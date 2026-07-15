@@ -106,5 +106,19 @@ const TOPICS = [
       {id:"cloud",label:"云端与多形态"},{id:"playbook",label:"实战场景手册"},
       {id:"pitfalls",label:"避坑与协同"},{id:"resources",label:"资源索引"}
     ]
+  },
+  {
+    href: "topics/android-crash-anr.html", icon: "⚡", tag: "稳定性", color: "#65a30d",
+    title: "Android Crash & ANR 排查根治 × AI 提效",
+    desc: "小白到大神:崩溃图鉴、ANR 解剖、Native 崩溃、全工具链、GP/Firebase 后台、疑难侦查术,以及 AI 分诊工作流与原创 crash-triage 技能。",
+    meta: ["12 章渐进式", "30+ 崩溃图鉴", "原创 AI Skill", "2026-07 核对"],
+    sections: [
+      {id:"overview",label:"全景与方法论"},{id:"read-crash",label:"第一课:读懂一次崩溃"},
+      {id:"crash-catalog",label:"常见 Crash 图鉴与根治"},{id:"anr",label:"ANR 深入"},
+      {id:"native",label:"Native Crash"},{id:"toolbox",label:"工具箱与用法"},
+      {id:"consoles",label:"Play Console 与 Firebase"},{id:"device-data",label:"测试机数据导出"},
+      {id:"detective",label:"疑难杂症侦查术"},{id:"ai-method",label:"AI 结合:方法论与提示词"},
+      {id:"ai-workflow",label:"AI 工作流与原创 Skill"},{id:"governance",label:"治理体系与资源"}
+    ]
   }
 ];
