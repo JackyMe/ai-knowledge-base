@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex 使用指南 · CLI × IDE × Cloud · 2026.07</title>
+<style>
+:root{
+  --accent:#0d9373; --accent-2:#34d399; --accent-soft:#e7f7f1;
+  --ink:#0c1512; --bg:#ffffff; --bg-side:#f9fbfa; --bg-code:#0e1614;
+  --text:#202723; --text-2:#57635c; --text-3:#8b978f;
+  --border:#e6ece8; --border-2:#d5ded8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#ebf7f2;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eef4f0;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e9f5ef;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(16,163,127,.40),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(52,211,153,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#6ee7b7;font-weight:600;background:rgba(16,163,127,.16);
+  border:1px solid rgba(16,163,127,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#34d399,#a7f3d0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#b6c9c0;max-width:640px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#93a89e}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c4e8da}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eef4f0;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0b7a5f}
+pre{background:var(--bg-code);color:#dde9e2;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7f948a}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f8fbf9}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f9fcfa}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#f8fbf9;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#e7f7f1;color:#0b7a5f}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(12,21,18,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">CX</span>Codex 使用指南<span class="sub">干货版</span></div>
+  <div class="right">
+    <a href="../index.html">◂ 主题中心</a>
+    <span>基于 codex-cli 0.14x · 2026-07-15</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">认识</div>
+    <a href="#overview"><span class="no">00</span>Codex 全景</a>
+    <a href="#setup"><span class="no">01</span>安装与登录</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">速查</div>
+    <a href="#commands"><span class="no">02</span>命令速查手册</a>
+    <a href="#sandbox"><span class="no">03</span>沙箱与审批</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">配置与扩展</div>
+    <a href="#agents-md"><span class="no">04</span>AGENTS.md 与记忆</a>
+    <a href="#skills-mcp"><span class="no">05</span>Skills / 插件 / MCP</a>
+    <a href="#config-auth"><span class="no">06</span>配置与账号全解</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">进阶</div>
+    <a href="#cloud"><span class="no">07</span>云端与多形态</a>
+    <a href="#playbook"><span class="no">08</span>实战场景手册</a>
+    <a href="#pitfalls"><span class="no">09</span>避坑与协同</a>
+    <a href="#resources"><span class="no">10</span>资源索引</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 截至 2026-07</div>
+  <h1>Codex<br><span class="grad">使用指南 · 干货版</span></h1>
+  <p class="lead">OpenAI 的代理式编码工具:一个账号,五种形态——终端 CLI、IDE 扩展、云端任务、桌面 App、GitHub 代码评审。本指南以官方 CLI 参考与斜杠命令文档为底,整理出安装配置、命令速查、沙箱审批、AGENTS.md、Skills/MCP 与实战打法。</p>
+  <div class="meta">
+    <span>20+ 子命令</span><span>40+ 斜杠命令</span><span>沙箱三档详解</span><span>与 Claude Code 协同</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5 种形态</b><span>CLI / IDE / Cloud / Desktop / GitHub 评审,一个账号通用</span></div>
+  <div class="stat"><b>3 档沙箱</b><span>read-only → workspace-write → danger-full-access</span></div>
+  <div class="stat"><b>AGENTS.md</b><span>开放标准的项目记忆,/init 一键生成</span></div>
+  <div class="stat"><b>1 条捷径</b><span>/import 直接导入 Claude Code 的配置与会话</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">认识 00</div>
+<h2>Codex 全景</h2>
+
+<p>Codex 是 OpenAI 的代理式编码工具:读代码、跑命令、改文件、自主推进任务。与 Claude Code 同属"终端编码代理"物种,心智模型高度相通(上下文管理、计划先行、验证闭环同样适用),但形态矩阵与安全模型有自己的鲜明取向。</p>
+
+<h3>五种形态,一个账号</h3>
+<table class="tbl">
+  <tr><th>形态</th><th>入口</th><th>适用</th></tr>
+  <tr><td><strong>CLI(TUI)</strong></td><td>终端运行 <code>codex</code></td><td>日常主力:交互式终端 UI</td></tr>
+  <tr><td><strong>非交互模式</strong></td><td><code>codex exec</code>(别名 <code>codex e</code>)</td><td>脚本与 CI:结果流式输出到 stdout 或 JSONL</td></tr>
+  <tr><td><strong>IDE 扩展</strong></td><td>VS Code / Cursor 等安装 Codex 扩展</td><td>编辑器内对话、内联改代码</td></tr>
+  <tr><td><strong>Codex Cloud</strong></td><td><code>codex cloud</code> / 网页端</td><td>云端沙箱跑任务,支持 best-of-N 多次尝试,回本地 <code>codex apply</code> 应用 diff</td></tr>
+  <tr><td><strong>桌面 App / GitHub</strong></td><td><code>codex app</code>;GitHub 中 @ 提及</td><td>独立窗口工作台;PR 自动代码评审</td></tr>
+</table>
+
+<h3>模型与推理力度</h3>
+<p>会话内用 <code>/model</code> 切换模型并选择推理力度(reasoning effort),启动时用 <code>--model</code> 指定(官方文档示例如 <code>gpt-5.4</code>;具体型号随版本演进,以 <code>codex debug models</code> 输出为准)。<code>/fast</code> 可切换 Fast 服务档;<code>--oss</code> 甚至能接本地 Ollama 开源模型。</p>
+
+<div class="callout note"><b class="t">一句话定位(社区共识)</b>Codex 的招牌是<strong>默认更严格的沙箱模型</strong>(命令在 OS 级沙箱里跑)与<strong>云端任务矩阵</strong>;Claude Code 的招牌是更丰富的扩展面(Skills/Hooks/子代理生态)。两者高度互补,见<a href="#pitfalls">协同一节</a>。</div>
+<p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://developers.openai.com/codex/cli" target="_blank">官方 Codex CLI</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="setup">
+<div class="sec-tag">认识 01</div>
+<h2>安装与登录</h2>
+
+<h3>安装</h3>
+<pre><code><span class="c"># npm 方式</span>
+npm install -g @openai/codex
+
+<span class="c"># 或 Homebrew(macOS)</span>
+brew install codex
+
+<span class="c"># 启动 / 自更新</span>
+codex
+codex update</code></pre>
+
+<h3>登录</h3>
+<p><code>codex login</code> 支持三种方式:<strong>ChatGPT 账号 OAuth</strong>(推荐,Plus/Pro/Team 订阅直接用)、设备码认证、或从 stdin 传入 API Key。登出用 <code>codex logout</code>;会话内 <code>/logout</code>。</p>
+
+<h3>进入新仓库的标准四步</h3>
+<ol class="steps">
+  <li><code>/init</code> —— 生成 <code>AGENTS.md</code> 脚手架(构建命令、测试方式、项目约定)</li>
+  <li><code>/model</code> —— 选定模型与推理力度;<code>/status</code> 确认会话配置与 token 用量</li>
+  <li>确认<strong>沙箱与审批档位</strong>(见 <a href="#sandbox">03 沙箱与审批</a>)——这是 Codex 使用体验的核心开关</li>
+  <li><code>/mcp</code> —— 查看已接入的外部工具;需要就 <code>codex mcp add</code></li>
+</ol>
+
+<h3>配置体系:config.toml 三层</h3>
+<table class="tbl">
+  <tr><th>层级</th><th>位置</th><th>说明</th></tr>
+  <tr><td>全局</td><td><code>~/.codex/config.toml</code></td><td>个人默认:模型、沙箱、审批策略、MCP、profiles</td></tr>
+  <tr><td>项目</td><td><code>.codex/config.toml</code>(仓库根)</td><td>覆盖全局,冲突时<strong>项目优先</strong></td></tr>
+  <tr><td>单次运行</td><td><code>-c key=value</code> / <code>--profile 名称</code></td><td>临时覆盖任意配置;profile 可打包一组预设</td></tr>
+</table>
+<pre><code><span class="c"># ~/.codex/config.toml 常用起步项</span>
+#:schema https://developers.openai.com/codex/config-schema.json
+model = "gpt-5.4"
+sandbox_mode = "workspace-write"     <span class="c"># 沙箱默认档</span>
+approval_policy = "on-request"       <span class="c"># 审批默认档</span></code></pre>
+<div class="callout tip"><b class="t">编辑体验</b>文件顶部加上面那行 schema 注释,配合 VS Code 的 Even Better TOML 扩展即可获得自动补全与校验。诊断配置层叠用会话内 <code>/debug-config</code>。</div>
+<p class="src">来源:<a href="https://developers.openai.com/codex/config-reference" target="_blank">官方 Configuration Reference</a> · <a href="https://blakecrosley.com/guides/codex" target="_blank">Codex CLI Guide 2026</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="commands">
+<div class="sec-tag">速查 02</div>
+<h2>命令速查手册</h2>
+<p>按使用层级分组:终端子命令 → 启动参数 → 会话内斜杠命令。TUI 内键入 <code>/</code> 可浏览全部命令。</p>
+
+<h3>终端子命令</h3>
+<table class="tbl">
+  <tr><th>命令</th><th>作用</th></tr>
+  <tr><td><code>codex ["任务"]</code></td><td>启动交互式 TUI,可带初始提示与 <code>-i 图片</code></td></tr>
+  <tr><td><code>codex exec</code>(<code>e</code>)</td><td>非交互执行:输出到 stdout 或 JSONL,可恢复既往会话——自动化基石</td></tr>
+  <tr><td><code>codex resume</code> / <code>codex fork</code></td><td>按 ID 恢复会话 / 分叉旧会话为新线程(原始记录保留)</td></tr>
+  <tr><td><code>codex apply</code>(<code>a</code>)</td><td>把 Codex Cloud 任务生成的最新 diff 应用到本地工作树</td></tr>
+  <tr><td><code>codex cloud</code></td><td>在终端浏览/执行云端任务(<code>--env</code> 指定环境、<code>--attempts 1-4</code> best-of-N)</td></tr>
+  <tr><td><code>codex login</code> / <code>logout</code></td><td>认证(ChatGPT OAuth / 设备码 / stdin 传 API Key)/ 登出</td></tr>
+  <tr><td><code>codex mcp</code></td><td>管理 MCP 服务器:list / add / remove / 认证</td></tr>
+  <tr><td><code>codex mcp-server</code></td><td>把 Codex 自身作为 MCP 服务器暴露(stdio)——供其他代理调用</td></tr>
+  <tr><td><code>codex sandbox</code></td><td>在 Codex 提供的 OS 沙箱里跑任意命令(macOS/Linux/Windows)</td></tr>
+  <tr><td><code>codex app</code></td><td>启动桌面 App(macOS 可直接打开工作区路径)</td></tr>
+  <tr><td><code>codex features</code></td><td>列出/持久开关特性旗标(写入 config.toml)</td></tr>
+  <tr><td><code>codex plugin marketplace</code></td><td>从 Git 或本地源添加/升级/移除插件市场</td></tr>
+  <tr><td><code>codex completion</code> / <code>codex update</code></td><td>生成 shell 补全脚本 / 自更新</td></tr>
+</table>
+
+<h3>高价值启动参数</h3>
+<table class="tbl">
+  <tr><th>参数</th><th>作用</th></tr>
+  <tr><td><code>--model, -m</code></td><td>覆盖配置中的模型(如 <code>gpt-5.4</code>)</td></tr>
+  <tr><td><code>--sandbox, -s</code></td><td>沙箱档位:<code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code></td></tr>
+  <tr><td><code>--ask-for-approval, -a</code></td><td>审批档位:<code>untrusted</code> / <code>on-request</code> / <code>never</code></td></tr>
+  <tr><td><code>--cd, -C 路径</code></td><td>指定代理的工作目录</td></tr>
+  <tr><td><code>--add-dir 路径</code></td><td>为主工作区之外的目录追加写权限(可重复)</td></tr>
+  <tr><td><code>-c key=value</code></td><td>单次覆盖任意配置项(值按 JSON 解析)</td></tr>
+  <tr><td><code>--profile, -p 名称</code></td><td>加载 config.toml 中的配置档</td></tr>
+  <tr><td><code>--image, -i 路径</code></td><td>初始提示附带图片(逗号分隔或重复传参)</td></tr>
+  <tr><td><code>--search</code></td><td>启用实时联网搜索(默认为 cached)</td></tr>
+  <tr><td><code>--oss</code></td><td>使用本地开源模型(需 Ollama 运行中)</td></tr>
+  <tr><td><code>--enable / --disable 特性</code></td><td>单次强开/强关特性旗标</td></tr>
+  <tr><td><code>--remote ws(s)://…</code></td><td>TUI 连接远程 app-server(codex / resume / fork 支持)</td></tr>
+  <tr><td><code>--yolo</code></td><td>⚠️ 全跳过审批与沙箱,仅限外部已加固的隔离环境</td></tr>
+</table>
+
+<h3>会话内斜杠命令 · 按场景分组</h3>
+<h4>① 会话与上下文</h4>
+<table class="tbl">
+  <tr><th>命令</th><th>作用</th></tr>
+  <tr><td><code>/new</code> / <code>/clear</code></td><td>同一 CLI 内开新对话 / 清屏并重开(注意 <kbd>Ctrl+L</kbd> 只清屏不重开)</td></tr>
+  <tr><td><code>/compact</code></td><td>摘要压缩对话,释放 token</td></tr>
+  <tr><td><code>/resume</code> / <code>/fork</code></td><td>从会话列表恢复 / 分叉当前对话为新线程</td></tr>
+  <tr><td><code>/side</code>(<code>/btw</code>)</td><td>临时侧对话,不污染主线</td></tr>
+  <tr><td><code>/archive</code> / <code>/delete</code></td><td>归档当前会话并退出 / 永久删除当前会话并退出</td></tr>
+  <tr><td><code>/copy</code> / <code>/raw</code></td><td>复制最近一次输出 / 切换原始滚动模式</td></tr>
+</table>
+<h4>② 模型与行为</h4>
+<table class="tbl">
+  <tr><th>命令</th><th>作用</th></tr>
+  <tr><td><code>/model</code> / <code>/fast</code></td><td>切模型与推理力度 / 切 Fast 服务档</td></tr>
+  <tr><td><code>/plan</code></td><td>进入计划模式(可带提示,如 <code>/plan 给这个服务出迁移方案</code>);任务运行中不可用</td></tr>
+  <tr><td><code>/goal</code></td><td>设定/暂停/恢复/查看/清除任务目标</td></tr>
+  <tr><td><code>/personality</code></td><td>选择回复风格</td></tr>
+  <tr><td><code>/status</code> / <code>/usage</code></td><td>会话配置 + token 用量(模型、审批策略、可写根目录、剩余上下文)/ 账号级用量与限额</td></tr>
+</table>
+<h4>③ 工作流</h4>
+<table class="tbl">
+  <tr><th>命令</th><th>作用</th></tr>
+  <tr><td><code>/diff</code></td><td>查看 Git diff(含未跟踪文件)——提交前必看</td></tr>
+  <tr><td><code>/review</code></td><td>让 Codex 评审当前工作树,给第二双眼睛</td></tr>
+  <tr><td><code>/mention</code></td><td>把文件/目录挂进对话,指定下一步检查对象</td></tr>
+  <tr><td><code>/approve</code></td><td>放行一次被自动评审拦下的重试</td></tr>
+  <tr><td><code>/ps</code> / <code>/stop</code></td><td>查看后台终端及输出 / 停止全部后台终端</td></tr>
+</table>
+<h4>④ 配置与扩展</h4>
+<table class="tbl">
+  <tr><th>命令</th><th>作用</th></tr>
+  <tr><td><code>/init</code></td><td>生成 AGENTS.md 脚手架</td></tr>
+  <tr><td><code>/skills</code> / <code>/plugins</code> / <code>/hooks</code> / <code>/apps</code></td><td>浏览技能 / 插件 / 生命周期钩子 / 应用连接器</td></tr>
+  <tr><td><code>/mcp</code></td><td>列出 MCP 工具(加 <code>verbose</code> 看服务器详情)</td></tr>
+  <tr><td><code>/memories</code></td><td>配置记忆的使用与生成</td></tr>
+  <tr><td><code>/import</code></td><td><strong>导入 Claude Code 的设置、项目文件与近期会话</strong>——双工具党福音</td></tr>
+  <tr><td><code>/statusline</code> / <code>/title</code> / <code>/theme</code></td><td>状态栏字段 / 窗口标题 / 语法高亮主题</td></tr>
+  <tr><td><code>/experimental</code> / <code>/debug-config</code></td><td>开关实验特性 / 打印配置层叠诊断</td></tr>
+</table>
+<p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://developers.openai.com/codex/cli/slash-commands" target="_blank">官方 Slash Commands</a> · <a href="https://toolsbase.dev/en/reference/codex-commands" target="_blank">Toolsbase Cheat Sheet</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="sandbox">
+<div class="sec-tag">速查 03</div>
+<h2>沙箱与审批:Codex 的安全内核</h2>
+<p>Codex 的安全模型是<strong>两个正交的旋钮</strong>:沙箱决定"命令能碰什么",审批决定"什么时候要问你"。理解这 3×3 组合,就掌握了 Codex 的使用手感。</p>
+
+<h3>沙箱三档(--sandbox / sandbox_mode)</h3>
+<table class="tbl">
+  <tr><th>档位</th><th>能力</th><th>适用</th></tr>
+  <tr><td><code>read-only</code></td><td>只能读,不能写不能联网</td><td>代码调研、评审、问答</td></tr>
+  <tr><td><code>workspace-write</code> <span class="pill a">推荐默认</span></td><td>可写工作区(及 <code>--add-dir</code> 追加目录),网络默认受限</td><td>日常开发</td></tr>
+  <tr><td><code>danger-full-access</code></td><td>无沙箱限制</td><td>仅限容器等隔离环境</td></tr>
+</table>
+
+<h3>审批三档(--ask-for-approval / approval_policy)</h3>
+<table class="tbl">
+  <tr><th>档位</th><th>行为</th><th>适用</th></tr>
+  <tr><td><code>untrusted</code></td><td>非白名单命令一律先问</td><td>陌生仓库、高危操作期</td></tr>
+  <tr><td><code>on-request</code> <span class="pill a">推荐默认</span></td><td>模型自行在沙箱内干活,越权需求才来问你</td><td>交互式日常(官方推荐,<code>on-failure</code> 已弃用)</td></tr>
+  <tr><td><code>never</code></td><td>从不询问,越权直接失败</td><td>CI 与无人值守脚本</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">--yolo 的正确认知</b><code>--dangerously-bypass-approvals-and-sandbox</code>(别名 <code>--yolo</code>)= 审批与沙箱全关。与 Claude Code 的 <code>--dangerously-skip-permissions</code> 同理:只应出现在<strong>无敏感数据、无网络副作用的外部加固环境</strong>(如一次性容器)。</div>
+
+<h3>进阶:execpolicy 规则</h3>
+<p><code>codex execpolicy</code> 可以评估自定义规则文件,预演某条命令会被<strong>放行、询问还是拦截</strong>——把团队的命令安全策略做成可测试的代码。另有 <code>codex sandbox</code> 让你把任意命令手动丢进 Codex 同款 OS 沙箱里跑,适合验证沙箱行为。</p>
+<p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://smartscope.blog/en/generative-ai/chatgpt/openai-codex-cli-comprehensive-guide/" target="_blank">SmartScope Codex Guide</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="agents-md">
+<div class="sec-tag">配置与扩展 04</div>
+<h2>AGENTS.md 与记忆</h2>
+
+<h3>AGENTS.md:开放标准的项目说明书</h3>
+<p>作用等价于 Claude Code 的 CLAUDE.md:每次会话自动加载的项目级指令。差异在于 <strong>AGENTS.md 是跨工具开放标准</strong>(agents.md),Codex、Cursor 等多家代理都认它——写一份,多个工具受益。</p>
+<ol class="steps">
+  <li><code>/init</code> 生成脚手架:构建命令、测试方式、项目约定</li>
+  <li>手工打磨:留下"猜不出来的事实",删掉读代码就能知道的内容(精简法则与 CLAUDE.md 完全一致)</li>
+  <li>子目录可放自己的 AGENTS.md,作用于该子树——monorepo 友好</li>
+</ol>
+<pre><code><span class="c"># AGENTS.md 精瘦模板</span>
+## 构建与测试
+- 构建: pnpm build   测试: pnpm test -- --run
+- 提交前必须通过 pnpm typecheck
+
+## 约定
+- ES modules;分支名 feat/xxx、fix/xxx
+- migrations/ 目录只增不改
+
+## 环境
+- 集成测试前先 docker compose up -d db</code></pre>
+
+<h3>记忆与个性</h3>
+<ul>
+  <li><code>/memories</code> —— 管理 Codex 的记忆生成与使用:跨会话记住你的偏好与项目事实;</li>
+  <li><code>/personality</code> —— 选择回复风格(简洁/详尽等);</li>
+  <li>会话本身也是资产:<code>codex resume</code> 恢复、<code>codex fork</code> 分叉、<code>/archive</code> 归档。</li>
+</ul>
+<p class="src">来源:<a href="https://developers.openai.com/codex/cli/slash-commands" target="_blank">官方 Slash Commands</a> · <a href="https://agents.md" target="_blank">agents.md 开放标准</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="skills-mcp">
+<div class="sec-tag">配置与扩展 05</div>
+<h2>Skills / 插件 / MCP</h2>
+
+<h3>Skills:与 Claude Code 同标准</h3>
+<p>Codex 的技能同样遵循<strong>开放 Agent Skills 标准</strong>——按需加载的能力包,目录结构:</p>
+<pre><code>my-skill/
+├── SKILL.md            <span class="c"># 必需:指令</span>
+├── scripts/            <span class="c"># 可选:可执行脚本</span>
+├── references/         <span class="c"># 可选:参考文档</span>
+├── assets/             <span class="c"># 可选:图片资源</span>
+└── agents/openai.yaml  <span class="c"># 可选:元数据、UI、依赖(Codex 扩展)</span></code></pre>
+<p>会话内 <code>/skills</code> 浏览与调用。<strong>同一份技能包可以在 Claude Code 与 Codex 之间复用</strong>——这是把工作流沉淀成技能的最大红利。</p>
+
+<h3>插件与钩子</h3>
+<ul>
+  <li><code>codex plugin marketplace</code> 从 Git/本地源接入插件市场,<code>/plugins</code> 浏览安装;</li>
+  <li><code>/hooks</code> 查看与管理生命周期钩子;</li>
+  <li><code>/apps</code> 浏览应用连接器(connectors)并插入到提示中。</li>
+</ul>
+
+<h3>MCP:既是客户端,也是服务器</h3>
+<table class="tbl">
+  <tr><th>方向</th><th>命令</th><th>用途</th></tr>
+  <tr><td>Codex 用别人</td><td><code>codex mcp add / list / remove</code>;会话内 <code>/mcp</code></td><td>接数据库、Figma、Sentry……以及 <strong>Pencil</strong>(本知识库的 Pencil 主题即介绍过 Codex 驱动 Pencil 画布)</td></tr>
+  <tr><td>别人用 Codex</td><td><code>codex mcp-server</code></td><td>把 Codex 整个作为 MCP 工具暴露给其他代理——多代理编排的乐高件</td></tr>
+</table>
+<div class="callout tip"><b class="t">实用组合</b>在 Claude Code 里 <code>claude mcp add codex -- codex mcp-server</code>,即可让 Claude Code 把任务转包给 Codex(反向亦然)——两个代理互为工具。</div>
+<p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://blakecrosley.com/guides/codex" target="_blank">Codex CLI Guide 2026</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="config-auth">
+<div class="sec-tag">配置与扩展 06</div>
+<h2>配置与账号体系全解</h2>
+<p>把 <code>~/.codex</code> 里的每个文件、每种登录形式、换电脑/无头机的每条路径讲透——按"是什么 → 在哪里 → 怎么改 → 出问题怎么查"组织。</p>
+
+<h3>一、CODEX_HOME 目录地图</h3>
+<p>Codex 的所有本地状态都在 <code>CODEX_HOME</code>(默认 <code>~/.codex</code>,设该环境变量可整体搬家):</p>
+<table class="tbl">
+  <tr><th>文件 / 目录</th><th>内容</th><th>要不要备份</th></tr>
+  <tr><td><code>config.toml</code></td><td>核心配置:模型、沙箱、审批、MCP、特性旗标、模型提供方</td><td>✅ dotfiles 必备</td></tr>
+  <tr><td><code>&lt;名称&gt;.config.toml</code></td><td>配置档(profile)文件,与 config.toml 同目录,<code>--profile 名称</code> 启用</td><td>✅ 一起带走</td></tr>
+  <tr><td><code>AGENTS.md</code></td><td>全局个人指令(项目层的在仓库里)</td><td>✅</td></tr>
+  <tr><td><code>auth.json</code></td><td><strong>登录凭证缓存(明文 token!)</strong></td><td>❌ 当密码对待,不进 git 不进聊天</td></tr>
+  <tr><td>日志目录(含 <code>codex-login.log</code>)</td><td>运行与登录诊断日志</td><td>无需备份;排查登录问题时看它</td></tr>
+  <tr><td>会话数据</td><td><code>codex resume</code> / <code>fork</code> 依赖的本地会话记录</td><td>本地资产,不随机器走</td></tr>
+</table>
+
+<h3>二、配置层级与 Profile</h3>
+<p>同一个键冲突时,从高到低:</p>
+<ol class="steps">
+  <li><strong>企业管控</strong> —— managed configuration 与 <code>requirements.toml</code> 约束,个人不可越过</li>
+  <li><strong>单次覆盖</strong> —— <code>-c key=value</code>(值按 JSON 解析)</li>
+  <li><strong>Profile</strong> —— <code>--profile 名称</code> 加载对应 <code>名称.config.toml</code></li>
+  <li><strong>项目层</strong> —— 仓库根的 <code>.codex/config.toml</code>(注意:出于安全,<code>model_providers</code>、<code>notify</code>、<code>otel</code> 等键在项目层<strong>被忽略</strong>,必须写在用户层)</li>
+  <li><strong>用户层</strong> —— <code>~/.codex/config.toml</code></li>
+  <li>内置默认值</li>
+</ol>
+<div class="callout tip"><b class="t">诊断三板斧</b><code>/status</code> 看当前会话生效的模型/审批/可写根;<code>/debug-config</code> 打印配置层叠与 requirements 诊断("为什么这个键不生效"一查便知);config.toml 顶部加 <code>#:schema https://developers.openai.com/codex/config-schema.json</code> 获得编辑器校验。</div>
+
+<h3>三、登录方式全解与切换</h3>
+<table class="tbl">
+  <tr><th>方式</th><th>怎么用</th><th>计费 / 适用</th></tr>
+  <tr><td><strong>ChatGPT 登录(默认)</strong></td><td><code>codex login</code> → 浏览器 OAuth(本机回调 <code>localhost:1455</code>)</td><td>订阅额度;Fast mode 等依赖 ChatGPT 额度的功能<strong>仅此方式可用</strong>;走 ChatGPT 工作区的权限与数据政策</td></tr>
+  <tr><td><strong>API Key</strong></td><td>平台后台取 key,经 stdin 传给 <code>codex login</code></td><td>按量 API 计费;<strong>官方推荐 CI/CD 用这种</strong>;走 API 组织的数据设置</td></tr>
+  <tr><td><strong>设备码(beta)</strong></td><td><code>codex login --device-auth</code>,或登录界面选 Sign in with Device Code;需先在 ChatGPT 安全设置(个人)或工作区权限(管理员)中启用</td><td>无浏览器/回调被挡的环境首选</td></tr>
+  <tr><td>社交/SSO 登录</td><td>Google / Microsoft / Apple / 企业 SSO 直接走 ChatGPT 登录页</td><td>MFA 建议在提供方处开启;<strong>邮箱+密码账号必须开 MFA 才能用 Codex cloud</strong></td></tr>
+</table>
+<h4>凭证存到哪、怎么切换</h4>
+<ul>
+  <li><strong>存储位置可选</strong>:config.toml 里 <code>cli_auth_credentials_store = "file" | "keyring" | "auto"</code>——file 存明文 <code>auth.json</code>;keyring 存系统凭据库(macOS 钥匙串等);auto 优先系统凭据库。</li>
+  <li><strong>CLI 与 IDE 扩展共享同一份缓存</strong>:任一端 logout,另一端也要重登;ChatGPT 会话的 token 会自动续期。</li>
+  <li><strong>切换账号</strong> = <code>codex logout</code> → <code>codex login</code> 选新账号;会话内 <code>/logout</code> 同效。</li>
+  <li><strong>企业强制</strong>:管控配置可设 <code>forced_login_method = "chatgpt" | "api"</code> 与 <code>forced_chatgpt_workspace_id</code>;凭证不匹配会被直接登出退出——"公司机器换不了登录方式"就是它。</li>
+</ul>
+
+<h3>四、换电脑 / 无头机 / 远程环境</h3>
+<h4>普通换电脑</h4>
+<pre><code><span class="c"># 新机三步</span>
+npm install -g @openai/codex     <span class="c"># 或 brew install codex</span>
+codex login                      <span class="c"># 浏览器重新登录(凭证不建议拷贝)</span>
+<span class="c"># 把 dotfiles 里的 config.toml / profiles / AGENTS.md 放回 ~/.codex</span></code></pre>
+<h4>无头机 / 服务器 / 容器(官方三方案,按优先级)</h4>
+<ol class="steps">
+  <li><strong>设备码认证(首选)</strong>:<code>codex login --device-auth</code> → 本地浏览器开链接输一次性码。</li>
+  <li><strong>拷贝 auth.json(官方兜底)</strong>:在有浏览器的机器登录后,把缓存复制过去——
+<pre><code><span class="c"># SSH</span>
+ssh user@remote 'mkdir -p ~/.codex && cat > ~/.codex/auth.json' &lt; ~/.codex/auth.json
+<span class="c"># Docker 容器</span>
+docker cp ~/.codex/auth.json 容器名:/root/.codex/auth.json</code></pre>
+注意:若本机凭证存在系统钥匙串(keyring)而非文件,此法不适用——先把 <code>cli_auth_credentials_store</code> 设为 <code>file</code>。</li>
+  <li><strong>SSH 端口转发</strong>:<code>ssh -L 1455:localhost:1455 user@remote</code> 后在远端跑 <code>codex login</code>,用本地浏览器完成标准流程。</li>
+</ol>
+<div class="callout warn"><b class="t">安全红线</b><code>auth.json</code> 就是你的账号:含访问 token,不 commit、不贴工单、不发聊天。CI 长期方案优先 API Key 存 Secret,而不是搬运 auth.json。</div>
+<h4>企业网络(TLS 代理 / 私有 CA)</h4>
+<pre><code>export CODEX_CA_CERTIFICATE=/path/to/corporate-root-ca.pem
+codex login   <span class="c"># 登录、HTTPS、WebSocket 全部走该 CA;未设时回退 SSL_CERT_FILE</span></code></pre>
+
+<h3>五、第三方模型与网关</h3>
+<p>在用户层 config.toml 定义 <code>model_providers.&lt;id&gt;</code> 后,三种认证任选其一:</p>
+<table class="tbl">
+  <tr><th>方式</th><th>写法</th><th>场景</th></tr>
+  <tr><td>OpenAI 认证过网关</td><td><code>requires_openai_auth = true</code>(此时 env_key 被忽略)</td><td>经 LLM 代理/网关访问 OpenAI 模型,仍用 ChatGPT/API Key 登录</td></tr>
+  <tr><td>环境变量密钥</td><td><code>env_key = "MY_PROVIDER_KEY"</code></td><td>第三方模型服务商自己的 key</td></tr>
+  <tr><td>无认证</td><td>两者都不设</td><td>本地模型;<code>--oss</code> 直连 Ollama 是现成快捷方式</td></tr>
+</table>
+
+<h3>六、高频问题急救表</h3>
+<table class="tbl">
+  <tr><th>症状</th><th>原因 / 解法</th></tr>
+  <tr><td>浏览器登录卡住 / 回调失败</td><td>本机 1455 端口被占或被防火墙拦:改用 <code>--device-auth</code>,或 SSH 转发 1455</td></tr>
+  <tr><td>登录问题要证据</td><td>看日志目录里的 <code>codex-login.log</code>(login 专用日志)</td></tr>
+  <tr><td>IDE 扩展突然要求登录</td><td>CLI 与 IDE 共享凭证缓存——某端 logout 会连带另一端</td></tr>
+  <tr><td>Fast mode 用不了</td><td>它依赖 ChatGPT 额度:API Key 登录没有,换 ChatGPT 登录</td></tr>
+  <tr><td>改了 config 不生效</td><td><code>/debug-config</code> 查层叠;记住 <code>-c</code> &gt; profile &gt; 项目 &gt; 全局;provider/notify/otel 键项目层无效</td></tr>
+  <tr><td>公司机器登录方式被锁</td><td><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> 管控生效,找管理员</td></tr>
+  <tr><td>企业代理下全线 TLS 报错</td><td>设 <code>CODEX_CA_CERTIFICATE</code> 指向公司根证书 PEM</td></tr>
+  <tr><td>换电脑后 resume 不到旧会话</td><td>会话数据在旧机 CODEX_HOME,不随凭证走;云任务不受影响</td></tr>
+  <tr><td>Codex cloud 拒绝访问</td><td>邮箱+密码账号必须先开 MFA;cloud 只支持 ChatGPT 登录</td></tr>
+  <tr><td>想彻底重置</td><td>备份 config.toml/AGENTS.md 后清空 <code>~/.codex</code>,重新 login</td></tr>
+</table>
+<p class="src">本节依据:<a href="https://developers.openai.com/codex/auth" target="_blank">官方 Authentication</a> · <a href="https://developers.openai.com/codex/config-reference" target="_blank">官方 Config Reference</a> · <a href="https://developers.openai.com/codex/config-basic" target="_blank">Config Basics</a>(2026-07 版)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="cloud">
+<div class="sec-tag">进阶 07</div>
+<h2>云端与多形态</h2>
+
+<h3>Codex Cloud:云沙箱跑任务</h3>
+<pre><code><span class="c"># 终端直接派发云任务(--env 指定环境,--attempts 跑 best-of-N)</span>
+codex cloud exec --env ENV_ID --attempts 3 "重构 utils/ 并补齐测试"
+
+<span class="c"># 浏览任务列表(--json 机器可读)</span>
+codex cloud list --limit 10
+
+<span class="c"># 满意的结果一键落地到本地工作树</span>
+codex apply TASK_ID</code></pre>
+<p><strong>best-of-N 是云端的杀手锏</strong>:同一任务并行跑 1–4 次尝试,挑最好的 diff 应用——对"一次成型率不稳"的大任务尤其划算。</p>
+
+<h3>IDE 扩展与桌面 App</h3>
+<ul>
+  <li>VS Code / Cursor 安装 Codex 扩展:编辑器里对话、内联 diff、把当前文件上下文喂给代理;</li>
+  <li><code>codex app</code> 启动桌面工作台(macOS 可直接带工作区路径打开);</li>
+  <li><code>--remote ws://…</code> 让终端 TUI 连接远程 app-server——本地键盘,远端算力。</li>
+</ul>
+
+<h3>GitHub 代码评审</h3>
+<p>接入 GitHub 后,在 PR 中 @ 提及 Codex 即可触发自动代码评审;被自动评审拦下的重试可在 CLI 用 <code>/approve</code> 放行一次。</p>
+<p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://developers.openai.com/codex" target="_blank">官方 Codex 文档</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="playbook">
+<div class="sec-tag">进阶 08</div>
+<h2>实战场景手册</h2>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🧭</span><b>场景① 只读调研模式</b><span class="pt">EXPLORE</span></div>
+    <div class="pb">
+      <p><code>codex --sandbox read-only "梳理这个仓库的模块依赖关系"</code>——物理只读,放心让它翻遍整个代码库。配合 <code>/mention</code> 精确指定要看的文件,<code>/plan</code> 让它先出方案再动手。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🏗️</span><b>场景② 日常开发标准流</b><span class="pt">FEATURE</span></div>
+    <div class="pb">
+      <p>推荐组合 <code>workspace-write</code> + <code>on-request</code>:模型在沙箱里自主干活,越权才打断你。链路:<code>/plan</code> 出计划 → 确认后实现 → <code>/diff</code> 审查改动 → <code>/review</code> 让它自评一轮 → 提交。<code>/goal</code> 把验收条件挂到会话上。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🤖</span><b>场景③ 自动化与 CI</b><span class="pt">AUTOMATION</span></div>
+    <div class="pb">
+      <pre><code><span class="c"># 非交互执行:JSONL 输出便于管道处理</span>
+codex exec --sandbox workspace-write -a never \
+  "修掉所有 eslint 报错并跑通测试" --json
+
+<span class="c"># 批量:恢复既往会话续跑</span>
+codex exec resume SESSION_ID "继续处理剩余文件"</code></pre>
+      <p>要点:CI 里固定 <code>-a never</code>(越权即失败,不挂起等人),用 execpolicy 规则文件约束可执行命令。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">☁️</span><b>场景④ 大任务上云,好结果落地</b><span class="pt">CLOUD</span></div>
+    <div class="pb">
+      <p>本地继续写代码,大重构丢给云:<code>codex cloud exec --attempts 3</code> 并行三次尝试 → 网页/终端查看各次 diff → <code>codex apply</code> 把最优解落到本地 → <code>/diff</code> + 本地测试验收。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔀</span><b>场景⑤ 双代理协同(Codex × Claude Code)</b><span class="pt">DUAL-AGENT</span></div>
+    <div class="pb">
+      <p>三种玩法:① <code>/import</code> 一键把 Claude Code 的配置、项目文件、近期会话搬进 Codex,无痛双开;② Writer/Reviewer 跨代理——一个写实现,另一个 <code>/review</code>,不同模型的视角差异比同模型双会话更能暴露盲区;③ 互为 MCP 工具(见 05 节),编排层随意转包。技能包(Agent Skills 标准)两边通用,工作流沉淀一次即可。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="pitfalls">
+<div class="sec-tag">进阶 09</div>
+<h2>避坑与协同</h2>
+
+<h3>高频坑对照表</h3>
+<table class="tbl">
+  <tr><th>坑</th><th>解法</th></tr>
+  <tr><td>用 <kbd>Ctrl+L</kbd> 以为开了新对话</td><td><kbd>Ctrl+L</kbd> 只清屏;重开上下文要用 <code>/new</code> 或 <code>/clear</code></td></tr>
+  <tr><td>沙箱内联网失败以为是 bug</td><td><code>workspace-write</code> 默认限网;需要联网搜索加 <code>--search</code>,需要网络访问调整沙箱配置</td></tr>
+  <tr><td>审批弹个不停</td><td>档位切 <code>on-request</code>;把可信命令写进 execpolicy 白名单;别直接跳 <code>--yolo</code></td></tr>
+  <tr><td>AGENTS.md 写成百科全书</td><td>与 CLAUDE.md 同理:删到"少了这行就会犯错"为止,场景化内容做成技能</td></tr>
+  <tr><td>Cloud 任务结果不敢直接用</td><td><code>codex apply</code> 后必过 <code>/diff</code> + 本地测试;apply 只动工作树,不自动提交</td></tr>
+  <tr><td>配置改了不生效</td><td>记住三层优先级:<code>-c</code> 单次 &gt; 项目 <code>.codex/config.toml</code> &gt; 全局;<code>/debug-config</code> 一查便知</td></tr>
+  <tr><td>删会话手滑</td><td><code>/delete</code> 是永久删除;想保留记录用 <code>/archive</code></td></tr>
+</table>
+
+<h3>与 Claude Code 的选型直觉</h3>
+<table class="tbl">
+  <tr><th>维度</th><th>Codex 强项</th><th>Claude Code 强项</th></tr>
+  <tr><td>安全模型</td><td>OS 级沙箱默认开启,3×3 档位正交清晰</td><td>权限规则(deny/ask/allow)+ 权限模式灵活组合</td></tr>
+  <tr><td>云端形态</td><td>Cloud best-of-N、GitHub 评审、apply 落地闭环</td><td>Claude Code on the web、/batch 并行 worktree 舰队</td></tr>
+  <tr><td>扩展生态</td><td>Skills(开放标准)、插件市场、mcp-server 自暴露</td><td>Skills/Hooks/子代理/插件全家桶,生态更厚</td></tr>
+  <tr><td>迁移成本</td><td><code>/import</code> 直接吃 Claude Code 配置</td><td>AGENTS.md 标准互认,CLAUDE.md 可共存</td></tr>
+</table>
+<div class="callout note"><b class="t">一句话带走</b>不必二选一:AGENTS.md + Agent Skills 都是开放标准,把项目知识沉淀在标准层,代理随便换、随时双开。真正不可迁移的只有你对"上下文、验证、权限"三件事的理解——而那套心法在两边通用。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">进阶 10</div>
+<h2>资源索引</h2>
+
+<h3>官方(第一信源)</h3>
+<table class="tbl">
+  <tr><th>资源</th><th>说明</th></tr>
+  <tr><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>文档总入口(CLI / IDE / Cloud / 配置)</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/cli/reference" target="_blank">CLI Reference</a> / <a href="https://developers.openai.com/codex/cli/slash-commands" target="_blank">Slash Commands</a></td><td>子命令、参数、斜杠命令权威表</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/config-reference" target="_blank">Configuration Reference</a></td><td>config.toml 全量键值 + JSON Schema</td></tr>
+  <tr><td><a href="https://agents.md" target="_blank">agents.md</a></td><td>AGENTS.md 开放标准</td></tr>
+  <tr><td><a href="https://github.com/openai/codex" target="_blank">openai/codex(GitHub)</a></td><td>源码与 Releases</td></tr>
+</table>
+
+<h3>社区精华(本文参考)</h3>
+<table class="tbl">
+  <tr><th>主题</th><th>来源</th></tr>
+  <tr><td>安装/沙箱/AGENTS.md/MCP 通关</td><td><a href="https://blakecrosley.com/guides/codex" target="_blank">Blake Crosley: Codex CLI Guide 2026</a></td></tr>
+  <tr><td>64 命令随版本更新的速查</td><td><a href="https://toolsbase.dev/en/reference/codex-commands" target="_blank">Toolsbase Cheat Sheet</a> · <a href="https://www.scriptbyai.com/codex-commands-cheat-sheet/" target="_blank">ScriptByAI Cheat Sheet</a></td></tr>
+  <tr><td>综合评测与配置实践</td><td><a href="https://smartscope.blog/en/generative-ai/chatgpt/openai-codex-cli-comprehensive-guide/" target="_blank">SmartScope</a> · <a href="https://anycap.ai/page/en-US/ai/openai-codex-cli-complete-guide-2026" target="_blank">AnyCap Complete Guide</a> · <a href="https://computingforgeeks.com/codex-cli-cheat-sheet/" target="_blank">ComputingForGeeks</a></td></tr>
+  <tr><td>关联主题</td><td>本知识库:<a href="claude-code-guide.html">Claude Code 使用指南</a> · <a href="pencil-docs-zh.html#ai-integration">Pencil 文档 / AI 集成(Codex 驱动 Pencil)</a></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>说明</strong>:本指南基于 Codex 官方文档(developers.openai.com/codex,2026-07 版本)与社区公开资料提炼整理,非官方出品。命令与参数随版本快速演进,以 <code>codex --help</code> 与官方文档为准。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pencil 文档中文指南 · 基于官方文档整理</title>
+<style>
+:root{
+  --accent:#5b5bf6; --accent-2:#8b5cf6; --accent-soft:#eef0ff;
+  --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0f172a;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef4ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.75;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:.2px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);margin-left:2px;padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-3)}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:block;padding:6.5px 12px;border-radius:8px;color:var(--text-2);text-decoration:none;
+  font-size:13.8px;transition:.15s}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:880px;margin:0 auto;padding:0 44px 120px}
+
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--border)}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);font-weight:600;
+  background:var(--accent-soft);padding:5px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-size:40px;line-height:1.25;letter-spacing:-.5px;font-weight:800}
+.hero h1 .grad{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16.5px;color:var(--text-2);max-width:640px}
+.hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--text-3)}
+.hero .meta span{background:#f4f6fa;border:1px solid var(--border);padding:4px 12px;border-radius:99px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:34px 0 8px}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 20px 18px;text-decoration:none;
+  color:var(--text);transition:.18s;background:#fff}
+.card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(91,91,246,.10);transform:translateY(-2px)}
+.card .ic{font-size:20px;margin-bottom:10px}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:13px;color:var(--text-3);line-height:1.55;display:block}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:28px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19.5px;font-weight:700;margin:34px 0 12px;scroll-margin-top:84px}
+h4{font-size:16px;font-weight:700;margin:24px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.origin{font-size:12.5px;color:var(--text-3);margin:-14px 0 20px}
+.origin a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c9dcff}
+.callout.note b.t{color:#2563eb}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4338ca}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafbff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+details{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 18px;font-weight:600;font-size:14px;background:#fafbfd;list-style:none}
+details summary::before{content:"▸ ";color:var(--accent)}
+details[open] summary::before{content:"▾ "}
+details .inner{padding:16px 18px 6px;border-top:1px solid var(--border)}
+
+.dot{display:inline-block;width:10px;height:10px;border-radius:99px;margin-right:6px}
+.dot.blue{background:#3b82f6}.dot.magenta{background:#d946ef}.dot.violet{background:#8b5cf6}
+
+/* 图片与视频 */
+figure{margin:20px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 2px 10px rgba(15,23,42,.04)}
+figure img{display:block;width:100%;height:auto}
+figure.tall img{max-height:460px;object-fit:cover;object-position:top}
+figure figcaption{padding:10px 16px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--border);background:#fafbfd}
+figure figcaption a{color:var(--text-3)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:18px 0}
+.img-grid figure{margin:0}
+.video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  margin:18px 0 6px;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cap{font-size:12.5px;color:var(--text-3);margin:6px 2px 20px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero h1{font-size:30px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">✎</span>Pencil 文档<span class="sub">中文指南</span></div>
+  <div class="right">
+    <a href="../index.html">◂ 主题中心</a>
+    <span>整理于 2026-07-14</span>
+    <a href="https://docs.pencil.dev/" target="_blank">官方英文原版 ↗</a>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">概览</div>
+    <a href="#home">文档首页</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">快速开始</div>
+    <a href="#installation">安装</a>
+    <a href="#authentication">认证与激活</a>
+    <a href="#ai-integration">AI 集成</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">核心概念</div>
+    <a href="#pen-files">.pen 文件</a>
+    <a href="#design-as-code">设计即代码</a>
+    <a href="#interface">Pencil 界面</a>
+    <a href="#variables">变量</a>
+    <a href="#components">组件</a>
+    <a href="#slots">插槽 Slots</a>
+    <a href="#code-on-canvas">画布上的代码</a>
+    <a href="#design-libraries">设计库</a>
+    <a href="#import-export">导入与导出</a>
+    <a href="#shortcuts">键盘快捷键</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">设计与代码</div>
+    <a href="#design-to-code">设计 ↔ 代码</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">疑难解答</div>
+    <a href="#troubleshooting">故障排查</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">开发者</div>
+    <a href="#pen-format">.pen 文件格式</a>
+    <a href="#pencil-cli">Pencil CLI</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="home">
+  <div class="badge">⚡ 非官方中文指南 · 覆盖官方文档全部页面</div>
+  <h1>Pencil 文档<br><span class="grad">中文完整指南</span></h1>
+  <p class="lead">Pencil 是一款直接嵌入 IDE 的矢量设计工具:在画布上设计,在代码中落地。本指南基于 docs.pencil.dev 官方文档(更新至 2026-06-27)逐页整理为中文,每节均附原文链接,便于对照。</p>
+  <div class="meta">
+    <span>来源 docs.pencil.dev</span><span>官方更新 2026-06-27</span><span>中文整理 2026-07-14</span>
+  </div>
+</div>
+
+<div class="sec-tag">概览</div>
+<h2>什么是 Pencil?</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/" target="_blank">Pencil Documentation(首页)</a></p>
+
+<p>Pencil 是一款强大的矢量设计工具,<strong>直接集成在你的开发环境中</strong>。与运行在独立应用或浏览器标签页里的传统设计工具不同,Pencil 就住在你的 IDE 里,与代码并肩工作。</p>
+<p><strong>为什么选择 Pencil?</strong> 它把设计与开发放进同一个环境,弥合两者之间的鸿沟:在画布上设计组件、与代码保持同步,并让 AI 助手帮你维持设计与实现之间的一致性,从根本上提升工程速度。</p>
+
+<div class="video"><iframe src="https://www.youtube.com/embed/mduKhXvmsyA" title="Pencil 官方介绍视频" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ 官方介绍视频(来自文档首页)</p>
+
+<div class="cards">
+  <a class="card" href="#installation"><div class="ic">🚀</div><b>快速开始</b><span>安装、激活与 AI 集成,迈出第一步</span></a>
+  <a class="card" href="#pen-files"><div class="ic">🧩</div><b>核心概念</b><span>理解 .pen 文件、变量、组件与插槽</span></a>
+  <a class="card" href="#design-to-code"><div class="ic">🔄</div><b>设计与代码</b><span>让设计和代码库保持双向同步</span></a>
+  <a class="card" href="#troubleshooting"><div class="ic">🛠️</div><b>故障排查</b><span>常见问题与解决方案速查</span></a>
+  <a class="card" href="#pen-format"><div class="ic">📦</div><b>开发者文档</b><span>.pen 格式规范与 Pencil CLI</span></a>
+</div>
+
+<div class="divider"></div>
+
+<section id="installation">
+<div class="sec-tag">快速开始 01</div>
+<h2>安装</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/getting-started/installation" target="_blank">Getting Started / Installation</a></p>
+
+<p>Pencil 提供 <strong>IDE 扩展</strong>与<strong>独立桌面应用</strong>两种形态,按你的工作流选择即可。</p>
+
+<h3>VS Code 扩展</h3>
+<ol class="steps">
+  <li>打开 VS Code,进入扩展面板(<kbd>Cmd/Ctrl + Shift + X</kbd>)</li>
+  <li>搜索 "Pencil" 并点击 <strong>Install</strong></li>
+  <li>验证:新建一个 <code>.pen</code> 后缀文件(如 <code>test.pen</code>)并打开,编辑器右上角应出现 Pencil 图标</li>
+</ol>
+<div class="callout note"><b class="t">看不到图标?</b>打开命令面板(<kbd>Cmd/Ctrl + Shift + P</kbd>)搜索 "Pencil" 查看可用命令,并在扩展面板确认扩展已启用。</div>
+
+<h3>Cursor 扩展</h3>
+<p>安装方式与 VS Code 相同:扩展面板搜索 "Pencil" 安装,再新建 <code>.pen</code> 文件验证图标是否出现。</p>
+<h4>常见问题</h4>
+<ul>
+  <li><strong>扩展无法连接</strong>:确认 Claude Code 已登录(运行 <code>claude</code>)、完成激活流程、检查 Pencil MCP 服务器已连接。</li>
+  <li><strong>看不到提示输入框</strong>:检查激活/登录状态,重启 Cursor,仍不行则重装扩展。</li>
+  <li><strong>提示 "You need Cursor Pro"</strong>:可能与 Cursor 的套餐/工具限制有关,请检查订阅状态。</li>
+</ul>
+
+<h3>桌面应用</h3>
+<h4>macOS</h4>
+<ul>
+  <li>从官网或发布页下载最新 <code>.dmg</code>,拖入「应用程序」文件夹后启动。</li>
+  <li>首次启动如遇安全提示,右键 → 打开即可;随后完成激活,若要使用 AI 功能还需登录 Claude Code。</li>
+</ul>
+<h4>Linux</h4>
+<pre><code><span class="c"># .deb 包示例</span>
+sudo dpkg -i pencil-*.deb
+
+<span class="c"># .AppImage 示例</span>
+chmod +x pencil-*.AppImage
+./pencil-*.AppImage</code></pre>
+<div class="callout warn"><b class="t">已知问题</b>Wayland / Hyprland 环境可能出现 UI 异常,X11 环境更稳定。</div>
+<h4>Windows</h4>
+<p>Pencil 可在 Windows 上运行;Windows 用户也可以直接使用 VS Code 或 Cursor 扩展,安装步骤与 macOS/Linux 完全一致。</p>
+
+<h3>Claude Code CLI</h3>
+<p>Pencil 的 AI 功能依赖已安装并完成认证的 Claude Code:</p>
+<pre><code><span class="c"># 安装 Claude Code CLI</span>
+npm install -g @anthropic-ai/claude-code-cli
+
+<span class="c"># 或使用官方安装脚本</span>
+curl https://claude.ai/cli/install.sh | sh
+
+<span class="c"># 登录(跟随浏览器认证流程)</span>
+claude
+
+<span class="c"># 验证登录状态</span>
+claude --version</code></pre>
+
+<h3>MCP 服务器</h3>
+<p>Pencil 的 MCP(Model Context Protocol)服务器会在你使用 Pencil 时<strong>自动启动、本地运行</strong>,为 AI 助手提供读写 <code>.pen</code> 文件的工具,基础使用无需任何额外配置。</p>
+<ul>
+  <li><strong>Cursor 中验证</strong>:Settings → Tools &amp; MCP,确认列表中出现 Pencil。</li>
+  <li><strong>Codex CLI 中验证</strong>:先运行 Pencil,再在 Codex 中执行 <code>/mcp</code>,Pencil 应出现在 MCP 列表。</li>
+</ul>
+
+<h3>安装完成后</h3>
+<ol class="steps">
+  <li><strong>完成激活</strong> — 使用邮箱激活 Pencil</li>
+  <li><strong>登录 Claude Code</strong> — AI 功能必需</li>
+  <li><strong>打开欢迎文件</strong> — 画布右键 → Open Welcome File</li>
+  <li><strong>创建第一个设计</strong> — 参见 <a href="#pen-files">.pen 文件</a></li>
+</ol>
+
+<h3>更新 Pencil</h3>
+<ul>
+  <li><strong>VS Code / Cursor 扩展</strong>:默认自动更新;手动更新在扩展面板找到 Pencil 点击 Update。</li>
+  <li><strong>桌面应用</strong>:有新版本时应用会提示,从官网下载安装最新版。</li>
+</ul>
+
+<h3>安装故障速查</h3>
+<ul>
+  <li><strong>扩展已装但不连接</strong>:确认 Claude Code 已登录 → 完成激活 → 重启 IDE。</li>
+  <li><strong>收不到激活邮件</strong>:检查垃圾邮件;换一个邮箱;重装扩展。</li>
+  <li><strong>"Invalid API key" 或 "Please run /login"</strong>:运行 <code>claude</code> 完成认证,并确保没有冲突的认证配置(环境变量密钥、自定义 Provider)。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="authentication">
+<div class="sec-tag">快速开始 02</div>
+<h2>认证与激活</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/getting-started/authentication" target="_blank">Getting Started / Authentication</a></p>
+
+<p>Pencil 需要两层身份验证:<strong>激活</strong>(使用 Pencil 本身)+ <strong>Claude Code 认证</strong>(使用 AI 功能)。</p>
+
+<h3>Pencil 激活</h3>
+<ol class="steps">
+  <li>首次启动时按提示<strong>输入邮箱</strong></li>
+  <li><strong>查收邮件</strong>获取激活码</li>
+  <li>在 Pencil 中<strong>输入激活码</strong>完成激活</li>
+</ol>
+<h4>激活常见问题</h4>
+<ul>
+  <li><strong>收不到激活邮件</strong>:检查垃圾邮件文件夹;换邮箱;稍等几分钟(邮件可能延迟)。</li>
+  <li><strong>"Invite for your email address was not found. Please join the waitlist."</strong>:尝试重装 Cursor/VS Code 扩展,持续出现请联系支持。</li>
+  <li><strong>反复要求激活</strong>:部分版本的已知问题——重启 IDE,持续出现则重装扩展。</li>
+  <li><strong>迁移过程中激活卡住</strong>:重装扩展并清除扩展数据后重试。</li>
+</ul>
+
+<h3>Claude Code 认证</h3>
+<p>推荐通过 CLI 登录:</p>
+<pre><code><span class="c"># 启动 Claude Code,跟随浏览器认证流程</span>
+claude</code></pre>
+<p>该流程会打开浏览器 → 使用 Anthropic 账号登录 → 将凭证保存在本地。验证方式:运行 <code>claude --version</code>,或在 Pencil 中确认没有 "Claude Code not connected" 警告、AI 面板(<kbd>Cmd/Ctrl + K</kbd>)可正常使用。</p>
+
+<h3>常见认证问题</h3>
+<h4>"Claude Code isn't connected / not logged in"</h4>
+<p>在项目目录打开终端 → 运行 <code>claude</code> 完成认证 → 回到 Pencil 重试。</p>
+<h4>"Invalid API key" 或 "Please run /login"</h4>
+<p><strong>原因</strong>:认证未完成;多种认证方式冲突(控制台登录 + 环境变量密钥 + 自定义 Provider);凭证过期。<br>
+<strong>解决</strong>:运行 <code>claude</code> 完成认证;若使用 CLI 认证,移除 <code>ANTHROPIC_API_KEY</code> 环境变量、清除不需要的自定义 Provider 配置;必要时重新干净登录一次。</p>
+<h4>"Claude CLI 正常,但 Pencil 仍显示未登录"</h4>
+<p>通常由第三方/自定义 Provider 的认证冲突或扩展未识别 CLI 认证导致:保持一个干净的 Claude Code 登录会话(无自定义 Provider),认证后重启 IDE,并检查是否存在冲突的环境变量。</p>
+
+<h3>认证方式对比</h3>
+<table class="tbl">
+  <tr><th>方式</th><th>说明</th><th>建议</th></tr>
+  <tr><td><strong>Claude CLI(推荐)</strong></td><td>终端运行 <code>claude</code>,浏览器登录,所有功能自动可用</td><td>最简单可靠</td></tr>
+  <tr><td>API Key</td><td>设置 <code>ANTHROPIC_API_KEY</code> 环境变量</td><td>可能与 CLI 认证冲突,一般不推荐</td></tr>
+</table>
+
+<h3>一套可行的完整流程</h3>
+<ol class="steps">
+  <li>安装 Pencil(扩展或桌面应用)</li>
+  <li>完成 Pencil 激活(邮箱验证码)</li>
+  <li>安装 Claude Code CLI</li>
+  <li>认证 Claude Code(<code>claude</code> 命令)</li>
+  <li>在项目中创建 <code>.pen</code> 文件</li>
+  <li>开始工作 — Pencil 与 AI 功能均应就绪</li>
+</ol>
+
+<h3>权限与访问</h3>
+<ul>
+  <li><strong>"Pencil / Claude 无法访问其他文件夹"</strong>:多为文件夹权限或系统安全设置所致——出现授权提示时接受;在系统设置中更新文件夹权限;以合适的权限运行 IDE/Pencil。</li>
+  <li><strong>"从未看到权限弹窗"</strong>:改在 Pencil 之外的独立 Claude Code 会话中执行该操作;检查系统通知设置与 IDE 权限。</li>
+</ul>
+
+<h3>安全与隐私</h3>
+<ul>
+  <li>Pencil MCP 服务器<strong>在本机运行</strong>;除使用 AI 功能(提示词发送给 Claude)外,设计数据不会发送到远程服务器。仓库目前为私有。</li>
+  <li>可在 IDE 中查看 MCP 工具定义:Cursor 为 Settings → Tools &amp; MCP;VS Code 查看 MCP 配置。工具定义展示了 AI 能对你的设计做什么。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-integration">
+<div class="sec-tag">快速开始 03</div>
+<h2>AI 集成</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">Getting Started / AI Integration</a></p>
+
+<p>Pencil 通过 <strong>MCP(Model Context Protocol)</strong>与 AI 助手深度集成,实现强大的设计自动化工作流。</p>
+
+<h3>支持的 AI 助手</h3>
+<p>Claude Code(CLI 与 IDE)、Claude Desktop、Cursor、Windsurf IDE(Codeium)、Codex CLI(OpenAI)、Antigravity IDE、OpenCode CLI。</p>
+
+<h3>MCP 是什么、如何工作</h3>
+<p>MCP 是一种让 AI 助手获得「操作你设计文件的工具」的协议——可以把它理解为一套让 AI 以编程方式读写 <code>.pen</code> 文件的 API。</p>
+<ol class="steps">
+  <li><strong>Pencil MCP 服务器本地运行</strong> — 设计操作不依赖云端</li>
+  <li><strong>AI 助手通过 MCP 连接</strong> — Pencil 运行时即可连上</li>
+  <li><strong>AI 调用工具</strong> — 读取、修改、生成设计</li>
+  <li><strong>你保持掌控</strong> — AI 提议,你来批准</li>
+</ol>
+
+<h3>在 Claude Code 中使用</h3>
+<p><strong>前置条件</strong>:安装 Claude Code CLI → 运行 <code>claude</code> 认证 → 保持 Pencil 运行 → 打开一个 <code>.pen</code> 文件。</p>
+
+<div class="video"><iframe src="https://player.vimeo.com/video/1158682767" title="Pencil in Antigravity / VS Code with Claude Code panel" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ 官方演示:在 Antigravity / VS Code 的 Claude Code 面板中使用 Pencil</p>
+
+<h4>基本工作流</h4>
+<ol class="steps">
+  <li>按 <kbd>Cmd/Ctrl + K</kbd> 打开 AI 提示面板</li>
+  <li>用自然语言描述需求,例如:"创建一个带邮箱和密码的登录表单"、"给这个页面加一个导航栏"</li>
+  <li>AI 通过 MCP 工具修改你的 <code>.pen</code> 文件</li>
+  <li>修改即时反映在画布上</li>
+</ol>
+<h4>提示词示例</h4>
+<table class="tbl">
+  <tr><th>场景</th><th>示例提示词</th></tr>
+  <tr><td>创建设计</td><td>"设计一个带侧边栏和主内容区的仪表盘" / "创建一个三档定价表" / "添加一个带标题和 CTA 按钮的 Hero 区域"</td></tr>
+  <tr><td>修改设计</td><td>"把所有主按钮改成蓝色" / "把侧边栏变窄" / "给这些元素之间加间距"</td></tr>
+  <tr><td>设计系统</td><td>"创建一个带变体的按钮组件" / "基于 #3b82f6 生成一套配色" / "构建一个字号阶梯"</td></tr>
+  <tr><td>代码联动</td><td>"为这个组件生成 React 代码" / "从我的代码库导入 Header" / "根据这些变量生成 Tailwind 配置"</td></tr>
+</table>
+
+<h3>在 Cursor 中使用</h3>
+<ol class="steps">
+  <li>在 Cursor 安装 Pencil 扩展并完成激活</li>
+  <li>认证 Claude Code</li>
+  <li>验证 MCP 连接:Settings → Tools &amp; MCP</li>
+</ol>
+
+<div class="video"><iframe src="https://player.vimeo.com/video/1158019699" title="Using Pencil Extension in Cursor" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ 官方演示:在 Cursor 中使用 Pencil 扩展</p>
+<ul>
+  <li><strong>内联编辑</strong>:在 Pencil 中选中元素,用 Cursor 的 AI 聊天修改,变更直接写入 <code>.pen</code> 文件。</li>
+  <li><strong>代码库感知</strong>:Cursor 能同时看到代码和设计,可要求它在两者间同步组件、自动保持一致。</li>
+</ul>
+
+<h3>在 Codex CLI 中使用</h3>
+<ol class="steps">
+  <li>先运行 Pencil(桌面应用或 IDE 扩展)</li>
+  <li>在终端打开 Codex,执行 <code>/mcp</code> 验证连接</li>
+  <li>Pencil 应出现在 MCP 服务器列表中</li>
+</ol>
+<p>终端里即可直接下设计指令,好处是命令行工作流、可脚本化的设计生成、可与构建工具集成。</p>
+<div class="callout warn"><b class="t">已知问题</b>Pencil 可能修改或重复写入 Codex 的 <code>config.toml</code>。官方已确认并在调查中——首次使用前请备份配置。</div>
+
+<h3>可用的 MCP 工具</h3>
+<table class="tbl">
+  <tr><th>类别</th><th>工具</th><th>能力</th></tr>
+  <tr><td rowspan="2">设计</td><td><code>batch_design</code></td><td>创建/修改/操作设计元素:插入、复制、更新、替换、移动、删除;设置变量与主题;生成并放置图片</td></tr>
+  <tr><td><code>batch_get</code></td><td>读取设计组件与层级;按模式搜索元素;检查组件结构</td></tr>
+  <tr><td rowspan="3">分析</td><td><code>get_screenshot</code></td><td>渲染设计预览、核对视觉输出、前后对比</td></tr>
+  <tr><td><code>snapshot_layout</code></td><td>分析布局结构、发现定位问题与重叠元素</td></tr>
+  <tr><td><code>get_editor_state</code></td><td>当前编辑器上下文、选区信息、活动文件</td></tr>
+  <tr><td>变量与主题</td><td><code>get_variables</code></td><td>读取设计令牌与主题值、与 CSS 同步(写入变量通过 <code>batch_design</code> 的 SetVariables 操作)</td></tr>
+</table>
+
+<h3>高级工作流</h3>
+<ul>
+  <li><strong>自动化设计生成</strong>:指定风格("按 Material Design 原则创建仪表盘");批量操作("为这个按钮组件生成 5 个变体"、"设计一整页含 Hero、功能、定价与页脚的落地页")。</li>
+  <li><strong>设计系统管理</strong>:一致性约束("确保所有按钮使用主色变量"、"给所有元素应用 8px 间距网格");组件库("创建含全部变体的按钮组件"、"生成文本/下拉/复选/单选等表单输入组件")。</li>
+  <li><strong>代码-设计联动</strong>:导入既有应用("在 Pencil 中重建 src/components 下的全部组件"、"从 Tailwind 配置导入设计系统");同步变更("让所有 React 组件与 Pencil 设计保持一致"、"在 CSS 与 Pencil 之间同步字体变量")。</li>
+</ul>
+
+<h3>官方最佳实践</h3>
+<ul>
+  <li><strong>够具体</strong>:❌ "弄好看点" → ✅ "按钮内边距加到 16px,颜色改为蓝色"</li>
+  <li><strong>给上下文</strong>:❌ "加个表单" → ✅ "添加登录表单:邮箱、密码、记住我复选框和提交按钮"</li>
+  <li><strong>引用设计系统</strong>:"用我们现有的按钮组件"、"遵循变量里的间距阶梯"、"和 Header 组件风格保持一致"</li>
+  <li><strong>迭代式设计</strong>:先框架("创建仪表盘布局")→ 细化("加带导航项的侧边栏")→ 打磨("导航项加 hover 态")→ 收尾("间距对齐 8px 网格")</li>
+  <li><strong>验证</strong>:AI 修改后,在画布上目视检查 → 在图层面板核对结构 → 必要时让 AI 截图核验复杂布局</li>
+</ul>
+
+<h3>AI 集成故障排查</h3>
+<ul>
+  <li><strong>连接问题</strong>:"Claude Code not connected" → 运行 <code>claude</code> 登录、重启 Pencil;MCP 服务器不出现 → 确认 Pencil 在运行、检查 IDE 的 MCP 设置、把 Pencil 和 AI 助手都重启一遍。</li>
+  <li><strong>权限问题</strong>:接受权限弹窗;检查系统文件夹权限;弹窗不出现时改用独立 Claude Code 会话执行。</li>
+  <li><strong>输出问题</strong>:"Invalid API key" → 重新认证、清理冲突环境变量;AI 改得不符合预期 → 提示词更具体、要求先解释再执行、必要时用版本控制回滚。</li>
+</ul>
+
+<h3>示例会话</h3>
+<pre><code><span class="c"># 1. 启动 Pencil 与 Claude Code</span>
+claude
+<span class="c"># 2. 在 IDE 中打开 design.pen;按 Cmd+K 开始设计</span>
+用户: "创建一个现代风格的落地页 Hero 区域"
+AI:   [生成含主标题、副标题、CTA 按钮的 Hero]
+用户: "在下方添加一个三列的功能特性区"
+AI:   [在 Hero 下方添加功能区]
+用户: "CTA 按钮使用我们的主色变量"
+AI:   [按钮改为引用颜色变量]
+用户: "为整个页面生成 React 代码"
+AI:   [导出为 React + Tailwind 组件]
+<span class="c"># 3. 审查、微调,提交 Git</span>
+git add design.pen src/pages/landing.tsx
+git commit -m "Add landing page design and implementation"</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="pen-files">
+<div class="sec-tag">核心概念 01</div>
+<h2>.pen 文件</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/pen-files" target="_blank">Core Concepts / .pen Files</a></p>
+
+<p><code>.pen</code> 是 Pencil 的设计文件格式,三个关键特征:</p>
+<ul>
+  <li><strong>基于 JSON</strong> — 结构化、可读的数据格式</li>
+  <li><strong>版本控制友好</strong> — 像代码文件一样纳入 Git 管理</li>
+  <li><strong>可移植</strong> — 跨团队、跨平台共享</li>
+</ul>
+<table class="tbl">
+  <tr><th>操作</th><th>方式</th></tr>
+  <tr><td>创建</td><td>IDE:新建 <code>.pen</code> 后缀文件;桌面应用:File → New 或 <kbd>Cmd/Ctrl + N</kbd></td></tr>
+  <tr><td>打开</td><td>双击 <code>.pen</code> 文件,或像普通文件一样在 IDE 中打开,Pencil 自动激活</td></tr>
+  <tr><td>保存</td><td><kbd>Cmd/Ctrl + S</kbd>;<strong>注意:暂无自动保存,请勤保存!</strong>用 Git 提交留存版本历史</td></tr>
+</table>
+<div class="callout tip"><b class="t">最佳实践</b>勤保存(尚无自动保存);定期提交 Git;把 <code>.pen</code> 文件和代码放在同一项目工作区;用有语义的命名,如 <code>dashboard.pen</code>、<code>components.pen</code>。</div>
+<p>想以编程方式读写 .pen 文件?参见 <a href="#pen-format">.pen 文件格式(开发者)</a>。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-as-code">
+<div class="sec-tag">核心概念 02</div>
+<h2>设计即代码 Design as Code</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/design-as-code" target="_blank">Core Concepts / Design as Code</a></p>
+
+<p>因为 <code>.pen</code> 是文本格式,设计文件可以完全按代码的方式协作与管理版本:</p>
+<ul>
+  <li>像提交代码一样提交 <code>.pen</code> 文件</li>
+  <li>在 Git 中直接查看 diff(文本格式)</li>
+  <li>与代码一起对设计做分支与合并</li>
+</ul>
+<div class="callout tip"><b class="t">最佳实践</b>频繁提交,写清晰的 commit message。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="interface">
+<div class="sec-tag">核心概念 03</div>
+<h2>Pencil 界面</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/pencil-interface" target="_blank">Core Concepts / Pencil Interface</a></p>
+
+<h3>无限画布</h3>
+<p>画布提供不设边界的工作空间,交互习惯与专业设计工具一致,上手即熟悉。<strong>按住空格拖拽平移画布</strong>;用触控板或按住 <kbd>Cmd/Ctrl</kbd> 滚动进行缩放。</p>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>空格 + 拖拽</kbd></td><td>平移画布</td></tr>
+  <tr><td><kbd>Shift + 滚动</kbd></td><td>水平平移</td></tr>
+  <tr><td><kbd>0</kbd></td><td>缩放到 100%</td></tr>
+  <tr><td><kbd>1</kbd></td><td>缩放至容纳全部元素</td></tr>
+</table>
+
+<h3>Frame(框架)</h3>
+<p>Frame 是设计的容器:归组相关元素、界定屏幕边界。<kbd>Cmd/Ctrl + Option/Alt + G</kbd> 可对选区应用 Flex 布局。</p>
+
+<h3>选择与高亮</h3>
+<p>点击或框选画布元素,选中后的包围框颜色标识元素类型:</p>
+<ul>
+  <li><span class="dot blue"></span><strong>蓝色</strong> — 常规元素:Frame、形状、文本</li>
+  <li><span class="dot magenta"></span><strong>品红色</strong> — 组件源(origin):唯一事实来源,在这里的修改会自动应用到所有实例</li>
+  <li><span class="dot violet"></span><strong>紫色</strong> — 组件实例(instance)</li>
+</ul>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>点击</kbd></td><td>选中元素</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + 点击</kbd></td><td>直接选中(最深层元素)</td></tr>
+  <tr><td><kbd>Shift + 点击</kbd></td><td>加入多选</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + A</kbd></td><td>全选</td></tr>
+</table>
+
+<h3>图层面板</h3>
+<p>位于屏幕左侧,列出画布上的所有元素,让你在复杂嵌套结构中清晰浏览、编辑、组织设计层级。双击图层可重命名;点击 "Layers" 图标可开关面板。</p>
+
+<h3>属性面板</h3>
+<p>选中一个或多个元素时出现在屏幕右侧,可查看和编辑对齐、布局、外观、填充、描边、效果等属性。支持将选区导出为 PNG / JPEG / WEBP / PDF;点击右上角图标可最小化。</p>
+
+<h3>AI 聊天</h3>
+<p>Pencil 的 AI 聊天是「凭感觉设计(vibe-designing)」的入口:可以让它从零设计,也可以编辑画布上的现有设计。聊天面板内置于桌面应用;在 IDE 里使用扩展时,则通过 IDE 自带的聊天与 AI 协作。</p>
+<ul>
+  <li>画布上的选区会自动加入上下文。</li>
+  <li>点击 "New Agent" 可开启新会话并清空上下文窗口。</li>
+</ul>
+
+<h3>撤销 / 重做</h3>
+<p><kbd>Cmd/Ctrl + Z</kbd> 撤销,<kbd>Cmd/Ctrl + Shift + Z</kbd> 重做。注意:撤销/重做能力可能比常规设计编辑器有限。</p>
+<div class="callout tip"><b class="t">最佳实践</b>勤按 <kbd>Cmd/Ctrl + S</kbd> 保存;大改动前先提交 Git;需要时用 Git 历史回滚。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="variables">
+<div class="sec-tag">核心概念 04</div>
+<h2>变量 Variables</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/variables" target="_blank">Core Concepts / Variables</a></p>
+
+<p>Pencil 的变量类似 CSS 自定义属性或设计令牌(design tokens):颜色 HEX、间距/圆角/尺寸数值、字体名称字符串——<strong>只定义一次,到处引用</strong>。在变量面板修改变量,所有引用处即时更新。</p>
+
+<h3>创建变量的三种方式</h3>
+<ul>
+  <li><strong>手动创建</strong> — 点击工具栏变量图标打开面板,直接定义变量并为不同主题设值。</li>
+  <li><strong>从 CSS 导入</strong> — 让 AI 代理基于你的 <code>globals.css</code> 创建变量,自动提取颜色、间距和字体。</li>
+  <li><strong>从 Figma 导入</strong> — 粘贴变量表截图让 AI 在 Pencil 中建好;也可以直接从 Figma 复制单个令牌值。</li>
+</ul>
+
+<h3>使用变量</h3>
+<ul>
+  <li><strong>应用到元素</strong> — 用变量引用代替硬编码值;变量一改,所有引用元素自动更新。</li>
+  <li><strong>主题化</strong> — 在变量面板新增一列即可创建亮色/暗色等主题;在属性面板切换主题,即时预览设计的适配效果。</li>
+</ul>
+
+<h3>与代码同步</h3>
+<p>变量可以在 Pencil 和代码库之间保持同步:让 AI 根据 Pencil 文件更新 CSS 变量,或把 CSS 的改动导回 Pencil——这是双向设计-代码工作流的基础。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="components">
+<div class="sec-tag">核心概念 05</div>
+<h2>组件 Components</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/components" target="_blank">Core Concepts / Components</a></p>
+
+<h3>为什么用组件</h3>
+<p>组件保证设计一致性:编辑一次主组件,所有实例自动更新。组件是构建设计系统的基石。</p>
+
+<h3>创建组件</h3>
+<p>任何标准设计元素(Frame、形状、文本)都能转换为可复用组件:</p>
+<ol class="steps">
+  <li>选中元素</li>
+  <li>按 <kbd>Cmd/Ctrl + Option/Alt + K</kbd>,或点属性面板顶部的 "Create component" 按钮</li>
+  <li>该元素即成为<strong>组件源(origin)</strong>,选中时显示品红色包围框</li>
+</ol>
+<p>更复杂的结构可以创建嵌套组件。</p>
+
+<h3>使用组件</h3>
+<p>直接在画布上<strong>复制组件源即可创建实例</strong>;实例选中时显示紫色包围框。点击属性面板的 "Go to component" 按钮可快速跳回组件源。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="slots">
+<div class="sec-tag">核心概念 06</div>
+<h2>插槽 Slots</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/slots" target="_blank">Core Concepts / Slots</a></p>
+
+<p>插槽是组件内部预留的可投放区域,用来在组件里定义灵活、可自定义的内容区。</p>
+
+<h3>创建插槽</h3>
+<ol class="steps">
+  <li>创建一个 Frame 并将其转为组件(<kbd>Cmd/Ctrl + Option/Alt + K</kbd> 或属性面板 "Create component")</li>
+  <li>按需设置样式</li>
+  <li>点击属性面板顶部的 "Make a slot" 按钮</li>
+</ol>
+<div class="callout note"><b class="t">规则</b>只有组件源内的<strong>空 Frame</strong> 才能变成插槽;画布上插槽以斜线纹理标识可投放区域。</div>
+
+<h3>建议的插槽组件</h3>
+<p>同一 .pen 文件中的其他组件可以被标记为某插槽的「建议组件」。例如 <code>table</code> 组件的插槽可以建议 <code>table-row</code> 作为预期内容——这给人类和 AI 设计师都提供了「这个槽该放什么」的指引。</p>
+<ol class="steps">
+  <li>在组件源中选中带插槽的图层</li>
+  <li>点击属性面板顶部 "Slots" 行的 <code>+</code> 按钮</li>
+  <li>选择要设为建议的组件</li>
+</ol>
+
+<h3>向插槽投放元素</h3>
+<p>创建组件实例后,把元素拖拽或复制粘贴进插槽即可填充内容。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="code-on-canvas">
+<div class="sec-tag">核心概念 07</div>
+<h2>画布上的代码 Code on Canvas</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">Core Concepts / Code on Canvas</a></p>
+
+<p>Pencil 通过 <strong>Script 节点</strong>把代码带上画布:放一个节点、指向一个 <code>.js</code> 文件,脚本输出即渲染为嵌套图层——饼图、网格、装饰纹样,凡是能用代码描述的都行。适合手工搭建很繁琐的结构:数据驱动、带变化的重复、或希望用几个「旋钮」交互调参的场景。</p>
+
+<h3>快速上手</h3>
+<ol class="steps">
+  <li><strong>创建 Script 节点</strong>:工具栏打开形状下拉 → 选 Script(<code>&lt;/&gt;</code> 图标)→ 点击画布放置一个 200×200 节点(未关联文件前显示绿色 "No script file selected" 占位)</li>
+  <li><strong>关联 .js 文件</strong>:在属性面板脚本字段输入路径;路径相对于 <code>.pen</code> 文件解析,同目录文件直接写 <code>chart.js</code></li>
+  <li><strong>画布上调参</strong>:拖拽手柄改尺寸,脚本实时重跑重排;每个 <code>@input</code> 都会在属性面板生成控件;保存 .js 文件画布即更新</li>
+</ol>
+<p>不必手写脚本,两条捷径:去 <a href="https://github.com/highagency/pencil-scripts" target="_blank">highagency/pencil-scripts</a> 拿官方维护的现成示例(图表、网格、纹样等);或打开 AI 面板直接描述需求,AI 会创建 <code>.js</code> 并关联到选中的 Script 节点。</p>
+
+<h3>最小示例</h3>
+<pre><code>/**
+ * @schema 2.11
+ *
+ * @input columns: number(min=1) = 3
+ * @input color: color = #3B82F6
+ */
+const cols = Math.floor(pencil.input.columns);
+const cellW = pencil.width / cols;
+
+const nodes = [];
+for (let c = 0; c &lt; cols; c++) {
+  nodes.push({
+    type: "rectangle",
+    x: c * cellW,
+    y: 0,
+    width: cellW - 4,
+    height: pencil.height,
+    fill: pencil.input.color,
+  });
+}
+return nodes;</code></pre>
+
+<figure>
+  <img src="https://docs.pencil.dev/_next/static/media/docs-code-on-canvas.44613d68.png" data-fallback="https://docs.pencil.dev/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdocs-code-on-canvas.44613d68.png&amp;w=1920&amp;q=75" alt="Script 节点在画布上渲染出三根蓝色柱形" loading="lazy" referrerpolicy="no-referrer">
+  <figcaption>上述脚本在 200×200 Script 节点中的实际渲染效果 · 图片来源:<a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">官方文档 Code on Canvas</a></figcaption>
+</figure>
+
+<h3>工作机制要点</h3>
+<ul>
+  <li><code>.js</code> 文件独立于 <code>.pen</code> 文件,节点只存路径;多个节点可指向同一文件,各自维护尺寸与输入值。</li>
+  <li>输入在文件头部注释以 <code>@input</code> 声明;改名或删除后属性面板自动更新。</li>
+  <li>脚本必须<strong>返回节点数组</strong>,每个对象遵循 .pen 格式,作为 Script 节点的子级插入。</li>
+  <li>输出是<strong>派生状态</strong>:每次运行重新渲染,不进撤销历史;要手工编辑生成内容,点属性面板底部的「Convert to layers」转为普通图层快照。</li>
+  <li>脚本在<strong>沙箱</strong>中运行:无 DOM、网络、文件系统访问,必须同步执行(无 async / setTimeout)。</li>
+  <li><code>Math.random()</code> 是确定性的(每次运行重新播种):相同输入必得相同输出。</li>
+  <li>报错和缺失文件直接显示在节点上并高亮出错行,无需开控制台。</li>
+</ul>
+
+<h3>API 速查</h3>
+<h4>文件头</h4>
+<pre><code>/**
+ * @schema &lt;version&gt;     <span class="c">// 必填,当前 schema 版本为 2.14</span>
+ * @input &lt;name&gt;: &lt;type&gt;[(&lt;args&gt;)] [= &lt;default&gt;]   <span class="c">// 0 或多个</span>
+ */</code></pre>
+<h4>输入类型</h4>
+<table class="tbl">
+  <tr><th>类型</th><th>示例</th><th>说明</th></tr>
+  <tr><td><code>number</code></td><td><code>@input size: number(min=0, max=100) = 10</code></td><td>可选 min/max 参数,运行前先钳制取值</td></tr>
+  <tr><td><code>string</code></td><td><code>@input label: string = "Hello"</code></td><td>面板中为多行文本</td></tr>
+  <tr><td><code>boolean</code></td><td><code>@input filled: boolean = true</code></td><td>渲染为复选框</td></tr>
+  <tr><td><code>color</code></td><td><code>@input fill: color = #3B82F6</code></td><td>HEX 字面量或带引号字符串</td></tr>
+  <tr><td><code>enum</code></td><td><code>@input layout: enum("grid", "stack") = "grid"</code></td><td>渲染为下拉框</td></tr>
+  <tr><td><code>ref</code></td><td><code>@input target: ref</code></td><td>引用可复用组件,从缩略图网格中选取</td></tr>
+</table>
+<h4><code>pencil</code> 全局对象</h4>
+<table class="tbl">
+  <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+  <tr><td><code>pencil.width</code></td><td>number</td><td>Script 节点当前宽度</td></tr>
+  <tr><td><code>pencil.height</code></td><td>number</td><td>Script 节点当前高度</td></tr>
+  <tr><td><code>pencil.input.&lt;name&gt;</code></td><td>随 @input 类型</td><td>对应输入的当前值(已钳制并校验)</td></tr>
+</table>
+<div class="callout warn"><b class="t">限制</b>一次最多返回 <strong>1000 个节点</strong>,必须在 <strong>2 秒</strong>内完成。把输入绑定到<a href="#variables">变量</a>(如 <code>$primary</code>),脚本会自动响应主题切换。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-libraries">
+<div class="sec-tag">核心概念 08</div>
+<h2>设计库 Design Libraries</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/design-libraries" target="_blank">Core Concepts / Design Libraries</a></p>
+
+<p>设计库是可被其他 .pen 文件导入的组件集合。修改库文件中的组件,变更会同步到所有使用处。</p>
+
+<h3>创建设计库</h3>
+<ol class="steps">
+  <li>新建一个 .pen 文件并填充组件</li>
+  <li>在左侧图层面板点击 "Libraries" 图标</li>
+  <li>点击底部 "Turn this file into a library"</li>
+</ol>
+<div class="callout warn"><b class="t">注意</b>设计库文件使用 <code>.lib.pen</code> 后缀;文件一旦标记为设计库,<strong>不可撤销</strong>。</div>
+
+<h3>导入库到文件</h3>
+<p>图层面板 → "Libraries" 图标 → 选择要导入的库(也可从默认库中选取)。</p>
+
+<h3>使用库资产</h3>
+<p>图层面板 → "Assets" 图标 → 在网格中滚动浏览或按名称搜索 → 拖拽或点击放置到画布。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="import-export">
+<div class="sec-tag">核心概念 09</div>
+<h2>导入与导出</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/import-and-export" target="_blank">Core Concepts / Import &amp; Export</a></p>
+
+<h3>导入</h3>
+<table class="tbl">
+  <tr><th>来源</th><th>方式</th></tr>
+  <tr><td>完整 Figma 文件</td><td>工具栏:点 Rectangle 图标下方的箭头 → <code>Import Figma</code>;桌面应用:File → Import Image/SVG/Figma...</td></tr>
+  <tr><td>单个 Figma 图层</td><td>在 Figma 中复制元素,直接粘贴到 Pencil 画布(⚠️ 图片元素不支持复制粘贴——请导入完整文件或手动添加图片)</td></tr>
+  <tr><td>图片</td><td>拖拽 / 复制粘贴 / 工具栏 <code>Import Image or SVG...</code> / 桌面应用 File 菜单;支持 PNG、JPEG、SVG</td></tr>
+  <tr><td>图标</td><td>内置图标库:Material Symbols(Outlined/Rounded/Sharp)、Lucide、Feather、Phosphor;也可像图片一样导入自有 SVG 图标</td></tr>
+</table>
+
+<h3>导出</h3>
+<ul>
+  <li><strong>设计转代码</strong>:按 <kbd>Cmd/Ctrl + K</kbd> 打开 AI 聊天,让它基于设计生成代码。</li>
+  <li><strong>导出单个元素</strong>:选中元素 → 属性面板底部选择尺寸与格式(PNG / JPEG / WEBP / PDF)→ 点击 <strong>Export layer</strong> 选择位置保存。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="shortcuts">
+<div class="sec-tag">核心概念 10</div>
+<h2>键盘快捷键</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/keyboard-shortcuts" target="_blank">Core Concepts / Keyboard Shortcuts</a></p>
+
+<h3>AI 聊天</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + K</kbd></td><td>开关 AI 聊天</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + T</kbd></td><td>新建 Agent 标签页</td></tr>
+  <tr><td><kbd>Ctrl + Tab</kbd> / <kbd>Ctrl + Shift + Tab</kbd></td><td>切换到下一个 / 上一个聊天标签</td></tr>
+  <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>提示词历史</td></tr>
+</table>
+
+<h3>工具</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>工具</th></tr>
+  <tr><td><kbd>V</kbd></td><td>移动</td></tr>
+  <tr><td><kbd>H</kbd></td><td>抓手</td></tr>
+  <tr><td><kbd>R</kbd></td><td>矩形</td></tr>
+  <tr><td><kbd>O</kbd></td><td>椭圆</td></tr>
+  <tr><td><kbd>A</kbd> / <kbd>F</kbd></td><td>Frame</td></tr>
+  <tr><td><kbd>T</kbd></td><td>文本</td></tr>
+  <tr><td><kbd>N</kbd></td><td>便签</td></tr>
+</table>
+
+<h3>编辑</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + C</kbd> / <kbd>V</kbd> / <kbd>X</kbd></td><td>复制 / 粘贴 / 剪切</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + D</kbd></td><td>创建副本</td></tr>
+  <tr><td><kbd>Delete/Backspace</kbd></td><td>删除选区</td></tr>
+  <tr><td><kbd>方向键</kbd> / <kbd>Shift + 方向键</kbd></td><td>移动 1px / 10px;在 Flex 布局中交换元素顺序</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + G</kbd> / <kbd>Cmd/Ctrl + Shift + G</kbd></td><td>编组 / 解组</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Option/Alt + G</kbd></td><td>对选区应用 Flex 布局</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + [</kbd> / <kbd>]</kbd></td><td>后移一层 / 前移一层</td></tr>
+  <tr><td><kbd>[</kbd> / <kbd>]</kbd></td><td>置于底层 / 置于顶层</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Z</kbd> / <kbd>Cmd/Ctrl + Shift + Z</kbd></td><td>撤销 / 重做</td></tr>
+</table>
+
+<h3>选择</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + A</kbd></td><td>全选</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + 点击</kbd></td><td>直接选中(光标下最深层元素)</td></tr>
+  <tr><td><kbd>Shift + 点击</kbd></td><td>加入多选</td></tr>
+  <tr><td><kbd>Shift + Enter</kbd></td><td>选中当前元素的父级</td></tr>
+  <tr><td><kbd>Enter</kbd></td><td>选中当前元素的子级</td></tr>
+  <tr><td><kbd>Esc</kbd></td><td>取消选择</td></tr>
+</table>
+
+<h3>组件</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + Option/Alt + K</kbd></td><td>元素 → 组件,或组件 → 还原为普通元素</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Option/Alt + X</kbd></td><td>解除实例与组件的关联(detach)</td></tr>
+</table>
+
+<h3>画布导航</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + 滚动</kbd></td><td>缩放</td></tr>
+  <tr><td><kbd>空格 + 拖拽</kbd> / <kbd>鼠标中键</kbd></td><td>平移画布</td></tr>
+  <tr><td><kbd>Shift + 滚动</kbd></td><td>水平平移</td></tr>
+  <tr><td><kbd>=</kbd> / <kbd>-</kbd></td><td>放大 / 缩小</td></tr>
+  <tr><td><kbd>0</kbd> / <kbd>1</kbd> / <kbd>2</kbd></td><td>100% / 适配全部 / 适配选区</td></tr>
+</table>
+
+<h3>画布设置与文件操作</h3>
+<table class="tbl">
+  <tr><th>快捷键</th><th>作用</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + '</kbd></td><td>开关像素网格</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Shift + '</kbd></td><td>开关像素网格吸附</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + S</kbd> / <kbd>N</kbd> / <kbd>O</kbd></td><td>保存 / 新建 / 打开文件</td></tr>
+</table>
+<div class="callout tip"><b class="t">小贴士</b>应用内点击工具栏的键盘图标可随时打开快捷键清单。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-to-code">
+<div class="sec-tag">设计与代码</div>
+<h2>设计 ↔ 代码</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/design-and-code/design-to-code" target="_blank">Design and Code / Design ↔ Code</a></p>
+
+<p>Pencil 支持设计与代码之间的<strong>双向工作流</strong>:设计 → 代码(从 Pencil 设计生成组件)、代码 → 设计(把既有代码导入 Pencil)。</p>
+
+<h3>设计 → 代码</h3>
+<ol class="steps">
+  <li>在 Pencil 画布上设计屏幕、布局或单个 UI 组件</li>
+  <li>把 <code>.pen</code> 文件保存在项目工作区内</li>
+  <li>按 <kbd>Cmd/Ctrl + K</kbd> 打开 AI 聊天</li>
+  <li>让 Pencil 生成代码</li>
+</ol>
+<table class="tbl">
+  <tr><th>场景</th><th>示例提示词</th></tr>
+  <tr><td>组件生成</td><td>"为这个按钮创建 React 组件" / "为这个表单生成 TypeScript 类型" / "把这张卡片导出为可复用组件"</td></tr>
+  <tr><td>整页生成</td><td>"从这个设计生成 Next.js 页面" / "用 Tailwind CSS 创建落地页组件" / "把这个仪表盘导出为 React 组件"</td></tr>
+  <tr><td>指定库</td><td>"用 shadcn/ui 组件生成代码" / "用 React Hook Form 实现这个表单" / "图标用 Lucide 而不是 Material Icons"</td></tr>
+</table>
+
+<h3>代码 → 设计</h3>
+<p>代码库中已有的组件,Pencil 可以在画布上可视化重建。<strong>前提</strong>:<code>.pen</code> 文件与代码在同一工作区,AI 代理能同时访问两者。</p>
+<pre><code>Recreate the Button component from src/components/Button.tsx
+Import the LoginForm from my codebase into this design
+Add the Header component from src/layouts/Header.tsx</code></pre>
+<p><strong>会导入什么</strong>:组件结构与层级、布局与定位、样式(颜色、字体、间距)。</p>
+
+<h3>双向同步</h3>
+<p>最强大的工作流是两个方向结合:</p>
+<ol class="steps">
+  <li><strong>从代码开始</strong> — 把既有组件导入 Pencil</li>
+  <li><strong>在 Pencil 中做视觉改进</strong></li>
+  <li><strong>让 AI 把改动写回代码</strong></li>
+  <li><strong>循环迭代</strong></li>
+</ol>
+
+<h3>变量与设计令牌同步</h3>
+<ul>
+  <li><strong>CSS → Pencil</strong>:"Create Pencil variables from my globals.css" / "Import design tokens from src/styles/tokens.css"</li>
+  <li><strong>Pencil → CSS</strong>:"Update globals.css with these Pencil variables" / "Sync these design tokens to my CSS"</li>
+</ul>
+
+<h3>最佳实践</h3>
+<h4>文件组织:把 .pen 放进仓库</h4>
+<pre><code>my-project/
+├── src/
+│   ├── components/
+│   └── styles/
+├── design.pen           ← 设计文件
+└── package.json</code></pre>
+<p>好处:AI 代理同时看得到设计与代码;版本控制统一跟踪两者;同步维护更容易。</p>
+<h4>工作流建议</h4>
+<ul>
+  <li><strong>新功能</strong>:先在 Pencil 设计 → 生成初版代码 → 打磨实现 → 需要时回写设计。</li>
+  <li><strong>改既有功能</strong>:组件导入 Pencil → 修改设计 → 同步回代码。</li>
+  <li><strong>设计系统维护</strong>:在 Pencil 定义变量 → 同步到 CSS → 设计与代码共用变量 → 一处更新、处处生效。</li>
+</ul>
+
+<h3>常用技术栈</h3>
+<p>Pencil 不绑定框架,可要求 AI 面向任意技术栈生成代码。常见选择:框架(React / Next.js / Vue / Svelte / 纯 HTML+CSS)、样式(Tailwind CSS / CSS Modules / Styled Components / 纯 CSS)、组件库(shadcn/ui / Radix UI / Chakra UI / Material UI / 自有组件)。<strong>在提示词中写明你的技术栈</strong>,例如:"Generate Next.js 14 code with Tailwind CSS"。</p>
+
+<h3>图标库</h3>
+<p>Pencil 内置 Material Symbols(Outlined/Rounded/Sharp)、Lucide、Feather、Phosphor,自有 SVG 图标可按图片方式导入。生成代码时在提示词指定偏好库(Lucide、Heroicons、FontAwesome、React Icons 等),例如:"Generate this design using Lucide icons"。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="troubleshooting">
+<div class="sec-tag">疑难解答</div>
+<h2>故障排查</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/troubleshooting" target="_blank">Troubleshooting</a></p>
+
+<h3>安装与设置</h3>
+<ul>
+  <li><strong>扩展已装但不工作</strong>(无图标 / 打不开 .pen):确认 Claude Code 已登录(<code>claude</code>)→ 完成邮箱激活 → 检查 MCP 已连接(Settings → MCP)→ 新建 .pen 文件试开 → 重启 IDE → 仍不行则重装。</li>
+  <li><strong>看不到 Pencil 图标</strong>:新建并打开 <code>.pen</code> 文件;检查扩展版本;命令面板搜 "Pencil";确认扩展已启用。</li>
+</ul>
+
+<h3>认证与激活</h3>
+<ul>
+  <li><strong>收不到激活邮件</strong>:查垃圾邮件 → 等几分钟 → 换邮箱 → 卡住就重装扩展。</li>
+  <li><strong>"Invite not found"</strong>:重装扩展重新激活,持续出现联系支持。</li>
+  <li><strong>反复要求激活</strong>:重启 IDE、重新激活一次、必要时重装。</li>
+  <li><strong>Claude Code 连接类问题</strong>:见<a href="#authentication">认证与激活</a>一节的完整排查步骤。</li>
+</ul>
+
+<h3>IDE 相关</h3>
+<ul>
+  <li><strong>Cursor</strong>:提示框不出现 → 检查激活/登录、重启、验证 MCP、重装;"You need Cursor Pro" → 检查订阅,或先用基础功能。</li>
+  <li><strong>VS Code</strong>:扩展不激活 → 确保打开了 .pen 文件、检查扩展启用状态、看开发者工具控制台报错、重装。</li>
+</ul>
+
+<h3>欢迎文件与新项目</h3>
+<ul>
+  <li><strong>没拿到欢迎文件</strong>:画布任意处右键 → <strong>Open Welcome File</strong>(可能在独立窗口打开)。</li>
+  <li><strong>新项目接入 Pencil 的推荐姿势</strong>:在工作区创建 <code>design.pen</code> → 在 IDE 打开 → 激活 Pencil → 让 .pen 与代码同仓库,AI 才能两边都看到。</li>
+</ul>
+
+<h3>画布与界面</h3>
+<ul>
+  <li><strong>嵌套元素难选中</strong>:<kbd>Cmd/Ctrl + 点击</kbd> 直选最深层;<kbd>Shift + Enter</kbd> 选父级;或直接用图层面板。</li>
+  <li><strong>选择框颜色含义</strong>:蓝色 = 普通元素;品红/紫色 = 可复用组件及其实例。</li>
+  <li><strong>转组件后没显示品红框</strong>:先取消选择再重新选中即可出现。</li>
+</ul>
+
+<h3>导入与导出</h3>
+<ul>
+  <li><strong>macOS 图片导入失败</strong>:File 菜单方式可能失败——改用拖拽,各平台都稳定。</li>
+  <li><strong>Figma 图片粘不过来</strong>:已知限制,复制粘贴不支持图片——改用 SVG 或单独重新导入。</li>
+  <li><strong>导出到 Claude Code 失败("Process exited with code 1")</strong>:检查 Claude Code 认证与权限;换独立 Claude Code 会话导出;检查环境变量。</li>
+  <li><strong>导出结果与画布不一致</strong>:已知问题——截图留档、重新导出、调整设计再试,并向官方报告具体案例。</li>
+</ul>
+
+<h3>MCP 与 AI</h3>
+<ul>
+  <li><strong>MCP 是本地还是远程?</strong>本地运行,设计操作无云端依赖。验证:Cursor 在 Settings → Tools &amp; MCP;Codex 运行 <code>/mcp</code>。</li>
+  <li><strong>Codex config.toml 被改动</strong>:首次使用前备份;官方已在调查。</li>
+  <li><strong>AI 无法访问文件夹 / 权限弹窗不出现</strong>:接受权限提示、检查系统权限,或换独立会话执行。</li>
+</ul>
+
+<h3>保存与版本控制</h3>
+<ul>
+  <li><strong>没有自动保存</strong>(计划中):勤按 <kbd>Cmd/Ctrl + S</kbd>,用 Git 提交做版本历史。</li>
+  <li><strong>撤销/重做有限</strong>:大改动前先保存/提交;小步修改;需要时用 Git 回滚。</li>
+  <li><strong>没有实时协作</strong>:目前通过 Git 协作——分支并行、pull → 编辑 → commit → push → PR,用 PR 评审设计。</li>
+</ul>
+
+<h3>平台相关</h3>
+<ul>
+  <li><strong>Linux</strong>:桌面应用可用;Wayland/Hyprland 可能有 UI 问题,X11 更稳,必要时退回 IDE 扩展。</li>
+  <li><strong>Windows</strong>:如桌面应用不可用,使用 VS Code / Cursor 扩展,功能一致。</li>
+</ul>
+
+<h3>常见错误信息速查</h3>
+<table class="tbl">
+  <tr><th>错误</th><th>可能原因</th><th>解决</th></tr>
+  <tr><td>"Claude Code not connected"</td><td>未登录</td><td>运行 <code>claude</code></td></tr>
+  <tr><td>"Invalid API key"</td><td>认证冲突</td><td>清理环境变量后重新认证</td></tr>
+  <tr><td>"Process exited with code 1"</td><td>导出/认证问题</td><td>检查 Claude Code 配置</td></tr>
+  <tr><td>"Need Cursor Pro"</td><td>套餐限制</td><td>检查 Cursor 订阅</td></tr>
+  <tr><td>"Invite not found"</td><td>激活问题</td><td>重装扩展</td></tr>
+  <tr><td>"Can't access folder"</td><td>权限</td><td>更新文件夹权限</td></tr>
+</table>
+
+<h3>预防清单</h3>
+<ol>
+  <li>勤保存(尚无自动保存)</li>
+  <li>保持 Claude Code 认证有效</li>
+  <li>.pen 文件放在项目工作区内</li>
+  <li>定期提交 Git</li>
+  <li>定期更新 Pencil 与 Claude Code</li>
+  <li>接受权限提示</li>
+  <li>使用受支持的工作流(不要手动编辑 .pen 文件)</li>
+</ol>
+<div class="callout tip"><b class="t">一句话总结</b>绝大多数问题都可以通过「确保 Claude Code 认证正常 + Pencil 保持最新」解决;拿不准时,重启 IDE 并重新认证。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="pen-format">
+<div class="sec-tag">开发者 01</div>
+<h2>.pen 文件格式</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/for-developers/the-pen-format" target="_blank">For Developers / The .pen Format</a></p>
+
+<div class="callout warn"><b class="t">活文档</b>本节是 .pen 格式的鸟瞰;权威、详尽的参考请查阅原文末尾的 TypeScript Schema。官方保留对格式引入破坏性变更的权利。</div>
+
+<h3>总览</h3>
+<ul>
+  <li>.pen 文件是一个 JSON 结构,描述一棵<strong>对象树</strong>(类似 HTML 或 SVG)。</li>
+  <li>每个对象都是无限二维画布上的图形实体。</li>
+  <li>对象必须有文档内唯一的 <code>id</code>,以及 <code>type</code>(如 <code>rectangle</code>、<code>frame</code>、<code>text</code>、<code>script</code> 等)。</li>
+</ul>
+
+<h3>布局</h3>
+<ul>
+  <li>顶层对象放在无限画布上,由 <code>x</code>、<code>y</code> 描述左上角位置;嵌套对象相对父级左上角定位。</li>
+  <li>父对象可通过 <code>layout</code>、<code>justifyContent</code>、<code>alignItems</code> 等属性以 <strong>Flexbox 风格</strong>接管子级的尺寸与定位。</li>
+  <li>子对象可选择填满父级(<code>fill_container</code>)或固定宽高;父对象可选择适配子级(<code>fit_content</code>)或固定宽高。</li>
+</ul>
+
+<h3>图形外观</h3>
+<ul>
+  <li>由 <code>fill</code>(填充)、<code>stroke</code>(描边)、<code>effect</code>(效果)控制。</li>
+  <li>填充可以是纯色、渐变(线性/径向/角度)、图片、网格渐变(mesh gradient),甚至 WebGL 着色器;一个对象可叠多层填充,按文档顺序绘制。</li>
+  <li>描边只有一条,但描边可以有多层填充;效果(模糊、背景模糊、内/外阴影)可叠加,按顺序应用。</li>
+</ul>
+
+<h3>组件与实例</h3>
+<p>.pen 与 HTML/SVG 的关键差异:文档中的对象树片段可以在别处<strong>复用</strong>——这就是组件系统。</p>
+<h4>定义组件:<code>reusable: true</code></h4>
+<pre><code>{
+  "id": "foo",
+  "type": "rectangle",
+  "reusable": true,   <span class="c">// ← 这个对象现在是可复用组件</span>
+  "x": 0, "y": 0, "width": 100, "height": 100,
+  "fill": "#FF0000"
+}</code></pre>
+<h4>创建实例:<code>type: "ref"</code></h4>
+<pre><code>{
+  "id": "bar",
+  "type": "ref",
+  "ref": "foo",       <span class="c">// ← foo 的一个实例(同样是 100×100 红色方块)</span>
+  "x": 120, "y": 0
+}</code></pre>
+<h4>属性覆盖(Overrides)</h4>
+<p>实例可以覆盖组件定义中的属性——下例 <code>baz</code> 仍是 <code>foo</code> 的实例,但把继承的填充覆盖成了蓝色:</p>
+<pre><code>{
+  "id": "baz",
+  "type": "ref",
+  "ref": "foo",
+  "x": 240, "y": 0,
+  "fill": "#0000FF"   <span class="c">// ← 100×100 的蓝色方块</span>
+}</code></pre>
+<h4>嵌套定制:<code>descendants</code></h4>
+<p>实例会复制组件根之下的一切;通过 <code>descendants</code> 映射可以定制内部任意后代节点(键为后代 id,嵌套实例内的后代用 <code>实例id/后代id</code> 路径):</p>
+<pre><code>{
+  "id": "red-round-button",
+  "type": "ref",
+  "ref": "round-button",
+  "fill": "#FF0000",
+  "descendants": {
+    "label": {                <span class="c">// ← 定制组件内部 id 为 label 的节点</span>
+      "text": "Cancel",
+      "fill": "#FFFFFF"
+    }
+  }
+}</code></pre>
+<p>规则:<code>descendants</code> 条目里<strong>不含 <code>type</code></strong> 表示属性覆盖;<strong>含 <code>type</code></strong> 表示整节点替换。也可以保留节点本身、只替换其 <code>children</code>(适合面板、卡片、侧边栏等容器型组件)。组件可以由其他组件的实例组合而成。</p>
+<h4>插槽(格式层)</h4>
+<p>当组件内某个 Frame 就是为「被替换 children」而生时,用 <code>slot</code> 属性标记,数组值为建议放入的组件 id 列表:</p>
+<pre><code>{
+  "id": "content",
+  "type": "frame",
+  "slot": ["round-button", "icon-button"]   <span class="c">// ← 建议投放的组件</span>
+}</code></pre>
+
+<h3>变量与主题</h3>
+<p>常用颜色和数值(内边距、圆角、不透明度等)可提取为文档级变量,引用时加 <code>$</code> 前缀:</p>
+<pre><code>{
+  "variables": {
+    "color.background": { "type": "color", "value": "#FFFFFF" },
+    "text.title":       { "type": "number", "value": 72 }
+  },
+  "children": [
+    { "id": "page", "type": "frame", "fill": "$color.background",
+      "children": [
+        { "id": "title", "type": "text", "fontSize": "$text.title", "content": "Welcome!" }
+      ]
+    }
+  ]
+}</code></pre>
+<p><strong>主题系统</strong>:变量可以有多个值,每个值绑定一组主题条件;求值时,<strong>最后一个</strong>主题条件满足的值胜出。主题轴在文档级 <code>themes</code> 中声明(每根轴的默认值是第一个),对象通过 <code>theme</code> 属性切换其子树的主题:</p>
+<pre><code>{
+  "variables": {
+    "color.background": {
+      "type": "color",
+      "value": [
+        { "value": "#FFFFFF", "theme": { "mode": "light" } },
+        { "value": "#000000", "theme": { "mode": "dark" } }
+      ]
+    }
+  },
+  "themes": { "mode": ["light", "dark"] },
+  "children": [
+    { "id": "page-dark", "type": "frame",
+      "theme": { "mode": "dark" },        <span class="c">// ← 该子树全部使用 dark 主题</span>
+      "fill": "$color.background" }       <span class="c">// ← 求值为 #000000</span>
+  ]
+}</code></pre>
+
+<h3>节点类型与文档结构速查</h3>
+<table class="tbl">
+  <tr><th>类型</th><th>说明</th></tr>
+  <tr><td><code>frame</code></td><td>层级与布局容器;默认横向布局、宽高 fit_content、不裁剪;可设 <code>clip</code>、<code>slot</code></td></tr>
+  <tr><td><code>group</code></td><td>编组,可带效果</td></tr>
+  <tr><td><code>rectangle</code> / <code>ellipse</code> / <code>polygon</code> / <code>path</code></td><td>基础形状;椭圆支持环形与弧线参数;path 使用 SVG 路径</td></tr>
+  <tr><td><code>text</code></td><td>文本,含字体族/字号/字重/行高/对齐等样式属性与 <code>textGrowth</code> 增长模式</td></tr>
+  <tr><td><code>icon</code></td><td>图标库图标(lucide / feather / Material Symbols 三变体 / phosphor)</td></tr>
+  <tr><td><code>script</code></td><td>Script 节点,由外部 JS 生成子级(见<a href="#code-on-canvas">画布上的代码</a>)</td></tr>
+  <tr><td><code>ref</code></td><td>组件实例,支持覆盖与 <code>descendants</code> 定制</td></tr>
+  <tr><td><code>note</code> / <code>prompt</code> / <code>context</code></td><td>便签、提示词、上下文等辅助节点</td></tr>
+</table>
+<p>文档级字段:<code>version</code>(当前为 "2.14")、<code>themes</code>、<code>imports</code>(导入其他 .pen 文件,键为别名、值为相对路径)、<code>variables</code>(boolean/color/number/string 四类)、<code>children</code>。完整 TypeScript Schema(所有属性、Fill/Effect/Layout 的全部取值)请见<a href="https://docs.pencil.dev/for-developers/the-pen-format#typescript-schema" target="_blank">官方原文</a>。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="pencil-cli">
+<div class="sec-tag">开发者 02</div>
+<h2>Pencil CLI</h2>
+<p class="origin">原文:<a href="https://docs.pencil.dev/for-developers/pencil-cli" target="_blank">For Developers / Pencil CLI</a></p>
+
+<p>Pencil CLI 是独立的命令行工具,可在终端创建和编辑 <code>.pen</code> 文件。它运行与桌面应用/IDE 扩展<strong>相同的编辑器引擎</strong>,完全无头(headless)、无需 GUI。可用于:带提示词运行 AI 代理、在交互式 shell 中直接调用 MCP 工具、批量处理多个设计、导出 PNG/JPEG/WEBP/PDF。</p>
+
+<h3>安装</h3>
+<pre><code>npm install -g @pencil.dev/cli
+
+<span class="c"># 验证安装(需要 Node.js 18+)</span>
+pencil version</code></pre>
+
+<h3>认证</h3>
+<table class="tbl">
+  <tr><th>方式</th><th>说明</th></tr>
+  <tr><td><code>pencil login</code></td><td>交互式登录(邮箱+密码 或 邮箱+OTP);会话令牌存于 <code>~/.pencil/session-cli.json</code></td></tr>
+  <tr><td><code>PENCIL_CLI_KEY</code></td><td>CI/CD 用 CLI Key,在 Pencil 网页版组织设置的 Developer Keys 中创建;<strong>始终优先于</strong>已存会话令牌</td></tr>
+  <tr><td><code>pencil status</code></td><td>显示当前认证方式、向后端校验会话、展示账户信息</td></tr>
+</table>
+
+<h3>快速开始</h3>
+<pre><code><span class="c"># 登录</span>
+pencil login
+
+<span class="c"># 从零创建设计</span>
+pencil --out design.pen --prompt "Create a login page with email and password fields"
+
+<span class="c"># 修改现有设计</span>
+pencil --in existing.pen --out modified.pen --prompt "Add a blue submit button"
+
+<span class="c"># 导出 PNG</span>
+pencil --in design.pen --export design.png
+
+<span class="c"># 交互式 shell</span>
+pencil interactive -o design.pen
+
+<span class="c"># 列出可用模型</span>
+pencil --list-models</code></pre>
+
+<h3>Agent 模式选项</h3>
+<table class="tbl">
+  <tr><th>选项</th><th>说明</th></tr>
+  <tr><td><code>--in, -i &lt;path&gt;</code></td><td>输入 .pen 文件(可选,省略则从空画布开始)</td></tr>
+  <tr><td><code>--out, -o &lt;path&gt;</code></td><td>输出 .pen 文件路径(除非用 --export,否则必填)</td></tr>
+  <tr><td><code>--prompt, -p &lt;text&gt;</code></td><td>给 AI 代理的提示词</td></tr>
+  <tr><td><code>--model, -m &lt;id&gt;</code></td><td>模型(默认 <code>claude-opus-4-6</code>)</td></tr>
+  <tr><td><code>--custom, -c</code></td><td>使用自定义 Claude 模型配置(如 AWS Bedrock、Vertex AI)</td></tr>
+  <tr><td><code>--tasks, -t &lt;path&gt;</code></td><td>批量任务 JSON 文件</td></tr>
+  <tr><td><code>--workspace, -w &lt;path&gt;</code></td><td>代理的工作区目录</td></tr>
+  <tr><td><code>--export, -e &lt;path&gt;</code> / <code>--export-scale &lt;n&gt;</code> / <code>--export-type &lt;type&gt;</code></td><td>导出最终结果图片;缩放倍数(默认 1);格式 png/jpeg/webp/pdf(默认 png)</td></tr>
+  <tr><td><code>--list-models</code> / <code>--verbose-mcp</code> / <code>--help</code></td><td>列出模型 / 输出完整 MCP 错误 / 帮助</td></tr>
+</table>
+
+<h3>可用模型</h3>
+<table class="tbl">
+  <tr><th>模型 ID</th><th>特点</th><th>默认</th></tr>
+  <tr><td><code>claude-opus-4-6</code></td><td>能力最强,成本较高</td><td>✓</td></tr>
+  <tr><td><code>claude-sonnet-4-6</code></td><td>快速、性能均衡</td><td></td></tr>
+  <tr><td><code>claude-haiku-4-5</code></td><td>最快、成本最低</td><td></td></tr>
+</table>
+
+<h3>交互模式</h3>
+<p><code>pencil interactive</code> 启动一个可直接对 .pen 文件调用 MCP 工具的 shell——适合脚本化、调试和需要精细控制设计操作的 agentic 工作流。</p>
+<ul>
+  <li><strong>App 模式</strong>:<code>pencil interactive -a desktop -i my-design.pen</code> — 通过 WebSocket 连接正在运行的桌面应用/扩展,改动实时生效。</li>
+  <li><strong>Headless 模式</strong>:<code>pencil interactive -i input.pen -o output.pen</code> — 本地拉起无 GUI 编辑器,用 <code>save()</code> 写盘。</li>
+</ul>
+<pre><code><span class="c"># shell 内可用命令</span>
+tool_name({ key: value })   <span class="c">// 带参调用 MCP 工具</span>
+tool_name()                 <span class="c">// 无参调用</span>
+save()                      <span class="c">// 保存文档到磁盘</span>
+exit()                      <span class="c">// 退出</span>
+
+<span class="c"># 示例会话</span>
+pencil &gt; get_editor_state({ include_schema: true })
+pencil &gt; get_guidelines()
+pencil &gt; batch_design({ operations: 'hero=I(document,{type:"frame",name:"Hero",x:0,y:0,width:1440,height:900,fill:"#0A0A0A"})' })
+pencil &gt; get_screenshot({ nodeId: "hero" })
+pencil &gt; save()
+pencil &gt; exit()</code></pre>
+
+<h3>批量处理</h3>
+<p><code>pencil --tasks batch.json</code> 按 JSON 文件顺序执行多个任务,每个任务独立的编辑器实例。任务字段:<code>out</code>(必填)、<code>prompt</code>(必填)、<code>in</code>、<code>model</code>。</p>
+<pre><code>{
+  "tasks": [
+    { "out": "landing-page.pen",
+      "prompt": "Create a SaaS landing page with hero, features, and pricing sections" },
+    { "in": "existing-app.pen", "out": "existing-app-v2.pen",
+      "prompt": "Add a dark mode toggle to the header" },
+    { "out": "mobile-menu.pen", "model": "claude-haiku-4-5",
+      "prompt": "Create a mobile hamburger menu component" }
+  ]
+}</code></pre>
+
+<h3>支持的 MCP 工具</h3>
+<table class="tbl">
+  <tr><th>类别</th><th>工具</th><th>说明</th></tr>
+  <tr><td rowspan="5">设计操作</td><td><code>batch_design</code></td><td>插入、更新、删除、移动、复制、替换节点;设置变量</td></tr>
+  <tr><td><code>batch_get</code></td><td>按模式或 ID 搜索/读取节点</td></tr>
+  <tr><td><code>get_variables</code></td><td>读取设计变量</td></tr>
+  <tr><td><code>get_editor_state</code></td><td>获取文档元数据与结构</td></tr>
+  <tr><td><code>snapshot_layout</code></td><td>获取带计算边界的文档结构</td></tr>
+  <tr><td rowspan="2">视觉操作</td><td><code>get_screenshot</code></td><td>把节点渲染为 PNG</td></tr>
+  <tr><td><code>export_nodes</code></td><td>导出节点为 PNG/JPEG/WEBP/PDF</td></tr>
+  <tr><td>图片生成</td><td><code>batch_design</code> 的 <code>G()</code> 操作</td><td><code>G(nodeId, "ai", prompt)</code> AI 生成图;<code>G(nodeId, "stock", keywords)</code> Unsplash 图库图</td></tr>
+  <tr><td>风格与指南</td><td><code>get_guidelines</code></td><td>加载 .pen 工作指南与风格</td></tr>
+</table>
+
+<h3>CI/CD 与环境变量</h3>
+<pre><code>export PENCIL_CLI_KEY=pencil_cli_...
+export ANTHROPIC_API_KEY=sk-ant-...
+
+pencil --out onboarding.pen --prompt "Create a 3-step onboarding flow"</code></pre>
+<table class="tbl">
+  <tr><th>变量</th><th>说明</th></tr>
+  <tr><td><code>PENCIL_CLI_KEY</code></td><td>CI/CD 用 CLI Key(优先于已存会话)</td></tr>
+  <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Anthropic API 密钥</td></tr>
+  <tr><td><code>PENCIL_API_BASE</code></td><td>后端 API 地址(默认 <code>https://api.pencil.dev</code>)</td></tr>
+  <tr><td><code>DEBUG</code></td><td>启用调试日志</td></tr>
+</table>
+<p>CLI 与桌面应用使用不同的会话文件(<code>~/.pencil/session-cli.json</code>),便于后端区分客户端类型。</p>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>说明</strong>:本页面为非官方中文整理,基于 <a href="https://docs.pencil.dev/" target="_blank">docs.pencil.dev</a> 官方英文文档(更新至 2026-06-27)重新组织编写。文档持续更新,请以官方英文原版为准。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
