@@ -64,12 +64,21 @@ git push -u origin main
 
 ## 日常更新与同步(推荐流程)
 
-本目录已是 git 仓库,每次内容变更后运行:
+本目录已是 git 仓库,并装有 **post-commit 自动部署钩子**:配置令牌后,每次 `git commit` 都会自动发布到线上。
+
+**首次配置(一次即可)**:在 [app.netlify.com/user/applications](https://app.netlify.com/user/applications#personal-access-tokens) 创建 Personal access token,然后:
 
 ```bash
-./sync.sh                # 自动提交(带时间戳信息)
-./sync.sh -m "加了xx章节"  # 自定义提交信息
-./sync.sh -d             # 提交 + 一键部署到 Netlify
+echo "粘贴你的token" > .netlify/auth-token   # 该目录已被 gitignore,不会入库
+```
+
+日常使用:
+
+```bash
+bash sync.sh             # 提交 → 钩子自动部署(推荐,一条命令全搞定)
+bash sync.sh -m "说明"     # 自定义提交信息
+bash sync.sh -d          # 无新改动时也强制部署一次
+bash sync.sh -D          # 只部署不提交;或直接双击「一键部署.command」
 ```
 
 **同步到线上(aidoc-zq.netlify.app)二选一:**
