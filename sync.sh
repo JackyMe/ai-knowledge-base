@@ -31,11 +31,11 @@ deploy(){
   zip -qr "$TMP" . -x ".git/*" ".netlify/*" "*.command" "sync.sh"
   HTTP=$(curl -s -o /tmp/aikb-deploy-resp.json -w "%{http_code}" --max-time 180 \
     -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/zip" \
-    --data-binary "@$TMP" "https://api.netlify.com/api/v1/sites/$SITE_ID/deploys" || echo 000)
+    --data-binary "@$TMP" "https://api.netlify.com/api/v1/sites/$SITE_ID/deploys" || true)
   rm -f "$TMP"
   case "$HTTP" in
     200|201) echo "🌐 已部署 → https://aidoc-zq.netlify.app" ;;
-    000)     echo "❌ 无法连接 Netlify(当前网络受限?)——请在本机终端运行 bash sync.sh -D"; return 1 ;;
+    000|"")  echo "❌ 无法连接 Netlify(当前网络受限?)——请在本机终端运行 bash sync.sh -D"; return 1 ;;
     *)       echo "❌ 部署失败(HTTP $HTTP),响应见 /tmp/aikb-deploy-resp.json"; return 1 ;;
   esac
 }
