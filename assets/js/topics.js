@@ -46,9 +46,9 @@ const TOPICS = [
       {id:"mental-model",label:"一切围绕上下文"},{id:"golden-rules",label:"五条黄金法则"},
       {id:"setup",label:"安装与首次配置"},{id:"commands",label:"命令速查手册"},
       {id:"shortcuts",label:"快捷键与输入技巧"},{id:"extensions",label:"六大扩展怎么选"},
-      {id:"skills-hooks",label:"Skills / Hooks / 子代理"},{id:"playbook",label:"八大场景实战手册"},
+      {id:"skills-hooks",label:"Skills / Hooks / MCP / 子代理"},{id:"playbook",label:"八大场景实战手册"},
       {id:"context",label:"上下文管理进阶"},{id:"permissions",label:"权限与安全"},
-      {id:"config-auth",label:"配置与账号全解"},
+      {id:"config-auth",label:"配置与账号全解"},{id:"ecosystem",label:"生态精选:方法论与组合拳"},
       {id:"pitfalls",label:"避坑清单"},{id:"templates",label:"开箱即用模板库"},
       {id:"resources",label:"资源索引"}
     ]
