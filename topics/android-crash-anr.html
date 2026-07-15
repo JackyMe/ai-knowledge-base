@@ -127,7 +127,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 .duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
 .duo b{display:block;font-size:12.5px;margin-bottom:6px}
 .duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
-@media (max-width:720px){.duo{grid-template-columns:1fr}}
+@media (max-width:720px){
+  .duo{grid-template-columns:1fr}
+  .tbl{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
 
 .pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
 .pill.a{background:#f1f8e5;color:#4d7c0f}
@@ -162,7 +165,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">⚡</span>Android 稳定性指南<span class="sub">Crash · ANR · AI</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>整理于 2026-07-16</span>
+    <span>整理于 2026-07-15</span>
   </div>
 </header>
 
@@ -242,6 +245,16 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>防复发</strong> —— 同类问题的防线:lint 规则、StrictMode、CI 检查、监控告警。修一个 bug,堵一类 bug。</li>
 </ol>
 <div class="callout tip"><b class="t">进阶路径建议</b>新手:00→01→02,先能独立处理 NPE 级别的日常崩溃;中级:03→07,能处理 ANR 和线上工单;高级:08 之后,能啃难复现的疑难杂症并把 AI 编入工作流。</div>
+
+<h3>第一次值班：前 30 分钟照表执行</h3>
+<table class="tbl">
+  <tr><th>时间</th><th>必须完成</th><th>产物 / 决策</th></tr>
+  <tr><td>0–5 分钟</td><td>确认版本、开始时间、受影响用户、是否启动即崩/核心链路不可用；暂停相关灰度</td><td>严重级别、事故群/负责人；达到止血线立即回滚或关 feature flag</td></tr>
+  <tr><td>5–10 分钟</td><td>按四类地图分流：Java/Kotlin、Native、ANR、系统杀进程</td><td>选择唯一主证据：stack / tombstone / trace / ExitInfo</td></tr>
+  <tr><td>10–20 分钟</td><td>取 3 个以上事件样本，对齐 mapping/Build ID，按版本、OS、机型、国家、key 看共性</td><td>「确定事实」与「未知项」列表，禁止把单样本当普遍根因</td></tr>
+  <tr><td>20–30 分钟</td><td>列最多 3 个可证伪假设，每个写下一条验证命令、负责人和截止时间</td><td>继续灰度 / 暂停 / 回滚决策；向团队发布首报而非未经验证的修复承诺</td></tr>
+</table>
+<div class="callout warn"><b class="t">止血优先级</b>启动崩溃、支付/登录等核心链路、快速扩散的新版本问题，先回滚/关开关，再分析；止血不等于结案，恢复后仍要完成根治和防复发。</div>
 </section>
 
 <div class="divider"></div>
@@ -273,10 +286,797 @@ adb shell settings put global always_finish_activities 1   <span class="c"># 不
 adb shell monkey -p com.example.app --throttle 300 -v 5000 <span class="c"># monkey 随机事件流</span>
 <span class="c"># 开发者选项 → 模拟辅助显示/切换语言/切换深色模式:暴露配置变更类崩溃</span></code></pre>
 <div class="callout warn"><b class="t">新手护栏</b>不要用"全局 try-catch 吞掉异常"来"修复"崩溃——这只是把闪退变成更难查的数据错乱。同理,慎用一键"崩溃兜底 SDK"的自动吞异常模式,它会让你的 Vitals 好看而用户体验更糟。</div>
+
+<h3>证据交接单：任何人接手都能继续</h3>
+<pre><code>问题 ID / 首次时间 / 当前负责人：
+影响：版本、轨道、用户数、Crash/ANR 率、核心链路
+分类：Java/Kotlin | Native | ANR | 系统退出
+已对版：mapping / native Build ID / 源码 commit
+分布：App 版本、OS、机型、国家、feature flags
+主证据：完整 stack/trace/tombstone 链接（不只贴截图）
+确定事实：只写证据直接支持的结论
+候选假设：按概率×影响排序；每条附证伪方法
+止血状态：回滚/开关/降级/未处理，含时间
+下一步：命令或测试、负责人、截止时间</code></pre>
+<p>这份交接单也是第 09 章的「崩溃上下文包」雏形。先让人类能无损接手，再把同一份结构化证据交给 AI；否则 AI 只会更快地产生未经验证的猜测。</p>
+
+<h3>把上面的 NPE 真正走完</h3>
+<p>假设第 87 行是 <code>order.title.length</code>，继续向上追到 Java/JSON 边界，发现服务端旧数据缺少 title，Kotlin 把 platform type 当成非空。完整闭环应是：</p>
+<ol class="steps">
+  <li><strong>验证根因：</strong>用缺 title 的固定响应复现；确认同样数据进入 mapper 后产生 null，而正常响应不触发；</li>
+  <li><strong>根治：</strong>在 DTO → Domain 边界把字段声明为 <code>String?</code>，按业务规则返回可展示的占位值或明确的 <code>MalformedOrder</code>，UI 只接收非空 Domain；</li>
+  <li><strong>回归：</strong>覆盖缺字段、空字符串、正常值和旧缓存反序列化；运行 release + R8 构建，复跑原路径；</li>
+  <li><strong>预防：</strong>开启严格反序列化/schema 监控，为 Java platform type 边界加 lint/review 规则，并给 Crashlytics key 记录响应 schema 版本。</li>
+</ol>
+<div class="callout tip"><b class="t">判断是否根治</b>如果补丁只是把 <code>order.title.length</code> 改成 <code>order.title?.length ?: 0</code>，却没有定义「缺 title 的订单是否有效」，它只消除了闪退，没有修复数据契约。</div>
 </section>
 
 <div class="divider"></div>
-<!--MORE-->
+<section id="crash-catalog">
+<div class="sec-tag">进阶 02</div>
+<h2>常见 Crash 图鉴与根治</h2>
+
+<p>图鉴不是让你背异常名，而是帮你从「异常消息」跳到下一条取证动作。表中的根治方案都遵循同一原则：<strong>修复状态和边界，不吞异常</strong>。</p>
+<table class="tbl">
+  <tr><th>异常 / 典型信号</th><th>产生原因与排查</th><th>根治与预防</th></tr>
+  <tr><td><strong>NullPointerException</strong><br><code>... on a null object reference</code></td><td>Java 可空值未判空；Kotlin 最危险的是 Java platform type（显示为 <code>String!</code>）、反序列化缺字段和 <code>lateinit</code> 未初始化。先看第一条业务帧，再反查空值的生产路径。</td><td>在 Java/网络/数据库边界立刻转成明确的可空类型或领域对象；用 <code>requireNotNull</code> 只守真正不变量。不要用连续 <code>?.</code> 把必填数据静默吞掉。</td></tr>
+  <tr><td><strong>IndexOutOfBoundsException</strong><br><code>Index: 5, Size: 5</code></td><td>索引与集合不是同一快照；分页回调、DiffUtil 或并发更新后仍用旧 position。记录 index、size、adapterPosition 和数据版本。</td><td>用 <code>getOrNull</code> 只处理允许缺失的读取；RecyclerView 点击时重新取 <code>bindingAdapterPosition</code> 并检查 <code>NO_POSITION</code>；提交不可变列表。</td></tr>
+  <tr><td><strong>ClassCastException</strong><br><code>X cannot be cast to Y</code></td><td>Bundle/Intent、JSON、多类型列表或错误 ClassLoader 产生了与假设不一致的实际类型。先打印实际类名与入口数据。</td><td>使用类型安全导航参数、sealed class 与显式序列化 schema；跨版本数据必须迁移，不能靠强转。</td></tr>
+  <tr><td><strong>IllegalStateException</strong><br><code>Fragment not attached</code><br><code>after onSaveInstanceState</code></td><td>Fragment 已 detach 仍访问 Context；状态已保存后提交事务；RecyclerView 布局中途修改数据会报 inconsistency。对照生命周期时间线与所有数据写入口。</td><td>只在适当生命周期访问 UI；导航事件去重并在可恢复状态执行；列表只通过单一数据源提交新快照。<code>commitAllowingStateLoss</code> 仅适合确实允许丢 UI 状态的场景。</td></tr>
+  <tr><td><strong>WindowManager.BadTokenException</strong><br><code>Unable to add window</code></td><td>用非 Activity Context 弹窗，或 Activity 已 finishing/destroyed。结合页面生命周期和回调时间判断。</td><td>让 UI 事件由当前可见页面消费；展示前校验状态只是最后护栏，根治是取消过期异步结果。</td></tr>
+  <tr><td><strong>WindowLeaked</strong><br><code>Activity has leaked window</code></td><td>Activity 销毁时 Dialog/PopupWindow 仍显示。它常由框架构造后写入日志，用来指出窗口泄漏，<strong>不一定等同一次未捕获 Crash</strong>；与「无效 token 导致加窗失败」的 BadTokenException 是两类问题。</td><td>由生命周期所有者持有并在 <code>onDestroy</code> 关闭，优先使用 DialogFragment；同时检查日志后的真正 FATAL EXCEPTION，避免把诊断日志当最终崩溃类型。</td></tr>
+  <tr><td><strong>IllegalArgumentException</strong><br><code>Receiver not registered</code></td><td>注册与反注册路径不对称、重复反注册，或注册失败后仍执行清理。</td><td>集中管理注册状态；与 <code>onStart/onStop</code> 或 <code>onResume/onPause</code> 成对；新 API 按可见性指定 receiver flags。</td></tr>
+  <tr><td><strong>ConcurrentModificationException</strong></td><td>遍历集合时由当前线程或其他线程修改；日志同时记录线程名与修改入口。</td><td>单线程归属、不可变快照或并发集合；不要用 try-catch 包住迭代继续跑。</td></tr>
+  <tr><td><strong>ClassNotFoundException / NoSuchMethodError</strong></td><td>R8 误删反射目标、动态特性未安装、MultiDex 初始化时序、依赖二进制版本冲突。核对 APK 内容、dependencyInsight、mapping 与受影响 ABI/版本。</td><td>给反射/JNI/序列化入口加精确 keep 规则；锁定依赖版本并做 release 构建冒烟；动态模块调用前检查安装状态。</td></tr>
+  <tr><td><strong>ActivityNotFoundException</strong></td><td>隐式 Intent 无处理者、组件被裁剪或厂商应用缺失。</td><td>调用前用 PackageManager resolve；提供站内降级路径；显式组件随 manifest 测试。</td></tr>
+  <tr><td><strong>SecurityException</strong></td><td>运行时权限缺失、Android 12+ exported 配置、后台启动/前台服务限制、访问未授权 URI。</td><td>按目标 SDK 建权限状态机；使用 Activity Result API；组件最小暴露、URI 用临时授权；覆盖拒绝与「不再询问」测试。</td></tr>
+  <tr><td><strong>TransactionTooLargeException</strong></td><td>Binder 事务缓冲区由进程共享；大 Bundle、Intent、Fragment arguments 或 saved state 常在生命周期切换时爆。用 <code>dumpsys activity</code> 和序列化后大小定位。</td><td>只传 ID，把大对象存数据库/文件/Repository；SavedState 只留恢复 UI 所需的小状态。</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>Java heap space</code></td><td>Bitmap、缓存、集合或泄漏导致 retained heap 增长。看 heap dump 的 dominator tree 与 GC 后存活对象。</td><td>修引用链、缩放图片、设置有上限的 LRU；不要把 <code>largeHeap</code> 当根治。</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>pthread_create failed</code></td><td>线程数或每线程栈耗尽，而非 Java 对象堆满。抓线程列表并按名称/创建栈聚类。</td><td>共享有界线程池，限制并发，取消泄漏任务；禁用每请求新建线程。</td></tr>
+  <tr><td><strong>EMFILE / too many open files</strong></td><td>fd 耗尽常被包装成 OOM、SQLite 或网络异常。比较 <code>/proc/PID/fd</code> 数量和软上限。</td><td>所有 Cursor、流、ParcelFileDescriptor、Socket 用 <code>use</code> 关闭；压测监控 fd 曲线。</td></tr>
+  <tr><td><strong>CursorWindowAllocationException</strong></td><td>查询列/行过大、多个 Cursor 未关、一次加载 BLOB。先查 SQL、窗口大小和存活 Cursor。</td><td>只查所需列，分页；BLOB 改文件或流；Cursor 必须结构化关闭。</td></tr>
+  <tr><td><strong>SQLiteException / SQLiteDatabaseLockedException</strong></td><td>迁移不完整、schema 与代码不匹配、并发长事务、磁盘满或损坏。保留原始 SQLite 错误码并核对升级路径。</td><td>为每条版本迁移写真实数据库测试；事务短小；Room 单例；磁盘满要可恢复，禁止无条件删库。</td></tr>
+  <tr><td><strong>Resources.NotFoundException</strong></td><td>把颜色值当资源 ID、资源缩水误删反射引用、换肤包版本不匹配。</td><td>用类型安全资源 API；精确 keep resources；主题包携带并校验 schema 版本。</td></tr>
+  <tr><td><strong>RxJava UndeliverableException</strong></td><td>流已取消后异步错误无消费者，进入全局 error handler。先看 cause，区分取消后的网络错误与真实编程错误。</td><td>正确处理 dispose 和业务错误；全局 handler 只忽略明确无害的取消/中断类 cause，其余上报或交给线程异常处理器。</td></tr>
+  <tr><td><strong>CancellationException / 协程异常</strong></td><td><code>CancellationException</code> 通常是协作式取消信号；误吞它会让任务继续。兄弟任务互相取消则检查 Job 层级。</td><td>捕获宽泛 Exception 后必须重新抛取消；独立子任务用 <code>SupervisorJob</code>/<code>supervisorScope</code>；<code>CoroutineExceptionHandler</code> 只处理根协程未捕获异常，不代替 try-catch。</td></tr>
+</table>
+
+<h3>生命周期类崩溃：真正的问题是「状态过期」</h3>
+<ol class="steps">
+  <li><strong>进程重建</strong>：系统杀掉后台进程后会用 <code>savedInstanceState</code> 重建 Activity/Fragment。禁止依赖静态单例仍有数据；以持久 ID 恢复，ViewModel 的 SavedStateHandle 保存最小状态。</li>
+  <li><strong>Fragment View 生命周期</strong>：Fragment 还活着不代表 View 还活着。观察 LiveData/Flow 时绑定 <code>viewLifecycleOwner</code>，在 <code>onDestroyView</code> 清 binding。</li>
+  <li><strong>异步结果过期</strong>：网络/定位/支付回调回来时页面可能已销毁。让任务随 lifecycleScope/viewModelScope 取消，或把结果写入状态容器，由当前界面渲染。</li>
+</ol>
+<div class="duo">
+  <div class="bad"><b>看似修复</b>把 Activity 包成 WeakReference。它只能减少强引用泄漏，不能证明页面仍处于可更新状态，也没有取消后台工作。</div>
+  <div class="good"><b>根治模式</b>生命周期负责取消，状态容器负责保存结果，页面只在 STARTED 状态收集并渲染；进程重建从持久层恢复。</div>
+</div>
+<div class="callout tip"><b class="t">三条通用预防线</b>① Kotlin 边界收紧：Java/JSON/数据库入口立即做可空和 schema 校验；② 把团队高频错误写成 Android Lint/Detekt 规则；③ CI 必跑 release + R8 冒烟、迁移测试、进程重建与旋转回归。</div>
+<p class="src">来源：<a href="https://developer.android.com/topic/libraries/architecture/saving-states" target="_blank">Android：保存 UI 状态</a> · <a href="https://developer.android.com/guide/fragments/lifecycle" target="_blank">Fragment 生命周期</a> · <a href="https://kotlinlang.org/docs/exception-handling.html" target="_blank">Kotlin 协程异常处理</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="anr">
+<div class="sec-tag">进阶 03</div>
+<h2>ANR 深入：从主线程快照追到阻塞源</h2>
+
+<h3>先认清超时类型</h3>
+<table class="tbl">
+  <tr><th>类型</th><th>AOSP / Pixel 默认超时</th><th>第一检查点</th></tr>
+  <tr><td>Input dispatch</td><td><strong>5 秒</strong></td><td>main 是否运行、可运行却没被调度、或在等锁/Binder</td></tr>
+  <tr><td>Broadcast</td><td>Android 13 及以下：前台优先级 10 秒、后台 60 秒；Android 14+ 在 CPU 饥饿时可延长到 <strong>20 / 120 秒</strong></td><td>ANR subject 的 intent flags、冷启动耗时、<code>onReceive</code>/<code>goAsync</code> 是否及时 finish</td></tr>
+  <tr><td>Execute service</td><td>前台服务进程 20 秒；后台 200 秒</td><td><code>onCreate/onStartCommand/onBind</code> 与冷启动是否阻塞主线程</td></tr>
+  <tr><td>ContentProvider</td><td>由调用方 <code>ContentProviderClient.setDetectNotResponding</code> 指定</td><td>远程查询、冷启动与 Binder 线程池是否阻塞</td></tr>
+</table>
+<div class="callout note"><b class="t">版本边界</b>以上是当前 Android 官方给出的 AOSP/Pixel 默认值，OEM 可以调整。另有前台服务未在 5 秒内调用 <code>startForeground()</code>、JobScheduler 回调超时等独立 ANR 类型；不要只凭「5 秒」判断所有 ANR。</div>
+
+<h3>八类高频根因</h3>
+<ul>
+  <li><strong>主线程 I/O：</strong>文件、数据库、DNS、网络、Binder 或大 JSON/Proto 序列化；</li>
+  <li><strong>SharedPreferences：</strong><code>commit()</code> 同步落盘；<code>apply()</code> 虽异步写盘，但待完成写入会在 Activity/Service 生命周期切换时由框架等待，仍可能通过 QueuedWork 造成 ANR。新项目优先 DataStore；</li>
+  <li><strong>锁竞争/死锁：</strong>main 等后台线程持有的锁，而后台又等 main 或同步 Binder；</li>
+  <li><strong>同步 Binder：</strong>你的栈停在 <code>BinderProxy.transactNative</code>，真正慢点可能在 system_server 或另一个进程；</li>
+  <li><strong>广播和服务：</strong><code>onReceive</code>、冷启动初始化、<code>onStartCommand</code> 做重活；<code>goAsync()</code> 忘记 <code>finish()</code>；</li>
+  <li><strong>布局风暴：</strong>深层嵌套、反复 requestLayout、Compose 高频无效重组导致 measure/layout 超时；</li>
+  <li><strong>GC 抖动：</strong>短时间大量分配使 main 频繁停顿；单看一次 GC 不足以定罪，要结合 Perfetto 的分配与调度时间线；</li>
+  <li><strong>系统负载：</strong>main 处于 Runnable 却长时间没 CPU、system_server 锁住或 GPU hang，可能不是 App 自身长任务。</li>
+</ul>
+
+<h3>读 trace：沿锁链找真正持有者</h3>
+<pre><code>"main" prio=5 tid=1 Blocked
+  | group="main" sCount=1 dsCount=0 flags=1 obj=0x... self=0x...
+  | sysTid=18420 nice=-10 cgrp=default sched=0/0 handle=0x...
+  | state=S schedstat=(...) utm=82 stm=21 core=4 HZ=100
+  | held mutexes=
+  at com.example.Cache.read(Cache.kt:48)
+  - waiting to lock &lt;0x07c1&gt; (a java.lang.Object)
+  at com.example.HomeActivity.onResume(HomeActivity.kt:91)
+
+"sync-worker" prio=5 tid=27 TimedWaiting
+  - locked &lt;0x07c1&gt; (a java.lang.Object)
+  at android.os.BinderProxy.transactNative(Native method)
+  at com.example.remote.ISyncService$Stub$Proxy.refresh(...)</code></pre>
+<ol class="steps">
+  <li><strong>看 main 状态：</strong>Runnable 表示可能在算或饿死；Blocked 表示等 monitor；Waiting/TimedWaiting 要看在等谁；Native 需结合顶部 native 方法和 Perfetto。</li>
+  <li><strong>找等待对象：</strong>复制 <code>&lt;0x07c1&gt;</code>，全文搜索 <code>locked</code> 或「held by thread N」，定位持锁线程。</li>
+  <li><strong>继续追链：</strong>持锁线程若又等 Binder/另一把锁，继续追到最终运行者；同时看 system_server 与 Binder 线程栈。</li>
+  <li><strong>校准快照：</strong>trace 可能在超时后才抓到；顶部是 <code>nativePollOnce</code> 且 main 已空闲时，优先看同一 cluster 的其他事件和 Perfetto，而非硬猜。</li>
+</ol>
+
+<h3>根治与提前暴露</h3>
+<pre><code>if (BuildConfig.DEBUG) {
+    StrictMode.setThreadPolicy(
+        StrictMode.ThreadPolicy.Builder()
+            .detectAll()
+            .penaltyLog()
+            .penaltyDeath()
+            .build()
+    )
+}</code></pre>
+<ul>
+  <li>I/O 与序列化下移到有界 dispatcher，并设计取消、超时和结果回主线程的边界；</li>
+  <li>不要持锁执行 I/O/Binder/回调；缩小临界区，以不可变快照或单线程状态机替代共享可变状态；</li>
+  <li>广播只调度工作；需要保证执行时用合适的 WorkManager/JobScheduler，不在 <code>onReceive</code> 里等结果；</li>
+  <li>ANR-Watchdog 能在线程长时间不响应时提前抓自有线程栈，但会误报 debugger、系统饿死和长帧，也看不到系统完整 ANR 上下文；它是补充观测，不替代 Vitals、ExitInfo 和 bugreport。</li>
+</ul>
+<p class="src">来源：<a href="https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs" target="_blank">Android：Diagnose and fix ANRs</a> · <a href="https://developer.android.com/reference/android/content/SharedPreferences" target="_blank">SharedPreferences API</a> · <a href="https://developer.android.com/topic/performance/vitals/anr" target="_blank">Android Vitals：ANR</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="native">
+<div class="sec-tag">进阶 04</div>
+<h2>Native Crash：从信号到源码行</h2>
+
+<table class="tbl">
+  <tr><th>信号</th><th>常见含义</th><th>优先证据</th></tr>
+  <tr><td><code>SIGSEGV</code></td><td>空/野指针、越界、use-after-free、访问权限错误</td><td>signal code、fault addr、首个业务 so 帧、memory map</td></tr>
+  <tr><td><code>SIGABRT</code></td><td><code>abort/assert</code>、FORTIFY 或 CHECK 主动终止</td><td>Abort message 与崩溃前 logcat；不要把所有 Java 异常都泛称为 SIGABRT</td></tr>
+  <tr><td><code>SIGILL</code></td><td>非法指令、损坏函数指针、CPU/ABI 不匹配</td><td>pc 所在映射、ABI、反汇编</td></tr>
+  <tr><td><code>SIGBUS</code></td><td>未对齐访问、mmap 文件截断、总线错误</td><td>fault addr、映射文件大小与访问偏移</td></tr>
+  <tr><td><code>SIGFPE</code></td><td>整数除零、溢出陷阱等算术错误</td><td>寄存器、指令与输入值</td></tr>
+</table>
+
+<h3>tombstone 五个区块怎么读</h3>
+<ol class="steps">
+  <li><strong>Abort message：</strong>主动失败通常已把条件写出来，先处理它；</li>
+  <li><strong>signal / code / fault addr：</strong><code>0x0</code> 或很低地址常是空指针及字段偏移；高位随机地址常见野指针/越界，但必须结合 map 和 sanitizer 证据；靠近 stack guard 要考虑栈溢出；</li>
+  <li><strong>backtrace：</strong>找到首个属于自己 so 的 pc offset，不要停在 libc 的 memcpy/free；</li>
+  <li><strong>registers：</strong>结合崩溃指令判断哪个寄存器是坏指针；</li>
+  <li><strong>memory map：</strong>确认 fault addr 落在已映射区、权限是否匹配，并核对库的 Build ID。符号文件必须与线上 APK 的 ABI 和 Build ID 精确对应。</li>
+</ol>
+
+<h3>符号化三件套</h3>
+<pre><code><span class="c"># 先列出候选目录；用 readelf -n 比对 tombstone 中 Build ID，禁止静默选旧 hash</span>
+find app/build/intermediates/cxx -type d \
+  -path '*/RelWithDebInfo/*/obj/arm64-v8a' -print
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf \
+  -n 候选目录/libfoo.so | grep 'Build ID'
+
+<span class="c"># 确认 Build ID 后，把 ACTUAL_HASH 换成匹配目录</span>
+SYMBOL_DIR=app/build/intermediates/cxx/RelWithDebInfo/ACTUAL_HASH/obj/arm64-v8a
+$ANDROID_NDK_HOME/ndk-stack \
+  -sym "$SYMBOL_DIR" \
+  -dump tombstone.txt
+
+<span class="c"># 单个 so + 相对 PC；-C 反混淆 C++ 名，-f 显示函数，-e 指定 ELF</span>
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-addr2line \
+  -C -f -e libfoo.so 0x1234
+
+<span class="c"># Crashlytics NDK 符号上传；路径按构建产物调整</span>
+firebase crashlytics:symbols:upload \
+  --app=1:1234567890:android:abcdef app/build/native-debug-symbols</code></pre>
+
+<h3>内存错误工具怎么选</h3>
+<table class="tbl">
+  <tr><th>工具</th><th>适用阶段</th><th>代价 / 特点</th></tr>
+  <tr><td>ASan</td><td>本地/测试发现堆越界、UAF</td><td>兼容面广但开销高；按当前 NDK 指南配置测试构建</td></tr>
+  <tr><td>HWASan</td><td>64 位 Arm 测试环境深挖内存错误</td><td>比传统 ASan 更适合 Android，仍有显著内存开销；设备/系统版本有要求</td></tr>
+  <tr><td>GWP-ASan</td><td>线上低开销抽样</td><td>只采样部分分配，量大才更容易命中；Android 14+ 有 Recoverable GWP-ASan 平台能力</td></tr>
+  <tr><td>MTE</td><td>支持硬件上的持续检测/防护</td><td>利用内存标签；同步模式定位更准、异步模式开销更低，取决于设备与部署策略</td></tr>
+</table>
+<h3>从命中点回到源码根治</h3>
+<ul>
+  <li><strong>UAF/双重释放：</strong>明确对象所有权，优先 RAII 与 <code>std::unique_ptr</code>；跨线程传递共享生命周期时才使用 <code>shared_ptr</code>，并设计停止/回收顺序；</li>
+  <li><strong>越界：</strong>所有长度与偏移都在同一处校验，使用带长度的容器/视图；对解析器加入截断、超长、畸形输入的单测与 fuzz；</li>
+  <li><strong>JNI 契约：</strong>检查 Java 异常、局部/全局引用和线程附着；禁止跨线程保存局部引用，缓存 method/class ID 时处理 ClassLoader 与卸载边界；</li>
+  <li><strong>栈溢出：</strong>消除无界递归和巨型栈数组，改为迭代/堆分配并对深度设上限；</li>
+  <li><strong>防复发：</strong>修复后用同一 sanitizer 重跑原始输入，再加入 release 符号上传校验、ABI 冒烟、native 单测/fuzz 与线上 GWP-ASan 采样。</li>
+</ul>
+<div class="callout warn"><b class="t">最常见的无效操作</b>拿错版本的 so 符号化。地址能「翻出一个函数名」不代表结果可信；先比对 ABI、Build ID、版本号，再看源码行。</div>
+<p class="src">来源：<a href="https://developer.android.com/ndk/guides/debug" target="_blank">Android NDK：Debug your project</a> · <a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">AOSP：Diagnose native crashes</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory error debugging and mitigation</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="toolbox">
+<div class="sec-tag">武器库 05</div>
+<h2>工具箱与用法：先问证据在哪</h2>
+
+<table class="tbl">
+  <tr><th>现象</th><th>第一工具</th><th>升级工具</th></tr>
+  <tr><td>刚刚 Java/Kotlin 闪退</td><td><code>adb logcat -b crash -v threadtime</code></td><td>Crashlytics / Play Vitals + retrace</td></tr>
+  <tr><td>卡住、ANR、偶发慢</td><td>ANR trace / ApplicationExitInfo</td><td>bugreport + Perfetto 看调度、锁、Binder</td></tr>
+  <tr><td>Native 闪退</td><td>tombstone + 对版符号</td><td>ASan/HWASan/GWP-ASan</td></tr>
+  <tr><td>内存上涨</td><td>Memory Profiler / heap dump</td><td>LeakCanary、MAT dominator tree、fd/线程计数</td></tr>
+  <tr><td>掉帧/重组异常</td><td>CPU Profiler、Layout Inspector</td><td>Perfetto Frame Timeline / Compose 重组计数</td></tr>
+</table>
+<h3>工具给证据，证据决定根治</h3>
+<table class="tbl">
+  <tr><th>证据确认</th><th>根治动作</th><th>回归证明</th></tr>
+  <tr><td>业务第一帧 + 输入状态证明空值/越界</td><td>修数据边界、状态机或快照一致性</td><td>最小复现测试 + release/R8 冒烟</td></tr>
+  <tr><td>Perfetto 显示 main 长任务、锁等待或 CPU 饥饿</td><td>下移工作、缩短锁、追到 Binder 对端；系统负载问题按机型/系统聚类</td><td>同场景 trace 对比 + ANR 灰度指标</td></tr>
+  <tr><td>heap dominator 指向泄漏链/无界缓存</td><td>断开生命周期引用、给缓存设预算</td><td>重复场景后 retained heap 回落</td></tr>
+  <tr><td>sanitizer 报告分配/释放栈</td><td>修所有权、边界或 JNI 契约</td><td>原始输入在 sanitizer 下不再命中 + fuzz 回归</td></tr>
+  <tr><td>ExitInfo 显示 LMK/用户请求/权限变化</td><td>按退出类型处理恢复与内存预算，而非伪造 Crash 修复</td><td>进程重建测试 + 线上退出原因分布</td></tr>
+</table>
+
+<h3>命令行取证</h3>
+<pre><code><span class="c"># 崩溃缓冲区；保存原始时间、PID、TID</span>
+adb logcat -b crash -v threadtime -d &gt; crash.log
+
+<span class="c"># 只看当前进程；App 重启后 PID 会变化</span>
+adb logcat --pid=$(adb shell pidof -s com.example.app) -v threadtime
+
+<span class="c"># 一次性系统现场包</span>
+adb bugreport bugreport.zip
+
+<span class="c"># 20 秒 Perfetto：调度、频率、窗口、绘制、Binder、运行时</span>
+adb shell perfetto -o /data/misc/perfetto-traces/anr.perfetto-trace \
+  -t 20s sched freq idle am wm gfx view binder_driver hal dalvik input res memory
+adb pull /data/misc/perfetto-traces/anr.perfetto-trace .</code></pre>
+<p>把 trace 拖进 <a href="https://ui.perfetto.dev" target="_blank">ui.perfetto.dev</a>，先看 main 的 Thread State：Running 是真在执行，Runnable 长段可能是 CPU 饥饿，Sleeping/Blocked 要沿唤醒者或锁链追。Android 旧版本若直接 pull 无权限，可用 <code>adb shell cat 路径 &gt; 本地文件</code>。</p>
+
+<h3>开发期护栏与内存工具</h3>
+<ul>
+  <li><strong>StrictMode：</strong>在 debug 尽早暴露主线程磁盘/网络、泄漏的 Closeable 与注册对象；<code>penaltyDeath</code> 只在开发构建使用；</li>
+  <li><strong>LeakCanary：</strong>对已销毁对象保留弱引用，触发 GC 后仍不可达预期却未回收时 dump heap，自动找引用链；它定位泄漏，不解释所有 OOM；</li>
+  <li><strong>Memory Profiler / MAT：</strong>先比较两个时点的存活对象，再在 dominator tree 按 retained heap 找「删掉它能释放最多内存」的支配者；</li>
+  <li><strong>CPU / Energy Profiler：</strong>复现路径前后录制，关注主线程热点、系统调用和唤醒；采样适合低干扰，方法插桩更细但会改变时序；</li>
+  <li><strong>Compose Layout Inspector：</strong>看重组次数/跳过次数，确认状态读取范围；计数高只是线索，结合 Perfetto 判断是否真的造成帧预算超支；</li>
+  <li><strong>Native sanitizer：</strong>测试环境用 ASan/HWASan 提高命中率，线上用 GWP-ASan 抽样，详见 04。</li>
+</ul>
+
+<h3>启动时回收上次退出证据</h3>
+<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.R) {
+    val am = getSystemService(ActivityManager::class.java)
+    val exits = am.getHistoricalProcessExitReasons(packageName, 0, 8)
+    exits.filter { it.timestamp &gt; lastUploadedAt }.forEach { info -&gt;
+        val kind = when (info.reason) {
+            ApplicationExitInfo.REASON_ANR -&gt; "ANR"
+            ApplicationExitInfo.REASON_CRASH -&gt; "JAVA_CRASH"
+            ApplicationExitInfo.REASON_CRASH_NATIVE -&gt; "NATIVE_CRASH"
+            ApplicationExitInfo.REASON_LOW_MEMORY -&gt; "LOW_MEMORY"
+            else -&gt; "OTHER_${info.reason}"
+        }
+        uploadExit(kind, info.timestamp, info.importance, info.description)
+    }
+}</code></pre>
+<div class="callout note"><b class="t">工具选择心法</b>先定义缺哪份证据，再选最小工具。堆栈能回答「在哪里崩」，heap dump 回答「谁占着内存」，Perfetto 回答「当时谁在运行/等待」——拿着锤子找钉子，只会制造更多噪声。</div>
+<p class="src">来源：<a href="https://developer.android.com/tools/logcat" target="_blank">Logcat 命令行</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto：Recording system traces</a> · <a href="https://developer.android.com/reference/android/app/ActivityManager#getHistoricalProcessExitReasons(java.lang.String,%20int,%20int)" target="_blank">ActivityManager 退出历史 API</a></p>
+</section>
+
+<div class="divider"></div>
+<section id="consoles">
+<div class="sec-tag">武器库 06</div>
+<h2>Play Console 与 Firebase：线上问题的两副镜头</h2>
+
+<h3>Android Vitals：先看影响，再切维度</h3>
+<p>「用户感知」不是所有后台异常的总和。指标按<strong>每日活跃用户中至少经历 1 次事件的用户占比</strong>计算：用户感知 Crash 指 App 正在显示 Activity 或运行前台服务期间的未处理崩溃；当前用户感知 ANR 只计入 <code>Input dispatching timed out</code>。Play 当前核心坏行为阈值为：崩溃率 <strong>1.09%</strong>、ANR 率 <strong>0.47%</strong>；单<strong>手机型号</strong>均为 <strong>8%</strong>，Wear OS 单手表型号则分别为 Crash <strong>4%</strong>、ANR <strong>5%</strong>。Play 每日用最近 28 天数据评估质量；超线可能影响可见度并展示商店警告。</p>
+<ol class="steps">
+  <li><strong>先看新增 cluster：</strong>同一版本突然出现的新问题，通常比多年存量更有可操作性；</li>
+  <li><strong>按 App 版本切：</strong>确认是新版本引入，还是旧版本用户仍未升级；</li>
+  <li><strong>按 OS / 机型切：</strong>单厂商、单 GPU、单 Android 版本尖峰，优先查兼容性与系统栈；</li>
+  <li><strong>按国家/轨道切：</strong>网络、区域配置、灰度人群可能改变触发条件；</li>
+  <li><strong>比较 affected users 而非只看次数：</strong>一个用户循环崩 100 次与 100 个用户各崩 1 次，治理优先级不同。</li>
+</ol>
+<table class="tbl">
+  <tr><th>为什么 Vitals 与 Crashlytics 数字不同</th><th>解释</th></tr>
+  <tr><td>采集层不同</td><td>Vitals 来自 Android 系统，可看到 SDK 初始化前的崩溃等事件；Crashlytics 依赖 SDK、初始化和上传成功。</td></tr>
+  <tr><td>样本不同</td><td>Vitals 只覆盖 Google Play 安装、认证设备和同意共享诊断数据的用户，并受隐私门槛影响。</td></tr>
+  <tr><td>分母不同</td><td>Vitals 的示例口径按每日活跃用户；Crashlytics 同时提供 crash-free users 与 crash-free sessions。若一个用户当天确有 3 个独立 session 且其中 1 个崩溃，<strong>换算成崩溃率</strong>后按用户与按 session 可分别为 100% 与约 33%（对应 crash-free 0% 与约 67%）；「打开 3 次」不必然是 3 个 session。</td></tr>
+  <tr><td>聚类不同</td><td>堆栈归一化、变体拆分、去重窗口不同；先对齐版本、时间区间、设备与 issue 样本，再比较趋势。</td></tr>
+</table>
+
+<h3>Crashlytics：把复现上下文塞进每条事件</h3>
+<pre><code>Firebase.crashlytics.apply {
+    setUserId(hashUserId(accountId))       <span class="c">// 不上传邮箱/手机号等直接标识</span>
+    setCustomKey("app_track", buildTrack)
+    setCustomKey("feature_flags", flagDigest)
+    setCustomKey("screen", currentRoute)
+    setCustomKey("order_state", orderState.name)
+    log("checkout: confirm tapped")
+}
+
+try {
+    repository.refresh()
+} catch (e: RecoverableDomainException) {
+    Firebase.crashlytics.recordException(e) {
+        key("endpoint", "orders")
+        key("retry_count", retryCount)
+    }
+    showRecoverableError(e)
+}</code></pre>
+<ul>
+  <li><strong>Keys：</strong>使用稳定、低基数、可聚类的维度。当前 Android SDK 最多保留 64 个 key/value；不要把 timestamp 或随机 ID 塞进异常 message 破坏聚类；</li>
+  <li><strong>Logs：</strong>记录关键状态转移，不要复制整份网络响应。单 session 日志有大小上限，旧日志会被滚动删除；</li>
+  <li><strong>User ID：</strong>使用内部匿名/哈希标识，并遵守隐私与删除流程；</li>
+  <li><strong>Non-fatal：</strong>只记录「已处理但需要统计」的异常。把每次 404/取消都 <code>recordException</code> 会挤掉真正问题、增加成本并污染告警；</li>
+  <li><strong>Velocity alert：</strong>关注短时间激增，用来触发止血，不替代按受影响用户和版本分布排优先级；</li>
+  <li><strong>BigQuery：</strong>需要自定义趋势、feature flag 交叉分析或长期留存时导出；用版本采用率与 crash-free/事件率一起判断灰度是否继续。</li>
+</ul>
+
+<h3>Gemini AI insights 与 MCP</h3>
+<p>Firebase 控制台的 AI insights 可对 issue 生成摘要、潜在根因和调试建议，但它不能读取或修改你的本地代码。官方 Firebase MCP server 可让编码代理读取 issue、事件样本、堆栈、用户/事件数、版本维度与 notes，也能新增/删除 note、更新或关闭 issue；它使用运行环境中 Firebase CLI 的当前凭据。数据交给外部 AI 工具后如何处理取决于该工具条款，因此应使用最小权限账号、限制可用项目，所有写操作要求人工确认并保留审计。<strong>截至 2026-07-15，该能力仍为 Experimental</strong>，可能发生不兼容变更，接入时固定版本并准备人工回退。</p>
+<div class="callout warn"><b class="t">后台结论不是根因证明</b>聚类、AI insight 和告警只是排序与假设来源。最终仍要回到源码、对版符号、可复现条件或灰度指标完成验证。</div>
+<table class="tbl">
+  <tr><th>确认的线上证据</th><th>根治</th><th>预防 / 收案</th></tr>
+  <tr><td>仅新版本、新 feature flag 组激增</td><td>回滚/关开关止血，定位对应 diff 并修复</td><td>灰度门禁按新增 cluster、用户率和版本采用率自动暂停</td></tr>
+  <tr><td>单机型/OS 集中且含系统栈</td><td>能力探测与降级；必要时调整覆盖并向厂商提交最小复现</td><td>建立代表机型实验室与兼容性回归</td></tr>
+  <tr><td>自定义 key 指向同一业务状态</td><td>修状态机/输入数据，而不是只改异常分组</td><td>把该状态变成低基数监控维度和回归用例</td></tr>
+</table>
+<p class="src">来源：<a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://firebase.google.com/docs/crashlytics/android/customize-crash-reports" target="_blank">自定义 Crashlytics 报告</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Crashlytics MCP</a> · <a href="https://firebase.google.com/docs/crashlytics/bigquery-export" target="_blank">BigQuery 导出</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="device-data">
+<div class="sec-tag">武器库 07</div>
+<h2>测试机数据导出：把事故现场完整带走</h2>
+
+<h3>bugreport 是无 root 设备的系统快照</h3>
+<pre><code>adb bugreport bugreport.zip
+unzip -l bugreport.zip | less
+
+<span class="c"># 常用服务快照</span>
+adb shell dumpsys meminfo com.example.app
+adb shell dumpsys gfxinfo com.example.app framestats
+adb shell dumpsys activity activities
+adb shell dumpsys dbinfo com.example.app
+adb shell dumpsys batterystats --charged com.example.app
+
+<span class="c"># 系统 DropBox 事件索引；具体 tag 因系统版本而异</span>
+adb shell dumpsys dropbox --print SYSTEM_TOMBSTONE
+adb shell dumpsys dropbox --print data_app_anr</code></pre>
+<table class="tbl">
+  <tr><th>bugreport 区域</th><th>能回答什么</th></tr>
+  <tr><td><code>FS/data/anr/</code> 或 ANR dump 段</td><td>ANR 时各线程、锁链；未 root 时通常通过 bugreport 获取，而不是直接 pull <code>/data/anr</code></td></tr>
+  <tr><td>tombstones / SYSTEM_TOMBSTONE</td><td>Native signal、fault addr、Build ID、backtrace；内容可能因版本、权限和隐私策略裁剪</td></tr>
+  <tr><td>logcat buffers</td><td>崩溃前后系统与应用日志；先按时间、PID、process name 关联</td></tr>
+  <tr><td>dumpsys</td><td>进程、Activity、内存、数据库、窗口、电量等系统服务状态</td></tr>
+  <tr><td>dumpstate_board / 厂商段</td><td>热、GPU、内核和厂商服务线索；字段不稳定，需按机型解释</td></tr>
+</table>
+<div class="callout note"><b class="t">隐私与体积</b>bugreport 可能包含账号、通知、Wi-Fi、位置线索和大量系统日志。只在授权设备采集，最小化共享范围，工单设置过期与访问控制。</div>
+
+<h3>ApplicationExitInfo：启动后回收上一轮 ANR trace</h3>
+<p>Android 11（API 30）起，可在 App 下次启动时查询历史退出原因；ANR 记录常带系统抓取的 trace。它非常适合补齐「用户设备无法连 adb」的线上证据，但不保证每条记录都有 trace，也不是实时 ANR 回调。</p>
+<pre><code>class ExitInfoReporter(
+    private val context: Context,
+    private val store: ExitCursorStore,
+    private val upload: suspend (ExitEnvelope) -&gt; Unit
+) {
+    private val collectMutex = Mutex()
+
+    suspend fun collect() = collectMutex.withLock {
+      withContext(Dispatchers.IO) {
+        if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.R) return@withContext
+
+        val am = context.getSystemService(ActivityManager::class.java)
+        val records = am.getHistoricalProcessExitReasons(
+            context.packageName, 0, 32
+        ).sortedWith(compareBy({ it.timestamp }, { it.processName }, { it.reason }))
+
+        for (info in records) {
+            val eventKey = listOf(
+                info.timestamp, info.processName, info.reason, info.status
+            ).joinToString(":")
+            if (!store.shouldAttempt(eventKey, System.currentTimeMillis())) continue
+
+            try {
+                val trace = info.traceInputStream?.use { input -&gt;
+                    input.readAtMost(512 * 1024)        <span class="c">// API 30 兼容且限制体积</span>
+                }
+                upload(
+                    ExitEnvelope(
+                        eventKey = eventKey,
+                        timestamp = info.timestamp,
+                        processName = info.processName,
+                        reason = info.reason,
+                        status = info.status,
+                        importance = info.importance,
+                        description = info.description,
+                        pssKb = info.pss,
+                        rssKb = info.rss,
+                        traceGzip = trace?.let(::gzip)
+                    )
+                )
+                store.markUploaded(eventKey)
+            } catch (retryable: RetryableUploadException) {
+                store.scheduleRetry(eventKey, retryable) <span class="c">// 有上限的指数退避，不因离线次数直接死信</span>
+                continue
+            } catch (io: IOException) {
+                store.scheduleRetry(eventKey, io)
+                continue
+            } catch (permanent: PermanentUploadException) {
+                store.markDiscarded(eventKey, permanent) <span class="c">// 仅 schema/权限等确定永久错误</span>
+                continue                                <span class="c">// Error 与未知异常不吞，继续上抛</span>
+            }
+        }
+      }
+    }
+
+    private fun InputStream.readAtMost(limit: Int): ByteArray {
+        val output = ByteArrayOutputStream(minOf(limit, 64 * 1024))
+        val buffer = ByteArray(16 * 1024)
+        var remaining = limit
+        while (remaining &gt; 0) {
+            val count = read(buffer, 0, minOf(buffer.size, remaining))
+            if (count == -1) break
+            output.write(buffer, 0, count)
+            remaining -= count
+        }
+        return output.toByteArray()
+    }
+}</code></pre>
+<ul>
+  <li>在冷启动关键路径之外调用，放到受约束的后台任务；<code>shouldAttempt/scheduleRetry</code> 持久化下次时间并做有上限的指数退避，离线不能只按次数死信；只有明确的 schema/权限等永久错误才丢弃。不要捕获全部 Throwable；</li>
+  <li>本地与服务端都按 eventKey（timestamp + process + reason + status）幂等去重，并保存 App 版本、设备/OS、feature flags；</li>
+  <li>对 <code>REASON_ANR</code>、<code>REASON_CRASH</code>、<code>REASON_CRASH_NATIVE</code>、<code>REASON_LOW_MEMORY</code> 分开治理；<code>REASON_USER_REQUESTED</code> 不是应用崩溃；</li>
+  <li>trace 可能在进程后来以其他原因退出时仍随记录保留，必须结合 reason、timestamp 和内容判断。</li>
+</ul>
+
+<h3>无法连接 adb 的设备</h3>
+<p>指导测试/用户在开发者选项选择「提交错误报告/获取错误报告」，说明问题发生时间、App 版本和操作路径；部分厂商另有日志助手或售后拨号码，必须走公司隐私审批与厂商文档，不能让用户盲目上传整机日志。</p>
+<table class="tbl">
+  <tr><th>取到的证据</th><th>根治动作</th><th>防复发</th></tr>
+  <tr><td>ANR trace 的 main/锁链</td><td>下移阻塞操作或修锁顺序</td><td>同场景 Perfetto 对比 + StrictMode/并发回归</td></tr>
+  <tr><td>ExitInfo 为 LOW_MEMORY</td><td>按 PSS/RSS、进程重要性和整机压力收缩内存预算</td><td>低内存/后台重建测试与 ExitInfo 趋势告警</td></tr>
+  <tr><td>tombstone + 匹配 Build ID</td><td>符号化后修 native 所有权/边界</td><td>sanitizer/fuzz + 符号上传门禁</td></tr>
+  <tr><td>日志不足或已被覆盖</td><td>补低成本 keys、退出回收和滚动诊断，再等待新样本</td><td>把「证据完整率」纳入稳定性基础设施指标</td></tr>
+</table>
+<p class="src">来源：<a href="https://developer.android.com/studio/debug/bug-report" target="_blank">Capture and read bug reports</a> · <a href="https://developer.android.com/tools/dumpsys" target="_blank">dumpsys</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="detective">
+<div class="sec-tag">大神 08</div>
+<h2>疑难杂症侦查术：把不可观测变成可验证</h2>
+
+<div class="plays">
+  <div class="play"><div class="ph"><span class="pic">🧩</span><b>剧本一：难复现、样本很少</b><span class="pt">CLUSTER</span></div><div class="pb"><p><strong>取证：</strong>按版本、机型、OS、国家、网络、账号状态和 feature flag 聚类；每个维度先看 affected users 与基数，避免把小样本 100% 当主因。</p><p><strong>推进：</strong>列出可证伪假设 → 为最高优先假设增加低基数 key/状态转移 log → 定向灰度 → 比较命中与对照组。一次只改变一个观测变量。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">📱</span><b>剧本二：只在某厂商 ROM 崩</b><span class="pt">OEM</span></div><div class="pb"><p><strong>取证：</strong>确认崩溃帧属于 App、公开 Android API 还是厂商 framework；同 Android 版本找 AOSP/其他厂商对照，收集 Build fingerprint 与系统组件版本。</p><p><strong>根治：</strong>优先改用公开 API；反射兼容要探测能力而非猜品牌，并有 no-op/降级路径。最小复现、bugreport、时间与机型提交厂商渠道，不在业务层吞所有 Throwable。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🧠</span><b>剧本三：看起来都叫 OOM</b><span class="pt">MEMORY</span></div><div class="pb"><pre><code><span class="c"># fd 与线程是两条独立预算；/proc 可见性受版本与权限限制</span>
+PID=$(adb shell pidof -s com.example.app)
+adb shell ls -l /proc/$PID/fd | wc -l
+adb shell 'cat /proc/'$PID'/status | grep -E "Threads|VmRSS"'
+adb shell cat /proc/$PID/limits</code></pre><p><strong>分流：</strong><code>Java heap space</code> 看 hprof dominator；<code>pthread_create failed</code> 看线程创建栈/数量；<code>EMFILE</code> 看 fd 类型。若 ExitInfo 是 LOW_MEMORY/LMK，结合 RSS/PSS 和整机压力，不要只调 Java heap。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🔒</span><b>剧本四：卡死但还没触发 ANR</b><span class="pt">DEADLOCK</span></div><div class="pb"><pre><code>PID=$(adb shell pidof -s com.example.app)
+adb shell kill -3 $PID        <span class="c"># 向 ART 进程请求 Java 线程 dump，输出位置依系统而异</span>
+adb logcat -d -v threadtime &gt; manual-thread-dump.log</code></pre><p>连续抓 2–3 份：相同锁链不动更像死锁，栈持续前进可能只是慢。main 等锁时找持有者，持有者若在 Binder/IO 再追下去；debugger attach 会改变时序，只作为补充。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🧯</span><b>剧本五：启动崩溃风暴，用户打不开 App</b><span class="pt">RECOVERY</span></div><div class="pb"><p><strong>保险丝：</strong>在尽可能早且稳定的进程入口记录启动尝试；若同一版本短时间连续失败 N 次，进入最小恢复模式：关闭远程开关、跳过可选初始化、清理可安全重建的缓存，并展示恢复/反馈入口。</p><p><strong>边界：</strong>计数器必须跨进程持久化且有成功启动复位、时间窗和版本隔离；禁止自动删除用户数据库或登录态。最终仍要修根因，保险丝只负责止血。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">✂️</span><b>剧本六：二分定位未知回归</b><span class="pt">BISECT</span></div><div class="pb"><pre><code>git bisect start
+git bisect bad BAD_COMMIT
+git bisect good LAST_KNOWN_GOOD
+<span class="c"># 每次用同一自动化复现脚本判定，再执行 git bisect good/bad</span>
+git bisect reset</code></pre><p>没有可稳定复现时，可二分 feature flags、初始化模块或请求路径；CI 保存每个候选产物与 mapping。判定脚本不稳定会污染整个二分，先量化误报率。</p></div></div>
+</div>
+
+<h3>侦查结束必须落成防线</h3>
+<table class="tbl">
+  <tr><th>剧本</th><th>根治</th><th>防复发验证</th></tr>
+  <tr><td>OOM / fd / 线程</td><td>修泄漏/无界缓存、收口线程池、结构化关闭 fd</td><td>压力回放后 heap、Threads、fd 回到稳态并设置预算告警</td></tr>
+  <tr><td>卡死 / 死锁</td><td>统一锁顺序，禁止持锁 I/O/Binder，必要时改消息传递</td><td>并发测试 + 多次线程 dump/Perfetto 不再出现锁环</td></tr>
+  <tr><td>二分回归</td><td>对首个坏提交做最小修复或回滚</td><td>把判定脚本加入 CI，并为 mapping/产物建立可追溯归档</td></tr>
+</table>
+
+<div class="callout tip"><b class="t">疑难问题的通用心法</b>把「偶发」拆成可观测维度，把「怀疑」写成可证伪假设，把「修好了」绑定到回归证据。日志、key、trace、二分和灰度，本质都是在减少未知量。</div>
+<p class="src">来源：<a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://developer.android.com/topic/performance/memory-overview" target="_blank">Android 内存管理概览</a> · <a href="https://source.android.com/docs/core/tests/debug" target="_blank">AOSP 调试入口</a> · <a href="https://git-scm.com/docs/git-bisect" target="_blank">Git bisect 文档</a>。启动保险丝、feature flag 二分与多次 <code>kill -3</code> 对比属于工程实践；信号输出、<code>/proc</code> 可见性和厂商日志入口随 Android/ROM/权限变化，必须在目标设备验证。</p>
+</section>
+
+<div class="divider"></div>
+<section id="ai-method">
+<div class="sec-tag">大神 09</div>
+<h2>AI 结合：证据质量决定排查上限</h2>
+
+<p><strong>AI 排查质量 ≈ 证据完整度 × 问题约束 × 验证反馈。</strong>模型擅长跨堆栈、源码、diff 和分布找关联，但看不到你没提供的 mapping、运行时状态和失败样本。先把输入标准化，再谈提示词技巧。</p>
+
+<h3>崩溃上下文包：给人和 AI 的统一输入契约</h3>
+<table class="tbl">
+  <tr><th>物料</th><th>最低要求</th><th>缺失时的风险</th></tr>
+  <tr><td>完整主证据</td><td>已 retrace 的 Java stack、对版 tombstone、完整 ANR main + 锁链；保留 cause 和线程名</td><td>只见症状帧，把框架调用者误判为根因</td></tr>
+  <tr><td>源码与版本</td><td>第一业务帧相关文件、调用方、构建 commit、mapping/Build ID</td><td>分析错误版本或编造不存在的 API</td></tr>
+  <tr><td>分布与影响</td><td>affected users、版本/OS/机型/国家、首次时间、灰度轨道</td><td>把小样本巧合当普遍根因</td></tr>
+  <tr><td>运行上下文</td><td>稳定低基数 keys、关键状态转移、复现步骤、网络/权限/账号状态</td><td>只能解释「哪里崩」，无法解释「为何走到这里」</td></tr>
+  <tr><td>变更证据</td><td>相关文件近期 <code>git log -p</code>、依赖/target SDK/开关变化</td><td>遗漏最可能的新回归</td></tr>
+  <tr><td>负样本</td><td>同版本正常设备/路径、未受影响分组</td><td>假设无法证伪，相关性被当因果</td></tr>
+</table>
+<div class="callout note"><b class="t">证据门禁</b>mapping/Build ID 未对齐、堆栈截断或 ANR 只有单一晚到快照时，AI 的正确输出应是「证据不足 + 下一条取证命令」，而不是自信给补丁。</div>
+
+<h3>五段式提示词：可直接复制</h3>
+<pre><code>你是 Android 稳定性负责人。请把证据与假设严格分开；禁止虚构源码、
+API 行为或缺失日志。证据不足时先指出缺口，不要直接给补丁。
+
+[主证据]
+粘贴完整 retrace stack / ANR trace / tombstone，保留线程、Caused by、Build ID。
+
+[环境与分布]
+App 版本与 commit：___；Android/机型/ABI：___；
+受影响用户与时间趋势：___；feature flags/业务状态：___；正常对照组：___。
+
+[相关源码与变更]
+粘贴第一业务帧、调用方、生命周期/并发相关代码，以及近期 diff。
+
+[任务与输出]
+1. 先列「确定事实」，每条引用具体证据行；
+2. 给最多 3 个根因假设，按概率×影响排序；
+3. 每个假设给证伪条件、最小验证命令/测试和预期结果；
+4. 只有验证通过后才给最小修复，并说明生命周期、并发、兼容性边界；
+5. 给回归测试、灰度指标、防复发项；
+6. 输出：事实表 → 假设表 → 下一步 → 修复候选 → 风险/未知项。</code></pre>
+
+<div class="duo">
+  <div class="bad"><b>坏提示词</b>「帮我看看这个崩溃，顺便改好。」只有半截截图，没有版本、源码、分布，也没有要求验证；AI 只能按常见模式猜。</div>
+  <div class="good"><b>好提示词</b>给完整证据包、正常对照与近期 diff；要求事实逐条引用、最多 3 个假设、每个假设必须可证伪，验证前不准改代码。</div>
+</div>
+
+<h3>三种高价值任务型提示词</h3>
+<div class="plays">
+  <div class="play"><div class="ph"><span class="pic">💥</span><b>堆栈 → 源码根因</b><span class="pt">STACK</span></div><div class="pb"><p>「从最底层 cause 开始，找第一业务帧；沿参数/状态生产链向上追。输出空值/非法状态从何处进入、为何未在边界失败、需要读哪些调用方。不要把 null check 当默认答案。」</p></div></div>
+  <div class="play"><div class="ph"><span class="pic">⏳</span><b>ANR → 锁链与调度</b><span class="pt">TRACE</span></div><div class="pb"><p>「先判断 main 是 Running/Runnable/Blocked/Waiting；若等锁，按对象地址追持有者直到运行线程；若 Binder，指出需补哪段对端/system_server trace；区分 App 阻塞、CPU 饥饿与晚到快照。」</p></div></div>
+  <div class="play"><div class="ph"><span class="pic">🗂️</span><b>Top 20 → 根因族群</b><span class="pt">PORTFOLIO</span></div><div class="pb"><p>「不要按异常类机械分组。按共同根因/修复杠杆聚类：生命周期、状态边界、版本兼容、内存预算、线程/锁、符号/发布链。输出 affected users、可合并修复项、优先级与负责模块。」</p></div></div>
+</div>
+
+<h3>AI 防幻觉验证协议</h3>
+<ol class="steps">
+  <li><strong>引用证据：</strong>所有事实必须指向堆栈帧、源码行、分布或官方文档；无法引用则标为假设。</li>
+  <li><strong>反例检查：</strong>主动问「什么证据会推翻这个结论？正常对照为何没触发？」。</li>
+  <li><strong>工具验证：</strong>让 AI 给命令，但由受控环境执行；命令输出回填后再更新概率。</li>
+  <li><strong>最小补丁：</strong>只改根因路径，附失败测试；不接受大范围“顺手重构”。</li>
+  <li><strong>独立复核：</strong>第二代理只找错误归因、未覆盖边界和回归风险，不看第一代理的“信心”。</li>
+  <li><strong>线上闭环：</strong>测试通过仍不是结案；灰度观察新增 cluster、用户率和副作用，达到窗口后再关闭 issue。</li>
+</ol>
+<p class="src">来源：<a href="https://firebase.google.com/docs/crashlytics/ai-assistance" target="_blank">Firebase：Crashlytics AI assistance</a> · <a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-workflow">
+<div class="sec-tag">大神 10</div>
+<h2>AI 工作流与原创 crash-triage Skill</h2>
+
+<h3>工作流一：官方 Crashlytics MCP × 编码代理</h3>
+<pre><code><span class="c"># 方案 A（交互式官方推荐）：安装 Firebase 插件；与方案 B 二选一</span>
+claude plugin marketplace add firebase/firebase-tools
+claude plugin install firebase@firebase
+claude plugin marketplace list
+
+<span class="c"># 方案 B（生产固定版）：不安装上述插件，手动只接 Crashlytics</span>
+<span class="c"># 首次解析当前版本后，把具体版本号写入配置与变更记录</span>
+FIREBASE_TOOLS_VERSION=$(npm view firebase-tools version)
+claude mcp add firebase-crashlytics npx -- \
+  -y firebase-tools@$FIREBASE_TOOLS_VERSION mcp \
+  --dir "$(pwd)" --only crashlytics
+claude mcp list
+
+<span class="c"># 查看并审查该固定版本实际暴露的工具；后续不要自动跟随 latest</span>
+npx -y firebase-tools@$FIREBASE_TOOLS_VERSION mcp \
+  --only crashlytics --generate-tool-list</code></pre>
+<ol class="steps">
+  <li>先让代理「列出本版本新增的 Top 5 issue，按 affected users 与增长率排序，暂不改代码」；</li>
+  <li>对第 1 个 issue 拉取多个事件样本、版本/设备分布与 notes，生成第 09 章的证据包；支持 MCP prompt 的客户端可运行 <code>crashlytics:connect</code>；</li>
+  <li>让代理定位相关源码与 diff，只输出事实/假设/验证；验证后再写失败测试与最小补丁；</li>
+  <li>由人审核后，代理可把调查摘要和 PR 链接写回 note；关闭 issue 是写操作，必须人工确认。</li>
+</ol>
+<div class="callout warn"><b class="t">最小权限</b>MCP 使用 Firebase CLI 当前凭据，且 Crashlytics MCP 截至 2026-07-15 仍是 Experimental。示例用 <code>--only crashlytics</code> 收窄 feature group，但 core tools 仍可能存在；必须审查生成的 tool list。生产项目使用专用最小权限身份、固定已验证 firebase-tools 版本；禁止代理自动关闭 issue、合并代码或读取无关用户数据。</div>
+
+<h3>工作流二：告警 → CI 自动分诊，默认只读</h3>
+<h4><code>triage-schema.json</code>（Claude 与 Codex 共用同一输出契约）</h4>
+<pre><code>{
+  "type": "object",
+  "properties": {
+    "facts": {"type": "array", "items": {"type": "string"}},
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cause": {"type": "string"},
+          "verification": {"type": "string"}
+        },
+        "required": ["cause", "verification"],
+        "additionalProperties": false
+      }
+    },
+    "risk": {"type": "string"}
+  },
+  "required": ["facts", "hypotheses", "risk"],
+  "additionalProperties": false
+}</code></pre>
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+ISSUE_JSON="$1"                         <span class="c"># webhook worker 生成的脱敏证据包，不接受任意 URL</span>
+test -f "$ISSUE_JSON"
+test "$(wc -c &lt; "$ISSUE_JSON")" -lt 10485760
+test -f triage-schema.json
+
+OUTPUT_DIR=${OUTPUT_DIR:-"$(pwd)/triage-output"}
+mkdir -p "$OUTPUT_DIR"
+RUN_DIR=$(mktemp -d)
+trap 'rm -rf "$RUN_DIR"' EXIT
+cp "$ISSUE_JSON" "$RUN_DIR/issue.json"
+cp triage-schema.json "$RUN_DIR/triage-schema.json"
+cd "$RUN_DIR"                            <span class="c"># 空目录：不挂载源码、凭据、用户配置</span>
+SCHEMA=$(jq -c . triage-schema.json)
+
+AI_PROVIDER=${AI_PROVIDER:-claude}       <span class="c"># claude 或 codex，只运行一个</span>
+case "$AI_PROVIDER" in
+  claude)
+    cat issue.json | claude --bare -p \
+      "只做只读分诊。区分事实与假设；输出根因候选、验证步骤、回归风险；禁止改代码。" \
+      --permission-mode plan --tools "" \
+      --output-format json --json-schema "$SCHEMA" \
+      | jq -e '.structured_output' &gt; "$OUTPUT_DIR/triage-result.json"
+    ;;
+  codex)
+    cat issue.json | codex exec --ephemeral --ignore-user-config --ignore-rules \
+      --skip-git-repo-check --sandbox read-only \
+      --output-schema triage-schema.json \
+      "分析 stdin 中的脱敏证据包；只做分诊，不修改文件" \
+      -o "$OUTPUT_DIR/triage-result-codex.json"
+    ;;
+  *) echo "AI_PROVIDER must be claude or codex" &gt;&amp;2; exit 2 ;;
+esac</code></pre>
+<p>生产链路应是：Velocity alert/webhook → 队列去重与限流 → 服务端凭据拉证据 → 脱敏与大小上限 → 隔离容器中的只读 AI 分诊 → schema 校验 → 创建/更新 issue → 人决定是否启动修复代理。隔离容器<strong>不得包含 Firebase/业务凭据、源码或用户配置</strong>；Claude/Codex 的模型认证由 CI secret store 在单次进程中注入短期、最小额度身份，或通过不向工具进程暴露密钥的受控代理完成，并把网络出口限制到模型服务。Webhook 内容属于不可信输入；工作区隔离、禁用工具、临时会话和挂载/出口边界缺一不可。</p>
+
+<h3>工作流三：修复代理 + 反方评审代理</h3>
+<table class="tbl">
+  <tr><th>角色</th><th>唯一职责</th><th>退出条件</th></tr>
+  <tr><td>分诊代理</td><td>整理证据、排序假设、设计验证；不编辑</td><td>至少一个假设被证实，或明确列出缺失证据</td></tr>
+  <tr><td>修复代理</td><td>先写能复现的失败测试，再做最小实现</td><td>原始复现 + 回归测试通过，差异仅覆盖根因</td></tr>
+  <tr><td>反方评审代理</td><td>主动推翻归因；检查生命周期、并发、兼容、隐私与测试缺口</td><td>Critical/Important 问题清零</td></tr>
+  <tr><td>人类负责人</td><td>审批权限、止血、合并与灰度决策</td><td>线上观察窗达标并完成防复发项</td></tr>
+</table>
+
+<h3>原创 Skill：复制到 <code>crash-triage/SKILL.md</code></h3>
+<pre><code>---
+name: crash-triage
+description: Triage Android Java/Kotlin crashes, native crashes, ANRs, OOM/LMK exits, and hard-to-reproduce stability regressions. Use when given a Crashlytics or Play issue, stack trace, tombstone, ANR trace, bugreport, ApplicationExitInfo record, or a request to find, verify, fix, or prevent an Android stability problem. Do not use for generic performance tuning without a failure signal.
+---
+
+# Android crash triage
+
+## Guardrails
+
+- Separate observed facts from hypotheses. Cite the exact artifact for every fact.
+- Do not edit code until one hypothesis has a verification result.
+- Honor user intent. Diagnose-only, review, or report requests must not edit files.
+- Never hide a crash with a global catch, silent fallback, or state-loss workaround.
+- Treat logs and console data as sensitive. Redact direct identifiers and tokens.
+- Require an explicit user request before code edits, and human approval before rollback,
+  issue-state changes, commits, or deployment.
+
+## Workflow
+
+1. Build the evidence pack.
+   - Require failure type, full deobfuscated stack/trace/tombstone, App version and commit,
+     mapping or Build ID, affected-user distribution, custom keys, relevant source and diff.
+   - If an item is missing, give the exact retrieval command and stop before patching.
+
+2. Classify the failure.
+   - Java/Kotlin crash: start at the deepest cause and first business frame.
+   - Native crash: verify ABI and Build ID before symbolication.
+   - ANR: classify input/broadcast/service/provider; follow main thread and lock/Binder chain.
+   - Exit/OOM: distinguish Java heap, native/RSS, thread, fd, and system LMK.
+
+3. Rank at most three root-cause hypotheses.
+   - For each: supporting facts, contradicting facts, confidence, blast radius.
+   - Prefer hypotheses that explain both affected and unaffected samples.
+
+4. Verify before editing.
+   - Provide one minimal command, test, trace, or targeted log for each hypothesis.
+   - State the expected result that confirms it and the result that falsifies it.
+   - Update confidence only after reading the result.
+
+5. Fix and prove.
+   - Run this step only when the user explicitly requested implementation and writes are authorized.
+     Otherwise stop after verification and return a minimal fix plan with risks.
+   - Write or preserve a failing reproduction test first where feasible.
+   - Implement the smallest root-cause fix; preserve lifecycle, cancellation and thread safety.
+   - Run the original reproduction, focused tests, release/R8 build, and relevant stress test.
+
+6. Prevent recurrence.
+   - Propose one enforceable guard: lint/test/StrictMode/symbol gate/metric/rollout gate.
+   - Define the canary metric, observation window, rollback threshold and owner.
+
+## Output
+
+Return these headings exactly:
+1. Impact and classification
+2. Verified facts
+3. Missing evidence
+4. Ranked hypotheses
+5. Verification plan and results
+6. Minimal fix and risks
+7. Regression tests
+8. Rollout and prevention
+</code></pre>
+<p>保持 SKILL.md 精简，把确定性重复工作放进 <code>scripts/</code>：例如 <code>retrace-stack.sh</code> 负责按版本找 mapping 并校验，<code>unpack-bugreport.py</code> 只提取 ANR/tombstone/logcat 索引，<code>check-native-build-id.sh</code> 比对 tombstone 与 so。脚本必须对缺失/多候选版本失败退出，禁止“猜一个最像的”。团队 schema、严重级别和隐私规则放 <code>references/</code>，按需加载，不把所有背景塞进 Skill 主体。</p>
+
+<h3>如何判断 AI 真的提效，而不是多产文档</h3>
+<table class="tbl">
+  <tr><th>指标</th><th>定义</th><th>反作弊</th></tr>
+  <tr><td>证据完整时间</td><td>告警到上下文包齐备的 P50/P90</td><td>缺 mapping/Build ID 不算齐备</td></tr>
+  <tr><td>首个可验证假设时间</td><td>告警到产生并执行第一条证伪动作</td><td>只有“可能是”不计</td></tr>
+  <tr><td>一次修复成功率</td><td>无需回滚/二次修复且观察窗无复发的比例</td><td>必须按同一根因 cluster 追踪</td></tr>
+  <tr><td>AI 建议采纳率</td><td>被证据验证并最终合入的建议比例</td><td>不追求越高越好；同时统计误导率</td></tr>
+  <tr><td>防复发落地率</td><td>RCA 承诺项按期进入 lint/test/门禁/监控的比例</td><td>写在文档但无 owner/截止日不算</td></tr>
+</table>
+<p class="src">来源：<a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Firebase Crashlytics MCP</a> · <a href="https://code.claude.com/docs/en/headless" target="_blank">Claude Code 非交互模式</a> · <a href="https://learn.chatgpt.com/docs/non-interactive-mode" target="_blank">Codex 非交互模式</a> · <a href="https://developers.openai.com/codex/skills" target="_blank">Codex Skills</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="governance">
+<div class="sec-tag">大神 11</div>
+<h2>治理体系：从救火到稳定性复利</h2>
+
+<h3>四道防线</h3>
+<table class="tbl">
+  <tr><th>防线</th><th>机制</th><th>可执行门禁</th></tr>
+  <tr><td><span class="pill a">准入</span></td><td>Kotlin 空安全边界、lint/Detekt、StrictMode、单元/迁移/进程重建测试、review checklist</td><td>release + R8 冒烟；mapping/native symbols 归档并可检索；新增高风险 API 有测试</td></tr>
+  <tr><td><span class="pill b">灰度</span></td><td>分阶段发布、feature flag、版本采用率与新增 cluster 同看</td><td>超过内部 Crash/ANR 错误预算或出现启动/核心链路新崩溃，自动暂停</td></tr>
+  <tr><td><span class="pill c">监控</span></td><td>Vitals + Crashlytics + ExitInfo；按新增/存量、用户/事件、全局/机型拆分</td><td>告警必须路由到 owner，附上下文包链接、严重级别、止血按钮和 SOP</td></tr>
+  <tr><td><span class="pill d">复盘</span></td><td>时间线、根因、为何未提前发现、止血与永久修复分开</td><td>每个 S 级问题至少落 1 个可自动执行的防复发项，有 owner 与截止日</td></tr>
+</table>
+
+<h3>SLO 与错误预算：远低于平台红线</h3>
+<p>Play 坏行为阈值是商店惩罚线，不是质量目标。团队应按业务关键度、历史基线和用户规模设更严格 SLO，并把新增问题与存量债务分开。下面只是<strong>示例起点，不是 Android 官方目标</strong>：</p>
+<table class="tbl">
+  <tr><th>指标</th><th>示例目标</th><th>门禁</th></tr>
+  <tr><td>用户感知 Crash 率</td><td>关键 App ≤0.20%，或 crash-free users ≥99.8%</td><td>新版本相对基线恶化且统计可信即暂停，不等到 1.09%</td></tr>
+  <tr><td>用户感知 ANR 率</td><td>≤0.10%</td><td>新增 input dispatch cluster 或单机型尖峰触发专项</td></tr>
+  <tr><td>启动/核心链路崩溃</td><td>零容忍新增</td><td>任何可信新 cluster 先止血</td></tr>
+  <tr><td>证据完整率</td><td>Top issue ≥95% 可对版、可找到 owner</td><td>缺 mapping/symbol/版本归档视为发布链故障</td></tr>
+</table>
+
+<h3>值班 SOP：定级 → 止血 → 根治</h3>
+<ol class="steps">
+  <li><strong>定级：</strong>按用户影响、增长速度、核心链路与可恢复性，而不是异常名字；启动风暴/数据损坏优先级最高。</li>
+  <li><strong>止血：</strong>暂停灰度、回滚、关开关、服务端降级或恢复模式；记录每个操作时间与效果。</li>
+  <li><strong>根治：</strong>建立证据包、验证假设、最小修复、回归与灰度；止血补丁不能代替永久修复。</li>
+  <li><strong>复盘：</strong>回答「为何产生、为何测试没挡住、为何监控没更早发现、什么自动机制能防同类」。</li>
+</ol>
+
+<h3>一页式结案清单</h3>
+<ul>
+  <li>影响与版本范围已量化；Play 与 Crashlytics 口径已注明；</li>
+  <li>主证据已对版，根因有可复现/可证伪结果，不是仅凭 AI/聚类推断；</li>
+  <li>止血与永久修复分别记录，补丁有原始复现和边界回归；</li>
+  <li>灰度观察窗、成功指标、回滚阈值与 owner 已明确；</li>
+  <li>同类防线已进入 lint/test/StrictMode/发布门禁/监控之一；</li>
+  <li>Crashlytics/工单 note 链接 PR、验证证据和 RCA，方便下一位值班者追溯。</li>
+</ul>
+
+<h3>官方资源索引</h3>
+<table class="tbl">
+  <tr><th>主题</th><th>首选资料</th></tr>
+  <tr><td>Crash / ANR / Vitals</td><td><a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals 总览</a> · <a href="https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs" target="_blank">ANR 诊断</a></td></tr>
+  <tr><td>Native / 内存</td><td><a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">Native crash</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory debugging</a></td></tr>
+  <tr><td>系统取证</td><td><a href="https://developer.android.com/studio/debug/bug-report" target="_blank">Bugreport</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></td></tr>
+  <tr><td>Play / Firebase</td><td><a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Play 技术质量</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Crashlytics</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">官方 MCP</a></td></tr>
+  <tr><td>AI 工程</td><td><a href="claude-code-guide.html">本库 Claude Code 指南</a> · <a href="codex-guide.html">本库 Codex 指南</a> · <a href="https://agentskills.io/specification" target="_blank">Agent Skills 规范</a></td></tr>
+</table>
+<div class="callout tip"><b class="t">最终能力标准</b>新手能按 00–02 在 30 分钟内完成第一张有效工单；中级能用 03–07 还原 ANR/Native/设备现场；高级能用 08–10 处理不可复现问题并让 AI 安全接入；负责人用 11 把每次事故变成下一次不会再发生的系统能力。</div>
+<p class="src">来源：<a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Google Play 技术质量</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Firebase Crashlytics</a></p>
+</section>
 
 <div class="footer">
   <p><strong>说明</strong>:本指南基于 Android 官方文档(developer.android.com、support.google.com、firebase.google.com,2026-07 核对)与工程实践整理,非官方出品。API 与后台界面随版本演进,以官方文档为准。</p>
