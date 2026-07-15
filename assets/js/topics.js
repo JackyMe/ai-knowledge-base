@@ -6,6 +6,46 @@
    2. 在下方 TOPICS 追加一个对象
    3. 完成 —— 首页卡片、章节快链、全站搜索自动生效
    ============================================================ */
+/* ------------------------------------------------------------
+   精选外部学习站(在精不在多):首页「精选学习站」区块 + 全站搜索共用。
+   featured: true 的条目置顶通栏突出显示。
+   ------------------------------------------------------------ */
+const LEARN = [
+  {
+    href: "https://coding.stormzhang.ai/", icon: "🎓", tag: "中文 · 系统教程", color: "#f59e0b", featured: true,
+    title: "AI 编程指南(stormzhang)",
+    desc: "92 篇小白友好的系统教程:Claude Code 53 篇 + Codex 39 篇,GitHub 开源、持续维护。入门首选——跟着一篇篇走完即可;与本库互补:入门跟它走,日常查这里。",
+    links: [
+      { label: "Claude Code 篇(53 篇)→", href: "https://coding.stormzhang.ai/claude-code/01-what-is-claude-code" },
+      { label: "Codex 篇(39 篇)→", href: "https://coding.stormzhang.ai/codex/01-what-is-codex" },
+      { label: "GitHub 仓库", href: "https://github.com/stormzhang/ai-coding-guide" }
+    ]
+  },
+  {
+    href: "https://code.claude.com/docs", icon: "📖", tag: "官方 · 第一信源", color: "#d9634a",
+    title: "Claude Code 官方文档",
+    desc: "一切争议以它为准。Best practices 一页值得逐字精读;/release-notes 跟进每周新特性。",
+    links: [ { label: "Best Practices →", href: "https://code.claude.com/docs/en/best-practices" } ]
+  },
+  {
+    href: "https://developers.openai.com/codex", icon: "📗", tag: "官方 · 第一信源", color: "#0d9373",
+    title: "Codex 官方文档",
+    desc: "CLI / IDE / Cloud 全形态权威参考;Config 与 Authentication 两章最常回查。",
+    links: [ { label: "Best Practices →", href: "https://developers.openai.com/codex/learn/best-practices" } ]
+  },
+  {
+    href: "https://blakecrosley.com/guides/claude-code", icon: "🧭", tag: "英文 · 实战通关", color: "#6366f1",
+    title: "Blake Crosley Guides",
+    desc: "Claude Code 与 Codex 各一篇长文通关:Hooks / MCP / Skills 讲得最透的单页,示例即抄即用。",
+    links: [ { label: "Codex 篇 →", href: "https://blakecrosley.com/guides/codex" } ]
+  },
+  {
+    href: "https://github.com/hesreallyhim/awesome-claude-code", icon: "⭐", tag: "资源枢纽", color: "#64748b",
+    title: "awesome-claude-code",
+    desc: "社区最全精选清单:技能、钩子、子代理、工作流与工具,顺藤摸瓜能找到一切。"
+  }
+];
+
 const TOPICS = [
   {
     href: "topics/pencil-docs-zh.html", icon: "📘", tag: "官方文档", color: "#5b5bf6",

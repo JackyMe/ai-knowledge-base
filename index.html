@@ -104,6 +104,30 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 .res-empty{padding:34px;text-align:center;color:var(--text-3);font-size:13.5px;background:#fff;
   border:1px dashed var(--border-2);border-radius:14px}
 
+/* 精选学习站 */
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:8px}
+.learn{position:relative;display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--border);
+  border-radius:14px;padding:16px 18px;color:var(--text);transition:.18s;cursor:pointer}
+.learn:hover{border-color:var(--lc,#5b5bf6);box-shadow:0 10px 30px rgba(15,23,42,.08);transform:translateY(-2px)}
+.learn .lh{display:flex;align-items:center;gap:8px}
+.learn .lic{font-size:17px}
+.learn .ltag{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--lc,#5b5bf6);
+  background:color-mix(in srgb,var(--lc,#5b5bf6) 10%,#fff);border:1px solid color-mix(in srgb,var(--lc,#5b5bf6) 25%,#fff);
+  padding:2px 8px;border-radius:99px;white-space:nowrap}
+.learn .lh .ext{margin-left:auto;color:var(--text-3);font-size:12.5px;transition:.18s}
+.learn:hover .lh .ext{color:var(--lc,#5b5bf6);transform:translate(2px,-2px)}
+.learn b{font-size:14.5px;font-weight:750}
+.learn p{font-size:12.5px;color:var(--text-2);margin:0;flex:1;line-height:1.65}
+.learn .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.learn .quick a{font-size:11.5px;font-weight:600;color:var(--lc,#5b5bf6);background:#fff;
+  border:1px solid color-mix(in srgb,var(--lc,#5b5bf6) 35%,#fff);padding:3.5px 11px;border-radius:99px;text-decoration:none;transition:.15s}
+.learn .quick a:hover{background:color-mix(in srgb,var(--lc,#5b5bf6) 8%,#fff)}
+.learn.featured{grid-column:1/-1;background:linear-gradient(100deg,#fffbeb,#fff 65%);border-color:#fde68a}
+.learn.featured b{font-size:16.5px}
+.learn.featured p{font-size:13px}
+.learn.featured .fbadge{position:absolute;top:-10px;left:16px;font-size:10.5px;font-weight:800;color:#92400e;
+  background:#fde68a;padding:2.5px 11px;border-radius:99px;letter-spacing:.08em}
+
 .add-note{margin-top:22px;padding:13px 18px;border:1.5px dashed var(--border-2);border-radius:14px;
   font-size:12.5px;color:var(--text-3);text-align:center}
 .add-note code{font-family:var(--mono);font-size:11.5px;background:#fff;border:1px solid var(--border);
@@ -151,6 +175,9 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 <div class="results" id="results"></div>
 
 <div id="browse">
+  <div class="sec"><h2>精选学习站</h2><span>在精不在多 · 点击直达外站</span></div>
+  <div class="learn-grid" id="learnGrid"></div>
+
   <div class="sec"><h2>全部主题</h2><span id="topicCount"></span></div>
   <div class="grid" id="grid"></div>
   <div class="add-note">＋ 新增主题:HTML 放入 <code>topics/</code>,并在 <code>assets/js/topics.js</code> 追加一条注册 —— 卡片、章节快链与全站搜索自动生效</div>
@@ -185,6 +212,24 @@ document.querySelectorAll('.topic[data-href]').forEach(c=>
   c.addEventListener('click',()=>location.href=c.dataset.href));
 $('#topicCount').textContent=`${TOPICS.length} 个主题 · ${TOPICS.reduce((n,t)=>n+t.sections.length,0)} 个章节`;
 
+/* ---------- 精选学习站 ---------- */
+const lg=$('#learnGrid');
+if(typeof LEARN!=='undefined'&&lg){
+  lg.innerHTML=LEARN.map(l=>`
+    <div class="learn${l.featured?' featured':''}" style="--lc:${l.color}" data-href="${l.href}">
+      ${l.featured?'<span class="fbadge">★ 首选推荐</span>':''}
+      <span class="lh"><span class="lic">${l.icon}</span><span class="ltag">${escq(l.tag)}</span><span class="ext">↗</span></span>
+      <b>${escq(l.title)}</b>
+      <p>${escq(l.desc)}</p>
+      ${l.links?`<span class="quick">${l.links.map(k=>
+        `<a href="${k.href}" target="_blank" rel="noopener">${escq(k.label)}</a>`).join('')}</span>`:''}
+    </div>`).join('');
+  lg.querySelectorAll('.learn').forEach(c=>c.addEventListener('click',e=>{
+    if(e.target.closest('.quick a'))return;
+    window.open(c.dataset.href,'_blank','noopener');
+  }));
+}
+
 /* ---------- 继续上次阅读(与主题页 site.js 的记录联动) ---------- */
 try{
   const last=JSON.parse(localStorage.getItem('pkb-last')||'null');
@@ -209,6 +254,9 @@ TOPICS.forEach(t=>{
   INDEX.push({topic:t,label:t.title,id:'',text:(t.title+' '+t.desc+' '+t.tag).toLowerCase(),isTopic:true});
   t.sections.forEach(s=>INDEX.push({topic:t,label:s.label,id:s.id,text:(s.label+' '+t.title).toLowerCase(),isTopic:false}));
 });
+if(typeof LEARN!=='undefined')LEARN.forEach(l=>INDEX.push({
+  topic:{href:l.href,color:l.color,tag:'学习站',title:l.title},
+  label:l.title,id:'',text:(l.title+' '+l.desc+' '+l.tag+' 学习 教程').toLowerCase(),isTopic:true,ext:true}));
 const q=$('#q'),results=$('#results'),browse=$('#browse'),qmeta=$('#qmeta');
 let sel=0,shown=[];
 qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目`;
@@ -225,11 +273,11 @@ function doSearch(){
     `<div class="res-count">${shown.length} 条结果 · Enter 打开选中项</div>`+
     shown.map((it,i)=>`
       <a class="res${i===sel?' sel':''}" style="--rc:${it.topic.color}" data-i="${i}"
-         href="${it.topic.href}${it.id?'#'+it.id:''}">
+         href="${it.topic.href}${it.id?'#'+it.id:''}"${it.ext?' target="_blank" rel="noopener"':''}>
         <span class="badge">${it.topic.tag}</span>
         <b>${hl(it.label,kw)}</b>
         ${it.isTopic?'':`<span class="path">${escq(it.topic.title)}</span>`}
-        <span class="go">打开 →</span>
+        <span class="go">${it.ext?'外站 ↗':'打开 →'}</span>
       </a>`).join('')
     :'<div class="res-empty">没有匹配结果——换个关键词试试,或浏览下方全部主题</div>';
   const s=results.querySelector('.res.sel');s&&s.scrollIntoView({block:'nearest'});
@@ -239,7 +287,9 @@ q.addEventListener('keydown',e=>{
   if(e.key==='ArrowDown'){e.preventDefault();if(sel<shown.length-1)sel++;doSearch()}
   else if(e.key==='ArrowUp'){e.preventDefault();if(sel>0)sel--;doSearch()}
   else if(e.key==='Enter'){e.preventDefault();const it=shown[sel];
-    if(it)location.href=it.topic.href+(it.id?'#'+it.id:'')}
+    if(!it)return;
+    const url=it.topic.href+(it.id?'#'+it.id:'');
+    it.ext?window.open(url,'_blank','noopener'):location.href=url}
   else if(e.key==='Escape'){q.value='';sel=0;doSearch();q.blur()}
 });
 addEventListener('keydown',e=>{
