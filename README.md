@@ -61,6 +61,29 @@ git push -u origin main
 **方式 C · Cloudflare Pages / Vercel**
 两者均支持"导入 Git 仓库"或直接上传文件夹,构建命令留空、输出目录填 `/` 即可。
 
+
+## 日常更新与同步(推荐流程)
+
+本目录已是 git 仓库,每次内容变更后运行:
+
+```bash
+./sync.sh                # 自动提交(带时间戳信息)
+./sync.sh -m "加了xx章节"  # 自定义提交信息
+./sync.sh -d             # 提交 + 一键部署到 Netlify
+```
+
+**同步到线上(aidoc-zq.netlify.app)二选一:**
+
+- **方式 A · 拖拽(零配置)**:打开 [app.netlify.com/projects/aidoc-zq/deploys](https://app.netlify.com/projects/aidoc-zq/deploys),把整个 `ai-knowledge-base` 文件夹拖进页面底部的拖放区,10 秒发布。
+- **方式 B · 命令行(一次配置,之后一条命令)**:
+  ```bash
+  npm i -g netlify-cli
+  netlify login                 # 浏览器授权,一次即可
+  netlify link                  # 在本目录运行,选择 aidoc-zq 项目
+  # 之后每次发布:
+  netlify deploy --prod --dir . # 或直接 ./sync.sh -d
+  ```
+
 ## 说明
 
 - 内容为非官方整理,以各来源原文为准;各页脚注有来源链接。
