@@ -51,6 +51,7 @@ const TOPICS = [
     href: "topics/pencil-docs-zh.html", icon: "📘", tag: "官方文档", color: "#5b5bf6",
     title: "Pencil 官方文档 · 中文完整指南",
     desc: "覆盖 docs.pencil.dev 全部 16 个页面,含官方视频与配图,每节附原文链接。",
+    keywords: "pencil 设计 pen 文件 组件 变量 快捷键 安装 激活 导入 导出 cli 画布",
     meta: ["16 个页面", "含官方视频", "基于 2026-06-27 版"],
     sections: [
       {id:"home",label:"文档首页"},{id:"installation",label:"安装"},
@@ -68,6 +69,7 @@ const TOPICS = [
     href: "topics/pencil-claude-code-best-practices.html", icon: "⚡", tag: "实践指南", color: "#0ea5e9",
     title: "Pencil × Claude Code 最佳实践全景",
     desc: "聚合 9+ 来源:四种核心工作流、提示词模板、设计系统工程化、CI/CD 玩法、避坑与真实案例(附实测截图)。",
+    keywords: "pencil claude 工作流 提示词 prompt 设计系统 避坑 案例 最佳实践",
     meta: ["9+ 来源", "20+ 实测截图", "2026-07 聚合"],
     sections: [
       {id:"intro",label:"为什么是这对组合"},{id:"setup",label:"环境搭建标准流程"},
@@ -81,6 +83,7 @@ const TOPICS = [
     href: "topics/claude-code-guide.html", icon: "⛏️", tag: "使用指南", color: "#d9634a",
     title: "Claude Code 使用指南 · 干货版",
     desc: "五条黄金法则、100+ 命令速查、六大扩展选型、八大场景实战手册、权限安全与开箱模板库。",
+    keywords: "claude code 命令 快捷键 skills hooks mcp 子代理 上下文 权限 配置 模板 提示词 claude.md 斜杠命令",
     meta: ["100+ 命令收录", "8 大场景", "5 套模板", "基于 v2.1.x"],
     sections: [
       {id:"mental-model",label:"一切围绕上下文"},{id:"golden-rules",label:"五条黄金法则"},
@@ -97,6 +100,7 @@ const TOPICS = [
     href: "topics/codex-guide.html", icon: "🟢", tag: "使用指南", color: "#0d9373",
     title: "Codex 使用指南 · CLI × IDE × Cloud",
     desc: "OpenAI 编码代理全景:20+ 子命令与 40+ 斜杠命令速查、沙箱与审批 3×3 详解、AGENTS.md、Skills/MCP,以及与 Claude Code 的协同打法。",
+    keywords: "codex openai 沙箱 审批 agents.md 云端 cloud 命令 协同 gpt",
     meta: ["5 种形态", "沙箱 3 档详解", "双代理协同", "基于 0.14x"],
     sections: [
       {id:"overview",label:"Codex 全景"},{id:"setup",label:"安装与登录"},
@@ -108,9 +112,25 @@ const TOPICS = [
     ]
   },
   {
+    href: "topics/env-auth-clinic.html", icon: "🚑", tag: "急救手册", color: "#e11d48",
+    title: "AI CLI 环境与登录急救手册 · Claude Code × Codex",
+    desc: "登录报错、配置打架、换机翻车一页治好:五层诊断法 + 一键体检脚本、双工具症状急救表、共用电脑/换电脑/无头机三大剧本、三级万能重置方案。",
+    keywords: "登录 报错 环境 变量 换电脑 多账号 共用 会员 订阅 invalid api key 401 403 auth 认证 凭证 重置 修复 排查 诊断 keychain 钥匙串 代理 proxy ssh 容器 ci token",
+    meta: ["五层诊断法", "3 级重置", "3 大场景剧本", "2026-07-18 核对"],
+    sections: [
+      {id:"overview",label:"环境问题的本质"},{id:"diagnose",label:"五层诊断法 + 体检脚本"},
+      {id:"claude-cred",label:"Claude Code 凭证机制"},{id:"claude-er",label:"Claude Code 症状急救表"},
+      {id:"codex-cred",label:"Codex 凭证机制"},{id:"codex-er",label:"Codex 症状急救表"},
+      {id:"shared",label:"共用电脑 / 别人的配置"},{id:"machines",label:"换电脑 / 多机漫游"},
+      {id:"headless",label:"SSH / 容器 / CI"},{id:"reset",label:"万能修复:三级重置"},
+      {id:"map",label:"双工具对照与资源"}
+    ]
+  },
+  {
     href: "topics/android-crash-anr.html", icon: "⚡", tag: "稳定性", color: "#65a30d",
     title: "Android Crash & ANR 排查根治 × AI 提效",
     desc: "小白到大神:崩溃图鉴、ANR 解剖、Native 崩溃、全工具链、GP/Firebase 后台、疑难侦查术,以及 AI 分诊工作流与原创 crash-triage 技能。",
+    keywords: "android anr crash 崩溃 卡顿 稳定性 firebase play console native 堆栈 日志 排查",
     meta: ["12 章渐进式", "30+ 崩溃图鉴", "原创 AI Skill", "2026-07 核对"],
     sections: [
       {id:"overview",label:"全景与方法论"},{id:"read-crash",label:"第一课:读懂一次崩溃"},
