@@ -114,16 +114,16 @@ const TOPICS = [
   {
     href: "topics/env-auth-clinic.html", icon: "🚑", tag: "急救手册", color: "#e11d48",
     title: "AI CLI 环境与登录急救手册 · Claude Code × Codex",
-    desc: "登录报错、配置打架、换机翻车一页治好:五层诊断法 + 一键体检脚本、双工具症状急救表、共用电脑/换电脑/无头机三大剧本、三级万能重置方案。",
-    keywords: "登录 报错 环境 变量 换电脑 多账号 共用 会员 订阅 invalid api key 401 403 auth 认证 凭证 重置 修复 排查 诊断 keychain 钥匙串 代理 proxy ssh 容器 ci token",
-    meta: ["五层诊断法", "3 级重置", "3 大场景剧本", "2026-07-18 核对"],
+    desc: "登录报错、配置打架、换机翻车一页治好:对症快查表 30 秒定位,五层诊断法 + 一键体检脚本、双工具五分类急救表、共用电脑/换电脑/无头机三大剧本、三级万能重置方案。",
+    keywords: "登录 报错 环境 变量 换电脑 多账号 共用 会员 订阅 invalid api key 401 403 429 529 限流 额度 usage limit 计费 auth 认证 凭证 重置 修复 排查 诊断 keychain 钥匙串 代理 proxy ssh 容器 ci token vs code 扩展 windows node 版本 案例 复盘 credit balance wsl econnreset 超时",
+    meta: ["对症快查", "五层诊断法", "3 级重置", "2026-07-18 核对"],
     sections: [
-      {id:"overview",label:"环境问题的本质"},{id:"diagnose",label:"五层诊断法 + 体检脚本"},
+      {id:"overview",label:"对症快查 + 问题地图"},{id:"diagnose",label:"五层诊断法 + 体检脚本"},
       {id:"claude-cred",label:"Claude Code 凭证机制"},{id:"claude-er",label:"Claude Code 症状急救表"},
       {id:"codex-cred",label:"Codex 凭证机制"},{id:"codex-er",label:"Codex 症状急救表"},
       {id:"shared",label:"共用电脑 / 别人的配置"},{id:"machines",label:"换电脑 / 多机漫游"},
-      {id:"headless",label:"SSH / 容器 / CI"},{id:"reset",label:"万能修复:三级重置"},
-      {id:"map",label:"双工具对照与资源"}
+      {id:"headless",label:"SSH / 容器 / CI"},{id:"cases",label:"案例复盘:从症状到根因"},
+      {id:"reset",label:"万能修复:三级重置"},{id:"map",label:"双工具对照与资源"}
     ]
   },
   {
@@ -139,6 +139,37 @@ const TOPICS = [
       {id:"consoles",label:"Play Console 与 Firebase"},{id:"device-data",label:"测试机数据导出"},
       {id:"detective",label:"疑难杂症侦查术"},{id:"ai-method",label:"AI 结合:方法论与提示词"},
       {id:"ai-workflow",label:"AI 工作流与原创 Skill"},{id:"governance",label:"治理体系与资源"}
+    ]
+  },
+  {
+    href: "topics/ai-leverage-guide.html", icon: "🧭", tag: "提效心法", color: "#7c3aed",
+    title: "AI 到底能帮你干什么 · 提效全景与心法",
+    desc: "全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化四套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。",
+    keywords: "ai 能干什么 有什么用 提效 效率 场景 用法 写作 文档 周报 调研 学习 入门 数据 分析 自动化 生活 心法 提示词 prompt 误区 新手 学ai 怎么学 选工具 对比 gemini chatgpt claude codex deep research 深度调研 vibe coding",
+    meta: ["8 大场景", "7 条心法", "7 个实例", "2026-07 调研"],
+    sections: [
+      {id:"map",label:"全景地图:边界一张表"},{id:"matrix",label:"场景 × 收益矩阵"},
+      {id:"coding",label:"编程:最佳范式"},{id:"writing",label:"写作与文档"},
+      {id:"research",label:"调研与学习"},{id:"data-auto",label:"数据与自动化"},
+      {id:"tools",label:"三大工具怎么选"},{id:"principles",label:"通用心法七条"},
+      {id:"cases",label:"真实实例集"},{id:"learning-path",label:"普通人学习路径"},
+      {id:"resources",label:"资源索引"}
+    ]
+  },
+  {
+    href: "topics/android-to-fullstack.html", icon: "🧗", tag: "提效心法", color: "#ea580c",
+    title: "Android 转型全栈 · AI 时代硬核手册",
+    desc: "不是励志文,是作战手册:语言/UI/架构/数据四层硬核迁移(30+ Kotlin↔TS、Compose↔React 双栏代码对照)、六大体系学习包(学什么/怎么学/怎么实操配到章节级)、三个渐进项目的 12 周路线、RLS 安全实战、20 题自测、一人公司商业闭环。",
+    keywords: "android 转型 全栈 转行 kotlin typescript compose react 对照 next.js nextjs supabase rls sql drizzle server actions 一人公司 独立开发 出海 学习路线 12周 移动端 客户端 vercel stripe 变现 saas indie 自测 面试 hydration ssr 学习包 教材 课程 total typescript sqlbolt",
+    meta: ["4 层硬核迁移", "6 个学习包", "20 题自测", "Next.js 16 · 2026-07"],
+    sections: [
+      {id:"overview",label:"导读 + 结论先行"},{id:"paradigm",label:"范式与角色升级"},
+      {id:"lang",label:"语言:Kotlin → TypeScript"},{id:"ui",label:"UI:Compose → React"},
+      {id:"arch",label:"架构:App → Web 全栈"},{id:"data",label:"数据:Room → Supabase"},
+      {id:"roadmap",label:"三个渐进项目(12 周)"},{id:"kits",label:"学习包:六大体系"},
+      {id:"engineering",label:"工程化:质量与安全"},{id:"ai-workflow",label:"AI 协同工作流"},
+      {id:"method",label:"学习系统 + 20 题自测"},{id:"pitfalls",label:"转型陷阱手册"},
+      {id:"business",label:"一人公司商业闭环"},{id:"resources",label:"资源库(带评级)"}
     ]
   }
 ];

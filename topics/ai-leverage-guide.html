@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 到底能帮你干什么 · 提效全景与心法 · 2026.07</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#a78bfa; --accent-soft:#f3eefe;
+  --ink:#150f26; --bg:#ffffff; --bg-side:#fbfafd; --bg-code:#141021;
+  --text:#232030; --text-2:#5d5a6b; --text-3:#928fa0;
+  --border:#eae7f1; --border-2:#d9d4e6;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f3eefe;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#efeaf8;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#efeaf9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(124,58,237,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(167,139,250,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.16);
+  border:1px solid rgba(124,58,237,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a78bfa,#ddd6fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c2bdd6;max-width:640px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a29dbb}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#ddd2f5}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f1eefa;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#6d28d9}
+pre{background:var(--bg-code);color:#e4dff0;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8b87a0}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#faf9fd}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fbfafe}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#faf9fd;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f3eefe;color:#6d28d9}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(21,15,38,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">AI</span>AI 提效全景与心法<span class="sub">干货版</span></div>
+  <div class="right">
+    <a href="../index.html">◂ 主题中心</a>
+    <span>全网调研 · 2026-07-20</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">认知</div>
+    <a href="#map"><span class="no">00</span>全景地图:边界一张表</a>
+    <a href="#matrix"><span class="no">01</span>场景 × 收益矩阵</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">场景范式</div>
+    <a href="#coding"><span class="no">02</span>编程:最佳范式</a>
+    <a href="#writing"><span class="no">03</span>写作与文档</a>
+    <a href="#research"><span class="no">04</span>调研与学习</a>
+    <a href="#data-auto"><span class="no">05</span>数据与自动化</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">选型</div>
+    <a href="#tools"><span class="no">06</span>三大工具怎么选</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">内功</div>
+    <a href="#principles"><span class="no">07</span>通用心法七条</a>
+    <a href="#cases"><span class="no">08</span>真实实例集</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">上手</div>
+    <a href="#learning-path"><span class="no">09</span>普通人学习路径</a>
+    <a href="#resources"><span class="no">10</span>资源索引</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🧭 全网调研聚合 · 官方文档 + 研究报告 + 社区共识 · 截至 2026-07</div>
+  <h1>AI 到底能帮你干什么<br><span class="grad">提效全景与心法</span></h1>
+  <p class="lead">不吹不黑:哪些场景提效最猛、每个场景的正确姿势、三大编码代理怎么选、跨场景通用心法,以及普通人从零到熟练的路径。每个关键论断都有出处——包括"AI 有时会让你变慢"这条扎心的。</p>
+  <div class="meta">
+    <span>8 大场景</span><span>7 条心法</span><span>7 个可复刻实例</span><span>误区清单</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>57%</b><span>Claude 平台上的任务是"人机协作"而非全自动(Anthropic 经济指数)</span></div>
+  <div class="stat"><b>42%</b><span>个人生活用途占比,2026 年仍在快速上升——非编程场景被低估</span></div>
+  <div class="stat"><b>-19%</b><span>METR 实测:范式用错,资深开发者反而变慢 19%(却自感快 20%)</span></div>
+  <div class="stat"><b>+10%</b><span>熟手比新手任务成功率高约 10%:会用是练出来的,不是天生的</span></div>
+</div>
+
+<section id="map">
+<div class="sec-tag">认知 00</div>
+<h2>全景地图:AI 擅长什么、不擅长什么</h2>
+
+<p>先建立一个诚实的能力边界认知,再谈提效。2026 年年中的通用大模型(Claude / GPT / Gemini)在下面这张表里的左列已经"稳定可用",右列则仍需人类兜底——把任务放错列,是一切失望的来源。</p>
+
+<table class="tbl">
+  <tr><th>✅ 擅长(放心交给它)</th><th>⚠️ 不擅长(必须人把关)</th></tr>
+  <tr><td>初稿生成:文章、代码、方案、邮件——从 0 到 60 分极快</td><td>最后 20 分:观点、品味、取舍,仍是人的活</td></tr>
+  <tr><td>格式转换与结构化:乱笔记→表格、录音稿→纪要、需求→代码骨架</td><td>事实精确性:会一本正经地编造(幻觉),重要事实必须核验</td></tr>
+  <tr><td>总结压缩:长文档、论文、会议记录提炼要点</td><td>时效信息:训练截止后的事,不联网检索就不可信</td></tr>
+  <tr><td>翻译与润色:接近母语水平,风格可控</td><td>长链路无验证任务:没有检查点的多步任务,错误会累积放大</td></tr>
+  <tr><td>头脑风暴:一次给 10 个方案,人来挑</td><td>精确计算与计数:让它写代码算,别让它口算</td></tr>
+  <tr><td>跨领域入门讲解:任何学科的"耐心私教"</td><td>责任与决策:医疗/法律/投资等高风险决定,AI 只能当参谋</td></tr>
+  <tr><td>代码:写脚本、修 bug、解释报错——有编译器和测试天然兜底</td><td>"帮我做完全部":越模糊的全权委托,翻车率越高</td></tr>
+</table>
+
+<h3>三个反直觉的数据</h3>
+<ul>
+  <li><strong>编程仍是第一大用途,但个人生活用途在猛涨。</strong>Anthropic 经济指数显示,与"计算机与数学"职业相关的任务约占 Claude 对话的 35%,居各类之首;同时个人用途占比从 35% 升至 42%(2025-11 → 2026-02)。</li>
+  <li><strong>过半任务是"协作"而非"自动"。</strong>57% 的任务是人机迭代协作,43% 是委托自动完成——说明当前最佳姿势仍是"AI 干活、人指挥和验收"。</li>
+  <li><strong>用错范式,AI 让你变慢。</strong>METR 2025 年随机对照试验:16 名资深开源开发者在自己熟悉的大型代码库上用 AI 工具,实测完成任务<strong>慢了 19%</strong>——但他们自我感觉快了 20%。</li>
+</ul>
+
+<div class="callout warn"><b class="t">METR 研究的正确解读</b>它证明的不是"AI 无用",而是:<strong>在"你本来就极熟"的领域,AI 增益最小;提效感受会严重高估实际提效</strong>。反过来推论——AI 增益最大的地方,恰是你不熟的领域、重复的体力活、和从零起步的初稿。选对场景 + 用对范式,才有真提效。本页后面全部内容,都在回答"怎么选、怎么用"。</div>
+<p class="src">来源:<a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index(2026 年 1/3/6 月报告)</a> · <a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR:Measuring the Impact of Early-2025 AI on Experienced Developer Productivity</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="matrix">
+<div class="sec-tag">认知 01</div>
+<h2>场景 × 收益矩阵:哪里提效最猛</h2>
+
+<p>八大场景按"提效潜力"排序。潜力大小不由技术炫酷程度决定,而由三个问题决定:<strong>有没有验证方法?错了代价多大?重复频率高不高?</strong>验证越容易、容错越高、重复越多的场景,越值得马上上 AI。</p>
+
+<table class="tbl">
+  <tr><th>场景</th><th>提效潜力</th><th>为什么</th><th>今天就能做的起步动作</th></tr>
+  <tr><td><strong>编程 / 脚本</strong></td><td>★★★★★</td><td>编译器、测试、报错信息构成天然验证闭环;初稿→可用的距离最短</td><td>让 AI 写一个你手工做过 3 次以上的小脚本(如批量重命名文件)</td></tr>
+  <tr><td><strong>写作 / 文档</strong></td><td>★★★★★</td><td>初稿成本归零;结构、润色、多版本尝试全部提速;人只管观点与事实</td><td>丢一堆素材给 AI,要它先出 3 版不同侧重的大纲</td></tr>
+  <tr><td><strong>调研 / 决策辅助</strong></td><td>★★★★☆</td><td>Deep Research 类功能 10-30 分钟产出带引用的调研报告,顶人肉半天</td><td>选一个正纠结的购买/选型决策,跑一次深度调研并点开来源核验</td></tr>
+  <tr><td><strong>学习新领域</strong></td><td>★★★★☆</td><td>无限耐心的私教:任意深度追问、按你的水平解释、随时出题检验</td><td>挑一个一直想学的主题,要求 AI"先摸底测试我,再定学习计划"</td></tr>
+  <tr><td><strong>数据分析</strong></td><td>★★★★☆</td><td>自然语言问表格已成熟;AI 写分析代码兼得灵活与可验证</td><td>把一份 Excel/CSV 扔给对话模型,用中文问 3 个业务问题</td></tr>
+  <tr><td><strong>自动化办公</strong></td><td>★★★☆☆</td><td>收益极高但需先手动跑通流程;无验证的自动化是事故制造机</td><td>把一个每周重复的流程写成清单,先让 AI 半自动跑一次</td></tr>
+  <tr><td><strong>生活事务</strong></td><td>★★★☆☆</td><td>行程规划、饮食方案、礼物点子、合同解读——低风险高频小决策</td><td>下次做饭前:报上冰箱现有食材,要 3 个菜谱 + 采购补货清单</td></tr>
+  <tr><td><strong>情感陪伴 / 自我梳理</strong></td><td>★★★☆☆</td><td>HBR 百大用途榜 2025 年第一名;但注意它不是执业心理咨询师</td><td>用"帮我把这团乱麻的想法整理成 3 个待决策问题"开始</td></tr>
+</table>
+
+<div class="callout note"><b class="t">别只盯着编程</b>HBR 对全网真实用途的年度盘点显示,2025 年起排名前三的用途是<strong>心理疏导/陪伴、生活组织、寻找目标感</strong>——全是非技术场景。工程师圈子的声量让"AI = 写代码"成了错觉;对普通人,写作、调研、学习、生活侧的复利可能更大。</div>
+<p class="src">来源:<a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR:Top 10 Gen AI Use Cases(Marc Zao-Sanders,2025-04)</a> · <a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="coding">
+<div class="sec-tag">场景范式 02</div>
+<h2>编程场景最佳范式(Claude Code / Codex)</h2>
+
+<p>两家官方最佳实践 2026 年已高度趋同,可总结为一套四段式工作流 + 五个核心习惯。细节操作见本库 <a href="claude-code-guide.html">Claude Code 指南</a> 与 <a href="codex-guide.html">Codex 指南</a>,这里只讲"范式"。</p>
+
+<h3>官方共识:四段式工作流</h3>
+<ol class="steps">
+  <li><strong>探索(Explore)</strong>——进入计划模式(Claude Code 的 plan mode / Codex 的 <code>/plan</code>),让 AI 先读代码、回答问题,不动手改</li>
+  <li><strong>计划(Plan)</strong>——要求产出具体实现计划:改哪些文件、什么顺序、怎么验证;人审计划比人审代码便宜 10 倍</li>
+  <li><strong>实现(Implement)</strong>——退出计划模式执行,边写边跑测试;小任务(一句话能说清 diff 的)可跳过前两步直接干</li>
+  <li><strong>提交(Commit)</strong>——审 diff、跑完整验证、写清楚提交信息;AI 的活也要过人这一关</li>
+</ol>
+
+<h3>五个核心习惯</h3>
+<table class="tbl">
+  <tr><th>习惯</th><th>做法</th></tr>
+  <tr><td><strong>给 AI 可运行的验证</strong></td><td>官方原话:给它一个能跑出 pass/fail 的检查(测试、构建、脚本、截图对比),闭环就自动转起来;没有验证,"看起来做完了"就是唯一信号,你就成了人肉验收员</td></tr>
+  <tr><td><strong>说清完成标准</strong></td><td>Codex 官方推荐的任务结构:<strong>Goal(目标)+ Context(相关文件/文档)+ Constraints(约束)+ Done when(完成判据)</strong>——四要素齐了,返工率断崖式下降</td></tr>
+  <tr><td><strong>小步迭代、尽早纠偏</strong></td><td>发现跑偏立刻 <kbd>Esc</kbd> 打断;同一个问题纠正两次还不对,别再纠了——<code>/clear</code> 重开,用学到的信息写个更好的初始提示</td></tr>
+  <tr><td><strong>管好上下文</strong></td><td>上下文窗口是第一资源:无关任务间 <code>/clear</code>;大范围搜索交给子代理,别让主对话被文件内容灌满</td></tr>
+  <tr><td><strong>沉淀项目记忆</strong></td><td>重复交代的规则写进 <code>CLAUDE.md</code> / <code>AGENTS.md</code>,并保持精简——判据是"删了这行 AI 就会犯错"才留</td></tr>
+</table>
+
+<div class="duo">
+  <div class="bad"><b>✗ 模糊委托</b>"修一下登录的 bug"<br><br>AI 只能猜:哪个登录?什么症状?修到什么程度算好?</div>
+  <div class="good"><b>✓ 带验证的委托</b>"用户反馈会话超时后登录失败。查 src/auth/ 里的 token 刷新逻辑。先写一个能复现问题的失败测试,再修复,最后跑整个 auth 测试套件确认全绿。"</div>
+</div>
+
+<h3>非程序员也能上桌:vibe coding</h3>
+<p>用自然语言描述、让 AI 全程写码调试的"vibe coding"(Karpathy 2025 年 2 月造词,Collins 词典 2025 年度词),已让大量零基础用户做出了自用的记账 App、习惯打卡器、下料计算器等个人工具。社区统计称此类工具用户中过半从未写过代码(具体比例各家口径不一)。边界也要认清:<strong>自用小工具随便造;要对外收钱、存别人数据的产品,安全与运维仍需专业把关。</strong></p>
+<p class="src">来源:<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code 官方 Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex 官方 Best Practices</a> · <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier:Vibe coding examples</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="writing">
+<div class="sec-tag">场景范式 03</div>
+<h2>写作与文档场景范式</h2>
+
+<p>核心分工一句话:<strong>AI 出初稿与结构,人出观点与事实。</strong>把 AI 当"永不疲倦的初稿机 + 结构编辑",而不是代笔。</p>
+
+<h3>提示词四要素(MIT Sloan 教学共识)</h3>
+<p>有效写作提示 = <strong>角色/背景</strong>(你是谁、写给谁)+ <strong>任务与格式</strong>(产出什么、什么结构)+ <strong>语气与受众</strong> + <strong>约束</strong>(字数、必须包含/避免的点)。四样都给,一次到位率最高;然后靠对话式迭代打磨:"更短""第二段展开""换成给老板看的语气"。</p>
+
+<h3>被验证的高收益用法</h3>
+<table class="tbl">
+  <tr><th>用法</th><th>怎么做</th></tr>
+  <tr><td><strong>三版大纲法</strong></td><td>丢素材,要 3 版不同侧重的大纲 → 人挑一版(或拼贴)→ 再逐节展开。比直接要全文的质量高得多</td></tr>
+  <tr><td><strong>会议录音 → 纪要</strong></td><td>转写稿全文丢给 AI:"提炼决策、行动项(负责人+期限)、遗留问题三张清单"</td></tr>
+  <tr><td><strong>长文压缩</strong></td><td>"压成 200 字摘要 + 10 条要点,保留所有数字和结论"——读文档前先读摘要,决定要不要精读</td></tr>
+  <tr><td><strong>反向提纲</strong></td><td>把自己写的初稿丢回给 AI:"给这篇文章列反向提纲,指出逻辑断层和重复"——比"帮我润色"有效</td></tr>
+  <tr><td><strong>去 AI 味</strong></td><td>给它 2-3 段你自己的旧文当风格样本;明令禁用陈词滥调("在当今快速发展的时代…");要求短句、具体名词、有数字</td></tr>
+  <tr><td><strong>多语言润色</strong></td><td>中文思路 → 英文邮件/文档,注明场合与对象关系,产出接近母语水平</td></tr>
+</table>
+
+<ol class="steps">
+  <li>把原始素材(笔记/数据/链接)一次性全给 AI,先要大纲不要全文</li>
+  <li>人定大纲和核心观点——这是文章的灵魂,不外包</li>
+  <li>逐节生成初稿,每节给具体指令(要点、例子、长度)</li>
+  <li>人工核验所有事实、数字、引用——AI 的引用必须逐条点开确认</li>
+  <li>最后自己通读改一遍:改到"这话像你说的"为止</li>
+</ol>
+
+<div class="callout warn"><b class="t">两条红线</b>① 事实与引用必须人工核验——模型会自信地编造文献和数据,学术与商务场景尤其致命。② 别把敏感信息(客户数据、未公开业务数字、他人隐私)粘进公共 AI 服务,用企业版或本地方案。</div>
+<p class="src">来源:<a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan:Effective Prompts for AI</a> · 多方社区共识(做法均可在通用对话模型中直接复刻)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="research">
+<div class="sec-tag">场景范式 04</div>
+<h2>调研与学习场景范式</h2>
+
+<h3>调研:Deep Research 四步法</h3>
+<ol class="steps">
+  <li><strong>先写清问题边界</strong>——研究什么、不研究什么、判断标准、期望产出格式;边界越清,报告越有用</li>
+  <li><strong>跑深度调研</strong>——ChatGPT / Gemini / Claude 的 Deep Research 类功能会自主检索、交叉阅读,10-30 分钟产出带引用的报告</li>
+  <li><strong>追问与溯源</strong>——对关键结论逐条追问"这条的依据是哪个来源?",点开链接核验;引用造假是高发区</li>
+  <li><strong>交叉验证</strong>——重要决策用第二个模型再跑一遍同题,对比分歧点;分歧处往往是需要人工深挖的地方</li>
+</ol>
+
+<h3>学习:把 AI 当私教,不当答案机</h3>
+<table class="tbl">
+  <tr><th>范式</th><th>提示词模板</th></tr>
+  <tr><td><strong>摸底定制</strong></td><td>"我想学 X。先出 5 道题摸底我的水平,再按结果给我定 4 周学习计划"</td></tr>
+  <tr><td><strong>苏格拉底式</strong></td><td>"别直接给答案,用提问引导我自己推出来"——对抗"看懂了错觉"</td></tr>
+  <tr><td><strong>费曼检验</strong></td><td>"我用自己的话讲一遍 X,你指出我哪里理解错了、哪里含糊"</td></tr>
+  <tr><td><strong>难度调档</strong></td><td>"先讲给 12 岁孩子听,再讲专业版,再给我一个能上手的最小练习"</td></tr>
+  <tr><td><strong>刻意练习</strong></td><td>"每天出 3 道递进难度的题,我答完你批改并讲解错因"</td></tr>
+</table>
+
+<div class="callout tip"><b class="t">研究背书:会用是练出来的</b>Anthropic「Learning curves」报告(2026-03)发现:熟手用户任务成功率比新手高约 10%,且熟手<strong>更多采用迭代协作而非一次性全权委托</strong>,更善于把模型能力和任务难度匹配。学习 AI 的最好方式就是高频使用 + 复盘哪种问法有效。</div>
+
+<h3>学术场景工具速览</h3>
+<p>文献发现:Elicit、Consensus、Semantic Scholar;论文精读与问答:NotebookLM、Claude(长文档);综述比对:Elicit 的跨研究提取表。原则不变:<strong>发现和摘要交给 AI,结论与批判留给自己。</strong></p>
+<p class="src">来源:<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic:Learning curves(2026-03)</a> · <a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify:Best AI Tools for Academic Research 2026</a> · <a href="https://lumivero.com/resources/blog/ai-tools-for-academic-research/" target="_blank">Lumivero 学术工具盘点</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="data-auto">
+<div class="sec-tag">场景范式 05</div>
+<h2>数据与自动化场景范式</h2>
+
+<h3>数据分析:三个层级</h3>
+<table class="tbl">
+  <tr><th>层级</th><th>做法</th><th>适合</th></tr>
+  <tr><td><strong>L1 自然语言问表格</strong></td><td>Excel/CSV 直接丢给对话模型(或 Julius 等专用工具),中文提问、要图表</td><td>零基础;快速探索一份陌生数据</td></tr>
+  <tr><td><strong>L2 AI 写分析代码</strong></td><td>让 AI 写 Python/SQL 脚本跑分析——代码可审可复跑,结果可验证,幻觉空间小</td><td>要复用、要精确、数据大</td></tr>
+  <tr><td><strong>L3 编码代理全流程</strong></td><td>Claude Code / Codex 直接读文件、清洗、分析、出报告,人验收结论</td><td>多文件、多步骤的分析任务</td></tr>
+</table>
+<div class="callout tip"><b class="t">为什么优先让 AI"写代码算"而不是"直接答"</b>模型口算数字不可靠,但它写的代码是确定性执行的——这把"信 AI"换成了"信代码",而代码你可以审。这是数据场景最重要的一个观念转换。</div>
+
+<h3>自动化:五级阶梯,逐级上</h3>
+<ol class="steps">
+  <li><strong>手动对话</strong>——每次把重复任务丢给 AI 做,人盯全程</li>
+  <li><strong>提示词模板</strong>——把跑通的问法存成模板/技能,一键复用</li>
+  <li><strong>命令行非交互</strong>——<code>claude -p "提示"</code> / <code>codex exec</code> 接进脚本,批量处理</li>
+  <li><strong>定时与钩子</strong>——每天自动跑:整理文件、汇总日报、盯监控(Codex 的 scheduled tasks / 系统 cron)</li>
+  <li><strong>代理工作流</strong>——n8n / Zapier / 自建代理串起多系统;此时必须有失败告警与人工抽查</li>
+</ol>
+
+<div class="callout warn"><b class="t">自动化两条铁律</b>① <strong>手动跑通三次才许自动化</strong>——流程本身还没稳定就自动化,等于把错误规模化。② <strong>无验证不自动化</strong>——每一级自动化都要有可检查的产出(日志、diff、报表)和出错时的兜底(告警、人工审批点)。官方最佳实践对无人值守运行的要求同样是:先给检查,再谈放手。</div>
+<p class="src">来源:<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices(headless / fan-out 模式)</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices(scheduled tasks)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="tools">
+<div class="sec-tag">选型 06</div>
+<h2>三大工具选型:Claude Code vs Codex vs Gemini</h2>
+
+<div class="callout warn"><b class="t">⚠️ 2026-06 重大变更:Gemini CLI 已谢幕</b>Google 在 2026-05-19 I/O 宣布、并于 <strong>2026-06-18 起停止</strong>为免费档与 AI Pro/Ultra 订阅用户提供 Gemini CLI 服务,转向闭源 Go 重写的 <strong>Antigravity CLI</strong>(命令 <code>agy</code>);免费额度从约 1000 次/天骤降至约 20 次/天。仅企业版 Gemini Code Assist 许可与付费 API 不受影响。个人用户实际上已退出"三选一",以官方公告为准。</div>
+
+<h3>选型对照表(2026-07)</h3>
+<table class="tbl">
+  <tr><th>维度</th><th>Claude Code</th><th>Codex</th><th>Gemini 系(Antigravity CLI)</th></tr>
+  <tr><td>定位标签</td><td><span class="pill a">质量与生态</span></td><td><span class="pill b">沙箱与性价比</span></td><td><span class="pill c">检索与企业</span></td></tr>
+  <tr><td>公认强项</td><td>复杂多文件重构的输出质量;Skills/Hooks/子代理生态最厚</td><td>OS 级沙箱默认开启;Cloud 任务矩阵;开源</td><td>联网检索融合最好;Google 生态整合</td></tr>
+  <tr><td>付费直觉</td><td>无免费档,重度使用买订阅最划算</td><td>随 ChatGPT 订阅附带,已付费者"等于白送"</td><td>个人免费红利已结束,现为企业向选择</td></tr>
+  <tr><td>形态</td><td>CLI / 桌面 / Web / IDE 扩展</td><td>CLI / IDE / Cloud / 桌面 / GitHub 评审</td><td>Antigravity 平台 + <code>agy</code> CLI</td></tr>
+  <tr><td>项目记忆</td><td>CLAUDE.md(兼容 AGENTS.md)</td><td>AGENTS.md(开放标准)</td><td>随 Antigravity 平台演进,以官方为准</td></tr>
+</table>
+
+<h3>互补组合打法</h3>
+<ul>
+  <li><strong>双开不冲突:</strong>Claude Code 与 Codex 各自独立认证、独立进程,常见组合是"日常用订阅内含的那个,难啃的重构换另一个";<code>AGENTS.md</code> 与 Agent Skills 是开放标准,项目知识沉淀在标准层,换代理零成本(Codex 还有 <code>/import</code> 直接吃 Claude Code 配置)。</li>
+  <li><strong>通用对话模型分工(社区高频打法):</strong>时效检索与深度调研用 Gemini / ChatGPT 的 Deep Research;长文档精读、写作与代码用 Claude;把各模型当"各有所长的同事"而非单选题。</li>
+</ul>
+<p class="src">来源:<a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">google-gemini/gemini-cli 官方公告 #27274</a> · <a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ 三工具对比(2026)</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs 对比</a> · <a href="https://www.tomsguide.com/ai/how-i-use-claude-for-strategy-gemini-for-research-and-chatgpt-for-the-grind" target="_blank">Tom's Guide:多模型分工实践</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="principles">
+<div class="sec-tag">内功 07</div>
+<h2>通用心法七条(跨场景通用)</h2>
+
+<p>以下每条都有官方文档或研究报告背书,不是鸡汤。写作、编程、调研、自动化——换场景不换心法。</p>
+
+<table class="tbl">
+  <tr><th>#</th><th>心法</th><th>一句话展开</th><th>出处</th></tr>
+  <tr><td>1</td><td><strong>上下文是第一资源</strong></td><td>给足相关材料、砍掉无关噪音;上下文塞满后模型性能会退化,"喂什么"比"怎么问"更重要</td><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic 上下文工程</a></td></tr>
+  <tr><td>2</td><td><strong>计划先行,再动手</strong></td><td>复杂任务先要计划、人审计划再执行;审计划比审成品便宜一个数量级</td><td>Claude Code / Codex 官方共识</td></tr>
+  <tr><td>3</td><td><strong>给 AI 可验证的闭环</strong></td><td>测试、样例、检查清单、对照样本——有 pass/fail 信号,AI 才能自我纠错;没有验证就别放手</td><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a></td></tr>
+  <tr><td>4</td><td><strong>说清完成标准</strong></td><td>目标 + 上下文 + 约束 + "做到什么样算完"(Done when);模糊委托是返工之母</td><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></td></tr>
+  <tr><td>5</td><td><strong>小步迭代,两次纠错就重开</strong></td><td>首答只是起点;跑偏立刻打断;同一问题纠正两次无效,就带着教训清空重来</td><td>官方最佳实践 + Learning curves(熟手更多迭代协作)</td></tr>
+  <tr><td>6</td><td><strong>人管品味与事实,AI 管体力</strong></td><td>观点、取舍、事实核验、最终责任永远在人;把 AI 输出当"初稿"而非"答案"</td><td>METR / HBR / 多方共识</td></tr>
+  <tr><td>7</td><td><strong>把重复沉淀为资产</strong></td><td>跑通的问法存成模板,项目规则写进 CLAUDE.md / AGENTS.md,流程做成技能——个人提示词库是复利</td><td>两家官方文档(Skills / 记忆文件)</td></tr>
+</table>
+
+<div class="callout note"><b class="t">一句话总纲</b>把 AI 当成一个<strong>能力极强、毫无背景、过目就忘的新同事</strong>:给足上下文(1)、先对齐计划(2)、定好验收标准(3、4)、勤反馈(5)、关键决定自己拍板(6)、好的协作方式写进员工手册(7)。七条心法就是这一句话。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">内功 08</div>
+<h2>真实实例集:每个场景一个可复刻模板</h2>
+
+<p>以下实例是对本页各范式的具体化,提示词可直接抄改。标注"实录"的来自公开报道,其余为范式复刻模板。</p>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🐛</span><b>编程 · 修一个 bug</b><span class="pt">CODING</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>"用户反馈:会话超时后重新登录会白屏。相关代码在 <code>src/auth/</code>,重点看 token 刷新。先写一个能复现的失败测试,再修复,跑通整个 auth 测试套件算完成。"</p>
+      <p><strong>迭代:</strong>AI 提交计划 → 人确认"只动 auth,不重构其他" → AI 写测试(红)→ 修复(绿)→ 人审 diff。</p>
+      <p><strong>产出:</strong>一个带回归测试的修复提交。关键在"失败测试先行"——这是验证闭环的最小实现。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">📝</span><b>写作 · 从素材到周报/文章</b><span class="pt">WRITING</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>本周的零散记录(聊天摘录、数据、待办完成情况)全部粘贴 +"写给不懂技术的老板看,300 字以内,三段式:成果 / 风险 / 下周计划。先给我 3 版大纲。"</p>
+      <p><strong>迭代:</strong>挑大纲 → 逐段生成 → "第二段的风险太含糊,量化" → 人工核对所有数字。</p>
+      <p><strong>产出:</strong>10 分钟出一份过去要 40 分钟的周报,且结构逐周稳定。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔍</span><b>调研 · 大额购买决策</b><span class="pt">RESEARCH</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>"预算 X 元买家用 NAS。需求:照片备份、两人用、静音优先、不折腾。用深度调研对比 2026 年在售的 3-5 款,给对比表 + 每款的差评集中点,附来源链接。"</p>
+      <p><strong>迭代:</strong>报告出来后逐条追问差评来源并点开核验 → 换另一个模型跑同题 → 只深挖两份报告的分歧点。</p>
+      <p><strong>产出:</strong>半小时得到过去两晚论坛爬楼的结论,且有据可查。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">📊</span><b>数据 · 月度报表分析</b><span class="pt">DATA</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>上传销售 CSV +"按月汇总各品类销售额,找出环比波动超 20% 的品类,分析可能原因,产出图表。用代码算,把代码一并给我。"</p>
+      <p><strong>迭代:</strong>核对总数与原表一致(验证!)→ "把节假日因素考虑进去重跑" → 让 AI 把脚本参数化,下月直接复用。</p>
+      <p><strong>产出:</strong>分析结论 + 一个可复跑的脚本——一次分析,月月复利。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">⚙️</span><b>自动化 · 下载文件夹自动归类</b><span class="pt">AUTOMATION</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>对 Claude Code:"写个脚本把 ~/Downloads 里的文件按类型归档到子文件夹,超过 30 天的截图移入回收站候选清单(不直接删)。先跑一次演习模式只打印计划,不动文件。"</p>
+      <p><strong>迭代:</strong>看演习输出 → 修正误分类规则 → 真跑 → 手动确认三次没问题后,再挂定时任务。</p>
+      <p><strong>产出:</strong>一个每周自动执行的整理任务。注意范式:演习模式 + 不做不可逆删除 + 跑通三次再自动化。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎓</span><b>学习 · 30 天入门一个新领域</b><span class="pt">LEARNING</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>"我想入门投资理财基础概念(不要荐股)。先出 5 道题摸底 → 按结果定 4 周计划,每周一个主题 → 每天 15 分钟:你讲一个概念 + 出 2 道题我答 + 批改讲解。"</p>
+      <p><strong>迭代:</strong>每周末用费曼法:"我复述本周内容,你挑错" → 含糊处下周加练。</p>
+      <p><strong>产出:</strong>一个贴合自己水平、天天有反馈的私教课程,成本为零。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🏠</span><b>生活 · 一周晚餐 + 采购(实录风)</b><span class="pt">LIFE</span></div>
+    <div class="pb">
+      <p><strong>输入:</strong>"两大一小,孩子 5 岁;冰箱现有:(拍照或列清单)。排一周晚餐:30 分钟内能做、少油炸、周三要有鱼。产出:菜单表 + 按超市动线排序的采购清单。"</p>
+      <p><strong>迭代:</strong>"周五那顿换掉,孩子不吃茄子" → 下周把"家庭忌口清单"存成固定模板开头。</p>
+      <p><strong>产出:</strong>每周省下约一小时的决策消耗。非程序员做个人工具同理:公开报道里有零基础用户用 Claude + 八小时对话做出全家记账 App(见 Zapier 实例集,实录)。</p>
+    </div>
+  </div>
+</div>
+<p class="src">来源:范式依据见 02-05 各节;实录案例出自 <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier:Vibe coding examples(真实非开发者项目)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="learning-path">
+<div class="sec-tag">上手 09</div>
+<h2>普通人学习路径:从零到熟练</h2>
+
+<p>研究结论先行:AI 熟练度是<strong>练出来的使用直觉</strong>,不是学出来的理论——熟手成功率高约 10%,差异主要来自"会不会迭代、会不会给上下文、会不会挑任务"。所以路径设计只有一个原则:<strong>永远围绕自己的真实任务练,不上抽象课。</strong></p>
+<div class="callout note"><b class="t">🧗 开发者专属深化版</b>如果你是移动端/客户端工程师想借 AI 转型全栈或做一人公司,本页方法论有一份场景特化的姊妹篇:<a href="android-to-fullstack.html">Android 老兵转型全栈 · AI 时代路线图</a>——12 周含验收的实战路线、Android→Web 认知映射与类比提问术。</div>
+
+<h3>四阶阶梯</h3>
+<ol class="steps">
+  <li><strong>第 1-2 周 · 建立手感:</strong>每天用对话模型解决 1 个真实小事(改邮件、解读体检单、做菜谱)。只练一件事:不满意就追问和补充信息,而不是放弃。目标:体感"首答只是起点"。</li>
+  <li><strong>第 3-4 周 · 学会喂上下文:</strong>练习把背景材料一次给全(文件、截图、旧例子);对比"干问"和"带材料问"的质量差距。目标:内化心法 1 和 4(上下文 + 完成标准)。</li>
+  <li><strong>第 2 个月 · 场景纵深:</strong>挑 2 个自己最高频的场景(如写作 + 调研),按本页 03/04 节的范式各跑 5 次完整流程;把跑通的问法存成个人模板库。目标:形成可复用资产。</li>
+  <li><strong>第 3 个月起 · 上代理与自动化:</strong>装一个编码代理(Claude Code 或 Codex),从"写一个自动化小脚本"起步,按 05 节阶梯逐级上;开始用深度调研做大决策。目标:从"聊天"进化到"委托带验证的任务"。</li>
+</ol>
+
+<h3>常见误区对照表</h3>
+<table class="tbl">
+  <tr><th>误区</th><th>纠正</th></tr>
+  <tr><td>期待一次成型,首答不满意就说"AI 不行"</td><td>AI 是迭代式工具:追问、给反馈、补材料——熟手和新手的差距主要在这里</td></tr>
+  <tr><td>把 AI 当搜索引擎,只丢关键词</td><td>给完整任务:背景 + 要求 + 完成标准;它是执行者不是索引</td></tr>
+  <tr><td>盲信输出,直接转发/提交</td><td>事实、数字、引用必须核验;高风险内容(法律/医疗/财务)只当参考</td></tr>
+  <tr><td>外包思考:让 AI 替你决定观点与立场</td><td>AI 出选项和论据,人做判断;长期外包思考会废掉判断力本身</td></tr>
+  <tr><td>囤教程、追新工具,不落地</td><td>工具换得再勤,不如一个场景练 5 遍;先场景后工具</td></tr>
+  <tr><td>抽象学 AI(啃原理、背提示词大全)</td><td>挑一个两周内要交付的真实产出,围绕它练;原理可以以后补</td></tr>
+  <tr><td>敏感信息随手粘贴</td><td>个人隐私、客户数据、公司机密不进公共服务;用企业版或脱敏后再问</td></tr>
+</table>
+<p class="src">来源:<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic:Learning curves(2026-03)</a> · <a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan:Effective Prompts</a> · 误区部分综合多篇 2026 年入门指南的高频共识</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">上手 10</div>
+<h2>资源索引(按可信度排序)</h2>
+
+<h3>第一梯队 · 官方文档与工程博客</h3>
+<table class="tbl">
+  <tr><th>资源</th><th>说明</th></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code 官方 Best Practices</a></td><td>验证闭环、计划先行、上下文管理、并行扩展——本页 02/05/07 节的主要底本</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex 官方 Best Practices</a></td><td>Goal/Context/Constraints/Done-when 任务结构、AGENTS.md、技能化、定时任务</td></tr>
+  <tr><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic:Effective Context Engineering</a></td><td>"上下文是第一资源"的系统论述(2025-09)</td></tr>
+  <tr><td><a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">Gemini CLI → Antigravity CLI 官方公告</a></td><td>2026-06-18 变更的第一信源</td></tr>
+  <tr><td><a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan:Effective Prompts for AI</a></td><td>提示词四要素的教学级表述</td></tr>
+</table>
+
+<h3>第二梯队 · 研究与数据报告</h3>
+<table class="tbl">
+  <tr><th>资源</th><th>说明</th></tr>
+  <tr><td><a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index(系列)</a></td><td>全球真实用途分布、协作/自动化比例、Learning curves 学习曲线报告</td></tr>
+  <tr><td><a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR 随机对照试验(2025)</a></td><td>"实测慢 19%、自感快 20%"——提效认知纠偏的必读文献</td></tr>
+  <tr><td><a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR:Top Gen AI Use Cases(2025)</a></td><td>全网真实用途百强榜,非技术场景的量级证据</td></tr>
+</table>
+
+<h3>第三梯队 · 高质量社区沉淀</h3>
+<table class="tbl">
+  <tr><th>资源</th><th>说明</th></tr>
+  <tr><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang:AI 编程指南(中文)</a></td><td>92 篇小白友好系统教程,编程场景入门首选</td></tr>
+  <tr><td><a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier:Vibe coding examples</a></td><td>非开发者真实项目实例集</td></tr>
+  <tr><td><a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs</a> · <a href="https://colombani.ai/en/blog/cli-agents-comparison-2026/" target="_blank">colombani.ai</a></td><td>2026 年三工具对比,多方交叉可信度尚可</td></tr>
+  <tr><td><a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify 学术工具盘点</a></td><td>学术调研工具选型</td></tr>
+  <tr><td>本知识库</td><td><a href="claude-code-guide.html">Claude Code 使用指南</a> · <a href="codex-guide.html">Codex 使用指南</a> · <a href="env-auth-clinic.html">环境与登录急救手册</a></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>说明</strong>:本页为 2026-07 全网调研聚合,非官方出品。用途分布、工具格局与产品能力演进极快,数字与结论均注明来源与时间;涉及产品现状(尤其 Gemini/Antigravity)以官方最新公告为准。医疗、法律、投资等高风险决策,AI 仅供参考。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

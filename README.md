@@ -13,7 +13,9 @@ ai-knowledge-base/
 │   ├── claude-code-guide.html
 │   ├── codex-guide.html
 │   ├── env-auth-clinic.html    # 环境与登录急救手册(Claude Code × Codex)
-│   └── android-crash-anr.html
+│   ├── android-crash-anr.html
+│   ├── ai-leverage-guide.html  # AI 提效全景与心法
+│   └── android-to-fullstack.html # Android 转型全栈路线(心法姊妹篇)
 ├── assets/
 │   ├── css/site.css            # 全站共享交互样式(进度条/筛选/复制/灯箱/跳转面板)
 │   └── js/
