@@ -56,6 +56,7 @@ const PATHS = [
     desc: "从零认识 AI 能干什么,到装好工具跑通第一个任务",
     steps: [
       { label: "AI 能干什么 · 全景与心法", href: "topics/ai-leverage-guide.html", note: "先建认知:场景、边界、七条心法" },
+      { label: "提示词与上下文工程", href: "topics/prompt-context-engineering.html", note: "会说话才有产出:七技法 + 9 式模板" },
       { label: "stormzhang 系统教程(外站)", href: "https://coding.stormzhang.ai/", note: "92 篇小白教程,装好第一个工具", ext: true },
       { label: "Claude Code 指南 · 安装与配置", href: "topics/claude-code-guide.html#setup", note: "命令、权限、模板逐步上手" },
       { label: "环境急救手册(收藏备查)", href: "topics/env-auth-clinic.html", note: "登录报错时 30 秒对症自救" }
@@ -68,7 +69,7 @@ const PATHS = [
       { label: "Claude Code 指南 · 干货版", href: "topics/claude-code-guide.html", note: "五条黄金法则 → 八大场景实战" },
       { label: "Codex 指南 · CLI × IDE × Cloud", href: "topics/codex-guide.html", note: "沙箱审批、云端任务、双代理协同" },
       { label: "Pencil × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
-      { label: "通用心法七条(内功)", href: "topics/ai-leverage-guide.html#principles", note: "防止把 AI 用成人肉补全" }
+      { label: "上下文工程与反模式(内功)", href: "topics/prompt-context-engineering.html#context", note: "注意力预算、长任务三板斧、鉴别偏方" }
     ]
   },
   {
@@ -191,6 +192,20 @@ const TOPICS = [
       {id:"tools",label:"三大工具怎么选"},{id:"principles",label:"通用心法七条"},
       {id:"cases",label:"真实实例集"},{id:"learning-path",label:"普通人学习路径"},
       {id:"resources",label:"资源索引"}
+    ]
+  },
+  {
+    href: "topics/prompt-context-engineering.html", icon: "🎯", tag: "提效心法", color: "#0891b2",
+    title: "提示词与上下文工程 · 从技法到心法",
+    desc: "全站的地基学科:基础七技法(每个配 ❌/✅ 对照)、结构化输出、注意力预算与系统提示高度、智能体长任务三板斧、9 式逐字模板、失败集迭代法、反模式图鉴,以及在 CC/Codex 里内容该放哪层。",
+    keywords: "提示词 prompt 上下文 context 工程 写提示 怎么问 few-shot 示例 思维链 cot xml 角色 预填充 json 结构化 输出 系统提示 system claude.md agents.md 压缩 子代理 模板 幻觉 评估 反模式 玄学 注意力",
+    meta: ["7 大技法对照", "9 式模板", "反模式图鉴", "2026-07 官方核对"],
+    sections: [
+      {id:"overview",label:"全景:从提示词到上下文"},{id:"basics",label:"基础七技法"},
+      {id:"structured",label:"结构化输出"},{id:"context",label:"上下文工程核心"},
+      {id:"agentic",label:"智能体上下文"},{id:"templates",label:"逐字模板库(9 式)"},
+      {id:"eval",label:"评估与迭代"},{id:"antipatterns",label:"反模式图鉴"},
+      {id:"tools",label:"在 CC / Codex 里的承载"},{id:"resources",label:"资源索引"}
     ]
   },
   {

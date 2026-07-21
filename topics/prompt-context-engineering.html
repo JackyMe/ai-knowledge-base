@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词与上下文工程 · 从技法到心法 · 2026.07</title>
+<style>
+:root{
+  --accent:#0891b2; --accent-2:#22d3ee; --accent-soft:#e6f7fb;
+  --ink:#082129; --bg:#ffffff; --bg-side:#f7fbfc; --bg-code:#0b1b20;
+  --text:#1f2a2e; --text-2:#586a70; --text-3:#8b9ba1;
+  --border:#e3eef1; --border-2:#d0e2e7;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#ecf8fb;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eaf4f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e8f4f7;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(8,145,178,.45),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(34,211,238,.20),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#67e8f9;font-weight:600;background:rgba(8,145,178,.18);
+  border:1px solid rgba(8,145,178,.5);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#22d3ee,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#a8c3cb;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#8fabb4}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c3e7f0}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eaf4f7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0e7490}
+pre{background:var(--bg-code);color:#dcecf1;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7fa2ac}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f6fafb}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f8fbfc}
+.er td:first-child{font-weight:600;min-width:120px}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+.duo code{background:rgba(255,255,255,.7)}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#e6f7fb;color:#0e7490}
+.pill.b{background:#fef2f2;color:#dc2626}
+
+/* 模板卡片 */
+.prompt-box{background:#fff;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 18px;margin:14px 0;font-size:13.5px}
+.prompt-box .pt{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase}
+.prompt-box code{display:block;background:none;border:none;padding:0;color:var(--text);white-space:pre-wrap;line-height:1.75}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(8,33,41,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🎯</span>提示词与上下文工程<span class="sub">地基学科</span></div>
+  <div class="right">
+    <a href="../index.html">◂ 主题中心</a>
+    <span>官方文档核对 · 2026-07</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">认知</div>
+    <a href="#overview"><span class="no">00</span>全景:从提示词到上下文</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">技法</div>
+    <a href="#basics"><span class="no">01</span>基础七技法(❌/✅ 对照)</a>
+    <a href="#structured"><span class="no">02</span>结构化输出与格式控制</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">进阶</div>
+    <a href="#context"><span class="no">03</span>上下文工程核心</a>
+    <a href="#agentic"><span class="no">04</span>智能体上下文(长任务)</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">实战</div>
+    <a href="#templates"><span class="no">05</span>逐字模板库(9 式)</a>
+    <a href="#eval"><span class="no">06</span>评估与迭代</a>
+    <a href="#antipatterns"><span class="no">07</span>反模式图鉴</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">落地</div>
+    <a href="#tools"><span class="no">08</span>在 CC / Codex 里的承载</a>
+    <a href="#resources"><span class="no">09</span>资源索引</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎯 全站的地基学科 · 官方文档 2026 版核对</div>
+  <h1>提示词与上下文工程<br><span class="grad">从技法到心法</span></h1>
+  <p class="lead">本库每个主题都在说"上下文是第一资源""提示词要具体"——这一页把散装的常识变成系统:七个基础技法(每个配 ❌/✅ 真实对照)、上下文工程四原则、智能体长任务三板斧、九个逐字模板、以及最容易被忽视的一环:怎么评估你的提示词真的变好了。</p>
+  <div class="meta">
+    <span>7 大技法对照</span><span>9 式逐字模板</span><span>反模式图鉴</span><span>CC × Codex 落地</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1 个定义</b><span>用最小的高信号 token 集,最大化期望产出的概率</span></div>
+  <div class="stat"><b>7 技法</b><span>清晰直接 · 示例 · 思维链 · 结构标签 · 角色 · 预填充 · 分解</span></div>
+  <div class="stat"><b>3 板斧</b><span>长任务上下文:压缩 · 笔记 · 子代理</span></div>
+  <div class="stat"><b>0 玄学</b><span>每条技法都有官方文档或强共识出处,拒绝民间偏方</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">认知 00</div>
+<h2>全景:从提示词工程到上下文工程</h2>
+
+<p>2023 年大家谈"提示词工程"(怎么问一句话);2026 年官方与社区的重心已经移到<strong>上下文工程</strong>(怎么管理模型看到的一切)。原因很简单:当 AI 从"回答一个问题"进化成"自主干完一个任务",决定成败的不再是那一句问话,而是整个上下文窗口里装了什么——系统提示、工具定义、历史消息、检索进来的文件,全都是"提示词"。</p>
+
+<table class="tbl">
+  <tr><th></th><th>提示词工程(单轮)</th><th>上下文工程(智能体时代)</th></tr>
+  <tr><td>优化对象</td><td>一条指令怎么写</td><td>整个上下文窗口装什么、何时装、何时扔</td></tr>
+  <tr><td>核心约束</td><td>表达是否清晰</td><td><strong>注意力预算有限</strong>:塞得越多,单位 token 的关注度越低</td></tr>
+  <tr><td>典型动作</td><td>加示例、给格式</td><td>校准系统提示高度、精简工具集、压缩/笔记/子代理</td></tr>
+  <tr><td>官方定义</td><td colspan="2"><strong>找到最小的高信号 token 集合,最大化期望结果的概率</strong>(Anthropic 上下文工程文章)</td></tr>
+</table>
+
+<div class="callout note"><b class="t">这一页和心法页的分工</b><a href="ai-leverage-guide.html">心法页</a>回答"AI 能干什么、该怎么用"(场景与原则);本页回答"具体怎么说、怎么喂"(技法与工程)。心法页的七条心法之一"上下文是第一资源"——本页就是那句话的展开说明书。</div>
+
+<h3>十项能力速查(学完本页你会的)</h3>
+<table class="tbl er">
+  <tr><th>能力</th><th>在哪章</th></tr>
+  <tr><td>把模糊请求改写成一次成型的指令</td><td><a href="#basics">01 · 清晰直接</a></td></tr>
+  <tr><td>用 2-3 个例子锁定输出风格</td><td><a href="#basics">01 · 示例 few-shot</a></td></tr>
+  <tr><td>让模型先想后答,难题正确率显著提升</td><td><a href="#basics">01 · 思维链</a></td></tr>
+  <tr><td>长材料 + 指令混装时不串味</td><td><a href="#basics">01 · 结构标签</a></td></tr>
+  <tr><td>稳定拿到能被程序解析的 JSON</td><td><a href="#structured">02 · 结构化输出</a></td></tr>
+  <tr><td>判断"该塞多少上下文"的度</td><td><a href="#context">03 · 注意力预算</a></td></tr>
+  <tr><td>写出不啰嗦也不空洞的系统提示 / CLAUDE.md</td><td><a href="#context">03 · 高度校准</a> + <a href="#agentic">04</a></td></tr>
+  <tr><td>让跑几小时的长任务不"失忆"</td><td><a href="#agentic">04 · 三板斧</a></td></tr>
+  <tr><td>用失败集科学迭代提示词,而不是凭感觉改</td><td><a href="#eval">06 · 评估</a></td></tr>
+  <tr><td>识破网上流传的提示词偏方</td><td><a href="#antipatterns">07 · 反模式</a></td></tr>
+</table>
+<p class="src">来源:<a href="https://claude.com/blog/best-practices-for-prompt-engineering" target="_blank">Anthropic:Prompt engineering best practices for 2026</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Effective context engineering for AI agents</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="basics">
+<div class="sec-tag">技法 01</div>
+<h2>基础七技法(每个配 ❌/✅ 对照)</h2>
+
+<p>全部出自官方提示词工程文档,按"日常收益从高到低"排序。<strong>前两个技法解决 80% 的质量问题。</strong></p>
+
+<h3>技法① 清晰直接:把模型当"能力超强但不知道背景的新同事"</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 模糊</b><code>帮我优化一下这段文案</code>
+  ——优化什么?给谁看?什么算好?模型只能猜,猜错了你还得返工。</div>
+  <div class="good"><b>✅ 具体</b><code>把这段产品介绍压缩到 100 字以内,保留"免费试用 30 天"和价格信息,语气改为面向企业采购决策人的正式风格,删掉所有感叹号。</code></div>
+</div>
+<p>自检口诀:<strong>目标、受众、约束、成功标准</strong>,四样齐了再发送。写完问自己一句:"一个不了解背景的新同事,拿到这段话能一次做对吗?"</p>
+
+<h3>技法② 示例 few-shot:一个好例子胜过三段描述</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 纯描述</b><code>帮我把用户反馈分类,要考虑情感倾向和问题类型…</code>
+  ——形容词堆得再多,模型对"你想要的样子"仍是模糊的。</div>
+  <div class="good"><b>✅ 给样例</b><code>按以下格式分类用户反馈:
+
+输入:"充了会员还有广告,退钱!"
+输出:{"情感":"负面","类型":"计费投诉","紧急":true}
+
+输入:"深色模式什么时候上?"
+输出:{"情感":"中性","类型":"功能请求","紧急":false}
+
+现在处理:"..."</code></div>
+</div>
+<p>2026 版官方要点:示例要<strong>多样且典范(canonical)</strong>——挑 2-5 个能代表不同情形的标准样本,<strong>不要把一堆边缘 case 全塞进去</strong>(那是在教模型钻牛角尖)。</p>
+
+<h3>技法③ 思维链:先想后答</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 直接要答案</b><code>这两个方案哪个好?</code></div>
+  <div class="good"><b>✅ 要求推理过程</b><code>先分别列出两个方案在成本、风险、可维护性上的优劣,再给结论和理由。把分析放在 &lt;thinking&gt; 里,结论放在 &lt;answer&gt; 里。</code></div>
+</div>
+<p>适用:数学、逻辑、多步决策、代码分析。不适用:简单事实问答(徒增延迟)。推理模型时代它依然有效——显式的分析框架引导模型"往哪个方向想"。</p>
+
+<h3>技法④ 结构标签:长材料与指令分舱</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 混装</b><code>总结这份合同,重点看违约条款,合同如下:甲方…(三千字)…另外帮我注意付款周期</code>
+  ——指令埋进材料里,模型可能漏掉"付款周期"。</div>
+  <div class="good"><b>✅ 分舱</b><code>&lt;contract&gt;
+…三千字合同原文…
+&lt;/contract&gt;
+
+&lt;task&gt;
+总结上述合同,重点:1) 违约条款 2) 付款周期
+&lt;/task&gt;</code></div>
+</div>
+<p>用 XML 风格标签(<code>&lt;doc&gt;</code>、<code>&lt;example&gt;</code>、<code>&lt;task&gt;</code>)把不同性质的内容围起来。长上下文额外规律:<strong>关键指令放开头或结尾</strong>,长材料放中间——首尾位置的注意力最高。</p>
+
+<h3>技法⑤ 角色设定:一句话换专家视角</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 万能角色迷信</b><code>你是世界第一的天才全能专家大师…</code>
+  ——堆砌头衔不增加信息量,见 07 章反模式。</div>
+  <div class="good"><b>✅ 具体到岗位与立场</b><code>你是审阅初创公司融资协议的律师,立场是保护创始人。逐条指出对创始人不利的条款并给修改建议。</code></div>
+</div>
+<p>角色的价值不在"变聪明",在于<strong>圈定知识域、口径与立场</strong>——同一份合同,买方律师和卖方律师看出的问题不同。</p>
+
+<h3>技法⑥ 预填充:替它起个头</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 任其发挥</b>输出总带一段"好的,我来帮你…"的开场白,格式时对时错。</div>
+  <div class="good"><b>✅ 预填开头</b>API 里直接把 assistant 回复的开头写成 <code>{</code> ——模型会顺着补完 JSON,跳过一切废话;或预填 <code>方案A:</code> 锁定输出结构。</div>
+</div>
+<p>对话界面里的等效技巧:在指令末尾写"直接以表格开始输出,不要任何开场白"。</p>
+
+<h3>技法⑦ 任务分解:一个大提示词不如一条流水线</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 巨型提示词</b><code>读这 10 篇文章,提炼观点,对比分歧,写成报告,再配 5 条推文…</code>
+  ——步骤越多,每步质量越不可控,错误还会向后传染。</div>
+  <div class="good"><b>✅ 链式分解</b>第 1 轮:逐篇提炼观点(可并行);第 2 轮:对比分歧;第 3 轮:成稿;第 4 轮:衍生推文。<strong>每步产出可检查,错了只重跑那一步。</strong></div>
+</div>
+<p class="src">来源:<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank">Anthropic 官方提示词工程文档(全系列)</a> · <a href="https://claude.com/blog/best-practices-for-prompt-engineering" target="_blank">2026 版最佳实践</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="structured">
+<div class="sec-tag">技法 02</div>
+<h2>结构化输出与格式控制</h2>
+
+<p>要让 AI 的产出能被程序消费(脚本解析、表格导入、自动化流水线),"差不多的 JSON"等于零分。三层手段按可靠性递增:</p>
+
+<table class="tbl">
+  <tr><th>层</th><th>做法</th><th>可靠性</th></tr>
+  <tr><td>① 提示词约束</td><td>给出字段清单 + 一个完整输出示例 + "只输出 JSON,不要解释"</td><td>够日常;偶发多话/漏字段</td></tr>
+  <tr><td>② 预填充</td><td>assistant 开头预填 <code>{</code>(API)或"直接以 { 开始"</td><td>基本消灭开场白问题</td></tr>
+  <tr><td>③ Schema 强约束</td><td>API 的结构化输出 / JSON schema 能力(如 Claude 的 output format、工具强制调用),把格式交给系统层保证</td><td>生产级;写自动化必用</td></tr>
+</table>
+
+<div class="prompt-box"><div class="pt">模板 · 提示词层结构化输出</div><code>从下面的会议记录中提取行动项,输出 JSON 数组,每项字段:
+- task: string,动词开头
+- owner: string,负责人名;没提到则 "未指定"
+- due: string,YYYY-MM-DD;没提到则 null
+不确定的信息宁可标 null,不要编造。只输出 JSON。
+
+&lt;notes&gt;…会议记录…&lt;/notes&gt;</code></div>
+
+<div class="callout tip"><b class="t">两个魔法句式</b>① "<strong>不确定的宁可标 null / 说不知道,不要编造</strong>"——官方 2026 最佳实践确认:显式允许表达不确定性能显著降低幻觉;② "<strong>先输出你对任务的理解,我确认后再执行</strong>"——高风险任务的一道保险闸。</div>
+<p class="src">来源:<a href="https://claude.com/blog/best-practices-for-prompt-engineering" target="_blank">2026 版官方最佳实践(不确定性许可)</a> · 结构化输出以各平台 API 文档为准</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="context">
+<div class="sec-tag">进阶 03</div>
+<h2>上下文工程核心:注意力是稀缺资源</h2>
+
+<h3>原则① 注意力预算:多塞≠更好</h3>
+<p>上下文窗口不是硬盘,是<strong>注意力的分母</strong>:塞进的每个 token 都在稀释模型对其他 token 的关注。上下文过长时模型出现"迷失中间"(long-context degradation)——中段信息被忽略、早先指令被"忘记"。所以官方对好上下文的定义是一道优化题:<strong>最小的高信号 token 集</strong>。</p>
+<ul>
+  <li>与任务无关的材料,再"可能有用"也不放;</li>
+  <li>能引用路径就不粘全文,能摘要就不给原文;</li>
+  <li>会话跑偏或换任务:新开会话比"在废墟上继续盖"便宜得多(对应 CC 的 <code>/clear</code> 纪律)。</li>
+</ul>
+
+<h3>原则② 高度校准:系统提示的"金发姑娘区"</h3>
+<p>写系统提示 / CLAUDE.md / AGENTS.md 最常见的两种翻车,官方称之为高度(altitude)问题:</p>
+<div class="duo">
+  <div class="bad"><b>❌ 太低:硬编码脆弱逻辑</b><code>如果用户说"退款"就回复模板A,如果说"退钱"回复模板B,如果说"取消订阅"…</code>
+  ——穷举 if-else 既写不全又难维护,模型沦为查表机。</div>
+  <div class="bad"><b>❌ 太高:空洞口号</b><code>请提供优质、专业、令人满意的客服体验</code>
+  ——没有任何可执行信号,等于没写。</div>
+</div>
+<div class="callout tip"><b class="t">✅ 正确高度:给启发式,不给穷举</b>"退款类请求:先确认订单号与购买渠道;7 天内无理由直接受理;超期的说明政策并给补偿选项;<strong>任何时候不承诺你无法验证的时限</strong>。"——具体到能指导行为,又留了判断空间。</div>
+
+<h3>原则③ 位置策略与检索节奏</h3>
+<ul>
+  <li><strong>首尾效应</strong>:关键指令放上下文开头或结尾,大块材料放中间;</li>
+  <li><strong>Just-in-time 检索</strong>:智能体场景下,别把可能用到的文件全预载——给模型检索工具,让它按需去取(轻量标识符 + 运行时加载),这是 Claude Code 等编码代理的默认哲学;</li>
+  <li><strong>2026 平台能力</strong>:上下文编辑(自动裁剪过期工具结果)、记忆工具(跨会话持久存储)等已进入官方 API 能力面,重活正在从提示词层下沉到平台层——以官方文档为准。</li>
+</ul>
+<p class="src">来源:<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic:Effective context engineering for AI agents</a>(注意力预算/高度/最小高信号集的原始出处)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="agentic">
+<div class="sec-tag">进阶 04</div>
+<h2>智能体上下文:让长任务不"失忆"</h2>
+
+<p>当任务从"一问一答"变成"自主跑几十分钟",上下文管理从技巧升级为架构问题。三个层面:</p>
+
+<h3>① 常驻指令怎么写:CLAUDE.md / AGENTS.md 设计法</h3>
+<table class="tbl">
+  <tr><th>原则</th><th>做法</th></tr>
+  <tr><td>只留"猜不出来的"</td><td>构建命令、隐藏约定、踩过的坑;读代码就能知道的不写</td></tr>
+  <tr><td>短到极致</td><td>每个会话都加载=每个 token 都全程收租;超过一屏就该拆</td></tr>
+  <tr><td>规则分流</td><td>必须 100% 执行的 → Hooks/权限(强制);场景性知识 → Skills(按需加载);只有"每次都要的少量事实"才配常驻</td></tr>
+  <tr><td>高度正确</td><td>用 03 章的高度原则写:启发式+红线,不写 if-else 也不喊口号</td></tr>
+</table>
+<p>两份可直接抄的成品模板:<a href="android-to-fullstack.html#ai-workflow">转型手册的 CLAUDE.md 模板</a> · <a href="codex-guide.html#agents-md">Codex 指南的 AGENTS.md 精瘦模板</a>。</p>
+
+<h3>② 工具与示例也是上下文</h3>
+<ul>
+  <li><strong>工具描述即提示词</strong>:模型靠工具的名字和描述决定何时调用——描述含糊的工具会被误用或冷落;工具集要<strong>最小可行</strong>,功能重叠的工具让模型选择困难(对应 CC 纪律:MCP 只装用得上的);</li>
+  <li><strong>示例宁缺毋滥</strong>:给智能体的示例同样遵循"多样典范"原则,堆边缘 case 只会教坏它。</li>
+</ul>
+
+<h3>③ 长任务三板斧(超出窗口怎么办)</h3>
+<table class="tbl">
+  <tr><th>板斧</th><th>机制</th><th>对应工具动作</th></tr>
+  <tr><td><strong>压缩 Compaction</strong></td><td>把陈旧对话蒸馏成摘要,腾出窗口继续跑</td><td>CC 的 <code>/compact</code>;平台的上下文编辑</td></tr>
+  <tr><td><strong>结构化笔记</strong></td><td>把关键状态写到窗口<strong>外</strong>的持久载体,需要时再读回</td><td>让代理维护 NOTES.md / TODO 清单;记忆工具</td></tr>
+  <tr><td><strong>子代理架构</strong></td><td>探索交给独立上下文的分身,主窗口只收结论摘要</td><td>CC 子代理;Codex 云端任务</td></tr>
+</table>
+<div class="callout note"><b class="t">一条判断线</b>官方建议的次序:<strong>先做最简单可行的</strong>——窗口够用就好好修剪;真不够,压缩优先;要跨会话记忆,上笔记;探索量巨大,才上子代理。别为了架构而架构。</div>
+<p class="src">来源:<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">同 03 章(压缩/笔记/子代理的原始论述)</a> · <a href="claude-code-guide.html#context">CC 指南 · 上下文管理进阶(工具层实操)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="templates">
+<div class="sec-tag">实战 05</div>
+<h2>逐字模板库(9 式,复制改词即用)</h2>
+
+<p>覆盖高频场景。每式都内嵌了前四章的技法——照抄之后,建议对照标注回看"为什么这么写"。</p>
+
+<div class="prompt-box"><div class="pt">① 万能任务骨架(G-C-C-D)</div><code>Goal: 一句话说清要产出什么
+Context: 背景材料/相关文件(用标签围起来)
+Constraints: 不许做什么、必须遵守什么
+Done-when: 什么样算完成(可验证的标准)</code></div>
+<p style="font-size:13px;color:var(--text-3);margin-top:-6px">Codex 官方 Best Practices 推荐结构,通用于一切工具。</p>
+
+<div class="prompt-box"><div class="pt">② 深度改稿(反向提纲式)</div><code>&lt;draft&gt;…我的初稿…&lt;/draft&gt;
+先为这篇初稿列反向提纲(每段实际在说什么),指出逻辑断层、重复
+和"该说没说"的缺口;不要改写,先只做诊断。我确认后再动笔。</code></div>
+
+<div class="prompt-box"><div class="pt">③ 调研快查(带溯源)</div><code>调研问题:__。范围:只看 2025 年后的信息;排除 __。
+产出:结论(带置信度)+ 关键证据清单(每条附来源链接)+
+主要分歧点。规则:找不到可靠来源的直接说没找到,不要推测。</code></div>
+
+<div class="prompt-box"><div class="pt">④ 学习私教(苏格拉底式)</div><code>我想真正理解 __。不要直接讲解:先出 3 道题摸底,
+根据我的回答定位薄弱点,再用我熟悉的 __ 领域做类比讲解,
+最后出一道应用题验收。全程发现我理解错就立刻打断。</code></div>
+
+<div class="prompt-box"><div class="pt">⑤ 代码功能开发</div><code>实现 __。相关文件:@a.ts @b.ts。约束:遵守项目 CLAUDE.md,
+不引入新依赖。Done-when: 通过 npm test 且新增逻辑有测试。
+先给实现计划,我确认后再动手。</code></div>
+
+<div class="prompt-box"><div class="pt">⑥ 审查式把关(给 AI 的产出装刹车)</div><code>审查你刚才的产出:按 ①事实与引用 ②逻辑漏洞 ③遗漏的重要
+情形 三类各列出问题(没有就明说),给每条一个修复建议。
+最后回答:如果这是你自己的名誉背书,你会直接交付吗?</code></div>
+
+<div class="prompt-box"><div class="pt">⑦ 会议/长文提炼</div><code>&lt;transcript&gt;…原文…&lt;/transcript&gt;
+输出三张清单:1) 已定决策 2) 行动项(负责人+期限,缺则标未定)
+3) 遗留争议。保留所有数字与日期原文,不要改写口径。</code></div>
+
+<div class="prompt-box"><div class="pt">⑧ 数据分析(代码优先)</div><code>&lt;data&gt;…或文件路径…&lt;/data&gt;
+问题:__。要求:用代码计算而不是口算;先输出你打算怎么算
+(口径、过滤条件),我确认后执行;结论区分"数据支持的"和
+"你的推测",推测必须标注。</code></div>
+
+<div class="prompt-box"><div class="pt">⑨ 两次纠错重开(止损式)</div><code>这个问题我们已经两轮没修好。忘掉之前的尝试路径,现在:
+1) 重新陈述问题与已排除的假设 2) 列 3 个新方向按可能性排序
+3) 给每个方向一个 5 分钟可完成的最小验证实验。</code></div>
+
+<p class="src">模板与本库其他专题联动:编程场景细化见<a href="android-to-fullstack.html#ai-workflow">转型手册提示词库</a>,设计场景见<a href="pencil-claude-code-best-practices.html#prompts">Pencil 实践范例集</a>,场景选择见<a href="ai-leverage-guide.html#matrix">心法页收益矩阵</a>。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="eval">
+<div class="sec-tag">实战 06</div>
+<h2>评估与迭代:别凭感觉改提示词</h2>
+
+<p>大多数人改提示词的方式是"感觉不对就加一句"——三个月后攒出一个 2000 字的缝合怪,没人知道哪句还在起作用。工程化的做法只需三步:</p>
+
+<ol class="steps">
+  <li><strong>攒失败集</strong>:每次 AI 产出不合格,把「输入 + 差产出 + 你期望的产出」存进一个文档——这就是你的测试集。10 条起步就够用。</li>
+  <li><strong>改一处,跑全集</strong>:每次只改提示词的一个变量,把失败集全部重跑,看修好了几条、弄坏了几条——<strong>修好 3 条弄坏 2 条不算进步</strong>。</li>
+  <li><strong>定期减法</strong>:每月挑一次,逐段删掉提示词里的句子重跑失败集——删了不变差的,说明是废话,永久删除。提示词和 CLAUDE.md 一样,<strong>短是战斗力</strong>。</li>
+</ol>
+
+<div class="callout tip"><b class="t">三条止损纪律(与心法页共识一致)</b>① 同一问题纠正两轮无效 → 别第三轮,用模板⑨重开;② 高风险产出必过模板⑥的审查式把关;③ 对"提示词玄学"保持警惕——任何声称"加这句话质量暴涨"的偏方,先过你自己的失败集再信。</div>
+<p class="src">方法论依据:官方 evals 思想的个人化简化;止损纪律出处见<a href="ai-leverage-guide.html#principles">心法页七条</a>。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="antipatterns">
+<div class="sec-tag">实战 07</div>
+<h2>反模式图鉴:流传最广的提示词偏方</h2>
+
+<table class="tbl er">
+  <tr><th>反模式</th><th>为什么错 → 正解</th></tr>
+  <tr><td>提示词膨胀</td><td>出一次错加一条规则,最终指令互相冲突、彼此稀释。正解:用 06 章的减法机制,信噪比优先</td></tr>
+  <tr><td>头衔堆砌</td><td>"你是世界顶级天才专家"不含任何信息量。正解:角色具体到岗位+立场+口径(技法⑤)</td></tr>
+  <tr><td>威胁/贿赂迷信</td><td>"答错就惩罚你""给你 100 美元小费"——社区流传的都市传说,对现代模型无稳定收益,白占 token。正解:把这份心思花在写清 Done-when</td></tr>
+  <tr><td>边缘 case 塞满示例</td><td>教会了模型钻牛角尖,常规输入反而答歪。正解:2-5 个多样典范示例(技法②)</td></tr>
+  <tr><td>一个会话当垃圾场</td><td>翻译完接着调代码再顺便写周报——上下文互相污染,越用越笨。正解:一事一会话;跑偏即重开</td></tr>
+  <tr><td>把"请一步步思考"当万能药</td><td>对简单任务只增加延迟;对复杂任务不如给出具体分析框架(技法③的 ✅ 写法)</td></tr>
+  <tr><td>用对话修数据</td><td>让 AI"重新数一遍"数不对的数字。正解:让它写代码算(模板⑧)——口算不可靠是模型特性,不是提示词能修的</td></tr>
+  <tr><td>禁令式否定滥用</td><td>整页"不要 X 不要 Y"却不说要什么。正解:每条禁令配一条"应该怎样"的正向指令</td></tr>
+</table>
+<div class="callout warn"><b class="t">鉴别偏方的通用方法</b>问三个问题:① 官方文档写过吗?② 有可复现的对比证据吗?③ 它增加了信息量还是只增加了字数?三问全挂的,就是玄学。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="tools">
+<div class="sec-tag">落地 08</div>
+<h2>在 Claude Code / Codex 里的承载:什么内容放哪层</h2>
+
+<p>技法学完,最后一个问题是"写在哪"。同一段指令,放错层级效果天差地别:</p>
+
+<table class="tbl">
+  <tr><th>内容性质</th><th>Claude Code</th><th>Codex</th><th>本页对应</th></tr>
+  <tr><td>每会话必需的少量事实</td><td>CLAUDE.md</td><td>AGENTS.md</td><td>04 章设计法</td></tr>
+  <tr><td>场景性知识与流程</td><td>Skills(按需加载)</td><td>Skills / 技能包</td><td>把模板⑤-⑨固化成技能</td></tr>
+  <tr><td>必须 100% 发生的规则</td><td>Hooks / 权限规则</td><td>execpolicy / 审批档位</td><td><strong>不要用提示词求它</strong>,用机制保证</td></tr>
+  <tr><td>单次任务指令</td><td>会话内提示(G-C-C-D)</td><td>会话内提示 / <code>/goal</code></td><td>模板①⑤</td></tr>
+  <tr><td>验收标准</td><td>提示词的 Done-when + 测试</td><td><code>/goal</code> 挂会话级</td><td>技法①的成功标准</td></tr>
+  <tr><td>大探索任务</td><td>子代理</td><td>云端任务 best-of-N</td><td>04 章三板斧</td></tr>
+</table>
+
+<div class="callout note"><b class="t">一句话总纲</b>提示词的尽头是分层:<strong>该机制保证的别靠措辞,该按需加载的别常驻,该新开会话的别硬续</strong>。工具用法的完整展开见<a href="claude-code-guide.html#extensions">CC 指南 · 六大扩展怎么选</a>与<a href="codex-guide.html#skills-mcp">Codex 指南 · Skills/MCP</a>。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">落地 09</div>
+<h2>资源索引</h2>
+
+<table class="tbl">
+  <tr><th>资源</th><th>说明</th></tr>
+  <tr><td><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank">Anthropic 提示词工程文档(全系列)</a></td><td>七技法的第一信源,每篇都短,值得全读</td></tr>
+  <tr><td><a href="https://claude.com/blog/best-practices-for-prompt-engineering" target="_blank">Prompt engineering best practices for 2026</a></td><td>官方 2026 版增补:不确定性许可、长上下文位置策略等</td></tr>
+  <tr><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Effective context engineering for AI agents</a></td><td>上下文工程的奠基文:注意力预算、高度、三板斧的原始出处</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></td><td>G-C-C-D 任务骨架与智能体任务下达的官方口径</td></tr>
+  <tr><td><a href="https://www.promptingguide.ai/" target="_blank">Prompt Engineering Guide(DAIR.AI)</a></td><td>社区最全的技法百科,含论文索引;查冷门技法用</td></tr>
+  <tr><td>本库联动</td><td><a href="ai-leverage-guide.html">心法页</a>(场景与原则)· <a href="claude-code-guide.html">CC 指南</a> / <a href="codex-guide.html">Codex 指南</a>(工具承载)· <a href="android-to-fullstack.html#method">转型手册 · 类比提问术</a>(领域特化示范)</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>说明</strong>:本页技法均以 Anthropic / OpenAI 官方文档(2026-07 核对)为第一信源,社区经验仅在标注处引用;模型与平台能力演进快,API 级特性(结构化输出、上下文编辑、记忆工具)以官方最新文档为准。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

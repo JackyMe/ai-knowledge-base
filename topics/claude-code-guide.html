@@ -203,7 +203,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <a href="#ecosystem"><span class="no">11</span>生态精选:方法论与组合拳</a>
     <a href="#pitfalls"><span class="no">12</span>避坑清单</a>
     <a href="#templates"><span class="no">13</span>开箱即用模板库</a>
-    <a href="#resources"><span class="no">14</span>资源索引</a>
+    <a href="#hidden-config"><span class="no">14</span>隐藏能力与彩蛋配置</a>
+    <a href="#resources"><span class="no">15</span>资源索引</a>
   </div>
 </nav>
 
@@ -1000,8 +1001,68 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 
 <div class="divider"></div>
 
-<section id="resources">
+<section id="hidden-config">
 <div class="sec-tag">沉淀 14</div>
+<h2>隐藏能力与彩蛋配置</h2>
+<p>这一章的素材来源和前面 14 章不一样——不是查文档,而是直接对本机已安装的 <code>claude.exe</code> 做 <code>--help</code> 全遍历 + 字符串反查,再逐条回官方文档交叉核对。三类证据分开标注,别混着信:</p>
+<p><span class="pill c">官方确认</span> 文档写了但极少人翻到 &nbsp; <span class="pill a">反查证实</span> 二进制里真实存在、行为可从代码逻辑推断,官网未写 &nbsp; <span class="pill b">存在未验证</span> 变量确认存在,但具体行为没有可靠依据,别当日常功能用</p>
+<div class="callout warn"><b class="t">版本水印</b>本节全部结论实测于 <strong>Claude Code v2.1.216(2026-07-21)</strong>。这类内部实现细节随版本演进很快,几个月后可能整批改名或下线——命令与参数的最终判据永远是你自己那台机器的 <code>claude --help</code> 与 <code>/release-notes</code>,不是这张表。</div>
+
+<h3>一、官方写了但很少人翻到的参数 <span class="pill c">官方确认</span></h3>
+<table class="tbl">
+  <tr><th>参数</th><th>作用</th></tr>
+  <tr><td><code>--effort ultracode</code></td><td>xhigh 之上的第 6 档 effort,<code>--help</code> 本身不列(官方文档原话:"help 不列全部参数,不在 help 里不代表不存在"),v2.1.203+ 才有</td></tr>
+  <tr><td><code>claude auto-mode critique</code></td><td>让 AI 反过来审查你自己写的 auto-mode 自定义规则有没有漏洞——审查审查者</td></tr>
+  <tr><td><code>claude agents --json</code></td><td>脚本化拿到全部会话列表(交互+后台),配合 <code>--cwd</code> 过滤,适合自建监控面板</td></tr>
+  <tr><td><code>claude plugin eval</code></td><td>对插件跑 eval 用例并打分,自动追加一组"不装插件"的基线对照</td></tr>
+  <tr><td><code>--exclude-dynamic-system-prompt-sections</code></td><td>把 cwd/git 状态等每机器不同的内容挪到首条用户消息,提升跨用户 prompt cache 命中率</td></tr>
+  <tr><td><code>--fallback-model a,b,c</code></td><td><code>-p</code> 模式下主模型不可用时按序自动切换,每个新 turn 重试一次主模型</td></tr>
+</table>
+
+<h3>二、<code>/model</code> 别名全家桶与 opusplan 揭秘</h3>
+<p>源码里的模型别名数组是:<code>sonnet / opus / haiku / fable / best / opusplan / sonnet[1m] / opus[1m] / fable[1m]</code>。<code>best</code> 按账号计划自动解析为当前最强可用模型;<code>[1m]</code> 后缀对应 1M 长上下文变体。</p>
+<div class="callout note"><b class="t">🥚 opusplan 是目前挖到的最硬核彩蛋 <span class="pill a">反查证实</span></b>选它之后,Plan 阶段会<strong>自动升级用 Opus 想清楚</strong>,退出计划模式开始干活后则用你选的常规执行模型(比如 Sonnet)——一次设置,规划用最强模型、执行用性价比模型。整个机制<strong>官方 CLI 文档只字未提</strong>,连 <code>--help</code> 里都不列。会话里直接 <code>/model opusplan</code> 就能开。</div>
+
+<h3>三、隐藏子命令 <span class="pill c">官方确认</span></h3>
+<table class="tbl">
+  <tr><th>命令</th><th>作用</th></tr>
+  <tr><td><code>claude auto-mode defaults</code></td><td>打印 auto 模式分类器的完整内置规则(允许/软拒绝/硬拒绝),想知道"AI 到底按什么标准替我批"就看这个</td></tr>
+  <tr><td><code>claude mcp login &lt;name&gt;</code></td><td>给 HTTP/SSE/claude.ai connector 类 MCP 服务器单独走 OAuth,不用手填 token</td></tr>
+  <tr><td><code>claude gateway</code></td><td>企业级 auth/telemetry 网关,自建代理转发用</td></tr>
+  <tr><td><code>claude ultrareview [PR号]</code></td><td>云端多智能体审查当前分支或指定 PR,<code>--json</code> 拿原始 bugs.json</td></tr>
+</table>
+
+<h3>四、环境变量:官方确认 vs 反查未验证,别混着用</h3>
+<p><span class="pill c">官方确认</span> ——长期放心用,来自 <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings 文档</a>:</p>
+<table class="tbl">
+  <tr><th>变量</th><th>作用</th></tr>
+  <tr><td><code>CLAUDE_CODE_DISABLE_AGENT_VIEW</code></td><td>关掉后台代理管理面板</td></tr>
+  <tr><td><code>CLAUDE_CODE_DISABLE_REMOTE_CONTROL</code></td><td>关闭 Remote Control 远程遥控功能</td></tr>
+  <tr><td><code>CLAUDE_CODE_ENABLE_AWAY_SUMMARY</code></td><td>回到终端时给一段"你不在时发生了什么"摘要</td></tr>
+  <tr><td><code>CLAUDE_CODE_USE_POWERSHELL_TOOL</code></td><td>非 Windows 上也能用 PowerShell 工具</td></tr>
+  <tr><td><code>DISABLE_AUTO_COMPACT</code> / <code>DISABLE_AUTOUPDATER</code></td><td>关自动压缩上下文 / 关自动更新(配合 <code>claude install 版本号</code> 钉版本)</td></tr>
+  <tr><td><code>MAX_THINKING_TOKENS=0</code></td><td>彻底关闭扩展思考</td></tr>
+</table>
+<p><span class="pill a">反查证实</span> ——二进制里真实存在、官网未写、按命名可以大胆试,风险可控:</p>
+<table class="tbl">
+  <tr><th>变量</th><th>推断作用</th></tr>
+  <tr><td><code>CLAUDE_CODE_SUBAGENT_MODEL</code> / <code>CLAUDE_CODE_BG_CLASSIFIER_MODEL</code> / <code>CLAUDE_CODE_AUTO_MODE_MODEL</code></td><td>给子代理 / 后台分类器 / auto-mode 分别指定更便宜的模型,直接对应第七章"额度与成本管理"</td></tr>
+  <tr><td><code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> / <code>CLAUDE_CODE_PLAN_V2_AGENT_COUNT</code></td><td>控制 Plan 模式并行探索用几个 agent——最接近"多智能体并行"的真实旋钮</td></tr>
+  <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code> / <code>CLAUDE_CODE_MAX_TURNS</code> / <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code></td><td>硬性上限,CI/自动化脚本里防失控好用</td></tr>
+  <tr><td><code>CLAUDE_CODE_HTTP_PROXY</code> / <code>CLAUDE_CODE_HTTPS_PROXY</code> / <code>CLAUDE_CODE_PROXY_URL</code></td><td>公司代理环境专用,可配合<a href="env-auth-clinic.html">环境急救手册</a>排查代理相关登录失败</td></tr>
+  <tr><td><code>CLAUDE_CODE_OVERRIDE_DATE</code></td><td>让助手以为现在是别的日期,测试日期相关行为用,日常别开</td></tr>
+</table>
+
+<h3>五、神秘代号开关:存在,但别当真用 <span class="pill b">存在未验证</span></h3>
+<p>二进制里还挖到一批命名模式完全不同的变量——<code>CLAUDE_CODE_BASALT_COVE</code>、<code>MARL_CORMORANT</code>、<code>GAULT_KESTREL</code>、<code>NANKEEN_KESTREL</code>、<code>LANTERN_PRISM</code>、<code>PEWTER_OWL</code>、<code>THISTLE_GREBE</code>、<code>WALNUT_SPIRE</code>。代码逻辑显示它们是"环境变量覆盖一个随机代号命名的远程灰度开关"——专门起不相关的随机词组,就是为了不让人一眼看出控制什么、防止被扒。</p>
+<div class="callout warn"><b class="t">确认存在 ≠ 建议使用</b>这批变量的具体效果没有任何可靠依据,下个版本随时可能改名或消失。同理,<code>CLAUDE_CODE_COORDINATOR_MODE</code> 虽然真实存在、也确实控制着后台代理的"协调者↔工作会话"桥接架构(<code>WORKER_EPOCH</code>、<code>bridge:session</code> 等配套机制都能在代码里对上),但它是<strong>程序自动管理的内部状态</strong>(恢复会话时自动切换),不是设计给用户手动开关的功能开关——手动设置没有文档支持,行为不保证稳定。</div>
+<p class="src">本节方法论:对本机安装的 <code>@anthropic-ai/claude-code</code> 包(bin/claude.exe)做 <code>strings</code> 字符串反查提取命令与变量名,逐条与 <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">官方 CLI Reference</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings</a> 交叉核对区分"官方确认"与"反查未验证"。不基于任何未经验证的网络传言。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">沉淀 15</div>
 <h2>资源索引</h2>
 
 <h3>官方(第一信源)</h3>
@@ -1023,7 +1084,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td>Skills 生态与选型</td><td><a href="https://www.totalum.app/blog/claude-code-skills-totalum" target="_blank">Totalum: Skills vs Hooks vs Subagents vs MCP</a> · <a href="https://www.firecrawl.dev/blog/best-claude-code-skills" target="_blank">Firecrawl: Best Skills</a> · <a href="https://www.developersdigest.tech/blog/best-claude-code-skills-2026" target="_blank">Developers Digest 精选目录</a></td></tr>
   <tr><td>工程化工作流</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Best Practices That Ship Code</a> · <a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">GitHub: claude-code-best-practice</a></td></tr>
   <tr><td>中文社区</td><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang:AI 编程指南(92 篇系统教程)</a> · <a href="https://zhuanlan.zhihu.com/p/2009744974980331332" target="_blank">知乎:Claude Code 最佳实践指南</a> · <a href="https://www.cnblogs.com/knqiufan/p/19449849" target="_blank">博客园:完全指南</a> · <a href="https://www.cnblogs.com/leadingcode/p/19064358" target="_blank">博客园:官方内部团队最佳实践</a></td></tr>
-  <tr><td>本知识库相关主题</td><td><a href="codex-guide.html">Codex 使用指南</a>(双代理协同)· <a href="pencil-claude-code-best-practices.html">Pencil × Claude Code 最佳实践</a>(设计-代码闭环)· <a href="env-auth-clinic.html">环境与登录急救手册</a>(出问题查它)· <a href="ai-leverage-guide.html">AI 提效全景与心法</a>(方法论内功)· <a href="android-to-fullstack.html">Android 转型全栈硬核手册</a>(用 CC 转型的完整实战)</td></tr>
+  <tr><td>本知识库相关主题</td><td><a href="codex-guide.html">Codex 使用指南</a>(双代理协同)· <a href="pencil-claude-code-best-practices.html">Pencil × Claude Code 最佳实践</a>(设计-代码闭环)· <a href="env-auth-clinic.html">环境与登录急救手册</a>(出问题查它)· <a href="ai-leverage-guide.html">AI 提效全景与心法</a>(方法论内功)· <a href="prompt-context-engineering.html">提示词与上下文工程</a>(怎么说怎么喂的系统课)· <a href="android-to-fullstack.html">Android 转型全栈硬核手册</a>(用 CC 转型的完整实战)</td></tr>
 </table>
 
 <div class="callout note"><b class="t">一句话带走</b>Claude Code 的上限不取决于你记住多少命令,而取决于三件事:<strong>上下文是否干净、验证是否闭环、该系统兜底的是否交给了系统</strong>(Hook 管强制、Skill 管知识、子代理管隔离)。命令表会过时,这三件事不会。</div>
