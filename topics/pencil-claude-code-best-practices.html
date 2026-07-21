@@ -252,7 +252,7 @@ figure figcaption a{color:var(--text-3)}
 <p>综合官方文档与 DevelopersIO 实测教程,这是社区验证过的最稳妥路径(以 VS Code 为例,Cursor 同理):</p>
 
 <ol class="steps">
-  <li><strong>安装 Claude Code CLI 并认证</strong>:<code>npm install -g @anthropic-ai/claude-code-cli</code>,运行 <code>claude</code> 走浏览器登录。</li>
+  <li><strong>安装 Claude Code 并认证</strong>:官方首推 native 安装器 <code>curl -fsSL https://claude.ai/install.sh | bash</code>(Windows 用 <code>irm https://claude.ai/install.ps1 | iex</code>);运行 <code>claude</code> 走浏览器登录。装不上/登不上查<a href="env-auth-clinic.html">环境急救手册</a>。</li>
   <li><strong>安装 Pencil 扩展</strong>:VS Code 扩展面板搜索 "Pencil",认准发布者标识 <code>highagency.pencildev</code>。</li>
   <li><strong>启动 Pencil</strong>:点击状态栏左下角的 Pencil 铅笔图标(不出现就重启 VS Code)。</li>
   <li><strong>邮箱激活</strong>:首次启动输入邮箱 → 收验证码 → 填码登录。</li>
@@ -385,7 +385,7 @@ figure figcaption a{color:var(--text-3)}
 <div class="prompt-box"><div class="pt">组件级</div><code>Create a React component for this button
 Generate TypeScript types for this form
 Export this card as a reusable component</code></div>
-<div class="prompt-box"><div class="pt">页面级 + 技术栈</div><code>Generate Next.js 14 code with Tailwind CSS
+<div class="prompt-box"><div class="pt">页面级 + 技术栈</div><code>Generate Next.js code with Tailwind CSS and the App Router
 Use shadcn/ui components for this layout
 Export using Lucide icons instead of Material Icons</code></div>
 
@@ -644,7 +644,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
   <tr><td>完整评测</td><td><a href="https://invernessdesignstudio.com/pencil-dev-review-the-complete-guide-to-ai-vibe-coding-for-2026" target="_blank">Inverness Design Studio: Pencil.dev Review 2026</a> · <a href="https://bkamp.ai/en/recipes/1f8fecbc-c897-430e-b64b-ff6d70cd361b" target="_blank">bkamp: Pencil.dev Complete Guide</a></td></tr>
   <tr><td>中文社区讨论</td><td><a href="https://www.zhihu.com/question/1998357194861725413" target="_blank">知乎:Claude Code 加持 Pencil 的行业影响</a> · <a href="https://agent.csdn.net/6a32449810ee7a33f27eaad9.html" target="_blank">CSDN:pencil on claude</a></td></tr>
   <tr><td>Claude Code 通用最佳实践</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Claude Code Workflow Best Practices</a> · <a href="https://medium.com/design-bootcamp/a-designers-guide-to-organizing-ai-skills-and-tools-in-claude-code-f87477c35b82" target="_blank">Medium: A Designer's Guide to Claude Code</a></td></tr>
-  <tr><td>本知识库相关主题</td><td><a href="claude-code-guide.html">Claude Code 使用指南 · 干货版</a> · <a href="codex-guide.html">Codex 使用指南</a> · <a href="pencil-docs-zh.html">Pencil 官方文档中文版</a></td></tr>
+  <tr><td>本知识库相关主题</td><td><a href="claude-code-guide.html">Claude Code 使用指南 · 干货版</a> · <a href="codex-guide.html">Codex 使用指南</a> · <a href="pencil-docs-zh.html">Pencil 官方文档中文版</a> · <a href="ai-leverage-guide.html">AI 提效全景与心法</a> · <a href="env-auth-clinic.html">环境与登录急救手册</a></td></tr>
 </table>
 
 <div class="callout note"><b class="t">一句话带走</b>AI 生成代码的质量,正比于你喂给它的上下文质量。Pencil × Claude Code 的本质,就是一套「把正确上下文交给 AI」的系统——画布、风格指南、变量、仓库结构,缺一不可。其余一切实践都由此推导而来。</div>

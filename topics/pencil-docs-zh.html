@@ -536,13 +536,15 @@ git commit -m "Add landing page design and implementation"</code></pre>
 <h2>设计即代码 Design as Code</h2>
 <p class="origin">原文:<a href="https://docs.pencil.dev/core-concepts/design-as-code" target="_blank">Core Concepts / Design as Code</a></p>
 
-<p>因为 <code>.pen</code> 是文本格式,设计文件可以完全按代码的方式协作与管理版本:</p>
+<p>因为 <code>.pen</code> 是文本格式,设计文件可以完全按代码的方式协作与管理版本——这是 Pencil 区别于 Figma 等云端设计工具的根本理念。</p>
 <ul>
-  <li>像提交代码一样提交 <code>.pen</code> 文件</li>
-  <li>在 Git 中直接查看 diff(文本格式)</li>
-  <li>与代码一起对设计做分支与合并</li>
+  <li><strong>同仓库</strong> — <code>.pen</code> 与代码放进同一个 Git 仓库,设计和实现共享一套版本历史;</li>
+  <li><strong>可 diff</strong> — 设计变更在 PR 里以文本 diff 呈现,评审设计改动像评审代码一样;</li>
+  <li><strong>可分支合并</strong> — 设计跟着功能分支走,一起合并、一起回滚,设计与代码永不漂移;</li>
+  <li><strong>单一事实源</strong> — 不再有「Figma 里是一套、代码里是另一套」的双事实来源问题。</li>
 </ul>
-<div class="callout tip"><b class="t">最佳实践</b>频繁提交,写清晰的 commit message。</div>
+<div class="callout tip"><b class="t">最佳实践</b>频繁提交、写清晰的 commit message;把设计放进功能分支,让「改了什么设计」和「改了什么代码」在同一个 PR 里被一起评审。</div>
+<div class="callout note"><b class="t">这套理念怎么落地成工作流</b>「设计即代码」不只是存储格式的选择,它解锁了一整套设计-代码双向同步的打法(变量同源、一句话设计转代码、既有组件反向重建为设计)。完整的四种工作流与真实案例见本库<a href="pencil-claude-code-best-practices.html#workflows">Pencil × Claude Code 最佳实践 · 四种核心工作流</a>。</div>
 </section>
 
 <div class="divider"></div>

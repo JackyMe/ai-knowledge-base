@@ -233,6 +233,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>会话内用 <code>/model</code> 切换模型并选择推理力度(reasoning effort),启动时用 <code>--model</code> 指定(官方文档示例如 <code>gpt-5.4</code>;具体型号随版本演进,以 <code>codex debug models</code> 输出为准)。<code>/fast</code> 可切换 Fast 服务档;<code>--oss</code> 甚至能接本地 Ollama 开源模型。</p>
 
 <div class="callout note"><b class="t">一句话定位(社区共识)</b>Codex 的招牌是<strong>默认更严格的沙箱模型</strong>(命令在 OS 级沙箱里跑)与<strong>云端任务矩阵</strong>;Claude Code 的招牌是更丰富的扩展面(Skills/Hooks/子代理生态)。两者高度互补,见<a href="#pitfalls">协同一节</a>。</div>
+<div class="callout warn"><b class="t">官方文档搬家提醒(2026 年中)</b>Codex 文档已从 <code>developers.openai.com/codex</code> 迁往 <code>learn.chatgpt.com/docs</code>,旧链接 308 重定向仍可达;搜教程时注意甄别新旧域名与内容时效。</div>
 <p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://developers.openai.com/codex/cli" target="_blank">官方 Codex CLI</a></p>
 </section>
 
@@ -594,45 +595,105 @@ codex apply TASK_ID</code></pre>
 <section id="playbook">
 <div class="sec-tag">进阶 08</div>
 <h2>实战场景手册</h2>
+<p>八个高频场景,每个给出<strong>沙箱/审批档位组合 + 可直接抄的命令与提示词</strong>。Codex 的场景思路与 <a href="claude-code-guide.html#playbook">Claude Code 八大场景</a>相通,但落地在自己的沙箱模型与云端矩阵上。</p>
 
 <div class="plays">
   <div class="play">
-    <div class="ph"><span class="pic">🧭</span><b>场景① 只读调研模式</b><span class="pt">EXPLORE</span></div>
+    <div class="ph"><span class="pic">🧭</span><b>场景① 接手陌生代码库</b><span class="pt">ONBOARDING</span></div>
     <div class="pb">
-      <p><code>codex --sandbox read-only "梳理这个仓库的模块依赖关系"</code>——物理只读,放心让它翻遍整个代码库。配合 <code>/mention</code> 精确指定要看的文件,<code>/plan</code> 让它先出方案再动手。</p>
+      <p><strong>档位:</strong><code>read-only</code>——物理只读,放心让它翻遍整个仓库,零误改风险。</p>
+      <pre><code>codex --sandbox read-only
+<span class="c"># 然后像问资深同事一样直接问:</span>
+&gt; 梳理这个仓库的模块依赖,画出核心数据流
+&gt; 新建一个 API endpoint 要改哪些文件、走什么流程?
+&gt; @src/auth/session.rs 第 88 行的 async 块在等什么?</code></pre>
+      <p><strong>组合拳:</strong><code>/mention</code> 精确圈定要读的文件,避免它漫游烧上下文;摸清后 <code>/init</code> 把项目约定沉淀进 <code>AGENTS.md</code>,下次会话自动加载。追历史直接让它读 git:"翻这个模块的提交历史,总结它为什么长这样"。</p>
     </div>
   </div>
   <div class="play">
-    <div class="ph"><span class="pic">🏗️</span><b>场景② 日常开发标准流</b><span class="pt">FEATURE</span></div>
+    <div class="ph"><span class="pic">🏗️</span><b>场景② 开发新功能</b><span class="pt">FEATURE</span></div>
     <div class="pb">
-      <p>推荐组合 <code>workspace-write</code> + <code>on-request</code>:模型在沙箱里自主干活,越权才打断你。链路:<code>/plan</code> 出计划 → 确认后实现 → <code>/diff</code> 审查改动 → <code>/review</code> 让它自评一轮 → 提交。<code>/goal</code> 把验收条件挂到会话上。</p>
+      <p><strong>档位:</strong><code>workspace-write</code> + <code>on-request</code>——模型在工作区沙箱里自主干活,越权(装包、访问网络)才打断你。</p>
+      <p><strong>标准链路:</strong><code>/plan</code> 探索并出计划 → 人审计划(方向错在这里改最便宜)→ 确认后实现 → <code>/diff</code> 审查改动 → <code>/review</code> 让它换个视角自评一轮 → 提交。</p>
+      <pre><code>&gt; /goal 新增 OAuth 登录,回调 handler 有测试且 npm test 全绿
+&gt; /plan 先给方案:改哪些文件、加哪些依赖、测试怎么写
+<span class="c"># 确认后:</span>
+&gt; 按计划实现,并为 callback handler 写测试,跑测试修到通过</code></pre>
+      <p><code>/goal</code> 把验收条件挂到会话级,模型每步都对着它自查;<strong>done-when 写清楚是一次成型率的关键</strong>。</p>
     </div>
   </div>
   <div class="play">
-    <div class="ph"><span class="pic">🤖</span><b>场景③ 自动化与 CI</b><span class="pt">AUTOMATION</span></div>
+    <div class="ph"><span class="pic">🐛</span><b>场景③ 调试与修 Bug</b><span class="pt">DEBUG</span></div>
     <div class="pb">
-      <pre><code><span class="c"># 非交互执行:JSONL 输出便于管道处理</span>
+      <p><strong>黄金模板:症状 + 疑似位置 + "修好"的定义,并要求失败测试先行。</strong></p>
+      <pre><code>&gt; 用户反馈:会话超时后重新登录会白屏。查 src/auth/ 的 token
+  刷新逻辑。先写一个能复现的失败测试,再修,并验证测试通过。
+  解决根因,不要用 try-catch 压掉报错。</code></pre>
+      <p><strong>提效招:</strong>报错日志用非交互模式直灌——<code>cat error.log | codex exec "分析根因,列 3 个假设按可能性排序"</code>;让它跑测试时用 <code>on-failure</code> 档位,只有命令失败才需要你介入;修完要求它<strong>出示测试输出作为证据</strong>,而不是口头宣称已修。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔍</span><b>场景④ 代码评审</b><span class="pt">REVIEW</span></div>
+    <div class="pb">
+      <p><strong>会话内自评:</strong><code>/review</code> 让 Codex 对当前改动做一轮结构化审查(安全/边界/一致性);GitHub 上 @ 提及 Codex 触发 PR 自动评审。</p>
+      <p><strong>跨代理双审(强力):</strong>一个代理写、另一个全新上下文审——不同模型的盲区不重叠,比同模型双会话更能暴露问题:</p>
+      <pre><code>&gt; 审查 @src/middleware/rateLimiter.ts:找边界情况、竞态条件,
+  以及与现有中间件模式的一致性;每条给出修复建议和风险等级。</code></pre>
+      <p>把审查产出喂回写代码的会话修复。写测试同理:一个写测试、一个写实现,互为对照。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🚚</span><b>场景⑤ 大规模重构 / 迁移</b><span class="pt">MIGRATION</span></div>
+    <div class="pb">
+      <p><strong>先小样后全量,输出约定成机器可判(OK/FAIL):</strong></p>
+      <pre><code><span class="c"># 1. 让它先列全部待迁移文件</span>
+codex exec --sandbox read-only "列出所有用了旧 Router API 的文件" &gt; files.txt
+
+<span class="c"># 2. 挑 2-3 个手动调好提示词,再全量循环</span>
+while read f; do
+  codex exec --sandbox workspace-write -a never \
+    "把 $f 从 Solid 迁到 React,保持行为不变,返回 OK 或 FAIL"
+done &lt; files.txt</code></pre>
+      <p><strong>大而独立的迁移丢云端并行</strong>(场景⑦),每个单元独立尝试互不干扰。要点:收窄沙箱、约定机器可判输出、先小样验证提示词再放全量。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🤖</span><b>场景⑥ 自动化与 CI</b><span class="pt">AUTOMATION</span></div>
+    <div class="pb">
+      <p><code>codex exec</code>(别名 <code>codex e</code>)是把 Codex 塞进任何管道的接口:</p>
+      <pre><code><span class="c"># JSONL 输出便于管道解析</span>
 codex exec --sandbox workspace-write -a never \
   "修掉所有 eslint 报错并跑通测试" --json
 
-<span class="c"># 批量:恢复既往会话续跑</span>
+<span class="c"># 恢复既往会话续跑(长任务分批)</span>
 codex exec resume SESSION_ID "继续处理剩余文件"</code></pre>
-      <p>要点:CI 里固定 <code>-a never</code>(越权即失败,不挂起等人),用 execpolicy 规则文件约束可执行命令。</p>
+      <p><strong>CI 四条纪律:</strong>① 固定 <code>-a never</code>(越权即失败,绝不挂起等人);② 用 <strong>execpolicy 规则文件</strong>把可执行命令收进白名单;③ 认证走 API Key 或 auth.json 续期循环(见<a href="#config-auth">本页配置章</a>与<a href="env-auth-clinic.html#headless">急救手册</a>);④ 定时任务(scheduled tasks)让它每天自动跑固定活,但必须有失败告警。</p>
     </div>
   </div>
   <div class="play">
-    <div class="ph"><span class="pic">☁️</span><b>场景④ 大任务上云,好结果落地</b><span class="pt">CLOUD</span></div>
+    <div class="ph"><span class="pic">☁️</span><b>场景⑦ 大任务上云,best-of-N 落地</b><span class="pt">CLOUD</span></div>
     <div class="pb">
-      <p>本地继续写代码,大重构丢给云:<code>codex cloud exec --attempts 3</code> 并行三次尝试 → 网页/终端查看各次 diff → <code>codex apply</code> 把最优解落到本地 → <code>/diff</code> + 本地测试验收。</p>
+      <p>本地继续写代码,大重构/难题丢给云端沙箱并行跑多次,挑最好的:</p>
+      <pre><code>codex cloud exec --attempts 3 "重构 utils/ 消除重复并补齐测试"
+codex cloud list --limit 10          <span class="c"># 看各次尝试的 diff</span>
+codex apply TASK_ID                  <span class="c"># 满意的一键落到本地工作树</span></code></pre>
+      <p><strong>best-of-N 是云端杀手锏:</strong>同一任务并行 1-4 次、挑最优 diff,对"一次成型率不稳"的大任务尤其划算。落地后必过 <code>/diff</code> + 本地测试再合并——<code>apply</code> 只动工作树,不自动提交。</p>
     </div>
   </div>
   <div class="play">
-    <div class="ph"><span class="pic">🔀</span><b>场景⑤ 双代理协同(Codex × Claude Code)</b><span class="pt">DUAL-AGENT</span></div>
+    <div class="ph"><span class="pic">🔀</span><b>场景⑧ 双代理协同(Codex × Claude Code)</b><span class="pt">DUAL-AGENT</span></div>
     <div class="pb">
-      <p>三种玩法:① <code>/import</code> 一键把 Claude Code 的配置、项目文件、近期会话搬进 Codex,无痛双开;② Writer/Reviewer 跨代理——一个写实现,另一个 <code>/review</code>,不同模型的视角差异比同模型双会话更能暴露盲区;③ 互为 MCP 工具(见 05 节),编排层随意转包。技能包(Agent Skills 标准)两边通用,工作流沉淀一次即可。</p>
+      <p>Codex 严格沙箱 + Claude Code 丰富扩展面,是公认互补组合。三种玩法:</p>
+      <ul>
+        <li><strong>无痛双开:</strong><code>/import</code> 一键把 Claude Code 的配置、项目文件、近期会话搬进 Codex;</li>
+        <li><strong>Writer / Reviewer 跨代理:</strong>一个写实现、另一个 <code>/review</code>——<strong>不同模型的视角差异比同模型双会话更能暴露盲区</strong>;</li>
+        <li><strong>互为 MCP 工具:</strong>把对方挂成 MCP(见<a href="#skills-mcp">05 节</a>),编排层随意转包子任务。</li>
+      </ul>
+      <p>技能包遵循 <strong>Agent Skills 开放标准</strong>、记忆走 <strong>AGENTS.md 开放标准</strong>,两边通用——工作流沉淀一次,双工具受益。</p>
     </div>
   </div>
 </div>
+<p class="src">场景提炼自:<a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">官方 Best Practices</a> · <a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · 与 <a href="claude-code-guide.html#playbook">本库 Claude Code 场景手册</a>对照阅读。</p>
 </section>
 
 <div class="divider"></div>
@@ -688,7 +749,7 @@ codex exec resume SESSION_ID "继续处理剩余文件"</code></pre>
   <tr><td>64 命令随版本更新的速查</td><td><a href="https://toolsbase.dev/en/reference/codex-commands" target="_blank">Toolsbase Cheat Sheet</a> · <a href="https://www.scriptbyai.com/codex-commands-cheat-sheet/" target="_blank">ScriptByAI Cheat Sheet</a></td></tr>
   <tr><td>综合评测与配置实践</td><td><a href="https://smartscope.blog/en/generative-ai/chatgpt/openai-codex-cli-comprehensive-guide/" target="_blank">SmartScope</a> · <a href="https://anycap.ai/page/en-US/ai/openai-codex-cli-complete-guide-2026" target="_blank">AnyCap Complete Guide</a> · <a href="https://computingforgeeks.com/codex-cli-cheat-sheet/" target="_blank">ComputingForGeeks</a></td></tr>
   <tr><td>中文系统教程</td><td><a href="https://coding.stormzhang.ai/codex/01-what-is-codex" target="_blank">stormzhang:AI 编程指南 · Codex 篇(39 篇,小白友好)</a>——入门跟它走,日常查本页</td></tr>
-  <tr><td>关联主题</td><td>本知识库:<a href="claude-code-guide.html">Claude Code 使用指南</a> · <a href="pencil-docs-zh.html#ai-integration">Pencil 文档 / AI 集成(Codex 驱动 Pencil)</a></td></tr>
+  <tr><td>关联主题</td><td>本知识库:<a href="claude-code-guide.html">Claude Code 使用指南</a> · <a href="pencil-docs-zh.html#ai-integration">Pencil 文档 / AI 集成(Codex 驱动 Pencil)</a> · <a href="env-auth-clinic.html">环境与登录急救手册</a> · <a href="ai-leverage-guide.html">AI 提效全景与心法</a></td></tr>
 </table>
 </section>
 

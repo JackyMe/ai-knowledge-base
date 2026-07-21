@@ -786,6 +786,7 @@ git bisect reset</code></pre><p>没有可稳定复现时，可二分 feature fla
 <h2>AI 结合：证据质量决定排查上限</h2>
 
 <p><strong>AI 排查质量 ≈ 证据完整度 × 问题约束 × 验证反馈。</strong>模型擅长跨堆栈、源码、diff 和分布找关联，但看不到你没提供的 mapping、运行时状态和失败样本。先把输入标准化，再谈提示词技巧。</p>
+<div class="callout note"><b class="t">配套阅读</b>本章方法论的通用版(上下文第一资源、验证闭环、七条心法)见<a href="ai-leverage-guide.html">AI 提效全景与心法</a>;Claude Code 工具本身的用法见<a href="claude-code-guide.html">使用指南</a>。</div>
 
 <h3>崩溃上下文包：给人和 AI 的统一输入契约</h3>
 <table class="tbl">

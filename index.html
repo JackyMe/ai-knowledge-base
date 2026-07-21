@@ -75,6 +75,23 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 .sec h2{font-size:20px;font-weight:800;letter-spacing:-.3px}
 .sec span{font-size:12.5px;color:var(--text-3)}
 
+/* 学习路径 */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.path{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 22px 14px;position:relative;overflow:hidden}
+.path::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--pc,#5b5bf6);opacity:.9}
+.path .ph{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.path .pic{font-size:20px}
+.path b{font-size:15.5px;font-weight:750}
+.path>p{font-size:12.5px;color:var(--text-2);margin:0 0 10px}
+.path ol{list-style:none;margin:0;padding:0}
+.path ol a{display:flex;gap:10px;padding:7px 8px;margin:0 -8px;border-radius:9px;text-decoration:none;
+  color:var(--text);font-size:13px;transition:.15s;align-items:baseline}
+.path ol a:hover{background:color-mix(in srgb,var(--pc,#5b5bf6) 8%,#fff)}
+.path ol a:hover .sl{color:var(--pc,#5b5bf6)}
+.path ol .n{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--pc,#5b5bf6);flex:none;width:15px}
+.path ol .sl{font-weight:600;display:block;line-height:1.45}
+.path ol .pn{font-size:11.5px;color:var(--text-3);display:block;line-height:1.5}
+
 /* 标签筛选 */
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
 .tabs button{font-family:var(--font);font-size:12.5px;font-weight:600;color:var(--text-2);background:#fff;
@@ -204,6 +221,9 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 <div class="results" id="results" aria-live="polite"></div>
 
 <div id="browse">
+  <div class="sec"><h2>学习路径</h2><span>三条路线把主题串成课程表 · 按序走完即可</span></div>
+  <div class="paths" id="paths"></div>
+
   <div class="sec"><h2>全部主题</h2><span id="topicCount"></span></div>
   <div class="tabs" id="tabs" role="tablist" aria-label="按类型筛选主题"></div>
   <div class="grid" id="grid"></div>
@@ -266,6 +286,22 @@ tabs.addEventListener('click',e=>{
   grid.querySelectorAll('.topic').forEach(c=>
     c.classList.toggle('hidden',tg!=='全部'&&c.dataset.tag!==tg));
 });
+
+/* ---------- 学习路径 ---------- */
+const pg=$('#paths');
+if(typeof PATHS!=='undefined'&&pg){
+  pg.innerHTML=PATHS.map(p=>`
+    <div class="path" style="--pc:${p.color}">
+      <span class="ph"><span class="pic">${p.icon}</span><b>${escq(p.title)}</b></span>
+      <p>${escq(p.desc)}</p>
+      <ol>${p.steps.map((s,i)=>`
+        <li><a href="${s.href}"${s.ext?' target="_blank" rel="noopener"':''}>
+          <span class="n">${i+1}</span>
+          <span><span class="sl">${escq(s.label)}${s.ext?' ↗':''}</span><span class="pn">${escq(s.note)}</span></span>
+        </a></li>`).join('')}
+      </ol>
+    </div>`).join('');
+}
 
 /* ---------- 精选学习站(整卡真实链接) ---------- */
 const lg=$('#learnGrid');

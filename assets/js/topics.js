@@ -46,6 +46,43 @@ const LEARN = [
   }
 ];
 
+/* ------------------------------------------------------------
+   学习路径:把主题串成课程表,首页「学习路径」区块渲染。
+   step 可用 ext: true 标记外站。
+   ------------------------------------------------------------ */
+const PATHS = [
+  {
+    icon: "🌱", color: "#0d9373", title: "新手起步",
+    desc: "从零认识 AI 能干什么,到装好工具跑通第一个任务",
+    steps: [
+      { label: "AI 能干什么 · 全景与心法", href: "topics/ai-leverage-guide.html", note: "先建认知:场景、边界、七条心法" },
+      { label: "stormzhang 系统教程(外站)", href: "https://coding.stormzhang.ai/", note: "92 篇小白教程,装好第一个工具", ext: true },
+      { label: "Claude Code 指南 · 安装与配置", href: "topics/claude-code-guide.html#setup", note: "命令、权限、模板逐步上手" },
+      { label: "环境急救手册(收藏备查)", href: "topics/env-auth-clinic.html", note: "登录报错时 30 秒对症自救" }
+    ]
+  },
+  {
+    icon: "⚙️", color: "#d9634a", title: "工具精通",
+    desc: "把 Claude Code 与 Codex 用到专业水准,双代理协同",
+    steps: [
+      { label: "Claude Code 指南 · 干货版", href: "topics/claude-code-guide.html", note: "五条黄金法则 → 八大场景实战" },
+      { label: "Codex 指南 · CLI × IDE × Cloud", href: "topics/codex-guide.html", note: "沙箱审批、云端任务、双代理协同" },
+      { label: "Pencil × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
+      { label: "通用心法七条(内功)", href: "topics/ai-leverage-guide.html#principles", note: "防止把 AI 用成人肉补全" }
+    ]
+  },
+  {
+    icon: "🧗", color: "#ea580c", title: "转型跃迁",
+    desc: "客户端老兵 12 周转 Web 全栈,直到一人公司",
+    steps: [
+      { label: "转型手册 · 四层硬核迁移", href: "topics/android-to-fullstack.html", note: "语言/UI/架构/数据逐层兑换" },
+      { label: "三个渐进项目 + 学习包", href: "topics/android-to-fullstack.html#roadmap", note: "12 周每周有交付物与验收" },
+      { label: "AI 协同工作流", href: "topics/android-to-fullstack.html#ai-workflow", note: "CLAUDE.md 模板与提示词库" },
+      { label: "商业闭环 + 陷阱手册", href: "topics/android-to-fullstack.html#business", note: "从上线到第一笔收入" }
+    ]
+  }
+];
+
 const TOPICS = [
   {
     href: "topics/pencil-docs-zh.html", icon: "📘", tag: "官方文档", color: "#5b5bf6",
