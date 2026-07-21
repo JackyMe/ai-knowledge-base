@@ -5,7 +5,17 @@
    ============================================ */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const menuBtn=$('#menuBtn'),sidebar=$('#sidebar'),topBtn=$('#topBtn'),prog=$('#prog'),sf=$('#sideFilter');
-menuBtn&&menuBtn.addEventListener('click',()=>sidebar.classList.toggle('open'));
+/* 移动端侧栏遮罩:打开时点正文/遮罩或按 Esc 关闭 */
+let sbBackdrop=null;
+if(sidebar){
+  sbBackdrop=document.createElement('div');sbBackdrop.className='sb-backdrop';
+  document.body.appendChild(sbBackdrop);
+  const syncSb=()=>sbBackdrop.classList.toggle('on',sidebar.classList.contains('open'));
+  sbBackdrop.addEventListener('click',()=>{sidebar.classList.remove('open');syncSb()});
+  menuBtn&&menuBtn.addEventListener('click',()=>{sidebar.classList.toggle('open');syncSb()});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&sidebar.classList.contains('open')){sidebar.classList.remove('open');syncSb()}});
+  window.__syncSb=syncSb;   /* 供下方链接点击关闭时同步遮罩 */
+}
 topBtn&&topBtn.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
 
 function onScroll(){topBtn&&topBtn.classList.toggle('show',scrollY>600);
@@ -95,6 +105,7 @@ links.forEach(a=>a.addEventListener('click',e=>{
   e.preventDefault();
   showPage(a.getAttribute('href').slice(1));
   sidebar&&sidebar.classList.remove('open');
+  window.__syncSb&&window.__syncSb();
 }));
 /* 正文内部锚点链接(速查卡片、交叉引用)同样切页 */
 wrap&&wrap.addEventListener('click',e=>{

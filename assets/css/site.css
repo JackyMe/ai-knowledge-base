@@ -56,3 +56,26 @@ figure img{cursor:zoom-in}
 .pager a b{font-size:14px;color:var(--text);font-weight:650}
 .pager a:hover b{color:var(--accent)}
 .pager .nx{text-align:right;margin-left:auto}
+
+/* ===== 移动端顶栏收敛(所有主题页共用) =====
+   窄屏下顶栏内容过多会撑爆 60px 固定高度并相互重叠:
+   隐藏版本号、干货版徽章与 ⌘K 提示,标题不换行溢出省略,保留返回入口 */
+@media (max-width:640px){
+  .topbar{padding:0 12px!important;gap:8px!important}
+  .topbar .logo{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14.5px!important}
+  .topbar .logo .mark{flex:none}
+  .topbar .logo .sub{display:none}
+  .topbar .right{flex:none;gap:8px!important}
+  .topbar .right>span{display:none}      /* 版本号:手机上无用,占地方 */
+  .kbtn{padding:5px 9px}
+  .kbtn span{display:none}                /* ⌘K 提示:手机无键盘,只留「跳转」 */
+}
+@media (max-width:380px){
+  .kbtn{display:none}                     /* 极窄屏:侧栏筛选已覆盖导航,让位给标题 */
+}
+
+/* ===== 移动端侧栏遮罩:打开时点正文区域即可关闭(标准手势) ===== */
+.sb-backdrop{position:fixed;inset:60px 0 0 0;background:rgba(10,12,18,.42);z-index:85;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.sb-backdrop.on{opacity:1;pointer-events:auto}
+@media (min-width:1081px){.sb-backdrop{display:none}}  /* 桌面侧栏常驻,无需遮罩 */
