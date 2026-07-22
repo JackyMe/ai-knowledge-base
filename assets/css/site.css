@@ -91,5 +91,5 @@ figure img{cursor:zoom-in}
 [data-reveal]{opacity:0;transform:translateY(var(--rise-enter))}
 [data-reveal].is-visible{opacity:1;transform:none;
   transition:opacity var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms),
-             transform var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms)}
+  transform var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
