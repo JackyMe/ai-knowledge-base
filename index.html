@@ -133,7 +133,7 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 .topic{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);
   border-radius:18px;padding:24px 26px 18px;color:var(--text);transition:var(--dur-hover) var(--ease-breathe);overflow:hidden}
 .topic::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--tc,#5b5bf6);opacity:.9}
-.topic:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(15,23,42,.10);border-color:var(--tc,#5b5bf6)}
+.topic:hover{transform:translateY(calc(var(--rise-hover) * -1));box-shadow:0 16px 44px rgba(15,23,42,.10);border-color:var(--tc,#5b5bf6)}
 .topic.hidden{display:none}
 /* 整卡真实链接:绝对定位覆盖层,章节快链层级更高仍可点 */
 .topic .cover{position:absolute;inset:0;z-index:1;border-radius:18px}
