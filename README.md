@@ -46,7 +46,7 @@ npm run dev        # 等价于 npx serve .,打开 http://localhost:3000
    ```
    页面需包含:`.topbar`(内含 `.right`)、`#sidebar`(内含 `#sideFilter` 筛选框)、
    `#prog` 进度条、`#topBtn` 回顶按钮、`section[id]` + `h2/h3` 结构——参考现有主题页即可。
-2. 在 `assets/js/topics.js` 的 `TOPICS` 数组追加一条(标题/图标/颜色/章节列表;可选 `keywords` 字段写口语化搜索别名,如"登录 报错 换电脑")。
+2. 在 `assets/js/topics.js` 的 `TOPICS` 数组追加一条(标题/图标/颜色/章节列表;可选 `keywords` 字段写口语化搜索别名,如"登录 报错 换电脑")。若某章节是"速查手册"型高频入口(命令大全、快捷键之类),给它加 `quick:true` + `quickLabel:"展示文案"`,首页 hero 区「⚡ 常用速查」快链会自动收录,无需改 index.html。
 3. 重新生成搜索索引(新增/修改了任意 `topics/*.html` 正文都要跑一次):
    ```bash
    python3 scripts/build-search-index.py

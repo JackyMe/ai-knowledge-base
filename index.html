@@ -60,6 +60,15 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 .hot button:hover{color:#fff;border-color:rgba(129,140,248,.7);background:rgba(129,140,248,.18)}
 .hero .qmeta{margin-top:12px;font-size:12px;color:#7e8aa3}
 
+/* 常用速查快链(来自 TOPICS.sections 里 quick:true 的章节,唯一数据源自动派生) */
+.quickref{margin-top:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px}
+.quickref .qt{color:#7e8aa3}
+.quickref a{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:12.5px;font-weight:600;
+  color:#eaf1fb;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:99px;
+  padding:4px 13px 4px 10px;text-decoration:none;transition:.15s}
+.quickref a:hover{border-color:var(--qc,rgba(129,140,248,.7));background:rgba(129,140,248,.18)}
+.quickref a .qic{font-size:13px}
+
 .resume{display:none;margin:18px 0 0;align-items:center;gap:12px;padding:13px 18px;background:#fff;
   border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:.18s;position:relative}
 .resume.on{display:flex}
@@ -214,6 +223,7 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
     <span class="keys"><kbd>↑↓</kbd><kbd>Enter</kbd></span>
   </div>
   <div class="hot" id="hot"><span>热门:</span></div>
+  <div class="quickref" id="quickref"><span class="qt">⚡ 常用速查:</span></div>
   <div class="qmeta" id="qmeta"></div>
 </div>
 
@@ -458,6 +468,18 @@ q.addEventListener('keydown',e=>{
     it.ext?window.open(url,'_blank','noopener'):location.href=url}
   else if(e.key==='Escape'){q.value='';sel=0;doSearch();q.blur()}
 });
+
+/* ---------- 常用速查快链(章节对象里标 quick:true 即自动收录,唯一数据源) ---------- */
+const QUICKREF=[];
+TOPICS.forEach(t=>t.sections.forEach(s=>{
+  if(s.quick)QUICKREF.push({href:`${t.href}#${s.id}`,icon:t.icon,color:t.color,label:s.quickLabel||s.label});
+}));
+if(QUICKREF.length){
+  $('#quickref').insertAdjacentHTML('beforeend',QUICKREF.map(r=>
+    `<a href="${r.href}" style="--qc:${r.color}"><span class="qic">${r.icon}</span>${escq(r.label)} →</a>`).join(''));
+}else{
+  $('#quickref').style.display='none';
+}
 
 /* ---------- 热门搜索建议 ---------- */
 const HOT=['登录报错','快捷键','MCP','避坑','换电脑','提示词','沙箱','ANR'];

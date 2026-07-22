@@ -125,7 +125,7 @@ const TOPICS = [
     meta: ["100+ 命令收录", "8 大场景", "5 套模板", "基于 v2.1.x"],
     sections: [
       {id:"mental-model",label:"一切围绕上下文"},{id:"golden-rules",label:"五条黄金法则"},
-      {id:"setup",label:"安装与首次配置"},{id:"commands",label:"命令速查手册"},
+      {id:"setup",label:"安装与首次配置"},{id:"commands",label:"命令速查手册",quick:true,quickLabel:"Claude Code 命令速查"},
       {id:"shortcuts",label:"快捷键与输入技巧"},{id:"extensions",label:"六大扩展怎么选"},
       {id:"skills-hooks",label:"Skills / Hooks / MCP / 子代理"},{id:"playbook",label:"八大场景实战手册"},
       {id:"context",label:"上下文管理进阶"},{id:"permissions",label:"权限与安全"},
@@ -142,7 +142,7 @@ const TOPICS = [
     meta: ["5 种形态", "沙箱 3 档详解", "双代理协同", "基于 0.14x"],
     sections: [
       {id:"overview",label:"Codex 全景"},{id:"setup",label:"安装与登录"},
-      {id:"commands",label:"命令速查手册"},{id:"sandbox",label:"沙箱与审批"},
+      {id:"commands",label:"命令速查手册",quick:true,quickLabel:"Codex 命令速查"},{id:"sandbox",label:"沙箱与审批"},
       {id:"agents-md",label:"AGENTS.md 与记忆"},{id:"skills-mcp",label:"Skills / 插件 / MCP"},
       {id:"config-auth",label:"配置与账号全解"},
       {id:"cloud",label:"云端与多形态"},{id:"playbook",label:"实战场景手册"},

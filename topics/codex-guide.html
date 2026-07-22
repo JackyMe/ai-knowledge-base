@@ -104,6 +104,17 @@ pre .c{color:#7f948a}
   padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f8fbf9}
 .tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
 .tbl tr:hover td{background:#f9fcfa}
+
+/* 高频核心命令墙 */
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:.15s}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(12,21,18,.06)}
+.hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
+.hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
+.hotcmd.must{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.hotcmd.must .hc-cmd{color:var(--accent)}
+.hotcmd.must::after{content:"★ 必会";position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--accent);padding:2px 9px;border-radius:99px;letter-spacing:.02em}
 kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
   border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
 
@@ -289,6 +300,19 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <div class="sec-tag">速查 02</div>
 <h2>命令速查手册</h2>
 <p>按使用层级分组:终端子命令 → 启动参数 → 会话内斜杠命令。TUI 内键入 <code>/</code> 可浏览全部命令。</p>
+
+<h3>⚡ 高频核心命令(先记这 8 个)</h3>
+<p>下面完整表格收录 60+ 条,但日常 90% 的场景只靠这几个打底;标 <b>★ 必会</b> 的三个建议练到肌肉记忆。</p>
+<div class="hotcmds">
+  <div class="hotcmd must"><span class="hc-cmd">codex ["任务"]</span><span class="hc-desc">启动交互式 TUI,日常入口,可带初始提示与 -i 图片</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">codex exec(e)</span><span class="hc-desc">非交互执行,输出到 stdout / JSONL——自动化与脚本的基石</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">/diff</span><span class="hc-desc">查看 Git diff(含未跟踪文件)——提交前必看</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/new · /clear</span><span class="hc-desc">同一 CLI 内开新对话 / 清屏并重开,上下文噪音清零</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/compact</span><span class="hc-desc">摘要压缩对话,释放 token,长会话续命</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/review</span><span class="hc-desc">让 Codex 评审当前工作树,提交前的第二双眼睛</span></div>
+  <div class="hotcmd"><span class="hc-cmd">--sandbox · --ask-for-approval</span><span class="hc-desc">沙箱与审批双旋钮,安全边界怎么定就靠它俩</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/status · /usage</span><span class="hc-desc">会话配置与 token 用量 / 账号级用量与限额</span></div>
+</div>
 
 <h3>终端子命令</h3>
 <table class="tbl">
