@@ -131,17 +131,22 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 .results{display:none;margin-top:26px}
 .results.on{display:block}
 .res-count{font-size:12.5px;color:var(--text-3);margin-bottom:12px}
-.res{display:flex;align-items:center;gap:12px;padding:12px 18px;background:#fff;border:1px solid var(--border);
+.res{display:block;padding:12px 18px;background:#fff;border:1px solid var(--border);
   border-radius:12px;text-decoration:none;color:var(--text);margin-bottom:8px;transition:.15s}
 .res:hover,.res.sel{border-color:var(--rc,#5b5bf6);box-shadow:0 6px 20px rgba(15,23,42,.07)}
 .res.sel{background:#fcfdff}
+.res-row{display:flex;align-items:center;gap:12px}
 .res .badge{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--rc,#5b5bf6);
   padding:3px 10px;border-radius:99px;white-space:nowrap}
 .res b{font-size:14px;font-weight:600}
-.res .path{font-size:12px;color:var(--text-3);margin-left:2px}
+.res .restopic{font-size:12px;color:var(--text-3);margin-left:2px}
 .res .go{margin-left:auto;color:var(--text-3);font-size:13px;white-space:nowrap}
 .res:hover .go,.res.sel .go{color:var(--rc,#5b5bf6)}
 .res mark{background:#fff3bf;color:inherit;border-radius:3px;padding:0 1px}
+.res .snip{margin:6px 0 0;font-size:12.5px;color:var(--text-2);line-height:1.5;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.res .fz{flex:none;font-size:10.5px;font-weight:600;color:var(--text-3);border:1px solid var(--border);
+  border-radius:99px;padding:1px 8px}
 .res-empty{padding:34px;text-align:center;color:var(--text-3);font-size:13.5px;background:#fff;
   border:1px dashed var(--border-2);border-radius:14px}
 
@@ -243,6 +248,7 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 </div>
 
 <script src="assets/js/topics.js"></script>
+<script src="assets/js/search-index.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const escq=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -336,9 +342,11 @@ try{
   }
 }catch(e){}
 
-/* ---------- 全站搜索(主题 + 章节直达 + keywords 别名) ---------- */
+/* ---------- 全站搜索(主题 + 章节直达 + 章节正文内容 + keywords 别名) ---------- */
 const INDEX=[];
+const topicByHref={};
 TOPICS.forEach(t=>{
+  topicByHref[t.href]=t;
   const kw=(t.keywords||'').toLowerCase();
   INDEX.push({topic:t,label:t.title,id:'',text:(t.title+' '+t.desc+' '+t.tag+' '+kw).toLowerCase(),isTopic:true});
   t.sections.forEach(s=>INDEX.push({topic:t,label:s.label,id:s.id,
@@ -347,20 +355,80 @@ TOPICS.forEach(t=>{
 if(typeof LEARN!=='undefined')LEARN.forEach(l=>INDEX.push({
   topic:{href:l.href,color:l.color,tag:'学习站',title:l.title},
   label:l.title,id:'',text:(l.title+' '+l.desc+' '+l.tag+' 学习 教程').toLowerCase(),isTopic:true,ext:true}));
+/* 章节正文内容索引(assets/js/search-index.js 预生成,由 scripts/build-search-index.py 扫描 topics/*.html 产出) */
+if(typeof CONTENT_INDEX!=='undefined')CONTENT_INDEX.forEach(c=>{
+  const t=topicByHref[c.href];if(!t)return;
+  INDEX.push({topic:t,label:c.label,id:c.id,raw:c.text,
+    text:(c.label+' '+c.text).toLowerCase(),isTopic:false,isContent:true});
+});
 const q=$('#q'),results=$('#results'),browse=$('#browse'),qmeta=$('#qmeta');
 let sel=0,shown=[];
-qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目`;
+qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目(含章节正文内容检索)`;
 function hl(s,kw){if(!kw)return escq(s);
   const i=s.toLowerCase().indexOf(kw);if(i<0)return escq(s);
   return escq(s.slice(0,i))+'<mark>'+escq(s.slice(i,i+kw.length))+'</mark>'+escq(s.slice(i+kw.length))}
+/* 从正文里摘一段包含命中词的片段,居中截取并高亮 */
+function snippet(raw,kw,radius){
+  radius=radius||46;
+  const low=raw.toLowerCase();const i=low.indexOf(kw);
+  if(i<0)return escq(raw.slice(0,radius*2))+'…';
+  const start=Math.max(0,i-radius),end=Math.min(raw.length,i+kw.length+radius);
+  const pre=(start>0?'…':'')+raw.slice(start,i);
+  const mid=raw.slice(i,i+kw.length);
+  const post=raw.slice(i+kw.length,end)+(end<raw.length?'…':'');
+  return escq(pre)+'<mark>'+escq(mid)+'</mark>'+escq(post);
+}
+/* 模糊子序列打分(fzf 思路的简化版):query 每个字符都要按顺序出现在 text 里。
+   中文本身信息密度高,纯"子序列"如果不限制跨度,会在几千字的正文里随手抓到一堆
+   风马牛不相及的字凑成"命中"(比如"预填冲"能在完全无关的段落里跳着凑出这三个字)。
+   所以这里遍历 query 首字的每个出现位置作为起点,分别贪婪匹配剩余字符,
+   只有匹配跨度落在 query 长度的合理倍数内才算数,取跨度最紧凑的一次当分数——
+   跨度越紧、位置越靠前分数越高;找不到满足跨度限制的匹配返回 null。*/
+function fuzzyScore(text,query){
+  if(!query)return null;
+  const maxSpan=Math.max(12,query.length*5);
+  let best=null,from=0;
+  while(true){
+    const start=text.indexOf(query[0],from);
+    if(start<0)break;
+    let ti=start,ok=true;
+    for(let qi=1;qi<query.length;qi++){
+      const idx=text.indexOf(query[qi],ti+1);
+      if(idx<0){ok=false;break}
+      ti=idx;
+    }
+    if(ok){
+      const span=ti-start+1;
+      if(span<=maxSpan){
+        const score=1000/span-start*0.001;
+        if(best===null||score>best)best=score;
+      }
+    }
+    from=start+1;
+  }
+  return best;
+}
 function doSearch(){
-  const kw=q.value.trim().toLowerCase();
+  const kwRaw=q.value.trim();
+  const kw=kwRaw.toLowerCase();
   if(!kw){results.classList.remove('on');browse.style.display='';shown=[];return}
-  /* 多词 AND:空格分词,全部命中才算 */
+  /* 第一层:多词 AND 精确子串匹配(空格分词,全部命中才算,权威度最高) */
   const terms=kw.split(/\s+/).filter(Boolean);
-  const all=INDEX.filter(it=>terms.every(w=>it.text.includes(w)));
-  /* 主题命中排前,章节其次 */
-  shown=[...all.filter(x=>x.isTopic),...all.filter(x=>!x.isTopic)].slice(0,30);
+  const exact=INDEX.filter(it=>terms.every(w=>it.text.includes(w)));
+  /* 第二层:精确结果太少时,补一批模糊子序列匹配(容错拼写/漏字/顺序不对) */
+  const exactSet=new Set(exact);
+  let fuzzy=[];const fuzzySet=new Set();
+  if(exact.length<8&&kw.replace(/\s+/g,'').length>=2){
+    const fq=kw.replace(/\s+/g,'');
+    fuzzy=INDEX.map(it=>({it,score:fuzzyScore(it.text.replace(/\s+/g,''),fq)}))
+      .filter(x=>x.score!==null&&!exactSet.has(x.it))
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,15).map(x=>x.it);
+    fuzzy.forEach(it=>fuzzySet.add(it));
+  }
+  /* 排序:主题精确命中 > 章节精确命中 > 模糊命中 */
+  const all=[...exact.filter(x=>x.isTopic),...exact.filter(x=>!x.isTopic),...fuzzy];
+  shown=all.slice(0,30);
   if(sel>=shown.length)sel=Math.max(0,shown.length-1);
   browse.style.display='none';results.classList.add('on');
   results.innerHTML=shown.length?
@@ -368,10 +436,14 @@ function doSearch(){
     shown.map((it,i)=>`
       <a class="res${i===sel?' sel':''}" style="--rc:${it.topic.color}" data-i="${i}"
          href="${it.topic.href}${it.id?'#'+it.id:''}"${it.ext?' target="_blank" rel="noopener"':''}>
-        <span class="badge">${escq(it.topic.tag)}</span>
-        <b>${hl(it.label,terms[0])}</b>
-        ${it.isTopic?'':`<span class="path">${escq(it.topic.title)}</span>`}
-        <span class="go">${it.ext?'外站 ↗':'打开 →'}</span>
+        <div class="res-row">
+          <span class="badge">${escq(it.topic.tag)}</span>
+          <b>${hl(it.label,terms[0]||kw)}</b>
+          ${it.isTopic?'':`<span class="restopic">${escq(it.topic.title)}</span>`}
+          ${fuzzySet.has(it)?'<span class="fz">模糊匹配</span>':''}
+          <span class="go">${it.ext?'外站 ↗':'打开 →'}</span>
+        </div>
+        ${it.isContent?`<div class="snip">${snippet(it.raw,terms[0]||kw)}</div>`:''}
       </a>`).join('')
     :'<div class="res-empty">没有匹配结果——换个关键词试试,或按 Esc 浏览全部主题</div>';
   const s=results.querySelector('.res.sel');s&&s.scrollIntoView({block:'nearest'});

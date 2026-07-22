@@ -21,7 +21,10 @@ ai-knowledge-base/
 │   ├── css/site.css            # 全站共享交互样式(进度条/筛选/复制/灯箱/跳转面板)
 │   └── js/
 │       ├── site.js             # 全站共享交互脚本(所有主题页引用同一份)
-│       └── topics.js           # 主题注册表 —— 唯一数据源
+│       ├── topics.js           # 主题注册表 —— 唯一数据源
+│       └── search-index.js     # 章节正文内容搜索索引(自动生成,见下)
+├── scripts/
+│   └── build-search-index.py   # 扫描 topics/*.html 生成 search-index.js
 ├── package.json                # 本地预览脚本
 └── README.md
 ```
@@ -44,7 +47,11 @@ npm run dev        # 等价于 npx serve .,打开 http://localhost:3000
    页面需包含:`.topbar`(内含 `.right`)、`#sidebar`(内含 `#sideFilter` 筛选框)、
    `#prog` 进度条、`#topBtn` 回顶按钮、`section[id]` + `h2/h3` 结构——参考现有主题页即可。
 2. 在 `assets/js/topics.js` 的 `TOPICS` 数组追加一条(标题/图标/颜色/章节列表;可选 `keywords` 字段写口语化搜索别名,如"登录 报错 换电脑")。
-3. 完成。首页卡片、标签筛选 Tab、章节快链、全站搜索自动生效(筛选标签按 `tag` 字段自动归组)。
+3. 重新生成搜索索引(新增/修改了任意 `topics/*.html` 正文都要跑一次):
+   ```bash
+   python3 scripts/build-search-index.py
+   ```
+4. 完成。首页卡片、标签筛选 Tab、章节快链、全站搜索(标题 + 章节正文内容,精确匹配优先、模糊匹配兜底)自动生效(筛选标签按 `tag` 字段自动归组)。
 
 ## 部署
 
