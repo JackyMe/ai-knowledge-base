@@ -56,7 +56,7 @@ const PATHS = [
     desc: "从零认识 AI 能干什么,到装好工具跑通第一个任务",
     steps: [
       { label: "AI 能干什么 · 全景与心法", href: "topics/ai-leverage-guide.html", note: "先建认知:场景、边界、七条心法" },
-      { label: "提示词与上下文工程", href: "topics/prompt-context-engineering.html", note: "会说话才有产出:七技法 + 9 式模板" },
+      { label: "提示词与上下文工程", href: "topics/prompt-context-engineering.html", note: "会说话才有产出:七技法 + 12 式模板 + 6 个案例" },
       { label: "stormzhang 系统教程(外站)", href: "https://coding.stormzhang.ai/", note: "92 篇小白教程,装好第一个工具", ext: true },
       { label: "Claude Code 指南 · 安装与配置", href: "topics/claude-code-guide.html#setup", note: "命令、权限、模板逐步上手" },
       { label: "环境急救手册(收藏备查)", href: "topics/env-auth-clinic.html", note: "登录报错时 30 秒对症自救" }
@@ -69,7 +69,7 @@ const PATHS = [
       { label: "Claude Code 指南 · 干货版", href: "topics/claude-code-guide.html", note: "五条黄金法则 → 八大场景实战" },
       { label: "Codex 指南 · CLI × IDE × Cloud", href: "topics/codex-guide.html", note: "沙箱审批、云端任务、双代理协同" },
       { label: "Pencil × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
-      { label: "上下文工程与反模式(内功)", href: "topics/prompt-context-engineering.html#context", note: "注意力预算、长任务三板斧、鉴别偏方" }
+      { label: "上下文工程与反模式(内功)", href: "topics/prompt-context-engineering.html#context", note: "注意力预算、长任务三板斧、安全与成本、鉴别偏方" }
     ]
   },
   {
@@ -197,15 +197,19 @@ const TOPICS = [
   {
     href: "topics/prompt-context-engineering.html", icon: "🎯", tag: "提效心法", color: "#0891b2",
     title: "提示词与上下文工程 · 从技法到心法",
-    desc: "全站的地基学科:基础七技法(每个配 ❌/✅ 对照)、结构化输出、注意力预算与系统提示高度、智能体长任务三板斧、9 式逐字模板、失败集迭代法、反模式图鉴,以及在 CC/Codex 里内容该放哪层。",
-    keywords: "提示词 prompt 上下文 context 工程 写提示 怎么问 few-shot 示例 思维链 cot xml 角色 预填充 json 结构化 输出 系统提示 system claude.md agents.md 压缩 子代理 模板 幻觉 评估 反模式 玄学 注意力",
-    meta: ["7 大技法对照", "9 式模板", "反模式图鉴", "2026-07 官方核对"],
+    desc: "全站的地基学科:基础七技法(每个配 ❌/✅ 对照)、多模态与 RAG 场景怎么喂材料、三大模型提示词差异图鉴、模型路由与自动切换现状核查、Prompt 注入与安全防御、Token 经济学与成本控制、6 个完整改写案例、12 式逐字模板、失败集迭代与版本管理、反模式图鉴,以及在 CC/Codex 里内容该放哪层。",
+    keywords: "提示词 prompt 上下文 context 工程 写提示 怎么问 few-shot 示例 思维链 cot xml 角色 预填充 json 结构化 输出 系统提示 system claude.md agents.md 压缩 子代理 模板 幻觉 评估 反模式 玄学 注意力 多模态 图片 pdf 截图 视觉 vision rag 检索增强 引用 citations gpt gemini 模型差异 token 经济学 缓存 caching 成本 注入 injection 安全 owasp 案例 版本管理 a/b测试 模型路由 routing 自动切换 路由器 router litellm routellm 级联 cascade",
+    meta: ["7 大技法对照", "12 式模板", "6 个完整案例", "模型路由现状核查", "2026-07 官方核对"],
     sections: [
       {id:"overview",label:"全景:从提示词到上下文"},{id:"basics",label:"基础七技法"},
-      {id:"structured",label:"结构化输出"},{id:"context",label:"上下文工程核心"},
-      {id:"agentic",label:"智能体上下文"},{id:"templates",label:"逐字模板库(9 式)"},
-      {id:"eval",label:"评估与迭代"},{id:"antipatterns",label:"反模式图鉴"},
-      {id:"tools",label:"在 CC / Codex 里的承载"},{id:"resources",label:"资源索引"}
+      {id:"structured",label:"结构化输出"},{id:"multimodal",label:"多模态提示词"},
+      {id:"models",label:"主流模型提示词差异图鉴"},{id:"rag",label:"RAG 场景提示词"},
+      {id:"context",label:"上下文工程核心"},{id:"agentic",label:"智能体上下文"},
+      {id:"cost",label:"Token 经济学与成本控制"},{id:"routing",label:"模型路由与自动切换"},
+      {id:"security",label:"Prompt 注入与安全防御"},{id:"cases",label:"案例研究(6 例)"},
+      {id:"templates",label:"逐字模板库(12 式)"},{id:"eval",label:"评估、迭代与版本管理"},
+      {id:"antipatterns",label:"反模式图鉴"},{id:"tools",label:"在 CC / Codex 里的承载"},
+      {id:"resources",label:"资源索引"}
     ]
   },
   {
