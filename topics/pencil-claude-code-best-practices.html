@@ -236,12 +236,12 @@ figure figcaption a{color:var(--text-3)}
 <div class="sec-tag">导读 00</div>
 <h2>为什么是 Pencil + Claude Code</h2>
 
-<h3>它解决的核心问题:设计-代码鸿沟</h3>
+<h3 data-reveal>它解决的核心问题:设计-代码鸿沟</h3>
 <p>传统流程里,设计师在 Figma 精雕细琢,开发者对着标注重写一遍——间距差一点、字重不对、hover 态没文档,最终上线的东西「像设计稿的表亲」。这不是谁的错,而是设计与开发两套工具链、两个事实来源的结构性问题。</p>
 <p>通用 AI 编码工具也没能根治:它们看不到<strong>你的</strong>设计系统、品牌色和间距阶梯,只能基于全网见过的模式生成「看起来还行」但不属于你产品的组件。</p>
 <div class="callout note"><b class="t">这对组合的答案</b>Pencil 把设计放进代码仓库(.pen 文件),Claude Code 通过 MCP 直接读取画布的<strong>精确坐标、令牌与结构</strong>来生成代码——不是看图猜,而是读数据。设计与代码同仓库、同上下文、同一次提交。社区把这种体验称为「vibe design」:自然语言生成 UI → Git 直接管理 → 一句话转成代码。</div>
 
-<h3>能力版图</h3>
+<h3 data-reveal>能力版图</h3>
 <table class="tbl">
   <tr><th>角色</th><th>提供什么</th></tr>
   <tr><td><strong>Pencil</strong></td><td>无限画布、组件/变量/插槽体系、Figma 导入、内置 AI 聊天、.pen 文件格式、无头 CLI</td></tr>
@@ -356,7 +356,7 @@ figure figcaption a{color:var(--text-3)}
 </div>
 <p class="src">以上图片来源:<a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO 实测文章</a></p>
 
-<h3>给既有项目改版的完整链路(实测)</h3>
+<h3 data-reveal>给既有项目改版的完整链路(实测)</h3>
 <p>DevelopersIO 演示了对现有项目「设置页」改版的两步法:</p>
 <ol class="steps">
   <li><strong>生成设计</strong>:向 Claude Code 描述页面要求(用 Pencil MCP 设计当前项目的 Settings 页:白色卡片表单、AI 分析设置分区、模型单选按钮、每个模型下方灰色小字说明……)——先产出 .pen 设计稿。</li>
@@ -376,7 +376,7 @@ figure figcaption a{color:var(--text-3)}
 <h2>实战提示词范例集</h2>
 <p>以下范例来自社区实测与官方文档,可直接改造使用。经验规律:<strong>「页面类型 + 内容清单 + 配色气质」三要素</strong>的提示词,一次成型率最高。</p>
 
-<h3>整页生成(三要素模板)</h3>
+<h3 data-reveal>整页生成(三要素模板)</h3>
 <div class="prompt-box"><div class="pt">模板</div><code>设计一个〔页面类型/目标用户〕
 〔功能与内容清单:模块 1、模块 2、模块 3……〕
 〔配色与气质:色系 + 形容词〕</code></div>
@@ -388,7 +388,7 @@ figure figcaption a{color:var(--text-3)}
 每日销售柱状图、热门菜单排行、库存预警、今日预约列表
 暖棕色系配色</code></div>
 
-<h3>设计 → 代码(指定技术栈)</h3>
+<h3 data-reveal>设计 → 代码(指定技术栈)</h3>
 <div class="prompt-box"><div class="pt">组件级</div><code>Create a React component for this button
 Generate TypeScript types for this form
 Export this card as a reusable component</code></div>
@@ -396,17 +396,17 @@ Export this card as a reusable component</code></div>
 Use shadcn/ui components for this layout
 Export using Lucide icons instead of Material Icons</code></div>
 
-<h3>代码 → 设计</h3>
+<h3 data-reveal>代码 → 设计</h3>
 <div class="prompt-box"><div class="pt">导入既有组件</div><code>Recreate the Button component from src/components/Button.tsx
 Import the LoginForm from my codebase into this design
 Recreate all components from src/components in Pencil</code></div>
 
-<h3>变量与设计令牌</h3>
+<h3 data-reveal>变量与设计令牌</h3>
 <div class="prompt-box"><div class="pt">双向同步</div><code>Create Pencil variables from my globals.css
 Update globals.css with these Pencil variables
 Sync typography variables between CSS and Pencil</code></div>
 
-<h3>设计系统一致性</h3>
+<h3 data-reveal>设计系统一致性</h3>
 <div class="prompt-box"><div class="pt">批量约束</div><code>Ensure all buttons use the primary color variable
 Apply 8px spacing grid to all elements
 Create 5 variations of this button component</code></div>
@@ -422,7 +422,7 @@ Create 5 variations of this button component</code></div>
 <h2>设计系统工程化</h2>
 <p>单页生成只是起点;社区里最成熟的打法,是把 Pencil + Claude Code 当成<strong>设计系统的生产与消费流水线</strong>。</p>
 
-<h3>五阶段方法论(社区 Claude Code Skill)</h3>
+<h3 data-reveal>五阶段方法论(社区 Claude Code Skill)</h3>
 <p>社区流传较广的 <code>/create-design-system</code> 技能把「从想法到设计系统」拆成五个必须逐一确认的阶段,核心思想是<strong>每个阶段边界都停下来给人确认,绝不一口气冲到底</strong>:</p>
 <table class="tbl">
   <tr><th>阶段</th><th>做什么</th><th>关键动作</th></tr>
@@ -434,7 +434,7 @@ Create 5 variations of this button component</code></div>
 </table>
 <div class="callout note"><b class="t">该技能的通用守则(同样适用于日常使用)</b>不停展示工作(每个大步骤后截图);阶段间必须确认;宁可「无聊但易读」不要「新奇但难懂」;给节点起好名字;画布保持分区整洁。</div>
 
-<h3>企业级案例:Lullabot 品牌库</h3>
+<h3 data-reveal>企业级案例:Lullabot 品牌库</h3>
 <p>Lullabot 工程师 Jerad Bitner 的做法展示了「库文件」的正确姿势:把整个品牌系统装进一个可导入的设计库——56 个颜色变量、Circular + IBM Plex Mono 的字体令牌、4px 网格的间距阶梯、16 个可复用组件(按钮、卡片、表单输入、导航链接、徽章、标签、引用块)。</p>
 <ul>
   <li>公司内部工具 OpptyNet 导入它,Upstraker 导入它,下一个新工具还导入它——<strong>第二个项目起,视觉语言就不用从零搭</strong>。</li>
@@ -455,13 +455,13 @@ Create 5 variations of this button component</code></div>
 <div class="sec-tag">实战 05</div>
 <h2>高效提示词模式</h2>
 
-<h3>具体性法则</h3>
+<h3 data-reveal>具体性法则</h3>
 <div class="duo">
   <div class="bad"><b>❌ 低效</b>"弄好看点" / "加个表单" / "做个页面"</div>
   <div class="good"><b>✅ 高效</b>"按钮内边距加到 16px,颜色改为蓝色" / "登录表单:邮箱、密码、记住我、提交按钮" / "三要素:页面类型+内容清单+配色气质"</div>
 </div>
 
-<h3>迭代金字塔(官方推荐节奏)</h3>
+<h3 data-reveal>迭代金字塔(官方推荐节奏)</h3>
 <ol class="steps">
   <li><strong>先框架</strong> — "创建仪表盘布局"</li>
   <li><strong>再细化</strong> — "加带导航项的侧边栏"</li>
@@ -470,7 +470,7 @@ Create 5 variations of this button component</code></div>
 </ol>
 <p>社区共识与此一致:<strong>抵制「一个巨型提示词生成完整应用」的诱惑</strong>。小块设计 → 生成 → 审查 → 精修 → 下一块,质量远高于一次性梭哈。</p>
 
-<h3>上下文注入技巧</h3>
+<h3 data-reveal>上下文注入技巧</h3>
 <ul>
   <li><strong>引用既有资产</strong>:"用我们现有的按钮组件"、"遵循变量里的间距阶梯"、"和 Header 组件风格保持一致"——让 AI 复用而不是重造。</li>
   <li><strong>点名设计系统</strong>:"按 Material Design 原则"、"用 shadcn/ui 风格"、"遵循 design-system.pen 里的规范"。</li>
@@ -478,7 +478,7 @@ Create 5 variations of this button component</code></div>
   <li><strong>要求先解释再动手</strong>:对大改动,让 AI 先说明打算怎么改,确认后再执行,配合 Claude Code 的计划模式(Plan Mode)效果更佳——计划错了一句话就能纠正,改完了才发现错,代价是几百行 diff。</li>
 </ul>
 
-<h3>验证闭环</h3>
+<h3 data-reveal>验证闭环</h3>
 <ol>
   <li>画布上<strong>目视检查</strong>;</li>
   <li>图层面板<strong>核对结构</strong>;</li>
@@ -494,7 +494,7 @@ Create 5 variations of this button component</code></div>
 <div class="sec-tag">进阶 06</div>
 <h2>高级玩法</h2>
 
-<h3>Pencil CLI:无头设计与批量生产</h3>
+<h3 data-reveal>Pencil CLI:无头设计与批量生产</h3>
 <p>Pencil CLI 与桌面应用共用同一编辑引擎,却完全不需要 GUI——这让「设计」变成可脚本化的构建步骤:</p>
 <pre><code><span class="c"># 一句话生成设计文件</span>
 pencil --out login.pen --prompt "Create a modern login page with email, password, social login"
@@ -509,19 +509,19 @@ pencil --tasks batch.json
 <span class="c"># 简单任务换便宜模型,控制成本</span>
 pencil --out simple.pen --model claude-haiku-4-5 --prompt "Create a simple 404 page"</code></pre>
 
-<h3>接入 CI/CD</h3>
+<h3 data-reveal>接入 CI/CD</h3>
 <p>在组织设置的 Developer Keys 里创建 CLI Key,流水线中即可自动跑设计任务:</p>
 <pre><code>export PENCIL_CLI_KEY=pencil_cli_...
 export ANTHROPIC_API_KEY=sk-ant-...
 pencil --out onboarding.pen --prompt "Create a 3-step onboarding flow"</code></pre>
 <p>配合 <code>pencil interactive</code> 交互 shell,还能在脚本里直接调 MCP 工具做精细操作(<code>batch_design</code> 建节点 → <code>get_screenshot</code> 出图 → <code>save()</code> 落盘)。</p>
 
-<h3>Script 节点:数据驱动的设计</h3>
+<h3 data-reveal>Script 节点:数据驱动的设计</h3>
 <p>对图表、网格、纹样这类「手搭很痛苦」的结构,用 Script 节点让代码生成图层:声明 <code>@input</code> 参数即可在属性面板获得可视化旋钮;把输入绑到变量(如 <code>$primary</code>)还能自动响应主题切换。官方示例仓库 <a href="https://github.com/highagency/pencil-scripts" target="_blank">highagency/pencil-scripts</a> 提供现成的图表/网格/纹样脚本。</p>
 <div class="prompt-box"><div class="pt">让 AI 直接写脚本</div><code>Create a script that renders a horizontal bar chart with 5 bars.
 Add inputs for the bar color, gap between bars, and an array of values.</code></div>
 
-<h3>与 Claude Code 生态组合</h3>
+<h3 data-reveal>与 Claude Code 生态组合</h3>
 <ul>
   <li><strong>Skills(技能)</strong>:把重复流程固化成技能,如社区的 <code>/create-design-system</code>(五阶段设计系统)和 <a href="https://mcpmarket.com/tools/skills/pencil-to-code" target="_blank">pencil-to-code</a>(.pen → React 组件的规范化转换)。</li>
   <li><strong>Plan Mode</strong>:大功能先规划后动手;规划阶段只读不写,方向错了一句话就能掉头。</li>
@@ -537,10 +537,10 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 <div class="sec-tag">进阶 07</div>
 <h2>避坑清单</h2>
 
-<h3>方法论层面</h3>
+<h3 data-reveal>方法论层面</h3>
 <div class="callout warn"><b class="t">最大的坑:先画像素,后想目的</b>Jerad Bitner 复盘 OpptyNet 项目时的核心教训——一上来就让 AI 出 UI,产出「看着挺像回事」却是在没打地基的房子上刷漆。正确顺序:<strong>先定义目的</strong>(给谁用?成功长什么样?例如「业务同事要在 60 秒内从邮件摘要做出 go/no-go 判断」)→ 内容建模 → 设计令牌 → <em>然后</em>才是像素。他发现的关键规律:缺筛选器、AI 功能被藏进标签页,这些是「目的问题」,再多视觉打磨也修不好。</div>
 
-<h3>操作层面</h3>
+<h3 data-reveal>操作层面</h3>
 <table class="tbl">
   <tr><th>坑</th><th>规避方法</th></tr>
   <tr><td>元素散落画布,AI 读不到</td><td><strong>永远在命名的 Frame 里设计</strong>——MCP 工具按 Frame 读取数据</td></tr>
@@ -555,7 +555,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
   <tr><td>多人实时协作预期落空</td><td>暂无 multiplayer,用 Git 分支 + PR 评审设计</td></tr>
 </table>
 
-<h3>认知层面</h3>
+<h3 data-reveal>认知层面</h3>
 <ul>
   <li><strong>AI 产出质量 ∝ 你给的上下文质量</strong>——这是全部实践浓缩成的一句话。模糊提示 + 无上下文 = 通用模板;具体提示 + 画布/风格/仓库上下文 = 属于你产品的代码。</li>
   <li><strong>Pencil 不是 Figma 替代品</strong>(至少现在不是):功能没有 Figma 全,强项是内部工具、快速原型与设计-代码一体化场景;重协作、重高保真交付的团队仍需权衡。</li>
@@ -570,7 +570,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 <div class="sec-tag">进阶 08</div>
 <h2>真实案例研究</h2>
 
-<h3>案例一:OpptyNet — 七个版本,三小时,一条对话线</h3>
+<h3 data-reveal>案例一:OpptyNet — 七个版本,三小时,一条对话线</h3>
 <p>Lullabot 内部的政府招标(RFP)筛选工具,全程用 Pencil + Claude Code 对话式设计:</p>
 <table class="tbl">
   <tr><th>版本</th><th>方案</th><th>结论</th></tr>
@@ -603,7 +603,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 
 <p>作者的三点收获:① 方法论先于像素——缺筛选器这种坑,七轮像素迭代也发现不了;② 对话式迭代快得惊人——「统计压成一行」一句话就是一轮;③ 设计与代码同环境,从一开始就共享上下文。</p>
 
-<h3>案例二:Upstraker — 库复用的复利</h3>
+<h3 data-reveal>案例二:Upstraker — 库复用的复利</h3>
 <p>第二个内部工具直接导入第一个项目沉淀的 Lullabot 设计库(56 色彩变量 + 16 组件),概念成型明显更快;亮暗双主题同出于一套库令牌。<strong>设计库的价值在第二个项目开始兑现,并随项目数量复利增长。</strong></p>
 <div class="img-grid">
   <figure class="tall">
@@ -617,7 +617,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 </div>
 <p class="src">图片来源:<a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner 博客</a></p>
 
-<h3>案例三:DevelopersIO 五页面实测</h3>
+<h3 data-reveal>案例三:DevelopersIO 五页面实测</h3>
 <p>用「三要素提示词」连测五种完全不同类型的页面(旅行相册 / 面包店点单 / 咖啡店仪表盘 / 社区公告板 / 企业员工门户),全部达到可直接用作原型的质量,MCP 服务器全程稳定;并验证了「生成 .pen 设计稿 → 一句话应用到既有项目 CSS」的改版链路。作者的定位判断:功能不如 Figma 多,但对「对齐设计意象」的场景刚刚好。</p>
 <p class="src">来源:<a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner: Designing with Pencil and Claude Code</a> · <a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a></p>
 </section>
@@ -628,7 +628,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 <div class="sec-tag">附录 09</div>
 <h2>资源与来源索引</h2>
 
-<h3>官方资源</h3>
+<h3 data-reveal>官方资源</h3>
 <table class="tbl">
   <tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://www.pencil.dev/" target="_blank">pencil.dev</a></td><td>官网与下载</td></tr>
@@ -638,7 +638,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
   <tr><td><a href="https://code.claude.com/docs" target="_blank">Claude Code 文档</a></td><td>安装、MCP 配置、Skills、Plan Mode</td></tr>
 </table>
 
-<h3>本文引用的社区实践(按主题)</h3>
+<h3 data-reveal>本文引用的社区实践(按主题)</h3>
 <table class="tbl">
   <tr><th>主题</th><th>来源</th></tr>
   <tr><td>端到端工作流与 Pro Tips</td><td><a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow: From Design to Production Code in Minutes</a>(2026-02)</td></tr>
@@ -669,5 +669,6 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body>
 </html>
