@@ -64,7 +64,7 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:34px 0 8px}
 .card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 20px 18px;text-decoration:none;
-  color:var(--text);transition:.18s;background:#fff}
+  color:var(--text);transition:var(--dur-hover,.3s) var(--ease-breathe,ease);background:#fff}
 .card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(91,91,246,.10);transform:translateY(-2px)}
 .card .ic{font-size:20px;margin-bottom:10px}
 .card b{display:block;font-size:15px;margin-bottom:4px}
