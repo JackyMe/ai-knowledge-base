@@ -79,3 +79,17 @@ figure img{cursor:zoom-in}
   opacity:0;pointer-events:none;transition:opacity .25s}
 .sb-backdrop.on{opacity:1;pointer-events:auto}
 @media (min-width:1081px){.sb-backdrop{display:none}}  /* 桌面侧栏常驻,无需遮罩 */
+
+/* ===== 大厂动效:令牌 + 滚动浮现基础样式(供 motion.js 使用) ===== */
+:root{
+  --ease-breathe:cubic-bezier(.22,1,.36,1);
+  --dur-enter:.7s;
+  --dur-hover:.3s;
+  --rise-enter:16px;
+  --rise-hover:3px;
+}
+[data-reveal]{opacity:0;transform:translateY(var(--rise-enter))}
+[data-reveal].is-visible{opacity:1;transform:none;
+  transition:opacity var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms),
+             transform var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
