@@ -302,8 +302,9 @@ try{last=JSON.parse(localStorage.getItem('pkb-last')||'null')}catch(e){}
 const grid=$('#grid');
 grid.innerHTML=TOPICS.map((t,ti)=>{
   const isLast=last&&last.page&&t.href.split('/').pop()===last.page;
+  const revealDelay=Math.min(ti,4)*60;
   return `
-  <article class="topic" style="--tc:${t.color}" data-tag="${escq(t.tag)}">
+  <article class="topic" style="--tc:${t.color};--reveal-delay:${revealDelay}ms" data-tag="${escq(t.tag)}" data-reveal>
     <a class="cover" href="${t.href}" aria-label="${escq(t.title)}"></a>
     <div class="head"><div class="ic">${t.icon}</div><div class="tag">${escq(t.tag)}</div><span class="arrow">→</span></div>
     <b class="tt">${escq(t.title)}</b>
@@ -523,8 +524,8 @@ TOPICS.forEach(t=>t.sections.forEach(s=>{
   if(s.quick)QUICKREF.push({href:`${t.href}#${s.id}`,icon:t.icon,color:t.color,label:s.quickLabel||s.label});
 }));
 if(QUICKREF.length){
-  $('#quickref').insertAdjacentHTML('beforeend',QUICKREF.map(r=>
-    `<a href="${r.href}" style="--qc:${r.color}"><span class="qic">${r.icon}</span>${escq(r.label)} →</a>`).join(''));
+  $('#quickref').insertAdjacentHTML('beforeend',QUICKREF.map((r,ri)=>
+    `<a href="${r.href}" style="--qc:${r.color};--reveal-delay:${Math.min(ri,4)*40}ms" data-reveal><span class="qic">${r.icon}</span>${escq(r.label)} →</a>`).join(''));
 }else{
   $('#quickref').style.display='none';
 }
