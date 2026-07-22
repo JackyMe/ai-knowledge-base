@@ -9,7 +9,7 @@
 ![零依赖](https://img.shields.io/badge/构建-零依赖-brightgreen?style=flat-square)
 ![语言](https://img.shields.io/badge/语言-中文-red?style=flat-square)
 
-**[🌐 在线访问 aidoc-zq.netlify.app](https://aidoc-zq.netlify.app)** ·  [View in English »](README.en.md)
+**[🌐 在线访问 aidoc-zq.netlify.app](https://aidoc-zq.netlify.app)**(主站) · [GitHub Pages 镜像](https://jackyme.github.io/ai-knowledge-base/) ·  [View in English »](README.en.md)
 
 </div>
 

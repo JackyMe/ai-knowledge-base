@@ -9,7 +9,7 @@
 ![Zero Dependencies](https://img.shields.io/badge/build-zero%20dependencies-brightgreen?style=flat-square)
 ![Language](https://img.shields.io/badge/content-Chinese%20%28default%29-red?style=flat-square)
 
-**[🌐 Visit aidoc-zq.netlify.app](https://aidoc-zq.netlify.app)** ·  [中文说明 »](README.md)
+**[🌐 Visit aidoc-zq.netlify.app](https://aidoc-zq.netlify.app)** (primary) · [GitHub Pages mirror](https://jackyme.github.io/ai-knowledge-base/) ·  [中文说明 »](README.md)
 
 </div>
 
