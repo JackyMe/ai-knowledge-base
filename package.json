@@ -2,6 +2,12 @@
   "name": "ai-knowledge-base",
   "version": "1.0.0",
   "description": "AI 知识库 —— AI 工具文档中文版与实践精华聚合(纯静态站点)",
+  "homepage": "https://aidoc-zq.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JackyMe/ai-knowledge-base.git"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "npx serve ."
   },

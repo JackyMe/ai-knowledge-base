@@ -8,6 +8,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/JackyMe/ai-knowledge-base?style=flat-square&label=last%20updated)](https://github.com/JackyMe/ai-knowledge-base/commits/main)
 ![Zero Dependencies](https://img.shields.io/badge/build-zero%20dependencies-brightgreen?style=flat-square)
 ![Language](https://img.shields.io/badge/content-Chinese%20%28default%29-red?style=flat-square)
+[![License](https://img.shields.io/badge/code%20license-MIT-blue?style=flat-square)](LICENSE)
 
 **[🌐 Visit aidoc-zq.netlify.app](https://aidoc-zq.netlify.app)** (primary) · [GitHub Pages mirror](https://jackyme.github.io/ai-knowledge-base/) ·  [中文说明 »](README.md)
 
@@ -124,4 +125,5 @@ Both support "import a Git repository" — leave the build command empty and set
 - This is a personally curated set of study notes, drawing heavily on official documentation and community first-hand practice — **every page and its closing section link back to sources.** Disagreements between sources are flagged rather than papered over, and unverified claims aren't presented as fact. If you republish anything, please respect the license terms of the original sources.
 - "Continue reading" and reading-position tracking are powered by browser `localStorage` — no data is uploaded, no account required.
 - AI tooling moves fast; most pages are dated with a last-verified date, but always defer to the official docs as ground truth.
+- The code and site framework are open-sourced under [MIT](LICENSE). The prose content in `topics/*.html` is not covered by that license — see the note at the bottom of the LICENSE file.
 

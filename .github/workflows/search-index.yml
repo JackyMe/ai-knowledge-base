@@ -1,0 +1,39 @@
+name: 重建搜索索引
+
+# topics/*.html 正文改了但忘记手动跑 build-search-index.py 时,
+# 这个 workflow 自动补跑一次并把 assets/js/search-index.js 的更新提交回去。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "topics/**"
+      - "scripts/build-search-index.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: 生成 search-index.js
+        run: python3 scripts/build-search-index.py
+
+      - name: 有变化就提交
+        run: |
+          if git diff --quiet -- assets/js/search-index.js; then
+            echo "索引无变化,跳过提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/js/search-index.js
+          git commit -m "chore: 自动重建搜索索引 [skip ci]"
+          git push

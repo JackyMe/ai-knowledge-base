@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="AI 知识库 —— AI 工具官方文档中文版与全网实践精华聚合:Claude Code、Codex、Pencil、环境急救等,持续扩充。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI 知识库 · 主题中心">
+<meta property="og:description" content="AI 工具官方文档中文版与全网实践精华聚合:Claude Code、Codex、Pencil、环境急救等,持续扩充。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0b1220">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 <title>AI 知识库 · 主题中心</title>
@@ -275,7 +281,6 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 </div>
 
 <script src="assets/js/topics.js"></script>
-<script src="assets/js/search-index.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const escq=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -382,15 +387,31 @@ TOPICS.forEach(t=>{
 if(typeof LEARN!=='undefined')LEARN.forEach(l=>INDEX.push({
   topic:{href:l.href,color:l.color,tag:'学习站',title:l.title},
   label:l.title,id:'',text:(l.title+' '+l.desc+' '+l.tag+' 学习 教程').toLowerCase(),isTopic:true,ext:true}));
-/* 章节正文内容索引(assets/js/search-index.js 预生成,由 scripts/build-search-index.py 扫描 topics/*.html 产出) */
-if(typeof CONTENT_INDEX!=='undefined')CONTENT_INDEX.forEach(c=>{
-  const t=topicByHref[c.href];if(!t)return;
-  INDEX.push({topic:t,label:c.label,id:c.id,raw:c.text,
-    text:(c.label+' '+c.text).toLowerCase(),isTopic:false,isContent:true});
-});
 const q=$('#q'),results=$('#results'),browse=$('#browse'),qmeta=$('#qmeta');
 let sel=0,shown=[];
-qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目(含章节正文内容检索)`;
+qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目(开始搜索后自动加载章节正文内容索引)`;
+
+/* 章节正文内容索引(assets/js/search-index.js,412KB,由 scripts/build-search-index.py 扫描 topics/*.html 预生成)
+   懒加载:首屏不拖它,第一次聚焦/输入搜索框才拉取,加载完自动回填并重跑一次当前搜索 */
+let contentIndexState='idle';
+function ensureContentIndex(){
+  if(contentIndexState!=='idle')return;
+  contentIndexState='loading';
+  const s=document.createElement('script');
+  s.src='assets/js/search-index.js';
+  s.onload=()=>{
+    if(typeof CONTENT_INDEX!=='undefined')CONTENT_INDEX.forEach(c=>{
+      const t=topicByHref[c.href];if(!t)return;
+      INDEX.push({topic:t,label:c.label,id:c.id,raw:c.text,
+        text:(c.label+' '+c.text).toLowerCase(),isTopic:false,isContent:true});
+    });
+    contentIndexState='ready';
+    qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目(含章节正文内容检索)`;
+    if(q.value.trim())doSearch();
+  };
+  document.body.appendChild(s);
+}
+q.addEventListener('focus',ensureContentIndex,{once:true});
 function hl(s,kw){if(!kw)return escq(s);
   const i=s.toLowerCase().indexOf(kw);if(i<0)return escq(s);
   return escq(s.slice(0,i))+'<mark>'+escq(s.slice(i,i+kw.length))+'</mark>'+escq(s.slice(i+kw.length))}
@@ -439,6 +460,7 @@ function doSearch(){
   const kwRaw=q.value.trim();
   const kw=kwRaw.toLowerCase();
   if(!kw){results.classList.remove('on');browse.style.display='';shown=[];return}
+  ensureContentIndex();
   /* 第一层:多词 AND 精确子串匹配(空格分词,全部命中才算,权威度最高) */
   const terms=kw.split(/\s+/).filter(Boolean);
   const exact=INDEX.filter(it=>terms.every(w=>it.text.includes(w)));
