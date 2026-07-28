@@ -114,7 +114,7 @@ pre .c{color:#8d8478}
 
 /* 高频核心命令墙 */
 .hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
-.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:.15s}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:var(--dur-hover,.3s) var(--ease-breathe,ease)}
 .hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(23,19,16,.06)}
 .hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
 .hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
@@ -262,7 +262,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li>为什么"纠正两次就重开" → 失败尝试也留在上下文里,会把模型往同一个坑里带。</li>
 </ul>
 
-<h3>五种形态,同一个引擎</h3>
+<h3 data-reveal>五种形态,同一个引擎</h3>
 <p>Claude Code 不只活在终端里。关键在于:<strong>所有形态共用同一引擎,CLAUDE.md、settings、MCP 配一次处处生效</strong>。</p>
 <table class="tbl">
   <tr><th>形态</th><th>入口</th><th>适合</th></tr>
@@ -273,7 +273,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>GitHub</td><td><code>/install-github-app</code> 后在 PR 中 @claude</td><td>评审与自动修复</td></tr>
 </table>
 
-<h3>当前版本与模型(截至 2026-07)</h3>
+<h3 data-reveal>当前版本与模型(截至 2026-07)</h3>
 <table class="tbl">
   <tr><th>模型别名</th><th>说明</th><th>适用</th></tr>
   <tr><td><code>sonnet</code></td><td>Sonnet 5,当前默认模型,原生 1M 上下文</td><td>日常开发的主力,速度与能力平衡</td></tr>
@@ -291,7 +291,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h2>五条黄金法则</h2>
 <p>官方 Best Practices 数千字,可以浓缩为五条。每一条都值得贴在显示器边上。</p>
 
-<h3>法则一:给 Claude 一个能自己跑的验证</h3>
+<h3 data-reveal>法则一:给 Claude 一个能自己跑的验证</h3>
 <p>Claude 在"看起来完成"时就会停手。没有可运行的检查,你就是那个验证环节——每个错误都要等你发现。给它一个能产出 pass/fail 的信号(测试套件、构建退出码、linter、对照截图),循环就自动闭合:干活 → 跑检查 → 读结果 → 迭代到通过。</p>
 <div class="duo">
   <div class="bad"><b>❌ 弱</b>"实现一个校验邮箱的函数" / "构建挂了,修一下"</div>
@@ -299,11 +299,11 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </div>
 <p>验证的四个强度档位,按无人值守程度递进:同一条提示里要求"跑检查并迭代" → 用 <code>/goal</code> 设定条件让评估器每回合复查 → 用 <strong>Stop hook</strong> 把检查做成硬门禁(不通过就不许结束回合) → 让<strong>验证子代理</strong>用全新上下文给出第二意见。另外:要求 Claude <strong>出示证据</strong>(测试输出、命令返回、截图),而不是口头宣布成功。</p>
 
-<h3>法则二:先探索、再计划、后写码</h3>
+<h3 data-reveal>法则二:先探索、再计划、后写码</h3>
 <p>直接开写,很容易解决了一个错误的问题。推荐四段式:<strong>Explore</strong>(计划模式下读文件、问问题,不改代码)→ <strong>Plan</strong>(产出实施计划,<kbd>Ctrl+G</kbd> 可在编辑器里直接改计划)→ <strong>Implement</strong>(退出计划模式实现,对照计划自验)→ <strong>Commit</strong>(写清晰的提交信息、开 PR)。</p>
 <div class="callout tip"><b class="t">别把计划当教条</b>范围明确的小改动(改错字、加日志、重命名)直接让它干。官方的判断标准:<strong>如果一句话能说清 diff 长什么样,就跳过计划</strong>。计划最值钱的时机:方案不确定、涉及多文件、你对这块代码不熟。</div>
 
-<h3>法则三:提示要具体,上下文要够料</h3>
+<h3 data-reveal>法则三:提示要具体,上下文要够料</h3>
 <p>Claude 能推断意图,但不能读心。指名文件、说明约束、指向既有范式:</p>
 <table class="tbl">
   <tr><th>策略</th><th>弱提示</th><th>强提示</th></tr>
@@ -314,7 +314,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </table>
 <p>喂料的五种姿势:<code>@文件</code> 引用(Claude 会先读再答)、直接<strong>粘贴图片</strong>(<kbd>Ctrl+V</kbd>)、给 <strong>URL</strong>(配合 <code>/permissions</code> 放行常用域名)、<strong>管道</strong>灌入(<code>cat error.log | claude</code>)、或者让它自己去取(跑命令 / MCP / 读文件)。</p>
 
-<h3>法则四:小步纠偏,勤清上下文</h3>
+<h3 data-reveal>法则四:小步纠偏,勤清上下文</h3>
 <ul>
   <li><kbd>Esc</kbd> 随时打断,上下文保留,可立即改方向;</li>
   <li><kbd>Esc Esc</kbd> / <code>/rewind</code> 打开回滚菜单:恢复对话、恢复代码、或两者都恢复;</li>
@@ -322,7 +322,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><code>/clear</code> 在不相关任务之间必用;<strong>同一问题纠正两次仍错,别恋战</strong>——/clear 后用吸收了教训的更好提示重来,几乎总是赢过一个塞满失败尝试的长会话。</li>
 </ul>
 
-<h3>法则五:让它先采访你(大功能必备)</h3>
+<h3 data-reveal>法则五:让它先采访你(大功能必备)</h3>
 <p>大功能别急着下指令,先让 Claude 用 AskUserQuestion 工具反过来采访你:</p>
 <pre><code>我想做[简要描述]。用 AskUserQuestion 工具详细采访我:
 技术实现、UI/UX、边界情况、顾虑与取舍。别问显而易见的问题,
@@ -338,7 +338,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h2>安装与首次配置</h2>
 <div class="callout warn"><b class="t">🚑 装不上 / 登录报错 / 换电脑?</b>安装登录环节的一切疑难(凭证打架、共用电脑、SSH/CI、万能重置)在独立专题:<a href="env-auth-clinic.html">环境与登录急救手册</a>,按症状 30 秒直达修复。</div>
 
-<h3>安装与登录</h3>
+<h3 data-reveal>安装与登录</h3>
 <pre><code><span class="c"># 安装(npm 方式)</span>
 npm install -g @anthropic-ai/claude-code
 
@@ -350,7 +350,7 @@ claude auth status        <span class="c"># 查看登录状态(JSON;--text 人�
 claude update             <span class="c"># 升级到最新版</span>
 claude doctor             <span class="c"># 安装与配置诊断(只读,不进会话)</span></code></pre>
 
-<h3>进入新仓库的标准五步</h3>
+<h3 data-reveal>进入新仓库的标准五步</h3>
 <ol class="steps">
   <li><code>/init</code> —— 分析代码库(构建系统、测试框架、代码模式)生成 CLAUDE.md 初稿,之后用 <code>/memory</code> 持续打磨</li>
   <li><code>/permissions</code> —— 配好 allow/ask/deny 规则,把 <code>npm run lint</code>、<code>git diff</code> 这类安全命令放进白名单(或直接跑 <code>/fewer-permission-prompts</code> 让它根据你的历史自动生成白名单)</li>
@@ -368,7 +368,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <h2>命令速查手册</h2>
 <p>按使用场景分组,只收高频与高价值命令。会话内键入 <code>/</code> 可浏览你环境里的全部命令;标注 <span class="pill c">Skill</span> 的是"捆绑技能"——由提示驱动、可被同名自定义技能覆盖。</p>
 
-<h3>⚡ 高频核心命令(先记这 8 个)</h3>
+<h3 data-reveal>⚡ 高频核心命令(先记这 8 个)</h3>
 <p>下面完整表格收录 100+ 条,但日常 90% 的场景只靠这几个打底;标 <b>★ 必会</b> 的三个建议练到肌肉记忆。</p>
 <div class="hotcmds">
   <div class="hotcmd must"><span class="hc-cmd">claude -p "任务"</span><span class="hc-desc">非交互执行,退出即返回结果——脚本 / CI / 自动化流水线的基石</span></div>
@@ -381,7 +381,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <div class="hotcmd"><span class="hc-cmd">/usage</span><span class="hc-desc">本会话花费与套餐额度一目了然,超支前先知道</span></div>
 </div>
 
-<h3>终端命令(会话外)</h3>
+<h3 data-reveal>终端命令(会话外)</h3>
 <table class="tbl">
   <tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>claude</code> / <code>claude "任务"</code></td><td>启动交互会话 / 带初始提示启动</td></tr>
@@ -396,7 +396,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>claude project purge</code></td><td>清空某项目的全部本地状态(转录、历史、日志)</td></tr>
 </table>
 
-<h3>高价值启动参数</h3>
+<h3 data-reveal>高价值启动参数</h3>
 <table class="tbl">
   <tr><th>参数</th><th>作用</th></tr>
   <tr><td><code>--model</code> / <code>--effort</code></td><td>指定模型(sonnet/opus/haiku/fable)/ 推理力度(low→ultracode)</td></tr>
@@ -413,7 +413,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>--cloud</code> / <code>--teleport</code></td><td>把任务发到 claude.ai 云端跑 / 把云端会话拉回本地终端</td></tr>
 </table>
 
-<h3>会话内命令 · 按场景分组</h3>
+<h3 data-reveal>会话内命令 · 按场景分组</h3>
 <h4>① 会话与上下文</h4>
 <table class="tbl">
   <tr><th>命令</th><th>作用</th></tr>
@@ -477,7 +477,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <div class="sec-tag">速查 04</div>
 <h2>快捷键与输入技巧</h2>
 
-<h3>必背快捷键(收益排序)</h3>
+<h3 data-reveal>必背快捷键(收益排序)</h3>
 <table class="tbl">
   <tr><th>快捷键</th><th>作用</th><th>为什么值得背</th></tr>
   <tr><td><kbd>Esc</kbd></td><td>打断当前回合</td><td>纠偏的第一反应,已完成的工作保留</td></tr>
@@ -492,7 +492,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><kbd>Option/Alt+P</kbd> / <kbd>+T</kbd></td><td>切模型 / 切扩展思考</td><td>不清空输入就能换脑子</td></tr>
 </table>
 
-<h3>三个前缀,三种模式</h3>
+<h3 data-reveal>三个前缀,三种模式</h3>
 <table class="tbl">
   <tr><th>前缀</th><th>模式</th><th>说明</th></tr>
   <tr><td><code>/</code></td><td>命令 / 技能</td><td>可链式:<code>/skill-a /skill-b 干活</code> 同时加载多个技能(最多 6 个)</td></tr>
@@ -529,7 +529,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <div class="sec-tag">扩展体系 06</div>
 <h2>Skills / Hooks / MCP / 子代理:深入四件套</h2>
 
-<h3>Skills:按需加载的专家技能包</h3>
+<h3 data-reveal>Skills:按需加载的专家技能包</h3>
 <p>一个技能 = 一个目录 + 一个 <code>SKILL.md</code>(可附模板、示例、脚本)。Claude 匹配到场景自动加载,或你 <code>/技能名</code> 手动调用。判断该建技能的信号:<strong>你在反复粘贴同一段说明/清单/流程</strong>,或 CLAUDE.md 里某段已经从"事实"长成了"流程"。</p>
 <pre><code>.claude/skills/my-skill/
 ├── SKILL.md        <span class="c"># 必需:frontmatter + 指令正文</span>
@@ -549,7 +549,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 </ul>
 <div class="callout tip"><b class="t">写好技能的社区套路</b>description 像路由规则一样写清"何时用我";确定性的工作交给附带脚本而不是靠模型发挥;SKILL.md 保持精瘦、细节推到按需加载的附属文件;一个技能只干一件事;给具体的正反示例而不是抽象规则堆。</div>
 
-<h3>Hooks:确定性的护栏</h3>
+<h3 data-reveal>Hooks:确定性的护栏</h3>
 <p>CLAUDE.md 和技能里的指令是<strong>建议</strong>;必须发生的事,属于 Hook。Hook 在生命周期事件上运行脚本,以退出码 2 即可阻断动作。常用事件:</p>
 <table class="tbl">
   <tr><th>事件</th><th>时机</th><th>典型用法</th></tr>
@@ -572,7 +572,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <div class="callout tip"><b class="t">偷懒的正确方式</b>Hook 可以让 Claude 替你写:"写一个 hook,每次文件编辑后跑 eslint"、"写一个 hook,阻止对 migrations 目录的写入"。<code>/hooks</code> 查看已配置项。</div>
 <div class="callout warn"><b class="t">比 Hook 更安全的做法</b>敏感文件防读,权限规则优于 Hook:<code>deny</code> 规则(如 <code>Read(./.env)</code>、<code>Read(./secrets/**)</code>)让文件对 Claude 直接"不可见"。权限评估顺序:<strong>deny → ask → allow</strong>。</div>
 
-<h3>子代理(Subagents):独立上下文的分身</h3>
+<h3 data-reveal>子代理(Subagents):独立上下文的分身</h3>
 <p>定义在 <code>.claude/agents/*.md</code>,拥有自己的上下文窗口、工具集与系统提示。两大用途:</p>
 <ul>
   <li><strong>调研隔离</strong>:"用子代理调查认证系统如何处理 token 刷新"——它读几十个文件,你的主上下文只收到一份结论摘要;</li>
@@ -591,7 +591,7 @@ model: opus
 <div class="callout note"><b class="t">/btw 与子代理互为镜像</b>/btw 看得见全部对话但没有工具(问"已知的事");子代理有全部工具但从空上下文出发(去"查新的事")。选对方向,省一半上下文。</div>
 <div class="callout warn"><b class="t">评审代理的通病</b>被要求找问题的评审者总能"找到"问题——哪怕工作没毛病。追着每条发现改,结局是过度设计。给评审者立规矩:只报影响正确性或既定需求的缺口,其余当可选项。</div>
 
-<h3>MCP:连接外部世界</h3>
+<h3 data-reveal>MCP:连接外部世界</h3>
 <p>MCP(Model Context Protocol)让 Claude Code 直连数据库、Figma、Slack、Sentry 等外部系统。<strong>配置不在 settings.json 里</strong>——这是最常见的迷路点。</p>
 <h4>添加与管理</h4>
 <pre><code><span class="c"># 添加本地 stdio 服务器</span>
@@ -707,10 +707,10 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <div class="sec-tag">实战 08</div>
 <h2>上下文管理进阶</h2>
 
-<h3>诊断:先看清再动手</h3>
+<h3 data-reveal>诊断:先看清再动手</h3>
 <p><code>/context</code> 用彩色网格告诉你窗口被什么占着(哪个工具重、记忆文件是否臃肿、还剩多少容量),配上 <code>/statusline</code> 的常显用量,做到心里有数。</p>
 
-<h3>四种腾地方的手段(由轻到重)</h3>
+<h3 data-reveal>四种腾地方的手段(由轻到重)</h3>
 <table class="tbl">
   <tr><th>手段</th><th>动作</th><th>适用时机</th></tr>
   <tr><td>侧问</td><td><code>/btw 问题</code></td><td>只想快速确认一个细节,答案不需要留在历史里</td></tr>
@@ -720,10 +720,10 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 </table>
 <div class="callout tip"><b class="t">让压缩听你的话</b>在 CLAUDE.md 写下压缩策略,自动压缩时也会遵守,例如:"压缩时始终保留完整的已修改文件列表和测试命令"。</div>
 
-<h3>检查点:大胆试错的安全网</h3>
+<h3 data-reveal>检查点:大胆试错的安全网</h3>
 <p>每发一条提示自动建一个检查点,文件改动先快照。<kbd>Esc Esc</kbd> / <code>/rewind</code> 可以只回滚对话(实现满意但想换个说法)、只回滚代码(讨论有价值但想换实现)、或全回滚。检查点随会话持久化——关掉终端明天回来照样能回滚。<strong>局限</strong>:只追踪 Claude 编辑工具做的改动,Bash 命令和外部进程的变更不在内,它不是 git 的替代品。</p>
 
-<h3>会话即资产</h3>
+<h3 data-reveal>会话即资产</h3>
 <p>对话全部本地留存:<code>claude -c</code> 续最近、<code>claude -r 名称</code> 精确恢复、<code>/rename</code> 起个像分支名的名字(如 <code>oauth-migration</code>)、<code>/branch</code> 原地分叉试新方向、<code>--fork-session</code> 恢复时另起炉灶不污染原会话。每条工作流一个命名会话,像管理 git 分支一样管理上下文。</p>
 </section>
 
@@ -733,7 +733,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <div class="sec-tag">实战 09</div>
 <h2>权限与安全</h2>
 
-<h3>六种权限模式</h3>
+<h3 data-reveal>六种权限模式</h3>
 <table class="tbl">
   <tr><th>模式</th><th>行为</th><th>适用</th></tr>
   <tr><td><code>default</code></td><td>敏感操作逐一询问</td><td>默认;不熟悉的任务</td></tr>
@@ -745,7 +745,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 </table>
 <p><kbd>Shift+Tab</kbd> 在模式间循环;<code>--permission-mode</code> 指定启动模式。</p>
 
-<h3>规则三层:deny → ask → allow</h3>
+<h3 data-reveal>规则三层:deny → ask → allow</h3>
 <pre><code><span class="c">// .claude/settings.json —— 一份务实的起步配置</span>
 {
   "permissions": {
@@ -775,7 +775,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <p>"配置到底写在哪、登录方式怎么换、换台电脑怎么办"——这一章把散落在官方文档各处的配置与账号知识汇总成一张完整地图,按"是什么 → 在哪里 → 怎么改 → 出问题怎么查"组织。</p>
 <div class="callout note"><b class="t">遇到登录报错 / 环境翻车?</b>本库有一整个专题深挖这类问题:<a href="env-auth-clinic.html">环境与登录急救手册</a>——五层诊断法、一键体检脚本、共用电脑与换机剧本、三级万能重置方案,Claude Code 与 Codex 双工具对照。</div>
 
-<h3>一、配置载体全景图</h3>
+<h3 data-reveal>一、配置载体全景图</h3>
 <p>Claude Code 的所有配置就分布在这几个地方(Windows 上 <code>~/.claude</code> 对应 <code>%USERPROFILE%\.claude</code>):</p>
 <table class="tbl">
   <tr><th>载体</th><th>位置</th><th>管什么 / 谁用</th></tr>
@@ -789,7 +789,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 </table>
 <div class="callout tip"><b class="t">整个 ~/.claude 都可以搬家</b>设置 <code>CLAUDE_CONFIG_DIR</code> 环境变量后,所有 <code>~/.claude</code> 路径都改用该目录——把配置放进同步盘/仓库的正规姿势。</div>
 
-<h3>二、~/.claude 目录里到底有什么</h3>
+<h3 data-reveal>二、~/.claude 目录里到底有什么</h3>
 <table class="tbl">
   <tr><th>路径</th><th>内容</th><th>要不要备份</th></tr>
   <tr><td><code>settings.json</code> / <code>CLAUDE.md</code> / <code>skills/</code> / <code>agents/</code></td><td>你亲手写的配置——核心资产</td><td>✅ 建议进 dotfiles 仓库</td></tr>
@@ -800,7 +800,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 </table>
 <div class="callout warn"><b class="t">明文存储警告(官方)</b>转录与历史<strong>不加密</strong>,仅靠文件权限保护。如果某条命令打印了密钥,它就躺在 <code>projects/&lt;项目&gt;/&lt;会话&gt;.jsonl</code> 里。默认 30 天自动清理(<code>cleanupPeriodDays</code> 可调);<code>claude project purge</code> 可一键清空某项目全部本地状态。</div>
 
-<h3>三、优先级与"为什么没生效"</h3>
+<h3 data-reveal>三、优先级与"为什么没生效"</h3>
 <p>同一个键冲突时:<strong>企业管控 &gt; 命令行参数 &gt; .claude/settings.local.json &gt; .claude/settings.json &gt; ~/.claude/settings.json</strong>。三件事最常造成"改了没反应":</p>
 <ul>
   <li><strong>改错了层</strong>:项目层悄悄覆盖了你的用户层 → <code>/config</code> 看当前生效值,或用 <code>--setting-sources user</code> 只加载指定层排除干扰;</li>
@@ -808,7 +808,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <li><strong>配置本身坏了</strong>:<code>claude doctor</code>(终端体检)/ <code>/doctor</code>(会话内)会报 schema 错误;settings.json 顶部加 <code>"$schema": "https://json.schemastore.org/claude-code-settings.json"</code> 编辑器直接标红。怀疑自定义配置搞坏一切时,<code>claude --safe-mode</code> 全裸启动逐项排除。</li>
 </ul>
 
-<h3>四、登录方式全解与切换</h3>
+<h3 data-reveal>四、登录方式全解与切换</h3>
 <table class="tbl">
   <tr><th>方式</th><th>怎么用</th><th>计费 / 适用</th></tr>
   <tr><td><strong>订阅 OAuth(推荐)</strong></td><td><code>claude</code> 或 <code>/login</code> → 浏览器登录 claude.ai 账号</td><td>Pro/Max 订阅额度;日常首选</td></tr>
@@ -827,7 +827,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 </ol>
 <div class="callout note"><b class="t">认证冲突症状速查</b>"Invalid API key"、"Please run /login"、CLI 好着 Pencil/IDE 却说未登录——九成是<strong>多种凭证并存</strong>:环境变量 + OAuth + 自定义网关互相打架。排查顺序:<code>env | grep -i anthropic</code> 清掉不要的 → <code>claude auth status</code> → 重新干净登录一次。</div>
 
-<h3>五、换电脑 / 多机使用</h3>
+<h3 data-reveal>五、换电脑 / 多机使用</h3>
 <table class="tbl">
   <tr><th>东西</th><th>怎么带走</th></tr>
   <tr><td>全局配置(settings.json、CLAUDE.md、skills/、agents/)</td><td>放 dotfiles 仓库或同步盘;或干脆 <code>CLAUDE_CONFIG_DIR</code> 指向同步目录</td></tr>
@@ -840,7 +840,7 @@ npm install -g @anthropic-ai/claude-code
 claude          <span class="c"># 浏览器登录</span>
 git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或设置 CLAUDE_CONFIG_DIR</span></code></pre>
 
-<h3>六、常用环境变量速查</h3>
+<h3 data-reveal>六、常用环境变量速查</h3>
 <table class="tbl">
   <tr><th>变量</th><th>作用</th></tr>
   <tr><td><code>ANTHROPIC_API_KEY</code></td><td>API Key 认证(优先于 OAuth——冲突之源,慎设)</td></tr>
@@ -852,7 +852,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 </table>
 <p class="src">更多变量见 <a href="https://code.claude.com/docs/en/env-vars" target="_blank">官方 env-vars 全表</a>;环境变量也可写进 settings.json 的 <code>env</code> 块随作用域分发。</p>
 
-<h3>七、额度与成本管理(会员必修)</h3>
+<h3 data-reveal>七、额度与成本管理(会员必修)</h3>
 <p>订阅额度是双层水池:<strong>滚动窗口额度</strong>(约 5 小时一档,用尽等窗口滑动)+ <strong>每周上限</strong>(重度使用才会碰到)。具体数值随套餐与官方策略演进,一切以 <code>/usage</code> 面板显示为准。</p>
 <table class="tbl">
   <tr><th>动作</th><th>怎么做</th></tr>
@@ -863,7 +863,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
   <tr><td>超限了怎么办</td><td>四选一:等窗口重置 / <code>/model</code> 降档继续干 / 临时切 API 计费(设 <code>ANTHROPIC_API_KEY</code> + /config 开关,注意按量计费)/ 升级套餐。<strong>"usage limit reached"不是故障,重装重登毫无作用</strong>——排错去<a href="env-auth-clinic.html#claude-er">急救手册 · 计费与额度类</a></td></tr>
 </table>
 
-<h3>八、高频问题急救表</h3>
+<h3 data-reveal>八、高频问题急救表</h3>
 <table class="tbl">
   <tr><th>症状</th><th>原因 / 解法</th></tr>
   <tr><td>Invalid API key / 反复要求 /login</td><td>凭证冲突:清 <code>ANTHROPIC_*</code> 环境变量 → 重新登录</td></tr>
@@ -887,7 +887,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 <h2>生态精选:方法论、工具与组合拳</h2>
 <p>社区两年沉淀下来,真正经受住检验的东西不多。这一章只收"多榜共识 + 有明确出处"的硬货:三套方法论、一份 MCP 装机单、几套组合拳配方。</p>
 
-<h3>三套值得学的硬核方法论</h3>
+<h3 data-reveal>三套值得学的硬核方法论</h3>
 <table class="tbl">
   <tr><th>方法论</th><th>核心思想</th><th>怎么落地</th></tr>
   <tr><td><strong>Spec 驱动开发</strong></td><td>把模糊想法先固化为结构化规格,再逐任务执行、<strong>每个任务全新上下文</strong></td><td>"加用户认证"先展开成 research → requirements → design → tasks 四份文档,然后逐项实现;本指南法则五(采访出 SPEC)是它的轻量版;插件化方案见 <a href="https://github.com/tzachbon/smart-ralph" target="_blank">smart-ralph</a></td></tr>
@@ -895,7 +895,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
   <tr><td><strong>复利工程</strong></td><td>知识跨会话复利:每次干完活,把学到的沉淀为可复用上下文</td><td>Every.to 的 <a href="https://github.com/EveryInc/compound-engineering-plugin" target="_blank">compound-engineering 插件</a>:/ce-brainstorm → /ce-plan → /ce-work → /ce-review → <strong>/ce-compound</strong>(写回经验)——"同一个坑,一个月后不再踩第二次";不装插件也能学思想:每次修完疑难杂症让 Claude 把根因写进 CLAUDE.md 或技能</td></tr>
 </table>
 
-<h3>MCP 装机单(多榜共识版)</h3>
+<h3 data-reveal>MCP 装机单(多榜共识版)</h3>
 <table class="tbl">
   <tr><th>装什么</th><th>为什么</th></tr>
   <tr><td><strong>GitHub MCP</strong></td><td>各评测榜公认影响力最高:issue/PR/CI 全链路直连(轻量替代:直接用 <code>gh</code> CLI,零上下文成本)</td></tr>
@@ -906,14 +906,14 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 </table>
 <div class="callout warn"><b class="t">反共识提醒(评测验证)</b>两个"热门推荐"其实别装:<strong>Filesystem MCP</strong>——Claude Code 内置文件工具 + 权限体系全面优于它;<strong>Sequential Thinking</strong>——模型自带推理,叠加只是烧上下文。每装一个 MCP 都吃窗口,定期 <code>/context</code> 复查、<code>/mcp</code> 里禁用闲置项。</div>
 
-<h3>Skills 与插件精选</h3>
+<h3 data-reveal>Skills 与插件精选</h3>
 <ul>
   <li><strong>先榨干官方捆绑技能</strong>:/code-review、/batch、/run + /verify、/simplify——多数人还没用到三成;</li>
   <li><strong>skill-creator</strong>:用技能造技能,把你的重复流程半自动固化;</li>
   <li><strong>找现成的</strong>:<a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">awesome-claude-code</a>(社区最全清单)、<a href="https://www.developersdigest.tech/blog/best-claude-code-skills-2026" target="_blank">Developers Digest 精选目录</a>、<a href="https://www.firecrawl.dev/blog/best-claude-code-skills" target="_blank">Firecrawl 评测</a>;<code>/plugin</code> 直接逛官方市场。</li>
 </ul>
 
-<h3>组合拳配方</h3>
+<h3 data-reveal>组合拳配方</h3>
 <table class="tbl">
   <tr><th>场景</th><th>配方</th><th>效果</th></tr>
   <tr><td>UI 开发全闭环</td><td>Pencil MCP(设计)+ 实现 + Playwright MCP / <code>/verify</code>(真浏览器自验)</td><td>设计 → 代码 → 视觉验证,零人工截图比对</td></tr>
@@ -923,7 +923,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
   <tr><td>大规模迁移</td><td>SPEC 文档 + <code>/batch</code>(或 Ralph 循环)+ Stop hook 跑测试</td><td>拆解-并行-验证一条龙</td></tr>
 </table>
 
-<h3>中文学习资源推荐</h3>
+<h3 data-reveal>中文学习资源推荐</h3>
 <p>本指南是"干货速查"定位;如果你想要<strong>手把手的系统教程</strong>,推荐 stormzhang 的开源中文指南 <a href="https://coding.stormzhang.ai/" target="_blank">AI 编程指南</a>(Claude Code 53 篇 + Codex 39 篇,小白友好,GitHub 持续维护)——覆盖了本指南刻意从简的入门细节:逐平台安装、国内网络与第三方模型接入、JetBrains/桌面端形态、术语表等。两者互补:入门跟它走,日常查这里。</p>
 <p class="src">本节来源:<a href="https://nimbalyst.com/blog/best-claude-code-mcp-servers/" target="_blank">Nimbalyst MCP 评测</a> · <a href="https://www.totalum.app/blog/best-mcp-servers-2026" target="_blank">Totalum 2026 榜单</a> · <a href="https://awesomeclaude.ai/ralph-wiggum" target="_blank">Ralph Wiggum 技法指南</a> · <a href="https://blog.logrocket.com/ralph-claude-code/" target="_blank">LogRocket: Ralph 实测</a> · <a href="https://jingles.dev/articles/claude-spec-plan-loop" target="_blank">Spec 驱动三步框架</a> · <a href="https://www.developersdigest.tech/blog/loop-engineering-definitive-guide" target="_blank">Loop Engineering 权威指南</a></p>
 </section>
@@ -955,7 +955,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 <div class="sec-tag">沉淀 13</div>
 <h2>开箱即用模板库</h2>
 
-<h3>① CLAUDE.md 精瘦模板</h3>
+<h3 data-reveal>① CLAUDE.md 精瘦模板</h3>
 <pre><code># 构建与测试
 - 构建: pnpm build   测试: pnpm test -- --run(优先跑单测,别跑全量)
 - 改完一批代码必须跑 pnpm typecheck
@@ -974,7 +974,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 # 压缩策略
 - 压缩对话时,始终保留已修改文件清单与测试命令</code></pre>
 
-<h3>② 技能模板(带动态注入 + 手动触发)</h3>
+<h3 data-reveal>② 技能模板(带动态注入 + 手动触发)</h3>
 <pre><code><span class="c"># .claude/skills/release-notes/SKILL.md</span>
 ---
 name: release-notes
@@ -991,7 +991,7 @@ description: 生成版本发布说明。当用户要求写 changelog、release n
 <span class="c"># 危险流程加一行 frontmatter 即禁止自动触发:</span>
 <span class="c"># disable-model-invocation: true</span></code></pre>
 
-<h3>③ Hook 模板(拦截敏感写入)</h3>
+<h3 data-reveal>③ Hook 模板(拦截敏感写入)</h3>
 <pre><code><span class="c">#!/bin/bash  # .claude/scripts/block-sensitive.sh</span>
 set -euo pipefail
 INPUT="$(cat)"
@@ -1008,7 +1008,7 @@ exit 0
     "hooks": [{ "type": "command", "command": ".claude/scripts/block-sensitive.sh" }] }
 ] } }</code></pre>
 
-<h3>④ 子代理模板(评审员)</h3>
+<h3 data-reveal>④ 子代理模板(评审员)</h3>
 <pre><code><span class="c"># .claude/agents/spec-checker.md</span>
 ---
 name: spec-checker
@@ -1020,7 +1020,7 @@ model: sonnet
 列出的边界情况是否有测试、是否有超出任务范围的改动。
 只报告影响正确性的缺口,不报风格偏好。</code></pre>
 
-<h3>⑤ 无人值守脚本骨架</h3>
+<h3 data-reveal>⑤ 无人值守脚本骨架</h3>
 <pre><code><span class="c"># 批量任务的安全姿势</span>
 claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   --allowedTools "Read,Edit,Bash(npm run test:*)" \
@@ -1039,7 +1039,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 <p><span class="pill c">官方确认</span> 文档写了但极少人翻到 &nbsp; <span class="pill a">反查证实</span> 二进制里真实存在、行为可从代码逻辑推断,官网未写 &nbsp; <span class="pill b">存在未验证</span> 变量确认存在,但具体行为没有可靠依据,别当日常功能用</p>
 <div class="callout warn"><b class="t">版本水印</b>本节全部结论实测于 <strong>Claude Code v2.1.216(2026-07-21)</strong>。这类内部实现细节随版本演进很快,几个月后可能整批改名或下线——命令与参数的最终判据永远是你自己那台机器的 <code>claude --help</code> 与 <code>/release-notes</code>,不是这张表。</div>
 
-<h3>一、官方写了但很少人翻到的参数 <span class="pill c">官方确认</span></h3>
+<h3 data-reveal>一、官方写了但很少人翻到的参数 <span class="pill c">官方确认</span></h3>
 <table class="tbl">
   <tr><th>参数</th><th>作用</th></tr>
   <tr><td><code>--effort ultracode</code></td><td>xhigh 之上的第 6 档 effort,<code>--help</code> 本身不列(官方文档原话:"help 不列全部参数,不在 help 里不代表不存在"),v2.1.203+ 才有</td></tr>
@@ -1050,11 +1050,11 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td><code>--fallback-model a,b,c</code></td><td><code>-p</code> 模式下主模型不可用时按序自动切换,每个新 turn 重试一次主模型</td></tr>
 </table>
 
-<h3>二、<code>/model</code> 别名全家桶与 opusplan 揭秘</h3>
+<h3 data-reveal>二、<code>/model</code> 别名全家桶与 opusplan 揭秘</h3>
 <p>源码里的模型别名数组是:<code>sonnet / opus / haiku / fable / best / opusplan / sonnet[1m] / opus[1m] / fable[1m]</code>。<code>best</code> 按账号计划自动解析为当前最强可用模型;<code>[1m]</code> 后缀对应 1M 长上下文变体。</p>
 <div class="callout note"><b class="t">🥚 opusplan 是目前挖到的最硬核彩蛋 <span class="pill a">反查证实</span></b>选它之后,Plan 阶段会<strong>自动升级用 Opus 想清楚</strong>,退出计划模式开始干活后则用你选的常规执行模型(比如 Sonnet)——一次设置,规划用最强模型、执行用性价比模型。整个机制<strong>官方 CLI 文档只字未提</strong>,连 <code>--help</code> 里都不列。会话里直接 <code>/model opusplan</code> 就能开。</div>
 
-<h3>三、隐藏子命令 <span class="pill c">官方确认</span></h3>
+<h3 data-reveal>三、隐藏子命令 <span class="pill c">官方确认</span></h3>
 <table class="tbl">
   <tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>claude auto-mode defaults</code></td><td>打印 auto 模式分类器的完整内置规则(允许/软拒绝/硬拒绝),想知道"AI 到底按什么标准替我批"就看这个</td></tr>
@@ -1063,7 +1063,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td><code>claude ultrareview [PR号]</code></td><td>云端多智能体审查当前分支或指定 PR,<code>--json</code> 拿原始 bugs.json</td></tr>
 </table>
 
-<h3>四、环境变量:官方确认 vs 反查未验证,别混着用</h3>
+<h3 data-reveal>四、环境变量:官方确认 vs 反查未验证,别混着用</h3>
 <p><span class="pill c">官方确认</span> ——长期放心用,来自 <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings 文档</a>:</p>
 <table class="tbl">
   <tr><th>变量</th><th>作用</th></tr>
@@ -1084,7 +1084,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td><code>CLAUDE_CODE_OVERRIDE_DATE</code></td><td>让助手以为现在是别的日期,测试日期相关行为用,日常别开</td></tr>
 </table>
 
-<h3>五、神秘代号开关:存在,但别当真用 <span class="pill b">存在未验证</span></h3>
+<h3 data-reveal>五、神秘代号开关:存在,但别当真用 <span class="pill b">存在未验证</span></h3>
 <p>二进制里还挖到一批命名模式完全不同的变量——<code>CLAUDE_CODE_BASALT_COVE</code>、<code>MARL_CORMORANT</code>、<code>GAULT_KESTREL</code>、<code>NANKEEN_KESTREL</code>、<code>LANTERN_PRISM</code>、<code>PEWTER_OWL</code>、<code>THISTLE_GREBE</code>、<code>WALNUT_SPIRE</code>。代码逻辑显示它们是"环境变量覆盖一个随机代号命名的远程灰度开关"——专门起不相关的随机词组,就是为了不让人一眼看出控制什么、防止被扒。</p>
 <div class="callout warn"><b class="t">确认存在 ≠ 建议使用</b>这批变量的具体效果没有任何可靠依据,下个版本随时可能改名或消失。同理,<code>CLAUDE_CODE_COORDINATOR_MODE</code> 虽然真实存在、也确实控制着后台代理的"协调者↔工作会话"桥接架构(<code>WORKER_EPOCH</code>、<code>bridge:session</code> 等配套机制都能在代码里对上),但它是<strong>程序自动管理的内部状态</strong>(恢复会话时自动切换),不是设计给用户手动开关的功能开关——手动设置没有文档支持,行为不保证稳定。</div>
 <p class="src">本节方法论:对本机安装的 <code>@anthropic-ai/claude-code</code> 包(bin/claude.exe)做 <code>strings</code> 字符串反查提取命令与变量名,逐条与 <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">官方 CLI Reference</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings</a> 交叉核对区分"官方确认"与"反查未验证"。不基于任何未经验证的网络传言。</p>
@@ -1096,7 +1096,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 <div class="sec-tag">沉淀 15</div>
 <h2>资源索引</h2>
 
-<h3>官方(第一信源)</h3>
+<h3 data-reveal>官方(第一信源)</h3>
 <table class="tbl">
   <tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Best practices</a></td><td>本指南心法部分的母本,值得原文精读</td></tr>
@@ -1106,7 +1106,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td><code>/powerup</code> · <code>/release-notes</code> · <a href="https://code.claude.com/docs/llms.txt" target="_blank">llms.txt</a></td><td>应用内互动教程、更新日志、给 AI 用的全文档索引</td></tr>
 </table>
 
-<h3>社区精华(本指南参考)</h3>
+<h3 data-reveal>社区精华(本指南参考)</h3>
 <table class="tbl">
   <tr><th>主题</th><th>来源</th></tr>
   <tr><td>11 个进阶技巧(层级选型)</td><td><a href="https://smartscope.blog/en/generative-ai/claude/claude-code-best-practices-advanced-2026/" target="_blank">SmartScope: Advanced Best Practices 2026</a></td></tr>
@@ -1133,5 +1133,6 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body>
 </html>

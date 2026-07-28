@@ -245,7 +245,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 ② 干净重登:<code>/logout</code> 后重新 <code>/login</code>(Codex:<code>codex logout && codex login</code>);
 ③ 验证身份:<code>/status</code> / <code>codex login status</code>,确认账号和登录方式是你预期的。没救回来,往下对症查。</div>
 
-<h3>对症快查:30 秒定位你的问题</h3>
+<h3 data-reveal>对症快查:30 秒定位你的问题</h3>
 <table class="tbl er">
   <tr><th>你遇到的是…</th><th>直达</th></tr>
   <tr><td>登录不上 / 反复要求登录 / Invalid API key</td><td><a href="#claude-er">Claude Code 急救表</a> · <a href="#codex-er">Codex 急救表</a></td></tr>
@@ -262,7 +262,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>全试过了,想安全地推倒重来</td><td><a href="#reset">10 · 万能修复:三级重置</a></td></tr>
 </table>
 
-<h3>问题地图:所有环境问题只有四类根源</h3>
+<h3 data-reveal>问题地图:所有环境问题只有四类根源</h3>
 <p>Claude Code 与 Codex 的"环境问题"看似五花八门,拆开只有<strong>四类根源</strong>。认清根源,后面所有章节都是在这张地图上定位、修复。</p>
 
 <table class="tbl">
@@ -275,7 +275,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="callout note"><b class="t">一句话心法</b>遇到任何环境问题,<strong>不要上来就重装</strong>。先用下一章的五层诊断法定位问题在哪一层——90% 的"疑难杂症"是第②类(凭证打架),清一个环境变量就好,重装反而引入第①类问题。</div>
 
-<h3>两个工具,同一套心智模型</h3>
+<h3 data-reveal>两个工具,同一套心智模型</h3>
 <p>好消息:两个工具的环境体系高度同构,学一遍方法论,两边通用。</p>
 <table class="tbl">
   <tr><th></th><th><span class="pill a">Claude Code</span></th><th><span class="pill b">Codex</span></th></tr>
@@ -310,7 +310,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="callout tip"><b class="t">为什么是这个顺序</b>下层决定上层:程序都跑错了(L1),看凭证没意义;环境变量(L2)会篡改凭证选择(L3);凭证对了配置(L4)才谈得上;前四层都对还不通,才轮到网络(L5)。逆序排查会白忙。</div>
 
-<h3>从报错文本直接定层(关键词速查)</h3>
+<h3 data-reveal>从报错文本直接定层(关键词速查)</h3>
 <p>拿到报错先扫一眼关键词,九成能直接判断在哪层——这比从 L1 顺着查更快:</p>
 <table class="tbl er">
   <tr><th>报错里出现…</th><th>大概率在</th><th>第一动作</th></tr>
@@ -322,7 +322,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td><code>usage limit</code> / <code>429</code> / <code>529 Overloaded</code></td><td>不在你机器上</td><td>这是额度/服务端问题:查计费与额度类急救表,<strong>别动环境</strong></td></tr>
 </table>
 
-<h3>一键体检脚本(只读,复制即用)</h3>
+<h3 data-reveal>一键体检脚本(只读,复制即用)</h3>
 <p>把五层检查合成一个脚本。<strong>只读不改</strong>,在任何机器上都可以放心跑——上手陌生电脑前先跑一遍,30 秒看清全部状态:</p>
 <pre><code><span class="c">#!/bin/bash
 # ai-env-check.sh —— Claude Code / Codex 环境一键体检(只读)
@@ -371,7 +371,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 
 <p>Claude Code 的登录问题,八成源于一个被忽视的事实:<strong>它同时支持 7 种凭证来源,且有严格的优先顺序</strong>。你以为在用订阅,它可能在用一个你根本不知道存在的环境变量。</p>
 
-<h3>凭证优先级(官方完整顺序,从高到低)</h3>
+<h3 data-reveal>凭证优先级(官方完整顺序,从高到低)</h3>
 <ol class="steps">
   <li><strong>云厂商通道</strong>:设置了 <code>CLAUDE_CODE_USE_BEDROCK</code> / <code>CLAUDE_CODE_USE_VERTEX</code> / <code>CLAUDE_CODE_USE_FOUNDRY</code> 时,走 AWS/GCP/Azure 凭证(注:已登录的企业网关 gateway 会话比这还高)</li>
   <li><strong><code>ANTHROPIC_AUTH_TOKEN</code></strong>:以 Bearer 头发送——LLM 网关/中转站方案都靠它</li>
@@ -383,7 +383,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 
 <div class="callout warn"><b class="t">会员必读:为什么我在付两份钱?</b>你是 Pro/Max 会员,但机器上残留一条 <code>ANTHROPIC_API_KEY</code>(自己以前实验用的、前同事留下的、教程里抄的)——它优先于订阅生效,你的每次对话都在<strong>按 API 计费</strong>,或者因为那个 key 所属组织已停用而报 <code>This organization has been disabled</code>。解法:<code>unset ANTHROPIC_API_KEY</code> + 从 shell 配置文件删掉 export 行 + <code>/status</code> 确认 Login method 回到订阅。</div>
 
-<h3>凭证存在哪(官方口径)</h3>
+<h3 data-reveal>凭证存在哪(官方口径)</h3>
 <table class="tbl">
   <tr><th>平台</th><th>位置</th><th>说明</th></tr>
   <tr><td>macOS</td><td>系统<strong>钥匙串(Keychain)</strong>,加密</td><td>钥匙串锁定或密码不同步会导致登录保存失败——见急救表</td></tr>
@@ -392,7 +392,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 </table>
 <p>凭证由 <code>/login</code> / <code>/logout</code> 全权管理,<strong>不要手动编辑或跨机拷贝</strong>。登录有效期临近 5 天时启动会提示 <code>Your login expires in N days</code>,跑一次 <code>/login</code> 即续期(v2.1.203+);过期后每次请求报 <code>Login expired · Please run /login</code>。</p>
 
-<h3>三个必会状态命令</h3>
+<h3 data-reveal>三个必会状态命令</h3>
 <table class="tbl">
   <tr><th>命令</th><th>告诉你什么</th></tr>
   <tr><td><code>/status</code>(会话内)</td><td><strong>当前生效凭证</strong>:Login method 行显示订阅账号;若出现 API key 行,说明环境变量正在接管;登录过期会显示 Expired</td></tr>
@@ -409,7 +409,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 <h2>Claude Code · settings.json 全解:最小可跑 → 全量字典</h2>
 <p>上一章讲的是"谁的凭证生效"(优先级);这一章讲的是<strong>把这一切固化下来的那个文件</strong>——<code>settings.json</code> 到底有哪些键、最少写什么就能跑、写全了长什么样,以及"三方/账号怎么组合配"落到文件里具体怎么写。</p>
 
-<h3>一、文件在哪、谁覆盖谁</h3>
+<h3 data-reveal>一、文件在哪、谁覆盖谁</h3>
 <table class="tbl">
   <tr><th>层级</th><th>位置</th><th>影响范围</th><th>团队共享</th></tr>
   <tr><td>企业管控</td><td>服务端下发 / <code>managed-settings.json</code></td><td>组织或整机所有用户</td><td>是(IT 部署)</td></tr>
@@ -420,7 +420,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 </table>
 <p>优先级从高到低就是上表从上到下的顺序——企业管控永远赢,命令行参数其次,项目本地在项目之上,用户层垫底。改了不生效,九成是被更高层覆盖了,<code>/status</code> 里的 "Setting sources" 一行能看到实际加载了哪些来源;<code>claude doctor</code> 能连带报出无效字段。</p>
 
-<h3>二、最小可跑配置</h3>
+<h3 data-reveal>二、最小可跑配置</h3>
 <p>Claude Code 不需要任何 settings.json 就能跑——文件不存在也完全正常,登录后即用内置默认值。想显式声明"这就是最小配置"用于团队起步模板,写这些就够:</p>
 <pre><code>{
   "$schema": "https://json.schemastore.org/claude-code-settings.json"
@@ -434,7 +434,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   }
 }</code></pre>
 
-<h3>三、重点配置项(20 个,按用途分组)</h3>
+<h3 data-reveal>三、重点配置项(20 个,按用途分组)</h3>
 <p>90 多个键里,日常真正会主动改的其实就这些——先记这张表,后面的全量字典留作查阅:</p>
 <table class="tbl">
   <tr><th>用途</th><th>键</th><th>作用</th></tr>
@@ -456,7 +456,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td>环境注入</td><td><code>env</code></td><td>写死一批环境变量,每次会话与子进程都注入(见第五节)</td></tr>
 </table>
 
-<h3>四、全量字典(按类目速查,官方文档 2026-07 版核对)</h3>
+<h3 data-reveal>四、全量字典(按类目速查,官方文档 2026-07 版核对)</h3>
 <div class="callout note"><b class="t">怎么用这张字典</b>90 多个键按用途归成 8 类,标 <code>(企业)</code> 的仅在 managed 层生效,个人配置写了也不起作用——那是留给 IT 用的。侧栏 <code>/</code> 筛选框搜键名比人工翻表快。</div>
 
 <h4>认证、网络与部署</h4>
@@ -579,7 +579,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td><code>autoUpdatesChannel</code></td><td>更新渠道:<code>stable</code> / <code>latest</code></td></tr>
 </table>
 
-<h3>五、三方/账号登录怎么组合进 settings.json</h3>
+<h3 data-reveal>五、三方/账号登录怎么组合进 settings.json</h3>
 <p>02 章讲的是凭证优先级"是什么";这里给出<strong>具体怎么写进文件</strong>,把配置持久化、团队可复用,而不是每次手动 <code>export</code>。</p>
 <table class="tbl">
   <tr><th>场景</th><th>怎么写</th></tr>
@@ -597,7 +597,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td>强制登录方式与组织</td><td>企业管控层写 <code>forceLoginMethod</code> + <code>forceLoginOrgUUID</code>,个人无法绕过,环境变量凭证会在启动时被直接拦截</td></tr>
 </table>
 
-<h3>六、settings.json 专属常见冲突</h3>
+<h3 data-reveal>六、settings.json 专属常见冲突</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td><code>env</code> 块写了 <code>ANTHROPIC_API_KEY</code>,shell 里也 <code>export</code> 了同一个变量,行为很诡异</td><td>两处同时定义同一个键极易踩坑,具体谁赢没有官方明文保证——<strong>只在一处设置</strong>,推荐团队共享的走 <code>env</code> 块,个人临时实验走 shell,不要两者叠加</td></tr>
@@ -618,7 +618,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 <p>按<strong>五大类</strong>对症直查:登录凭证 / 计费额度 / 安装版本 / 配置 / 网络代理。每条给出根因与最短修复路径,全部经官方 2026-07 排障文档核对。</p>
 <div class="callout tip"><b class="t">⚡ 一分钟速修(先跑这三板斧,再查细表)</b><code>env | grep -i anthropic</code> 清劫持变量 → <code>/logout</code> 重登 → <code>claude doctor</code> 体检。</div>
 
-<h3>一、登录与凭证类</h3>
+<h3 data-reveal>一、登录与凭证类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>Invalid API key / 反复要求 /login</td><td>凭证打架之王:<code>env | grep -i anthropic</code> 找出劫持变量 → <code>unset ANTHROPIC_API_KEY</code> → 删 rc 文件里的 export → <code>/logout</code> 后重新 <code>/login</code> → <code>/status</code> 验证</td></tr>
@@ -632,7 +632,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td>公司电脑不让用 API key / 只能登指定组织</td><td>企业管控 <code>forceLoginMethod</code> / <code>forceLoginOrgUUID</code> 生效,环境变量凭证会被启动时拦截——这是策略不是故障,找 IT</td></tr>
 </table>
 
-<h3>二、计费与额度类("我明明是会员"系列)</h3>
+<h3 data-reveal>二、计费与额度类("我明明是会员"系列)</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>Pro/Max 会员,却被按 API 计费 / 提示余额不足</td><td>残留 <code>ANTHROPIC_API_KEY</code> 优先级高于订阅登录,每次对话都在走 API 账单:清变量(根因见<a href="#claude-cred">凭证优先级</a>)→ <code>/status</code> 确认 Login method 回到订阅</td></tr>
@@ -644,7 +644,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td><code>Credit balance is too low</code></td><td>你走的是 Console/API key 通道且余额不足:要么去 platform.claude.com 充值,要么根本不该走这条通道——清掉 API key 变量回订阅(本表第一行)</td></tr>
 </table>
 
-<h3>三、安装与版本类</h3>
+<h3 data-reveal>三、安装与版本类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>command not found: claude</td><td>安装目录不在 PATH:native 安装器装在 <code>~/.local/bin/claude</code>,把 <code>export PATH="$HOME/.local/bin:$PATH"</code> 加进 rc 文件。注意:<strong>只装了 VS Code 扩展不会有命令行 claude</strong>,扩展自带私有副本</td></tr>
@@ -657,7 +657,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td>更新失败 / 装 npm 包时报 EACCES 权限错误</td><td>别用 <code>sudo npm</code> 硬闯:那会把权限问题埋得更深。正解是切官方 native 安装器(<code>curl -fsSL https://claude.ai/install.sh | bash</code>),它装在用户目录,不需要任何提权</td></tr>
 </table>
 
-<h3>四、配置类</h3>
+<h3 data-reveal>四、配置类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>改了 settings.json 不生效</td><td>层叠覆盖(企业管控 &gt; 命令行 &gt; 项目本地 &gt; 项目 &gt; 用户)或该键需重启会话:<code>/config</code> 看生效值来源;<code>--setting-sources user</code> 排除干扰层</td></tr>
@@ -665,7 +665,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td>IDE 里认不到云厂商凭证,终端却正常</td><td>IDE 进程没继承 shell 环境:在 IDE 自身设置里配变量,或从已 export 的终端启动 IDE</td></tr>
 </table>
 
-<h3>五、网络与代理类</h3>
+<h3 data-reveal>五、网络与代理类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>TLS / unable to get local issuer certificate / SELF_SIGNED_CERT</td><td>公司代理做 TLS 拦截:安装时 <code>curl --cacert 公司CA.pem …</code>;运行时 <code>export NODE_EXTRA_CA_CERTS=/path/公司CA.pem</code>;证书文件找 IT 要</td></tr>
@@ -685,7 +685,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 
 <div class="callout note"><b class="t">2026 年中文档搬家提醒</b>Codex 官方文档已从 <code>developers.openai.com/codex</code> 迁往 <code>learn.chatgpt.com/docs</code>(旧链接 308 重定向,仍可达)。搜教程时注意甄别新旧域名与时效。</div>
 
-<h3>三种登录方式</h3>
+<h3 data-reveal>三种登录方式</h3>
 <table class="tbl">
   <tr><th>方式</th><th>怎么用</th><th>要点</th></tr>
   <tr><td><strong>ChatGPT OAuth(默认)</strong></td><td><code>codex login</code> → 浏览器,回调 <code>localhost:1455</code></td><td>订阅额度;Fast mode 等功能仅此方式可用;走 ChatGPT 工作区权限与数据政策</td></tr>
@@ -693,7 +693,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <tr><td><strong>设备码</strong></td><td><code>codex login --device-auth</code></td><td>无浏览器环境首选;<strong>部分工作区需管理员先启用</strong>,否则无头机登录会被卡住</td></tr>
 </table>
 
-<h3>凭证存哪、怎么续期</h3>
+<h3 data-reveal>凭证存哪、怎么续期</h3>
 <ul>
   <li><strong>存储三选一</strong>:config.toml 里 <code>cli_auth_credentials_store = "file" | "keyring" | "auto"</code>。file = 明文 <code>~/.codex/auth.json</code>;keyring = 系统钥匙串;auto 优先钥匙串。</li>
   <li><strong>自动续期</strong>:token 过期(约 8 天不用会变 stale)时,Codex 运行中自动刷新并<strong>回写 auth.json</strong>——CI 持久化方案就建立在这个机制上(见<a href="#headless">第 10 章</a>)。</li>
@@ -713,7 +713,7 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 <h2>Codex · config.toml 全解:最小可跑 → 全量字典</h2>
 <p>与 Claude Code 对称的一章:上一章讲凭证怎么存、怎么续期;这一章讲把它们<strong>固化进文件</strong>——<code>config.toml</code> 有哪些分区、最少写什么就能跑、写全了长什么样,以及"接三方模型/网关"具体怎么落成 TOML。</p>
 
-<h3>一、文件在哪、谁覆盖谁</h3>
+<h3 data-reveal>一、文件在哪、谁覆盖谁</h3>
 <table class="tbl">
   <tr><th>层级</th><th>位置</th><th>说明</th></tr>
   <tr><td>CLI 单次覆盖</td><td><code>-c key=value</code></td><td>最高优先级,值按 TOML/JSON 解析,不改文件</td></tr>
@@ -725,14 +725,14 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
 </table>
 <p>改了不生效,先跑 <code>/debug-config</code> 看层叠结果——这是 <a href="#codex-er">07 章急救表</a>里最高频的一类症状,根因几乎总在"写错了层"。</p>
 
-<h3>二、最小可跑配置</h3>
+<h3 data-reveal>二、最小可跑配置</h3>
 <p>Codex <strong>不需要任何 <code>config.toml</code> 就能跑</strong>——<code>codex login</code> 之后直接用内置默认值(默认模型、<code>workspace-write</code> 沙箱、<code>on-request</code> 审批)。想显式声明一份团队起步模板,这三行是最常改的:</p>
 <pre><code><span class="c">#:schema https://developers.openai.com/codex/config-schema.json</span>
 model = "gpt-5.6"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"</code></pre>
 
-<h3>三、重点配置项(20 个,按用途分组)</h3>
+<h3 data-reveal>三、重点配置项(20 个,按用途分组)</h3>
 <table class="tbl">
   <tr><th>用途</th><th>键</th><th>作用</th></tr>
   <tr><td rowspan="4">认证与登录</td><td><code>cli_auth_credentials_store</code></td><td>凭证存哪:<code>file</code>(明文 auth.json)/ <code>keyring</code>(系统钥匙串)/ <code>auto</code></td></tr>
@@ -751,7 +751,7 @@ sandbox_mode = "workspace-write"</code></pre>
   <tr><td>MCP 认证</td><td><code>mcp_oauth_credentials_store</code></td><td>MCP 服务器 OAuth 凭证存放方式,同 <code>cli_auth_credentials_store</code> 三选一</td></tr>
 </table>
 
-<h3>四、全量字典(按 TOML 分区速查,官方文档 2026-07 版核对)</h3>
+<h3 data-reveal>四、全量字典(按 TOML 分区速查,官方文档 2026-07 版核对)</h3>
 <div class="callout note"><b class="t">怎么用这张字典</b>Codex 的配置天然按 TOML 的 <code>[section]</code> 分区,比 Claude Code 的扁平 JSON 更容易按需定位。<code>features.*</code>(100+ 个功能旗标)不在此表重复——完整清单与 stable/experimental 状态见 <a href="codex-guide.html#hidden-config">Codex 指南 · 隐藏能力与彩蛋配置</a>,或直接跑 <code>codex features list</code>。</div>
 
 <h4>顶层核心键 · 认证与网络</h4>
@@ -854,7 +854,7 @@ sandbox_mode = "workspace-write"</code></pre>
 </table>
 <div class="callout warn"><b class="t">Desktop App 也写这个文件</b>如果你同时装了 Codex 桌面 App,<code>config.toml</code> 会出现 <code>[marketplaces.*]</code>、<code>[desktop]</code>、<code>tui.model_availability_nux</code> 等自动生成的分区——这些是应用内部状态,不在官方 CLI 文档的配置参考范围内,<strong>不建议手动编辑</strong>,改错了大概率被下次启动自动覆盖或产生诡异行为。</div>
 
-<h3>五、三方/账号登录怎么组合进 config.toml</h3>
+<h3 data-reveal>五、三方/账号登录怎么组合进 config.toml</h3>
 <p>05 章讲的是三种登录方式"是什么";这里给出<strong>具体怎么写进文件</strong>,把第三方模型、网关、企业策略固化下来。</p>
 <table class="tbl">
   <tr><th>场景</th><th>怎么写</th></tr>
@@ -882,7 +882,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
   <tr><td>强制企业登录方式与工作区</td><td><code>forced_login_method = "chatgpt"</code> + <code>forced_chatgpt_workspace_id = "工作区UUID"</code>,写在系统层或统一分发的用户层,个人无法绕过</td></tr>
 </table>
 
-<h3>六、config.toml 专属常见冲突</h3>
+<h3 data-reveal>六、config.toml 专属常见冲突</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>项目 <code>.codex/config.toml</code> 里配了 <code>[model_providers]</code> 或 <code>notify</code>,完全不生效</td><td>安全策略明确规定这些键在<strong>项目层被忽略</strong>,防止仓库里的恶意配置劫持你的凭证/通知——写到用户层 <code>~/.codex/config.toml</code></td></tr>
@@ -903,7 +903,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
 <p>与上一章同一套分类:登录凭证 / 计费额度 / 安装版本 / 配置会话 / 网络代理,两个工具的排查心智完全对齐。</p>
 <div class="callout tip"><b class="t">⚡ 一分钟速修</b><code>env | grep -iE 'openai|proxy'</code> 清劫持变量 → <code>codex logout && codex login</code> 干净重登 → <code>codex login status</code> 验证;登录类问题的铁证在 <code>codex-login.log</code>。</div>
 
-<h3>一、登录与凭证类</h3>
+<h3 data-reveal>一、登录与凭证类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>浏览器登录卡在等待 / 回调失败</td><td>1455 端口被占用或被防火墙/代理拦:① 确保 <code>localhost</code>、<code>127.0.0.1</code>、<code>::1</code> 在代理绕过名单(<code>NO_PROXY</code>);② 改用 <code>codex login --device-auth</code>;③ 远程机用 <code>ssh -L 1455:localhost:1455</code> 转发后登录</td></tr>
@@ -914,7 +914,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
   <tr><td>公司机器换不了登录方式</td><td>管控配置 <code>forced_login_method = "chatgpt" | "api"</code> 生效——策略不是故障,找管理员</td></tr>
 </table>
 
-<h3>二、计费与额度类</h3>
+<h3 data-reveal>二、计费与额度类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>Fast mode 用不了</td><td>它依赖 ChatGPT 订阅额度:API Key 登录没有,换 ChatGPT 登录</td></tr>
@@ -923,7 +923,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
   <tr><td>想在订阅与 API 计费之间切换</td><td><code>codex logout</code> 后按需重登:ChatGPT OAuth = 订阅额度,API Key = 按量计费;两者的数据政策也不同(工作区 vs API 组织)</td></tr>
 </table>
 
-<h3>三、安装与版本类</h3>
+<h3 data-reveal>三、安装与版本类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>npm 安装报错 / 提示 Node 版本不支持</td><td>Node 过旧:用 nvm 升级到当前 LTS 再 <code>npm install -g @openai/codex</code>;macOS 直接 <code>brew install codex</code> 绕开 Node 依赖</td></tr>
@@ -931,7 +931,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
   <tr><td>版本行为诡异 / 新特性没有</td><td><code>codex --version</code> 对照官方 release;npm 与 brew 双装并存会互相打架,<code>which -a codex</code> 查明后只留一个</td></tr>
 </table>
 
-<h3>四、配置与会话类</h3>
+<h3 data-reveal>四、配置与会话类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>改了 config.toml 不生效</td><td><code>/debug-config</code> 查层叠:<code>-c</code> 参数 &gt; profile &gt; 项目层 &gt; 用户层;注意 <code>model_providers</code>/<code>notify</code>/<code>otel</code> 等键在项目层被安全策略忽略,必须写用户层</td></tr>
@@ -939,7 +939,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
   <tr><td>登录问题需要证据定位</td><td>看日志目录里的 <code>codex-login.log</code>——登录专用诊断日志,报 issue 也靠它</td></tr>
 </table>
 
-<h3>五、网络与代理类</h3>
+<h3 data-reveal>五、网络与代理类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>公司代理下全线 TLS 报错</td><td><code>export CODEX_CA_CERTIFICATE=/path/公司根证书.pem</code>(未设时回退 <code>SSL_CERT_FILE</code>);登录、HTTPS、WebSocket 全部走该 CA</td></tr>
@@ -957,14 +957,14 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
 
 <p>最高频的翻车现场:你是 Claude 会员,坐到一台别人用过的电脑前,一顿操作后各种报错。<strong>根因几乎总是同一个:上一位使用者的凭证与环境变量还活着</strong>,而它们的优先级比你的登录高。</p>
 
-<h3>上机三查(动手配置之前先做)</h3>
+<h3 data-reveal>上机三查(动手配置之前先做)</h3>
 <ol class="steps">
   <li><strong>查环境变量与 rc 残留</strong>:跑<a href="#diagnose">第 01 章体检脚本</a>,重点看 L2 输出——别人 rc 文件里的 <code>export ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_BASE_URL</code>(中转站配置)/ <code>OPENAI_API_KEY</code> 就是定时炸弹。</li>
   <li><strong>查凭证归属</strong>:<code>claude</code> 进会话 <code>/status</code> 看登录的是谁的账号;<code>codex login status</code> 同理。是别人的就先 <code>/logout</code> / <code>codex logout</code>。</li>
   <li><strong>查全局配置污染</strong>:<code>~/.claude/CLAUDE.md</code>、<code>~/.claude/settings.json</code>、<code>~/.codex/config.toml</code>、<code>~/.codex/AGENTS.md</code> 里是不是别人的偏好与指令——这些会直接影响你的每次对话行为。</li>
 </ol>
 
-<h3>按共用程度选方案</h3>
+<h3 data-reveal>按共用程度选方案</h3>
 <table class="tbl">
   <tr><th>场景</th><th>推荐方案</th><th>做法</th></tr>
   <tr><td>临时借用一两次</td><td><strong>不动别人任何东西</strong></td><td>只在当前终端会话清变量(<code>unset ANTHROPIC_API_KEY</code> 等,不改 rc 文件),用完 <code>/logout</code> 登出自己账号即走</td></tr>
@@ -972,7 +972,7 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
   <tr><td>必须同一系统账号切换</td><td><strong>配置目录隔离 + 别名</strong></td><td>见下方——两个工具都支持"整个老家搬走"</td></tr>
 </table>
 
-<h3>同一系统账号跑多套配置(隔离方案)</h3>
+<h3 data-reveal>同一系统账号跑多套配置(隔离方案)</h3>
 <pre><code><span class="c"># ~/.zshrc —— 每人/每个账号一个独立配置目录 + 专属命令</span>
 <span class="c"># Claude Code:CLAUDE_CONFIG_DIR 决定"老家"在哪</span>
 alias claude-me='CLAUDE_CONFIG_DIR="$HOME/.claude-me" claude'
@@ -998,7 +998,7 @@ alias codex-work='CODEX_HOME="$HOME/.codex-work" codex'</code></pre>
 
 <p>核心原则一句话:<strong>配置随身走,凭证每机新登,历史留在原地</strong>。想清楚"什么带走、什么不带",换机就是十分钟的事。</p>
 
-<h3>带什么、不带什么(双工具对照)</h3>
+<h3 data-reveal>带什么、不带什么(双工具对照)</h3>
 <table class="tbl">
   <tr><th>资产</th><th>Claude Code</th><th>Codex</th><th>怎么处理</th></tr>
   <tr><td>核心配置</td><td><code>settings.json</code>、全局 <code>CLAUDE.md</code>、<code>skills/</code>、<code>agents/</code></td><td><code>config.toml</code>、profiles、全局 <code>AGENTS.md</code></td><td>✅ 进 dotfiles 仓库,新机 clone 即得</td></tr>
@@ -1008,7 +1008,7 @@ alias codex-work='CODEX_HOME="$HOME/.codex-work" codex'</code></pre>
   <tr><td>缓存/插件</td><td><code>plugins/</code>、<code>shell-snapshots/</code> 等</td><td>日志目录</td><td>➖ 不备份,新机自动重建</td></tr>
 </table>
 
-<h3>新机十分钟标准流程</h3>
+<h3 data-reveal>新机十分钟标准流程</h3>
 <pre><code><span class="c"># 1. 安装(官方 native 渠道,别混用 npm)</span>
 curl -fsSL https://claude.ai/install.sh | bash        <span class="c"># Claude Code</span>
 npm install -g @openai/codex                          <span class="c"># Codex(或 brew install codex)</span>
@@ -1037,21 +1037,21 @@ claude doctor && bash ai-env-check.sh</code></pre>
 
 <p>没有浏览器的环境,登录是另一套打法。两个工具的官方推荐路径不同,别互相套用。</p>
 
-<h3>Claude Code:三条路径</h3>
+<h3 data-reveal>Claude Code:三条路径</h3>
 <ol class="steps">
   <li><strong>SSH/WSL2/容器交互使用</strong>:正常跑 <code>claude</code>,把终端里的 OAuth URL 复制到<strong>本地浏览器</strong>完成登录,浏览器给出的 code 粘回终端(粘贴失灵就用 <code>claude auth login</code> 从 stdin 读)。</li>
   <li><strong>CI / 脚本(订阅额度)</strong>:在本地跑 <code>claude setup-token</code> 生成<strong>一年期 OAuth token</strong>,存进 CI Secret,运行环境设 <code>CLAUDE_CODE_OAUTH_TOKEN</code>。注意 <code>--bare</code> 模式不读它,bare 场景改用 <code>ANTHROPIC_API_KEY</code> 或 <code>apiKeyHelper</code>。</li>
   <li><strong>CI(API 计费)</strong>:直接 <code>ANTHROPIC_API_KEY</code> 环境变量——最简单,但走按量计费。</li>
 </ol>
 
-<h3>Codex:官方三方案按优先级</h3>
+<h3 data-reveal>Codex:官方三方案按优先级</h3>
 <ol class="steps">
   <li><strong>设备码(首选)</strong>:<code>codex login --device-auth</code>,本地任意浏览器输一次性码。工作区可能需要管理员先启用设备码权限。</li>
   <li><strong>拷贝 auth.json(官方兜底)</strong>:有浏览器的机器登录后把 <code>~/.codex/auth.json</code> 安全复制到目标机(scp / docker cp)。若本机凭证在钥匙串而非文件,先把 <code>cli_auth_credentials_store</code> 设为 <code>file</code> 重登一次。</li>
   <li><strong>SSH 端口转发</strong>:<code>ssh -L 1455:localhost:1455 user@remote</code> 后在远端 <code>codex login</code>,本地浏览器走标准流程。</li>
 </ol>
 
-<h3>Codex CI 长期认证(官方 auth.json 续期循环)</h3>
+<h3 data-reveal>Codex CI 长期认证(官方 auth.json 续期循环)</h3>
 <p>ChatGPT 订阅额度跑 CI 的官方姿势——利用 Codex 运行时自动刷新 token 并回写 auth.json 的机制:</p>
 <ol class="steps">
   <li>可信机器上 <code>codex login</code>(file 存储),把生成的 <code>auth.json</code> 存入 CI 的 Secret 管理;</li>
@@ -1061,7 +1061,7 @@ claude doctor && bash ai-env-check.sh</code></pre>
 
 <div class="callout tip"><b class="t">容器 / DevContainer 持久化登录</b>把"老家目录"做成挂载卷,容器重建不用重登:Claude Code 挂 <code>CLAUDE_CONFIG_DIR</code> 指向的卷(Linux 凭证就在其中的 <code>.credentials.json</code>);Codex 挂 <code>CODEX_HOME</code> 卷。红线:凭证只进卷,<strong>永远不要烤进镜像层</strong>。</div>
 
-<h3>公司网络(代理 / 私有 CA)速查</h3>
+<h3 data-reveal>公司网络(代理 / 私有 CA)速查</h3>
 <table class="tbl">
   <tr><th></th><th>Claude Code</th><th>Codex</th></tr>
   <tr><td>HTTP 代理</td><td><code>HTTPS_PROXY</code> / <code>HTTP_PROXY</code></td><td>同左,并确保 <code>NO_PROXY</code> 包含 localhost(OAuth 回调)</td></tr>
@@ -1079,7 +1079,7 @@ claude doctor && bash ai-env-check.sh</code></pre>
 
 <p>四个高频真实场景,把<a href="#diagnose">五层诊断法</a>从头到尾走一遍。看懂这四个,大多数"玄学问题"你都能自己破案——注意每个案例里<strong>报错文本和真正根因隔了多远</strong>。</p>
 
-<h3>案例一 · "我是 Max 会员,却提示组织已停用"</h3>
+<h3 data-reveal>案例一 · "我是 Max 会员,却提示组织已停用"</h3>
 <table class="tbl">
   <tr><td style="width:72px"><strong>现场</strong></td><td>接手同事的旧电脑,装好 Claude Code、订阅账号登录成功,一提问就报 <code>API Error: 400 "This organization has been disabled"</code>。重装了两次,毫无变化。</td></tr>
   <tr><td><strong>排查</strong></td><td>L1 正常(单一安装、版本最新);<strong>L2 命中</strong>——<code>env | grep -i anthropic</code> 揪出一条 <code>ANTHROPIC_API_KEY=sk-ant-…</code>,顺藤摸瓜发现它写在 <code>~/.zshrc</code> 里,是前任使用者留下的,key 所属的 Console 组织早已注销。</td></tr>
@@ -1087,7 +1087,7 @@ claude doctor && bash ai-env-check.sh</code></pre>
   <tr><td><strong>教训</strong></td><td>报错说"组织",你想的是"订阅",真正坏的是"环境变量"——<strong>报错文本描述的是结果,不是根因</strong>。这也是为什么重装(动 L1)对 L2 的病永远无效。</td></tr>
 </table>
 
-<h3>案例二 · "VS Code 扩展一直 Invalid API key,终端却好好的"</h3>
+<h3 data-reveal>案例二 · "VS Code 扩展一直 Invalid API key,终端却好好的"</h3>
 <table class="tbl">
   <tr><td style="width:72px"><strong>现场</strong></td><td>终端里 <code>claude</code> 一切正常;VS Code 扩展却反复弹 <code>Invalid API key · Please run /login</code>,登录成功后还是黑屏。社区大量同款(anthropics/claude-code#12204 记录的经典形态)。</td></tr>
   <tr><td><strong>排查</strong></td><td>L3 凭证层命中,但根子在 L2:机器上<strong>同时存在三种凭证</strong>——OAuth 登录、手动设置的 API key、shell 里的环境变量。终端从 rc 文件读到的环境和 VS Code 图形启动继承的环境<strong>不一样</strong>,两边各自选了不同的凭证,一边有效一边无效。</td></tr>
@@ -1095,7 +1095,7 @@ claude doctor && bash ai-env-check.sh</code></pre>
   <tr><td><strong>教训</strong></td><td>"终端好、IDE 坏"几乎必然是<strong>两个进程看到的环境不一致</strong>。多凭证并存时,谁也说不准哪个进程吃到哪个——凭证源永远只留一个。</td></tr>
 </table>
 
-<h3>案例三 · "一觉醒来,所有并行会话集体要求重新登录"</h3>
+<h3 data-reveal>案例三 · "一觉醒来,所有并行会话集体要求重新登录"</h3>
 <table class="tbl">
   <tr><td style="width:72px"><strong>现场</strong></td><td>头天晚上开着三个并行 Claude Code 会话合盖睡觉,早上唤醒后三个会话同时弹登录,重登一个另两个又掉——像闹鬼。</td></tr>
   <tr><td><strong>排查</strong></td><td>L2/L3 都干净,反直觉地落在 <strong>L1 版本层</strong>:查官方 changelog,v2.1.211 之前存在已知缺陷——机器从睡眠唤醒时,多个会话用同一个 token 并发续期,互相把对方的登录作废。</td></tr>
@@ -1103,7 +1103,7 @@ claude doctor && bash ai-env-check.sh</code></pre>
   <tr><td><strong>教训</strong></td><td><strong>集体性、时间点诡异的现象,先查版本与 changelog</strong>,而不是折腾自己的配置——官方已修的 bug,你在本地怎么排查都排不出根因。</td></tr>
 </table>
 
-<h3>案例四 · "Codex 在 CI 里稳定跑了一周,突然全线 401"</h3>
+<h3 data-reveal>案例四 · "Codex 在 CI 里稳定跑了一周,突然全线 401"</h3>
 <table class="tbl">
   <tr><td style="width:72px"><strong>现场</strong></td><td>用 ChatGPT 订阅额度跑 CI:把本机 <code>auth.json</code> 存进 Secret,每次任务恢复后运行。一周后所有流水线开始 401,本机重新导出一份,又能撑几天,循环往复。</td></tr>
   <tr><td><strong>排查</strong></td><td>L3 凭证层命中:Codex 的 token 约 8 天不刷新就 stale。运行中它其实自动续期并<strong>回写</strong>了 auth.json——但流水线每次都用 Secret 里那份"出厂旧档"覆盖,续期成果全被丢弃,刷新链一断就全线失效。</td></tr>
@@ -1121,7 +1121,7 @@ claude doctor && bash ai-env-check.sh</code></pre>
 
 <p>确实排查不动了,就分级重置。<strong>纪律:从 L1 开始逐级升级,每级之后验证,好了就停</strong>——直接上核弹会把"能定位问题的现场"一起炸掉,而且多数问题 L1/L2 就能解决。</p>
 
-<h3><span class="pill a">L1</span> 软重置(2 分钟)—— 解决 70% 的问题</h3>
+<h3 data-reveal><span class="pill a">L1</span> 软重置(2 分钟)—— 解决 70% 的问题</h3>
 <pre><code><span class="c"># 清掉当前 shell 的劫持变量(只影响本会话,零风险)</span>
 unset ANTHROPIC_API_KEY ANTHROPIC_AUTH_TOKEN ANTHROPIC_BASE_URL
 unset OPENAI_API_KEY
@@ -1130,7 +1130,7 @@ unset OPENAI_API_KEY
 claude   <span class="c"># 会话内:/logout → 退出 → 重新 claude → /login → /status 验证</span>
 codex logout && codex login && codex login status</code></pre>
 
-<h3><span class="pill a">L2</span> 凭证与残留重置(5 分钟)—— 再解决 20%</h3>
+<h3 data-reveal><span class="pill a">L2</span> 凭证与残留重置(5 分钟)—— 再解决 20%</h3>
 <pre><code><span class="c"># 1. 根除 rc 文件里的残留 export(编辑器打开逐行删,别 sed 盲删)</span>
 grep -nE 'ANTHROPIC|CLAUDE_|CODEX|OPENAI' ~/.zshrc ~/.zprofile ~/.bashrc ~/.profile
 
@@ -1147,7 +1147,7 @@ sudo sntp -sS time.apple.com
 claude   <span class="c"># /login → /status</span>
 codex login && codex login status</code></pre>
 
-<h3><span class="pill a">L3</span> 核弹重置(15 分钟)—— 备份 → 清干净 → 官方渠道重装</h3>
+<h3 data-reveal><span class="pill a">L3</span> 核弹重置(15 分钟)—— 备份 → 清干净 → 官方渠道重装</h3>
 <pre><code><span class="c"># ═══ 第一步:备份核心资产(手写配置是你的,其他都可再生)═══</span>
 mkdir -p ~/ai-cli-backup
 cp -r ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/skills ~/.claude/agents ~/ai-cli-backup/ 2&gt;/dev/null
@@ -1184,7 +1184,7 @@ codex login && codex login status</code></pre>
 <div class="sec-tag">终极方案 13</div>
 <h2>双工具概念对照 + 资源索引</h2>
 
-<h3>一张表打通两个工具</h3>
+<h3 data-reveal>一张表打通两个工具</h3>
 <table class="tbl">
   <tr><th>概念</th><th><span class="pill a">Claude Code</span></th><th><span class="pill b">Codex</span></th></tr>
   <tr><td>老家目录 / 搬家变量</td><td><code>~/.claude</code> / <code>CLAUDE_CONFIG_DIR</code></td><td><code>~/.codex</code> / <code>CODEX_HOME</code></td></tr>
@@ -1201,7 +1201,7 @@ codex login && codex login status</code></pre>
   <tr><td>多账号隔离</td><td><code>CLAUDE_CONFIG_DIR</code> + alias</td><td><code>CODEX_HOME</code> + alias(官方一等支持讨论中)</td></tr>
 </table>
 
-<h3>资源索引(按可信度排序)</h3>
+<h3 data-reveal>资源索引(按可信度排序)</h3>
 <table class="tbl">
   <tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">Claude Code · Troubleshoot installation and login</a></td><td>官方安装与登录排障总页——"错误信息 → 修复"对照表最全的一处,先查它</td></tr>
@@ -1228,5 +1228,6 @@ codex login && codex login status</code></pre>
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body>
 </html>

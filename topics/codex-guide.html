@@ -114,7 +114,7 @@ pre .c{color:#7f948a}
 
 /* 高频核心命令墙 */
 .hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
-.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:.15s}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:var(--dur-hover,.3s) var(--ease-breathe,ease)}
 .hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(12,21,18,.06)}
 .hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
 .hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
@@ -238,7 +238,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>Codex 是 OpenAI 的代理式编码工具:读代码、跑命令、改文件、自主推进任务。与 Claude Code 同属"终端编码代理"物种,心智模型高度相通(上下文管理、计划先行、验证闭环同样适用),但形态矩阵与安全模型有自己的鲜明取向。</p>
 
-<h3>五种形态,一个账号</h3>
+<h3 data-reveal>五种形态,一个账号</h3>
 <table class="tbl">
   <tr><th>形态</th><th>入口</th><th>适用</th></tr>
   <tr><td><strong>CLI(TUI)</strong></td><td>终端运行 <code>codex</code></td><td>日常主力:交互式终端 UI</td></tr>
@@ -248,7 +248,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td><strong>桌面 App / GitHub</strong></td><td><code>codex app</code>;GitHub 中 @ 提及</td><td>独立窗口工作台;PR 自动代码评审</td></tr>
 </table>
 
-<h3>模型与推理力度</h3>
+<h3 data-reveal>模型与推理力度</h3>
 <p>会话内用 <code>/model</code> 切换模型并选择推理力度(reasoning effort),启动时用 <code>--model</code> 指定(官方文档示例如 <code>gpt-5.4</code>;具体型号随版本演进,以 <code>codex debug models</code> 输出为准)。<code>/fast</code> 可切换 Fast 服务档;<code>--oss</code> 甚至能接本地 Ollama 开源模型。</p>
 
 <div class="callout note"><b class="t">一句话定位(社区共识)</b>Codex 的招牌是<strong>默认更严格的沙箱模型</strong>(命令在 OS 级沙箱里跑)与<strong>云端任务矩阵</strong>;Claude Code 的招牌是更丰富的扩展面(Skills/Hooks/子代理生态)。两者高度互补,见<a href="#pitfalls">协同一节</a>。</div>
@@ -263,7 +263,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h2>安装与登录</h2>
 <div class="callout warn"><b class="t">🚑 装不上 / 登录报错 / 换电脑?</b>登录卡住、1455 回调失败、无头机、共用电脑等一切环境疑难,在独立专题:<a href="env-auth-clinic.html">环境与登录急救手册</a>,按症状 30 秒直达修复。</div>
 
-<h3>安装</h3>
+<h3 data-reveal>安装</h3>
 <pre><code><span class="c"># npm 方式</span>
 npm install -g @openai/codex
 
@@ -274,10 +274,10 @@ brew install codex
 codex
 codex update</code></pre>
 
-<h3>登录</h3>
+<h3 data-reveal>登录</h3>
 <p><code>codex login</code> 支持三种方式:<strong>ChatGPT 账号 OAuth</strong>(推荐,Plus/Pro/Team 订阅直接用)、设备码认证、或从 stdin 传入 API Key。登出用 <code>codex logout</code>;会话内 <code>/logout</code>。</p>
 
-<h3>进入新仓库的标准四步</h3>
+<h3 data-reveal>进入新仓库的标准四步</h3>
 <ol class="steps">
   <li><code>/init</code> —— 生成 <code>AGENTS.md</code> 脚手架(构建命令、测试方式、项目约定)</li>
   <li><code>/model</code> —— 选定模型与推理力度;<code>/status</code> 确认会话配置与 token 用量</li>
@@ -285,7 +285,7 @@ codex update</code></pre>
   <li><code>/mcp</code> —— 查看已接入的外部工具;需要就 <code>codex mcp add</code></li>
 </ol>
 
-<h3>配置体系:config.toml 三层</h3>
+<h3 data-reveal>配置体系:config.toml 三层</h3>
 <table class="tbl">
   <tr><th>层级</th><th>位置</th><th>说明</th></tr>
   <tr><td>全局</td><td><code>~/.codex/config.toml</code></td><td>个人默认:模型、沙箱、审批策略、MCP、profiles</td></tr>
@@ -308,7 +308,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <h2>命令速查手册</h2>
 <p>按使用层级分组:终端子命令 → 启动参数 → 会话内斜杠命令。TUI 内键入 <code>/</code> 可浏览全部命令。</p>
 
-<h3>⚡ 高频核心命令(先记这 8 个)</h3>
+<h3 data-reveal>⚡ 高频核心命令(先记这 8 个)</h3>
 <p>下面完整表格收录 60+ 条,但日常 90% 的场景只靠这几个打底;标 <b>★ 必会</b> 的三个建议练到肌肉记忆。</p>
 <div class="hotcmds">
   <div class="hotcmd must"><span class="hc-cmd">codex ["任务"]</span><span class="hc-desc">启动交互式 TUI,日常入口,可带初始提示与 -i 图片</span></div>
@@ -321,7 +321,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <div class="hotcmd"><span class="hc-cmd">/status · /usage</span><span class="hc-desc">会话配置与 token 用量 / 账号级用量与限额</span></div>
 </div>
 
-<h3>终端子命令</h3>
+<h3 data-reveal>终端子命令</h3>
 <table class="tbl">
   <tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>codex ["任务"]</code></td><td>启动交互式 TUI,可带初始提示与 <code>-i 图片</code></td></tr>
@@ -339,7 +339,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <tr><td><code>codex completion</code> / <code>codex update</code></td><td>生成 shell 补全脚本 / 自更新</td></tr>
 </table>
 
-<h3>高价值启动参数</h3>
+<h3 data-reveal>高价值启动参数</h3>
 <table class="tbl">
   <tr><th>参数</th><th>作用</th></tr>
   <tr><td><code>--model, -m</code></td><td>覆盖配置中的模型(如 <code>gpt-5.4</code>)</td></tr>
@@ -357,7 +357,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <tr><td><code>--yolo</code></td><td>⚠️ 全跳过审批与沙箱,仅限外部已加固的隔离环境</td></tr>
 </table>
 
-<h3>会话内斜杠命令 · 按场景分组</h3>
+<h3 data-reveal>会话内斜杠命令 · 按场景分组</h3>
 <h4>① 会话与上下文</h4>
 <table class="tbl">
   <tr><th>命令</th><th>作用</th></tr>
@@ -407,7 +407,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <h2>沙箱与审批:Codex 的安全内核</h2>
 <p>Codex 的安全模型是<strong>两个正交的旋钮</strong>:沙箱决定"命令能碰什么",审批决定"什么时候要问你"。理解这 3×3 组合,就掌握了 Codex 的使用手感。</p>
 
-<h3>沙箱三档(--sandbox / sandbox_mode)</h3>
+<h3 data-reveal>沙箱三档(--sandbox / sandbox_mode)</h3>
 <table class="tbl">
   <tr><th>档位</th><th>能力</th><th>适用</th></tr>
   <tr><td><code>read-only</code></td><td>只能读,不能写不能联网</td><td>代码调研、评审、问答</td></tr>
@@ -415,7 +415,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <tr><td><code>danger-full-access</code></td><td>无沙箱限制</td><td>仅限容器等隔离环境</td></tr>
 </table>
 
-<h3>审批三档(--ask-for-approval / approval_policy)</h3>
+<h3 data-reveal>审批三档(--ask-for-approval / approval_policy)</h3>
 <table class="tbl">
   <tr><th>档位</th><th>行为</th><th>适用</th></tr>
   <tr><td><code>untrusted</code></td><td>非白名单命令一律先问</td><td>陌生仓库、高危操作期</td></tr>
@@ -425,7 +425,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 
 <div class="callout warn"><b class="t">--yolo 的正确认知</b><code>--dangerously-bypass-approvals-and-sandbox</code>(别名 <code>--yolo</code>)= 审批与沙箱全关。与 Claude Code 的 <code>--dangerously-skip-permissions</code> 同理:只应出现在<strong>无敏感数据、无网络副作用的外部加固环境</strong>(如一次性容器)。</div>
 
-<h3>进阶:execpolicy 规则</h3>
+<h3 data-reveal>进阶:execpolicy 规则</h3>
 <p><code>codex execpolicy</code> 可以评估自定义规则文件,预演某条命令会被<strong>放行、询问还是拦截</strong>——把团队的命令安全策略做成可测试的代码。另有 <code>codex sandbox</code> 让你把任意命令手动丢进 Codex 同款 OS 沙箱里跑,适合验证沙箱行为。</p>
 <p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://smartscope.blog/en/generative-ai/chatgpt/openai-codex-cli-comprehensive-guide/" target="_blank">SmartScope Codex Guide</a></p>
 </section>
@@ -436,7 +436,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <div class="sec-tag">配置与扩展 04</div>
 <h2>AGENTS.md 与记忆</h2>
 
-<h3>AGENTS.md:开放标准的项目说明书</h3>
+<h3 data-reveal>AGENTS.md:开放标准的项目说明书</h3>
 <p>作用等价于 Claude Code 的 CLAUDE.md:每次会话自动加载的项目级指令。差异在于 <strong>AGENTS.md 是跨工具开放标准</strong>(agents.md),Codex、Cursor 等多家代理都认它——写一份,多个工具受益。</p>
 <ol class="steps">
   <li><code>/init</code> 生成脚手架:构建命令、测试方式、项目约定</li>
@@ -455,7 +455,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 ## 环境
 - 集成测试前先 docker compose up -d db</code></pre>
 
-<h3>记忆与个性</h3>
+<h3 data-reveal>记忆与个性</h3>
 <ul>
   <li><code>/memories</code> —— 管理 Codex 的记忆生成与使用:跨会话记住你的偏好与项目事实;</li>
   <li><code>/personality</code> —— 选择回复风格(简洁/详尽等);</li>
@@ -470,7 +470,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <div class="sec-tag">配置与扩展 05</div>
 <h2>Skills / 插件 / MCP</h2>
 
-<h3>Skills:与 Claude Code 同标准</h3>
+<h3 data-reveal>Skills:与 Claude Code 同标准</h3>
 <p>Codex 的技能同样遵循<strong>开放 Agent Skills 标准</strong>——按需加载的能力包,目录结构:</p>
 <pre><code>my-skill/
 ├── SKILL.md            <span class="c"># 必需:指令</span>
@@ -480,14 +480,14 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 └── agents/openai.yaml  <span class="c"># 可选:元数据、UI、依赖(Codex 扩展)</span></code></pre>
 <p>会话内 <code>/skills</code> 浏览与调用。<strong>同一份技能包可以在 Claude Code 与 Codex 之间复用</strong>——这是把工作流沉淀成技能的最大红利。</p>
 
-<h3>插件与钩子</h3>
+<h3 data-reveal>插件与钩子</h3>
 <ul>
   <li><code>codex plugin marketplace</code> 从 Git/本地源接入插件市场,<code>/plugins</code> 浏览安装;</li>
   <li><code>/hooks</code> 查看与管理生命周期钩子;</li>
   <li><code>/apps</code> 浏览应用连接器(connectors)并插入到提示中。</li>
 </ul>
 
-<h3>MCP:既是客户端,也是服务器</h3>
+<h3 data-reveal>MCP:既是客户端,也是服务器</h3>
 <table class="tbl">
   <tr><th>方向</th><th>命令</th><th>用途</th></tr>
   <tr><td>Codex 用别人</td><td><code>codex mcp add / list / remove</code>;会话内 <code>/mcp</code></td><td>接数据库、Figma、Sentry……以及 <strong>Pencil</strong>(本知识库的 Pencil 主题即介绍过 Codex 驱动 Pencil 画布)</td></tr>
@@ -505,7 +505,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <p>把 <code>~/.codex</code> 里的每个文件、每种登录形式、换电脑/无头机的每条路径讲透——按"是什么 → 在哪里 → 怎么改 → 出问题怎么查"组织。</p>
 <div class="callout note"><b class="t">遇到登录报错 / 环境翻车?</b>本库有一整个专题深挖这类问题:<a href="env-auth-clinic.html">环境与登录急救手册</a>——五层诊断法、一键体检脚本、共用电脑与换机剧本、三级万能重置方案,Codex 与 Claude Code 双工具对照。</div>
 
-<h3>一、CODEX_HOME 目录地图</h3>
+<h3 data-reveal>一、CODEX_HOME 目录地图</h3>
 <p>Codex 的所有本地状态都在 <code>CODEX_HOME</code>(默认 <code>~/.codex</code>,设该环境变量可整体搬家):</p>
 <table class="tbl">
   <tr><th>文件 / 目录</th><th>内容</th><th>要不要备份</th></tr>
@@ -517,7 +517,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <tr><td>会话数据</td><td><code>codex resume</code> / <code>fork</code> 依赖的本地会话记录</td><td>本地资产,不随机器走</td></tr>
 </table>
 
-<h3>二、配置层级与 Profile</h3>
+<h3 data-reveal>二、配置层级与 Profile</h3>
 <p>同一个键冲突时,从高到低:</p>
 <ol class="steps">
   <li><strong>企业管控</strong> —— managed configuration 与 <code>requirements.toml</code> 约束,个人不可越过</li>
@@ -529,7 +529,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 </ol>
 <div class="callout tip"><b class="t">诊断三板斧</b><code>/status</code> 看当前会话生效的模型/审批/可写根;<code>/debug-config</code> 打印配置层叠与 requirements 诊断("为什么这个键不生效"一查便知);config.toml 顶部加 <code>#:schema https://developers.openai.com/codex/config-schema.json</code> 获得编辑器校验。</div>
 
-<h3>三、登录方式全解与切换</h3>
+<h3 data-reveal>三、登录方式全解与切换</h3>
 <table class="tbl">
   <tr><th>方式</th><th>怎么用</th><th>计费 / 适用</th></tr>
   <tr><td><strong>ChatGPT 登录(默认)</strong></td><td><code>codex login</code> → 浏览器 OAuth(本机回调 <code>localhost:1455</code>)</td><td>订阅额度;Fast mode 等依赖 ChatGPT 额度的功能<strong>仅此方式可用</strong>;走 ChatGPT 工作区的权限与数据政策</td></tr>
@@ -545,7 +545,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <li><strong>企业强制</strong>:管控配置可设 <code>forced_login_method = "chatgpt" | "api"</code> 与 <code>forced_chatgpt_workspace_id</code>;凭证不匹配会被直接登出退出——"公司机器换不了登录方式"就是它。</li>
 </ul>
 
-<h3>四、换电脑 / 无头机 / 远程环境</h3>
+<h3 data-reveal>四、换电脑 / 无头机 / 远程环境</h3>
 <h4>普通换电脑</h4>
 <pre><code><span class="c"># 新机三步</span>
 npm install -g @openai/codex     <span class="c"># 或 brew install codex</span>
@@ -567,7 +567,7 @@ docker cp ~/.codex/auth.json 容器名:/root/.codex/auth.json</code></pre>
 <pre><code>export CODEX_CA_CERTIFICATE=/path/to/corporate-root-ca.pem
 codex login   <span class="c"># 登录、HTTPS、WebSocket 全部走该 CA;未设时回退 SSL_CERT_FILE</span></code></pre>
 
-<h3>五、第三方模型与网关</h3>
+<h3 data-reveal>五、第三方模型与网关</h3>
 <p>在用户层 config.toml 定义 <code>model_providers.&lt;id&gt;</code> 后,三种认证任选其一:</p>
 <table class="tbl">
   <tr><th>方式</th><th>写法</th><th>场景</th></tr>
@@ -576,7 +576,7 @@ codex login   <span class="c"># 登录、HTTPS、WebSocket 全部走该 CA;未�
   <tr><td>无认证</td><td>两者都不设</td><td>本地模型;<code>--oss</code> 直连 Ollama 是现成快捷方式</td></tr>
 </table>
 
-<h3>六、高频问题急救表</h3>
+<h3 data-reveal>六、高频问题急救表</h3>
 <table class="tbl">
   <tr><th>症状</th><th>原因 / 解法</th></tr>
   <tr><td>浏览器登录卡住 / 回调失败</td><td>本机 1455 端口被占或被防火墙拦:改用 <code>--device-auth</code>,或 SSH 转发 1455</td></tr>
@@ -599,7 +599,7 @@ codex login   <span class="c"># 登录、HTTPS、WebSocket 全部走该 CA;未�
 <div class="sec-tag">进阶 07</div>
 <h2>云端与多形态</h2>
 
-<h3>Codex Cloud:云沙箱跑任务</h3>
+<h3 data-reveal>Codex Cloud:云沙箱跑任务</h3>
 <pre><code><span class="c"># 终端直接派发云任务(--env 指定环境,--attempts 跑 best-of-N)</span>
 codex cloud exec --env ENV_ID --attempts 3 "重构 utils/ 并补齐测试"
 
@@ -610,14 +610,14 @@ codex cloud list --limit 10
 codex apply TASK_ID</code></pre>
 <p><strong>best-of-N 是云端的杀手锏</strong>:同一任务并行跑 1–4 次尝试,挑最好的 diff 应用——对"一次成型率不稳"的大任务尤其划算。</p>
 
-<h3>IDE 扩展与桌面 App</h3>
+<h3 data-reveal>IDE 扩展与桌面 App</h3>
 <ul>
   <li>VS Code / Cursor 安装 Codex 扩展:编辑器里对话、内联 diff、把当前文件上下文喂给代理;</li>
   <li><code>codex app</code> 启动桌面工作台(macOS 可直接带工作区路径打开);</li>
   <li><code>--remote ws://…</code> 让终端 TUI 连接远程 app-server——本地键盘,远端算力。</li>
 </ul>
 
-<h3>GitHub 代码评审</h3>
+<h3 data-reveal>GitHub 代码评审</h3>
 <p>接入 GitHub 后,在 PR 中 @ 提及 Codex 即可触发自动代码评审;被自动评审拦下的重试可在 CLI 用 <code>/approve</code> 放行一次。</p>
 <p class="src">来源:<a href="https://developers.openai.com/codex/cli/reference" target="_blank">官方 CLI Reference</a> · <a href="https://developers.openai.com/codex" target="_blank">官方 Codex 文档</a></p>
 </section>
@@ -735,7 +735,7 @@ codex apply TASK_ID                  <span class="c"># 满意的一键落到本�
 <h2>避坑与协同</h2>
 <p>使用层面的高频坑看下表;<strong>环境与登录类</strong>的坑(登录失败、凭证冲突、换机、CI)已单独成册——查<a href="env-auth-clinic.html">环境与登录急救手册</a>。</p>
 
-<h3>高频坑对照表</h3>
+<h3 data-reveal>高频坑对照表</h3>
 <table class="tbl">
   <tr><th>坑</th><th>解法</th></tr>
   <tr><td>用 <kbd>Ctrl+L</kbd> 以为开了新对话</td><td><kbd>Ctrl+L</kbd> 只清屏;重开上下文要用 <code>/new</code> 或 <code>/clear</code></td></tr>
@@ -747,7 +747,7 @@ codex apply TASK_ID                  <span class="c"># 满意的一键落到本�
   <tr><td>删会话手滑</td><td><code>/delete</code> 是永久删除;想保留记录用 <code>/archive</code></td></tr>
 </table>
 
-<h3>与 Claude Code 的选型直觉</h3>
+<h3 data-reveal>与 Claude Code 的选型直觉</h3>
 <table class="tbl">
   <tr><th>维度</th><th>Codex 强项</th><th>Claude Code 强项</th></tr>
   <tr><td>安全模型</td><td>OS 级沙箱默认开启,3×3 档位正交清晰</td><td>权限规则(deny/ask/allow)+ 权限模式灵活组合</td></tr>
@@ -767,7 +767,7 @@ codex apply TASK_ID                  <span class="c"># 满意的一键落到本�
 <p><span class="pill a">官方确认</span> config-reference 文档写了 &nbsp; <span class="pill b">反查证实</span> <code>codex features list</code> 现场跑出来、官网没写 &nbsp; <span class="pill c">存在未验证 / 已下线</span> 名字还在,具体行为或现状不确定</p>
 <div class="callout warn"><b class="t">版本水印</b>本节结论实测于 <strong>codex-cli 0.144.6(2026-07-21)</strong>。Codex 处于 Rust 重写后的快速迭代期,feature 名字与阶段(stable/experimental/removed)随时变动——真正权威的判据永远是你自己那台机器跑一次 <code>codex features list</code>,不是这张表。</div>
 
-<h3>一、<code>codex features</code>:一条命令看穿全部功能旗标</h3>
+<h3 data-reveal>一、<code>codex features</code>:一条命令看穿全部功能旗标</h3>
 <pre><code><span class="c"># 列出全部功能旗标(名称/阶段/当前是否开启)</span>
 codex features list
 
@@ -776,7 +776,7 @@ codex features enable browser_use
 codex features disable multi_agent_v2</code></pre>
 <p>本机实测 <code>codex features list</code> 输出了 <strong>100+ 条</strong>功能旗标,而 <a href="https://developers.openai.com/codex/config-reference" target="_blank">官方 Configuration Reference</a> <span class="pill a">官方确认</span> 只写了其中 17 个:<code>apps</code> / <code>code_mode</code> / <code>fast_mode</code> / <code>goals</code> / <code>hooks</code> / <code>memories</code> / <code>multi_agent</code> / <code>network_proxy</code> / <code>personality</code> / <code>prevent_idle_sleep</code> / <code>remote_plugin</code> / <code>rollout_budget</code> / <code>shell_snapshot</code> / <code>shell_tool</code> / <code>skill_mcp_dependency_install</code> / <code>unified_exec</code> / <code>web_search</code>。</p>
 
-<h3>二、已经默认开启、官网没提的旗标 <span class="pill b">反查证实</span></h3>
+<h3 data-reveal>二、已经默认开启、官网没提的旗标 <span class="pill b">反查证实</span></h3>
 <p>下面这些在本机实测里状态是 <code>stable</code> 且<strong>已经是 true</strong>——正在悄悄跑,但官方 config-reference 只字未提:</p>
 <table class="tbl">
   <tr><th>旗标</th><th>状态</th></tr>
@@ -791,7 +791,7 @@ codex features disable multi_agent_v2</code></pre>
 <p>还有一批 <code>under development</code>——代码已存在但未公开、状态多为关闭,想尝鲜自己 <code>codex features enable</code>:<code>chronicle</code>、<code>artifact</code>、<code>code_mode_only</code>、<code>concurrent_reasoning_summaries</code>、<code>token_budget</code>、<code>realtime_conversation</code>、<code>multi_agent_v2</code>。</p>
 <div class="callout note"><b class="t">考古彩蛋 <span class="pill c">已下线</span></b><code>codex features list</code> 里还留着一批状态是 <code>removed</code> 的名字,说明历史上真实存在过、后来下线了——比如 <code>undo</code>、<code>steer</code>、<code>collaboration_modes</code>、<code>js_repl</code>。名字留着但功能已经没了,别照着网上老教程去试。</div>
 
-<h3>三、隐藏子命令 <span class="pill b">反查证实</span></h3>
+<h3 data-reveal>三、隐藏子命令 <span class="pill b">反查证实</span></h3>
 <table class="tbl">
   <tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>codex debug prompt-input</code></td><td>把即将发给模型的完整 prompt 输入原样渲染成 JSON——想知道 Codex 到底"看见"了什么上下文,比任何文档都直接</td></tr>
@@ -801,7 +801,7 @@ codex features disable multi_agent_v2</code></pre>
   <tr><td><code>codex resume --last</code> / <code>codex fork --last</code></td><td>免选择器直接续上 / 复刻最近一次会话</td></tr>
 </table>
 
-<h3>四、环境变量与万能覆盖语法</h3>
+<h3 data-reveal>四、环境变量与万能覆盖语法</h3>
 <p>Codex 的 Rust 二进制里能反查到的裸环境变量不多(它更依赖下面的 <code>-c</code> 统一覆盖机制),但这几个是真机确认的:</p>
 <table class="tbl">
   <tr><th>变量</th><th>作用</th></tr>
@@ -821,7 +821,7 @@ codex features disable multi_agent_v2</code></pre>
 <div class="sec-tag">进阶 11</div>
 <h2>资源索引</h2>
 
-<h3>官方(第一信源)</h3>
+<h3 data-reveal>官方(第一信源)</h3>
 <table class="tbl">
   <tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>文档总入口(CLI / IDE / Cloud / 配置)</td></tr>
@@ -831,7 +831,7 @@ codex features disable multi_agent_v2</code></pre>
   <tr><td><a href="https://github.com/openai/codex" target="_blank">openai/codex(GitHub)</a></td><td>源码与 Releases</td></tr>
 </table>
 
-<h3>社区精华(本文参考)</h3>
+<h3 data-reveal>社区精华(本文参考)</h3>
 <table class="tbl">
   <tr><th>主题</th><th>来源</th></tr>
   <tr><td>安装/沙箱/AGENTS.md/MCP 通关</td><td><a href="https://blakecrosley.com/guides/codex" target="_blank">Blake Crosley: Codex CLI Guide 2026</a></td></tr>
@@ -854,5 +854,6 @@ codex features disable multi_agent_v2</code></pre>
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
 <script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body>
 </html>
