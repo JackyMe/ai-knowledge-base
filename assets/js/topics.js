@@ -227,5 +227,18 @@ const TOPICS = [
       {id:"method",label:"学习系统 + 20 题自测"},{id:"pitfalls",label:"转型陷阱手册"},
       {id:"business",label:"一人公司商业闭环"},{id:"resources",label:"资源库(带评级)"}
     ]
+  },
+  {
+    href: "topics/toolchain-changelog.html", icon: "📅", tag: "使用指南", color: "#b45309",
+    title: "工具版本追踪 · 变了什么",
+    desc: "Claude Code 与 Codex 的版本变化摘要,只收录会改变实际使用习惯的更新:破坏性变更单独索引(升级后出问题先查这里)、行为变化与新增能力分类标注、按月归档、附官方源与本地自查命令。",
+    keywords: "更新 变化 版本 changelog 发布 release notes 升级 破坏性变更 breaking change 新功能 新版本 弃用 deprecated 迁移 opus 5 sonnet 5 gpt-5.6 subtask fork 权限模式 manual 新特性 最新 时效",
+    meta: ["破坏性变更索引", "按月归档", "三级分类标注", "核对至 2026-07-28"],
+    sections: [
+      {id:"how-to-read",label:"怎么用这一页"},
+      {id:"breaking",label:"破坏性变更总索引",quick:true,quickLabel:"破坏性变更速查"},
+      {id:"m2026-07",label:"2026 年 7 月"},{id:"m2026-06",label:"2026 年 6 月"},
+      {id:"method",label:"本页怎么维护"}
+    ]
   }
 ];

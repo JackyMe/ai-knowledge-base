@@ -179,7 +179,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">CX</span>Codex 使用指南<span class="sub">干货版</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>基于 codex-cli 0.14x · 2026-07-15</span>
+    <span>核对至 2026-07-28</span>
   </div>
 </header>
 
@@ -191,6 +191,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <div class="gt">认识</div>
     <a href="#overview"><span class="no">00</span>Codex 全景</a>
     <a href="#setup"><span class="no">01</span>安装与登录</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">动态</div>
+    <a href="#whats-new"><span class="no">新</span>近期重要变化</a>
   </div>
   <div class="nav-group">
     <div class="gt">速查</div>
@@ -217,7 +221,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 截至 2026-07</div>
+  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-07-28</div>
   <h1>Codex<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">OpenAI 的代理式编码工具:一个账号,五种形态——终端 CLI、IDE 扩展、云端任务、桌面 App、GitHub 代码评审。本指南以官方 CLI 参考与斜杠命令文档为底,整理出安装配置、命令速查、沙箱审批、AGENTS.md、Skills/MCP 与实战打法。</p>
   <div class="meta">
@@ -249,7 +253,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </table>
 
 <h3 data-reveal>模型与推理力度</h3>
-<p>会话内用 <code>/model</code> 切换模型并选择推理力度(reasoning effort),启动时用 <code>--model</code> 指定(官方文档示例如 <code>gpt-5.4</code>;具体型号随版本演进,以 <code>codex debug models</code> 输出为准)。<code>/fast</code> 可切换 Fast 服务档;<code>--oss</code> 甚至能接本地 Ollama 开源模型。</p>
+<p>会话内用 <code>/model</code> 切换模型并选择推理力度(reasoning effort),启动时用 <code>--model</code> 指定。当前默认是 <strong>GPT-5.6 Sol</strong>(2026-07-09 GA,旗舰档),同期还有 <strong>Terra</strong>(均衡)与 <strong>Luna</strong>(快而省)两个变体;原先绑定 GPT-5.4 的内置选择已迁移到对应的 5.6 档位。具体可用型号随版本演进,以 <code>codex debug models</code> 输出为准。<code>/fast</code> 可切换 Fast 服务档;<code>--oss</code> 甚至能接本地 Ollama 开源模型。</p>
 
 <div class="callout note"><b class="t">一句话定位(社区共识)</b>Codex 的招牌是<strong>默认更严格的沙箱模型</strong>(命令在 OS 级沙箱里跑)与<strong>云端任务矩阵</strong>;Claude Code 的招牌是更丰富的扩展面(Skills/Hooks/子代理生态)。两者高度互补,见<a href="#pitfalls">协同一节</a>。</div>
 <div class="callout warn"><b class="t">官方文档搬家提醒(2026 年中)</b>Codex 文档已从 <code>developers.openai.com/codex</code> 迁往 <code>learn.chatgpt.com/docs</code>,旧链接 308 重定向仍可达;搜教程时注意甄别新旧域名与内容时效。</div>
@@ -294,11 +298,54 @@ codex update</code></pre>
 </table>
 <pre><code><span class="c"># ~/.codex/config.toml 常用起步项</span>
 #:schema https://developers.openai.com/codex/config-schema.json
-model = "gpt-5.4"
+model = "gpt-5.6-sol"
 sandbox_mode = "workspace-write"     <span class="c"># 沙箱默认档</span>
 approval_policy = "on-request"       <span class="c"># 审批默认档</span></code></pre>
 <div class="callout tip"><b class="t">编辑体验</b>文件顶部加上面那行 schema 注释,配合 VS Code 的 Even Better TOML 扩展即可获得自动补全与校验。诊断配置层叠用会话内 <code>/debug-config</code>。</div>
 <p class="src">来源:<a href="https://developers.openai.com/codex/config-reference" target="_blank">官方 Configuration Reference</a> · <a href="https://blakecrosley.com/guides/codex" target="_blank">Codex CLI Guide 2026</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="whats-new">
+<div class="sec-tag">动态</div>
+<h2>近期重要变化</h2>
+
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-07-28</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+
+<h3 data-reveal>🔴 最容易踩的坑:多文件夹项目的配置发现规则</h3>
+<p>2026-07-23 起本地项目支持挂载<strong>多个相关文件夹</strong>,但配置发现有一条很容易忽略的规则:</p>
+<div class="callout warn"><b class="t">只有"主文件夹"提供配置</b><code>AGENTS.md</code>、skills、<code>config.toml</code> 的自动发现<strong>只在主文件夹里进行</strong>。副文件夹可以正常搜索、读取、编辑,但<strong>不贡献任何配置</strong>。如果你把 <code>AGENTS.md</code> 放在副文件夹里然后奇怪"为什么规则不生效",原因就在这。</div>
+
+<h3 data-reveal>🔄 模型与形态变化</h3>
+<table class="tbl">
+  <tr><th>时间</th><th>变化</th><th>影响</th></tr>
+  <tr><td>07-09</td><td><strong>GPT-5.6 Sol</strong> GA,成为默认模型</td><td>同期还有 Terra(均衡)与 Luna(快而省);原先绑定 GPT-5.4 的内置选择已迁到对应 5.6 档。配置里写死旧型号的要更新</td></tr>
+  <tr><td>07-09</td><td>Codex 并入 <strong>ChatGPT 桌面 App</strong>(macOS / Windows)</td><td>形态矩阵又多一种入口;同时带来 PR Chat(评审 GitHub PR 并给内联反馈)与 Sites 自定义域名</td></tr>
+  <tr><td>07-23</td><td>ChatGPT Voice(GPT-Live 驱动)</td><td>可以在 Chat / Work / Codex 三处用语音协调任务</td></tr>
+  <tr><td>06-25</td><td><strong>Codex Remote 转 GA</strong></td><td>手机与主机之间一对一 QR 配对;配套 DigitalOcean 插件可直接开 Droplet 当远程工作区</td></tr>
+</table>
+
+<h3 data-reveal>🆕 新增能力</h3>
+<table class="tbl">
+  <tr><th>能力</th><th>说明</th></tr>
+  <tr><td><strong>rollout token 预算</strong></td><td>可配置的 token 预算,跨 agent 线程统计用量、给剩余提醒、耗尽即中止回合。长任务防失控很实用</td></tr>
+  <tr><td><strong>多代理委派开关</strong></td><td>可在线程级与回合级配置为:禁用 / 仅在显式请求时 / 主动委派</td></tr>
+  <tr><td><strong>索引化 web 搜索模式</strong></td><td>允许实时搜索,但直接访问页面被限制在服务端批准的 URL 范围内——安全与时效的折中</td></tr>
+  <tr><td><strong>插件面板分组</strong></td><td><code>/plugins</code> 现在把远程插件分成 OpenAI Curated / Workspace / Shared with me 三组;符合条件的回合中会推荐并可直接安装</td></tr>
+  <tr><td><strong>Record &amp; Replay</strong>(macOS,06-18)</td><td>把你演示过一遍的流程直接转成可复用的 skill</td></tr>
+  <tr><td><strong><code>/init</code></strong>(06-11)</td><td>一键生成项目说明(<code>AGENTS.md</code>)</td></tr>
+  <tr><td><strong>Amazon Bedrock 提供方</strong>(06-01)</td><td>可经 Bedrock 使用 OpenAI 模型,走 AWS 托管认证与账号管控</td></tr>
+  <tr><td><strong>时间感知</strong></td><td>可接收定时 UTC 提醒、直接查询当前时间(含客户端提供的时钟)</td></tr>
+</table>
+
+<h3 data-reveal>🔧 平台与稳定性修复</h3>
+<ul>
+  <li><strong>Windows</strong>:<code>codex doctor</code> 能正确识别 npm 管理的安装;MSVC 发行版二进制不再依赖单独安装的 VC++ 运行时 DLL</li>
+  <li><strong>Linux</strong>:修好了 <kbd>Ctrl+Z</kbd> 挂起后 <code>fg</code> 恢复时 TUI 渲染错乱</li>
+</ul>
+
+<div class="callout warn"><b class="t">这份清单会过期</b>本节覆盖 2026-06 至 2026-07 的关键变化。<strong>看到本页核对日期距今超过一个月,请以<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">官方 changelog</a> 与 <code>codex debug models</code> 实际输出为准</strong>,别把这里当唯一真相。</div>
 </section>
 
 <div class="divider"></div>
@@ -342,7 +389,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <h3 data-reveal>高价值启动参数</h3>
 <table class="tbl">
   <tr><th>参数</th><th>作用</th></tr>
-  <tr><td><code>--model, -m</code></td><td>覆盖配置中的模型(如 <code>gpt-5.4</code>)</td></tr>
+  <tr><td><code>--model, -m</code></td><td>覆盖配置中的模型(如 <code>gpt-5.6-sol</code>)</td></tr>
   <tr><td><code>--sandbox, -s</code></td><td>沙箱档位:<code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code></td></tr>
   <tr><td><code>--ask-for-approval, -a</code></td><td>审批档位:<code>untrusted</code> / <code>on-request</code> / <code>never</code></td></tr>
   <tr><td><code>--cd, -C 路径</code></td><td>指定代理的工作目录</td></tr>
@@ -811,7 +858,7 @@ codex features disable multi_agent_v2</code></pre>
   <tr><td><code>CODEX_CA_CERTIFICATE</code> <span class="pill a">官方确认</span></td><td>企业代理/私有 CA 场景,见<a href="#config-auth">配置与账号 06 节</a></td></tr>
 </table>
 <div class="callout tip"><b class="t"><code>-c key=value</code> 比记具体变量名更值钱</b>点路径能覆盖 <code>config.toml</code> 里任意嵌套字段,不用真改文件,而且能覆盖<strong>所有</strong>配置项,包括上面 <code>features.*</code> 全部旗标(<code>-c features.名称=true</code> 等价于 <code>--enable 名称</code>)——比零散记环境变量名投资回报率高得多。</div>
-<pre><code>codex -c model="gpt-5.4" -c 'sandbox_permissions=["disk-full-read-access"]' -c shell_environment_policy.inherit=all</code></pre>
+<pre><code>codex -c model="gpt-5.6-sol" -c 'sandbox_permissions=["disk-full-read-access"]' -c shell_environment_policy.inherit=all</code></pre>
 <p class="src">本节方法论:<code>codex features list</code> 真机实测输出 + 对 <code>@openai/codex-darwin-arm64</code> 原生二进制的 <code>strings</code> 字符串反查,逐条与 <a href="https://developers.openai.com/codex/config-reference" target="_blank">官方 Configuration Reference</a> 交叉核对。</p>
 </section>
 
