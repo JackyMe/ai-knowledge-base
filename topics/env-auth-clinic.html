@@ -259,7 +259,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>命令找不到 / 版本诡异 / 更新没反应</td><td>急救表 · 安装与版本(<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>)</td></tr>
   <tr><td>说不清哪坏了,想系统性查一遍</td><td><a href="#diagnose">01 · 五层诊断法 + 体检脚本</a></td></tr>
   <tr><td>想看完整的排查过程长什么样</td><td><a href="#cases">11 · 案例复盘</a>——四个真实案例从症状走到根因</td></tr>
-  <tr><td>全试过了,想安全地推倒重来</td><td><a href="#reset">10 · 万能修复:三级重置</a></td></tr>
+  <tr><td>全试过了,想安全地推倒重来</td><td><a href="#reset">12 · 万能修复:三级重置</a></td></tr>
 </table>
 
 <h3 data-reveal>问题地图:所有环境问题只有四类根源</h3>
@@ -284,7 +284,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>凭证存放</td><td>macOS 钥匙串;Linux/Win 为 <code>.credentials.json</code></td><td><code>auth.json</code>(明文)或系统钥匙串(可配)</td></tr>
   <tr><td>体检命令</td><td><code>claude doctor</code> / 会话内 <code>/status</code> <code>/doctor</code></td><td>会话内 <code>/status</code> <code>/debug-config</code>;登录日志 <code>codex-login.log</code></td></tr>
 </table>
-<p class="src">完整对照表见<a href="#map">第 10 章</a>。本页所有结论均核对官方文档 2026-07 版,来源见各节脚注。</p>
+<p class="src">完整对照表见<a href="#map">第 13 章</a>。本页所有结论均核对官方文档 2026-07 版,来源见各节脚注。</p>
 </section>
 
 <div class="divider"></div>
@@ -1150,8 +1150,9 @@ codex login && codex login status</code></pre>
 <h3 data-reveal><span class="pill a">L3</span> 核弹重置(15 分钟)—— 备份 → 清干净 → 官方渠道重装</h3>
 <pre><code><span class="c"># ═══ 第一步:备份核心资产(手写配置是你的,其他都可再生)═══</span>
 mkdir -p ~/ai-cli-backup
-cp -r ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/skills ~/.claude/agents ~/ai-cli-backup/ 2&gt;/dev/null
-cp -r ~/.codex/config.toml ~/.codex/AGENTS.md ~/ai-cli-backup/ 2&gt;/dev/null
+cp -r ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/skills ~/.claude/agents ~/.claude/commands ~/ai-cli-backup/ 2&gt;/dev/null
+cp ~/.claude.json ~/ai-cli-backup/claude.json 2&gt;/dev/null   <span class="c"># 存 MCP 等全局状态,第三步会连它一起删,漏备份就找不回来了</span>
+cp -r ~/.codex/config.toml ~/.codex/AGENTS.md ~/.codex/prompts ~/ai-cli-backup/ 2&gt;/dev/null
 
 <span class="c"># ═══ 第二步:卸掉所有并存安装(Claude Code)═══</span>
 npm uninstall -g @anthropic-ai/claude-code 2&gt;/dev/null
@@ -1167,9 +1168,11 @@ curl -fsSL https://claude.ai/install.sh | bash
 npm install -g @openai/codex
 
 <span class="c"># ═══ 第五步:恢复配置 + 重新登录 + 全面验证 ═══</span>
-cp ~/ai-cli-backup/settings.json ~/ai-cli-backup/CLAUDE.md ~/.claude/ 2&gt;/dev/null
-cp -r ~/ai-cli-backup/skills ~/ai-cli-backup/agents ~/.claude/ 2&gt;/dev/null
+mkdir -p ~/.claude && cp ~/ai-cli-backup/settings.json ~/ai-cli-backup/CLAUDE.md ~/.claude/ 2&gt;/dev/null
+cp -r ~/ai-cli-backup/skills ~/ai-cli-backup/agents ~/ai-cli-backup/commands ~/.claude/ 2&gt;/dev/null
+cp ~/ai-cli-backup/claude.json ~/.claude.json 2&gt;/dev/null   <span class="c"># 对应第一步备份的 MCP 等全局状态</span>
 mkdir -p ~/.codex && cp ~/ai-cli-backup/config.toml ~/ai-cli-backup/AGENTS.md ~/.codex/ 2&gt;/dev/null
+cp -r ~/ai-cli-backup/prompts ~/.codex/ 2&gt;/dev/null
 claude doctor && claude    <span class="c"># /login → /status 确认订阅生效</span>
 codex login && codex login status</code></pre>
 

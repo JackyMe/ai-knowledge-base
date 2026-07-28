@@ -39,8 +39,8 @@
 | 🎯 [提示词与上下文工程](topics/prompt-context-engineering.html) | 从技法到心法的地基学科 | 7 大技法对照、12 式逐字模板、6 个原创案例、模型路由现状核查(如实标注"领域不成熟",不瞎编) |
 | 🚑 [环境与登录急救手册](topics/env-auth-clinic.html) | 报错 30 秒对症自救 | 五层诊断法、一键体检脚本、共用电脑/换电脑/CI 三大剧本、三级万能重置 |
 | 📘 [Pencil 官方文档中文版](topics/pencil-docs-zh.html) | docs.pencil.dev 全 16 页 | 含官方视频、逐节附原文链接 |
-| ⚡ [Pencil × Claude Code 实践](topics/pencil-claude-code-best-practices.html) | 设计到代码的完整流水线 | 9+ 来源聚合、20+ 实测截图 |
-| ⚡ [Android Crash & ANR 排查根治](topics/android-crash-anr.html) | 稳定性问题从识别到根治 | 30+ 崩溃类型图鉴、ANR 深度解剖、原创 AI 分诊 Skill |
+| ⚡ [Pencil × Claude Code 实践](topics/pencil-claude-code-best-practices.html) | 设计到代码的完整流水线 | 9+ 来源聚合、16 张实测截图 |
+| ⚡ [Android Crash & ANR 排查根治](topics/android-crash-anr.html) | 稳定性问题从识别到根治 | 20+ 崩溃类型图鉴、ANR 深度解剖、原创 AI 分诊 Skill |
 | 🧭 [AI 提效全景与心法](topics/ai-leverage-guide.html) | AI 到底能帮普通人干什么 | 8 大场景收益矩阵、7 条有出处的通用心法 |
 | 🧗 [Android 转型全栈](topics/android-to-fullstack.html) | 客户端老兵的转型作战手册 | 语言/UI/架构/数据四层硬核迁移、12 周路线、一人公司商业闭环 |
 

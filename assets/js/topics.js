@@ -108,7 +108,7 @@ const TOPICS = [
     title: "Pencil × Claude Code 最佳实践全景",
     desc: "聚合 9+ 来源:四种核心工作流、提示词模板、设计系统工程化、CI/CD 玩法、避坑与真实案例(附实测截图)。",
     keywords: "pencil claude 工作流 提示词 prompt 设计系统 避坑 案例 最佳实践",
-    meta: ["9+ 来源", "20+ 实测截图", "2026-07 聚合"],
+    meta: ["9+ 来源", "16 张实测截图", "2026-07 聚合"],
     sections: [
       {id:"intro",label:"为什么是这对组合"},{id:"setup",label:"环境搭建标准流程"},
       {id:"workflows",label:"四种核心工作流"},{id:"prompts",label:"实战提示词范例集"},
@@ -125,12 +125,14 @@ const TOPICS = [
     meta: ["100+ 命令收录", "8 大场景", "5 套模板", "基于 v2.1.x"],
     sections: [
       {id:"mental-model",label:"一切围绕上下文"},{id:"golden-rules",label:"五条黄金法则"},
+      {id:"whats-new",label:"近期重要变化"},
       {id:"setup",label:"安装与首次配置"},{id:"commands",label:"命令速查手册",quick:true,quickLabel:"Claude Code 命令速查"},
       {id:"shortcuts",label:"快捷键与输入技巧"},{id:"extensions",label:"六大扩展怎么选"},
       {id:"skills-hooks",label:"Skills / Hooks / MCP / 子代理"},{id:"playbook",label:"八大场景实战手册"},
       {id:"context",label:"上下文管理进阶"},{id:"permissions",label:"权限与安全"},
       {id:"config-auth",label:"配置与账号全解"},{id:"ecosystem",label:"生态精选:方法论与组合拳"},
       {id:"pitfalls",label:"避坑清单"},{id:"templates",label:"开箱即用模板库"},
+      {id:"hidden-config",label:"隐藏能力与彩蛋配置"},
       {id:"resources",label:"资源索引"}
     ]
   },
@@ -142,11 +144,13 @@ const TOPICS = [
     meta: ["5 种形态", "沙箱 3 档详解", "双代理协同", "基于 0.14x"],
     sections: [
       {id:"overview",label:"Codex 全景"},{id:"setup",label:"安装与登录"},
+      {id:"whats-new",label:"近期重要变化"},
       {id:"commands",label:"命令速查手册",quick:true,quickLabel:"Codex 命令速查"},{id:"sandbox",label:"沙箱与审批"},
       {id:"agents-md",label:"AGENTS.md 与记忆"},{id:"skills-mcp",label:"Skills / 插件 / MCP"},
       {id:"config-auth",label:"配置与账号全解"},
       {id:"cloud",label:"云端与多形态"},{id:"playbook",label:"实战场景手册"},
-      {id:"pitfalls",label:"避坑与协同"},{id:"resources",label:"资源索引"}
+      {id:"pitfalls",label:"避坑与协同"},{id:"hidden-config",label:"隐藏能力与彩蛋配置"},
+      {id:"resources",label:"资源索引"}
     ]
   },
   {
@@ -157,8 +161,10 @@ const TOPICS = [
     meta: ["对症快查", "五层诊断法", "3 级重置", "2026-07-18 核对"],
     sections: [
       {id:"overview",label:"对症快查 + 问题地图"},{id:"diagnose",label:"五层诊断法 + 体检脚本"},
-      {id:"claude-cred",label:"Claude Code 凭证机制"},{id:"claude-er",label:"Claude Code 症状急救表"},
-      {id:"codex-cred",label:"Codex 凭证机制"},{id:"codex-er",label:"Codex 症状急救表"},
+      {id:"claude-cred",label:"Claude Code 凭证机制"},{id:"claude-config",label:"Claude Code settings.json 全解"},
+      {id:"claude-er",label:"Claude Code 症状急救表"},
+      {id:"codex-cred",label:"Codex 凭证机制"},{id:"codex-config",label:"Codex config.toml 全解"},
+      {id:"codex-er",label:"Codex 症状急救表"},
       {id:"shared",label:"共用电脑 / 别人的配置"},{id:"machines",label:"换电脑 / 多机漫游"},
       {id:"headless",label:"SSH / 容器 / CI"},{id:"cases",label:"案例复盘:从症状到根因"},
       {id:"reset",label:"万能修复:三级重置"},{id:"map",label:"双工具对照与资源"}
@@ -169,7 +175,7 @@ const TOPICS = [
     title: "Android Crash & ANR 排查根治 × AI 提效",
     desc: "小白到大神:崩溃图鉴、ANR 解剖、Native 崩溃、全工具链、GP/Firebase 后台、疑难侦查术,以及 AI 分诊工作流与原创 crash-triage 技能。",
     keywords: "android anr crash 崩溃 卡顿 稳定性 firebase play console native 堆栈 日志 排查",
-    meta: ["12 章渐进式", "30+ 崩溃图鉴", "原创 AI Skill", "2026-07 核对"],
+    meta: ["12 章渐进式", "20+ 崩溃图鉴", "原创 AI Skill", "2026-07 核对"],
     sections: [
       {id:"overview",label:"全景与方法论"},{id:"read-crash",label:"第一课:读懂一次崩溃"},
       {id:"crash-catalog",label:"常见 Crash 图鉴与根治"},{id:"anr",label:"ANR 深入"},

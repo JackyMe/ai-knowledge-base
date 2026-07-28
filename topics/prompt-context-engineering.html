@@ -240,7 +240,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="stat"><b>1 个定义</b><span>用最小的高信号 token 集,最大化期望产出的概率</span></div>
   <div class="stat"><b>17 章</b><span>从基础技法到安全/成本/跨模型的完整体系</span></div>
   <div class="stat"><b>6 案例</b><span>原始提示词→坏产出→诊断→改写→好产出,全流程可复用</span></div>
-  <div class="stat"><b>0 玄学</b><span>每条结论标注官方确认/实测共识/存在分歧三级证据</span></div>
+  <div class="stat"><b>0 玄学</b><span>易变/存在分歧的结论标注官方确认/实测共识/存在分歧三级证据</span></div>
 </div>
 
 <section id="overview">
@@ -260,7 +260,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="callout note"><b class="t">这一页和心法页的分工</b><a href="ai-leverage-guide.html">心法页</a>回答"AI 能干什么、该怎么用"(场景与原则);本页回答"具体怎么说、怎么喂"(技法与工程)。心法页的七条心法之一"上下文是第一资源"——本页就是那句话的展开说明书。</div>
 
 <h3 data-reveal>三级证据标注,分清"官方说的"和"大家猜的"</h3>
-<p>本页涉及多家厂商、快速演进的领域,每条结论按可信度分三级标注,自己判断该信多少:</p>
+<p>本页涉及多家厂商、快速演进的领域,对易变或有争议的结论按可信度分三级标注,自己判断该信多少(基础性、多方一致的结论不逐条标注,以免标签泛滥反而没人看):</p>
 <p><span class="pill a">官方确认</span> 官方文档/博客逐字写明 &nbsp; <span class="pill b">实测/强共识</span> 官方未直接写,但有实测数据或行业近乎一致的共识 &nbsp; <span class="pill c">存在分歧/演进中</span> 说法不一或处于快速变化中,谨慎参考</p>
 
 <h3 data-reveal>十六项能力速查(学完本页你会的)</h3>
@@ -443,7 +443,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li>一次塞太多图片/视频——Anthropic 有明确张数上限(claude.ai 单条 20 张),Gemini 建议视频一次一个;</li>
   <li>OpenAI 官方额外点名:图表颜色/线型差异过大模型容易读错,旋转倒置图像容易误判,CAPTCHA 类图片会被系统直接拦截,不适合用于医学诊断影像判读。</li>
 </ul>
-<p>"UI 截图还原代码"这类高频场景,三家都没有专门的官方提示词模板;Anthropic 工程博客(不是提示词/vision 官方文档,来源类型不同)给出的思路是:给一张视觉稿,让模型实现后自己截图对比,反复迭代直到匹配——这是<a href="#agentic">07 章</a>"任务分解"技法在多模态场景的应用。</p>
+<p>"UI 截图还原代码"这类高频场景,三家都没有专门的官方提示词模板;Anthropic 工程博客(不是提示词/vision 官方文档,来源类型不同)给出的思路是:给一张视觉稿,让模型实现后自己截图对比,反复迭代直到匹配——这是<a href="#basics">01 章</a>技法⑦"任务分解"在多模态场景的应用。</p>
 
 <p class="src">来源:<a href="https://platform.claude.com/docs/en/build-with-claude/vision" target="_blank">Anthropic Vision 文档</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/vision-coordinates" target="_blank">坐标与边界框</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/pdf-support" target="_blank">PDF Support</a> · <a href="https://developers.openai.com/api/docs/guides/images-vision" target="_blank">OpenAI Images and vision</a> · <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank">Gemini Prompting strategies</a> · <a href="https://ai.google.dev/gemini-api/docs/video-understanding" target="_blank">Gemini Video understanding</a></p>
 </section>
@@ -860,7 +860,7 @@ messages: [
 <span class="c">// 改用 Structured Outputs / response_format 强约束 schema,
 // 而不是用预填 { 这种已废弃的技巧模拟格式约束</span>
 response_format: { type: "json_schema", json_schema: {...} }</code></pre>
-  <p>改用官方推荐的 Structured Outputs 机制后,格式约束由系统层保证,反而比原来"预填一个 <code>{</code> 赌模型会顺着写"更可靠——技法③结构化输出一节提到的"层③ Schema 强约束"正是这个思路的落地。</p>
+  <p>改用官方推荐的 Structured Outputs 机制后,格式约束由系统层保证,反而比原来"预填一个 <code>{</code> 赌模型会顺着写"更可靠——<a href="#structured">02 章结构化输出</a>提到的"层③ Schema 强约束"正是这个思路的落地。</p>
   <p class="case-takeaway"><strong>复盘:</strong>提示词库不是写完就一劳永逸的静态资产,尤其是依赖某个模型"特殊行为"的技巧(预填、特定角色话术),换模型或换大版本前,先去官方迁移指南查一遍有没有被废弃或替换,比线上报错了才排查省事得多。</p>
 </div>
 
@@ -954,7 +954,7 @@ Done-when: 什么样算完成(可验证的标准)</code></div>
 
 <div class="callout tip"><b class="t">三条止损纪律(与心法页共识一致)</b>① 同一问题纠正两轮无效 → 别第三轮,用模板⑨重开;② 高风险产出必过模板⑥的审查式把关;③ 对"提示词玄学"保持警惕——任何声称"加这句话质量暴涨"的偏方,先过你自己的失败集再信。</div>
 
-<h3 data-reveal>四、版本管理与 A/B 对比:提示词也要有变更记录</h3>
+<h3 data-reveal>版本管理与 A/B 对比:提示词也要有变更记录</h3>
 <p>提示词一旦进了生产流程(自动化脚本、团队共用的系统提示、CLAUDE.md),它就是代码,而不是聊天记录里随手改的一句话——没有版本记录的提示词,出问题时你甚至不知道"上周那版"长什么样。</p>
 <table class="tbl">
   <tr><th>做法</th><th>具体怎么做</th></tr>

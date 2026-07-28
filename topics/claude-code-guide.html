@@ -535,7 +535,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><th>快捷键</th><th>作用</th><th>为什么值得背</th></tr>
   <tr><td><kbd>Esc</kbd></td><td>打断当前回合</td><td>纠偏的第一反应,已完成的工作保留</td></tr>
   <tr><td><kbd>Esc Esc</kbd></td><td>回滚菜单(输入为空时)</td><td>对话/代码独立回滚,大胆试错的底气</td></tr>
-  <tr><td><kbd>Shift+Tab</kbd></td><td>循环权限模式</td><td>default → acceptEdits → plan →(auto)一键切换</td></tr>
+  <tr><td><kbd>Shift+Tab</kbd></td><td>循环权限模式</td><td>manual(原 default)→ acceptEdits → plan →(auto)一键切换</td></tr>
   <tr><td><kbd>Ctrl+B</kbd></td><td>把运行中的命令转后台</td><td>dev server、长测试不再阻塞对话(tmux 按两次)</td></tr>
   <tr><td><kbd>Ctrl+O</kbd></td><td>转录视图</td><td>展开每次工具调用细节,审查它到底做了什么</td></tr>
   <tr><td><kbd>Ctrl+R</kbd></td><td>反向搜索历史提示</td><td><kbd>Ctrl+S</kbd> 可切换范围:本会话/本项目/全部</td></tr>
@@ -1126,13 +1126,14 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td><code>CLAUDE_CODE_USE_POWERSHELL_TOOL</code></td><td>非 Windows 上也能用 PowerShell 工具</td></tr>
   <tr><td><code>DISABLE_AUTO_COMPACT</code> / <code>DISABLE_AUTOUPDATER</code></td><td>关自动压缩上下文 / 关自动更新(配合 <code>claude install 版本号</code> 钉版本)</td></tr>
   <tr><td><code>MAX_THINKING_TOKENS=0</code></td><td>彻底关闭扩展思考</td></tr>
+  <tr><td><code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> / <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code></td><td>每会话子代理派生数 / WebSearch 次数上限(07-17 起为官方硬性配额,见本页「近期重要变化」),长时间无人值守任务要留意</td></tr>
 </table>
 <p><span class="pill a">反查证实</span> ——二进制里真实存在、官网未写、按命名可以大胆试,风险可控:</p>
 <table class="tbl">
   <tr><th>变量</th><th>推断作用</th></tr>
   <tr><td><code>CLAUDE_CODE_SUBAGENT_MODEL</code> / <code>CLAUDE_CODE_BG_CLASSIFIER_MODEL</code> / <code>CLAUDE_CODE_AUTO_MODE_MODEL</code></td><td>给子代理 / 后台分类器 / auto-mode 分别指定更便宜的模型,直接对应第七章"额度与成本管理"</td></tr>
-  <tr><td><code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> / <code>CLAUDE_CODE_PLAN_V2_AGENT_COUNT</code></td><td>控制 Plan 模式并行探索用几个 agent——最接近"多智能体并行"的真实旋钮</td></tr>
-  <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code> / <code>CLAUDE_CODE_MAX_TURNS</code> / <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code></td><td>硬性上限,CI/自动化脚本里防失控好用</td></tr>
+  <tr><td><code>CLAUDE_CODE_PLAN_V2_AGENT_COUNT</code></td><td>控制 Plan 模式并行探索用几个 agent——最接近"多智能体并行"的真实旋钮</td></tr>
+  <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code> / <code>CLAUDE_CODE_MAX_TURNS</code></td><td>硬性上限,CI/自动化脚本里防失控好用</td></tr>
   <tr><td><code>CLAUDE_CODE_HTTP_PROXY</code> / <code>CLAUDE_CODE_HTTPS_PROXY</code> / <code>CLAUDE_CODE_PROXY_URL</code></td><td>公司代理环境专用,可配合<a href="env-auth-clinic.html">环境急救手册</a>排查代理相关登录失败</td></tr>
   <tr><td><code>CLAUDE_CODE_OVERRIDE_DATE</code></td><td>让助手以为现在是别的日期,测试日期相关行为用,日常别开</td></tr>
 </table>

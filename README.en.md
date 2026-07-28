@@ -41,8 +41,8 @@ This is not "another AI-generated content dump." Every claim is sourced (officia
 | 🎯 [Prompt & Context Engineering](topics/prompt-context-engineering.html) | The foundational discipline, technique to mindset | 7 core techniques with before/after pairs, 12 copy-paste templates, 6 original case studies, an honest audit of model-routing tools (states plainly that the space is still immature — no invented best practice) |
 | 🚑 [Environment & Login First-Aid](topics/env-auth-clinic.html) | Diagnose auth errors in 30 seconds | Five-layer diagnostic method, one-shot health-check script, shared-machine / new-machine / CI playbooks, a three-tier reset ladder |
 | 📘 [Pencil Official Docs (Chinese)](topics/pencil-docs-zh.html) | All 16 pages of docs.pencil.dev | Includes official videos, linked back to source per section |
-| ⚡ [Pencil × Claude Code Best Practices](topics/pencil-claude-code-best-practices.html) | The full design-to-code pipeline | 9+ sources synthesized, 20+ real screenshots |
-| ⚡ [Android Crash & ANR Field Guide](topics/android-crash-anr.html) | From spotting a crash to actually fixing it | 30+ crash-type catalog, deep ANR anatomy, an original AI-assisted triage skill |
+| ⚡ [Pencil × Claude Code Best Practices](topics/pencil-claude-code-best-practices.html) | The full design-to-code pipeline | 9+ sources synthesized, 16 real screenshots |
+| ⚡ [Android Crash & ANR Field Guide](topics/android-crash-anr.html) | From spotting a crash to actually fixing it | 20+ crash-type catalog, deep ANR anatomy, an original AI-assisted triage skill |
 | 🧭 [What AI Can Actually Do For You](topics/ai-leverage-guide.html) | A realistic map of where AI helps | 8-scenario payoff matrix, 7 sourced principles (not vibes) |
 | 🧗 [Android-to-Full-Stack Transition](topics/android-to-fullstack.html) | A veteran mobile dev's playbook for going full-stack | Four-layer migration (language/UI/architecture/data), a 12-week roadmap, a solo-founder business closer |
 

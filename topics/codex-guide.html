@@ -708,7 +708,7 @@ codex apply TASK_ID</code></pre>
       <pre><code>&gt; 用户反馈:会话超时后重新登录会白屏。查 src/auth/ 的 token
   刷新逻辑。先写一个能复现的失败测试,再修,并验证测试通过。
   解决根因,不要用 try-catch 压掉报错。</code></pre>
-      <p><strong>提效招:</strong>报错日志用非交互模式直灌——<code>cat error.log | codex exec "分析根因,列 3 个假设按可能性排序"</code>;让它跑测试时用 <code>on-failure</code> 档位,只有命令失败才需要你介入;修完要求它<strong>出示测试输出作为证据</strong>,而不是口头宣称已修。</p>
+      <p><strong>提效招:</strong>报错日志用非交互模式直灌——<code>cat error.log | codex exec "分析根因,列 3 个假设按可能性排序"</code>;让它跑测试时用 <code>on-request</code> 档位(见上「审批三档」表,<code>on-failure</code> 已弃用),模型自行在沙箱内跑,越权才问你;修完要求它<strong>出示测试输出作为证据</strong>,而不是口头宣称已修。</p>
     </div>
   </div>
   <div class="play">
