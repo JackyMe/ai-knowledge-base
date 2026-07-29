@@ -439,7 +439,99 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <section id="case-studies">
 <div class="sec-tag">实战 03</div>
 <h2>端到端深度案例</h2>
-<!-- 任务 5、6 填充 -->
+
+<p>下面两条案例都完整走一遍上面的五步方法论,选和你方向接近的一条深入读,也可以都读——两条案例内部结构一致,读一条就能掌握方法,另一条可以当参考。</p>
+<ul>
+  <li><a href="#case-a">案例 A:移动端出发,扩展到全栈跨端 →</a></li>
+  <li><a href="#case-b">案例 B:前端/客户端出发,扩展到后端与服务端 →</a></li>
+</ul>
+
+<h3 data-reveal id="case-a">案例 A:移动端 → 全栈跨端</h3>
+<p>你是一名 Android 或 iOS 背景的移动端工程师,声明式 UI、ViewModel/StateFlow 状态管理、Room 本地持久化这些心智已经很扎实,现在想往上再走一层——不只是"写一个跑在手机里的 App",而是能独立搭一个前端渲染、后端写操作、数据库读写全部自己拿下的全栈应用,不用等后端同事排期。下面按<a href="#engine">五步扩展引擎</a>把这条跨越走一遍,技术选型以 Next.js 全栈框架为例,原理同样适用于 Nuxt、SvelteKit 等其他全栈框架。</p>
+
+<h4>①诊断差距(案例化)</h4>
+<p><strong>学什么：</strong>对着<a href="#mapping">跨域映射</a>已经给出的"移动端→Web 前端"映射(<code>remember</code>/<code>@State</code> ↔ <code>useState</code>、<code>LaunchedEffect</code> ↔ <code>useEffect</code> 等)理清一件事:全栈比"移动端→前端"多出的那两层,是<strong>后端服务</strong>与<strong>数据库</strong>——这两层你目前完全没有对应心智模型,才是这次诊断真正要划出来的③全新区;前端这层因为你已有声明式 UI 直觉,大概率落在①重叠区/②翻译区,不用重新花时间学。</p>
+<p><strong>怎么学：</strong>不要自己先估"我大概懂多少",在#mapping 给的前端层映射基础上,把同一套"重叠区/翻译区/全新区"三分类往后端和数据库层继续问下去,让 AI 主动追问,而不是自己先列清单。</p>
+<p><strong>用什么：</strong>AI 对话诊断,纯聊天模式即可,不用挂载代码库。</p>
+<p><strong>怎么用：</strong></p>
+<pre><code>我是 [Android/iOS] 移动端工程师,写过 [N] 年 [Kotlin+Compose / Swift+SwiftUI],
+熟悉声明式 UI、ViewModel/StateFlow 状态管理、Room 本地持久化、Retrofit 网络层。
+
+我现在想把能力边界扩展到:能独立搭一个前端+后端+数据库都自己拿下的全栈应用
+(以 Next.js 为例,原理同样适用于其他全栈框架)。
+我现在最想做成的第一个具体产出是:[例如,一个带登录、能持久化私有数据的个人项目管理小工具]。
+
+在我说更多之前,先反问我 3-5 个诊断性问题,分别覆盖:
+① 前端渲染层——哪些和我的声明式 UI 直觉重叠
+② 后端服务层——我从没写过接口,这层要重点问
+③ 数据库层——我只用过 Room 这种本地嵌入式库,没碰过真正的服务端数据库和权限模型
+
+等我回答完,请把结果按三层拆成表格:①重叠区 ②翻译区 ③全新区,
+并特别标出:"后端服务层"和"数据库层"里,哪些概念是移动端完全没有对应物、必须从零建立的。</code></pre>
+
+<h4>②AI 知识速通(案例化)</h4>
+<p><strong>学什么：</strong>从诊断出的③全新区里挑一个真正卡点:"哪段代码到底在哪跑"——服务端组件与客户端组件的边界,以及页面 HTML 什么时候生成(SSR/SSG/ISR)。这是移动端心智完全没有对应物的部分:App 里所有代码都在设备上跑,全栈应用第一次出现"同一份代码,一部分在服务器执行、一部分在浏览器执行"这件事。</p>
+<p><strong>怎么学：</strong>用你已有的"哪层能力归哪层管"的直觉做类比引子,但要求 AI 讲完立刻出题,而不是听完类比就以为懂了——这正是#engine 步骤②"反向出题"技巧在这个具体全新区上的应用。</p>
+<p><strong>用什么：</strong>AI 对话即可,概念澄清阶段不需要挂载真实项目代码。</p>
+<p><strong>怎么用：</strong></p>
+<pre><code>我是移动端工程师,对"代码只在设备上跑"这个心智很熟。请给我讲清楚 Next.js
+(或同类全栈框架)里"服务端组件"和"客户端组件"的边界:
+
+1. 默认情况下,我写的组件在哪跑?什么声明会让它换到另一边跑?
+2. 举一个具体反例:如果我把数据库查询逻辑放进了本该在浏览器跑的组件,后果是什么——
+   是编译期报错,还是运行时才炸,还是更糟(比如密钥被下发到浏览器)?
+3. 再讲清楚 SSR/SSG/ISR 这三种"页面 HTML 什么时候生成"的模式,分别对应我要做的
+   应用里哪种页面(登录后的个性化面板 / 纯展示的落地页 / 更新不频繁的详情页)?
+4. 讲完出 3 道判断题考我,题目要能测出我是不是真分清了"服务端组件默认能力"
+   和"客户端组件必须显式声明才有的能力"。</code></pre>
+<p>一次靠谱的回答通常长这样(结构比逐字文案更重要,判断"AI 是不是真讲清楚了"就看有没有这三块):先给一张判断表——能不能用 <code>useState</code>/<code>onClick</code>、能不能直接查库或读密钥、默认该选哪个,这张表应该 30 秒内能背下来;再给具体反例——数据库查询放进声明了 <code>"use client"</code> 的组件会在构建期直接报错,因为浏览器端根本拿不到数据库连接,而反过来"服务端组件里想用 <code>onClick</code> 却忘了声明 <code>"use client"</code>"才是最容易在 AI 生成代码里漏检的坑;最后给 SSR/SSG/ISR 一句话结论——静态内容用 SSG,更新不频繁的内容页用带 <code>revalidate</code> 的 ISR,登录后的个性化面板用 SSR,对应的正是你在 Room/本地缓存里已经很熟的"要不要缓存、缓存多久"判断,只是这次要在页面粒度上做决定。</p>
+
+<h4>③脚手架起步(案例化)</h4>
+<p><strong>学什么：</strong>不追求学完整个技术栈,先搭出"一个能登录、有一条私有数据能读写"的最小全栈产物——这条线比"能跑起来的 Hello World"高一格,因为它同时验证了前端渲染、后端写操作、数据库权限三层是否真的打通,而不只是跑通了最简单的静态页面。</p>
+<p><strong>怎么学：</strong>边搭边问,卡住哪层就针对性问哪层,配合<a href="#engine">#engine 步骤③</a>已经给出的通用起手命令与 CLAUDE.md 模板——起步阶段不需要先读完框架文档或数据库文档。</p>
+<p><strong>用什么：</strong>这里以 Next.js 为例点名具体命令,原理同样适用于其他全栈框架;数据库以 Supabase/Postgres 为例,原理同样适用于其他数据库服务。</p>
+<p><strong>怎么用：</strong></p>
+<pre><code>npx create-next-app@latest my-app --yes
+cd my-app
+npm run dev   <span class="c"># http://localhost:3000</span></code></pre>
+<p>建好项目后确认 <code>tsconfig.json</code> 里 <code>"strict": true</code> 还在(这是下一步④验证闭环能生效的地基),然后只做一件事把脚手架撑起来:接入一个 Auth(Supabase Auth 或同类服务的 OAuth/邮箱登录)+ 建一张<strong>只有 owner 自己能读写</strong>的表。登录、写入一条属于自己的数据、读出来只能看到自己的——这三步跑通,就是移动端跨过来的第一个全栈及格线,原理同样适用于其他全栈框架和数据库服务。顺手可以再加一个未登录跳转登录页的 <code>proxy.ts</code>(Next.js 16 起原 <code>middleware.ts</code> 改名,行为不变,官方提供 codemod),对应你熟悉的 Interceptor 鉴权拦截。</p>
+
+<h4>④验证闭环(案例化)</h4>
+<p><strong>学什么：</strong>承接<a href="#engine">#engine 步骤④</a>"AI 产出正确性不能只看起来对",全栈案例里最有代表性的一处是<strong>数据权限</strong>:AI 很容易写出"看起来能跑"但权限有漏洞的代码——查询忘了带 owner 过滤,或者把无视权限的万能密钥用到了浏览器端。这一步要学的是给这类"必须验证、不能只读代码"的产出配一个可执行的验证方法。</p>
+<p><strong>怎么学：</strong>以 Supabase/Postgres 的行级安全(RLS)为例,原理同样适用于其他数据库的权限模型(比如自建后端的中间件鉴权 + ORM 层过滤、或其他云数据库自带的行级权限):先让 AI 给出策略,再反过来让 AI 扮演攻击者列出几种绕过尝试,用<strong>两个真实测试账号互相查询</strong>验证挡得住——这正是#engine 步骤④"要求 AI 自己说出产出怎么验证"的具体落地。</p>
+<p><strong>用什么：</strong>数据库的策略配置界面或 SQL Editor + 两个测试账号(不能自己一个账号自测,必须两个身份互相攻击才算验证)。</p>
+<p><strong>怎么用：</strong></p>
+<pre><code><span class="c">-- 以 Supabase/Postgres 为例,给一张表开启行级安全并写最小策略(原理同样适用于其他数据库权限模型)</span>
+alter table projects enable row level security;
+<span class="c">-- 开启后默认拒绝一切访问——这正是它的价值,漏写一条策略 = 请求被拒,不是数据裸奔</span>
+
+create policy "只能读自己的项目"
+  on projects for select
+  using ( owner_id = (select auth.uid()) );</code></pre>
+<pre><code>这张表已经开了行级安全、写了上面这条策略。请扮演攻击者,给出 3 种可能绕过这条
+策略、读到别人数据的尝试(比如:忘记给某个操作写策略、policy 条件写反、用错误
+的密钥绕过)。
+
+然后我会用两个真实测试账号(A 账号登录后尝试查 B 账号的数据)逐条复现验证——
+你先告诉我每种尝试具体该怎么操作,我验证完回来告诉你结果。</code></pre>
+<div class="callout warn"><b class="t">验证不能只看代码</b>两把钥匙的边界也要一并复查:面向浏览器的公开密钥受权限策略约束可以出现在前端,无视权限策略的万能密钥只允许留在服务端环境变量——这条红线不分数据库品牌都成立,AI 生成的任何写操作,照这个"策略 + 攻击场景验证"的模板审。</div>
+
+<h4>⑤深化沉淀(案例化)</h4>
+<p><strong>学什么：</strong>从"能跑通"到"能长期稳定运营"——移动端工程师熟悉的"崩溃率看板""灰度发布"这些工程习惯,在全栈里要重新落地成另一套具体动作,深化阶段就是把它们一项项补齐。</p>
+<p><strong>怎么学：</strong>承接<a href="#engine">#engine 步骤⑤</a>的费曼法,针对下表每一项自己讲一遍"我为什么需要它、它对应我原来的什么习惯",讲不清楚的就是还没真正沉淀,回头针对性补课。</p>
+<p><strong>用什么：</strong>下面按类别列工具,不锁定具体品牌——CI 用 GitHub Actions 同类即可,监控用 Sentry 同类即可。</p>
+<p><strong>怎么用：</strong>对照这张表把"移动端已有工程习惯"逐条迁移到全栈:</p>
+<table class="tbl">
+  <tr><th>移动端已有习惯</th><th>全栈对应动作</th><th>一句话</th></tr>
+  <tr><td>测试金字塔(单元/集成/UI 测试)</td><td>单元测试覆盖纯逻辑函数 + E2E 冒烟覆盖命脉流程(登录、核心功能、支付)</td><td>只挑命脉流程写 E2E,别贪多</td></tr>
+  <tr><td>CI 跑编译 + 检查(如 Gradle 任务)</td><td>GitHub Actions 同类工具在 PR 里跑 lint + 类型检查 + test</td><td>PR 不全绿不合并</td></tr>
+  <tr><td>Build Variant 区分 debug/release 密钥</td><td>本地/预览/生产三层环境变量分层管理</td><td>公开前缀的变量会打进浏览器,密钥绝不加这个前缀</td></tr>
+  <tr><td>崩溃率看板</td><td>错误监控(Sentry 同类)接入前后端</td><td>上线后第一个要盯的仪表盘</td></tr>
+  <tr><td>应用商店审核 + 灰度发布</td><td>推代码自动部署,每个 PR 生成独立预览环境</td><td>回滚变成一键,比商店审核回滚幸福得多</td></tr>
+  <tr><td>发版前 checklist</td><td>权限策略全覆盖、密钥边界、入口校验、签名验证、限流、监控、备份、依赖 audit</td><td>每次大版本前重过一遍,不是写一次就完事</td></tr>
+</table>
+<p class="src"><code>proxy.ts</code> 改名事实核实自 Next.js 官方文档<a href="https://nextjs.org/docs/app/api-reference/file-conventions/proxy" target="_blank">proxy.js 文件参考</a>(Migration to Proxy 一节,v16.0.0 起生效),2026-07 核实;架构层与数据层其余技术点核实口径与<a href="android-to-fullstack.html">《Android 到全栈跨端》</a>一致。</p>
+
 </section>
 
 <div class="divider"></div>
