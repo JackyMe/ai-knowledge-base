@@ -565,7 +565,7 @@ export function LikeButton() {
   <tr><td>Activity/Fragment + NavGraph</td><td><code>app/</code> 目录文件树(文件即路由)</td><td><code>app/projects/[id]/page.tsx</code> = 详情页,目录即导航图</td></tr>
   <tr><td>ViewModel + StateFlow</td><td>服务端组件(读)+ Server Actions(写)+ 少量客户端 state</td><td>大部分"状态管理"消失了:数据在服务端现取现渲染</td></tr>
   <tr><td>Repository + Retrofit/Room</td><td>Drizzle ORM 直查 PostgreSQL</td><td>没有"客户端缓存数据库"这一层,缓存交给框架(下表)</td></tr>
-  <tr><td>Interceptor(鉴权)</td><td><code>middleware.ts</code>(会话检查/重定向)</td><td>+ RLS 在数据库层兜底(<a href="#data">05 章</a>)</td></tr>
+  <tr><td>Interceptor(鉴权)</td><td><code>proxy.ts</code>(Next.js 16 起原 <code>middleware.ts</code> 改名,行为不变;会话检查/重定向)</td><td>+ RLS 在数据库层兜底(<a href="#data">05 章</a>)</td></tr>
   <tr><td>深链 Deep Link</td><td>URL 本身</td><td>Web 的 URL 天生即深链,还免费带 SEO</td></tr>
   <tr><td>Application 全局初始化</td><td>root layout(<code>app/layout.tsx</code>)</td><td>全局壳:字体、Provider、导航栏</td></tr>
 </table>
@@ -779,7 +779,7 @@ export async function createProject(formData: FormData) {
 <table class="tbl er">
   <tr><td>学什么</td><td><strong>主教材:<a href="https://nextjs.org/learn/dashboard-app" target="_blank">Next.js Learn · Dashboard 课程</a>(官方,16 章全做)</strong>——从零构建带鉴权的真实应用,覆盖路由/RSC/取数/流式/鉴权。<strong>辅助精读文档三专题</strong>:<a href="https://nextjs.org/docs/app/building-your-application/routing" target="_blank">Routing</a>、<a href="https://nextjs.org/docs/app/building-your-application/data-fetching" target="_blank">Data Fetching</a>、<a href="https://nextjs.org/docs/app/building-your-application/caching" target="_blank">Caching</a>。视频辅助:YouTube 搜 Jack Herrington 的 RSC 系列(把服务端/客户端边界讲得最透的人)。</td></tr>
   <tr><td>怎么学</td><td>Dashboard 课程<strong>逐章亲手敲,禁止复制粘贴</strong>;每章完成后用自己的话向 AI 复述本章概念,让它挑错(费曼法);卡在 RSC 就回 <a href="#arch">04 章</a>①对照表。</td></tr>
-  <tr><td>实操任务</td><td>① 做完官方课程后,<strong>立刻用同样架构起 P2 骨架</strong>(趁热迁移是最强内化);② 三个改造练习:给 P2 加一个 ISR 内容页(revalidate 3600)、把一处取数改成 Suspense 流式加载、写一个未登录重定向的 middleware;③ 用 <a href="#ai-workflow">09 章</a>建表提示词让 AI 出方案,你来审。</td></tr>
+  <tr><td>实操任务</td><td>① 做完官方课程后,<strong>立刻用同样架构起 P2 骨架</strong>(趁热迁移是最强内化);② 三个改造练习:给 P2 加一个 ISR 内容页(revalidate 3600)、把一处取数改成 Suspense 流式加载、写一个未登录重定向的 proxy.ts(原 middleware);③ 用 <a href="#ai-workflow">09 章</a>建表提示词让 AI 出方案,你来审。</td></tr>
   <tr><td>过关线</td><td>自测题 11-15 + 04 章验收三问;能画出 P2 每个页面"哪端渲染、缓存策略是什么"。</td></tr>
 </table>
 

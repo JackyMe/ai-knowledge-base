@@ -471,7 +471,7 @@ claude</code></pre>
 <div class="callout warn"><b class="t">已知问题</b>pen.dev 可能修改或重复写入 Codex 的 <code>config.toml</code>。官方已确认并在调查中——首次使用前请备份配置。</div>
 
 <h3 data-reveal>可用的 MCP 工具</h3>
-<p>2026-07-27 起官方文档把工具集从 5-6 个细分工具收拢成 3 个,完整新旧对照与「文档已改但你环境可能还没升级」的提醒见<a href="#pencil-cli">「pen.dev CLI」章 · 支持的 MCP 工具</a>。</p>
+<p>2026-07-27 起官方文档把工具集从 5-6 个细分工具收拢成 5 个(执行/取状态/截图/导出/加载指南),完整新旧对照与「文档已改但你环境可能还没升级」的提醒见<a href="#pencil-cli">「pen.dev CLI」章 · 支持的 MCP 工具</a>。</p>
 <table class="tbl">
   <tr><th>类别</th><th>工具</th><th>能力</th></tr>
   <tr><td>设计</td><td><code>execute</code></td><td>创建/修改/操作设计元素:Insert/Copy/Update/Replace/Move/Delete 操作;通过 <code>GetVariables</code>/<code>SetVariables</code> 子操作设置变量与主题;生成并放置图片</td></tr>
@@ -1289,7 +1289,7 @@ tool_name()                 <span class="c">// 无参调用</span>
 save()                      <span class="c">// 保存文档到磁盘</span>
 exit()                      <span class="c">// 退出</span>
 
-<span class="c"># 示例会话(2026-07-27 起工具集已改为 execute / get_screenshot / get_app_state 三个,见下方「支持的 MCP 工具」)</span>
+<span class="c"># 示例会话(2026-07-27 起工具集已改为 execute / get_app_state / get_screenshot / export_nodes / get_guidelines 五个,见下方「支持的 MCP 工具」)</span>
 pen &gt; get_app_state({ include_schema: true })
 pen &gt; get_guidelines()
 pen &gt; execute({ operations: 'hero=Insert(document,{type:"frame",name:"Hero",x:0,y:0,width:1440,height:900,fill:"#0A0A0A"})' })
@@ -1312,14 +1312,17 @@ pen &gt; exit()</code></pre>
 }</code></pre>
 
 <h3 data-reveal>支持的 MCP 工具</h3>
-<div class="callout note"><b class="t">2026-07-27 起工具集大改</b>官方文档已把原来的 5-6 个细分工具收拢成 3 个:<code>batch_design</code>/<code>batch_get</code>/<code>get_editor_state</code>/<code>get_variables</code>/<code>snapshot_layout</code>/<code>export_nodes</code> 这些名字<strong>官方文档里已经查不到</strong>。但截至本次核对,本知识库作者实际连接的 Pencil MCP 服务器<strong>仍然暴露的是旧版这一整套工具名</strong>——也就是说文档已经讲了新版,但不少人本地/线上实际装的可能还是旧版。用之前请先用 <code>pen interactive</code> 或你的 MCP 客户端实际列一遍工具,以你环境里真正拿到的名字为准。</div>
+<div class="callout note"><b class="t">2026-07-27 起工具集大改</b>官方文档已把原来的 5-6 个细分工具收拢成 <strong>5 个</strong>(不是早前版本里写的 3 个,已核对官方页面原始 HTML 逐条修正):<code>batch_design</code>/<code>batch_get</code>/<code>get_editor_state</code>/<code>get_variables</code>/<code>snapshot_layout</code> 这些名字<strong>官方文档里已经查不到</strong>。但截至本次核对,本知识库作者实际连接的 pen.dev MCP 服务器<strong>仍然暴露的是旧版这一整套工具名</strong>——也就是说文档已经讲了新版,但不少人本地/线上实际装的可能还是旧版。用之前请先用 <code>pen interactive</code> 或你的 MCP 客户端实际列一遍工具,以你环境里真正拿到的名字为准。</div>
 <table class="tbl">
-  <tr><th>工具(新版)</th><th>说明</th><th>对应的旧版工具(如果你环境还没升级)</th></tr>
-  <tr><td><code>execute</code></td><td>创建/修改设计元素:Insert/Copy/Update/Replace/Move/Delete 操作,以及通过 <code>GetVariables</code>/<code>SetVariables</code> 两个子操作读写变量和主题</td><td>对应旧版 <code>batch_design</code> / <code>batch_get</code> / <code>get_variables</code> 的合并</td></tr>
-  <tr><td><code>get_app_state</code></td><td>获取编辑器上下文、当前选区、活动文件信息</td><td>对应旧版 <code>get_editor_state</code> / <code>snapshot_layout</code></td></tr>
-  <tr><td><code>get_screenshot</code></td><td>渲染设计预览用于核对视觉效果</td><td>名字未变</td></tr>
+  <tr><th>类别</th><th>工具(新版)</th><th>说明</th><th>对应的旧版工具(如果你环境还没升级)</th></tr>
+  <tr><td rowspan="2">Design Operations</td><td><code>execute</code></td><td>Insert/Update/Delete/Move/Copy/Replace 节点;读取节点与计算后的边界;通过 <code>GetVariables</code>/<code>SetVariables</code> 子操作读写变量</td><td>对应旧版 <code>batch_design</code> / <code>batch_get</code> / <code>get_variables</code> 的合并</td></tr>
+  <tr><td><code>get_app_state</code></td><td>获取文档元数据与结构</td><td>对应旧版 <code>get_editor_state</code> / <code>snapshot_layout</code></td></tr>
+  <tr><td rowspan="2">Visual Operations</td><td><code>get_screenshot</code></td><td>把节点渲染为 PNG 图片</td><td>名字未变</td></tr>
+  <tr><td><code>export_nodes</code></td><td>导出节点为 PNG/JPEG/WEBP/PDF</td><td>名字未变,官方仍单独保留</td></tr>
+  <tr><td>Image Generation</td><td><code>execute</code> 的 <code>G()</code> 操作</td><td><code>G(nodeId, "ai", prompt)</code> AI 生成图;<code>G(nodeId, "stock", keywords)</code> Unsplash 图库图</td><td>不是独立工具,挂在 <code>execute</code> 下</td></tr>
+  <tr><td>Style &amp; Guidelines</td><td><code>get_guidelines</code></td><td>加载 .pen 工作指南与风格</td><td>名字未变,官方仍单独保留</td></tr>
 </table>
-<p class="src">来源:<a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">Getting Started / AI Integration</a>(更新于 2026-07-27)· 官方文档未给出 <code>execute</code> 的完整参数 JSON 示例,上面的操作名是根据文档文字描述转写的,不保证与实际调用签名逐字一致。</p>
+<p class="src">来源:<a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">官方 pen.dev CLI · Supported MCP Tools</a>(核对方式:直接抓取页面原始 HTML 逐条比对,WebFetch 摘要在这个页面上给出过不一致的结果,不作为唯一依据)。官方文档未给出 <code>execute</code> 的完整参数 JSON 示例,示例会话里的操作名是根据文档文字描述转写的,不保证与实际调用签名逐字一致。</p>
 
 <h3 data-reveal>CI/CD 与环境变量</h3>
 <pre><code>export PEN_CLI_KEY=pen_cli_...
