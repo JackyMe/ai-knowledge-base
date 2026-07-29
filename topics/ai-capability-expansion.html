@@ -549,6 +549,166 @@ create policy "只能读自己的项目"
 </table>
 <p class="src"><code>proxy.ts</code> 改名事实核实自 Next.js 官方文档<a href="https://nextjs.org/docs/app/api-reference/file-conventions/proxy" target="_blank">proxy.js 文件参考</a>(Migration to Proxy 一节,v16.0.0 起生效),2026-07 核实。</p>
 
+<h3 data-reveal id="case-b">案例 B:前端/客户端 → 后端与服务端工程</h3>
+<p>你是一名前端(React/Vue 等)或客户端背景的工程师,组件化拆分、状态管理、"发一个请求、拿到数据渲染出来"这套心智已经很熟练,现在想往下再扎一层——不只是消费别人写好的接口,而是能自己设计 API 契约、选一门后端语言把服务真正跑起来、并对它在生产环境里的稳定性负责。下面同样按<a href="#engine">五步扩展引擎</a>走一遍,起点正是<a href="#mapping">#mapping</a> 里"Web 前端 → 后端/服务端"那张映射表——那张表已经点出前端最容易带错的三个直觉(无状态请求、连接池、幂等性),这里从它们继续往下诊断。</p>
+
+<h4>①诊断差距(案例化)</h4>
+<b class="q4">学什么</b>
+<p><a href="#mapping">#mapping</a> 给出的三条映射基本落在①重叠区/②翻译区——你已经有"受控副作用"的直觉,只是把粒度从"组件重渲染"搬到了"一次 HTTP 请求"。这一步真正要划进③全新区的是那张表还没覆盖的两块:<strong>路由与契约设计</strong>(你一直是"消费" API 的一方,现在要变成"定义"这份契约的一方——路径怎么分层、状态码怎么选、错误结构怎么统一,都要自己决定,不再是读文档拿现成的)和<strong>鉴权的服务端视角</strong>(前端只需要"读"登录态——拿到 token 判断要不要显示某个按钮、要不要跳登录页;后端要"写"并对它的安全边界负责——token 怎么签发、怎么校验、过期怎么处理、一旦泄露怎么撤销,这些前端从来不用操心)。</p>
+<b class="q4">怎么学</b>
+<p>不要自己先估,直接把<a href="#mapping">#mapping</a> 那张映射表贴给 AI 当作"已确认的重叠区",让 AI 只在剩下的部分继续追问——这样能省掉重复诊断已经诊断过的内容,把追问力气集中在契约设计和鉴权这两块真正陌生的地方。</p>
+<b class="q4">用什么</b>
+<p>AI 对话诊断,纯聊天模式即可,不用挂载代码库。</p>
+<b class="q4">怎么用</b>
+<pre><code>我是前端/客户端工程师,写过 [N] 年 [React/Vue/移动端],
+熟悉组件化开发、状态管理、用 fetch/axios 消费 REST 或 GraphQL 接口、
+处理 loading/error 状态、用拿到的 token 判断登录态并跳转。
+
+我现在想把能力边界扩展到:能独立设计 API、选一门后端语言把服务跑起来、
+理解部署和运维的基础(不需要成为运维专家,但要能自己把服务发布上线并知道它有没有在正常跑)。
+我现在最想做成的第一个具体产出是:[例如,一个有登录、能对一张表做增删改查的最小后端服务]。
+
+已经确认的重叠区/翻译区如下,不用再重复问我这些:
+- HTTP 请求默认无状态,状态要显式存进数据库/缓存
+- 数据库连接池 ≈ 复用连接而不是每次新建
+- API 幂等性:同一请求重发多次,服务端最终状态只变化一次
+
+在这些之外,请反问我 3-5 个诊断性问题,重点覆盖:
+① 路由与 API 契约设计——我一直是消费方,现在要变成设计方
+② 鉴权与会话管理的服务端视角——token 的签发、校验、过期、撤销
+③ 我完全没概念的部分:数据库设计基础(范式、索引)
+
+等我回答完,按①重叠区②翻译区③全新区拆成表格,标出哪些是必须从零建立的。</code></pre>
+
+<h4>②AI 知识速通(案例化)</h4>
+<b class="q4">学什么</b>
+<p>从诊断出的③全新区里挑三个真正卡点:<strong>无状态请求处理</strong>的服务端实现方式(不是概念上知道"无状态",而是知道并发多个请求时状态具体存哪、怎么读写)、<strong>数据库设计基础</strong>(至少要能看懂并动手设计:第一/第二/第三范式在实际建表时具体意味着什么、索引解决什么问题及其代价)、<strong>鉴权与会话管理的服务端视角</strong>(和前端"消费登录态"视角的差异——服务端要决定用 session 还是 token、token 怎么存、怎么防篡改)。</p>
+<b class="q4">怎么学</b>
+<p>用你已有的"props 单向流入、状态提升到公共父组件"这类前端直觉做类比引子,但一定要求 AI 讲完立刻出题——这正是<a href="#engine">#engine</a> 步骤②"反向出题"技巧在这三个全新区上的应用,听懂类比不代表真的能在设计一张表或选一种鉴权方式时用对。</p>
+<b class="q4">用什么</b>
+<p>AI 对话即可,概念澄清阶段不需要挂载真实项目代码。</p>
+<b class="q4">怎么用</b>
+<pre><code>我是前端工程师,对"状态提升到公共父组件、避免重复来源"这个心智很熟。
+请分三部分给我讲清楚:
+
+1. 无状态请求处理:如果我要在服务端"记住"一个用户在多个请求之间的状态
+   (比如购物车、登录态),实际存在哪里?列出至少两种方案(session 存储 / token 自带状态)
+   及各自的权衡,并类比我熟悉的"状态提升"直觉解释为什么不能指望服务端进程内存长期可靠。
+
+2. 数据库设计基础:用一个具体例子(比如"文章+作者+标签"三张表)讲清楚
+   第一/第二/第三范式分别在解决什么重复/异常问题,以及给哪些字段加索引能加速查询、
+   加索引的代价是什么(写入变慢、占空间)。
+
+3. 鉴权的服务端视角:和我熟悉的"前端读 token 判断要不要显示登录页"相比,
+   服务端要多负责哪些事——token 怎么签发和校验、过期后怎么处理、
+   一旦 token 泄露怎么撤销。
+
+每部分讲完立刻出 2 道场景题考我,题目要能测出我是不是真能在设计阶段用对,
+不要出"是不是"这种送分题。</code></pre>
+
+<h4>③脚手架起步(案例化)</h4>
+<b class="q4">学什么</b>
+<p>不追求学完整个后端技术栈,先搭出"一个能跑的最小 API 服务 + 一张能读写的表"——这条线同样比"Hello World"高一格,因为它同时验证了路由、请求处理、数据持久化三层是否真的打通。</p>
+<b class="q4">怎么学</b>
+<p>边搭边问,配合<a href="#engine">#engine 步骤③</a>已给出的通用起手命令与 CLAUDE.md 模板——起步阶段不需要先读完框架文档。</p>
+<b class="q4">用什么</b>
+<p>后端语言/框架当前有不少主流选择,这里点名两个经 WebFetch 核实过生态活跃度的例子,原理同样适用于 Go(如 net/http+chi)、Java(Spring Boot)等其他语言:如果你的前端背景是 JS/TS,<strong>Node.js 生态的 Fastify</strong> 是自然延伸,复用同一门语言;如果想借机换一门语言积累,<strong>Python 生态的 FastAPI</strong> 是近两年增长最猛的选择——JetBrains/Python 官方基金会联合发布的《State of Python》调研显示,它的采用率从 29% 涨到 38%,是当年"涨幅最大的 Python Web 框架"。数据库用一张最小表起步即可,不需要先起一个独立的数据库服务——Node.js 24 LTS 起不需要额外 flag 就能用内置的 <code>node:sqlite</code> 模块,官方稳定性标注是 1.2(Release Candidate,接近稳定但运行时仍会打印 experimental 警告,预计 Node.js 26 起完全转正),用来做起步阶段的最小验证足够,真正上生产库前留意这行警告。</p>
+<b class="q4">怎么用</b>
+<pre><code><span class="c"># 以 Node.js + Fastify 为例,原理同样适用于 FastAPI/Spring Boot 等其他框架</span>
+mkdir my-api && cd my-api
+npm init -y
+npm i fastify
+<span class="c"># package.json 里加 "type": "module" 才能用下面的 import 语法</span></code></pre>
+<pre><code><span class="c">// server.js —— 最小可跑的 API + 一张表,用内置 node:sqlite,零外部依赖</span>
+import Fastify from 'fastify'
+import { DatabaseSync } from 'node:sqlite'
+
+const db = new DatabaseSync('app.db')
+db.exec(`
+  CREATE TABLE IF NOT EXISTS todos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    done INTEGER DEFAULT 0
+  )
+`)
+
+const app = Fastify({ logger: true })
+
+app.get('/todos', (req, reply) => {
+  const rows = db.prepare('SELECT * FROM todos').all()
+  reply.send(rows)
+})
+
+app.post('/todos', (req, reply) => {
+  const { title } = req.body
+  const stmt = db.prepare('INSERT INTO todos (title) VALUES (?)')
+  const info = stmt.run(title)
+  reply.code(201).send({ id: info.lastInsertRowid, title, done: 0 })
+})
+
+app.listen({ port: 3000 })</code></pre>
+<p>跑起来后用 <code>curl -X POST localhost:3000/todos -d '{"title":"第一条"}' -H 'content-type: application/json'</code> 和 <code>curl localhost:3000/todos</code> 各测一次——一写一读都通,就是这次跨越的最小及格线。如果选的是 Python/FastAPI,起手同样只需要 <code>uv run fastapi dev</code> 起一个内置的 <code>main.py</code>,数据库同理可以先用 Python 内置的 <code>sqlite3</code> 模块,原理一致。</p>
+
+<h4>④验证闭环(案例化)</h4>
+<b class="q4">学什么</b>
+<p>承接<a href="#engine">#engine 步骤④</a>"AI 产出正确性不能只看起来对",后端服务里最容易被 AI 生成代码糊弄过去的三处是:<strong>API 契约</strong>(响应结构、状态码是不是真的和文档/前端约定的一致)、<strong>鉴权边界</strong>(没登录/没权限的请求是不是真的被拒绝,而不是"代码里写了检查但漏了某条路径")、<strong>并发下的数据一致性</strong>(两个请求同时改同一行数据,最终结果对不对——这是前端几乎不会遇到的问题,浏览器里没有"两个用户同时点提交"这种真正的并发)。</p>
+<b class="q4">怎么学</b>
+<p>和案例 A 一样,先让 AI 给出验证方案,再反过来让它扮演"挑刺的人"列出会被漏掉的边界——这正是<a href="#engine">#engine</a> 步骤④"要求 AI 自己说出产出怎么验证"的具体落地,只是这次验证对象从"数据库行级权限"换成了"接口契约 + 鉴权 + 并发"。</p>
+<b class="q4">用什么</b>
+<p>Fastify 官方推荐的测试方式是 <code>fastify.inject()</code> 配合 Node.js 内置的 <code>node:test</code> 测试运行器——不需要真的起一个端口监听,注入请求直接测,足够覆盖契约测试和鉴权边界测试;并发一致性这块要专门起真实端口用多个并发请求打。</p>
+<b class="q4">怎么用</b>
+<pre><code><span class="c">// test.js —— 用 fastify.inject() + node:test,零额外测试依赖(Fastify 官方推荐写法)</span>
+import { test } from 'node:test'
+import assert from 'node:assert'
+import { build } from './server.js'   <span class="c">// 把 server 封装成可复用的 build() 函数,inject 前不需要真的监听端口</span>
+
+test('POST /todos 返回 201 和创建的记录', async () => {
+  const app = build()
+  const res = await app.inject({
+    method: 'POST',
+    url: '/todos',
+    payload: { title: '测试待办' }
+  })
+  assert.strictEqual(res.statusCode, 201)
+  assert.strictEqual(JSON.parse(res.body).title, '测试待办')
+})
+
+test('未带鉴权头访问受保护路由应返回 401', async () => {
+  const app = build()
+  const res = await app.inject({ method: 'GET', url: '/me' })
+  assert.strictEqual(res.statusCode, 401)
+})</code></pre>
+<pre><code>这是我这个 API 服务的路由清单:[粘贴路由列表,标出哪些需要登录]。
+请:
+1. 按每条路由给出契约测试要点:正常输入的期望状态码/响应结构,以及至少 2 种
+   异常输入(缺字段、类型错、越权访问别人的数据)的期望行为
+2. 针对标了"需要登录"的路由,列出 3 种应该被拒绝、但最容易在代码里漏掉的场景
+   (比如:token 过期、token 格式对但签名不对、token 有效但访问的是别人的资源)
+3. 针对 [具体写操作,例如"库存扣减"/"余额转账"],给出一个并发场景描述——
+   两个请求同时到达会不会导致数据不一致,该用什么手段防(比如数据库事务、
+   乐观锁的 version 字段、唯一约束),用一句话讲清楚原理,不要只说"加锁"两个字</code></pre>
+<div class="callout warn"><b class="t">验证不能只看代码</b>"鉴权检查写在代码里"和"鉴权检查真的挡住了未授权请求"是两回事——AI 生成的中间件/装饰器很容易在某条新加的路由上漏挂,契约测试和鉴权边界测试都要用真实请求跑一遍,不能只读代码确认"逻辑看起来对"。</div>
+
+<h4>⑤深化沉淀(案例化)</h4>
+<b class="q4">学什么</b>
+<p>从"能跑通"到"能发布上线并知道它有没有在正常跑"——前端工程师对"部署"的经验通常止步于"推一个静态站点",后端服务要多担两件事:<strong>部署基础</strong>(容器化概念、环境变量怎么分层管理)和<strong>可观测性基础</strong>(日志和监控的最小认知),深化阶段就是把这两项补齐。</p>
+<b class="q4">怎么学</b>
+<p>承接<a href="#engine">#engine 步骤⑤</a>的费曼法,对着下面的检查清单自己讲一遍"每一项具体防的是什么问题",讲不清楚的就是还没真正沉淀。</p>
+<b class="q4">用什么</b>
+<p>按类别列概念,不锁定具体品牌——容器化理解 Docker 多阶段构建、基础镜像用精简版这类思路即可,监控用 Sentry 或云厂商自带的同类服务即可。</p>
+<b class="q4">怎么用</b>
+<p>"从能跑到生产可用"检查清单:</p>
+<table class="tbl">
+  <tr><th>阶段</th><th>要补的动作</th><th>一句话</th></tr>
+  <tr><td>容器化</td><td>把服务打进多阶段构建的 Docker 镜像,基础镜像用精简版(如 alpine)</td><td>本地"能跑"和"能在任何机器上跑起来"是两件事,镜像负责补上这个差距</td></tr>
+  <tr><td>环境变量分层</td><td>开发/测试/生产三套配置分开管理,密钥绝不写进代码或提交进仓库</td><td>和案例 A 里"公开变量会打进浏览器"是同一条红线的后端版本</td></tr>
+  <tr><td>健康检查</td><td>暴露一个 <code>/health</code> 路由,供部署平台判断服务是否存活</td><td>没有它,服务挂了也没人第一时间知道</td></tr>
+  <tr><td>结构化日志</td><td>关键路径(登录、写操作、报错)打日志,带上请求 ID 方便串联排查</td><td>出问题时靠日志复原现场,不是靠猜</td></tr>
+  <tr><td>基础监控</td><td>接入 Sentry 同类工具捕获未处理异常,加一个响应时间/错误率的仪表盘</td><td>上线后第一个要盯的仪表盘,和案例 A 的崩溃率看板是同一件事的后端版本</td></tr>
+  <tr><td>发布前 checklist</td><td>鉴权全路径覆盖、密钥不出现在日志、限流、备份策略、依赖 audit</td><td>每次大版本前重过一遍</td></tr>
+</table>
+<p class="src">Fastify 安装命令、最小服务代码、<code>fastify.inject()</code> 官方推荐测试写法核实自 <a href="https://fastify.dev/docs/latest/Guides/Getting-Started/" target="_blank">Fastify 官方 Getting Started</a> 与 <a href="https://fastify.dev/docs/latest/Guides/Testing/" target="_blank">Fastify 官方 Testing 指南</a>;<code>node:sqlite</code> 的 API 用法(<code>DatabaseSync</code>/<code>exec</code>/<code>prepare</code>/<code>run</code>/<code>all</code>)与稳定性标注(1.2 Release Candidate)核实自 <a href="https://nodejs.org/api/sqlite.html" target="_blank">Node.js 官方 SQLite 文档</a>;Node.js 24(Krypton)为当前 Active LTS 核实自 <a href="https://nodejs.org/en/about/previous-releases" target="_blank">Node.js 官方 Releases 页面</a>;FastAPI 最小示例与运行命令核实自 <a href="https://fastapi.tiangolo.com/tutorial/first-steps/" target="_blank">FastAPI 官方 First Steps</a>;FastAPI 采用率 29%→38% 的数据核实自 <a href="https://blog.jetbrains.com/pycharm/2025/08/the-state-of-python-2025/" target="_blank">JetBrains/PSF《State of Python 2025》官方博客</a>,2026-07 核实。</p>
+
 </section>
 
 <div class="divider"></div>
