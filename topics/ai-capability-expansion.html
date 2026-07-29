@@ -342,7 +342,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>具体技巧是<strong>要求 AI 自己说出它的产出怎么验证</strong>,而不是你自己想验证方法。AI 通常清楚自己写的这段东西该配什么测试、哪里最容易出错,但默认不会主动给出来——它给你代码就停在那,除非你明确要求,否则"这段代码怎么验证"这一步会被两边都跳过。</p>
 
 <h4>用什么</h4>
-<p>按类别记住这几种工具,不需要绑定某个具体技术栈:<strong>单元测试框架</strong>(在大多数技术栈里都有对应物,比如 JavaScript 生态的 Jest/Vitest、Python 的 pytest、Go 内置的 testing 包)、<strong>类型检查器/静态检查工具</strong>(比如 TypeScript 的 tsc、Python 的 mypy)、以及针对该领域的<strong>官方文档</strong>作为最终校验源。</p>
+<p>按类别记住这几种工具,不需要绑定某个具体技术栈:<strong>单元测试框架</strong>(在大多数技术栈里都有对应物,比如 JavaScript 生态的 Jest/Vitest、Python 的 pytest、Go 内置的 testing 包)、<strong>类型检查器</strong>(比如 TypeScript 的 tsc、Python 的 mypy)、<strong>linter/静态检查工具</strong>(比如 JavaScript 生态的 ESLint、Python 的 Ruff/Pylint、Go 的 golangci-lint,专门抓类型检查器管不到的代码规范和常见坑)、以及针对该领域的<strong>官方文档</strong>作为最终校验源。</p>
 
 <h4>怎么用</h4>
 <pre><code>实现 [功能/改动] 之后,请在给出代码的同时必须附带以下几项——不要等我问:
