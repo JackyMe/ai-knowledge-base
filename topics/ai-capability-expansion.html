@@ -550,7 +550,7 @@ create policy "只能读自己的项目"
 <p class="src"><code>proxy.ts</code> 改名事实核实自 Next.js 官方文档<a href="https://nextjs.org/docs/app/api-reference/file-conventions/proxy" target="_blank">proxy.js 文件参考</a>(Migration to Proxy 一节,v16.0.0 起生效),2026-07 核实。</p>
 
 <h3 data-reveal id="case-b">案例 B:前端/客户端 → 后端与服务端工程</h3>
-<p>你是一名前端(React/Vue 等)或客户端背景的工程师,组件化拆分、状态管理、"发一个请求、拿到数据渲染出来"这套心智已经很熟练,现在想往下再扎一层——不只是消费别人写好的接口,而是能自己设计 API 契约、选一门后端语言把服务真正跑起来、并对它在生产环境里的稳定性负责。下面同样按<a href="#engine">五步扩展引擎</a>走一遍,起点正是<a href="#mapping">#mapping</a> 里"Web 前端 → 后端/服务端"那张映射表——那张表已经点出前端最容易带错的三个直觉(无状态请求、连接池、幂等性),这里从它们继续往下诊断。</p>
+<p>你是一名前端(React/Vue 等)或客户端背景的工程师,组件化拆分、状态管理、"发一个请求、拿到数据渲染出来"这套心智已经很熟练,现在想往下再扎一层——不只是消费别人写好的接口,而是能自己设计 API 契约、选一门后端语言把服务真正跑起来、并对它在生产环境里的稳定性负责。下面同样按<a href="#engine">五步扩展引擎</a>走一遍,技术选型以 Fastify(Node.js)为主线,原理同样适用于其他后端框架;起点正是<a href="#mapping">#mapping</a> 里"Web 前端 → 后端/服务端"那张映射表——那张表已经点出前端最容易带错的三个直觉(无状态请求、连接池、幂等性),这里从它们继续往下诊断。</p>
 
 <h4>①诊断差距(案例化)</h4>
 <b class="q4">学什么</b>
@@ -612,7 +612,7 @@ create policy "只能读自己的项目"
 <b class="q4">怎么学</b>
 <p>边搭边问,配合<a href="#engine">#engine 步骤③</a>已给出的通用起手命令与 CLAUDE.md 模板——起步阶段不需要先读完框架文档。</p>
 <b class="q4">用什么</b>
-<p>后端语言/框架当前有不少主流选择,这里点名两个经 WebFetch 核实过生态活跃度的例子,原理同样适用于 Go(如 net/http+chi)、Java(Spring Boot)等其他语言:如果你的前端背景是 JS/TS,<strong>Node.js 生态的 Fastify</strong> 是自然延伸,复用同一门语言;如果想借机换一门语言积累,<strong>Python 生态的 FastAPI</strong> 是近两年增长最猛的选择——JetBrains/Python 官方基金会联合发布的《State of Python》调研显示,它的采用率从 29% 涨到 38%,是当年"涨幅最大的 Python Web 框架"。数据库用一张最小表起步即可,不需要先起一个独立的数据库服务——Node.js 24 LTS 起不需要额外 flag 就能用内置的 <code>node:sqlite</code> 模块,官方稳定性标注是 1.2(Release Candidate,接近稳定但运行时仍会打印 experimental 警告,预计 Node.js 26 起完全转正),用来做起步阶段的最小验证足够,真正上生产库前留意这行警告。</p>
+<p>后端语言/框架当前有不少主流选择,这里点名一个经 WebFetch 核实过生态活跃度的例子作为主线:如果你的前端背景是 JS/TS,<strong>Node.js 生态的 Fastify</strong> 是自然延伸,复用同一门语言,原理同样适用于 Go(如 net/http+chi)、Java(Spring Boot)、Python(FastAPI,这两年采用率呈现出这几年少见的涨幅)等其他语言与框架。数据库用一张最小表起步即可,不需要先起一个独立的数据库服务——Node.js 24 LTS 起不需要额外 flag 就能用内置的 <code>node:sqlite</code> 模块,官方稳定性标注是 1.2(Release Candidate,接近稳定,API 已可直接用于起步验证)。但要注意 <code>DatabaseSync</code> 是同步阻塞 I/O——在 Fastify 这类基于事件循环的异步框架里,一次同步查询会卡住整个进程、阻塞其他并发请求,这正是"仅适合教学/起步阶段的最小验证,真正上生产库前应评估更成熟的异步数据库方案(比如 PostgreSQL 搭配异步驱动,或专用 ORM)"这条建议真正站得住的理由。</p>
 <b class="q4">怎么用</b>
 <pre><code><span class="c"># 以 Node.js + Fastify 为例,原理同样适用于 FastAPI/Spring Boot 等其他框架</span>
 mkdir my-api && cd my-api
@@ -623,31 +623,47 @@ npm i fastify
 import Fastify from 'fastify'
 import { DatabaseSync } from 'node:sqlite'
 
-const db = new DatabaseSync('app.db')
-db.exec(`
-  CREATE TABLE IF NOT EXISTS todos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    done INTEGER DEFAULT 0
-  )
-`)
+<span class="c">// export function build() 只组装实例、不监听端口——test.js 靠它拿到可 inject 的 app</span>
+export function build() {
+  const db = new DatabaseSync('app.db')
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS todos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      done INTEGER DEFAULT 0
+    )
+  `)
 
-const app = Fastify({ logger: true })
+  const app = Fastify({ logger: true })
 
-app.get('/todos', (req, reply) => {
-  const rows = db.prepare('SELECT * FROM todos').all()
-  reply.send(rows)
-})
+  app.get('/todos', (req, reply) => {
+    const rows = db.prepare('SELECT * FROM todos').all()
+    reply.send(rows)
+  })
 
-app.post('/todos', (req, reply) => {
-  const { title } = req.body
-  const stmt = db.prepare('INSERT INTO todos (title) VALUES (?)')
-  const info = stmt.run(title)
-  reply.code(201).send({ id: info.lastInsertRowid, title, done: 0 })
-})
+  app.post('/todos', (req, reply) => {
+    const { title } = req.body
+    const stmt = db.prepare('INSERT INTO todos (title) VALUES (?)')
+    const info = stmt.run(title)
+    reply.code(201).send({ id: info.lastInsertRowid, title, done: 0 })
+  })
 
-app.listen({ port: 3000 })</code></pre>
-<p>跑起来后用 <code>curl -X POST localhost:3000/todos -d '{"title":"第一条"}' -H 'content-type: application/json'</code> 和 <code>curl localhost:3000/todos</code> 各测一次——一写一读都通,就是这次跨越的最小及格线。如果选的是 Python/FastAPI,起手同样只需要 <code>uv run fastapi dev</code> 起一个内置的 <code>main.py</code>,数据库同理可以先用 Python 内置的 <code>sqlite3</code> 模块,原理一致。</p>
+  app.get('/me', (req, reply) => {
+    if (!req.headers.authorization) {
+      reply.code(401).send({ error: 'unauthorized' })
+      return
+    }
+    reply.send({ id: 1 })
+  })
+
+  return app
+}
+
+<span class="c">// 直接运行本文件(node server.js)才真正监听端口;被 test.js 当模块 import 时不会执行到这里</span>
+if (import.meta.url === `file://${process.argv[1]}`) {
+  build().listen({ port: 3000 })
+}</code></pre>
+<p>跑起来后用 <code>curl -X POST localhost:3000/todos -d '{"title":"第一条"}' -H 'content-type: application/json'</code> 和 <code>curl localhost:3000/todos</code> 各测一次——一写一读都通,就是这次跨越的最小及格线。</p>
 
 <h4>④验证闭环(案例化)</h4>
 <b class="q4">学什么</b>
@@ -707,7 +723,7 @@ test('未带鉴权头访问受保护路由应返回 401', async () => {
   <tr><td>基础监控</td><td>接入 Sentry 同类工具捕获未处理异常,加一个响应时间/错误率的仪表盘</td><td>上线后第一个要盯的仪表盘,和案例 A 的崩溃率看板是同一件事的后端版本</td></tr>
   <tr><td>发布前 checklist</td><td>鉴权全路径覆盖、密钥不出现在日志、限流、备份策略、依赖 audit</td><td>每次大版本前重过一遍</td></tr>
 </table>
-<p class="src">Fastify 安装命令、最小服务代码、<code>fastify.inject()</code> 官方推荐测试写法核实自 <a href="https://fastify.dev/docs/latest/Guides/Getting-Started/" target="_blank">Fastify 官方 Getting Started</a> 与 <a href="https://fastify.dev/docs/latest/Guides/Testing/" target="_blank">Fastify 官方 Testing 指南</a>;<code>node:sqlite</code> 的 API 用法(<code>DatabaseSync</code>/<code>exec</code>/<code>prepare</code>/<code>run</code>/<code>all</code>)与稳定性标注(1.2 Release Candidate)核实自 <a href="https://nodejs.org/api/sqlite.html" target="_blank">Node.js 官方 SQLite 文档</a>;Node.js 24(Krypton)为当前 Active LTS 核实自 <a href="https://nodejs.org/en/about/previous-releases" target="_blank">Node.js 官方 Releases 页面</a>;FastAPI 最小示例与运行命令核实自 <a href="https://fastapi.tiangolo.com/tutorial/first-steps/" target="_blank">FastAPI 官方 First Steps</a>;FastAPI 采用率 29%→38% 的数据核实自 <a href="https://blog.jetbrains.com/pycharm/2025/08/the-state-of-python-2025/" target="_blank">JetBrains/PSF《State of Python 2025》官方博客</a>,2026-07 核实。</p>
+<p class="src">Fastify 安装命令、最小服务代码、<code>fastify.inject()</code> 官方推荐测试写法核实自 <a href="https://fastify.dev/docs/latest/Guides/Getting-Started/" target="_blank">Fastify 官方 Getting Started</a> 与 <a href="https://fastify.dev/docs/latest/Guides/Testing/" target="_blank">Fastify 官方 Testing 指南</a>;<code>node:sqlite</code> 的 API 用法(<code>DatabaseSync</code>/<code>exec</code>/<code>prepare</code>/<code>run</code>/<code>all</code>)与稳定性标注(1.2 Release Candidate)核实自 <a href="https://nodejs.org/api/sqlite.html" target="_blank">Node.js 官方 SQLite 文档</a>;Node.js 24(Krypton)为当前 Active LTS 核实自 <a href="https://nodejs.org/en/about/previous-releases" target="_blank">Node.js 官方 Releases 页面</a>;FastAPI 采用率两年内明显上涨核实自 <a href="https://blog.jetbrains.com/pycharm/2025/08/the-state-of-python-2025/" target="_blank">JetBrains/PSF《State of Python 2025》官方博客</a>,2026-07 核实。</p>
 
 </section>
 
