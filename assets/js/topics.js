@@ -68,7 +68,7 @@ const PATHS = [
     steps: [
       { label: "Claude Code 指南 · 干货版", href: "topics/claude-code-guide.html", note: "五条黄金法则 → 八大场景实战" },
       { label: "Codex 指南 · CLI × IDE × Cloud", href: "topics/codex-guide.html", note: "沙箱审批、云端任务、双代理协同" },
-      { label: "Pencil × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
+      { label: "pen.dev × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
       { label: "上下文工程与反模式(内功)", href: "topics/prompt-context-engineering.html#context", note: "注意力预算、长任务三板斧、安全与成本、鉴别偏方" }
     ]
   },
@@ -86,26 +86,26 @@ const PATHS = [
 
 const TOPICS = [
   {
-    href: "topics/pencil-docs-zh.html", icon: "📘", tag: "官方文档", color: "#5b5bf6",
-    title: "Pencil 官方文档 · 中文完整指南",
+    href: "topics/pencil-docs-zh.html", icon: "📘", tag: "设计与文档", color: "#5b5bf6",
+    title: "pen.dev 官方文档 · 中文完整指南",
     desc: "覆盖 docs.pencil.dev 全部 16 个页面,含官方视频与配图,每节附原文链接。",
     keywords: "pencil 设计 pen 文件 组件 变量 快捷键 安装 激活 导入 导出 cli 画布",
-    meta: ["16 个页面", "含官方视频", "基于 2026-06-27 版"],
+    meta: ["16 个页面", "含官方视频", "基于 2026-07-27 版"],
     sections: [
       {id:"home",label:"文档首页"},{id:"installation",label:"安装"},
       {id:"authentication",label:"认证与激活"},{id:"ai-integration",label:"AI 集成"},
       {id:"pen-files",label:".pen 文件"},{id:"design-as-code",label:"设计即代码"},
-      {id:"interface",label:"Pencil 界面"},{id:"variables",label:"变量"},
+      {id:"interface",label:"pen.dev 界面"},{id:"variables",label:"变量"},
       {id:"components",label:"组件"},{id:"slots",label:"插槽 Slots"},
       {id:"code-on-canvas",label:"画布上的代码"},{id:"design-libraries",label:"设计库"},
       {id:"import-export",label:"导入与导出"},{id:"shortcuts",label:"键盘快捷键"},
       {id:"design-to-code",label:"设计 ↔ 代码"},{id:"troubleshooting",label:"故障排查"},
-      {id:"pen-format",label:".pen 文件格式"},{id:"pencil-cli",label:"Pencil CLI"}
+      {id:"pen-format",label:".pen 文件格式"},{id:"pencil-cli",label:"pen.dev CLI"}
     ]
   },
   {
-    href: "topics/pencil-claude-code-best-practices.html", icon: "⚡", tag: "实践指南", color: "#0ea5e9",
-    title: "Pencil × Claude Code 最佳实践全景",
+    href: "topics/pencil-claude-code-best-practices.html", icon: "⚡", tag: "设计与文档", color: "#0ea5e9",
+    title: "pen.dev × Claude Code 最佳实践全景",
     desc: "聚合 9+ 来源:四种核心工作流、提示词模板、设计系统工程化、CI/CD 玩法、避坑与真实案例(附实测截图)。",
     keywords: "pencil claude 工作流 提示词 prompt 设计系统 避坑 案例 最佳实践",
     meta: ["9+ 来源", "16 张实测截图", "2026-07 聚合"],
@@ -154,7 +154,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/env-auth-clinic.html", icon: "🚑", tag: "急救手册", color: "#e11d48",
+    href: "topics/env-auth-clinic.html", icon: "🚑", tag: "排查急救", color: "#e11d48",
     title: "AI CLI 环境与登录急救手册 · Claude Code × Codex",
     desc: "登录报错、配置打架、换机翻车一页治好:对症快查表 30 秒定位,五层诊断法 + 一键体检脚本、双工具五分类急救表、共用电脑/换电脑/无头机三大剧本、三级万能重置方案。",
     keywords: "登录 报错 环境 变量 换电脑 多账号 共用 会员 订阅 invalid api key 401 403 429 529 限流 额度 usage limit 计费 auth 认证 凭证 重置 修复 排查 诊断 keychain 钥匙串 代理 proxy ssh 容器 ci token vs code 扩展 windows node 版本 案例 复盘 credit balance wsl econnreset 超时",
@@ -171,7 +171,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/android-crash-anr.html", icon: "⚡", tag: "稳定性", color: "#65a30d",
+    href: "topics/android-crash-anr.html", icon: "⚡", tag: "排查急救", color: "#65a30d",
     title: "Android Crash & ANR 排查根治 × AI 提效",
     desc: "小白到大神:崩溃图鉴、ANR 解剖、Native 崩溃、全工具链、GP/Firebase 后台、疑难侦查术,以及 AI 分诊工作流与原创 crash-triage 技能。",
     keywords: "android anr crash 崩溃 卡顿 稳定性 firebase play console native 堆栈 日志 排查",
@@ -188,13 +188,14 @@ const TOPICS = [
   {
     href: "topics/ai-leverage-guide.html", icon: "🧭", tag: "提效心法", color: "#7c3aed",
     title: "AI 到底能帮你干什么 · 提效全景与心法",
-    desc: "全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化四套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。",
+    desc: "全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化/生活五套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。",
     keywords: "ai 能干什么 有什么用 提效 效率 场景 用法 写作 文档 周报 调研 学习 入门 数据 分析 自动化 生活 心法 提示词 prompt 误区 新手 学ai 怎么学 选工具 对比 gemini chatgpt claude codex deep research 深度调研 vibe coding",
     meta: ["8 大场景", "7 条心法", "7 个实例", "2026-07 调研"],
     sections: [
       {id:"map",label:"全景地图:边界一张表"},{id:"matrix",label:"场景 × 收益矩阵"},
       {id:"coding",label:"编程:最佳范式"},{id:"writing",label:"写作与文档"},
       {id:"research",label:"调研与学习"},{id:"data-auto",label:"数据与自动化"},
+      {id:"life",label:"生活与自我管理场景"},
       {id:"tools",label:"三大工具怎么选"},{id:"principles",label:"通用心法七条"},
       {id:"cases",label:"真实实例集"},{id:"learning-path",label:"普通人学习路径"},
       {id:"resources",label:"资源索引"}

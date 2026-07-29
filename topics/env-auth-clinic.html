@@ -702,8 +702,68 @@ echo "体检完成 ✅  逐层核对:多安装?可疑变量?账号归属?配置�
   <li><strong>企业管控</strong>:<code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> 可锁定登录方式与工作区,凭证不匹配会被直接登出——公司机器"换不了登录方式"是策略使然。</li>
 </ul>
 
+<h3 data-reveal>凭证来源优先级:谁覆盖谁</h3>
+<div class="callout note"><b class="t">这套顺序官方文档没有公开完整版</b>learn.chatgpt.com/docs 只分别介绍了三种登录方式和 <code>model_providers.&lt;id&gt;.env_key</code>,<strong>没有一张像 Claude Code 那样的完整优先级表</strong>。下面这份顺序核实自 Codex 开源仓库(<code>openai/codex</code>)源码本体——不是猜的,但请注意它的信息层级比官方文档更底层,版本升级后可能变。</div>
+
+<p>和 Claude Code 的单一线性列表不同,Codex 的凭证解析分两步:<strong>先看走的是哪个 model provider</strong>,再看该 provider 下怎么取密钥。</p>
+
+<ol class="steps">
+  <li><strong>自定义 <code>model_provider</code> 优先短路</strong>:如果顶层 <code>model_provider</code> 指向一个自定义 <code>[model_providers.&lt;id&gt;]</code>,且该表配了 <code>env_key</code> / <code>experimental_bearer_token</code> / <code>auth.command</code> 三者之一——这个凭证<strong>直接用于该 provider 的请求,完全跳过下面的 ChatGPT/API key 判断</strong>,不管你有没有登录、订阅是否有效(源码:<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/model-provider/src/auth.rs#L267-L279" target="_blank"><code>model-provider/src/auth.rs · bearer_auth_for_provider()</code></a>)。</li>
+  <li><strong>走内置 <code>openai</code> provider(默认,即正常用 ChatGPT/API key 登录 Codex)时</strong>,按下表顺序解析(源码:<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L1217-L1291" target="_blank"><code>login/src/auth/manager.rs · load_auth()</code></a>):</li>
+</ol>
+
+<table class="tbl">
+  <tr><th>顺位</th><th>来源</th><th>说明</th></tr>
+  <tr><td>1</td><td><code>CODEX_API_KEY</code> 环境变量</td><td><strong>只在 <code>codex exec</code>(非交互执行)里生效</strong>,交互式 <code>codex</code> TUI 里这条完全不检查——源码里这个开关叫 <code>enable_codex_api_key_env</code>,exec 模式为 <code>true</code>,TUI 为 <code>false</code></td></tr>
+  <tr><td>2</td><td>宿主应用注入的临时 ChatGPT 会话</td><td>IDE 扩展等宿主程序桥接的内存态凭证,内部机制,普通用户很少直接碰到</td></tr>
+  <tr><td>3</td><td><code>CODEX_ACCESS_TOKEN</code> 环境变量</td><td>企业 access token / Agent Identity,CI 免交互登录常用(见<a href="#headless">第 10 章</a>)</td></tr>
+  <tr><td>4</td><td>持久化 <code>auth.json</code>(或钥匙串)</td><td><code>codex login</code>(ChatGPT OAuth)/ <code>codex login --with-api-key</code> / <code>--with-access-token</code> / <code>--device-auth</code> 写入的凭证,日常场景 99% 落在这一条</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">一个常见误解:<code>OPENAI_API_KEY</code> 并不会像 Claude 那样"劫持"会话</b>很多人类比 <code>ANTHROPIC_API_KEY</code> 的行为,以为设了 <code>OPENAI_API_KEY</code> 环境变量就会覆盖 ChatGPT 登录——<strong>源码里查不到这个逻辑</strong>。<code>OPENAI_API_KEY</code> 只在一处被读取:交互式 <code>codex login</code> 走到"输入 API key"这一步时,<strong>拿它预填文本框</strong>(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/tui/src/onboarding/auth.rs#L776-L795" target="_blank">源码</a>),仅此而已——它不会在请求时被静默读取,也不出现在上面那张优先级表里。真正能这样"劫持"内置 provider 请求的,是表里第①③④条,以及被设进 <code>[model_providers.&lt;id&gt;].env_key</code> 的那个变量。</div>
+
+<p><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> 不是"优先级"意义上的来源,而是<strong>启动时的一道闸门</strong>:Codex 加载出当前生效凭证后再核对策略,一旦模式或工作区不匹配就<strong>直接登出</strong>并给出原因,例如策略要求 API key 但当前是 ChatGPT 登录时会报 <code>API key login is required, but ChatGPT is currently being used. Logging out.</code>;反过来是 <code>ChatGPT login is required, but an API key is currently being used. Logging out.</code>;工作区不匹配则是 <code>Login is restricted to workspace(s) &lt;允许的工作区&gt;, but current credentials belong to &lt;实际工作区&gt;. Logging out.</code>(源码:<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L1083-L1150" target="_blank"><code>manager.rs · enforce_login_restrictions()</code></a>)。</p>
+
+<h3 data-reveal><code>codex login status</code> 长什么样</h3>
+<p>页面多处让你跑这条命令验证,这里给出它的真实输出——直接源码核对(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/cli/src/login.rs#L424-L473" target="_blank"><code>cli/src/login.rs · run_login_status()</code></a>),不是转述:</p>
+<pre><code><span class="c"># 走 ChatGPT 订阅登录</span>
+$ codex login status
+Logged in using ChatGPT
+$ echo $?
+0
+
+<span class="c"># 走 API key 计费登录(key 会被脱敏:前 8 位 + *** + 后 5 位)</span>
+$ codex login status
+Logged in using an API key - sk-proj-a***7f3k9
+
+<span class="c"># 没登录 / 凭证已被 forced_login_method 登出</span>
+$ codex login status
+Not logged in
+$ echo $?
+1</code></pre>
+<p>企业 access token / 个人 access token / Bedrock 场景则分别输出 <code>Logged in using access token</code>、<code>Logged in using personal access token</code>、<code>Logged in using Amazon Bedrock API key</code>——共 6 种确定性文案,没有第 7 种。</p>
+
+<h3 data-reveal>auth.json 脱敏字段结构</h3>
+<p>官方文档只说"这是明文 token,当密码对待",不列字段。下面是从开源仓库结构体核对出的真实字段(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/storage.rs#L37-L61" target="_blank"><code>login/src/auth/storage.rs · AuthDotJson</code></a>),敏感值已替换:</p>
+<pre><code><span class="c">// ChatGPT OAuth 登录时的 auth.json(简化,已脱敏)</span>
+{
+  "auth_mode": "chatgpt",
+  "OPENAI_API_KEY": null,
+  "tokens": {
+    "id_token": "&lt;JWT,内含 email / chatgpt_plan_type / chatgpt_account_id 等声明&gt;",
+    "access_token": "&lt;JWT,每次请求携带&gt;",
+    "refresh_token": "&lt;续期用,长期有效&gt;",
+    "account_id": "..."
+  },
+  "last_refresh": "2026-07-20T08:00:00Z"
+}
+
+<span class="c">// API key 登录时的 auth.json:tokens/last_refresh 为空</span>
+{ "auth_mode": "apikey", "OPENAI_API_KEY": "sk-…", "tokens": null, "last_refresh": null }</code></pre>
+<p><strong>怎么看出它 stale 了</strong>:只有 ChatGPT 登录(<code>tokens</code> 非空)才有续期这回事——判断依据是 <code>last_refresh</code> 字段,源码里的阈值常量 <code>TOKEN_REFRESH_INTERVAL = 8</code>(天,<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L182" target="_blank">源码</a>),与本章上一条"约 8 天不用会变 stale"是同一处逻辑,已交叉核对一致。自查方法:<code>python3 -c "import json,datetime;d=json.load(open('~/.codex/auth.json'));print(d.get('last_refresh'))"</code>(Linux/keyring 模式看不到文件,用 <code>codex login status</code> 代替),距今超过 8 天说明下次运行会自动刷新;API key 登录该字段恒为 <code>null</code>,不适用这套判断。</p>
+
 <div class="callout warn"><b class="t">auth.json = 你的账号本体</b>明文 token,当密码对待:不 commit、不贴聊天、不进截图。需要跨机复用优先走设备码登录,实在要拷贝也只通过安全通道,用完即删。</div>
-<p class="src">来源:<a href="https://developers.openai.com/codex/auth" target="_blank">官方 Authentication</a>(现 learn.chatgpt.com/docs/auth)· <a href="https://developers.openai.com/codex/config-reference" target="_blank">官方 Config Reference</a>(2026-07 版)。config.toml 层叠与 Profile 详解见 <a href="codex-guide.html#config-auth">Codex 指南 · 配置与账号全解</a>。</p>
+<p class="src">来源:<a href="https://learn.chatgpt.com/docs/auth" target="_blank">官方 Authentication</a> · <a href="https://learn.chatgpt.com/docs/config-file/config-reference" target="_blank">官方 Config Reference</a>(2026-07 版)。凭证优先级、<code>login status</code> 输出、auth.json 字段结构官方文档未公开,核实自 <a href="https://github.com/openai/codex" target="_blank">openai/codex 开源仓库</a>源码(commit <code>f6160ca</code>,2026-07):<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs" target="_blank">auth/manager.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/storage.rs" target="_blank">auth/storage.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/cli/src/login.rs" target="_blank">cli/login.rs</a>。config.toml 层叠与 Profile 详解见 <a href="codex-guide.html#config-auth">Codex 指南 · 配置与账号全解</a>。</p>
 </section>
 
 <div class="divider"></div>
@@ -903,50 +963,57 @@ MY_TOOL_BASE_URL = "https://你的中转地址"</code></pre>常见于"在 Codex 
 <p>与上一章同一套分类:登录凭证 / 计费额度 / 安装版本 / 配置会话 / 网络代理,两个工具的排查心智完全对齐。</p>
 <div class="callout tip"><b class="t">⚡ 一分钟速修</b><code>env | grep -iE 'openai|proxy'</code> 清劫持变量 → <code>codex logout && codex login</code> 干净重登 → <code>codex login status</code> 验证;登录类问题的铁证在 <code>codex-login.log</code>。</div>
 
+<div class="callout note"><b class="t">本表英文报错原文的核实方式</b>Codex CLI 官方排障文档(learn.chatgpt.com/docs)不像 Claude Code 那样罗列完整报错对照表,下面每条英文原文能核实到的,都直接标注来源(<code>openai/codex</code> 开源仓库源码行,或具体 GitHub issue 号);<strong>查不到固定原文的,只写中文描述,不编</strong>。</div>
+
 <h3 data-reveal>一、登录与凭证类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
-  <tr><td>浏览器登录卡在等待 / 回调失败</td><td>1455 端口被占用或被防火墙/代理拦:① 确保 <code>localhost</code>、<code>127.0.0.1</code>、<code>::1</code> 在代理绕过名单(<code>NO_PROXY</code>);② 改用 <code>codex login --device-auth</code>;③ 远程机用 <code>ssh -L 1455:localhost:1455</code> 转发后登录</td></tr>
-  <tr><td>登录成功,提交 prompt 立刻 401</td><td>token 失效或代理污染:<code>codex logout</code> → 删 <code>~/.codex/auth.json</code> → 暂时关 VPN/代理 → <code>codex login</code> 干净重登</td></tr>
-  <tr><td>无头机 device-auth 报不可用</td><td>工作区未启用设备码:个人版在 ChatGPT 安全设置开启;企业版找管理员在工作区权限里启用(官方 issue #9253 记录了这个坑)</td></tr>
-  <tr><td>IDE 扩展突然要求登录</td><td>CLI 与 IDE 共享凭证缓存,某端 logout 连带另一端——重登一次即可</td></tr>
-  <tr><td>登录时进错了工作区(个人/公司)</td><td>浏览器缓存的 ChatGPT 会话把你带进默认工作区:<code>codex logout</code> 重登时在授权页选对 workspace;企业管控 <code>forced_chatgpt_workspace_id</code> 会强制指定,不匹配直接被登出</td></tr>
-  <tr><td>公司机器换不了登录方式</td><td>管控配置 <code>forced_login_method = "chatgpt" | "api"</code> 生效——策略不是故障,找管理员</td></tr>
+  <tr><td>浏览器登录卡在等待 / 回调失败,或报 <code>Port 127.0.0.1:1455 is already in use</code></td><td>1455 端口被占用或被防火墙/代理拦。源码会先尝试向旧进程发取消请求并重试,仍失败才降级到备用端口 1457,两个都占用才报上面这条错(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs#L614-L663" target="_blank">源码</a>)。① 确保 <code>localhost</code>、<code>127.0.0.1</code>、<code>::1</code> 在代理绕过名单(<code>NO_PROXY</code>);② 改用 <code>codex login --device-auth</code>;③ 远程机用 <code>ssh -L 1455:localhost:1455</code> 转发后登录</td></tr>
+  <tr><td>登录成功,提交 prompt 立刻 <code>unexpected status 401 Unauthorized</code></td><td>token 失效或代理污染:<code>codex logout</code> → 删 <code>~/.codex/auth.json</code> → 暂时关 VPN/代理 → <code>codex login</code> 干净重登</td></tr>
+  <tr><td>无头机 device-auth 报 <code>device code login is not enabled for this Codex server. Use the browser login or verify the server URL.</code></td><td>工作区未启用设备码(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/device_code_auth.rs#L78-L92" target="_blank">源码,报的是 HTTP 404</a>):个人版在 ChatGPT 安全设置开启;企业版找管理员在工作区权限里启用</td></tr>
+  <tr><td>IDE 扩展突然要求登录</td><td>CLI 与 IDE 共享凭证缓存,某端 logout 连带另一端——重登一次即可。<strong>未核实到官方固定报错文案</strong>,这是登出联动的正常行为而非异常,可用两端各跑一次 <code>codex login status</code> 互相印证</td></tr>
+  <tr><td>登录时进错了工作区(个人/公司)</td><td>浏览器缓存的 ChatGPT 会话把你带进默认工作区:<code>codex logout</code> 重登时在授权页选对 workspace。企业管控 <code>forced_chatgpt_workspace_id</code> 强制指定时,不匹配会直接登出并报 <code>Login is restricted to workspace(s) &lt;允许的工作区&gt;, but current credentials belong to &lt;实际工作区&gt;. Logging out.</code>(<a href="#codex-cred">源码见 05 章</a>)</td></tr>
+  <tr><td>公司机器换不了登录方式</td><td>管控配置 <code>forced_login_method = "chatgpt" | "api"</code> 生效,尝试反向登录时精确报 <code>ChatGPT login is disabled. Use API key login instead.</code> 或反过来 <code>API key login is disabled. Use ChatGPT login instead.</code>——策略不是故障,找管理员</td></tr>
+  <tr><td>WSL 里浏览器显示登录成功,CLI/IDE 却报 <code>Token exchange failed: error sending request for url (https://auth.openai.com/oauth/token)</code></td><td>Windows 与 WSL 是两个独立的网络命名空间,localhost 不通用,回调常在两侧之间丢失或超时(<a href="https://github.com/openai/codex/issues/6413" target="_blank">issue #6413</a> · <a href="https://github.com/openai/codex/issues/13342" target="_blank">#13342</a>):VS Code 关掉"Run Codex in WSL"设置改走原生 Windows;或改用 <code>codex login --device-auth</code>;或在 Windows 侧登录后把 <code>auth.json</code> 通过安全通道复制进 WSL 的 <code>~/.codex/</code></td></tr>
 </table>
 
 <h3 data-reveal>二、计费与额度类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
-  <tr><td>Fast mode 用不了</td><td>它依赖 ChatGPT 订阅额度:API Key 登录没有,换 ChatGPT 登录</td></tr>
-  <tr><td>额度用尽 / usage 限制提示</td><td>ChatGPT 登录走订阅额度窗口,等重置或升级套餐;API Key 登录则去平台后台查余额与限额——先 <code>codex login status</code> 确认你走的是哪条计费通道</td></tr>
-  <tr><td>Codex cloud 拒绝访问</td><td>邮箱+密码账号必须先开 MFA;cloud 仅支持 ChatGPT 登录</td></tr>
+  <tr><td>Fast mode 用不了</td><td>它依赖 ChatGPT 订阅额度:API Key 登录没有,换 ChatGPT 登录。<strong>未核实到固定报错文案</strong>,通常表现为功能项置灰或静默降级,而非弹错误</td></tr>
+  <tr><td><code>You've hit your usage limit.</code></td><td>ChatGPT 登录走订阅额度窗口,等重置或升级套餐(文案随套餐而变,Pro 会带 <code>Visit https://chatgpt.com/codex/settings/usage to purchase more credits</code>,Plus 会带升级链接,源码:<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L674-L718" target="_blank">error.rs</a>);API Key 登录则去平台后台查余额与限额——先 <code>codex login status</code> 确认你走的是哪条计费通道</td></tr>
+  <tr><td><code>Quota exceeded. Check your plan and billing details.</code></td><td>你走的是 API key 计费通道且额度不足(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L135" target="_blank">源码</a>):去 platform.openai.com 充值,或清掉 <code>[model_providers]</code> 里指向的 key 改回 ChatGPT 登录</td></tr>
+  <tr><td>API 报 <code>exceeded retry limit, last status: 429 Too Many Requests</code></td><td>速率限流,重试耗尽后才把原始状态码透出(<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L601-L611" target="_blank">源码</a>,历史上 Codex 曾长期不透出 429 详情,见 <a href="https://github.com/openai/codex/issues/4840" target="_blank">issue #4840</a>):降并发、稍后重试;ChatGPT 订阅用户看到它,先确认没被自定义 <code>model_provider</code> 劫持到某个限流更严的三方网关</td></tr>
+  <tr><td>Codex cloud 拒绝访问</td><td>邮箱+密码账号必须先开 MFA;cloud 仅支持 ChatGPT 登录。<strong>未核实到官方固定报错原文</strong>,仅在官方文档里确认了 MFA 前置条件这一事实</td></tr>
   <tr><td>想在订阅与 API 计费之间切换</td><td><code>codex logout</code> 后按需重登:ChatGPT OAuth = 订阅额度,API Key = 按量计费;两者的数据政策也不同(工作区 vs API 组织)</td></tr>
 </table>
 
 <h3 data-reveal>三、安装与版本类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
-  <tr><td>npm 安装报错 / 提示 Node 版本不支持</td><td>Node 过旧:用 nvm 升级到当前 LTS 再 <code>npm install -g @openai/codex</code>;macOS 直接 <code>brew install codex</code> 绕开 Node 依赖</td></tr>
+  <tr><td>npm 安装报 <code>npm warn EBADENGINE Unsupported engine</code></td><td>Node 过旧,不满足 <code>package.json</code> 的 <code>engines.node</code> 声明(npm 标准告警格式,非 Codex 专属):用 nvm 升级到当前 LTS 再 <code>npm install -g @openai/codex</code>;macOS 直接 <code>brew install codex</code> 绕开 Node 依赖</td></tr>
   <tr><td>command not found: codex</td><td>npm 全局 bin 目录不在 PATH:<code>npm prefix -g</code> 找到目录,把 <code>其下/bin</code> 加进 rc 文件;brew 安装则检查 brew 的 PATH 配置</td></tr>
   <tr><td>版本行为诡异 / 新特性没有</td><td><code>codex --version</code> 对照官方 release;npm 与 brew 双装并存会互相打架,<code>which -a codex</code> 查明后只留一个</td></tr>
+  <tr><td>Windows 上 <code>npm install -g @openai/codex</code> 装完,运行 <code>codex</code> 报 <code>Missing optional dependency @openai/codex-win32-x64</code></td><td>该版本发布时平台专属包(<code>-win32-x64</code>)缺失或滞后于主包,npm 装出了一个装不全的版本(<a href="https://github.com/openai/codex/issues/17432" target="_blank">issue #17432</a>):改用官方 <code>winget install OpenAI.Codex</code> 或 PowerShell 安装脚本;临时绕过可 <code>npm install -g @openai/codex@上一个已知完整版本</code></td></tr>
 </table>
 
 <h3 data-reveal>四、配置与会话类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
   <tr><td>改了 config.toml 不生效</td><td><code>/debug-config</code> 查层叠:<code>-c</code> 参数 &gt; profile &gt; 项目层 &gt; 用户层;注意 <code>model_providers</code>/<code>notify</code>/<code>otel</code> 等键在项目层被安全策略忽略,必须写用户层</td></tr>
-  <tr><td>换电脑后 <code>codex resume</code> 找不到旧会话</td><td>会话数据在旧机的 <code>CODEX_HOME</code> 里,不随凭证走;云任务不受影响</td></tr>
+  <tr><td>换电脑后 <code>codex resume</code> 报 <code>no thread with id: &lt;uuid&gt;</code></td><td>会话数据在旧机的 <code>CODEX_HOME</code> 里,不随凭证走(报错格式见<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L97-L98" target="_blank">源码</a>);云任务不受影响</td></tr>
+  <tr><td>CLI / IDE 扩展 / Desktop App 三份都装,config.toml 突然报 <code>failed to load configuration: ~/.codex/config.toml</code> 及 <code>unexpected key or value, expected newline, '#'</code> / <code>key with no value, expected '='</code></td><td>07 章配置一节的 callout 埋过这个雷:Desktop App 会自动写回 <code>[marketplaces.*]</code>、<code>[desktop]</code> 等分区,和 CLI/IDE 手改的内容拼接时产生非法 TOML(真实用户报告见 <a href="https://github.com/openai/codex/issues/30045" target="_blank">issue #30045</a>,该案例是加第三方 MCP 后触发的)。三方共享同一份 <code>~/.codex/config.toml</code>——不要手动编辑 Desktop 自动生成的分区;出问题先 <code>cp ~/.codex/config.toml ~/.codex/config.toml.bak</code> 再逐段删排查,或直接删 <code>[marketplaces.*]</code>/<code>[desktop]</code> 分区重启 Desktop App 重新生成</td></tr>
   <tr><td>登录问题需要证据定位</td><td>看日志目录里的 <code>codex-login.log</code>——登录专用诊断日志,报 issue 也靠它</td></tr>
 </table>
 
 <h3 data-reveal>五、网络与代理类</h3>
 <table class="tbl er">
   <tr><th>症状</th><th>根因 → 修复</th></tr>
-  <tr><td>公司代理下全线 TLS 报错</td><td><code>export CODEX_CA_CERTIFICATE=/path/公司根证书.pem</code>(未设时回退 <code>SSL_CERT_FILE</code>);登录、HTTPS、WebSocket 全部走该 CA</td></tr>
+  <tr><td>公司代理做 TLS 拦截,登录报 <code>Token exchange failed: error sending request for url (https://auth.openai.com/oauth/token)</code></td><td>登录回调走的 <code>reqwest::Client</code> 默认只信任系统证书库,企业自签 CA 会直接握手失败(<a href="https://github.com/openai/codex/issues/6849" target="_blank">issue #6849</a>,源码位置:<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs#L786-L836" target="_blank">server.rs · exchange_code_for_tokens()</a>):<code>export CODEX_CA_CERTIFICATE=/path/公司根证书.pem</code>(未设时回退 <code>SSL_CERT_FILE</code>);登录、HTTPS、WebSocket 全部走该 CA</td></tr>
   <tr><td>VPN / 代理切换后各种诡异失败</td><td>残留 <code>*_PROXY</code> 变量污染:<code>env | grep -i proxy</code> 清理;OAuth 回调要求 <code>NO_PROXY</code> 包含 localhost 一族</td></tr>
   <tr><td>auth.openai.com 连不通</td><td><code>curl -sI https://auth.openai.com</code> 直测;不通则是防火墙/区域问题,换网络或走<a href="#headless">设备码/SSH 转发</a>方案</td></tr>
 </table>
-<p class="src">来源:<a href="https://developers.openai.com/codex/auth" target="_blank">官方 Authentication</a> · <a href="https://github.com/openai/codex/issues" target="_blank">openai/codex issues(#9253、#13838、#4432)</a>(2026-07 核对)</p>
+<p class="src">来源:<a href="https://learn.chatgpt.com/docs/auth" target="_blank">官方 Authentication</a>(2026-07 版)。英文报错原文核实自 <a href="https://github.com/openai/codex" target="_blank">openai/codex 开源仓库</a>源码(commit <code>f6160ca</code>):<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs" target="_blank">protocol/error.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs" target="_blank">login/server.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/device_code_auth.rs" target="_blank">login/device_code_auth.rs</a>,以及真实用户报告 <a href="https://github.com/openai/codex/issues" target="_blank">openai/codex issues</a>(#3927、#4840、#6413、#6849、#13342、#17432、#30045,2026-07 核对)</p>
 </section>
 
 <div class="divider"></div>

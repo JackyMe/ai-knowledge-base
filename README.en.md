@@ -2,7 +2,7 @@
 
 # 📚 AI Knowledge Base
 
-**Field guides for Claude Code · Codex · Pencil — official docs distilled with real-world practice, all in one place**
+**Field guides for Claude Code · Codex · pen.dev — official docs distilled with real-world practice, all in one place**
 
 [![Live Site](https://img.shields.io/website?url=https%3A%2F%2Faidoc-zq.netlify.app&up_message=online&down_message=offline&style=flat-square&label=site)](https://aidoc-zq.netlify.app)
 [![Last Commit](https://img.shields.io/github/last-commit/JackyMe/ai-knowledge-base?style=flat-square&label=last%20updated)](https://github.com/JackyMe/ai-knowledge-base/commits/main)
@@ -20,7 +20,7 @@
 
 ## What this is
 
-In one line: a distillation of official docs and battle-tested practices for **Claude Code, Codex, and Pencil** into a single, always-searchable knowledge base.
+In one line: a distillation of official docs and battle-tested practices for **Claude Code, Codex, and pen.dev** into a single, always-searchable knowledge base.
 
 This is not "another AI-generated content dump." Every claim is sourced (official docs / GitHub / hands-on testing), disagreements between sources are flagged rather than smoothed over, and where no solid evidence exists the page says so instead of making something up.
 
@@ -40,8 +40,8 @@ This is not "another AI-generated content dump." Every claim is sourced (officia
 | 🟢 [Codex Guide](topics/codex-guide.html) | CLI × IDE × Cloud, all forms covered | Sandbox × approval 3×3 matrix, AGENTS.md, dual-agent workflow with Claude Code |
 | 🎯 [Prompt & Context Engineering](topics/prompt-context-engineering.html) | The foundational discipline, technique to mindset | 7 core techniques with before/after pairs, 12 copy-paste templates, 6 original case studies, an honest audit of model-routing tools (states plainly that the space is still immature — no invented best practice) |
 | 🚑 [Environment & Login First-Aid](topics/env-auth-clinic.html) | Diagnose auth errors in 30 seconds | Five-layer diagnostic method, one-shot health-check script, shared-machine / new-machine / CI playbooks, a three-tier reset ladder |
-| 📘 [Pencil Official Docs (Chinese)](topics/pencil-docs-zh.html) | All 16 pages of docs.pencil.dev | Includes official videos, linked back to source per section |
-| ⚡ [Pencil × Claude Code Best Practices](topics/pencil-claude-code-best-practices.html) | The full design-to-code pipeline | 9+ sources synthesized, 16 real screenshots |
+| 📘 [pen.dev Official Docs (Chinese)](topics/pencil-docs-zh.html) | All 16 pages of docs.pencil.dev | Includes official videos, linked back to source per section |
+| ⚡ [pen.dev × Claude Code Best Practices](topics/pencil-claude-code-best-practices.html) | The full design-to-code pipeline | 9+ sources synthesized, 16 real screenshots |
 | ⚡ [Android Crash & ANR Field Guide](topics/android-crash-anr.html) | From spotting a crash to actually fixing it | 20+ crash-type catalog, deep ANR anatomy, an original AI-assisted triage skill |
 | 🧭 [What AI Can Actually Do For You](topics/ai-leverage-guide.html) | A realistic map of where AI helps | 8-scenario payoff matrix, 7 sourced principles (not vibes) |
 | 🧗 [Android-to-Full-Stack Transition](topics/android-to-fullstack.html) | A veteran mobile dev's playbook for going full-stack | Four-layer migration (language/UI/architecture/data), a 12-week roadmap, a solo-founder business closer |

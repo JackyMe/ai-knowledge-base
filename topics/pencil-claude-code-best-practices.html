@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="聚合 9+ 来源:四种核心工作流、提示词模板、设计系统工程化、CI/CD 玩法、避坑与真实案例(附实测截图)。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pencil × Claude Code 最佳实践全景指南 · 2026.07">
+<meta property="og:title" content="pen.dev × Claude Code 最佳实践全景指南 · 2026.07">
 <meta property="og:description" content="聚合 9+ 来源:四种核心工作流、提示词模板、设计系统工程化、CI/CD 玩法、避坑与真实案例(附实测截图)。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/pencil-claude-code-best-practices.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>Pencil × Claude Code 最佳实践全景指南 · 2026.07</title>
+<title>pen.dev × Claude Code 最佳实践全景指南 · 2026.07</title>
 <style>
 :root{
   --accent:#0ea5e9; --accent-2:#6366f1; --accent-soft:#e8f6fe;
@@ -178,7 +178,7 @@ figure figcaption a{color:var(--text-3)}
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn">☰</button>
-  <div class="logo"><span class="mark">P×C</span>Pencil × Claude Code<span class="sub">最佳实践</span></div>
+  <div class="logo"><span class="mark">P×C</span>pen.dev × Claude Code<span class="sub">最佳实践</span></div>
   <div class="right"><a href="../index.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ 主题中心</a>&nbsp;&nbsp;全网聚合 · 2026-07-14</div>
 </header>
 
@@ -218,8 +218,8 @@ figure figcaption a{color:var(--text-3)}
 
 <div class="hero" id="top">
   <div class="badge">⚡ 全网最新实践聚合 · 截至 2026 年 7 月</div>
-  <h1>Pencil × Claude Code<br><span class="grad">最佳实践全景指南</span></h1>
-  <p class="lead">Pencil 是住进 IDE 的 AI 设计画布,Claude Code 是终端里的智能编码代理,MCP 把两者连成一条「设计上下文零损耗」的流水线。本指南聚合官方文档、社区教程、实战博客与开源技能,整理出一套可直接落地的完整打法。</p>
+  <h1>pen.dev × Claude Code<br><span class="grad">最佳实践全景指南</span></h1>
+  <p class="lead">pen.dev 是住进 IDE 的 AI 设计画布,Claude Code 是终端里的智能编码代理,MCP 把两者连成一条「设计上下文零损耗」的流水线。本指南聚合官方文档、社区教程、实战博客与开源技能,整理出一套可直接落地的完整打法。</p>
   <div class="meta">
     <span>9+ 来源交叉验证</span><span>覆盖入门到 CI/CD</span><span>附完整提示词模板</span>
   </div>
@@ -234,19 +234,19 @@ figure figcaption a{color:var(--text-3)}
 
 <section id="intro">
 <div class="sec-tag">导读 00</div>
-<h2>为什么是 Pencil + Claude Code</h2>
+<h2>为什么是 pen.dev + Claude Code</h2>
 
 <h3 data-reveal>它解决的核心问题:设计-代码鸿沟</h3>
 <p>传统流程里,设计师在 Figma 精雕细琢,开发者对着标注重写一遍——间距差一点、字重不对、hover 态没文档,最终上线的东西「像设计稿的表亲」。这不是谁的错,而是设计与开发两套工具链、两个事实来源的结构性问题。</p>
 <p>通用 AI 编码工具也没能根治:它们看不到<strong>你的</strong>设计系统、品牌色和间距阶梯,只能基于全网见过的模式生成「看起来还行」但不属于你产品的组件。</p>
-<div class="callout note"><b class="t">这对组合的答案</b>Pencil 把设计放进代码仓库(.pen 文件),Claude Code 通过 MCP 直接读取画布的<strong>精确坐标、令牌与结构</strong>来生成代码——不是看图猜,而是读数据。设计与代码同仓库、同上下文、同一次提交。社区把这种体验称为「vibe design」:自然语言生成 UI → Git 直接管理 → 一句话转成代码。</div>
+<div class="callout note"><b class="t">这对组合的答案</b>pen.dev 把设计放进代码仓库(.pen 文件),Claude Code 通过 MCP 直接读取画布的<strong>精确坐标、令牌与结构</strong>来生成代码——不是看图猜,而是读数据。设计与代码同仓库、同上下文、同一次提交。社区把这种体验称为「vibe design」:自然语言生成 UI → Git 直接管理 → 一句话转成代码。</div>
 
 <h3 data-reveal>能力版图</h3>
 <table class="tbl">
   <tr><th>角色</th><th>提供什么</th></tr>
-  <tr><td><strong>Pencil</strong></td><td>无限画布、组件/变量/插槽体系、Figma 导入、内置 AI 聊天、.pen 文件格式、无头 CLI</td></tr>
+  <tr><td><strong>pen.dev</strong></td><td>无限画布、组件/变量/插槽体系、Figma 导入、内置 AI 聊天、.pen 文件格式、无头 CLI</td></tr>
   <tr><td><strong>Claude Code</strong></td><td>代理式编码:多文件读写、执行命令、计划模式、技能(Skills)与 MCP 扩展</td></tr>
-  <tr><td><strong>MCP</strong></td><td>桥梁协议:让 Claude Code 获得 <code>batch_design</code>、<code>batch_get</code>、<code>get_screenshot</code>、<code>snapshot_layout</code>、<code>get_variables</code> 等设计操作工具</td></tr>
+  <tr><td><strong>MCP</strong></td><td>桥梁协议:让 Claude Code 获得 <code>execute</code>、<code>get_screenshot</code>、<code>get_app_state</code> 等设计操作工具(2026-07-27 官方文档已把工具集从 <code>batch_design</code>/<code>batch_get</code>/<code>snapshot_layout</code>/<code>get_variables</code> 等收拢为这 3 个,详见<a href="pencil-docs-zh.html#pencil-cli">《pen.dev 文档中文版》</a>)</td></tr>
 </table>
 <p class="src">来源:<a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow</a> · <a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">官方 AI Integration 文档</a> · <a href="https://www.geeky-gadgets.com/pencil-dev-claude-code/" target="_blank">Geeky Gadgets</a></p>
 </section>
@@ -260,8 +260,8 @@ figure figcaption a{color:var(--text-3)}
 
 <ol class="steps">
   <li><strong>安装 Claude Code 并认证</strong>:官方首推 native 安装器 <code>curl -fsSL https://claude.ai/install.sh | bash</code>(Windows 用 <code>irm https://claude.ai/install.ps1 | iex</code>);运行 <code>claude</code> 走浏览器登录。装不上/登不上查<a href="env-auth-clinic.html">环境急救手册</a>。</li>
-  <li><strong>安装 Pencil 扩展</strong>:VS Code 扩展面板搜索 "Pencil",认准发布者标识 <code>highagency.pencildev</code>。</li>
-  <li><strong>启动 Pencil</strong>:点击状态栏左下角的 Pencil 铅笔图标(不出现就重启 VS Code)。</li>
+  <li><strong>安装 pen.dev 扩展</strong>:VS Code 扩展面板搜索 "pen.dev",认准发布者标识 <code>highagency.pencildev</code>。</li>
+  <li><strong>启动 pen.dev</strong>:点击状态栏左下角的 pen.dev 铅笔图标(不出现就重启 VS Code)。</li>
   <li><strong>邮箱激活</strong>:首次启动输入邮箱 → 收验证码 → 填码登录。</li>
   <li><strong>验证 MCP 连接</strong>:启动 Claude Code,执行 <code>/mcp</code>,确认 pencil 显示为 connected。MCP 配置在安装时已自动写好,无需手工配置。</li>
   <li><strong>创建 <code>design.pen</code></strong>:放在项目工作区根目录,与代码同仓库——这是后续一切「AI 同时看到设计与代码」玩法的前提。</li>
@@ -321,7 +321,7 @@ figure figcaption a{color:var(--text-3)}
   <div class="flow">
     <div class="fno">WORKFLOW D</div>
     <b>双向同步 + Git 单一事实源</b>
-    <p>变量层打通 CSS ↔ Pencil("Create Pencil variables from my globals.css"),.pen 与代码一起提交、一起回滚——设计与实现之间「零漂移」。改设计的 PR 里能直接 diff 设计变更。</p>
+    <p>变量层打通 CSS ↔ pen.dev("Create pen.dev variables from my globals.css"),.pen 与代码一起提交、一起回滚——设计与实现之间「零漂移」。改设计的 PR 里能直接 diff 设计变更。</p>
     <div class="chain">变量同步 → 设计/代码并行迭代 → 同一 commit 提交</div>
   </div>
 </div>
@@ -359,7 +359,7 @@ figure figcaption a{color:var(--text-3)}
 <h3 data-reveal>给既有项目改版的完整链路(实测)</h3>
 <p>DevelopersIO 演示了对现有项目「设置页」改版的两步法:</p>
 <ol class="steps">
-  <li><strong>生成设计</strong>:向 Claude Code 描述页面要求(用 Pencil MCP 设计当前项目的 Settings 页:白色卡片表单、AI 分析设置分区、模型单选按钮、每个模型下方灰色小字说明……)——先产出 .pen 设计稿。</li>
+  <li><strong>生成设计</strong>:向 Claude Code 描述页面要求(用 pen.dev MCP 设计当前项目的 Settings 页:白色卡片表单、AI 分析设置分区、模型单选按钮、每个模型下方灰色小字说明……)——先产出 .pen 设计稿。</li>
   <li><strong>应用设计</strong>:确认设计后一句 <code>请应用这个设计</code>,AI 把设计落到项目的 CSS/组件代码上。</li>
 </ol>
 <figure class="tall">
@@ -367,6 +367,58 @@ figure figcaption a{color:var(--text-3)}
   <figcaption>「生成 .pen → 一句话应用」后,既有项目设置页的实际改版效果 · 图:<a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a></figcaption>
 </figure>
 <p class="src">来源:<a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a> · <a href="https://docs.pencil.dev/design-and-code/design-to-code" target="_blank">官方 Design ↔ Code</a> · <a href="https://daily.dev/posts/pencil-01-vibe-design-with-pencil-and-claude-code-znlvofrea" target="_blank">daily.dev: Vibe Design with Pencil and Claude Code</a></p>
+
+<h3 data-reveal>Workflow D 深挖:.pen 的 diff 长什么样、冲突怎么办</h3>
+<p>本指南 hero 统计条把 <code>.pen = JSON,可 Git 版本化、可 diff、可合并</code> 立成第二大卖点,但「能 diff」不等于「diff 可读」,「能合并」也不等于「冲突好解决」。这三个问题拆开说清楚。</p>
+
+<h4>1. .pen 的 diff 实际长什么样</h4>
+<p>官方没有公开过完整的真实 .pen 导出文件(格式本身在 <a href="pencil-docs-zh.html#pen-format" target="_blank">《pen.dev 文档中文版 · .pen 文件格式》</a>一节有详细 schema),下面这段 diff 是<strong>按该 schema 手工构造的示意结构,不是真实文件导出</strong>,用来展示「文本 diff」大致的可读程度——一次按钮位置下移 + 文案改动 + 颜色变量切换:</p>
+<pre><code><span class="c">diff --git a/design/settings.pen b/design/settings.pen
+index 8a1f3c2..44e9b7a 100644
+--- a/design/settings.pen
++++ b/design/settings.pen</span>
+@@ -18,11 +18,11 @@
+     {
+       "id": "save-button",
+       "type": "ref",
+       "ref": "primary-button",
+<span class="c">-      "x": 24, "y": 480,</span>
+<span class="c">+      "x": 24, "y": 512,</span>
+       "descendants": {
+         "label": {
+<span class="c">-          "text": "Save",
+-          "fill": "$color.text-secondary"</span>
+<span class="c">+          "text": "Save changes",
++          "fill": "$color.text-primary"</span>
+         }
+       }
+     },</code></pre>
+<p>结论是「介于两者之间」:比 Figma 的二进制/云端格式确实<strong>可读得多</strong>——审阅者能看出「按钮往下挪了、文案变了、颜色变量换了」;但比一段代码 diff<strong>噪音更大</strong>——组件实例的 <code>id</code>/<code>ref</code>/<code>descendants</code> 路径会占掉不少行,读起来更接近 review 一份 <code>package-lock.json</code> 而不是一段函数改动。<strong>「PR 里能看懂设计变了什么」成立,但「一眼看懂改得好不好」仍然做不到</strong>——这正是下方 <a href="#advanced">高级玩法 · 接入 CI/CD</a> 里「CI 自动出截图」要补的缺口。</p>
+
+<h4>2. 两人同时改一个 .pen,冲突怎么解</h4>
+<div class="callout warn"><b class="t">官方没有正面回答这个问题</b>本节参考了官方 <a href="https://docs.pencil.dev/core-concepts/design-as-code" target="_blank">Design as Code</a>、<a href="https://docs.pencil.dev/troubleshooting" target="_blank">Troubleshooting</a> 两篇文档以及两篇社区实测文章,<strong>没有任何一处给出「.pen 文件产生 Git 冲突标记后具体怎么解决」的操作步骤</strong>。以下先摆官方原话,再说清楚缺口在哪、目前能做的规避手段是什么——不把推测包装成官方结论。</div>
+<ul>
+  <li><strong>官方原话(乐观的一面)</strong>:「可分支合并——设计跟着功能分支走,一起合并、一起回滚」(Design as Code);「没有实时协作:目前通过 Git 协作——分支并行、pull → 编辑 → commit → push → PR」(Troubleshooting)。</li>
+  <li><strong>官方原话(矛盾的一面)</strong>:「官方明确:不要手动编辑 .pen,走编辑器或 MCP 工具」(见下方<a href="#pitfalls">避坑清单</a>)。</li>
+  <li><strong>缺口</strong>:.pen 是单棵 JSON 对象树,一旦两个分支都改了<strong>同一个 <code>id</code></strong> 的节点,Git 的三方合并会在 JSON 文本中间插入 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>/<code>=======</code>/<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 冲突标记——这和代码冲突的形态完全一样,但解决它需要手工编辑 JSON 文本,而这恰恰是官方明确劝阻的操作。截至本文核对(2026-07-28),<code>docs.pencil.dev</code> 与 Jerad Bitner、Tao An、Xinran Ma 等三篇被本站引用的社区文章均未提及这个场景的处理办法。</li>
+</ul>
+<p>在没有官方指引的情况下,以下是<strong>本文作者基于上述两条已发布规则反推出的可行规避思路,不是官方教程</strong>:</p>
+<ol class="steps">
+  <li><strong>优先靠流程规避,而不是靠合并技术解决</strong>:Troubleshooting 页给的协作方式本质是「分支并行 + PR 评审」,没有说「放心并发改同一文件」。同一个 Frame/页面同一时间只给一个人改,是目前唯一被官方认可的路径。</li>
+  <li><strong>用 <code>imports</code> 拆分文件,缩小冲突面</strong>:.pen 格式支持文档级 <code>imports</code> 字段(键为别名、值为相对路径,见 <a href="pencil-docs-zh.html#pen-format" target="_blank">.pen 文件格式</a>),可以把大设计拆成多个按页面/组件划分的 .pen 文件、在根文件里 import——和代码里拆模块减少合并冲突是同一个思路,只是官方文档没有把这一点明确写成「防冲突手段」,这是本文的推断用法。</li>
+  <li><strong>真出现冲突标记,别手改 JSON,改「二选一 + 重做」</strong>:<code>git checkout --ours</code>/<code>--theirs</code> 整体选一侧,再让对方回到编辑器/MCP 工具里把自己那部分改动重新做一遍——这样冲突解决过程始终没有绕开「只用编辑器或 MCP 工具改 .pen」这条官方红线,代价是重做一遍改动。</li>
+</ol>
+
+<h4>3. 变量双向同步跑完,两边各自长什么样</h4>
+<p>「Create pen.dev variables from my globals.css」执行前后,CSS 和 pen.dev 变量面板的对应关系(命名规则依据官方 <a href="pencil-docs-zh.html#variables" target="_blank">Variables</a> 与 <a href="pencil-docs-zh.html#pen-format" target="_blank">.pen 文件格式</a>两篇文档描述整理,<strong>非真实截图</strong>——官方文档也没有给出这条命令的实际运行截图):</p>
+<table class="tbl">
+  <tr><th>globals.css(同步前)</th><th>pen.dev 变量面板(同步后)</th><th>类型</th></tr>
+  <tr><td><code>--color-primary: #0ea5e9;</code></td><td><code>color.primary</code></td><td>color(色板色块)</td></tr>
+  <tr><td><code>--color-text-secondary: #5a6272;</code></td><td><code>color.text-secondary</code></td><td>color</td></tr>
+  <tr><td><code>--radius-md: 12px;</code></td><td><code>radius.md</code></td><td>number</td></tr>
+  <tr><td><code>--font-body: "Inter", sans-serif;</code></td><td><code>font.body</code></td><td>string</td></tr>
+</table>
+<p>CSS 一侧不会有任何变化——AI 只读取 <code>globals.css</code>,把每条 <code>--自定义属性</code> 映射成 pen.dev 变量面板里的一条新记录(命名把 <code>--</code> 前缀去掉、连字符按语义拆成点号分段,这是 <code>.pen</code> 格式变量键名惯用的 <code>色板.用途</code> 写法,而不是逐字保留 CSS 变量名)。画布上的元素这时<strong>还没有自动引用</strong>这些新变量——同步命令只负责「把 CSS 里已有的值搬进变量面板」,要让画布元素用上它们,得再来一句类似「所有按钮改用 <code>$color.primary</code>」的指令,或手动在属性面板里把硬编码值换成变量引用。反向的「Update globals.css with these pen.dev variables」同理:只搬运值,不会自动重构还在用旧硬编码值的 CSS 规则。</p>
 </section>
 
 <div class="divider"></div>
@@ -399,12 +451,12 @@ Export using Lucide icons instead of Material Icons</code></div>
 <h3 data-reveal>代码 → 设计</h3>
 <div class="prompt-box"><div class="pt">导入既有组件</div><code>Recreate the Button component from src/components/Button.tsx
 Import the LoginForm from my codebase into this design
-Recreate all components from src/components in Pencil</code></div>
+Recreate all components from src/components in pen.dev</code></div>
 
 <h3 data-reveal>变量与设计令牌</h3>
-<div class="prompt-box"><div class="pt">双向同步</div><code>Create Pencil variables from my globals.css
-Update globals.css with these Pencil variables
-Sync typography variables between CSS and Pencil</code></div>
+<div class="prompt-box"><div class="pt">双向同步</div><code>Create pen.dev variables from my globals.css
+Update globals.css with these pen.dev variables
+Sync typography variables between CSS and pen.dev</code></div>
 
 <h3 data-reveal>设计系统一致性</h3>
 <div class="prompt-box"><div class="pt">批量约束</div><code>Ensure all buttons use the primary color variable
@@ -420,7 +472,7 @@ Create 5 variations of this button component</code></div>
 <section id="design-system">
 <div class="sec-tag">实战 04</div>
 <h2>设计系统工程化</h2>
-<p>单页生成只是起点;社区里最成熟的打法,是把 Pencil + Claude Code 当成<strong>设计系统的生产与消费流水线</strong>。</p>
+<p>单页生成只是起点;社区里最成熟的打法,是把 pen.dev + Claude Code 当成<strong>设计系统的生产与消费流水线</strong>。</p>
 
 <h3 data-reveal>五阶段方法论(社区 Claude Code Skill)</h3>
 <p>社区流传较广的 <code>/create-design-system</code> 技能把「从想法到设计系统」拆成五个必须逐一确认的阶段,核心思想是<strong>每个阶段边界都停下来给人确认,绝不一口气冲到底</strong>:</p>
@@ -445,7 +497,7 @@ Create 5 variations of this button component</code></div>
   <figcaption>Lullabot 设计库:色板、字体令牌、间距阶梯与 16 个可复用组件,全部装进一个可导入的 .pen 库 · 图:<a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner</a></figcaption>
 </figure>
 
-<div class="callout tip"><b class="t">对应的 Pencil 机制</b>把品牌文件转成 <code>.lib.pen</code> 设计库(图层面板 → Libraries → Turn this file into a library),即可被任意项目导入;库内组件更新会同步到所有使用处。注意:转库操作不可逆。</div>
+<div class="callout tip"><b class="t">对应的 pen.dev 机制</b>把品牌文件转成 <code>.lib.pen</code> 设计库(图层面板 → Libraries → Turn this file into a library),即可被任意项目导入;库内组件更新会同步到所有使用处。注意:转库操作不可逆。</div>
 <p class="src">来源:<a href="https://gist.github.com/TobyScr/cc30eba6541a1e7174076dd2667b96a7" target="_blank">TobyScr / create-design-system skill</a> · <a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner: Designing with Pencil and Claude Code</a> · <a href="https://docs.pencil.dev/core-concepts/design-libraries" target="_blank">官方 Design Libraries</a></p>
 </section>
 
@@ -483,7 +535,7 @@ Create 5 variations of this button component</code></div>
   <li>画布上<strong>目视检查</strong>;</li>
   <li>图层面板<strong>核对结构</strong>;</li>
   <li>让 AI 调 <code>get_screenshot</code> <strong>截图自检</strong>复杂布局;</li>
-  <li><code>snapshot_layout</code> 排查<strong>重叠与错位</strong>。</li>
+  <li>用 <code>get_app_state</code>(旧版工具名 <code>snapshot_layout</code>)排查<strong>重叠与错位</strong>。</li>
 </ol>
 <p class="src">来源:<a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">官方 AI Integration / Best Practices</a> · <a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow</a> · <a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Claude Code Workflow Best Practices</a></p>
 </section>
@@ -494,27 +546,96 @@ Create 5 variations of this button component</code></div>
 <div class="sec-tag">进阶 06</div>
 <h2>高级玩法</h2>
 
-<h3 data-reveal>Pencil CLI:无头设计与批量生产</h3>
-<p>Pencil CLI 与桌面应用共用同一编辑引擎,却完全不需要 GUI——这让「设计」变成可脚本化的构建步骤:</p>
+<h3 data-reveal>pen.dev CLI:无头设计与批量生产</h3>
+<div class="callout note"><b class="t">2026-07-28 编者注</b>官方 CLI 已从 <code>pencil</code> 更名为 <code>pen</code>(npm 包 <code>@pen.dev/cli</code>,环境变量 <code>PENCIL_CLI_KEY</code> → <code>PEN_CLI_KEY</code>),下面已按新版更新。CLI 与桌面应用共用同一编辑引擎,却完全不需要 GUI——这让「设计」变成可脚本化的构建步骤:</div>
 <pre><code><span class="c"># 一句话生成设计文件</span>
-pencil --out login.pen --prompt "Create a modern login page with email, password, social login"
+pen --out login.pen --prompt "Create a modern login page with email, password, social login"
 
 <span class="c"># 修改既有设计并导出 2 倍图</span>
-pencil --in dashboard.pen --out dashboard-v2.pen --prompt "Add a sidebar navigation"
-pencil --in design.pen --export hero.png --export-scale 2
+pen --in dashboard.pen --out dashboard-v2.pen --prompt "Add a sidebar navigation"
+pen --in design.pen --export hero.png --export-scale 2
 
 <span class="c"># 批量任务(每个任务独立编辑器实例,顺序执行)</span>
-pencil --tasks batch.json
+pen --tasks batch.json
 
 <span class="c"># 简单任务换便宜模型,控制成本</span>
-pencil --out simple.pen --model claude-haiku-4-5 --prompt "Create a simple 404 page"</code></pre>
+pen --out simple.pen --model claude-haiku-4-5 --prompt "Create a simple 404 page"</code></pre>
 
 <h3 data-reveal>接入 CI/CD</h3>
 <p>在组织设置的 Developer Keys 里创建 CLI Key,流水线中即可自动跑设计任务:</p>
-<pre><code>export PENCIL_CLI_KEY=pencil_cli_...
+<pre><code>export PEN_CLI_KEY=pen_cli_...
 export ANTHROPIC_API_KEY=sk-ant-...
-pencil --out onboarding.pen --prompt "Create a 3-step onboarding flow"</code></pre>
-<p>配合 <code>pencil interactive</code> 交互 shell,还能在脚本里直接调 MCP 工具做精细操作(<code>batch_design</code> 建节点 → <code>get_screenshot</code> 出图 → <code>save()</code> 落盘)。</p>
+pen --out onboarding.pen --prompt "Create a 3-step onboarding flow"</code></pre>
+<p>配合 <code>pen interactive</code> 交互 shell,还能在脚本里直接调 MCP 工具做精细操作(<code>execute</code> 建节点 → <code>get_screenshot</code> 出图 → <code>save()</code> 落盘;旧版工具名是 <code>batch_design</code>)。</p>
+
+<h4>CI 里跑设计,到底解决什么问题</h4>
+<p>不是「让 AI 在流水线里自动画设计」这种花活——最有说服力的用途是<strong>补上 <a href="#workflows">Workflow D 深挖</a>里提到的那个缺口:.pen 的文本 diff 能看出「改了什么节点」,但看不出「改完长什么样、好不好看」</strong>。让 CI 在每个改动 .pen 文件的 PR 里自动渲染一版截图,评审者不用装 pen.dev、不用切出 IDE,PR 页面里直接肉眼判断这版改动是否可接受——这是「设计变更能像代码一样被 review」这句话里,文本 diff 单独做不到、必须靠出图来补的那一半。</p>
+
+<div class="callout warn"><b class="t">下面这份 workflow 是本文作者按官方文档已核实的 CLI 参数(见<a href="pencil-docs-zh.html#pencil-cli" target="_blank">《pen.dev 文档中文版 · CLI》</a>)手工搭的示意流水线,不是官方发布的模板,用前请按自己仓库的实际情况调整。</b>PR 评论里贴的是「本次运行的 Artifacts 链接」而不是内联图片——GitHub Actions 的 Artifact 本身不提供公开直链,要做到评论里直接嵌图,还需要额外接一个图床/对象存储步骤,这里没有替你验证过那一步,所以没有写进示例。</div>
+
+<pre><code><span class="c"># .github/workflows/design.yml</span>
+name: pen.dev 设计预览
+
+on:
+  pull_request:
+    paths:
+      - '**/*.pen'
+
+jobs:
+  design-preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: 检出代码(需要能 diff 出改动的 .pen 文件)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+<span class="c">      # CLI 要求 Node.js 18+,见官方 Installation</span>
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 安装 pen.dev CLI
+        run: npm install -g @pen.dev/cli
+
+      - name: 导出本次 PR 改动的 .pen 文件为 PNG
+        env:
+          PEN_CLI_KEY: ${{ secrets.PEN_CLI_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          mkdir -p design-previews
+          git fetch origin "${{ github.base_ref }}"
+          for f in $(git diff --name-only "origin/${{ github.base_ref }}"...HEAD -- '*.pen'); do
+            [ -f "$f" ] || continue
+            name=$(echo "$f" | tr '/' '_' | sed 's/\.pen$//')
+            pen --in "$f" --export "design-previews/${name}.png" --export-scale 2
+          done
+
+      - name: 上传设计预览 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-previews
+          path: design-previews/
+          if-no-files-found: ignore
+
+      - name: 在 PR 里留言,附本次运行的预览链接
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `本次 PR 改动的 .pen 设计已渲染,预览图见[本次 workflow 运行的 Artifacts](${runUrl})。`
+            });</code></pre>
+<p>要点对照官方参数:<code>pen --in &lt;path&gt; --export &lt;path&gt;</code> 不加 <code>--out</code> 也合法(<code>--out</code> 仅在不使用 <code>--export</code> 时必填);<code>--export-scale 2</code> 出 2 倍图便于在小屏幕上看清细节;<code>PEN_CLI_KEY</code> 走 CI Key 而不是交互登录,<strong>优先于</strong>本机已存的会话令牌,这也是它能在无人值守的 runner 上工作的原因。</p>
 
 <h3 data-reveal>Script 节点:数据驱动的设计</h3>
 <p>对图表、网格、纹样这类「手搭很痛苦」的结构,用 Script 节点让代码生成图层:声明 <code>@input</code> 参数即可在属性面板获得可视化旋钮;把输入绑到变量(如 <code>$primary</code>)还能自动响应主题切换。官方示例仓库 <a href="https://github.com/highagency/pencil-scripts" target="_blank">highagency/pencil-scripts</a> 提供现成的图表/网格/纹样脚本。</p>
@@ -528,7 +649,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
   <li><strong>设计令牌文件</strong>:让 Claude Code 维护一份 <code>design-tokens.ts</code> / <code>design-tokens.css</code>,作为设计与代码共同的单一事实源,项目演进时一处更新、两边生效。</li>
   <li><strong>版本控制兜底</strong>:代理式修改多文件时偶尔会弄坏东西——频繁 commit 给自己留检查点;.pen 的撤销/重做有限,Git 就是你的后悔药。</li>
 </ul>
-<p class="src">来源:<a href="https://docs.pencil.dev/for-developers/pencil-cli" target="_blank">官方 Pencil CLI</a> · <a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">官方 Code on Canvas</a> · <a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow</a></p>
+<p class="src">来源:<a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">官方 pen.dev CLI</a> · <a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">官方 Code on Canvas</a> · <a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow</a></p>
 </section>
 
 <div class="divider"></div>
@@ -558,7 +679,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 <h3 data-reveal>认知层面</h3>
 <ul>
   <li><strong>AI 产出质量 ∝ 你给的上下文质量</strong>——这是全部实践浓缩成的一句话。模糊提示 + 无上下文 = 通用模板;具体提示 + 画布/风格/仓库上下文 = 属于你产品的代码。</li>
-  <li><strong>Pencil 不是 Figma 替代品</strong>(至少现在不是):功能没有 Figma 全,强项是内部工具、快速原型与设计-代码一体化场景;重协作、重高保真交付的团队仍需权衡。</li>
+  <li><strong>pen.dev 不是 Figma 替代品</strong>(至少现在不是):功能没有 Figma 全,强项是内部工具、快速原型与设计-代码一体化场景;重协作、重高保真交付的团队仍需权衡。</li>
   <li><strong>工具迭代快</strong>:菜单位置、命令语法都可能变;掌握原理(上下文经由结构化协议流向代码代理)比记住界面更长久。</li>
 </ul>
 <p class="src">来源:<a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner</a> · <a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Best Practices and Pro Tips</a> · <a href="https://docs.pencil.dev/troubleshooting" target="_blank">官方 Troubleshooting</a></p>
@@ -571,7 +692,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 <h2>真实案例研究</h2>
 
 <h3 data-reveal>案例一:OpptyNet — 七个版本,三小时,一条对话线</h3>
-<p>Lullabot 内部的政府招标(RFP)筛选工具,全程用 Pencil + Claude Code 对话式设计:</p>
+<p>Lullabot 内部的政府招标(RFP)筛选工具,全程用 pen.dev + Claude Code 对话式设计:</p>
 <table class="tbl">
   <tr><th>版本</th><th>方案</th><th>结论</th></tr>
   <tr><td>V1</td><td>卡片列表 + 筛选栏 + 分页</td><td>好看但视觉太重,扫 20–50 条太慢</td></tr>
@@ -617,9 +738,18 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
 </div>
 <p class="src">图片来源:<a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner 博客</a></p>
 
-<h3 data-reveal>案例三:DevelopersIO 五页面实测</h3>
-<p>用「三要素提示词」连测五种完全不同类型的页面(旅行相册 / 面包店点单 / 咖啡店仪表盘 / 社区公告板 / 企业员工门户),全部达到可直接用作原型的质量,MCP 服务器全程稳定;并验证了「生成 .pen 设计稿 → 一句话应用到既有项目 CSS」的改版链路。作者的定位判断:功能不如 Figma 多,但对「对齐设计意象」的场景刚刚好。</p>
-<p class="src">来源:<a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner: Designing with Pencil and Claude Code</a> · <a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a></p>
+<h3 data-reveal>案例三:多人并行改同一设计——这套流程在这里会更慢</h3>
+<p>前两个案例都是「一个人 + 一条对话线」的场景,这也是 pen.dev + Claude Code 打法目前最擅长的形态。反过来,<strong>多人需要同时对着同一屏设计动手</strong>的场景,是它相对 Figma 更慢的地方——这不是一次具体项目翻车的复盘故事(没找到这样的公开案例),而是一条能在官方文档里找到出处、并被独立第三方评测反复印证的<strong>能力边界</strong>。</p>
+<ul>
+  <li><strong>官方自己的定性</strong>:Troubleshooting 页原话——「没有实时协作:目前通过 Git 协作——分支并行、pull → 编辑 → commit → push → PR」。这不是「暂时的 bug」,而是架构选择:.pen 的协作模型是「分支 + PR」,不是「光标可见的多人同屏」。</li>
+  <li><strong>独立评测的印证</strong>:Tao An 在复盘 pen.dev 的 Git-first 主张时写道,「there's no real-time collaboration, which is a notable gap for teams used to Figma's multiplayer editing」,并把两者的取舍概括为「Figma optimizes for designers collaborating on design. Pencil optimizes for design integrating with development」——言下之意是多人协同设计的场景,pen.dev 天然不是主场。</li>
+  <li><strong>叠加效应</strong>:Xinran Ma 2026-04-19 的实测还提到一个放大因素——<strong>暂无自动保存</strong>,「it's relatively common to hit a crash」且「if it goes down mid-session, you lose work with no recovery option」。在单人场景下这只是「勤按 Cmd/Ctrl+S」的习惯问题;但换到多人并行、需要频繁交接同一文件的场景,一次意外崩溃加上前一节讨论过的<a href="#workflows">「.pen 冲突官方没有给出解法」</a>,代价会被放大。</li>
+</ul>
+<div class="duo">
+  <div class="bad"><b>这套流程会更慢的场景</b>高保真交付给外部客户团队(对方要的是能实时打开评论、拖拽调整的 Figma 文件,不是要跑 <code>git clone</code>);多人同时对同一屏做设计评审式的并行微调;需要复杂点击交互原型给非技术干系人演示。</div>
+  <div class="good"><b>这套流程仍然合适的场景</b>单人或「设计-开发同一个人」主导、迭代快于评审频率的内部工具;设计随功能分支走、按顺序交接而非同时动手的团队节奏。</div>
+</div>
+<p class="src">来源:<a href="https://docs.pencil.dev/troubleshooting" target="_blank">官方 Troubleshooting</a> · <a href="https://tao-hpu.medium.com/design-files-dont-belong-in-git-pencil-dev-says-we-re-all-wrong-f81dae4b49a0" target="_blank">Tao An: Design Files Don't Belong in Git. Pencil.dev Says We're All Wrong.</a> · <a href="https://medium.com/design-bootcamp/exploring-pencil-dev-walkthrough-and-impressions-90c4587231c6" target="_blank">Xinran Ma: Exploring Pencil.dev — Walkthrough and Impressions</a>(2026-04-19)</p>
 </section>
 
 <div class="divider"></div>
@@ -649,12 +779,13 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
   <tr><td>Vibe Design 入门</td><td><a href="https://daily.dev/posts/pencil-01-vibe-design-with-pencil-and-claude-code-znlvofrea" target="_blank">daily.dev: Vibe Design with Pencil and Claude Code</a></td></tr>
   <tr><td>.pen → React 转换 Skill</td><td><a href="https://mcpmarket.com/tools/skills/pencil-to-code" target="_blank">MCP Market: pencil-to-code</a></td></tr>
   <tr><td>完整评测</td><td><a href="https://invernessdesignstudio.com/pencil-dev-review-the-complete-guide-to-ai-vibe-coding-for-2026" target="_blank">Inverness Design Studio: Pencil.dev Review 2026</a> · <a href="https://bkamp.ai/en/recipes/1f8fecbc-c897-430e-b64b-ff6d70cd361b" target="_blank">bkamp: Pencil.dev Complete Guide</a></td></tr>
+  <tr><td>协作能力边界批评(案例三来源)</td><td><a href="https://tao-hpu.medium.com/design-files-dont-belong-in-git-pencil-dev-says-we-re-all-wrong-f81dae4b49a0" target="_blank">Tao An: Design Files Don't Belong in Git. Pencil.dev Says We're All Wrong.</a> · <a href="https://medium.com/design-bootcamp/exploring-pencil-dev-walkthrough-and-impressions-90c4587231c6" target="_blank">Xinran Ma: Exploring Pencil.dev — Walkthrough and Impressions</a>(2026-04-19)</td></tr>
   <tr><td>中文社区讨论</td><td><a href="https://www.zhihu.com/question/1998357194861725413" target="_blank">知乎:Claude Code 加持 Pencil 的行业影响</a> · <a href="https://agent.csdn.net/6a32449810ee7a33f27eaad9.html" target="_blank">CSDN:pencil on claude</a></td></tr>
   <tr><td>Claude Code 通用最佳实践</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Claude Code Workflow Best Practices</a> · <a href="https://medium.com/design-bootcamp/a-designers-guide-to-organizing-ai-skills-and-tools-in-claude-code-f87477c35b82" target="_blank">Medium: A Designer's Guide to Claude Code</a></td></tr>
-  <tr><td>本知识库相关主题</td><td><a href="claude-code-guide.html">Claude Code 使用指南 · 干货版</a> · <a href="codex-guide.html">Codex 使用指南</a> · <a href="pencil-docs-zh.html">Pencil 官方文档中文版</a> · <a href="ai-leverage-guide.html">AI 提效全景与心法</a> · <a href="env-auth-clinic.html">环境与登录急救手册</a></td></tr>
+  <tr><td>本知识库相关主题</td><td><a href="claude-code-guide.html">Claude Code 使用指南 · 干货版</a> · <a href="codex-guide.html">Codex 使用指南</a> · <a href="pencil-docs-zh.html">pen.dev 官方文档中文版</a> · <a href="ai-leverage-guide.html">AI 提效全景与心法</a> · <a href="env-auth-clinic.html">环境与登录急救手册</a></td></tr>
 </table>
 
-<div class="callout note"><b class="t">一句话带走</b>AI 生成代码的质量,正比于你喂给它的上下文质量。Pencil × Claude Code 的本质,就是一套「把正确上下文交给 AI」的系统——画布、风格指南、变量、仓库结构,缺一不可。其余一切实践都由此推导而来。</div>
+<div class="callout note"><b class="t">一句话带走</b>AI 生成代码的质量,正比于你喂给它的上下文质量。pen.dev × Claude Code 的本质,就是一套「把正确上下文交给 AI」的系统——画布、风格指南、变量、仓库结构,缺一不可。其余一切实践都由此推导而来。</div>
 </section>
 
 <div class="divider"></div>

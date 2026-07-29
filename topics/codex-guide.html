@@ -470,7 +470,32 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <tr><td><code>never</code></td><td>从不询问,越权直接失败</td><td>CI 与无人值守脚本</td></tr>
 </table>
 
-<div class="callout warn"><b class="t">--yolo 的正确认知</b><code>--dangerously-bypass-approvals-and-sandbox</code>(别名 <code>--yolo</code>)= 审批与沙箱全关。与 Claude Code 的 <code>--dangerously-skip-permissions</code> 同理:只应出现在<strong>无敏感数据、无网络副作用的外部加固环境</strong>(如一次性容器)。</div>
+<h3 data-reveal>3×3 交叉速查:九种组合分别是什么手感</h3>
+<p>两个旋钮正交,共九种组合。竖轴是沙箱(能碰什么),横轴是审批(什么时候问你):</p>
+<table class="tbl">
+  <tr><th>沙箱 ＼ 审批</th><th><code>untrusted</code><br><span class="src">非白名单先问</span></th><th><code>on-request</code> <span class="pill a">默认</span><br><span class="src">越权才问</span></th><th><code>never</code><br><span class="src">从不问</span></th></tr>
+  <tr>
+    <td><code>read-only</code></td>
+    <td><strong>最保守</strong>——读代码都可能被拦一下。适合完全陌生、来路不明的仓库首次打开。<br><span class="src">典型翻车:问得太频繁,读个文件都要点确认,人会烦到直接关沙箱</span></td>
+    <td><strong>调研档</strong>——纯读不写,越权(想改文件/联网)才问你。代码调研、架构问答、PR 评审的推荐组合。<br><span class="src">典型翻车:让它"顺手修一下",它改不了,白跑一轮</span></td>
+    <td><strong>只读批处理</strong>——CI 里跑纯分析任务(生成报告、静态检查),想写就直接失败。<br><span class="src">典型翻车:任务其实需要写临时文件,静默失败后你以为它做完了</span></td>
+  </tr>
+  <tr>
+    <td><code>workspace-write</code> <span class="pill a">默认</span></td>
+    <td><strong>严管开发</strong>——能改工作区,但每条非白名单命令都要过你的眼。适合在生产仓库里做高危改动(改构建脚本、动数据库迁移)。<br><span class="src">典型翻车:白名单没配好,连 <code>ls</code> 都问,节奏全断</span></td>
+    <td><strong>日常主力</strong> ✅——官方推荐的默认组合。在工作区里自由读写,要装依赖/联网/碰工作区外的路径才来问你。<br><span class="src">典型翻车:忘了网络默认受限,以为它能装包,结果卡在拉取依赖那一步</span></td>
+    <td><strong>无人值守写入</strong>——CI 里改代码、跑测试、提交。越权直接失败而不是挂起等人。<br><span class="src">典型翻车:任务需要装依赖但网络受限,又没人能批准,任务失败得莫名其妙</span></td>
+  </tr>
+  <tr>
+    <td><code>danger-full-access</code></td>
+    <td><strong>基本没人用</strong>——沙箱全开却又逐条问,两头的成本都占了,收益说不清。<br><span class="src">要么信它给它权限,要么不信就别开沙箱全访问</span></td>
+    <td><strong>受控的全权</strong>——无沙箱限制但越权动作仍会问你,只应在一次性容器里用。<br><span class="src">典型翻车:在自己主力开发机上开这档,一个手滑的 <code>rm</code> 就没有兜底了</span></td>
+    <td><strong>= <code>--yolo</code></strong>,见下方警告。<br><span class="src">仅限一次性容器,且容器里不该有你的凭证</span></td>
+  </tr>
+</table>
+<div class="callout tip"><b class="t">怎么选</b>不确定就用 <code>workspace-write</code> + <code>on-request</code>(表格正中间那格,也是官方默认)。往左上走是"更不信任它",往右下走是"更省事但兜底更少"——每往右下一格,出事时你能拦住的机会就少一层。</div>
+
+<div class="callout warn"><b class="t">--yolo 的正确认知</b><code>--dangerously-bypass-approvals-and-sandbox</code>(别名 <code>--yolo</code>)= 审批与沙箱全关,也就是上表右下角那一格。与 Claude Code 的 <code>--dangerously-skip-permissions</code> 同理:只应出现在<strong>无敏感数据、无网络副作用的外部加固环境</strong>(如一次性容器)。</div>
 
 <h3 data-reveal>进阶:execpolicy 规则</h3>
 <p><code>codex execpolicy</code> 可以评估自定义规则文件,预演某条命令会被<strong>放行、询问还是拦截</strong>——把团队的命令安全策略做成可测试的代码。另有 <code>codex sandbox</code> 让你把任意命令手动丢进 Codex 同款 OS 沙箱里跑,适合验证沙箱行为。</p>

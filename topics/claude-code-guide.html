@@ -760,18 +760,59 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <div class="sec-tag">实战 08</div>
 <h2>上下文管理进阶</h2>
 
+<h3 data-reveal>1M 上下文时代,这套还成立吗</h3>
+<p>本页开篇的核心约束写于"上下文很容易装不下"的年代,而模型表里 Sonnet 5 / Opus 5 已经是原生 <strong>1M</strong> 上下文——这两处看着矛盾,但结论没变,只是支撑它的理由换了。</p>
+<div class="callout note"><b class="t">立场:依然成立,但从"装不下"变成"划不来"</b>过去的问题是物理限度:200K 窗口很快被文件和命令输出填满,不压缩就没法继续。1M 窗口把这条物理限度往后推了 5 倍,但没有消掉另外两条一直都在、只是过去被"装不下"盖住的账:<strong>①每一轮消息都要把当前的全部历史重新发一遍</strong>——官方 costs 文档原话"Claude Code sends your full conversation with every message",窗口越大、历史攒得越多,一句话追问也要为整段历史付费,账单随对话长度线性上涨;<strong>②压缩本身会丢细节</strong>——早期没写进 CLAUDE.md 的具体指令,压缩后大概率保不住(官方原话"instructions from early in the conversation can get lost",下文有完整展开)。1M 买到的是"不会突然断供"的余量,不是"可以放着不管"的许可。</div>
+<p>能放松的只有一条:<strong>短会话、当天能收尾的任务,不用再像 200K 时代那样一读大文件就紧张兮兮地手动 <code>/compact</code></strong>——大概率整场任务都碰不到自动压缩的阈值(下文有具体数字)。但凡是跨天恢复、需要长期跑、或你在乎每条消息成本的场景(CI 管道、无人值守的后台代理),下面四种手段依旧是正解,没有一条可以跳过。1M 目前只在 Sonnet 5 / Opus 5 / Fable 5 等模型上原生生效,别不看模型就假设自己已经在 1M 窗口里,以 <code>/context</code> 实际显示为准。</p>
+
 <h3 data-reveal>诊断:先看清再动手</h3>
 <p><code>/context</code> 用彩色网格告诉你窗口被什么占着(哪个工具重、记忆文件是否臃肿、还剩多少容量),配上 <code>/statusline</code> 的常显用量,做到心里有数。</p>
 
 <h3 data-reveal>四种腾地方的手段(由轻到重)</h3>
 <table class="tbl">
-  <tr><th>手段</th><th>动作</th><th>适用时机</th></tr>
-  <tr><td>侧问</td><td><code>/btw 问题</code></td><td>只想快速确认一个细节,答案不需要留在历史里</td></tr>
-  <tr><td>定向压缩</td><td><code>/compact 保留 API 变更与测试命令</code></td><td>会话要继续,但历史太重——你来定摘要策略</td></tr>
-  <tr><td>局部摘要</td><td><kbd>Esc Esc</kbd> 选中某条消息 → Summarize from here / up to here</td><td>只压前半段或后半段,保住关键区间的完整细节</td></tr>
-  <tr><td>彻底重开</td><td><code>/clear</code></td><td>切换到不相关任务,或同一问题已纠正两次未果</td></tr>
+  <tr><th>手段</th><th>动作</th><th>适用时机</th><th>什么时候动手(量化触发条件)</th></tr>
+  <tr><td>侧问</td><td><code>/btw 问题</code></td><td>只想快速确认一个细节,答案不需要留在历史里</td><td>任何时候,不占"腾地方"的预算,与 <code>/context</code> 用量无关</td></tr>
+  <tr><td>定向压缩</td><td><code>/compact 保留 API 变更与测试命令</code></td><td>会话要继续,但历史太重——你来定摘要策略</td><td>抢在自动压缩前手动接管:<code>/context</code> 显示的用量逼近自动阈值时(Sonnet 5 默认约 <strong>96.7%</strong>≈967K/1M token;未开 1M 扩展上下文的标准模型在逼近 <strong>200K</strong> 边界时;两者都可用 <code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code> 调低阈值提前介入,但不能调高)</td></tr>
+  <tr><td>局部摘要</td><td><kbd>Esc Esc</kbd> 选中某条消息 → Summarize from here / up to here</td><td>只压前半段或后半段,保住关键区间的完整细节</td><td>官方未给量化阈值——按"这段之后还有用 / 这段已经用不上"判断,不是看百分比</td></tr>
+  <tr><td>彻底重开</td><td><code>/clear</code></td><td>切换到不相关任务,或同一问题已纠正两次未果</td><td>和容量无关,是任务相关性判断:换任务就清,不必等用量涨上去</td></tr>
 </table>
 <div class="callout tip"><b class="t">让压缩听你的话</b>在 CLAUDE.md 写下压缩策略,自动压缩时也会遵守,例如:"压缩时始终保留完整的已修改文件列表和测试命令"。</div>
+
+<h3 data-reveal>自动压缩:它什么时候动手、动完丢了什么</h3>
+<p><code>DISABLE_AUTO_COMPACT</code> 在本页「隐藏能力与彩蛋配置」章目前只是孤零零一行——它其实是 <code>settings.json</code> 里 <code>autoCompactEnabled</code>(默认 <code>true</code>)的环境变量开关,关掉后 Claude 不会再自动摘要,上下文写满就直接报错中止,只适合你自己会盯紧 <code>/context</code> 手动 <code>/compact</code> 的场景。</p>
+<p><strong>触发阈值</strong>(核对自官方 <code>env-vars</code> / <code>model-config</code> 文档):</p>
+<table class="tbl">
+  <tr><th>模型 / 场景</th><th>触发点</th></tr>
+  <tr><td>Sonnet 5(原生 1M,无 200K 变体)</td><td>默认约 <strong>96.7%</strong>,即约 <strong>967K / 1M</strong> token,由 <code>CLAUDE_CODE_AUTO_COMPACT_WINDOW</code> 控制阈值本身</td></tr>
+  <tr><td>未开 1M 扩展上下文的标准模型(如 Sonnet 4.6 / Opus 4.6)</td><td>逼近 / 到达 <strong>200K</strong> 边界</td></tr>
+  <tr><td>其他本地会话(如本地跑 Opus 4.8)</td><td>对话逼近模型自身上下文上限时触发,官方未给固定百分比</td></tr>
+</table>
+<p><code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code>(取值 1–100)可以把这个百分比调低、让压缩提前动手,但不能调高——想确认自己此刻的真实占比,直接跑 <code>/context</code>,不要凭感觉猜"快满了"。</p>
+<p><strong>动手时到底做了什么</strong>:官方原话是它"先清理旧的工具输出,不够再对整段对话做摘要"("clears older tool outputs first, then summarizes the conversation if needed")——自动压缩其实是两级火箭:第一级只丢已经读过的大文件内容、旧命令输出这类"看过一眼就不再需要原文"的东西,不动你的指令历史;只有第一级腾出的空间还不够,才会触发第二级——把整段对话历史压成一份结构化摘要。你有时候会看到用量突然掉一截、却没弹出"Conversation compacted"提示,大概率只是走了第一级。</p>
+<p><strong>第二级摘要之后,留下什么、丢了什么</strong>:</p>
+<table class="tbl">
+  <tr><th>机制</th><th>压缩后</th></tr>
+  <tr><td>系统提示词与输出风格</td><td>不受影响,本来就不在对话历史里</td></tr>
+  <tr><td>项目根 CLAUDE.md 与未限定路径的规则</td><td>从磁盘重新加载</td></tr>
+  <tr><td>Auto memory(<code>MEMORY.md</code>)</td><td>从磁盘重新加载</td></tr>
+  <tr><td>带 <code>paths:</code> 前缀的规则</td><td>丢失,直到再次读到匹配文件才重新加载</td></tr>
+  <tr><td>子目录里的嵌套 CLAUDE.md</td><td>丢失,直到再次读到该子目录下的文件</td></tr>
+  <tr><td>已调用过的 Skill 正文</td><td>重新注入,但每个 Skill 上限 5000 token、总预算上限 25000 token,超出部分先丢最早调用的</td></tr>
+  <tr><td>Hooks</td><td>不适用——hooks 是代码,不占上下文</td></tr>
+</table>
+<div class="callout warn"><b class="t">"压完变笨了"不是错觉</b>官方原话:"Your requests and key code snippets are preserved; detailed instructions from early in the conversation may be lost."——摘要保住的是"你要什么"和关键代码片段,保不住你早先细致强调过的边界条件,除非那条规则写进了 CLAUDE.md(见上表,会重新加载)。解法不是抱怨压缩笨,是把真正重要的约束从"对话里说过一次"搬进 CLAUDE.md,或者压缩前自己用 <code>/compact 聚焦指令</code> 定摘要策略,别让自动压缩替你猜。</div>
+<p>还有一种边界情况:如果某个单个文件或工具输出大到"每次摘完立刻又把上下文塞满",Claude Code 会在尝试几次后直接停止自动压缩并报错,而不是死循环重压——官方文档称之为 thrashing 报错。遇到时别指望再点一次压缩解决,该用子代理或 hook 把那个超大输出先摘掉。</p>
+
+<h3 data-reveal>用文件当外部记忆</h3>
+<p>「实战场景」章的 Ralph 循环提过一句"用文件系统而非对话历史当记忆",但没展开怎么写。逻辑其实很朴素:对话历史会被自动压缩摘要、会在 <code>/clear</code> 时清空、换一个新会话更是从零开始(会话之间互不共享历史)——但磁盘上的文件不会。把状态显式写进文件,等于在上下文窗口之外单独开一份不受压缩影响的"真相源",需要的时候随时 <code>Read</code> 回来,而不是指望它一直悬在对话里。</p>
+<p>三种常用写法:</p>
+<ul>
+  <li><strong>SPEC.md</strong>:法则五"让它先采访你"里已经出现过——规格定稿后把它写进文件,<strong>开新会话执行</strong>,让实现阶段拿到一个干净的上下文,SPEC.md 是随时可查的锚点而不是要背下来的东西。好的 SPEC.md 自带三要素:点名涉及的文件与接口、写明什么不做、以一个端到端验证步骤收尾。</li>
+  <li><strong>NOTES.md / PROGRESS.md</strong>:跑长任务或 Ralph 式循环时,每一轮开始前先读、结束前更新——记"已确认可行的方案""已经排除的死路""下一步要做什么"。写成可勾选清单而不是叙事日记,压缩或换会话之后,新的一轮不用把踩过的坑再踩一遍。</li>
+  <li><strong>压缩策略本身也可以写进 CLAUDE.md</strong>:上面「四种腾地方的手段」表里的 <code>/compact</code> 提示已经示范过——"压缩时始终保留完整的已修改文件列表和测试命令",这条规则本身就活在文件里,不受任何一次压缩影响。</li>
+</ul>
+<p>三者的共同点:都不依赖"这句话还留在上下文里",依赖的是"这个文件我随时能重新读到"。</p>
+<p class="src">本节结论核对自:<a href="https://code.claude.com/docs/en/context-window" target="_blank">官方 Explore the context window</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works" target="_blank">官方 How Claude Code works</a> · <a href="https://code.claude.com/docs/en/model-config" target="_blank">官方 Model configuration</a> · <a href="https://code.claude.com/docs/en/env-vars" target="_blank">官方 Environment variables</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings</a> · <a href="https://code.claude.com/docs/en/costs" target="_blank">官方 Manage costs</a></p>
 
 <h3 data-reveal>检查点:大胆试错的安全网</h3>
 <p>每发一条提示自动建一个检查点,文件改动先快照。<kbd>Esc Esc</kbd> / <code>/rewind</code> 可以只回滚对话(实现满意但想换个说法)、只回滚代码(讨论有价值但想换实现)、或全回滚。检查点随会话持久化——关掉终端明天回来照样能回滚。<strong>局限</strong>:只追踪 Claude 编辑工具做的改动,Bash 命令和外部进程的变更不在内,它不是 git 的替代品。</p>
@@ -818,6 +859,22 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <li>审批疲劳是安全隐患:点第十次"允许"时你已经不在审查了。解法是白名单(<code>/fewer-permission-prompts</code> 可自动生成)+ <code>/sandbox</code> OS 级隔离,而不是硬扛;</li>
   <li><code>--dangerously-skip-permissions</code> 只该出现在<strong>无网络、无敏感数据的封闭环境</strong>(如容器里跑 lint 修复);企业可用 <code>disableBypassPermissionsMode</code> 全组织禁用。</li>
 </ul>
+
+<h3 data-reveal>语法速查:每一种写法到底匹配什么</h3>
+<p>上面配置里的 <code>Bash(npm run lint:*)</code>、<code>Read(./.env.*)</code>、<code>Read(./secrets/**)</code> 全是能抄的正确写法,但 <code>:*</code>、<code>./</code>、<code>**</code> 各自什么语义不解释清楚,读者只能靠猜。逐条对照:</p>
+<table class="tbl">
+  <tr><th>写法</th><th>匹配什么(对)</th><th>别当成什么(错)</th></tr>
+  <tr><td><code>Read</code> / <code>Edit</code> / <code>Bash</code><br>裸工具名,不带括号</td><td>匹配这个工具的<strong>每一次</strong>调用,无论对象是什么</td><td>别当成"没写规则等于不生效"——裸工具名本身就是一条全放行 / 全询问 / 全拒绝规则</td></tr>
+  <tr><td><code>Read(./.env)</code></td><td>具体路径,相对<strong>当前工作目录</strong>(cwd,即启动 <code>claude</code> 时所在目录),精确匹配这一个文件</td><td>别当成相对项目根目录——单斜杠开头的 <code>/path</code> 才是相对配置文件所在层级(下面第 7 行)</td></tr>
+  <tr><td><code>Bash(npm run lint:*)</code><br><code>Bash(git diff:*)</code></td><td><code>:*</code> 是"末尾加空格再加 <code>*</code>"的等价简写,做<strong>前缀匹配</strong>:命令以 <code>npm run lint </code> 开头就放行</td><td>别当成冒号是字段选择器——<code>Bash(command:rm *)</code> 这种写法官方直接判定无效并在启动时警告</td></tr>
+  <tr><td><code>Edit(src/**)</code><br>作为 <strong>allow</strong> 规则</td><td>单段目录写法,只匹配 <code>&lt;cwd&gt;/src</code> 这一处</td><td>别当成会匹配 <code>packages/foo/src</code>——2026-07-18 起收紧为此行为,以前会匹配树上任意位置的 <code>src</code>(见「近期重要变化」)</td></tr>
+  <tr><td><code>Read(./secrets/**)</code><br>作为 <strong>deny / ask</strong> 规则</td><td>同样是单段目录写法,但 deny / ask 规则匹配当前目录下<strong>任意深度</strong>的 <code>secrets</code>(<code>packages/foo/secrets</code> 也拦得住)</td><td>别把 allow 和 deny 的单段行为当成一回事——本页配置示例里这条能保持安全正是因为它是 deny;换成 allow 语义就会踩上一行的收紧</td></tr>
+  <tr><td><code>Edit(**/src/**)</code></td><td>显式任意深度写法,allow / deny / ask 下都匹配树上任意位置的 <code>src</code></td><td>别再纠结单段 <code>src/**</code> 够不够——想要"哪里都算"直接这样写,不必猜规则类型</td></tr>
+  <tr><td><code>Edit(/src/**)</code><br>单个前导斜杠</td><td>相对<strong>配置文件所在层级</strong>(项目设置里就是项目根,即 <code>&lt;project root&gt;/src</code>),不是 cwd</td><td>别和第 2 行的 <code>./path</code> 混用——worktree 里这个"项目根"其实是该 worktree 自己的根,不是主仓库根目录</td></tr>
+  <tr><td><code>Read(//Users/alice/secrets/**)</code><br>双斜杠开头</td><td><strong>绝对路径</strong>,从文件系统根算起,与 cwd / 项目根都无关</td><td>别在团队共享的项目设置里写死自己的用户名路径——这种写法几乎总该留在个人 <code>settings.local.json</code></td></tr>
+</table>
+<div class="callout warn"><b class="t">本页配置示例本身没过期,但换个写法就会踩坑</b>上面 <code>deny</code> 里的 <code>Read(./secrets/**)</code> 是单段目录写法,但因为它是 <strong>deny</strong> 规则,2026-07-18 的收紧不影响它——依然拦得住任意深度的 <code>secrets</code> 目录。真正被收紧的是<strong>同样写法用在 allow 规则上</strong>(比如把某个目录整体放行时写 <code>Edit(src/**)</code>):现在只放行 <code>&lt;cwd&gt;/src</code>,不会顺带放行嵌套更深处的同名目录。要在 allow 规则里覆盖任意深度,必须显式写 <code>**/dir/**</code>。</div>
+<p class="src">语法核对自:<a href="https://code.claude.com/docs/en/permissions" target="_blank">官方 Permissions 文档</a></p>
 </section>
 
 <div class="divider"></div>

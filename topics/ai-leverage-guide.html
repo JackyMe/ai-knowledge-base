@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化四套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。">
+<meta name="description" content="全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化/生活五套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AI 到底能帮你干什么 · 提效全景与心法 · 2026.07">
-<meta property="og:description" content="全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化四套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。">
+<meta property="og:description" content="全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化/生活五套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-leverage-guide.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -187,20 +187,21 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <a href="#writing"><span class="no">03</span>写作与文档</a>
     <a href="#research"><span class="no">04</span>调研与学习</a>
     <a href="#data-auto"><span class="no">05</span>数据与自动化</a>
+    <a href="#life"><span class="no">06</span>生活与自我管理</a>
   </div>
   <div class="nav-group">
     <div class="gt">选型</div>
-    <a href="#tools"><span class="no">06</span>三大工具怎么选</a>
+    <a href="#tools"><span class="no">07</span>三大工具怎么选</a>
   </div>
   <div class="nav-group">
     <div class="gt">内功</div>
-    <a href="#principles"><span class="no">07</span>通用心法七条</a>
-    <a href="#cases"><span class="no">08</span>真实实例集</a>
+    <a href="#principles"><span class="no">08</span>通用心法七条</a>
+    <a href="#cases"><span class="no">09</span>真实实例集</a>
   </div>
   <div class="nav-group">
     <div class="gt">上手</div>
-    <a href="#learning-path"><span class="no">09</span>普通人学习路径</a>
-    <a href="#resources"><span class="no">10</span>资源索引</a>
+    <a href="#learning-path"><span class="no">10</span>普通人学习路径</a>
+    <a href="#resources"><span class="no">11</span>资源索引</a>
   </div>
 </nav>
 
@@ -406,8 +407,53 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="divider"></div>
 
+<section id="life">
+<div class="sec-tag">场景范式 06</div>
+<h2>生活与自我管理场景范式</h2>
+
+<p>01 节矩阵把"生活事务"和"情感陪伴/自我梳理"排进了收益榜,HBR 的年度盘点甚至把它们排在编程前面——但前面 02-05 节全是技术/知识工作范式,矩阵里论证最该做的两类反而没有对应打法。这一节补上三块:生活决策的提问骨架、自我梳理的做法与边界,以及矩阵里完全没提到的一个入口——拍照 / 截图 / 语音。</p>
+
+<h3 data-reveal>生活决策类:行程 / 饮食 / 采购 / 合同解读</h3>
+<p>这类场景的共性是<strong>低风险、高频率、有明确约束条件</strong>——正好是 AI 最擅长的那种任务。骨架都一样:把约束条件一次性说全,再要求给多个方案而不是一个"标准答案"。</p>
+
+<table class="tbl">
+  <tr><th>子场景</th><th>提示词骨架(可直接抄)</th><th>输出要求</th></tr>
+  <tr><td><strong>行程规划</strong></td><td>"我们 [人数+关系],[日期范围] 去 [目的地],预算 [金额],偏好 [细节]。排一份逐日行程,标注每天的交通方式和缓冲时间。"</td><td>要求给 2 个不同侧重的备选方案,别只要一个</td></tr>
+  <tr><td><strong>饮食方案</strong></td><td>"冰箱现有:[清单]。忌口:[列表]。排一周晚餐,30 分钟内能做完,产出菜单表 + 按超市动线排序的采购清单。"</td><td>要每餐给关键步骤而不是一句话菜名,方便直接照做</td></tr>
+  <tr><td><strong>采购比价</strong></td><td>"预算 [金额] 买 [品类]。核心需求:[3 条以内]。对比在售的 3-5 款,给差评集中点 + 来源链接。"</td><td>逐条点开来源核验,别信 AI 汇总出的"综合评分"</td></tr>
+  <tr><td><strong>合同 / 说明书解读</strong></td><td>"这是一份 [合同/说明书类型]。用大白话逐条解释:哪些条款对我不利、哪些是行业惯例、我该重点问对方哪 3 个问题。"</td><td>只当"帮你看懂",不当"帮你决定签不签"——重要合同仍需人或律师复核</td></tr>
+</table>
+
+<div class="duo">
+  <div class="bad"><b>✗ 模糊委托</b>"帮我规划一下国庆行程"<br><br>AI 只能给一份放之四海皆准的攻略,人数、预算、偏好全靠猜</div>
+  <div class="good"><b>✓ 带约束的委托</b>"两大一小(孩子 6 岁),10.1-10.5 去成都,预算 8000 元不含机票,孩子怕辣、需要午休。给 2 版行程:一版景点密集,一版节奏宽松,标注每天交通方式和缓冲时间。"</div>
+</div>
+
+<h3 data-reveal>自我梳理类:从"一团乱麻"到"可决策清单"</h3>
+<p>这类用法在 HBR 的年度盘点里长期排名靠前(见 01 节矩阵的 callout),但社区讨论常把它和"心理咨询"混为一谈——这里先划清边界,再给可抄的骨架。</p>
+<p><strong>提示词骨架:</strong>"我脑子里有一堆关于 [主题] 的想法,乱糟糟理不清。请帮我:① 提炼成 3-5 个可以回答'是/否'或'选 A / 选 B'的具体问题;② 每个问题列出我目前能看到的选项和各自的代价;③ 指出哪个问题最影响其他问题,建议我先想哪个。不要替我做决定,只帮我看清问题。"</p>
+
+<div class="callout warn"><b class="t">边界声明,先读这条</b>"自我梳理"提示词的作用,是把杂乱的情绪和想法转成一份可执行的问题清单,<strong>它不是心理咨询,AI 也不是执业心理咨询师</strong>。如果你正经历自伤念头、自杀意念,或长期、严重的抑郁/焦虑等精神健康困扰,<strong>请立即联系精神科医生、心理咨询师,或拨打当地的心理援助/危机干预热线,不要把这类问题只交给 AI 处理</strong>。AI 能帮你理清"要不要换工作""这段关系要不要继续"这类决策型困惑,但处理不了需要专业诊断和干预的心理健康问题。</div>
+
+<h3 data-reveal>多模态入口:拍照问 / 截图问 / 语音转写</h3>
+<p>本页前面所有范式默认的都是"打字提问",但这是 8 大场景矩阵里完全缺席的一块:很多人第一次觉得 AI 有用,恰恰是从拍一张照片开始的。主流对话 App(ChatGPT / Gemini / Claude 官方客户端)都支持图片上传和语音输入,具体交互入口以各家当前版本 UI 为准,这里不细描界面。</p>
+
+<table class="tbl">
+  <tr><th>入口</th><th>怎么用(可直接抄的话术)</th><th>适合场景</th></tr>
+  <tr><td><strong>拍照问</strong></td><td>拍照 + 配文:"这是 [说明书/体检单/白板/菜谱],用大白话讲清楚重点,我不懂 [专业领域] 术语。"</td><td>家电说明书、体检报告里看不懂的指标、白板讨论速记、菜谱换算</td></tr>
+  <tr><td><strong>截图问</strong></td><td>截图 + 配文:"这是什么意思?我该怎么办?"</td><td>App/系统报错、看不懂的表格网页、聊天记录里没跟上的一段讨论</td></tr>
+  <tr><td><strong>语音转写</strong></td><td>对着手机说 2-3 分钟零散想法,配文:"转成文字,再帮我理成 [大纲/待办清单/结构化笔记]。"</td><td>开车/走路时的灵感、会议现场速记、懒得打字的长吐槽</td></tr>
+</table>
+
+<div class="callout note"><b class="t">什么时候别用</b>身份证、银行卡、病历原件、合同原件这类含敏感信息的照片,不要传公共免费版服务——传之前先想清楚"这张图丢了会怎样"。另外,拍照识别数字、日期、金额有误读风险,凡是要用来做决策的数字,肉眼再核一遍。</div>
+
+<p class="src">来源:自我梳理场景的高频程度见 <a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR:Top 10 Gen AI Use Cases(2025-04)</a>(01 节矩阵已引用同一报告);其余提示词骨架为范式复刻模板,可在主流对话模型中直接复刻。心理健康求助渠道请以当地卫生部门或平台公布的信息为准,本页不代为列出具体热线号码以免过期失效。</p>
+</section>
+
+<div class="divider"></div>
+
 <section id="tools">
-<div class="sec-tag">选型 06</div>
+<div class="sec-tag">选型 07</div>
 <h2>三大工具选型:Claude Code vs Codex vs Gemini</h2>
 
 <div class="callout warn"><b class="t">⚠️ 2026-06 重大变更:Gemini CLI 已谢幕</b>Google 在 2026-05-19 I/O 宣布、并于 <strong>2026-06-18 起停止</strong>为免费档与 AI Pro/Ultra 订阅用户提供 Gemini CLI 服务,转向闭源 Go 重写的 <strong>Antigravity CLI</strong>(命令 <code>agy</code>);免费额度从约 1000 次/天骤降至约 20 次/天。仅企业版 Gemini Code Assist 许可与付费 API 不受影响。个人用户实际上已退出"三选一",以官方公告为准。</div>
@@ -428,12 +474,25 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>通用对话模型分工(社区高频打法):</strong>时效检索与深度调研用 Gemini / ChatGPT 的 Deep Research;长文档精读、写作与代码用 Claude;把各模型当"各有所长的同事"而非单选题。</li>
 </ul>
 <p class="src">来源:<a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">google-gemini/gemini-cli 官方公告 #27274</a> · <a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ 三工具对比(2026)</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs 对比</a> · <a href="https://www.tomsguide.com/ai/how-i-use-claude-for-strategy-gemini-for-research-and-chatgpt-for-the-grind" target="_blank">Tom's Guide:多模型分工实践</a></p>
+
+<h3 data-reveal>通用对话模型怎么选</h3>
+<p>上面对比的是"写代码的编码代理 CLI"。如果你不写代码,日常用的是网页/App 里的 ChatGPT、Claude、Gemini 对话产品,选型逻辑完全不同——看的是长文档能力、联网检索质量、Deep Research 配额这几件事。以下信息核对自三家官方帮助中心(2026-07):</p>
+<table class="tbl">
+  <tr><th>维度</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th></tr>
+  <tr><td>适合什么题型</td><td>通用写作、多模态(图像/语音)、开放性调研报告;模型改款频繁,新模型上线快</td><td>长文档精读、复杂写作与代码场景是公认强项(见上方选型表);Research 模式擅长把网页检索与内部知识库/Workspace 整合成综合报告</td><td>需要边聊边查最新信息、多模态(图片/视频)、与 Gmail/Drive/Workspace 深度联动的场景</td></tr>
+  <tr><td>长文档能力</td><td>随模型和订阅档位分层明显:官方帮助中心显示 GPT-5.6 Luna/Terra 上下文窗口 <strong>128K token</strong>,GPT-5.6 Sol 为 <strong>272K token</strong>;具体以账号内可选模型为准</td><td>官方支持文章列出 Opus 5 / Sonnet 5 在<strong>所有付费档位</strong>提供 <strong>100 万 token</strong> 上下文;Opus 4.6-4.8、Sonnet 4.6 为 <strong>50 万 token</strong>;其余型号为 <strong>20 万 token</strong>(约 500 页文本)。Free 档上限官方该文未列出</td><td>官方分级表最直白:未开通订阅 <strong>3.2 万 token</strong>,AI Plus <strong>12.8 万 token</strong>,AI Pro/AI Ultra <strong>100 万 token</strong>(约 1500 页文本)。免费与付费档差距是三家里最悬殊的</td></tr>
+  <tr><td>联网检索质量</td><td>内置网页搜索,可指定信源范围(网站/已上传文件/已连接 App),先出调研计划、可人工调整后再执行</td><td>Web Search 需手动打开开关,开启后才能与 Research 模式联动、自动检索并内联引用来源;2026-02 起 Research 模式可连接任意 MCP 服务器接入企业数据源</td><td>默认把 Google 搜索作为信源,可增减信源(接入 Gmail、Drive、NotebookLM 笔记本等)。三家均未公布可比的"检索质量"评分,只能定性判断,具体效果建议按 <a href="#research">调研与学习场景范式</a> 的四步法交叉验证</td></tr>
+  <tr><td>Deep Research 的配额与耗时</td><td>官方原话:深度研究"比常规检索需要更多时间读取和分析多个来源";<strong>具体次数配额官方页面未给出固定数字</strong>,而是"因订阅档位而异,账号内用量计数器实时显示剩余次数",有固定月配额的档位按"首次使用起 30 天"滚动重置</td><td>官方称"几分钟内交付详尽答案";<strong>不设独立配额</strong>——沿用标准对话消息额度,只是单次检索多个来源会更快耗尽;仅 Pro/Max/Team/Enterprise 付费档可用,<strong>Free 不支持</strong></td><td>官方称典型报告耗时"约 5-10 分钟,复杂报告更久";次数配额官方原文为"每日研究请求次数、以及可同时运行的研究请求数量均有限制,AI Pro/Ultra 限制更高",<strong>未公布具体数字</strong>。需年满 18 岁且登录后才能使用</td></tr>
+  <tr><td>已知短板</td><td>官方注明"可用性取决于订阅档位与所在国家/地区";深度研究仅能对已连接 App 执行"只读"操作,不能代为提交/发送</td><td>不会自动判断"这个问题该不该用 Research"——官方建议显式下指令(如"请使用 research 工具"),且必须先手动打开网页搜索开关,否则 Research 无法工作</td><td>免费层官方明确:"需求高峰期,Deep Research 等高算力功能可能不可用";若信源包含 Gmail/Drive 等 Workspace 服务,部分可视化报告功能(图表等)不可用</td></tr>
+</table>
+<div class="callout note"><b class="t">配额数字会变,认准两个地方</b>三家官方都把 Deep Research 的具体次数配额放在"账号内用量计数器"里实时显示,而不是写死在帮助文档中——这意味着<strong>任何第三方文章列出的具体数字(如"每月 X 次")都可能已经过期</strong>。真要对比,直接登录三家账号看当前用量面板,或以官网当前说明为准。</div>
+<p class="src">来源:<a href="https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt" target="_blank">OpenAI Help Center:Deep research in ChatGPT</a> · <a href="https://help.openai.com/en/articles/12003714-chatgpt-business-models-limits" target="_blank">OpenAI Help Center:ChatGPT Business - Models & Limits</a> · <a href="https://support.claude.com/en/articles/11088861-use-research-on-claude" target="_blank">Claude Help Center:Use research on Claude</a> · <a href="https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans" target="_blank">Claude Help Center:context window on paid plans</a> · <a href="https://support.google.com/gemini/answer/15719111" target="_blank">Gemini Apps Help:Use Deep Research</a> · <a href="https://support.google.com/gemini/answer/16275805" target="_blank">Gemini Apps Help:limits & upgrades for Google AI subscribers</a></p>
 </section>
 
 <div class="divider"></div>
 
 <section id="principles">
-<div class="sec-tag">内功 07</div>
+<div class="sec-tag">内功 08</div>
 <h2>通用心法七条(跨场景通用)</h2>
 
 <p>以下每条都有官方文档或研究报告背书,不是鸡汤。写作、编程、调研、自动化——换场景不换心法。</p>
@@ -456,7 +515,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <section id="cases">
-<div class="sec-tag">内功 08</div>
+<div class="sec-tag">内功 09</div>
 <h2>真实实例集:每个场景一个可复刻模板</h2>
 
 <p>以下实例是对本页各范式的具体化,提示词可直接抄改。标注"实录"的来自公开报道,其余为范式复刻模板。</p>
@@ -525,7 +584,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <section id="learning-path">
-<div class="sec-tag">上手 09</div>
+<div class="sec-tag">上手 10</div>
 <h2>普通人学习路径:从零到熟练</h2>
 
 <p>研究结论先行:AI 熟练度是<strong>练出来的使用直觉</strong>,不是学出来的理论——熟手成功率高约 10%,差异主要来自"会不会迭代、会不会给上下文、会不会挑任务"。所以路径设计只有一个原则:<strong>永远围绕自己的真实任务练,不上抽象课。</strong></p>
@@ -556,7 +615,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <section id="resources">
-<div class="sec-tag">上手 10</div>
+<div class="sec-tag">上手 11</div>
 <h2>资源索引(按可信度排序)</h2>
 
 <h3 data-reveal>第一梯队 · 官方文档与工程博客</h3>

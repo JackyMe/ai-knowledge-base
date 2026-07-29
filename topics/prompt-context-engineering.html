@@ -381,16 +381,16 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">技法 02</div>
 <h2>结构化输出与格式控制</h2>
 
-<p>要让 AI 的产出能被程序消费(脚本解析、表格导入、自动化流水线),"差不多的 JSON"等于零分。三层手段按可靠性递增:</p>
+<p>要让 AI 的产出能被程序消费(脚本解析、表格导入、自动化流水线),"差不多的 JSON"等于零分。三层手段按可靠性递增,<strong>层③是本章真正的重点</strong>——前两层是兜底,写自动化管道该用的是层③:</p>
 
 <table class="tbl">
   <tr><th>层</th><th>做法</th><th>可靠性</th></tr>
   <tr><td>① 提示词约束</td><td>给出字段清单 + 一个完整输出示例 + "只输出 JSON,不要解释"</td><td>够日常;偶发多话/漏字段</td></tr>
   <tr><td>② 预填充</td><td><s>assistant 开头预填 <code>{</code></s> ——<strong>Claude 4.6+ 已废弃此技巧,请求会返回 400 错误</strong>,详见 <a href="#basics">01 章技法⑥</a></td><td>历史技巧,新模型请跳过这一层</td></tr>
-  <tr><td>③ Schema 强约束</td><td>API 的结构化输出 / JSON schema 能力(如 Claude 的 output format、工具强制调用),把格式交给系统层保证</td><td>生产级;写自动化必用</td></tr>
+  <tr><td>③ Schema 强约束</td><td>API 层的结构化输出能力,把格式校验从"祈祷模型听话"变成系统层保证,具体接法见下</td><td>生产级;写自动化必用</td></tr>
 </table>
 
-<div class="prompt-box"><div class="pt">模板 · 提示词层结构化输出</div><code>从下面的会议记录中提取行动项,输出 JSON 数组,每项字段:
+<div class="prompt-box"><div class="pt">模板 · 提示词层结构化输出(层①)</div><code>从下面的会议记录中提取行动项,输出 JSON 数组,每项字段:
 - task: string,动词开头
 - owner: string,负责人名;没提到则 "未指定"
 - due: string,YYYY-MM-DD;没提到则 null
@@ -399,7 +399,49 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 &lt;notes&gt;…会议记录…&lt;/notes&gt;</code></div>
 
 <div class="callout tip"><b class="t">两个魔法句式</b>① "<strong>不确定的宁可标 null / 说不知道,不要编造</strong>"——官方 2026 最佳实践确认:显式允许表达不确定性能显著降低幻觉;② "<strong>先输出你对任务的理解,我确认后再执行</strong>"——高风险任务的一道保险闸。</div>
-<p class="src">来源:<a href="https://claude.com/blog/best-practices-for-prompt-engineering" target="_blank">2026 版官方最佳实践(不确定性许可)</a> · 结构化输出以各平台 API 文档为准</p>
+
+<h3 data-reveal>层③ 到底怎么接:一份最小 Schema + 两家平台的参数 <span class="pill a">官方确认</span></h3>
+<p>还是 01 章"会议行动项"那个场景,写成一份和平台无关的最小 JSON Schema:</p>
+<pre><code>{
+  "type": "object",
+  "properties": {
+    "task":     { "type": "string" },
+    "owner":    { "type": "string" },
+    "due_date": { "type": "string", "format": "date" },
+    "priority": { "type": "string", "enum": ["low", "mid", "high"] }
+  },
+  "required": ["task", "owner", "due_date", "priority"],
+  "additionalProperties": false
+}</code></pre>
+<p>同一份 schema,两家平台的接入参数和限制不一样,<strong>核对官方文档后</strong>如下:</p>
+<table class="tbl">
+  <tr><th>平台</th><th>参数与门槛</th><th>已知限制</th></tr>
+  <tr><td>Anthropic</td><td><code>output_config.format = {type:"json_schema", schema:{...}}</code>,Claude 4.5 及以后 GA(旧的 <code>output_format</code> 参数已进入弃用过渡期)</td><td>数组只支持 <code>minItems</code> 为 0 或 1,<strong>不支持 <code>maxItems</code></strong>,也不支持数值/字符串长度约束(<code>minimum</code>/<code>maxLength</code> 等)</td></tr>
+  <tr><td>OpenAI</td><td><code>response_format = {type:"json_schema", json_schema:{name, schema, strict:true}}</code></td><td>标准模型支持完整的 <code>minItems</code>/<code>maxItems</code>/<code>minLength</code> 等约束;schema 最多 10 层嵌套、5000 个属性;不支持 <code>allOf</code>/<code>not</code>/<code>if-then-else</code></td></tr>
+</table>
+<p>11 章案例 06 里那段 <code>response_format: { type: "json_schema", json_schema: {...} }</code>,填的就是上表 OpenAI 那一行——本章才是它该打底的地方。工具强制调用(<code>tool_choice</code>,见本页 <a href="#agentic">07 章②</a>)约束的是"调用哪个工具、传什么参数",不是文本回复本身,两者是两套机制,不能互相替代。</p>
+
+<h3 data-reveal>五类结构化输出翻车 → 解法</h3>
+<table class="tbl er">
+  <tr><th>翻车现象</th><th>解法</th></tr>
+  <tr><td>JSON 外面裹了一层 <code>```json</code> markdown 围栏</td><td>层③ Schema 强约束从机制上就不会产出围栏;只能用层①提示词层时,加一句"直接输出 JSON,不要用 markdown 代码块包裹",解析端再做一次围栏裁剪兜底</td></tr>
+  <tr><td>字段名漂移(<code>due_date</code> 写成 <code>due</code>)</td><td><code>additionalProperties:false</code> + <code>required</code> 显式列全字段名——两家结构化输出都要求这条,字段名在生成阶段就被锁死,不必再靠提示词反复提醒</td></tr>
+  <tr><td>枚举值自创(比如 priority 冒出个 "urgent")</td><td>schema 里用 <code>enum</code> 列出闭集,strict 模式下模型不能生成集合外的值;提示词层再补一句"只能是枚举里的值,不要自造"作双保险</td></tr>
+  <tr><td>数组长度失控(要 5 条给了 20 条,或反过来)</td><td>OpenAI 标准模型可直接在 schema 用 <code>minItems</code>/<code>maxItems</code> 卡住;<strong>Anthropic 结构化输出目前只支持 <code>minItems</code> 为 0/1,没有 <code>maxItems</code></strong>——这是两家真实存在的能力差,Claude 上这条约束仍要靠提示词明说条数</td></tr>
+  <tr><td>长 JSON 被 <code>max_tokens</code> 截断成半截</td><td>看返回里的 <code>stop_reason</code>(Anthropic,值为 <code>max_tokens</code>)或 <code>finish_reason</code>(OpenAI,值为 <code>length</code>)——出现这个值就是被截断,不是模型主动说完;按字段数估算留够 <code>max_tokens</code> 余量,长列表宁可分批请求也不要指望一次要全量</td></tr>
+</table>
+
+<h3 data-reveal>JSON 不是唯一答案:三种格式的适用边界 <span class="pill a">官方确认</span></h3>
+<p>本章默认的结构化格式是 JSON,但这个默认在长上下文场景下并不成立——<a href="#rag">05 章</a>已经提到,OpenAI 官方 GPT-4.1 Prompting Guide 的实测结论是:长上下文里文档格式用 XML 或 <code>ID|标题|内容</code> 结构优于 JSON,<strong>官方测试里 JSON 格式表现最差</strong>。两条结论不冲突,是场景不同:</p>
+<table class="tbl">
+  <tr><th>格式</th><th>适用场景</th></tr>
+  <tr><td>JSON</td><td>产出要直接给<strong>程序</strong>消费(脚本解析、入库、传参)——下游是代码不是模型自己读,层③ Schema 强约束也只支持 JSON 这一种格式</td></tr>
+  <tr><td>XML / 自定义标签</td><td>长上下文里包裹<strong>输入</strong>材料(见 <a href="#basics">01 章技法④</a>),或输出要保留嵌套语义又要模型自己读——首尾注意力更集中,标签比大括号更抗"迷失中间"</td></tr>
+  <tr><td><code>ID|标题|内容</code> 等分隔符结构</td><td>大批量条目(几十上百条检索片段)喂给模型自己阅读理解时,比 JSON/XML 更省 token,长列表里也更不容易丢字段</td></tr>
+</table>
+<p>一句话区分:<strong>产出给程序吃,用 JSON + 层③强约束;产出或输入给模型自己读,长材料优先 XML 或分隔符结构</strong>——JSON 该待在它最擅长的位置,不是所有结构化场景的默认答案。</p>
+
+<p class="src">来源:<a href="https://claude.com/blog/best-practices-for-prompt-engineering" target="_blank">2026 版官方最佳实践(不确定性许可)</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs" target="_blank">Anthropic Structured Outputs</a> · <a href="https://developers.openai.com/api/docs/guides/structured-outputs" target="_blank">OpenAI Structured Outputs</a> · <a href="https://platform.claude.com/docs/en/api/messages" target="_blank">Anthropic Messages API(stop_reason)</a> · <a href="https://developers.openai.com/api/docs/api-reference/chat/object" target="_blank">OpenAI Chat Completions(finish_reason)</a> · <a href="https://developers.openai.com/cookbook/examples/gpt4-1_prompting_guide" target="_blank">GPT-4.1 Prompting Guide(格式实测,同 05 章)</a></p>
 </section>
 
 <div class="divider"></div>
@@ -584,6 +626,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>工具描述即提示词</strong>:模型靠工具的名字和描述决定何时调用——描述含糊的工具会被误用或冷落;工具集要<strong>最小可行</strong>,功能重叠的工具让模型选择困难(对应 CC 纪律:MCP 只装用得上的);</li>
   <li><strong>示例宁缺毋滥</strong>:给智能体的示例同样遵循"多样典范"原则,堆边缘 case 只会教坏它。</li>
 </ul>
+<div class="duo">
+  <div class="bad"><b>❌ 描述含糊,模型只能猜</b><code>"description": "查股票价格的工具"</code>
+  ——名字和描述几乎是同义反复:没说清楚接受什么样的股票代码、返回的价格是什么币种什么口径、"最新"是不是实时。模型遇到模糊请求时,选不选它全靠赌。</div>
+  <div class="good"><b>✅ 说清楚做什么/何时用/边界在哪</b><code>"description": "查询指定股票代码的最新成交价(美元)。代码必须是纽交所/纳斯达克等主要美股交易所的有效代码。仅用于回答'现在/最近价格是多少'这类问题;不返回财报、新闻等公司其他信息。"</code>
+  ——Anthropic 官方要求工具描述至少 3-4 句,覆盖:做什么、什么时候该用/不该用、每个参数具体指什么、不提供什么。</div>
+</div>
+<p>工具集"最小可行"不只是少装几个 MCP,还包括<strong>把相关操作合并成一个工具</strong>:官方给的反例是把 <code>create_pr</code>/<code>review_pr</code>/<code>merge_pr</code> 拆成三个独立工具,不如合并成一个带 <code>action</code> 参数的工具——工具越多、功能越重叠,模型选择的难度越大。这条直接呼应本页 <a href="#security">10 章</a>的工具滥用风险和 <a href="#tools">15 章</a>"MCP 只装用得上的"纪律,三章说的是同一件事的三个角度。</p>
+<div class="callout note"><b class="t">什么时候该强制 <code>tool_choice</code> <span class="pill a">官方确认</span></b>默认值(Anthropic/OpenAI 都是 <code>auto</code>)交给模型自己判断该不该调用工具;当流水线里某一步<strong>必须</strong>产出一次工具调用(比如固定的抽取/分类步骤),该用强制模式,而不是靠提示词"求"模型调用——Anthropic 用 <code>tool_choice: {type:"tool", name:"..."}</code> 强制指定工具,或 <code>{type:"any"}</code> 要求必须调用某一个但不指定是谁;OpenAI 对应 <code>tool_choice: {type:"function", name:"..."}</code> 或 <code>"required"</code>。两家文档都提到同一个副作用:强制调用时模型不会先说"我要做什么"就直接进入工具调用——如果还想保留这段自然语言说明,留在 <code>auto</code>,在提示词里明说"请使用 XX 工具回答",而不是切到强制模式。</div>
 
 <h3 data-reveal>③ 长任务三板斧(超出窗口怎么办)</h3>
 <table class="tbl">
@@ -593,7 +643,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td><strong>子代理架构</strong></td><td>探索交给独立上下文的分身,主窗口只收结论摘要</td><td>CC 子代理;Codex 云端任务</td></tr>
 </table>
 <div class="callout note"><b class="t">一条判断线</b>官方建议的次序:<strong>先做最简单可行的</strong>——窗口够用就好好修剪;真不够,压缩优先;要跨会话记忆,上笔记;探索量巨大,才上子代理。别为了架构而架构。</div>
-<p class="src">来源:<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">同 06 章(压缩/笔记/子代理的原始论述)</a> · <a href="claude-code-guide.html#context">CC 指南 · 上下文管理进阶(工具层实操)</a></p>
+<p class="src">来源:<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">同 06 章(压缩/笔记/子代理的原始论述)</a> · <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank">Anthropic 工具描述最佳实践 / tool_choice</a> · <a href="https://developers.openai.com/api/docs/guides/function-calling" target="_blank">OpenAI Function calling(tool_choice)</a> · <a href="claude-code-guide.html#context">CC 指南 · 上下文管理进阶(工具层实操)</a></p>
 </section>
 
 <div class="divider"></div>

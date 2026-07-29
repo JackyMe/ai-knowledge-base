@@ -302,6 +302,20 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>安全红线 / 数据模型 / 上线放行</td><td><strong>你(不可下放)</strong></td><td>RLS 策略、密钥边界、迁移 SQL,必须逐行看懂才合入</td></tr>
 </table>
 <div class="callout note"><b class="t">范式跳变对你个人的意义</b>它抹平的是<strong>招式差距</strong>(你缺的),抹不平的是<strong>内功差距</strong>(你有的)。内功厚、招式旧的人,恰好是这个窗口期的最大受益者。方法论出处与研究依据见<a href="ai-leverage-guide.html#coding">心法页 · 编程范式</a>。</div>
+
+<h3 data-reveal>这道"12 周"是怎么算出来的,不是拍脑袋喊的</h3>
+<p>范式讲的是"为什么招式变便宜了",这里把账摊开算给你看——敢立军令状,得先经得起算术检验:</p>
+<table class="tbl er">
+  <tr><th>项</th><th>数字</th><th>出处</th></tr>
+  <tr><td>六大体系学习包总时长</td><td>15 + 20 + 25 + 8 + 20 + 12 = <strong>约 100 小时</strong></td><td><a href="#kits">07 章</a>六个学习包标称时长逐个相加</td></tr>
+  <tr><td>12 周可用总时长</td><td>12 周 × 7 天 × 2.5 小时 ≈ <strong>210 小时</strong></td><td><a href="#roadmap">06 章</a>节奏说明"在职每天 2-3 小时"取中位数 2.5h</td></tr>
+  <tr><td>剩余用于三个项目实操</td><td>210 − 100 = <strong>约 110 小时</strong></td><td>分摊在 P1/P2/P3 三个渐进项目上(06 章周计划"交付物"那一列)</td></tr>
+</table>
+<p>换句话说:<strong>100 小时够把六大体系的教材过一遍,剩下约 110 小时够把三个真实项目做出来并上线</strong>。这不是两段互不相关的时间——学习包本身就是跟着每周项目走的(07 章使用纪律第一条"跟周走,别囤课"),100 和 110 是同一份日程的两种记账方式,不是简单相加两个独立预算。</p>
+<div class="callout warn"><b class="t">这道 12 周成立的前提,以及什么时候它对你不成立</b>
+<strong>成立的前提</strong>:① 有 Compose(或至少一种现代声明式 UI)经验——<a href="#ui">03 章</a>"你已经会了 70%"是这条路线敢喊 12 周唯一的底气,没有这条,先发优势不存在;② 能读英文官方文档——07 章教材主线基本是英文;③ 每天真能挤出 2-2.5 小时,不是"理论上凑得出来"。<br>
+<strong>不成立的情况,直接调整而不是硬撑</strong>:纯 XML 布局时代成长、没写过任何声明式 UI 的,按 16-20 周重新排;每天不足 1.5 小时的,按 210h ÷ 1.5h ≈ 140 天即 16 周走——<strong>顺序与验收标准不许变,只拉长格子</strong>(06 章节奏说明原话);英文文档读起来明显拖慢进度的,先插一周专门补技术英语阅读,别硬扛着往下冲。
+</div>
 </section>
 
 <div class="divider"></div>
@@ -804,6 +818,53 @@ export async function createProject(formData: FormData) {
 
 <p>一人公司没有 QA、没有 SRE、没有安全团队——<strong>你的工程化配置就是这三个部门</strong>。好消息:2026 年把它们全部自动化只要一天。</p>
 
+<h3 data-reveal>🚀 起步①:把 Gradle 心智换成 npm/pnpm</h3>
+<p>前六章讲的都是语言/UI/架构/数据的心智迁移,但没人告诉你"怎么开工"——这里补上。先换心智,再动手,和你学 Compose 时的路径一样。</p>
+<table class="tbl">
+  <tr><th>Android / Gradle</th><th>Web / npm-pnpm</th><th>说明</th></tr>
+  <tr><td><code>build.gradle(.kts)</code></td><td><code>package.json</code></td><td>声明依赖、脚本命令(scripts)、项目元信息</td></tr>
+  <tr><td>Gradle 依赖缓存(<code>~/.gradle</code>)</td><td><code>node_modules/</code></td><td>本地已下载的依赖包,体积大、可删可重装,永远不进 git</td></tr>
+  <tr><td>版本锁定(Version Catalog / 隐式解析)</td><td><code>package-lock.json</code>(npm)或 <code>pnpm-lock.yaml</code>(pnpm)</td><td>精确锁死每个依赖的实际版本,<strong>必须提交进 git</strong>——团队/CI 装出来的包才和你本地一致</td></tr>
+  <tr><td><code>./gradlew build</code></td><td><code>npm run build</code></td><td>生产构建,产出可部署产物</td></tr>
+  <tr><td>Android Studio ▶ Run(装到设备/模拟器)</td><td><code>npm run dev</code></td><td>本地开发服务器,默认 <code>http://localhost:3000</code>,存文件即热更新</td></tr>
+  <tr><td>Build Variant(debug/release)</td><td><code>.env.local</code> / <code>.env.production</code></td><td>环境相关配置与密钥,按环境区分而不是按 flavor 区分(见本章③)</td></tr>
+  <tr><td>Gradle Plugin</td><td><code>devDependencies</code> 里的包</td><td>只在构建期起作用,不进最终产物</td></tr>
+  <tr><td>签名打包 APK/AAB → 上传 Play Console 人工审核</td><td><code>git push</code> → Vercel 自动构建部署</td><td><strong>最大的心智差异:没有"打包上传"这一步</strong>,推代码即发布,分钟级见效</td></tr>
+</table>
+
+<h3 data-reveal>🚀 起步②:三条命令,从空文件夹到公网可访问</h3>
+<p>跟着敲完,就是<a href="#roadmap">06 章 W1</a>交付物"Vercel 首次部署"、验收线"公网能访问自己的页面"的达成路径。</p>
+<ol class="steps">
+  <li><strong>建项目</strong>(TypeScript + Tailwind + App Router——2026 年的 <code>create-next-app</code> 这三项都已是默认值):
+<pre><code>npx create-next-app@latest my-app --yes
+cd my-app
+npm run dev   <span class="c"># http://localhost:3000</span></code></pre>
+去掉 <code>--yes</code> 会走交互问答,逐项自己选。生成的 <code>tsconfig.json</code> 默认已含 <code>"strict": true</code>——W1 验收线"零 any"就建立在这一行上,拿到项目第一件事打开确认它还在,别手滑关掉。</li>
+  <li><strong>装 shadcn/ui</strong>:
+<pre><code>npx shadcn@latest init
+npx shadcn@latest add button card dialog</code></pre>
+<code>init</code> 自动识别 Next.js + Tailwind 项目;<code>add</code> 是把组件源码直接拷进你项目(不是装一个黑盒依赖,读得懂就改得动——这也是它比传统组件库更适合 AI 协作的原因)。</li>
+  <li><strong>推上 GitHub</strong>:
+<pre><code>git init && git add . && git commit -m "init"
+gh repo create my-app --private --source=. --push
+<span class="c"># 没装 gh CLI:去 github.com 建空仓库,再 git remote add origin ... && git push</span></code></pre></li>
+  <li><strong>连 Vercel,拿到公网地址</strong>:打开 <a href="https://vercel.com/new" target="_blank">vercel.com/new</a>,导入刚才的 GitHub 仓库,一路默认下一步——Vercel 自动识别 Next.js 项目,零配置构建部署。几十秒后你会拿到一个 <code>*.vercel.app</code> 域名,<strong>这就是 W1 验收线</strong>。之后每次 <code>git push</code> 到主分支自动重新部署,每个 PR 自动生成独立预览环境(对应你熟悉的灰度包,见本章④)。</li>
+</ol>
+
+<h3 data-reveal>🚀 起步③:App Router 文件速查——<code>app/</code> 目录里每个文件是谁</h3>
+<p><a href="#arch">04 章</a>讲了服务端/客户端组件怎么分,这里补上<a href="#roadmap">06 章 W4</a>验收线要求的"说清 app/ 目录每个文件的角色"——对着这张表自测。</p>
+<table class="tbl">
+  <tr><th>文件</th><th>角色</th><th>说明</th></tr>
+  <tr><td><code>page.tsx</code></td><td>路由入口</td><td>这个文件夹要能被访问到 URL,必须有它;等价"这个 Fragment 对应这条路由"</td></tr>
+  <tr><td><code>layout.tsx</code></td><td>共享外壳</td><td>包裹同级与所有子级页面,切路由时不重新挂载;根 <code>app/layout.tsx</code> 必须含 <code>&lt;html&gt;&lt;body&gt;</code>,对应 Application 的全局初始化</td></tr>
+  <tr><td><code>loading.tsx</code></td><td>加载态</td><td>自动把同级 <code>page.tsx</code> 包进一层 Suspense,数据没回来先显示它,免手写 loading flag</td></tr>
+  <tr><td><code>error.tsx</code></td><td>错误边界</td><td>必须是客户端组件(<code>"use client"</code>),捕获同级子树抛出的异常并给出重试入口</td></tr>
+  <tr><td><code>not-found.tsx</code></td><td>404 UI</td><td>调用 <code>notFound()</code> 或路由匹配不到时展示</td></tr>
+  <tr><td><code>route.ts</code></td><td>API 端点</td><td>和 <code>page.tsx</code> 二选一,同一路由段不能共存;导出 <code>GET</code>/<code>POST</code> 等函数,给第三方 webhook、移动端等非浏览器调用用</td></tr>
+  <tr><td><code>proxy.ts</code>(项目根目录,不在 <code>app/</code> 里)</td><td>请求拦截</td><td>路由匹配前跑,做会话鉴权/重定向,对应 Android 的 Interceptor——<strong>Next.js 16 起原 <code>middleware.ts</code> 改名为 <code>proxy.ts</code>(行为不变,官方提供 codemod 一键改名);本页其余章节沿用 middleware 这个更多人熟悉的叫法指代同一个东西,去官网查文档时认 proxy 这个新名字</strong></td></tr>
+</table>
+<p class="src">文件角色核实自 Next.js 官方文档<a href="https://nextjs.org/docs/app/getting-started/project-structure" target="_blank">Project structure and organization</a>;<code>middleware→proxy</code> 改名核实自<a href="https://nextjs.org/docs/app/api-reference/file-conventions/proxy" target="_blank">proxy.js 文件参考</a>(Migration to Proxy 一节,v16.0.0 起生效);<code>create-next-app</code> 与 <code>shadcn</code> 命令核实自<a href="https://nextjs.org/docs/app/api-reference/cli/create-next-app" target="_blank">create-next-app CLI 参考</a>与<a href="https://ui.shadcn.com/docs/cli" target="_blank">shadcn CLI 文档</a>,均截至 2026-07。</p>
+
 <h3 data-reveal>① 测试:金字塔的一人公司版</h3>
 <table class="tbl">
   <tr><th>层</th><th>工具</th><th>只写这些(别贪)</th></tr>
@@ -847,6 +908,94 @@ jobs:
   <li><strong>依赖audit</strong>:CI 里加 <code>npm audit --audit-level=high</code>,高危不上线。</li>
 </ol>
 <div class="callout warn"><b class="t">发布纪律(从你的 Android 直觉搬过来)</b>灰度=preview 链接先发小群;回滚=Vercel 一键回上个部署(比商店审核回滚幸福一万倍);监控告警响了先回滚再排查——老兵都懂,别因为发版太容易就丢了纪律。</div>
+
+<h3 data-reveal>⑤ SEO 基建:让 Next.js 页面真正被搜索引擎收录</h3>
+<p>00 章用"SEO 收录差"一票否决了 Compose Multiplatform,12 章说"SEO 是你选 Web 全栈的全部理由"——战略判断得有技术清单接住,以下五件事做完才算"基建"到位,不是喊完口号就完事。</p>
+
+<p><strong>① 动态页的 title/description:<code>generateMetadata</code></strong></p>
+<pre><code><span class="c">// app/blog/[slug]/page.tsx</span>
+import type { Metadata } from "next";
+
+export async function generateMetadata(
+  { params }: { params: Promise&lt;{ slug: string }&gt; }
+): Promise&lt;Metadata&gt; {
+  const { slug } = await params;   <span class="c">// Next.js 15+ 起 params 是 Promise,必须 await</span>
+  const post = await getPost(slug);
+  return {
+    title: post.title,
+    description: post.description,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: { images: [post.ogImage] },
+  };
+}</code></pre>
+<p>静态页(落地页、About)不用这么麻烦,直接 <code>export const metadata: Metadata = {...}</code> 就够;只有内容依赖数据库/路由参数的页面才需要 <code>generateMetadata</code>——两者同一路由段不能同时导出。</p>
+
+<p><strong>② 站点级文件:<code>app/sitemap.ts</code> 与 <code>app/robots.ts</code></strong></p>
+<pre><code><span class="c">// app/sitemap.ts —— 生成 sitemap.xml,默认被缓存</span>
+import type { MetadataRoute } from "next";
+
+export default async function sitemap(): Promise&lt;MetadataRoute.Sitemap&gt; {
+  const posts = await getAllPosts();   <span class="c">// 从数据库拉全部已发布内容页</span>
+  return [
+    { url: "https://example.com", lastModified: new Date(), changeFrequency: "yearly", priority: 1 },
+    ...posts.map((p) =&gt; ({
+      url: `https://example.com/blog/${p.slug}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    })),
+  ];
+}</code></pre>
+<pre><code><span class="c">// app/robots.ts —— 生成 robots.txt</span>
+import type { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: { userAgent: "*", allow: "/", disallow: "/dashboard/" },  <span class="c">// 私有页不给爬</span>
+    sitemap: "https://example.com/sitemap.xml",
+  };
+}</code></pre>
+
+<p><strong>③ canonical 与 OG image</strong>:根 <code>layout.tsx</code> 设一次 <code>metadataBase: new URL("https://yourdomain.com")</code>,之后每页只需 <code>alternates: { canonical: "/xxx" }</code> 写相对路径,Next.js 自动拼成完整 URL——避免同一内容因带不带 <code>?ref=</code> 之类参数被判定为重复页,拉低整站权重。OG 分享图除了在 <code>metadata.openGraph.images</code> 里给静态图,也可以在路由段放一个 <code>opengraph-image.tsx</code> 文件用代码动态生成(文章标题配图这类"千图千面"的卡片就是这么来的)。</p>
+
+<p><strong>④ 结构化数据(JSON-LD)加在哪</strong>:官方推荐直接嵌进页面组件,不是塞进 <code>&lt;head&gt;</code> 也不是另建文件:</p>
+<pre><code><span class="c">// app/blog/[slug]/page.tsx</span>
+export default async function Page({ params }: { params: Promise&lt;{ slug: string }&gt; }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    datePublished: post.publishedAt,
+  };
+  return (
+    &lt;&gt;
+      &lt;script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/&lt;/g, "\\u003c") }}
+      /&gt;
+      {/* 正文 */}
+    &lt;/&gt;
+  );
+}</code></pre>
+<p><code>.replace(/&lt;/g, "\\u003c")</code> 是官方给的防 XSS 标准写法,别为了省事删掉;想要类型安全可以装 <code>schema-dts</code> 包给 JSON-LD 对象加类型。</p>
+
+<p><strong>⑤ 程序化 SEO 的路由做法:<code>generateStaticParams</code> + 数据源</strong></p>
+<pre><code><span class="c">// app/tools/[slug]/page.tsx —— 用数据源批量出长尾页</span>
+export async function generateStaticParams() {
+  const tools = await getAllToolPairs();   <span class="c">// 例如"json-vs-yaml""regex-vs-glob"这类矩阵数据</span>
+  return tools.map((t) =&gt; ({ slug: t.slug }));   <span class="c">// 构建时把每一条都预渲染成一个静态页</span>
+}
+
+export default async function Page({ params }: { params: Promise&lt;{ slug: string }&gt; }) {
+  const { slug } = await params;
+  const data = await getToolPair(slug);
+  return &lt;ComparisonPage data={data} /&gt;;
+}</code></pre>
+<p>这就是 12 章说的"程序化 SEO":<code>generateStaticParams</code> 在构建时把数据源(哪怕几百上千条)批量转成静态页,每条都能被单独收录——"X vs Y"矩阵页、模板库页都是这个路由做法的产物,不是靠手写几百个 <code>page.tsx</code>。</p>
+
+<p class="src">以上 API 均核实自 Next.js 官方文档(v16.2.x,2026-07):<a href="https://nextjs.org/docs/app/api-reference/functions/generate-metadata" target="_blank">generateMetadata</a>、<a href="https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap" target="_blank">sitemap.ts</a>、<a href="https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots" target="_blank">robots.ts</a>、<a href="https://nextjs.org/docs/app/guides/json-ld" target="_blank">JSON-LD 指南</a>、<a href="https://nextjs.org/docs/app/api-reference/functions/generate-static-params" target="_blank">generateStaticParams</a>。</p>
 </section>
 
 <div class="divider"></div>
@@ -987,10 +1136,19 @@ Drizzle ORM · Supabase(Auth/PG/RLS) · Stripe · Vercel
 
 <h3 data-reveal>② 获客:SEO 是你选 Web 全栈的全部理由,用足它</h3>
 <ul>
-  <li><strong>产品即内容</strong>:每个功能页/教程页/对比页都是搜索入口,SSG 天生可收录;</li>
-  <li><strong>程序化 SEO</strong>:用数据批量生成长尾页("X vs Y"矩阵、模板库)——AI + Next.js 的组合技,一人也能做出千页站;</li>
+  <li><strong>产品即内容</strong>:每个功能页/教程页/对比页都是搜索入口,SSG 天生可收录——技术怎么落地(<code>generateMetadata</code>/<code>sitemap.ts</code>/<code>robots.ts</code>/JSON-LD)见<a href="#engineering">08 章⑤ SEO 基建</a>,别只记口号不记代码;</li>
+  <li><strong>程序化 SEO</strong>:用数据批量生成长尾页("X vs Y"矩阵、模板库)——靠的是 <code>generateStaticParams</code> 撑着的路由做法(08 章⑤有可复制代码),AI + Next.js 的组合技,一人也能做出千页站;</li>
   <li><strong>冷启动三渠道</strong>:build in public(独立开发者社区/即刻)、答题式获客(在别人提问处解决真问题顺带露出)、转型复盘本身就是内容(你的 12 周就是连载素材)。</li>
 </ul>
+<table class="tbl">
+  <tr><th>发布后第一个月</th><th>做什么</th></tr>
+  <tr><td>Day 0-1</td><td>Search Console 验证站点 + 手动提交 <code>sitemap.xml</code>(08 章⑤生成的那个文件);打开 <code>robots.txt</code> 确认没有误伤了不该屏蔽的页面</td></tr>
+  <tr><td>Week 1</td><td>写第一篇内容页——不是"关于我",是<strong>能被搜到的那种</strong>:直接对着①五问过滤器里确认过的那个明确搜索词开局第一篇</td></tr>
+  <tr><td>Week 1-2</td><td>首批外链:自己产品在个人主页/GitHub profile/独立开发者社区档案里留链接;去 3-5 个相关工具目录站提交收录——早期外链质量比数量重要,别刷</td></tr>
+  <tr><td>Week 2-4</td><td>build in public 连载启动:每周一篇进度贴带产品链接;盯 Search Console 的收录量与展现次数曲线,<strong>不是排名</strong>(这么早看排名只会自己吓自己)</td></tr>
+  <tr><td>Week 4</td><td>回看 Search Console:哪些词"有展现无点击"(标题/描述该改了,回 08 章⑤调 <code>generateMetadata</code>)、哪些页面"已发现但未编入索引"(先查 sitemap/robots 是不是写反了),据此写第二批内容页</td></tr>
+</table>
+<p class="src">Search Console 的具体操作路径以 Google 官方帮助文档为准,平台 UI 改版频繁,这里只给动作顺序,不给会过期的截图式步骤。</p>
 
 <h3 data-reveal>③ 收款:国内主体的现实问题(多数教程避而不谈)</h3>
 <table class="tbl">

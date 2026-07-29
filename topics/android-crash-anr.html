@@ -346,6 +346,9 @@ adb shell monkey -p com.example.app --throttle 300 -v 5000 <span class="c"># mon
   <tr><td><strong>Resources.NotFoundException</strong></td><td>把颜色值当资源 ID、资源缩水误删反射引用、换肤包版本不匹配。</td><td>用类型安全资源 API；精确 keep resources；主题包携带并校验 schema 版本。</td></tr>
   <tr><td><strong>RxJava UndeliverableException</strong></td><td>流已取消后异步错误无消费者，进入全局 error handler。先看 cause，区分取消后的网络错误与真实编程错误。</td><td>正确处理 dispose 和业务错误；全局 handler 只忽略明确无害的取消/中断类 cause，其余上报或交给线程异常处理器。</td></tr>
   <tr><td><strong>CancellationException / 协程异常</strong></td><td><code>CancellationException</code> 通常是协作式取消信号；误吞它会让任务继续。兄弟任务互相取消则检查 Job 层级。</td><td>捕获宽泛 Exception 后必须重新抛取消；独立子任务用 <code>SupervisorJob</code>/<code>supervisorScope</code>；<code>CoroutineExceptionHandler</code> 只处理根协程未捕获异常，不代替 try-catch。</td></tr>
+  <tr><td><strong>ForegroundServiceStartNotAllowedException</strong><br><code>android.app</code>,API 31+</td><td>App 在后台状态尝试启动前台服务(推送到达、定时任务回调里直接 <code>startForeground</code> 是重灾区)。少数场景(如用户刚点了通知)有豁免,其余一律拒绝启动。</td><td>后台触发的工作改用 <code>WorkManager</code>/<code>JobScheduler</code> 出队;确需前台服务时,把启动动作挪到应用仍在前台的窗口内触发,或改用 <code>startForegroundService</code> 前先确认满足豁免条件。</td></tr>
+  <tr><td><strong>MissingForegroundServiceTypeException</strong><br><code>android.app</code>,API 31+</td><td>调用 <code>startForeground()</code> 但 <code>AndroidManifest.xml</code> 里对应 <code>&lt;service&gt;</code> 没声明 <code>android:foregroundServiceType</code>(location/camera/microphone 等)。</td><td>每个前台服务在 manifest 里显式声明类型;Android 14+ 部分类型还要求运行时权限,发版前用 targetSdk 34+ 的机型跑一遍冒烟。</td></tr>
+  <tr><td><strong>InvalidForegroundServiceTypeException / StartForegroundCalledOnStoppedServiceException</strong><br><code>android.app</code></td><td>前者是声明的 type 与实际调用不匹配;后者是服务已经 <code>stopSelf()</code>/被系统回收后仍调用 <code>startForeground()</code>——常见于异步回调在 <code>onDestroy</code> 之后才回来。</td><td>startForeground 调用前检查服务自身生命周期状态;异步结果回调统一经过"服务是否还活着"的判断层,和 Activity 侧"页面是否还在"是同一类模式。</td></tr>
 </table>
 
 <h3 data-reveal>生命周期类崩溃：真正的问题是「状态过期」</h3>
@@ -445,11 +448,46 @@ adb shell monkey -p com.example.app --throttle 300 -v 5000 <span class="c"># mon
   <tr><td><code>SIGFPE</code></td><td>整数除零、溢出陷阱等算术错误</td><td>寄存器、指令与输入值</td></tr>
 </table>
 
+<h3 data-reveal>先拿到 tombstone：四条路</h3>
+<p>下面五个区块怎么读之前，读者手上通常还没有 tombstone 文件——这一步经常被跳过。四条获取路径：</p>
+<table class="tbl">
+  <tr><th>场景</th><th>怎么拿</th></tr>
+  <tr><td>有 root 的测试机</td><td>直接读 <code>/data/tombstones/tombstone_NN</code>（数字滚动覆盖，别等太久去抓）</td></tr>
+  <tr><td>无 root 设备</td><td><code>adb bugreport</code> 生成的压缩包里，路径形如 <code>FS/data/tombstones/</code></td></tr>
+  <tr><td>命令行直接查（无 root）</td><td><code>adb shell dumpsys dropbox --print SYSTEM_TOMBSTONE</code></td></tr>
+  <tr><td>已接 Crashlytics NDK</td><td>Firebase 控制台对应 native crash 事件页可直接下载符号化前的 tombstone</td></tr>
+</table>
+
 <h3 data-reveal>tombstone 五个区块怎么读</h3>
+<p>下面是 AOSP 官方文档给出的 tombstone 格式示例（历史机型，字段结构与当前一致，只是十六进制地址位宽因 ABI 而异）：</p>
+<pre><code>*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Build fingerprint: 'Android/aosp_flounder/flounder:5.1.51/AOSP/enh08201009:eng/test-keys'
+Revision: '0'
+ABI: 'arm'
+pid: 1656, tid: 1656, name: crasher  &gt;&gt;&gt; crasher &lt;&lt;&lt;
+signal 6 (SIGABRT), code -6 (SI_TKILL), fault addr --------
+Abort message: 'some_file.c:123: some_function: assertion "false" failed'
+    r0 00000000  r1 00000678  r2 00000006  r3 f70b6dc8
+    r4 f70b6dd0  r5 f70b6d80  r6 00000002  r7 0000010c
+    r8 ffffffed  r9 00000000  sl 00000000  fp ff96ae1c
+    ip 00000006  sp ff96ad18  lr f700ced5  pc f700dc98  cpsr 400b0010
+backtrace:
+    #00 pc 00042c98  /system/lib/libc.so (tgkill+12)
+    #01 pc 00041ed1  /system/lib/libc.so (pthread_kill+32)
+    #02 pc 0001bb87  /system/lib/libc.so (raise+10)
+    #03 pc 00018cad  /system/lib/libc.so (__libc_android_abort+34)
+    #04 pc 000168e8  /system/lib/libc.so (abort+4)
+    #05 pc 0001a78f  /system/lib/libc.so (__libc_fatal+16)
+    #06 pc 00018d35  /system/lib/libc.so (__assert2+20)
+    #07 pc 00000f21  /system/xbin/crasher
+    #08 pc 00016795  /system/lib/libc.so (__libc_init+44)
+    #09 pc 00000abc  /system/xbin/crasher
+Tombstone written to: /data/tombstones/tombstone_06
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***</code></pre>
 <ol class="steps">
-  <li><strong>Abort message：</strong>主动失败通常已把条件写出来，先处理它；</li>
-  <li><strong>signal / code / fault addr：</strong><code>0x0</code> 或很低地址常是空指针及字段偏移；高位随机地址常见野指针/越界，但必须结合 map 和 sanitizer 证据；靠近 stack guard 要考虑栈溢出；</li>
-  <li><strong>backtrace：</strong>找到首个属于自己 so 的 pc offset，不要停在 libc 的 memcpy/free；</li>
+  <li><strong>Abort message：</strong>主动失败通常已把条件写出来，先处理它——上面这条已经明写了断言文件、行号与条件；</li>
+  <li><strong>signal / code / fault addr：</strong>这条示例是 <code>SIGABRT</code>（主动终止，<code>fault addr</code> 为空）；换成 <code>SIGSEGV</code> 时这一行会是 <code>signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0</code> 这种形式——<code>0x0</code> 或很低地址常是空指针及字段偏移；高位随机地址常见野指针/越界，但必须结合 map 和 sanitizer 证据；靠近 stack guard 要考虑栈溢出；</li>
+  <li><strong>backtrace：</strong>每行格式是 <code>#帧号 pc 相对地址  库路径 (符号名+偏移)</code>（如上面的 <code>#00 pc 00042c98  /system/lib/libc.so (tgkill+12)</code>）；找到首个属于自己 so 的 pc offset，不要停在 libc 的 memcpy/free；</li>
   <li><strong>registers：</strong>结合崩溃指令判断哪个寄存器是坏指针；</li>
   <li><strong>memory map：</strong>确认 fault addr 落在已映射区、权限是否匹配，并核对库的 Build ID。符号文件必须与线上 APK 的 ABI 和 Build ID 精确对应。</li>
 </ol>
@@ -487,12 +525,31 @@ firebase crashlytics:symbols:upload \
 <ul>
   <li><strong>UAF/双重释放：</strong>明确对象所有权，优先 RAII 与 <code>std::unique_ptr</code>；跨线程传递共享生命周期时才使用 <code>shared_ptr</code>，并设计停止/回收顺序；</li>
   <li><strong>越界：</strong>所有长度与偏移都在同一处校验，使用带长度的容器/视图；对解析器加入截断、超长、畸形输入的单测与 fuzz；</li>
-  <li><strong>JNI 契约：</strong>检查 Java 异常、局部/全局引用和线程附着；禁止跨线程保存局部引用，缓存 method/class ID 时处理 ClassLoader 与卸载边界；</li>
+  <li><strong>JNI 契约：</strong>检查 Java 异常、局部/全局引用和线程附着；禁止跨线程保存局部引用，缓存 method/class ID 时处理 ClassLoader 与卸载边界；开 CheckJNI 让这类问题在开发期就报出来，而不是等到线上 native crash（见下方 CheckJNI 小节）；</li>
   <li><strong>栈溢出：</strong>消除无界递归和巨型栈数组，改为迭代/堆分配并对深度设上限；</li>
   <li><strong>防复发：</strong>修复后用同一 sanitizer 重跑原始输入，再加入 release 符号上传校验、ABI 冒烟、native 单测/fuzz 与线上 GWP-ASan 采样。</li>
 </ul>
 <div class="callout warn"><b class="t">最常见的无效操作</b>拿错版本的 so 符号化。地址能「翻出一个函数名」不代表结果可信；先比对 ABI、Build ID、版本号，再看源码行。</div>
-<p class="src">来源：<a href="https://developer.android.com/ndk/guides/debug" target="_blank">Android NDK：Debug your project</a> · <a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">AOSP：Diagnose native crashes</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory error debugging and mitigation</a></p>
+
+<h3 data-reveal>CheckJNI：把 JNI 契约违反提前到开发期报错</h3>
+<p>模拟器默认开启（logcat 能看到 <code>CheckJNI is ON</code>）；真机开启方式：</p>
+<pre><code><span class="c"># 无 root，仅对之后启动的进程生效</span>
+adb shell setprop debug.checkjni 1
+
+<span class="c"># 有 root，从系统层面常驻开启</span>
+adb shell stop &amp;&amp; adb shell setprop dalvik.vm.checkjni true &amp;&amp; adb shell start</code></pre>
+<p><code>android:debuggable="true"</code> 的 App 同样会自动启用。CheckJNI 会在下面这些场景直接报错阻断，而不是让它悄悄跑出一个 native crash：</p>
+<table class="tbl">
+  <tr><th>检查类别</th><th>典型触发场景</th></tr>
+  <tr><td>坏引用/坏指针</td><td>把已释放的 jobject/jarray/jstring 传回 JNI；该传对象却传了 NULL</td></tr>
+  <tr><td>线程归属</td><td>从错误的线程使用不属于它的 <code>JNIEnv*</code>（每个线程的 <code>JNIEnv*</code> 不能跨线程用）</td></tr>
+  <tr><td>异常待处理时仍调用 JNI</td><td>有未清理的 Java 异常时又发起了新的 JNI 调用（<code>DeleteGlobalRef</code>/<code>DeleteLocalRef</code>/异常相关函数例外，这几个允许在异常待处理时调）</td></tr>
+  <tr><td>jfieldID / jmethodID 误用</td><td>NULL 字段 ID、类型不匹配、静态/非静态搞混、返回类型与声明不符</td></tr>
+  <tr><td>引用类型误用</td><td>对局部引用调 <code>DeleteGlobalRef</code>，反之亦然</td></tr>
+  <tr><td>UTF-8 校验</td><td>传入非法的 Modified UTF-8 字节序列</td></tr>
+</table>
+<p>局部引用最常见的两个坑：循环里批量创建局部引用不释放（该用 <code>DeleteLocalRef</code> 或 <code>PushLocalFrame</code>/<code>PopLocalFrame</code> 框起来）；用 <code>AttachCurrentThread</code> 附加的原生线程里创建的局部引用<strong>不会自动释放，直到线程 detach</strong>，必须手动删除。全局引用最常见的坑是用 <code>==</code> 比较两个引用是否指向同一对象——必须用 <code>IsSameObject</code>，官方原文强调"不能假设对象引用是常量或唯一的"。</p>
+<p class="src">来源：<a href="https://developer.android.com/ndk/guides/debug" target="_blank">Android NDK：Debug your project</a> · <a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">AOSP：Diagnose native crashes</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory error debugging and mitigation</a> · <a href="https://developer.android.com/training/articles/perf-jni" target="_blank">JNI Tips（CheckJNI 与引用管理）</a></p>
 </section>
 
 <div class="divider"></div>
@@ -613,6 +670,28 @@ try {
   <li><strong>Velocity alert：</strong>关注短时间激增，用来触发止血，不替代按受影响用户和版本分布排优先级；</li>
   <li><strong>BigQuery：</strong>需要自定义趋势、feature flag 交叉分析或长期留存时导出；用版本采用率与 crash-free/事件率一起判断灰度是否继续。</li>
 </ul>
+
+<h3 data-reveal>符号发布链：没上传 mapping，前面几章全部作废</h3>
+<p>02-04 章的崩溃图鉴、tombstone 解剖、ANR trace 分析，全部建立在"线上堆栈能还原成源码"这个前提上。mapping/符号没上传，Vitals 和 Crashlytics 看到的就是一堆 <code>a.b.c</code> 和裸地址——这一步经常被跳过，直到线上出问题才发现堆栈看不懂。</p>
+<pre><code><span class="c">// build.gradle.kts，release 变体开启 mapping 与 native symbol 自动上传</span>
+android {
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = true
+      configure&lt;com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension&gt; {
+        mappingFileUploadEnabled = true   <span class="c">// 默认就是 true，混淆产物才需要它</span>
+        nativeSymbolUploadEnabled = true  <span class="c">// 默认 false（避免拖慢构建），有 native 代码务必手动开</span>
+      }
+    }
+  }
+}</code></pre>
+<table class="tbl">
+  <tr><th>产物</th><th>AAB</th><th>APK</th></tr>
+  <tr><td>Java/Kotlin 混淆 mapping（Play Console 侧）</td><td>上传 AAB 时自动带上（前提：<code>uploadCrashlyticsMappingFileRelease</code> 之类的 Gradle task 在构建时跑过，或走 Play App Signing 关联）</td><td>需要在 Play Console「App bundle 浏览器」对应版本手动上传 <code>mapping.txt</code></td></tr>
+  <tr><td>Native symbol（Crashlytics 侧）</td><td>随 <code>uploadCrashlyticsSymbolFile&lt;Variant&gt;</code> task 自动生成上传，也可手动 <code>firebase crashlytics:symbols:upload --app=&lt;FIREBASE_APP_ID&gt; &lt;符号目录&gt;</code></td><td>同左，命令行方式与 AAB 一致</td></tr>
+</table>
+<div class="callout warn"><b class="t">排障：Vitals 有符号、Crashlytics 没有</b>先查 native 库有没有带 GNU build ID——<code>readelf -n libfoo.so</code> 看不到 build ID 的话，Crashlytics 没法把上传的符号和线上二进制对上，即使符号确实传了也匹配不到。缺 build ID 通常是链接参数漏了 <code>-Wl,--build-id</code>。CI 里把这条 mapping/符号上传的 task 和 <code>assembleRelease</code>/<code>bundleRelease</code> 绑在同一次构建、和 commit 一起归档，比事后补传更可靠。</div>
+<p class="src">来源：<a href="https://firebase.google.com/docs/crashlytics/android/get-deobfuscated-reports" target="_blank">Firebase：Get deobfuscated crash reports</a> · <a href="https://firebase.google.com/docs/crashlytics/ndk-reports" target="_blank">Firebase：Get and customize NDK reports</a></p>
 
 <h3 data-reveal>Gemini AI insights 与 MCP</h3>
 <p>Firebase 控制台的 AI insights 可对 issue 生成摘要、潜在根因和调试建议，但它不能读取或修改你的本地代码。官方 Firebase MCP server 可让编码代理读取 issue、事件样本、堆栈、用户/事件数、版本维度与 notes，也能新增/删除 note、更新或关闭 issue；它使用运行环境中 Firebase CLI 的当前凭据。数据交给外部 AI 工具后如何处理取决于该工具条款，因此应使用最小权限账号、限制可用项目，所有写操作要求人工确认并保留审计。<strong>截至 2026-07-15，该能力仍为 Experimental</strong>，可能发生不兼容变更，接入时固定版本并准备人工回退。</p>
