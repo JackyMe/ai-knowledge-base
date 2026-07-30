@@ -73,13 +73,13 @@ const PATHS = [
     ]
   },
   {
-    icon: "🧗", color: "#ea580c", title: "转型跃迁",
-    desc: "客户端老兵 12 周转 Web 全栈,直到一人公司",
+    icon: "🧗", color: "#ea580c", title: "AI 能力扩展",
+    desc: "用 AI 扩展技术能力边界:方法论 + 两条端到端案例",
     steps: [
-      { label: "转型手册 · 四层硬核迁移", href: "topics/android-to-fullstack.html", note: "语言/UI/架构/数据逐层兑换" },
-      { label: "三个渐进项目 + 学习包", href: "topics/android-to-fullstack.html#roadmap", note: "12 周每周有交付物与验收" },
-      { label: "AI 协同工作流", href: "topics/android-to-fullstack.html#ai-workflow", note: "CLAUDE.md 模板与提示词库" },
-      { label: "商业闭环 + 陷阱手册", href: "topics/android-to-fullstack.html#business", note: "从上线到第一笔收入" }
+      { label: "五步扩展引擎:通用方法论", href: "topics/ai-capability-expansion.html#engine", note: "诊断差距→AI 知识速通→脚手架起步→验证闭环→深化沉淀" },
+      { label: "跨域映射技法", href: "topics/ai-capability-expansion.html#mapping", note: "把已会的心智模型喂给 AI,自动标出新概念" },
+      { label: "端到端案例:选一条深入读", href: "topics/ai-capability-expansion.html#case-studies", note: "全栈跨端,或前端到后端与服务端" },
+      { label: "技术型一人公司", href: "topics/ai-capability-expansion.html#indie", note: "从能写代码到能上线赚钱" }
     ]
   }
 ];
@@ -220,19 +220,16 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/android-to-fullstack.html", icon: "🧗", tag: "提效心法", color: "#ea580c",
-    title: "Android 转型全栈 · AI 时代硬核手册",
-    desc: "不是励志文,是作战手册:语言/UI/架构/数据四层硬核迁移(30+ Kotlin↔TS、Compose↔React 双栏代码对照)、六大体系学习包(学什么/怎么学/怎么实操配到章节级)、三个渐进项目的 12 周路线、RLS 安全实战、20 题自测、一人公司商业闭环。",
-    keywords: "android 转型 全栈 转行 kotlin typescript compose react 对照 next.js nextjs supabase rls sql drizzle server actions 一人公司 独立开发 出海 学习路线 12周 移动端 客户端 vercel stripe 变现 saas indie 自测 面试 hydration ssr 学习包 教材 课程 total typescript sqlbolt",
-    meta: ["4 层硬核迁移", "6 个学习包", "20 题自测", "Next.js 16 · 2026-07"],
+    href: "topics/ai-capability-expansion.html", icon: "🧗", tag: "提效心法", color: "#ea580c",
+    title: "AI 能力边界扩展指南",
+    desc: "不针对某个具体技术栈转型,而是一套用 AI 扩展技术能力边界的通用方法论:诊断差距→AI 知识速通→脚手架起步→验证闭环→深化沉淀。配跨域映射技法与两条端到端案例(全栈跨端 / 技术型独立开发)。",
+    keywords: "全栈 转型 扩展 边界 移动端 android ios web 后端 服务端 独立开发 一人公司 学习方法 方法论 跨域 映射",
+    meta: ["五步方法论", "2 条端到端案例", "跨域映射技法", "2026-07"],
     sections: [
-      {id:"overview",label:"导读 + 结论先行"},{id:"paradigm",label:"范式与角色升级"},
-      {id:"lang",label:"语言:Kotlin → TypeScript"},{id:"ui",label:"UI:Compose → React"},
-      {id:"arch",label:"架构:App → Web 全栈"},{id:"data",label:"数据:Room → Supabase"},
-      {id:"roadmap",label:"三个渐进项目(12 周)"},{id:"kits",label:"学习包:六大体系"},
-      {id:"engineering",label:"工程化:质量与安全"},{id:"ai-workflow",label:"AI 协同工作流"},
-      {id:"method",label:"学习系统 + 20 题自测"},{id:"pitfalls",label:"转型陷阱手册"},
-      {id:"business",label:"一人公司商业闭环"},{id:"resources",label:"资源库(带评级)"}
+      {id:"mindset",label:"认知框架"},{id:"engine",label:"五步扩展引擎"},
+      {id:"mapping",label:"跨域映射技法"},{id:"case-studies",label:"端到端深度案例"},
+      {id:"indie",label:"技术型一人公司"},{id:"learning-system",label:"AI 辅助学习系统"},
+      {id:"pitfalls",label:"陷阱与心法"},{id:"resources",label:"资源库"}
     ]
   },
   {
