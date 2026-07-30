@@ -739,7 +739,7 @@ test('未带鉴权头访问受保护路由应返回 401', async () => {
   <tr><td>1. 我自己是不是这个问题的用户?</td><td>是——自用产品的迭代直觉碾压猜需求</td></tr>
   <tr><td>2. 目标用户有没有付费习惯?</td><td>开发者工具/效率工具/B 端小工具 &gt; 面向大众的免费习惯区</td></tr>
   <tr><td>3. 搜索得到吗?</td><td>存在明确搜索词(如 "xxx generator/converter")——SEO 才有抓手</td></tr>
-  <tr><td>4. 一个人 12 周内做得出 MVP 吗?</td><td>砍到剩一个核心动作还成立,才算</td></tr>
+  <tr><td>4. 一个人在一个短周期内做得出 MVP 吗?</td><td>砍到剩一个核心动作还成立,才算</td></tr>
   <tr><td>5. 头部垄断了吗?</td><td>有 3-5 个活着的小竞品 = 市场验证过且容得下小玩家(完全空白反而危险)</td></tr>
 </table>
 
@@ -747,15 +747,15 @@ test('未带鉴权头访问受保护路由应返回 401', async () => {
 <ul>
   <li><strong>产品即内容</strong>:每个功能页/教程页/对比页都是搜索入口,SSG 天生可收录——技术上要落地的是 <code>generateMetadata</code>/<code>sitemap.ts</code>/<code>robots.ts</code>/JSON-LD 这类站点级 SEO 基建,具体写法查框架官方文档即可,别只记口号不查代码;</li>
   <li><strong>程序化 SEO</strong>:用数据批量生成长尾页("X vs Y"矩阵、模板库)——靠的是 <code>generateStaticParams</code> 撑着的路由做法,AI + Next.js 的组合技,一人也能做出千页站;</li>
-  <li><strong>冷启动三渠道</strong>:build in public(独立开发者社区/即刻)、答题式获客(在别人提问处解决真问题顺带露出)、转型复盘本身就是内容(你的12周就是连载素材)。</li>
+  <li><strong>冷启动三渠道</strong>:build in public(独立开发者社区/即刻)、答题式获客(在别人提问处解决真问题顺带露出)、转型复盘本身就是内容(你的迭代过程就是连载素材)。</li>
 </ul>
 <table class="tbl">
-  <tr><th>发布后第一个月</th><th>做什么</th></tr>
-  <tr><td>Day 0-1</td><td>Search Console 验证站点 + 手动提交 sitemap.xml;打开 robots.txt 确认没有误伤了不该屏蔽的页面</td></tr>
-  <tr><td>Week 1</td><td>写第一篇内容页——不是"关于我",是能被搜到的那种:直接对着①五问过滤器里确认过的那个明确搜索词开局第一篇</td></tr>
-  <tr><td>Week 1-2</td><td>首批外链:自己产品在个人主页/GitHub profile/独立开发者社区档案里留链接;去 3-5 个相关工具目录站提交收录——早期外链质量比数量重要,别刷</td></tr>
-  <tr><td>Week 2-4</td><td>build in public 连载启动:每周一篇进度贴带产品链接;盯 Search Console 的收录量与展现次数曲线,不是排名(这么早看排名只会自己吓自己)</td></tr>
-  <tr><td>Week 4</td><td>回看 Search Console:哪些词"有展现无点击"(标题/描述该改了)、哪些页面"已发现但未编入索引"(先查sitemap/robots是不是写反了),据此写第二批内容页</td></tr>
+  <tr><th>发布后迭代节奏</th><th>做什么</th></tr>
+  <tr><td>上线当日</td><td>Search Console 验证站点 + 手动提交 sitemap.xml;打开 robots.txt 确认没有误伤了不该屏蔽的页面</td></tr>
+  <tr><td>首个内容周期</td><td>写第一篇内容页——不是"关于我",是能被搜到的那种:直接对着①五问过滤器里确认过的那个明确搜索词开局第一篇</td></tr>
+  <tr><td>初始验证阶段</td><td>首批外链:自己产品在个人主页/GitHub profile/独立开发者社区档案里留链接;去 3-5 个相关工具目录站提交收录——早期外链质量比数量重要,别刷</td></tr>
+  <tr><td>持续发布阶段</td><td>build in public 连载启动:每次发布进度贴都带产品链接;盯 Search Console 的收录量与展现次数曲线,不是排名(这么早看排名只会自己吓自己)</td></tr>
+  <tr><td>按反馈复盘</td><td>回看 Search Console:哪些词"有展现无点击"(标题/描述该改了)、哪些页面"已发现但未编入索引"(先查sitemap/robots是不是写反了),据此写下一批内容页</td></tr>
 </table>
 <p class="src">Search Console 的具体操作路径以 Google 官方帮助文档为准,平台 UI 改版频繁,这里只给动作顺序,不给会过期的截图式步骤。</p>
 
@@ -790,7 +790,7 @@ test('未带鉴权头访问受保护路由应返回 401', async () => {
 1. [我自己是不是用户——回答]
 2. [目标用户付费习惯——回答]
 3. [搜索得到吗,附几个候选搜索词]
-4. [12周内能砍到的MVP核心动作]
+4. [一个短周期内能砍到的MVP核心动作]
 5. [3-5个活着的竞品名单]
 
 请你扮演一个挑剔的天使投资人,指出这五条回答里最站不住脚的一到两处假设,
