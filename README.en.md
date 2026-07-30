@@ -44,7 +44,7 @@ This is not "another AI-generated content dump." Every claim is sourced (officia
 | ⚡ [pen.dev × Claude Code Best Practices](topics/pencil-claude-code-best-practices.html) | The full design-to-code pipeline | 9+ sources synthesized, 16 real screenshots |
 | ⚡ [Android Crash & ANR Field Guide](topics/android-crash-anr.html) | From spotting a crash to actually fixing it | 20+ crash-type catalog, deep ANR anatomy, an original AI-assisted triage skill |
 | 🧭 [What AI Can Actually Do For You](topics/ai-leverage-guide.html) | A realistic map of where AI helps | 8-scenario payoff matrix, 7 sourced principles (not vibes) |
-| 🧗 [Android-to-Full-Stack Transition](topics/android-to-fullstack.html) | A veteran mobile dev's playbook for going full-stack | Four-layer migration (language/UI/architecture/data), a 12-week roadmap, a solo-founder business closer |
+| 🧗 [AI Capability Expansion Guide](topics/ai-capability-expansion.html) | A generic AI-leverage methodology for expanding technical boundaries, not a fixed-stack tutorial | Five-step engine, cross-domain mapping, and end-to-end full-stack cross-platform / indie development cases |
 
 ## Feature highlights
 
@@ -68,7 +68,7 @@ ai-knowledge-base/
 │   ├── pencil-claude-code-best-practices.html
 │   ├── android-crash-anr.html
 │   ├── ai-leverage-guide.html  # What AI can do for you
-│   └── android-to-fullstack.html
+│   └── ai-capability-expansion.html # AI Capability Expansion Guide
 ├── assets/
 │   ├── css/site.css            # Shared interaction styles (progress bar, filters, copy buttons, lightbox, jump panel)
 │   └── js/

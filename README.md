@@ -42,7 +42,7 @@
 | ⚡ [pen.dev × Claude Code 实践](topics/pencil-claude-code-best-practices.html) | 设计到代码的完整流水线 | 9+ 来源聚合、16 张实测截图 |
 | ⚡ [Android Crash & ANR 排查根治](topics/android-crash-anr.html) | 稳定性问题从识别到根治 | 20+ 崩溃类型图鉴、ANR 深度解剖、原创 AI 分诊 Skill |
 | 🧭 [AI 提效全景与心法](topics/ai-leverage-guide.html) | AI 到底能帮普通人干什么 | 8 大场景收益矩阵、7 条有出处的通用心法 |
-| 🧗 [Android 转型全栈](topics/android-to-fullstack.html) | 客户端老兵的转型作战手册 | 语言/UI/架构/数据四层硬核迁移、12 周路线、一人公司商业闭环 |
+| 🧗 [AI 能力边界扩展指南](topics/ai-capability-expansion.html) | 用 AI 扩展技术能力边界的通用方法论 | 五步扩展引擎、跨域映射技法、全栈跨端 / 独立开发两条端到端案例 |
 
 ## 亮点功能
 
@@ -66,7 +66,7 @@ ai-knowledge-base/
 │   ├── pencil-claude-code-best-practices.html
 │   ├── android-crash-anr.html
 │   ├── ai-leverage-guide.html  # AI 提效全景与心法
-│   └── android-to-fullstack.html # Android 转型全栈路线
+│   └── ai-capability-expansion.html # AI 能力边界扩展指南
 ├── assets/
 │   ├── css/site.css            # 全站共享交互样式(进度条/筛选/复制/灯箱/跳转面板)
 │   └── js/
