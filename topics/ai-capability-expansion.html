@@ -876,7 +876,38 @@ test('未带鉴权头访问受保护路由应返回 401', async () => {
 <section id="resources">
 <div class="sec-tag">资源 07</div>
 <h2>资源库</h2>
-<!-- 任务 10 填充 -->
+
+<div class="callout note"><b class="t">按需索引,从案例回查</b>先选一条<a href="#case-studies">端到端案例</a>推进;遇到具体技术、工具或交付问题时,再回到本节按目标检索。这里不提供一套固定技术栈路线。</div>
+
+<h3 data-reveal>评级说明:S = 主线必用 · A = 强烈推荐 · B = 特定阶段用</h3>
+
+<h3 data-reveal>学习资源与选材方法</h3>
+<table class="tbl">
+  <tr><th>级</th><th>资源 / 方法</th><th>为什么 / 怎么用</th></tr>
+  <tr><td><span class="pill s">S</span></td><td>目标技术的官方文档、官方教程与变更日志</td><td>先按要做的真实产出确定技术栈,再核对目标版本的官方资料;版本、命令和迁移事项以官方变更日志为准,不要把旧教程当现行规范。</td></tr>
+  <tr><td><span class="pill s">S</span></td><td><a href="#case-studies">本页端到端案例</a></td><td>用案例里的“诊断 → 速通 → 起步 → 验证 → 沉淀”闭环驱动学习;每学一段都落到真实项目验证,而不是只收藏链接。</td></tr>
+  <tr><td><span class="pill a">A</span></td><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang AI 编程指南</a> · <a href="https://datawhalechina.github.io/easy-vibe/zh-cn/stage-1/learning-map/" target="_blank">DataWhale Easy-Vibe</a></td><td>中文工具入门可按需参考;具体技术主线仍应回到对应版本的官方资料和项目实践。</td></tr>
+  <tr><td><span class="pill a">A</span></td><td>技术视频与课程筛选</td><td>优先选能说明版本、给出完整项目和验证步骤的内容;先看目录和更新时间,把课程当作补充讲解,遇到差异立即回查官方文档。</td></tr>
+  <tr><td><span class="pill b">B</span></td><td>B 站 / YouTube 碎片视频</td><td>只用于建立入门体感或追踪技术动态;不要用零散视频替代项目闭环,也不要因讲师推荐而跳过版本核对。</td></tr>
+</table>
+
+<h3 data-reveal>工具、模板与技术栈补充</h3>
+<table class="tbl">
+  <tr><th>级</th><th>资源</th><th>说明</th></tr>
+  <tr><td><span class="pill s">S</span></td><td>官方脚手架与官方示例</td><td>需要起步时先找目标技术栈的官方模板或示例,读懂生成的目录、配置和运行命令后再改;用最小真实功能验证每次接入。</td></tr>
+  <tr><td><span class="pill a">A</span></td><td>项目内的 README、Issue 与变更记录</td><td>排障和升级先定位当前项目实际版本、配置与报错;再查官方文档和已知问题,避免把别人的环境答案直接搬进来。</td></tr>
+  <tr><td><span class="pill b">B</span></td><td>Next.js / React / Supabase 官方资料</td><td>仅当你选择本页案例中的对应方向时按需查阅:<a href="https://nextjs.org/learn" target="_blank">Next.js Learn</a>、<a href="https://react.dev/learn" target="_blank">React Learn</a>、<a href="https://supabase.com/docs" target="_blank">Supabase Docs</a>。它们不是所有人的主教材。</td></tr>
+  <tr><td><span class="pill b">B</span></td><td>付费脚手架与成品模板</td><td>学习期优先自己完成最小闭环;当第二个产品的交付速度确实比理解成本更重要时,再评估购买,并先确认维护状态、授权和升级路径。</td></tr>
+</table>
+
+<h3 data-reveal>社区与本库联动</h3>
+<table class="tbl">
+  <tr><th>资源</th><th>用途</th></tr>
+  <tr><td><a href="https://www.indiehackers.com/" target="_blank">Indie Hackers</a> · 独立开发者社区 App · 即刻 / V2EX</td><td>观察 build in public、真实收入案例和用户反馈,用来校验问题是否真实、需求是否值得做,而不是照抄他人的技术选型。</td></tr>
+  <tr><td>本库四件套</td><td><a href="ai-leverage-guide.html">心法页</a>(通用方法论) · <a href="claude-code-guide.html">Claude Code 指南</a> · <a href="codex-guide.html">Codex 指南</a>(工具深度) · <a href="env-auth-clinic.html">环境急救手册</a>(环境与鉴权问题排查)</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">资料纪律</b>官方资料优先 · 按目标版本核对 · 用真实项目验证 · 少即是多。S 级资源做透,胜过收藏一百个链接;遇到技术栈差异时,先确认你自己的目标和当前版本,不要套用固定路线。</div>
 </section>
 
 <div class="divider"></div>
