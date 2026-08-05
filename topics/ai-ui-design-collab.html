@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 编码代理(Claude Code/Codex)与 UI 设计工具(pencil.dev/Figma/新一代 AI 设计)协同全景:工具地图、Android 端到端流水线、设计 token 工程化、真机回归与反模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 编码代理 × UI 设计工具 · 最高效率协同全景(以 Android 为例)">
+<meta property="og:description" content="pencil.dev + Figma + Claude Code / Codex + Material 3 · 工具分工、MCP 集成、设计-代码双向同步、Compose 与 Paparazzi/Roborazzi 回归。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-ui-design-collab.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI 编码代理 × UI 设计工具 · 最高效率协同全景(以 Android 为例) · 2026.08</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#ec4899; --accent-soft:#f5edff;
+  --ink:#0b1220; --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0b1220;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef6fe;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3)}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;background:
+  radial-gradient(1000px 400px at 80% -20%,rgba(124,58,237,.35),transparent 60%),
+  radial-gradient(800px 400px at 10% 120%,rgba(236,72,153,.35),transparent 60%),
+  var(--ink);
+  color:#eaf1fb;padding:56px 52px 48px;position:relative;overflow:hidden}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.14);
+  border:1px solid rgba(124,58,237,.35);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#c4b5fd,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c8d2e6;max-width:680px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#94a3c0}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c3e3fb}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0369a1}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafcff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+/* 工具卡片网格 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:20px 0}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;background:#fff;transition:.2s}
+.card:hover{border-color:var(--accent);box-shadow:0 6px 22px rgba(124,58,237,.10)}
+.card .name{font-weight:700;font-size:15.5px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card .name .icon{font-size:18px}
+.card .role{font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.card p{font-size:13.5px;color:var(--text-2);margin:0}
+.card .links{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.card .links a{font-size:12px;color:var(--text-3);text-decoration:none;border:1px solid var(--border);padding:2px 8px;border-radius:6px}
+.card .links a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* 流水线 */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0 26px}
+.pipe-step{border:1px solid var(--border);border-radius:10px;padding:14px 12px;background:#fff;position:relative;text-align:center}
+.pipe-step .ps-num{font-family:var(--mono);font-size:11px;color:var(--text-3);font-weight:700}
+.pipe-step .ps-icon{font-size:22px;margin:4px 0 6px}
+.pipe-step .ps-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.pipe-step .ps-tool{font-size:11.5px;color:var(--text-3)}
+.pipe-step::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-weight:700}
+.pipe-step:last-child::after{display:none}
+@media (max-width:880px){.pipeline{grid-template-columns:repeat(2,1fr)}.pipe-step::after{display:none}}
+
+/* 对比表 */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+/* prompt 样例框 */
+.prompt-box{border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 18px;margin:14px 0;background:#fafcff;font-size:14px}
+.prompt-box .pt{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.prompt-box code{background:none;border:none;padding:0;color:var(--text);font-size:13.5px;white-space:pre-wrap;display:block}
+
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;letter-spacing:.04em}
+.pill.c{background:#e0f2fe;color:#0284c7}
+.pill.a{background:#f3e8ff;color:#7c3aed}
+.pill.b{background:#fef3c7;color:#d97706}
+.pill.d{background:#dcfce7;color:#16a34a}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">A×U</span>AI 编码代理 × UI 设计<span class="sub">最高效率协同</span></div>
+  <div class="right"><a href="../index.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ 主题中心</a>&nbsp;&nbsp;截至 2026-08-05</div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">导读</div>
+    <a href="#intro"><span class="no">00</span>全景与设计-代码鸿沟</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">工具地图</div>
+    <a href="#map"><span class="no">01</span>设计端工具定位</a>
+    <a href="#consume"><span class="no">02</span>AI 代理如何"看到"设计</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Android 端到端</div>
+    <a href="#pipeline"><span class="no">03</span>五步流水线</a>
+    <a href="#tokens"><span class="no">04</span>Figma → Material 3 Token</a>
+    <a href="#compose"><span class="no">05</span>Compose 代码生成与回写</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">质量与回归</div>
+    <a href="#verify"><span class="no">06</span>真机/虚拟截图回归</a>
+    <a href="#sync"><span class="no">07</span>双向同步与设计系统维护</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">实战</div>
+    <a href="#cases"><span class="no">08</span>真实案例(电商详情页)</a>
+    <a href="#antipatterns"><span class="no">09</span>反模式与避坑</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">附录</div>
+    <a href="#prompts"><span class="no">A</span>提示词模板库</a>
+    <a href="#resources"><span class="no">R</span>资源与来源</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎨 AI 编码代理 × UI 设计工具 · 截至 2026 年 8 月</div>
+  <h1>把设计稿当"一等公民"<br><span class="grad">喂给 Claude Code / Codex</span></h1>
+  <p class="lead">设计师画图、开发者写码、AI 改码——三套流程在 2026 年终于能用 MCP / 视觉上下文 / 设计 Token 三条路径真正合流。本页把 pencil.dev、Figma、Material Theme Builder、Jetpack Compose、Paparazzi / Roborazzi 拼成一条<strong>最高效率的"设计 ↔ 代码"流水线</strong>,以 Android 工程师视角为主、Web / iOS 旁通。</p>
+  <div class="meta">
+    <span>工具分工清晰</span><span>MCP 集成全解</span><span>Material 3 完整桥接</span><span>真机/虚拟双回归</span><span>提示词逐字模板</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>3 入口</b><span>Figma · pen.dev · AI 草图(stitch/galileo/v0),各有最佳用法</span></div>
+  <div class="stat"><b>2 通道</b><span>MCP 读结构(零损耗) + 截图读视觉(兜底),二选一不互斥</span></div>
+  <div class="stat"><b>5 步</b><span>Android 端到端:Token → 草图 → 生成 → 截图 → 回归</span></div>
+  <div class="stat"><b>2 回归</b><span>Paparazzi(JVM 截图,快)+ Roborazzi(Robolectric,真集成)</span></div>
+</div>
+
+<div class="callout warn"><b class="t">本页与已有 pen.dev 专题不重复</b>已有<a href="pencil-claude-code-best-practices.html">《pen.dev × Claude Code 最佳实践》</a>深扎 pencil + Claude Code 一对组合;本页视野更广:把 pencil 当作"设计端工具之一",对比 Figma、Stitch、Galileo、v0,重点讲<strong>AI 编码代理消费设计的统一模式</strong>,并以 Android Jetpack Compose / Material 3 为落地端。<strong>两篇建议对照看</strong>。</div>
+
+<section id="intro">
+<div class="sec-tag">导读 00</div>
+<h2>全景:为什么 2026 年这件事突然变得"非做不可"</h2>
+
+<h3 data-reveal>设计-代码鸿沟:不是工具问题,是结构问题</h3>
+<p>2024 年之前,设计师在 Figma 标注像素,开发者照着重写。通用 AI 编码工具(早期的 Copilot)只能基于"全网见过的模式"生成"看起来差不多"的组件,完全看不见<strong>你的</strong>设计系统。出来的代码像是"设计稿的远房表亲"——配色偏一点、间距错几像素、hover 态没文档,改起来比从零写还累。</p>
+<p>2026 年,三件事一起成熟,把鸿沟压到了可忽略的尺度:</p>
+<ol>
+  <li><strong>MCP(Model Context Protocol)成事实标准</strong>——pen.dev、Figma、Google Stitch 都暴露了 MCP 服务器,Claude Code / Codex 装上就能"读到"设计稿的精确结构、Token、节点关系,不再是看图猜。</li>
+  <li><strong>设计工具原生支持"画 + 码"双产出</strong>——pen.dev 的 <code>.pen</code> 文件是 JSON,Git 可 diff;Figma 的 Dev Mode + Variables 暴露结构化数据;Stitch / Galileo 直接吐组件代码。</li>
+  <li><strong>真机/虚拟回归成本归零</strong>——Paparazzi / Roborazzi 在 JVM 上跑 Compose 截图,AI 改 UI 后 30 秒内拿到全设备快照,反馈环短到能进 CI。</li>
+</ol>
+
+<div class="callout note"><b class="t">这一页的承诺</b>学完你能做:① 给任意设计工具(pencil / Figma / Stitch)装上 MCP,让 Claude Code 直接读;② 把 Figma Variables → Material 3 Color Scheme → Compose Theme 一路串通;③ 让 AI 改 UI 后,Paparazzi / Roborazzi 自动比对回归;④ 判断什么活该 AI 做、什么活必须手写。</div>
+
+<h3 data-reveal>三件事你必须先认同</h3>
+<ul>
+  <li><strong>设计稿是"一等公民"输入</strong>——和 PR、issue、CLAUDE.md 同级。不是参考图,是 source of truth。</li>
+  <li><strong>设计 Token 优先于视觉</strong>——AI 改色,改的是 <code>colorScheme.primary</code> 而不是某个十六进制;改间距,改的是 <code>Spacing.md</code> 而不是 <code>16.dp</code>。</li>
+  <li><strong>回归必须有低成本闭环</strong>——AI 30 秒出一个 PR 没人看得过来,必须靠截图自动比对 + 关键属性断言,异常才推人。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="map">
+<div class="sec-tag">地图 01</div>
+<h2>设计端工具地图:五种角色,不要选错</h2>
+<p>2026 年市面上"AI 辅助 UI 设计"的工具多到看着眼晕。把它们按"在流水线里干什么"分桶,选型就清晰了:</p>
+
+<div class="cards">
+  <div class="card">
+    <div class="name"><span class="icon">📐</span>Figma</div>
+    <div class="role">设计稿的事实源 · 团队协作</div>
+    <p>仍是绝大多数团队设计协作的根。Variables(设计 Token)、Components、Code Connect 让设计数据"有结构",是 MCP 输出的基础。</p>
+    <div class="links"><a href="https://www.figma.com/" target="_blank">官网</a><a href="https://help.figma.com/hc/en-us/sections/14506167395095-AI" target="_blank">AI 能力</a><a href="https://github.com/figma/mcp-server-guide" target="_blank">MCP 指南</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">🎨</span>pen.dev (Pencil)</div>
+    <div class="role">IDE 里的设计画布 · 编码友好</div>
+    <p>矢量画布直接装在 VS Code / Cursor / Antigravity 里,<code>.pen</code> 文件 JSON 化、Git 可 diff、原生 MCP 服务器,Claude Code / Codex 改 UI 的最短路径。已有<a href="pencil-claude-code-best-practices.html">本库专题</a>。</p>
+    <div class="links"><a href="https://pencil.dev/" target="_blank">官网</a><a href="https://docs.pencil.dev/" target="_blank">官方文档</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">🪄</span>Google Stitch</div>
+    <div class="role">AI 草图生成器 · 0→1 快速起稿</div>
+    <p>Google 2026 年推出的"Design with AI",输入文字或截图,直接吐出多平台(Material 3 Web / Android / iOS)的高保真稿。适合"还没有设计稿,先看几种方向"的早期探索。</p>
+    <div class="links"><a href="https://stitch.withgoogle.com/" target="_blank">官网</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">🤖</span>Galileo AI</div>
+    <div class="role">文字 → 组件级 UI 生成</div>
+    <p>输入自然语言描述,吐出可编辑的 Figma 组件(不是图片)。适合"我想要一个 onboarding 流程"这种粗粒度需求,产物可直接拉进 Figma 继续精修。</p>
+    <div class="links"><a href="https://stitch.withgoogle.com/" target="_blank">跳转(已合并)</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">⚡</span>v0 / Uizard / Visily</div>
+    <div class="role">截图 / 草图 → 可用代码</div>
+    <p>v0(Vercel)主打 React/Tailwind/shadcn;Uizard 截图直接转线框;Visily 把白板草图变成可点击原型。都能直接产代码或 Figma 文件。</p>
+    <div class="links"><a href="https://v0.dev/" target="_blank">v0</a><a href="https://uizard.io/" target="_blank">Uizard</a><a href="https://www.visily.ai/" target="_blank">Visily</a></div>
+  </div>
+</div>
+
+<h3 data-reveal>选型决策树</h3>
+<p>不要"哪个最新用哪个",按你的起点选:</p>
+<div class="pipeline">
+  <div class="pipe-step"><div class="ps-num">START</div><div class="ps-icon">❓</div><div class="ps-name">已有设计稿?</div><div class="ps-tool">→ 看下一步</div></div>
+  <div class="pipe-step"><div class="ps-num">Y1</div><div class="ps-icon">📐</div><div class="ps-name">Figma 团队协作</div><div class="ps-tool">Figma MCP</div></div>
+  <div class="pipe-step"><div class="ps-num">Y2</div><div class="ps-icon">🎨</div><div class="ps-name">个人/小团队 + 喜欢 IDE</div><div class="ps-tool">pen.dev MCP</div></div>
+  <div class="pipe-step"><div class="ps-num">N1</div><div class="ps-icon">🪄</div><div class="ps-name">想看 5 种方向</div><div class="ps-tool">Stitch 草图</div></div>
+  <div class="pipe-step"><div class="ps-num">N2</div><div class="ps-icon">🤖</div><div class="ps-name">想看组件级</div><div class="ps-tool">Galileo / v0</div></div>
+</div>
+
+<div class="callout tip"><b class="t">混合使用是常态</b>实战里最常见的组合:Stitch 起稿 → 拉进 Figma 精修 → Claude Code 读 Figma MCP 写 Compose 组件 → pen.dev 用来"局部微调单组件" → 截图回归。不用死守一个工具。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="consume">
+<div class="sec-tag">地图 02</div>
+<h2>AI 编码代理如何"看到"设计:三种通道</h2>
+<p>AI 编码代理(Claude Code、Codex 等)拿设计输入,本质只有三种通道。理解差异才能选对:</p>
+
+<table class="tbl">
+  <tr><th>通道</th><th>代表</th><th>能拿到什么</th><th>精度</th><th>代价</th></tr>
+  <tr>
+    <td><span class="pill a">MCP 结构化</span></td>
+    <td>Figma MCP、pen.dev MCP、Stitch MCP</td>
+    <td>节点树、Token 键值对、组件实例、变量定义、可访问性属性</td>
+    <td><strong>零损耗</strong>——拿到的是结构化数据,不是渲染后的图像</td>
+    <td>需要 MCP 服务在跑;每个工具的 MCP 工具集不一样</td>
+  </tr>
+  <tr>
+    <td><span class="pill c">视觉</span></td>
+    <td>截图 / 拍照 / 录屏;Claude / GPT 的多模态</td>
+    <td>看起来什么样,大概有什么元素</td>
+    <td>中——颜色能读准,数值(具体间距、字号)猜不准</td>
+    <td>快、无依赖,任何时候都能用;不能拿 Token</td>
+  </tr>
+  <tr>
+    <td><span class="pill d">导出物</span></td>
+    <td>Figma Dev Mode "Copy as Compose"、pen.dev 导出 React、Stitch "Export to Code"</td>
+    <td>设计工具自己生成的代码片段</td>
+    <td>高(但有工具的固有限制)</td>
+    <td>一次性的复制粘贴,没法双向同步</td>
+  </tr>
+</table>
+
+<div class="callout note"><b class="t">MCP 是 2026 年的"分水岭"</b>用了 MCP,Claude Code 在生成代码时能说"主色用 <code>colorScheme.primary</code>,因为 Figma 那边叫 <code>brand/primary/500</code>";不用 MCP,它只能看截图说"这里用蓝色"。前者是<strong>设计系统协同</strong>,后者是<strong>像素级仿写</strong>。下面所有讨论默认走 MCP 通道。</div>
+
+<h3 data-reveal>三种通道的具体接法</h3>
+
+<h4>① Figma MCP(官方 · 最稳)</h4>
+<pre><code># 装官方 plugin(最简)
+claude plugin install figma@claude-plugins-official
+
+# 或手工加 MCP server
+claude mcp add --transport http figma https://mcp.figma.com/mcp
+
+# 验证
+claude mcp list
+# 应该看到 figma / connected</code></pre>
+<p>在 Figma 文件里选中一个 Frame → Claude Code 里说"用 Figma MCP 读这个 Frame 的结构与变量,生成对应的 Compose 实现",工具会自动调用。核心工具:</p>
+<table class="tbl">
+  <tr><th>工具</th><th>干什么</th></tr>
+  <tr><td><code>get_design_context</code></td><td>返回结构化 React + Tailwind 表示(对 Web 最友好;Android 需要后续翻译)</td></tr>
+  <tr><td><code>get_variable_defs</code></td><td>抽取 Variables(色板、字号、间距)及其 Light/Dark 模式</td></tr>
+  <tr><td><code>get_metadata</code></td><td>高层节点地图:什么 Frame、什么组件、层级关系</td></tr>
+  <tr><td><code>get_screenshot</code></td><td>视觉参照(像素级)</td></tr>
+</table>
+<p>Codex 用 <code>config.toml</code> 的 <code>[mcp_servers.figma]</code> 块加 <code>url = "https://mcp.figma.com/mcp"</code> 同理可达。</p>
+
+<h4>② pen.dev MCP(原生,本地,零云)</h4>
+<p>装好 VS Code 扩展 <code>highagency.pencildev</code> 后,pen.dev 自带的 MCP 服务<strong>跑在本机</strong>——设计数据不出本地,适合隐私敏感场景。Claude Code / Codex 用 <code>/mcp</code> 看到 <code>pencil</code> 后,工具集更细:读节点、执行修改、读变量、截图。详见 <a href="pencil-claude-code-best-practices.html">pen.dev × Claude Code 专题</a>。</p>
+
+<h4>③ 视觉通道(任何时候的兜底)</h4>
+<p>没有 MCP 时,最朴素也最万能的做法:把设计稿截图(或 PDF)直接喂给 Claude Code,搭配提示词说明"按截图生成 Compose,色值用 Material 3 ColorScheme 的语义化命名"。<strong>像素能拿,但 Token 拿不到</strong>——所以这一步要么补 Figma Variables 的导出,要么接受"出来的代码配色和品牌色对不上"的风险。</p>
+
+<div class="callout warn"><b class="t">Codex 的 MCP 现状</b>Codex 0.146.0 起原生支持 MCP(同 Claude Code 一样的协议),<code>config.toml</code> 配 <code>[mcp_servers]</code> 即可。差异在 UX:Codex 更倾向"任务交付型",要明确说"读完 Figma Frame 后直接改 Android 项目";Claude Code 倾向"探索型",你可以一路问"为什么这个色用 primary 不用 secondary"。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="pipeline">
+<div class="sec-tag">端到端 03</div>
+<h2>Android 端到端:五步流水线</h2>
+<p>把上面所有工具拼起来,就是这条<strong>最高效率</strong>路径。每步都有可复现的输入输出,不依赖任何"灵感":</p>
+
+<div class="pipeline">
+  <div class="pipe-step"><div class="ps-num">STEP 1</div><div class="ps-icon">🎨</div><div class="ps-name">设计 Token</div><div class="ps-tool">Figma Variables</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 2</div><div class="ps-icon">🖼</div><div class="ps-name">组件/页面</div><div class="ps-tool">Figma Frame</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 3</div><div class="ps-icon">🤖</div><div class="ps-name">读取 + 计划</div><div class="ps-tool">Claude Code / Codex</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 4</div><div class="ps-icon">⚙️</div><div class="ps-name">生成代码</div><div class="ps-tool">Compose + 单元测试</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 5</div><div class="ps-icon">📸</div><div class="ps-name">视觉回归</div><div class="ps-tool">Paparazzi / Roborazzi</div></div>
+</div>
+
+<p class="src">为什么是 5 步不是 3 步?少一步就要么少了 Token 同步(设计改了色代码没改),要么少了回归(AI 改 UI 没人审)。这 5 步可以并行(多页面同时推进)但不能省。</p>
+
+<h3 data-reveal>STEP 1 · 设计 Token:Figma Variables 是事实源</h3>
+<p>设计 Token 是颜色 / 字号 / 间距 / 圆角的<strong>命名化</strong>值。在 Figma 里长这样:</p>
+<pre><code>brand/primary/500      → #476810
+brand/primary/600      → #3a5609
+brand/secondary/500    → #586a4f
+surface/background     → #fefbff
+surface/onBackground   → #1b1c18
+text/display/large     → 57sp / 64lh
+text/title/medium      → 16sp / 24lh
+spacing/xs             → 4dp
+spacing/md             → 16dp
+radius/lg              → 16dp</code></pre>
+<p>这一步在 Figma 端用 <strong>Material Theme Builder</strong>(material.io/material-theme-builder)或 Figma 自带的 Material 3 Design Kit 完成;Claude Code 这一步什么都不做——它是<strong>结构化背景</strong>,后面要用。</p>
+
+<h3 data-reveal>STEP 2 · 组件/页面:Figma Frame 是契约</h3>
+<p>每个要实现的页面在 Figma 里是一个 Frame,Frame 命名要稳定(开发会拿来当 key):</p>
+<pre><code>📁 Figma: App / 1.0
+  📄 Page: ProductDetail
+    🟦 Frame: ProductDetailScreen / 360×800 (mobile)
+    🟦 Frame: ProductDetailScreen / Dark</code></pre>
+<p>用 <strong>Auto Layout</strong>(Figma 的 Flexbox)+ 100% 约束,这样 Claude Code 读 <code>get_metadata</code> 拿到的就是结构化布局,不是绝对坐标。</p>
+
+<h3 data-reveal>STEP 3 · 读取 + 计划:Claude Code / Codex 启动</h3>
+<p>在 Android 项目根目录(已有 <code>app/</code> 源码)启动 Claude Code,给一段明确指令:<strong>不要让它"自己想办法",把读什么、写哪里、测什么写死</strong>。</p>
+<div class="prompt-box">
+<div class="pt">PROMPT 03-A · 启动</div>
+<code>读 Figma Frame `ProductDetailScreen` (node-id 1:23),用 figma MCP。
+- 先调 get_variable_defs,把所有 Variables 落到 app/src/main/java/.../theme/Color.kt 和 Type.kt(语义名对齐 Material 3)
+- 再调 get_design_context 和 get_metadata,理解 Frame 的结构
+- 然后规划:1) 哪些 Composable;2) 哪些 Preview;3) 哪些 Paparazzi 测试;4) 哪些 Preview 截图入仓
+- 计划用 ExitPlanMode 给我审,不要直接动手</code>
+</div>
+
+<div class="callout tip"><b class="t">为什么要"先计划后写码"</b>Claude Code 的 Plan 模式(<code>Shift+Tab</code> 切)会先探查代码,生成可审的实施步骤再执行。改 UI 是高频返工区——一步错后面截图全红。<strong>花 2 分钟审计划 = 省 20 分钟重做</strong>。Codex 同理(<code>--plan</code> 模式)。</div>
+
+<h3 data-reveal>STEP 4 · 生成代码:Compose + 测试 + 截图三件套</h3>
+<p>AI 实际会写出三类产物,缺一不可:</p>
+<ol>
+  <li><strong>Composable 函数</strong>——业务组件;<strong>用 Token 不用硬编码</strong>是核心纪律(<code>MaterialTheme.colorScheme.primary</code> 而不是 <code>Color(0xFF476810)</code>)。</li>
+  <li><strong>@Preview 注解</strong>——让 Android Studio 的 Design 面板能直接看;Roborazzi 会扫这个注解自动生成截图测试。</li>
+  <li><strong>Paparazzi / Roborazzi 测试</strong>——上一组基线快照,后面 AI 改 UI 用同一份基线 diff。</li>
+</ol>
+
+<div class="prompt-box">
+<div class="pt">PROMPT 03-B · 实施</div>
+<code>按计划实施,约束:
+1. Composable 用 Material 3 API,所有色/字/间距走 MaterialTheme.colorScheme/typography/shapes
+2. 不要硬编码颜色值;spacing 走 Spacing.xs/sm/md/lg 常量
+3. 每个屏幕组件加 @Preview(name = "Light"),@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
+4. 加 src/test/.../ProductDetailSnapshotTest.kt 用 Paparazzi 跑两个 Preview,先 recordPaparazzi 入基线
+5. 完成后跑 ./gradlew verifyPaparazziDebug 给我看结果</code>
+</div>
+
+<h3 data-reveal>STEP 5 · 视觉回归:Paparazzi / Roborazzi 二选一</h3>
+<p>这一步是整条流水线的<strong>质量门</strong>。详见 <a href="#verify">真机/虚拟截图回归</a>章节,核心一句话:<strong>AI 改 UI 前先有基线,改完自动 diff,异常才推人</strong>。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="tokens">
+<div class="sec-tag">端到端 04</div>
+<h2>Figma → Material 3 Token:一条标准桥</h2>
+<p>Material 3 的 ColorScheme / Typography / Shapes 是 Compose 的<strong>一等设计 Token</strong>;Figma Variables 是设计端的<strong>一等设计 Token</strong>。两者必须严格一一对应,否则"设计改了代码没改"是必然。</p>
+
+<h3 data-reveal>官方标准做法:Material Theme Builder</h3>
+<ol class="steps">
+  <li>在 <a href="https://material.io/material-theme-builder" target="_blank">m3.material.io/theme-builder</a> 选基色 + 二级色,工具自动展开成 M3 调色板(13 个 tone 之一给每个 role)。</li>
+  <li>导出"Jetpack Compose"格式,得到 <code>Color.kt</code>(5 个 key color + 衍生 role)和 <code>Theme.kt</code>(<code>lightColorScheme(...)</code> / <code>darkColorScheme(...)</code>)。</li>
+  <li>把这两个文件落进 <code>app/src/main/java/.../ui/theme/</code>。</li>
+  <li>在 <code>MainActivity</code> 用 <code>ReplyTheme</code>(或你命名的主题)包 <code>setContent { ... }</code>。</li>
+  <li>把同样的"基色 + 二级色"在 Figma Material 3 Design Kit 里也设一份(插件自带同步),Variables 自动对齐。</li>
+</ol>
+
+<h3 data-reveal>Figma Variables ↔ Compose ColorScheme 完整映射</h3>
+<p>Material 3 ColorScheme 的所有 role 与 Figma Material 3 Design Kit 的 Variables <strong>命名完全一致</strong>(都是 <code>primary / onPrimary / primaryContainer / onPrimaryContainer / secondary / onSecondary / ...</code>),Claude Code 用 Figma MCP 的 <code>get_variable_defs</code> 读出来,直接写到 <code>lightColorScheme(primary = Color(0xFF...), ...)</code> 即可。下面是完整 role 清单(便于你核对没漏):</p>
+<pre><code>// M3 ColorScheme 完整 32 个 role(亮/暗各一套)
+lightColorScheme(
+  primary, onPrimary, primaryContainer, onPrimaryContainer,
+  secondary, onSecondary, secondaryContainer, onSecondaryContainer,
+  tertiary, onTertiary, tertiaryContainer, onTertiaryContainer,
+  error, onError, errorContainer, onErrorContainer,
+  background, onBackground,
+  surface, onSurface, surfaceVariant, onSurfaceVariant,
+  outline, outlineVariant,
+  inverseSurface, inverseOnSurface, inversePrimary,
+  surfaceTint, scrim,
+)</code></pre>
+
+<h3 data-reveal>Typography 与 Shapes 的桥</h3>
+<p>M3 Typography 是 15 个 TextStyle(<code>displayLarge/Medium/Small</code>、<code>headlineLarge/...</code>、<code>titleLarge/...</code>、<code>bodyLarge/...</code>、<code>labelLarge/...</code>),Shapes 是 5 个 <code>RoundedCornerShape</code>(<code>extraSmall/small/medium/large/extraLarge</code>)。</p>
+<p>Figma 端要保持<strong>用 Figma Material 3 Design Kit 的官方组件</strong>——它的 Text Styles 与 Shape 命名跟 M3 一致,Claude Code 读 <code>get_metadata</code> 时能直接 map。</p>
+
+<div class="callout tip"><b class="t">动态色(Material You)与品牌色怎么平衡</b>Android 12+ 设备有系统取色(<code>dynamicLightColorScheme(LocalContext.current)</code>),你的品牌色要不要被覆盖是<strong>产品决策</strong>。常见做法:① 强品牌 → 关动态色,始终用品牌 ColorScheme;② 弱品牌(消费类)→ 开动态色,但单独保留 1-2 个品牌强调色不进 ColorScheme,改用 <code>ExtendedColors</code> 自定义。Claude Code / Codex 处理这种决策时,要在 CLAUDE.md / AGENTS.md 里写明。</div>
+
+<h3 data-reveal>动态色 vs 品牌色:决策矩阵</h3>
+<table class="tbl">
+  <tr><th>产品类型</th><th>动态色</th><th>品牌色</th><th>做法</th></tr>
+  <tr><td>金融 / 工具型(强品牌识别)</td><td>关</td><td>始终用品牌</td><td><code>val colors = if (darkTheme) DarkColors else LightColors</code> 不用 dynamicXxx</td></tr>
+  <tr><td>消费 / 内容型(用户主导)</td><td>开</td><td>仅强调按钮/Logo</td><td>dynamicXxx 作主,品牌色作 <code>ExtendedColors.brand</code> 单独取</td></tr>
+  <tr><td>企业内嵌 / 白标</td><td>关</td><td>运行时可换</td><td>ColorScheme 不写死,从后端/BuildConfig 拉</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="compose">
+<div class="sec-tag">端到端 05</div>
+<h2>Compose 代码生成与回写:AI 改 UI 的纪律</h2>
+<p>这一步是"出活"环节,也是最容易出"看起来能用、实则跑不起来"代码的环节。下面是从 30+ 真实 PR 里收敛出的纪律:</p>
+
+<h3 data-reveal>纪律 1:Token 优先,绝不硬编码</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 硬编码(常见 AI 出错姿势)</b>
+<pre><code>Text("Save",
+  color = Color(0xFF476810),
+  fontSize = 16.sp,
+  modifier = Modifier.padding(16.dp)
+)</code></pre>
+  </div>
+  <div class="good"><b>✅ 走 Token(纪律)</b>
+<pre><code>Text("Save",
+  style = MaterialTheme.typography.titleMedium,
+  color = MaterialTheme.colorScheme.primary,
+  modifier = Modifier.padding(Spacing.md)
+)</code></pre>
+  </div>
+</div>
+
+<h3 data-reveal>纪律 2:任何状态变化都用 State hoisting</h3>
+<p>AI 经常写出"组件自己 <code>remember { mutableStateOf(...) }</code>"的代码——预览能跑,真用就坏。规则:<strong>无状态 Composable 优先</strong>,状态从调用方传进来,事件回调出来。</p>
+<div class="prompt-box">
+<div class="pt">PROMPT 05-A · 改 AI 出错的 Compose</div>
+<code>检查 src/.../ProductDetailScreen.kt,把所有内部 remember { mutableStateOf } 改成 hoisted 参数;Preview 里包 remember。改完用 ./gradlew :app:compileDebugKotlin 验证。</code>
+</div>
+
+<h3 data-reveal>纪律 3:每一个 Composable 至少一个 @Preview</h3>
+<p>这是 Paparazzi / Roborazzi 能跑回归的前提,也是设计-开发协作的最低成本反馈——AI 写完,Android Studio Design 面板里直接看,不用装到设备。</p>
+<pre><code>@Preview(name = "Light", showBackground = true)
+@Composable
+private fun ProductDetailScreenLightPreview() {
+  AppTheme(darkTheme = false) {
+    ProductDetailScreen(state = fakeState(), onIntent = {})
+  }
+}
+
+@Preview(name = "Dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun ProductDetailScreenDarkPreview() {
+  AppTheme(darkTheme = true) {
+    ProductDetailScreen(state = fakeState(), onIntent = {})
+  }
+}</code></pre>
+
+<h3 data-reveal>纪律 4:从代码回写设计系统</h3>
+<p>设计师改 Figma → Claude Code 改 Compose 是正向;反过来呢?改完 Compose 跑通了才发现"按钮圆角和 Figma 不一致",谁改谁?</p>
+<p><strong>规矩:谁先合并谁负责同步</strong>。Figma 是源就改 Figma;代码是源(改 token 配)就改 Figma Variables。最忌讳两套都改,最后谁都不知道哪边是对的。</p>
+<p>具体回写流程(以 Figma 为源):</p>
+<ol class="steps">
+  <li>设计师在 Figma 改 Variables(比如 <code>brand/primary/500</code> 从 <code>#476810</code> 改 <code>#507810</code>)。</li>
+  <li>设计师<strong>不直接改 Compose 代码</strong>,发 Slack / 邮件 / 评论说"primary 改了,看 PR"。</li>
+  <li>Claude Code 读 Figma MCP <code>get_variable_defs</code> → 比对 <code>Color.kt</code> → 生成 patch → 提 PR。</li>
+  <li>PR 跑 Paparazzi 回归 → 绿就合;有非预期 diff 推设计师确认。</li>
+</ol>
+
+<div class="callout warn"><b class="t">双向同步的隐藏陷阱</b>设计 Token 同步不像业务代码——它影响的不是单页面,而是<strong>整个产品的视觉</strong>。一个手抖的色值改动可能让 Paparazzi 一次红 200 张图。建议:Token 改动走单独 PR 分支,先在内部测试包验证完再发生产。这不是 AI 编码代理的问题,是流程问题。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="verify">
+<div class="sec-tag">质量 06</div>
+<h2>真机/虚拟截图回归:AI 改 UI 后的保险栓</h2>
+<p>AI 改 UI 30 秒出一个 PR,人眼审不过来。必须靠<strong>自动化视觉回归</strong>——AI 改完,机器比对所有页面截图,异常才推人。</p>
+
+<h3 data-reveal>为什么"真机测试"在 AI 时代反而退居二线</h3>
+<p>Instrumented test 跑一台 Pixel 6 要 90 秒,跑 10 台设备 15 分钟,根本跟不上 AI 改 UI 的速度。<strong>JVM 上的截图测试</strong>(Paparazzi / Roborazzi)几秒出全设备快照,才是新时代的正解。</p>
+
+<h3 data-reveal>Paparazzi(JVM 渲染,无设备)</h3>
+<p>由 Cash App 出品,在 JVM 上用 LayoutLib 渲染 Android View 与 Jetpack Compose,产出 PNG,可与基线 diff。<strong>优势:不依赖模拟器,CI 上跑比 Robolectric 还快</strong>。</p>
+<table class="tbl">
+  <tr><th>配置</th><th>用途</th></tr>
+  <tr><td><code>PIXEL_5</code> / <code>PIXEL_6</code> / <code>NEXUS_5</code></td><td>设备尺寸 + DPI,影响 dp→px 换算</td></tr>
+  <tr><td><code>theme = "android:Theme.Material.Light.NoActionBar"</code></td><td>传统 View 用;Compose 用 <code>AppTheme</code> 自己的</td></tr>
+  <tr><td><code>nightMode = NIGHT_MODE_NIGHT</code></td><td>一次跑亮 + 暗两套快照</td></tr>
+</table>
+<p>关键 Gradle 任务:</p>
+<pre><code>./gradlew :app:recordPaparazziDebug   # 首次录基线 → src/test/snapshots/
+./gradlew :app:verifyPaparazziDebug   # 改完跑这个,有 diff 失败
+./gradlew :app:testDebug               # 跑全部单元测试(包括 Paparazzi)</code></pre>
+<p><strong>注意</strong>:Paparazzi 与 Robolectric 不兼容(都 mock Android Framework,只能选一个)。</p>
+
+<h3 data-reveal>Roborazzi(Robolectric 路线,可集成 Hilt)</h3>
+<p>由 takahirom 出品,基于 Robolectric 在 JVM 渲染 Compose,支持 <code>@Preview</code> 自动生成测试、与 Hilt 等 DI 框架无冲突。<strong>优势:可以测有依赖注入的真组件</strong>。</p>
+<p>关键能力:</p>
+<ul>
+  <li><code>captureRoboImage()</code> 给定节点截图</li>
+  <li><code>generateComposePreviewRobolectricTests</code> Gradle 任务:扫所有 <code>@Preview</code> 注解,自动生成截图测试</li>
+  <li>(实验)<code>roborazzi-ai-gemini</code> / <code>roborazzi-ai-openai</code>:用 AI 做"截图差异语义判定",能区分"故意改"和"误改"</li>
+</ul>
+<p>关键 Gradle 任务:</p>
+<pre><code>./gradlew :app:recordRoborazziDebug           # 录基线
+./gradlew :app:verifyRoborazziDebug           # diff 模式
+./gradlew :app:verifyAndRecordRoborazziDebug  # 边验证边更新基线(本地用)
+./gradlew :app:compareRoborazziDebug          # 三个对比图叠看</code></pre>
+
+<p>最妙的是它发了一个 <strong>Claude Code / Codex 可安装的 skill</strong>:</p>
+<pre><code>npx skills add takahirom/roborazzi</code></pre>
+<p>装上后,AI 编码代理遇到"加截图测试""调基线""看 Roborazzi 失败"这类问题会自动加载正确知识,不用你手把手教。</p>
+
+<h3 data-reveal>两条路怎么选</h3>
+<table class="tbl">
+  <tr><th>场景</th><th>选</th><th>理由</th></tr>
+  <tr><td>纯 UI 组件,无 Hilt / 复杂依赖</td><td><strong>Paparazzi</strong></td><td>更快更纯,CI 友好</td></tr>
+  <tr><td>有 Hilt / 业务状态注入 / 模拟 ViewModel</td><td><strong>Roborazzi</strong></td><td>能跑 Robolectric,与现有测试栈共存</td></tr>
+  <tr><td>Compose 与 View 混用</td><td><strong>Paparazzi</strong></td><td>两者都支持,生态更成熟</td></tr>
+  <tr><td>需要用 AI 判定截图差异是否预期</td><td><strong>Roborazzi + roborazzi-ai-gemini</strong></td><td>实验性但已可用</td></tr>
+</table>
+
+<h3 data-reveal>完整的 AI 改 UI 反馈环</h3>
+<pre><code>设计稿改 ──→ Figma MCP 读到 diff ──→ Claude Code 生成 Compose 改动
+                                              │
+                                              ▼
+                                  ./gradlew :app:verifyPaparazziDebug
+                                              │
+                                ┌─────────────┴─────────────┐
+                                ▼                           ▼
+                            全部绿                    有 diff 失败
+                                │                           │
+                                ▼                           ▼
+                          提 PR,自动截图                AI 改回(自动)
+                          附在 PR 评论                 或人审 /look 决定</code></pre>
+<p><strong>关键:这个环必须能在本地 30 秒内跑完</strong>。Paparazzi / Roborazzi 在 MBP 上 5-15 秒能跑完一个模块的全部截图,这是 AI 改 UI 工作流能持续的前提;慢了就退化回"靠人眼"。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="sync">
+<div class="sec-tag">质量 07</div>
+<h2>双向同步:让设计系统真正"活"起来</h2>
+<p>"设计系统"不是一张 Figma 页面,是<strong>会持续演化的活物</strong>。AI 编码代理在中间起到的作用是<strong>让设计 ↔ 代码的同步成本归零</strong>。</p>
+
+<h3 data-reveal>三种同步模式</h3>
+
+<h4>① Figma → Code(正向,最常见)</h4>
+<p>设计师改 Figma → Claude Code 改 Compose,前面流水线讲的全是这一条。<strong>关键约束</strong>:设计师改完 Variables 后,要让 Claude Code 重新拉一次 <code>get_variable_defs</code> 再生成代码,不能基于缓存。</p>
+
+<h4>② Code → Figma(回写,设计师主导场景)</h4>
+<p>开发者改完 ColorScheme 想让 Figma 跟上,有两种做法:</p>
+<ul>
+  <li><strong>Claude Code 生成 Figma REST API 请求</strong>——Figma 官方 API 支持改 Variables,AI 拼请求体推上去。门槛中等。</li>
+  <li><strong>导出 .css 风格的 Token JSON</strong>(Style Dictionary / Theo),让设计师手动 import 到 Figma 插件(如 Tokens Studio)。门槛低,但不是真的"自动同步"。</li>
+</ul>
+
+<h4>③ Figma ↔ Code 双向(高级,需要中间层)</h4>
+<p>用 <a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a> 或 <a href="https://github.com/salesforce/theo" target="_blank">Theo</a> 做<strong>Token 单一来源</strong>(一个 JSON),Figma 用 Tokens Studio 插件同步,Compose 用 Gradle 插件生成 ColorScheme。一处改,两边自动跟。<strong>这是 2026 年设计系统工程的"正确姿势"</strong>,但要小团队愿意花一周搭基础设施。</p>
+
+<h3 data-reveal>设计系统维护的 6 条纪律</h3>
+<ol>
+  <li><strong>Token 命名即文档</strong>——<code>surface/container/high</code> 优于 <code>gray-100</code>。AI 看到语义名会知道用在哪儿,看到颜色名只知道是灰。</li>
+  <li><strong>不直接用 <code>Color.White</code> 等系统色</strong>——所有色都走 ColorScheme,即使"我就是要白色"也用 <code>colorScheme.surface</code>。这样暗色模式自动反相。</li>
+  <li><strong>间距走 <code>Spacing.xs/sm/md/lg/xl</code> 常量</strong>——4 / 8 / 16 / 24 / 32 起步,不要在 Composable 里随手写 <code>13.dp</code>。</li>
+  <li><strong>圆角走 <code>Shapes.small/medium/large</code></strong>——同理,不要 <code>RoundedCornerShape(7.dp)</code>。</li>
+  <li><strong>Typography 走 <code>MaterialTheme.typography.*</code></strong>——不要 <code>fontSize = 17.sp</code>。</li>
+  <li><strong>图标用 Material Symbols 或 Lucide</strong>——不要到处塞 SVG。Figma 端用 Material Symbols,R.drawable 也用同一份,跨端一致。</li>
+</ol>
+
+<div class="prompt-box">
+<div class="pt">PROMPT 07-A · 审计设计纪律</div>
+<code>扫描 src/main/java/.../ui 下所有 .kt 文件,列出:
+1. 直接用 Color(0xFF...) 的位置(应改为 MaterialTheme.colorScheme.*)
+2. 直接用 .dp 数字且不含 Spacing 引用的(应改为 Spacing.*)
+3. 直接用 fontSize = N.sp 的(应改为 MaterialTheme.typography.*)
+输出三张表,我来逐项改。</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">实战 08</div>
+<h2>真实案例:从 Figma 到 Play Store,一个商品详情页</h2>
+<p>把上面所有点串成一个端到端例子。背景:某电商 App 要加一个"商品详情页",设计稿在 Figma,代码在 Android Studio,5 个屏幕(Light/Dark × 2 状态 × 中英文),要求一周内 Play Store 上架。</p>
+
+<h3 data-reveal>Day 1 · 准备阶段(2 小时)</h3>
+<ol class="steps">
+  <li>在 Figma 安装 <strong>Material 3 Design Kit</strong>(官方),把基色贴进去,生成 Variables。</li>
+  <li>导出 Variables 描述文件(JSON),存入 <code>design/tokens/figma-variables.json</code>,Git 跟踪。</li>
+  <li>在 Android 项目跑 <code>./gradlew :app:dependencies | grep material3</code> 确认依赖在。</li>
+  <li>装 Claude Code 插件 <code>figma@claude-plugins-official</code>,<code>claude mcp list</code> 确认 figma connected。</li>
+</ol>
+
+<h3 data-reveal>Day 2-3 · 流水线打通(2 天)</h3>
+<ol class="steps">
+  <li>Claude Code 读 Figma Variables,生成 <code>Color.kt</code> / <code>Type.kt</code> / <code>Shape.kt</code>。</li>
+  <li>读 Figma Frame <code>ProductDetailScreen</code>,生成 Composable + @Preview + Paparazzi 测试。</li>
+  <li><code>./gradlew :app:recordPaparazziDebug</code> 入基线(2 套亮/暗 × 中英 = 4 张)。</li>
+  <li>提交 PR #1:"design system 接入 + 详情页初版"。</li>
+</ol>
+
+<h3 data-reveal>Day 4 · 业务逻辑接入(1 天)</h3>
+<ol class="steps">
+  <li>把 Composable 改成 hoisted state(<code>ProductDetailScreen(state, onIntent)</code>)。</li>
+  <li>加 ViewModel + Hilt 注入,从 Repository 取数据。</li>
+  <li>用 fake state 写 Roborazzi 测试,模拟 loading / loaded / error 三态。</li>
+  <li><code>./gradlew :app:verifyPaparazziDebug</code> 应该全绿(没改视觉)。</li>
+  <li>提交 PR #2:"业务接入"。</li>
+</ol>
+
+<h3 data-reveal>Day 5 · 设计师改动 + 同步(0.5 天)</h3>
+<ol class="steps">
+  <li>设计师说"主色想调亮一点",改 Figma Variables 里 <code>brand/primary/500</code>。</li>
+  <li>Claude Code 自动检测:读最新 <code>get_variable_defs</code> → 比对 <code>Color.kt</code> → 生成 patch。</li>
+  <li>跑 Paparazzi → 4 张基线有 diff → 人工 spot check → 接受。</li>
+  <li><code>./gradlew :app:recordPaparazziDebug</code> 更新基线。</li>
+  <li>提交 PR #3:"品牌色调整",附 Paparazzi diff 截图。</li>
+</ol>
+
+<h3 data-reveal>Day 6-7 · 国际化 + 上架(1.5 天)</h3>
+<ol class="steps">
+  <li>加 <code>values-zh-rCN/strings.xml</code>、<code>values-en/strings.xml</code>。</li>
+  <li>录新基线(中英各 2 套),Paparazzi 跑 8 张。</li>
+  <li>Play Console 跑 Pre-launch report,真机/真网络再过一遍。</li>
+  <li>提交审核。</li>
+</ol>
+
+<div class="callout note"><b class="t">这一周的"AI 贡献"</b>① Token 自动化落码(1 小时手工→3 秒);② Composable 框架(8 小时手工→1 小时审);③ 回归基线维护(分散在每步 5 秒,合计 <30 分钟);④ 设计师改动同步(平时 1 小时 PR→5 分钟);⑤ 中英文版本 8 张截图(以前没自动化,根本不录)。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="antipatterns">
+<div class="sec-tag">避坑 09</div>
+<h2>反模式与避坑清单</h2>
+<p>下面这些是社区(以及我自己的项目)反复踩过的坑,每条都附"为什么错"和"应该怎么做":</p>
+
+<h3 data-reveal>设计端反模式</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 设计师只导图,不给 Token</b>
+  <p>让 AI 看截图去"猜"色值,出来的代码和品牌永远差几度。</p></div>
+  <div class="good"><b>✅ 必须给 Variables JSON 或可访问的 Figma 文件</b>
+  <p>用 Material Theme Builder 一次到位,后面 Claude Code 自动对。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ 设计稿用绝对定位</b>
+  <p>所有元素 <code>x=137, y=204, w=320</code>,改文案就崩。</p></div>
+  <div class="good"><b>✅ 必须 Auto Layout + 100% 约束</b>
+  <p>AI 读到的 Flexbox 结构才能正确转成 Compose <code>Row/Column/Box</code>。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ 一个 Frame 塞 5 个屏幕</b>
+  <p>AI 不知道怎么切 Composable 边界。</p></div>
+  <div class="good"><b>✅ 一个 Frame = 一个 Composable</b>
+  <p>Figma Frame 命名和 Compose 函数名一一对应,Claude Code 推断最准。</p></div>
+</div>
+
+<h3 data-reveal>编码端反模式</h3>
+<div class="duo">
+  <div class="bad"><b>❌ AI 直接改 production 代码</b>
+  <p>无计划无回归,改出来 5 个错只发现 2 个。</p></div>
+  <div class="good"><b>✅ Plan 模式 + PR 评审 + 截图回归 三件套</b>
+  <p>Claude Code <code>Shift+Tab</code> 进 Plan,ExitPlanMode 给你审,合 PR 必跑 Paparazzi。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ 改 UI 不加测试</b>
+  <p>"AI 改的应该不会错吧"——会的,而且会经常错。</p></div>
+  <div class="good"><b>✅ 改一个 Composable,加一个 Paparazzi 测试</b>
+  <p>成本是 30 秒,挡掉的回归是无数次。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ AI 一次改 10 个页面</b>
+  <p>Prompt 一句话改 10 个,出来 1 个能跑 9 个错。</p></div>
+  <div class="good"><b>✅ 一次一个,跑通再下一个</b>
+  <p>AI 上下文有限 + 出错难追,小步快跑比大跃进稳 10 倍。</p></div>
+</div>
+
+<h3 data-reveal>流程端反模式</h3>
+<div class="duo">
+  <div class="bad"><b>❌ Figma 与代码两套都改,没记录</b>
+  <p>三方(设计 / 前端 / AI)都改,改完对不上。</p></div>
+  <div class="good"><b>✅ 约定唯一源 + 改完发 PR 评论</b>
+  <p>Figma 是源就只动 Figma,代码源同上;改动必须可追溯。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ Paparazzi 基线永不更新</b>
+  <p>3 个月后基线全红,没人敢 reset。</p></div>
+  <div class="good"><b>✅ 设计改动 PR 必带"基线更新说明"</b>
+  <p>截图 diff 是 PR 评审的一部分,基线更新有理由。</p></div>
+</div>
+
+<h3 data-reveal>判断 AI 改 UI 是否真提效的 4 个指标</h3>
+<p>不要被"看起来 30 秒出 PR"迷惑,真提效要看:</p>
+<ol>
+  <li><strong>PR 合入率</strong>——AI 提的 PR 里一次过审的比例。低于 50% 说明 AI 在制造返工。</li>
+  <li><strong>Paparazzi 误报率</strong>——AI 改完的截图 diff 里"实际有视觉问题"的比例。高于 30% 就要重新训练提示词。</li>
+  <li><strong>设计师改动到代码上线的时间</strong>——目标 <2 小时,>1 天就是流程断了。</li>
+  <li><strong>设计 Token 一致率</strong>——代码里硬编码颜色 / 间距的比例。目标 <5%,>15% 就要把 Token 重构排上日程。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="prompts">
+<div class="sec-tag">附录 A</div>
+<h2>提示词模板库(可直接复制)</h2>
+<p>以下提示词都按"读什么 / 写哪里 / 测什么"三段式写,适配 Claude Code 与 Codex,改改细节就能用。</p>
+
+<h3 data-reveal>A1 · 启动:Figma 读设计 + 落 Token</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A1</div>
+<code>读 Figma 文件 &lt;FILE_KEY&gt; 的 ProductDetailScreen(用 figma MCP):
+1. get_variable_defs 拿到所有 Variables,写入 app/src/main/java/.../ui/theme/Color.kt 与 Type.kt
+2. 变量名对齐 Material 3 ColorScheme role(primary → primary, surface-variant → surfaceVariant)
+3. 写完用 ./gradlew :app:compileDebugKotlin 验证
+4. 给我看 Color.kt 的 diff</code>
+</div>
+
+<h3 data-reveal>A2 · 生成 Composable + Preview + 测试</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A2</div>
+<code>按 Figma Frame 结构生成:
+- app/src/main/java/.../feature/product/ProductDetailScreen.kt
+- @Preview(name="Light"),@Preview(name="Dark"),@Preview(name="EN")
+- 颜色/字/间距全部走 MaterialTheme,不走硬编码
+- 加 src/test/.../ProductDetailSnapshotTest.kt,先用 recordPaparazzi 录基线
+- 跑 ./gradlew :app:verifyPaparazziDebug,绿了再回来</code>
+</div>
+
+<h3 data-reveal>A3 · 设计师改 Token 后自动同步</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A3</div>
+<code>设计师刚在 Figma 改了 Variables,链接:&lt;FIGMA_URL&gt;
+1. 用 figma MCP 重新 get_variable_defs(不要用缓存)
+2. 与当前 Color.kt/Type.kt 比对,生成最小 patch
+3. 跑 ./gradlew :app:verifyPaparazziDebug,有 diff 列出来给我看
+4. 提一个 PR,标题 "design: sync tokens from Figma (2026-08-05)"</code>
+</div>
+
+<h3 data-reveal>A4 · 加新页面(同设计系统)</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A4</div>
+<code>读 Figma Frame &lt;FRAME_ID&gt;,创建 &lt;FeatureName&gt;Screen.kt
+- 必须用 MaterialTheme.colorScheme / typography / shapes
+- 必须有 @Preview Light/Dark
+- 必须有 Paparazzi 测试,先 recordPaparazzi 入基线
+- 不允许:硬编码颜色、硬编码 dp/sp、Color.White 等系统色
+- 完成后跑 :app:lintDebug,再跑 :app:verifyPaparazziDebug</code>
+</div>
+
+<h3 data-reveal>A5 · 截图回归失败 → 让 AI 自己修</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A5</div>
+<code>我刚跑 :app:verifyPaparazziDebug,以下测试失败:
+&lt;粘贴测试输出&gt;
+请:
+1. 读失败的 diff 图(在 app/build/paparazzi/failures/)
+2. 判断是预期改动还是回归
+3. 如果是预期:重跑 recordPaparazzi 更新基线
+4. 如果是回归:读 git diff,定位改动,要么 revert 要么修
+5. 修完再跑一次 verify,直到全绿</code>
+</div>
+
+<h3 data-reveal>A6 · 反向回写:Figma → Token JSON</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A6</div>
+<code>从 app/src/main/java/.../ui/theme/Color.kt 读所有 ColorScheme role
+生成 design/tokens/color-tokens.json,格式:
+{ "primary": "#476810", "onPrimary": "#FFFFFF", ... }
+同时生成 design/tokens/typography.json 和 spacing.json
+用 Style Dictionary 兼容的格式</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">附录 R</div>
+<h2>资源与来源索引</h2>
+
+<h3 data-reveal>官方文档(第一信源)</h3>
+<ul>
+  <li><a href="https://docs.pencil.dev/" target="_blank">pen.dev 官方文档</a>——已收录在本库 <a href="pencil-docs-zh.html">《pen.dev 文档中文版》</a></li>
+  <li><a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">pen.dev AI Integration</a>——MCP 集成、Claude Code / Codex 工作流</li>
+  <li><a href="https://github.com/figma/mcp-server-guide" target="_blank">Figma MCP Server 指南</a>——安装、工具集、Code Connect</li>
+  <li><a href="https://help.figma.com/hc/en-us/sections/14506167395095-AI" target="_blank">Figma AI 能力中心</a></li>
+  <li><a href="https://developer.android.com/develop/ui/compose/designsystems/material3" target="_blank">Material 3 in Jetpack Compose</a>——官方 ColorScheme / Typography / Shapes</li>
+  <li><a href="https://m3.material.io/theme-builder" target="_blank">Material Theme Builder</a>——Figma Variables → Compose 官方桥</li>
+  <li><a href="https://stitch.withgoogle.com/" target="_blank">Google Stitch</a></li>
+</ul>
+
+<h3 data-reveal>工具仓库</h3>
+<ul>
+  <li><a href="https://github.com/cashapp/paparazzi" target="_blank">Paparazzi</a>——JVM 截图测试</li>
+  <li><a href="https://github.com/takahirom/roborazzi" target="_blank">Roborazzi</a>——Robolectric 截图测试 + AI skill(<code>npx skills add takahirom/roborazzi</code>)</li>
+  <li><a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a>——设计 Token 单一来源</li>
+  <li><a href="https://github.com/salesforce/theo" target="_blank">Theo</a>——另一种 Token 工具</li>
+</ul>
+
+<h3 data-reveal>本库相关专题(对照阅读)</h3>
+<ul>
+  <li><a href="pencil-claude-code-best-practices.html">pen.dev × Claude Code 最佳实践</a>——深扎一对组合的实战手册</li>
+  <li><a href="pencil-docs-zh.html">pen.dev 官方文档中文版</a>——逐页翻译</li>
+  <li><a href="claude-code-guide.html">Claude Code 使用指南</a>——命令、Skill、MCP 通用基础</li>
+  <li><a href="codex-guide.html">Codex 使用指南</a>——OpenAI 编码代理对照</li>
+  <li><a href="android-crash-anr.html">Android Crash & ANR 排查根治</a>——AI 改 UI 不影响稳定性</li>
+  <li><a href="prompt-context-engineering.html">提示词与上下文工程</a>——本页所有提示词的底层方法论</li>
+</ul>
+
+<div class="callout warn"><b class="t">时效声明</b>本页基于 2026-08-05 公开资料整理。Figma / pen.dev / Compose Material 3 / Paparazzi / Roborazzi 都在快速迭代——以官方文档为准。<strong>看到本页核对日期距今超过 1 个月</strong>,请重新跑一次 token 同步验证 + 看 Paparazzi 基线是否还匹配。设计工具和 AI 编码代理都在狂奔,这是这一类页面的宿命。</div>
+</section>
+
+<div class="footer">
+  <div>本页内容遵循 AI 知识库的总原则:每条结论标了来源,争议处标了分歧,没查到的直接写"没查到"。设计工具与 AI 编码代理的协同是 2026 年才真正"能用"的事——一年前本页不可能写出来,因为 MCP、Material 3 在 Compose 的成熟、Paparazzi 的稳定缺一不可。</div>
+  <div style="margin-top:8px">最后核对 <strong>2026-08-05</strong> · 适用工具版本:Claude Code v2.1.222 · Codex 0.146.0 · pen.dev docs 2026-07-27 · Paparazzi 2.0.0-alpha05 · Roborazzi 最新 stable</div>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

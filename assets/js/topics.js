@@ -69,6 +69,7 @@ const PATHS = [
       { label: "Claude Code 指南 · 干货版", href: "topics/claude-code-guide.html", note: "五条黄金法则 → 八大场景实战" },
       { label: "Codex 指南 · CLI × IDE × Cloud", href: "topics/codex-guide.html", note: "沙箱审批、云端任务、双代理协同" },
       { label: "pen.dev × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
+      { label: "AI × UI 设计协同全景(新)", href: "topics/ai-ui-design-collab.html", note: "Figma + pen.dev + Material 3 + 视觉回归,Android 端到端" },
       { label: "上下文工程与反模式(内功)", href: "topics/prompt-context-engineering.html#context", note: "注意力预算、长任务三板斧、安全与成本、鉴别偏方" }
     ]
   },
@@ -115,6 +116,27 @@ const TOPICS = [
       {id:"design-system",label:"设计系统工程化"},{id:"prompt-patterns",label:"高效提示词模式"},
       {id:"advanced",label:"高级玩法"},{id:"pitfalls",label:"避坑清单"},
       {id:"cases",label:"真实案例研究"},{id:"resources",label:"资源与来源索引"}
+    ]
+  },
+  {
+    href: "topics/ai-ui-design-collab.html", icon: "🎨", tag: "设计与文档", color: "#7c3aed",
+    title: "AI 编码代理 × UI 设计工具 · 最高效率协同全景",
+    desc: "pen.dev / Figma / Stitch / Galileo / v0 五种角色 + Claude Code / Codex + Android Jetpack Compose Material 3:工具地图、MCP 三通道、Android 五步端到端流水线、设计 Token 工程化、Paparazzi / Roborazzi 视觉回归、双向同步、反模式与逐字提示词库。",
+    keywords: "figma pencil.dev stitch galileo v0 claude code codex mcp 设计 token variables compose material3 配色 主题 android 视觉回归 paparazzi roborazzi 截图 协同 设计系统 双向同步 配色 字体 间距 圆角 暗色 dynamic color material you auto layout dev mode code connect style dictionary",
+    meta: ["3 入口", "5 步 Android 流水线", "Paparazzi/Roborazzi 双回归", "2026-08 核对"],
+    sections: [
+      {id:"intro",label:"全景与设计-代码鸿沟"},
+      {id:"map",label:"设计端工具定位"},
+      {id:"consume",label:"AI 代理如何看到设计"},
+      {id:"pipeline",label:"五步流水线"},
+      {id:"tokens",label:"Figma → Material 3 Token"},
+      {id:"compose",label:"Compose 生成与回写"},
+      {id:"verify",label:"真机/虚拟截图回归"},
+      {id:"sync",label:"双向同步与设计系统维护"},
+      {id:"cases",label:"真实案例(电商详情页)"},
+      {id:"antipatterns",label:"反模式与避坑"},
+      {id:"prompts",label:"提示词模板库"},
+      {id:"resources",label:"资源与来源"}
     ]
   },
   {
