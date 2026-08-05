@@ -185,7 +185,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">CC</span>Claude Code 使用指南<span class="sub">干货版</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 v2.1.220 · 2026-07-28</span>
+    <span>核对至 v2.1.222 · 2026-08-05</span>
   </div>
 </header>
 
@@ -234,7 +234,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-07-28</div>
+  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-05</div>
   <h1>Claude Code<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">从心法到命令,从扩展体系到八大实战场景。以官方 Best Practices 与命令参考为底,融合社区高阶经验,压缩成一页可反复查阅的实战手册——只留干货,不讲废话。</p>
   <div class="meta">
@@ -277,7 +277,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>GitHub</td><td><code>/install-github-app</code> 后在 PR 中 @claude</td><td>评审与自动修复</td></tr>
 </table>
 
-<h3 data-reveal>当前版本与模型(截至 2026-07-28)</h3>
+<h3 data-reveal>当前版本与模型(截至 2026-08-05)</h3>
 <table class="tbl">
   <tr><th>模型别名</th><th>说明</th><th>适用</th></tr>
   <tr><td><code>sonnet</code></td><td>Sonnet 5,当前默认模型,原生 1M 上下文</td><td>日常开发的主力,速度与能力平衡</td></tr>
@@ -342,11 +342,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">动态</div>
 <h2>近期重要变化</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-07-28</strong> · 对照 Claude Code <strong>v2.1.220</strong>(2026-07-25 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-05</strong> · 对照 Claude Code <strong>v2.1.222</strong>(2026-08-04 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
 <h3 data-reveal>🔴 破坏性变更:老习惯会失效</h3>
 <table class="tbl">
   <tr><th>时间</th><th>变化</th><th>你要怎么改</th></tr>
+  <tr><td>08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> 命令<strong>被移除</strong></td><td>任何脚本、SOP、笔记里出现 <code>/ultraplan</code> 都要删。改用 <code>/plan</code> + 远程评审,或 <code>/workflows</code> 看进度</td></tr>
+  <tr><td>08-04<br><span class="src">v2.1.222</span></td><td>Remote Control 自动开启:<strong>仓库本地 <code>.claude/settings.json</code> 不再能开</strong>(仍可关)</td><td>想在仓库里给团队默认开 Remote Control,必须配到<strong>用户级</strong> <code>/config</code>。repo-local 只能关不能开,这是防供应链风险的明确收紧</td></tr>
+  <tr><td>08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> 行为再加一层:<strong>fork 出去的会话自带新 git worktree</strong></td><td>原"在主 checkout 上接着改"的工作流,改用 <code>/subtask</code>;<code>/fork</code> 现在等于"复制 + 独立 worktree",适合并行实验</td></tr>
   <tr><td>07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code>、<code>/code-review</code> <strong>不再自动触发</strong></td><td>以前 Claude 会自己在合适时机跑,现在必须你显式敲 <code>/verify</code> 或 <code>/code-review</code>。习惯"它会自己验"的人要改口令</td></tr>
   <tr><td>07-18<br><span class="src">v2.1.214</span></td><td>单段 <code>dir/**</code> 权限规则收紧</td><td><code>Edit(src/**)</code> 以前会匹配目录树里<strong>任何位置</strong>的 <code>src</code>,现在只匹配 <code>&lt;cwd&gt;/src</code>。要匹配任意深度得写 <code>**/dir/**</code>;hook 的 <code>if:</code> 条件同理</td></tr>
   <tr><td>07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code> 语义变更</td><td>原"派生子代理"功能改名 <code>/subtask</code>;<code>/fork</code> 现在是把会话<strong>复制</strong>到新后台会话。脚本、笔记、团队文档里的 <code>/fork</code> 要逐个确认是哪个意思</td></tr>
@@ -362,11 +365,17 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>MCP 调用超 2 分钟自动转后台</strong>(07-17)—— 慢工具不再卡住整个回合,用 <code>CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS</code> 调阈值。</li>
   <li><strong>自动模式在 Bedrock / Vertex / Foundry 上默认可用</strong>(07-11)—— 不再需要 <code>CLAUDE_CODE_ENABLE_AUTO_MODE</code> 开关;不想要用 <code>disableAutoMode</code> 关掉。同时自动模式加了硬拦截:未经要求的 <code>git reset --hard</code>、<code>git clean -fd</code>、terraform/pulumi destroy 一律挡下。</li>
   <li><strong><code>/code-review</code> 改为后台子代理执行</strong>(07-22)—— 评审过程不再刷屏,对话记录更干净。</li>
+  <li><strong>后台会话新默认收尾</strong>(08-04,v2.1.221)—— 自动 commit + push 保住成果,需要时再开 draft PR;遵循 CLAUDE.md 里的 git 指令;最后主动汇报"工作落在哪"</li>
+  <li><strong><code>/usage</code> 不再把整回合算到 MCP 上</strong>(08-04,v2.1.222)—— MCP 工具的用量份额只看"实际消费其工具结果的请求",不是"调过它的整回合"——成本拆分终于合理</li>
 </ul>
 
 <h3 data-reveal>🆕 新增能力:值得马上试的</h3>
 <table class="tbl">
   <tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
+  <tr><td>08-04</td><td><strong>Focus view</strong>(VSCode)</td><td><kbd>Ctrl+Alt+F</kbd> 或命令面板 "Claude Code: Toggle Focus view"。把工具活动折叠成可展开的逐回合摘要 + 实时运行指示器,长会话看输出不再刷屏</td></tr>
+  <tr><td>08-04</td><td>沙箱凭证 <code>mode: "mask"</code>(Linux/WSL)</td><td>沙箱里读凭证拿到的是<strong>哨兵拷贝</strong>(全文或 <code>extract</code> 正则截取的片段),出口时由代理替换为真实值;macOS 暂 fallback 为 <code>deny</code>。CI 跑需要密钥的命令时减少暴露面</td></tr>
+  <tr><td>08-04</td><td><code>claude-api</code> skill 新增 <code>prompt-audit</code></td><td>审计你自己的提示词与工具描述里"为旧模型写的模式",升级到新模型时跑一次心里有底</td></tr>
+  <tr><td>08-04</td><td><code>claude plugin validate</code> 命名预警</td><td>marketplace / 插件名会被 Claude Desktop 托管同步拒绝时给出告警,避免装上去才发现用不了</td></tr>
   <tr><td>07-24</td><td><strong>Opus 5</strong> 成为默认 Opus 模型</td><td>1M 上下文。<code>/fast</code> 快速档现适用于 Opus 5 与 4.8(4.7 已移出)</td></tr>
   <tr><td>06-30</td><td><strong>Sonnet 5</strong> 成为默认模型</td><td>原生 1M 上下文</td></tr>
   <tr><td>07-17</td><td><code>/subtask</code></td><td>派生子代理办侧线任务(即原 <code>/fork</code>)</td></tr>
@@ -515,11 +524,10 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>/background</code>(/bg)</td><td>当前会话转后台继续跑,腾出终端;<code>claude agents</code> 监控</td></tr>
   <tr><td><code>/subtask 指令</code> <span class="pill a">2026-07 更名</span></td><td>派生子代理:继承完整对话去办事,结果回传,你继续干活。<strong>这是原 <code>/fork</code> 的功能</strong>,2026-07-17 起改叫 <code>/subtask</code></td></tr>
-  <tr><td><code>/fork</code></td><td><strong>语义已变</strong>:现在是把当前会话<strong>复制</strong>到一个新的后台会话(不再是派生子代理)</td></tr>
+  <tr><td><code>/fork</code></td><td><strong>语义已变两次</strong>:2.1.212 起不再是派生子代理(改 <code>/subtask</code>),是<strong>把当前会话复制到一个新后台会话</strong>;2.1.221 起复制出来的会话<strong>自带独立 git worktree</strong>。原 checkout 上接着改用 <code>/subtask</code>;想"复制 + 隔离分支并行"用 <code>/fork</code></td></tr>
   <tr><td><code>/tasks</code></td><td>查看/管理一切后台运行(shell、子代理)</td></tr>
   <tr><td><code>/autofix-pr</code></td><td>云端会话盯当前 PR:CI 挂了、评审提意见,自动推修复</td></tr>
   <tr><td><code>/schedule 描述</code></td><td>创建定时任务(云端执行),对话式配置</td></tr>
-  <tr><td><code>/ultraplan 任务</code></td><td>云端起草计划 → 浏览器审阅 → 远程执行或发回终端</td></tr>
   <tr><td><code>/workflows</code></td><td>动态工作流进度视图:暂停/恢复/保存</td></tr>
 </table>
 </section>
@@ -1147,7 +1155,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 <h2>隐藏能力与彩蛋配置</h2>
 <p>这一章的素材来源和前面 14 章不一样——不是查文档,而是直接对本机已安装的 <code>claude.exe</code> 做 <code>--help</code> 全遍历 + 字符串反查,再逐条回官方文档交叉核对。三类证据分开标注,别混着信:</p>
 <p><span class="pill c">官方确认</span> 文档写了但极少人翻到 &nbsp; <span class="pill a">反查证实</span> 二进制里真实存在、行为可从代码逻辑推断,官网未写 &nbsp; <span class="pill b">存在未验证</span> 变量确认存在,但具体行为没有可靠依据,别当日常功能用</p>
-<div class="callout warn"><b class="t">版本水印</b>本节全部结论实测于 <strong>Claude Code v2.1.216(2026-07-21)</strong>。这类内部实现细节随版本演进很快,几个月后可能整批改名或下线——命令与参数的最终判据永远是你自己那台机器的 <code>claude --help</code> 与 <code>/release-notes</code>,不是这张表。</div>
+<div class="callout warn"><b class="t">版本水印</b>本节全部结论实测于 <strong>Claude Code v2.1.222(2026-08-04)</strong>。这类内部实现细节随版本演进很快,几个月后可能整批改名或下线——命令与参数的最终判据永远是你自己那台机器的 <code>claude --help</code> 与 <code>/release-notes</code>,不是这张表。</div>
 
 <h3 data-reveal>一、官方写了但很少人翻到的参数 <span class="pill c">官方确认</span></h3>
 <table class="tbl">

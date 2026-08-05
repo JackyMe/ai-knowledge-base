@@ -179,7 +179,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">CX</span>Codex 使用指南<span class="sub">干货版</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-07-28</span>
+    <span>核对至 2026-08-05</span>
   </div>
 </header>
 
@@ -221,7 +221,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-07-28</div>
+  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-08-05</div>
   <h1>Codex<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">OpenAI 的代理式编码工具:一个账号,五种形态——终端 CLI、IDE 扩展、云端任务、桌面 App、GitHub 代码评审。本指南以官方 CLI 参考与斜杠命令文档为底,整理出安装配置、命令速查、沙箱审批、AGENTS.md、Skills/MCP 与实战打法。</p>
   <div class="meta">
@@ -311,7 +311,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <div class="sec-tag">动态</div>
 <h2>近期重要变化</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-07-28</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-05</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
 <h3 data-reveal>🔴 最容易踩的坑:多文件夹项目的配置发现规则</h3>
 <p>2026-07-23 起本地项目支持挂载<strong>多个相关文件夹</strong>,但配置发现有一条很容易忽略的规则:</p>
@@ -333,6 +333,7 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
   <tr><td><strong>多代理委派开关</strong></td><td>可在线程级与回合级配置为:禁用 / 仅在显式请求时 / 主动委派</td></tr>
   <tr><td><strong>索引化 web 搜索模式</strong></td><td>允许实时搜索,但直接访问页面被限制在服务端批准的 URL 范围内——安全与时效的折中</td></tr>
   <tr><td><strong>插件面板分组</strong></td><td><code>/plugins</code> 现在把远程插件分成 OpenAI Curated / Workspace / Shared with me 三组;符合条件的回合中会推荐并可直接安装</td></tr>
+  <tr><td><strong>Codex 0.146.0 特性集</strong>(07-29)</td><td>会话可命名 + 钉选 + 侧栏多开;Agent Plugins 支持 Bedrock 与 Claude Code marketplace;支持分页历史的 fork(含<strong>临时 fork</strong>,不在列表留痕);app-server 通过 WebSocket 接远程 Code Mode 主机;自定义模型提供方可独立启用 web 搜索;executor 提供的 skills 可被安全发现并读取资源</td></tr>
   <tr><td><strong>Record &amp; Replay</strong>(macOS,06-18)</td><td>把你演示过一遍的流程直接转成可复用的 skill</td></tr>
   <tr><td><strong><code>/init</code></strong>(06-11)</td><td>一键生成项目说明(<code>AGENTS.md</code>)</td></tr>
   <tr><td><strong>Amazon Bedrock 提供方</strong>(06-01)</td><td>可经 Bedrock 使用 OpenAI 模型,走 AWS 托管认证与账号管控</td></tr>

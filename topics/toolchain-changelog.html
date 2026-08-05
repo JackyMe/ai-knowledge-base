@@ -168,7 +168,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">📅</span>工具版本追踪<span class="sub">变化日志</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-07-28</span>
+    <span>核对至 2026-08-05</span>
   </div>
 </header>
 
@@ -186,6 +186,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">按月归档</div>
+    <a href="#m2026-08"><span class="no">08</span>2026 年 8 月</a>
     <a href="#m2026-07"><span class="no">07</span>2026 年 7 月</a>
     <a href="#m2026-06"><span class="no">06</span>2026 年 6 月</a>
   </div>
@@ -199,7 +200,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-07-28</div>
+  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-08-05</div>
   <h1>工具版本追踪<br><span class="grad">变了什么 · 要不要改习惯</span></h1>
   <p class="lead">AI 编程工具迭代太快,官方 changelog 又长又琐碎。这一页只做一件事:把 Claude Code 与 Codex 的版本变化<strong>筛成"跟你有关的"</strong>,标清楚哪些会让你的老习惯失效,哪些值得马上试。</p>
   <div class="meta">
@@ -248,6 +249,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3 data-reveal>Claude Code</h3>
 <table class="tbl">
   <tr><th>时间 / 版本</th><th>变化</th><th>怎么改</th></tr>
+  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> 命令被<strong>移除</strong>(功能下线)</td><td>任何脚本/笔记/SOP 里出现 <code>/ultraplan</code> 的都要删;改用 <code>/plan</code> + 远程评审,或 <code>/workflows</code> 看进度</td></tr>
+  <tr><td>2026-08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> 行为再加一层:<strong>fork 出去的会话自带新 worktree</strong>,不再在原 checkout 上干活</td><td>原 checkout 上"接着改"的工作流要改用 <code>/subtask</code>;<code>/fork</code> 现在等于"复制+独立 worktree",适合并行实验</td></tr>
+  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td>Remote Control 自动开启:<strong>仓库本地 <code>.claude/settings.json</code> 不再能开</strong>(仍可关)</td><td>想在仓库里默认给队友开 Remote Control,必须放到用户级 <code>/config</code>。repo-local 只能关不能开,防供应链风险</td></tr>
   <tr><td>2026-07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code>、<code>/code-review</code> 不再自动触发</td><td>必须显式调用。以前靠"Claude 会自己验"的工作流要加上明确指令</td></tr>
   <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td>单段 <code>dir/**</code> 权限规则只匹配 <code>&lt;cwd&gt;/dir</code></td><td><code>Edit(src/**)</code> 不再匹配树中任意位置的 <code>src</code>;要任意深度写 <code>**/dir/**</code>。hook 的 <code>if:</code> 条件同理</td></tr>
   <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td><code>file</code> 命令的 <code>-m</code>/<code>--magic-file</code>、<code>-f</code>/<code>--files-from</code> 需要授权</td><td>原本自动放行,现在会弹权限确认</td></tr>
@@ -267,6 +271,45 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </table>
 
 <div class="callout note"><b class="t">怎么快速自查</b>Claude Code 用 <code>/release-notes</code> 看你当前版本到最新之间的变化;Codex 用 <code>codex debug models</code> 确认实际可用型号,用 <code>/debug-config</code> 查"为什么这个配置键不生效"。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-08">
+<div class="sec-tag">归档 08</div>
+<h2>2026 年 8 月</h2>
+
+<h3 data-reveal>Claude Code:稳定为主,两条行为变化值得注意</h3>
+<p>本月主线是稳定性与权限/工作流收敛:<strong><code>/ultraplan</code> 下线</strong>、<strong><code>/fork</code> 语义再加一层</strong>、<strong>Remote Control 自动开启被 repo-local 锁死</strong>。其余多数为 bug 修复与内部改进。</p>
+
+<table class="tbl">
+  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td><strong><code>/ultraplan</code> 命令移除</strong>:该功能整体下线,任何脚本/SOP 里的 <code>/ultraplan</code> 都要删</td></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td><strong>Remote Control 自动开启被 repo-local 锁死</strong>:<code>.claude/settings.json</code> 不再能开(只能关)。想在仓库里默认给队友开,必须放到用户级 <code>/config</code></td></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td>auto-mode 安全加固:跨会话 <code>SendMessage</code> 在派发前先过权限分类器</td></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td><code>/usage</code> 不再把整回合算到任一调过的 MCP 上,而是按"实际消费该工具结果的请求数"分摊</td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td><strong><code>/fork</code> 现在会<em>复制 + 独立 worktree</em></strong>:fork 出去的会话自带新 git worktree,不再在原 checkout 上干活。想"原 checkout 接着改"用 <code>/subtask</code></td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td>后台会话的新默认收尾模式:有工作时 commit+push 保住成果、需要时再开 draft PR、遵循 CLAUDE.md 的 git 指令、最后汇报工作落在哪</td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🆕</td><td><strong>Focus view</strong>(VSCode):<kbd>Ctrl+Alt+F</kbd> 切换,把工具活动折叠成可展开的逐回合摘要 + 实时运行指示器</td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🆕</td><td>沙箱凭证 <code>mode: "mask"</code>(Linux/WSL):沙箱命令读到的是哨兵拷贝(全文或 <code>extract</code> 正则截取的片段),出口时由代理替换为真实值;macOS 暂 fallback 为 <code>deny</code></td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🆕</td><td><code>claude-api</code> skill 新增 <code>prompt-audit</code> 子命令:审计提示词与工具描述里为旧模型写的模式</td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🆕</td><td><code>claude plugin validate</code> 在 marketplace/插件名会被 Claude Desktop 托管同步拒绝时给出告警</td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🔧</td><td>修了一批生产环境很痛的 bug:<code>/usage</code> 对 MCP 用量错算、<code>SendMessage</code> 长摘要字符上限拒收、print mode 下 MCP 工具调用被当成字面文本、<code>EndConversation</code> 误用、Bedrock + Windows + 异常 <code>HOME</code> 变量认证失败等</td></tr>
+</table>
+
+<h3 data-reveal>Codex:0.146.0 是一次"特性密度很高"的稳定版</h3>
+<p>07-29 发的 0.146.0 没有破坏性变更,但带来一批直接改变工作流的特性:会话可命名 / 钉选、临时 fork、插件支持 Bedrock 与 Claude Code 市场、app-server 通过 WebSocket 接远程 Code Mode 主机、自定义模型提供方可独立启用 web 搜索、发现并安全读取 executor 提供的 skills 资源。<strong>本月内尚无 0.147 稳定版</strong> —— 0.147 系列当前都是 alpha 预发布,不收录。</p>
+
+<table class="tbl">
+  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>会话可命名 + 钉选</strong>:<code>/new</code> 与 <code>/clear</code> 命名新会话、置顶重要会话,在不关闭的前提下侧栏切换多个并行会话</td></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>Agent Plugins 清单 + 工作区发布</strong>:支持 Bedrock 与 Claude Code 额外 marketplace;workspace 插件可发布并被成员发现</td></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>支持分页历史的 fork</strong>,含<strong>临时 fork</strong>(不在会话列表里留痕,适合一次性实验分支)</td></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>app-server 通过 <strong>WebSocket</strong> 连接远程 Code Mode 主机</td></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>兼容的自定义模型提供方可独立启用<strong>web 搜索</strong></td></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>发现 executor 提供的 skills 并安全读取其关联资源(含用户显式选中的)</td></tr>
+  <tr><td>07-29</td><td>0.146.0</td><td>🔧</td><td>代理配置在 auth / 插件下载 / MCP 鉴权 / 远程执行 / WebSocket / 重定向 / LM Studio 连接等链路统一生效;Windows 导航键、TUI 渲染与 <kbd>Ctrl+Z</kbd> 恢复等多平台修复</td></tr>
+</table>
 </section>
 
 <div class="divider"></div>
