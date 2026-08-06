@@ -141,6 +141,15 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 .pipe-step:last-child::after{display:none}
 @media (max-width:880px){.pipeline{grid-template-columns:repeat(2,1fr)}.pipe-step::after{display:none}}
 
+/* Paparazzi 截图网格 */
+.screenshot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0 24px}
+.screenshot-grid figure{margin:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.2s}
+.screenshot-grid figure:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(124,58,237,.08)}
+.screenshot-grid img{width:100%;height:auto;display:block;background:#fafbfc}
+.screenshot-grid figcaption{font-size:13px;color:var(--text-2);padding:12px 14px;background:#fafcff;border-top:1px solid var(--border);line-height:1.6}
+.screenshot-grid figcaption strong{color:var(--accent)}
+@media (max-width:720px){.screenshot-grid{grid-template-columns:1fr}}
+
 /* 对比表 */
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
 .duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
@@ -222,6 +231,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">附录</div>
     <a href="#prompts"><span class="no">A</span>提示词模板库</a>
+    <a href="#ios-web"><span class="no">X</span>iOS / Web 跨端落地</a>
     <a href="#resources"><span class="no">R</span>资源与来源</a>
   </div>
 </nav>
@@ -234,15 +244,15 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <h1>把设计稿当"一等公民"<br><span class="grad">喂给 Claude Code / Codex</span></h1>
   <p class="lead">设计师画图、开发者写码、AI 改码——三套流程在 2026 年终于能用 MCP / 视觉上下文 / 设计 Token 三条路径真正合流。本页把 pencil.dev、Figma、Material Theme Builder、Jetpack Compose、Paparazzi / Roborazzi 拼成一条<strong>最高效率的"设计 ↔ 代码"流水线</strong>,以 Android 工程师视角为主、Web / iOS 旁通。</p>
   <div class="meta">
-    <span>工具分工清晰</span><span>MCP 集成全解</span><span>Material 3 完整桥接</span><span>真机/虚拟双回归</span><span>提示词逐字模板</span>
+    <span>工具分工清晰</span><span>MCP 集成全解</span><span>Material 3 完整桥接</span><span>真机/虚拟双回归</span><span>提示词逐字模板</span><span>三端对比速查</span>
   </div>
 </div>
 
 <div class="stats">
-  <div class="stat"><b>3 入口</b><span>Figma · pen.dev · AI 草图(stitch/galileo/v0),各有最佳用法</span></div>
+  <div class="stat"><b>3 入口</b><span>Figma · pen.dev · v0/Stitch,各取所需,Galileo 已并入 Stitch</span></div>
   <div class="stat"><b>2 通道</b><span>MCP 读结构(零损耗) + 截图读视觉(兜底),二选一不互斥</span></div>
   <div class="stat"><b>5 步</b><span>Android 端到端:Token → 草图 → 生成 → 截图 → 回归</span></div>
-  <div class="stat"><b>2 回归</b><span>Paparazzi(JVM 截图,快)+ Roborazzi(Robolectric,真集成)</span></div>
+  <div class="stat"><b>3 端</b><span>Android / iOS(SwiftUI)/ Web(Tailwind v4 + shadcn)速查</span></div>
 </div>
 
 <div class="callout warn"><b class="t">本页与已有 pen.dev 专题不重复</b>已有<a href="pencil-claude-code-best-practices.html">《pen.dev × Claude Code 最佳实践》</a>深扎 pencil + Claude Code 一对组合;本页视野更广:把 pencil 当作"设计端工具之一",对比 Figma、Stitch、Galileo、v0,重点讲<strong>AI 编码代理消费设计的统一模式</strong>,并以 Android Jetpack Compose / Material 3 为落地端。<strong>两篇建议对照看</strong>。</div>
@@ -295,24 +305,19 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="card">
     <div class="name"><span class="icon">🪄</span>Google Stitch</div>
     <div class="role">AI 草图生成器 · 0→1 快速起稿</div>
-    <p>Google 2026 年推出的"Design with AI",输入文字或截图,直接吐出多平台(Material 3 Web / Android / iOS)的高保真稿。适合"还没有设计稿,先看几种方向"的早期探索。</p>
-    <div class="links"><a href="https://stitch.withgoogle.com/" target="_blank">官网</a></div>
+    <p>Google Labs 项目,<strong>2025 I/O 上线,2026.8 仍在收尾 waitlist</strong>。输入文字或截图,直接吐 Material 3 Web/Android/iOS 高保真稿,支持导出 Figma 文件或可运行代码。适合"还没有设计稿,先看几种方向"的早期探索。</p>
+    <div class="links"><a href="https://stitch.withgoogle.com/" target="_blank">官网</a><a href="https://docs.stitch.withgoogle.com/" target="_blank">文档</a></div>
   </div>
 
   <div class="card">
-    <div class="name"><span class="icon">🤖</span>Galileo AI</div>
-    <div class="role">文字 → 组件级 UI 生成</div>
-    <p>输入自然语言描述,吐出可编辑的 Figma 组件(不是图片)。适合"我想要一个 onboarding 流程"这种粗粒度需求,产物可直接拉进 Figma 继续精修。</p>
-    <div class="links"><a href="https://stitch.withgoogle.com/" target="_blank">跳转(已合并)</a></div>
-  </div>
-
-  <div class="card">
-    <div class="name"><span class="icon">⚡</span>v0 / Uizard / Visily</div>
-    <div class="role">截图 / 草图 → 可用代码</div>
-    <p>v0(Vercel)主打 React/Tailwind/shadcn;Uizard 截图直接转线框;Visily 把白板草图变成可点击原型。都能直接产代码或 Figma 文件。</p>
-    <div class="links"><a href="https://v0.dev/" target="_blank">v0</a><a href="https://uizard.io/" target="_blank">Uizard</a><a href="https://www.visily.ai/" target="_blank">Visily</a></div>
+    <div class="name"><span class="icon">⚡</span>v0 by Vercel</div>
+    <div class="role">文字 / Figma → React + Tailwind + shadcn 代码</div>
+    <p>Vercel 出品,<strong>2026.7 起支持直接读 Figma 文件 + Claude Opus 5 模型 + v0 MCP server</strong>(<code>listMessages</code> / <code>resolveTask</code> 等工具),全面开放(GA),免费层即可上手。React / Next.js / Vite 项目里直接出可运行 UI。</p>
+    <div class="links"><a href="https://v0.app/" target="_blank">官网(注意域名 v0.app,不是 v0.dev)</a><a href="https://v0.app/docs/introduction" target="_blank">文档</a></div>
   </div>
 </div>
+
+<div class="callout warn"><b class="t">已过时的合并卡片被拆开</b>Galileo AI 在 2026 年已停止独立运营(域名 <code>usegalileo.ai</code> 308 重定向到 Stitch,LinkedIn 标注 "acquired by Google"),并入 Stitch 的能力里;Uizard 与 Visily 各自独立但定位偏向"截图 → 线框",与本主题"设计 ↔ 代码"主线不直接相关——所以三张旧卡片合并成 Stitch + v0 两张独立卡,Galileo 不再单独列。<strong>核对日期 2026-08-05</strong>。</div>
 
 <h3 data-reveal>选型决策树</h3>
 <p>不要"哪个最新用哪个",按你的起点选:</p>
@@ -321,10 +326,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="pipe-step"><div class="ps-num">Y1</div><div class="ps-icon">📐</div><div class="ps-name">Figma 团队协作</div><div class="ps-tool">Figma MCP</div></div>
   <div class="pipe-step"><div class="ps-num">Y2</div><div class="ps-icon">🎨</div><div class="ps-name">个人/小团队 + 喜欢 IDE</div><div class="ps-tool">pen.dev MCP</div></div>
   <div class="pipe-step"><div class="ps-num">N1</div><div class="ps-icon">🪄</div><div class="ps-name">想看 5 种方向</div><div class="ps-tool">Stitch 草图</div></div>
-  <div class="pipe-step"><div class="ps-num">N2</div><div class="ps-icon">🤖</div><div class="ps-name">想看组件级</div><div class="ps-tool">Galileo / v0</div></div>
+  <div class="pipe-step"><div class="ps-num">N2</div><div class="ps-icon">🤖</div><div class="ps-name">想直接产可运行代码</div><div class="ps-tool">v0(React/Tailwind)</div></div>
 </div>
 
-<div class="callout tip"><b class="t">混合使用是常态</b>实战里最常见的组合:Stitch 起稿 → 拉进 Figma 精修 → Claude Code 读 Figma MCP 写 Compose 组件 → pen.dev 用来"局部微调单组件" → 截图回归。不用死守一个工具。</div>
+<div class="callout note"><b class="t">2026.8 选型速记</b><strong>Stitch</strong>(waitlist,Google Labs)= 快速看多方向;<strong>v0</strong>(GA,Vercel)= 直接产 React 代码;<strong>Galileo AI</strong> 已并入 Stitch 不再独立推荐。<a href="https://stitch.withgoogle.com/" target="_blank">Stitch</a> / <a href="https://v0.app/" target="_blank">v0.app</a>。</div>
 </section>
 
 <div class="divider"></div>
@@ -600,6 +605,38 @@ private fun ProductDetailScreenDarkPreview() {
 ./gradlew :app:testDebug               # 跑全部单元测试(包括 Paparazzi)</code></pre>
 <p><strong>注意</strong>:Paparazzi 与 Robolectric 不兼容(都 mock Android Framework,只能选一个)。</p>
 
+<h4>Paparazzi 实拍样图(本机 2026-08-05 实跑)</h4>
+<p>下面 6 张图是同一份 demo 工程跑出来的——9 个 Composable 挑 6 个典型场景:JDK 21 + AGP 8.13.2 + Kotlin 2.2.21 + Paparazzi 2.0.0-alpha05(踩坑清单:这个组合才能跑通,JDK 17/25 都失败)。每个 demo 都是"AI 改 UI 后回归"的真实对照样本。</p>
+
+<div class="screenshot-grid">
+  <figure>
+    <img src="../assets/img/collab/01-button-card.png" alt="Paparazzi 截图:Button + Card 组合" loading="lazy">
+    <figcaption><strong>01 · Button + Card</strong><br>最基础的 Material 3 组件组合,验证 Compose 渲染准确性</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/02-theme-light.png" alt="Paparazzi 截图:浅色主题" loading="lazy">
+    <figcaption><strong>02 · 浅色主题</strong><br><code>MaterialTheme(colorScheme = lightColorScheme(...))</code> 渲染结果</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/03-theme-dark.png" alt="Paparazzi 截图:深色主题" loading="lazy">
+    <figcaption><strong>03 · 深色主题</strong><br>同 Composable,只换 <code>darkColorScheme</code>——回归测试一次性比对两套</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/05-dynamic-color.png" alt="Paparazzi 截图:动态色" loading="lazy">
+    <figcaption><strong>04 · Material You 动态色</strong><br><code>dynamicLightColorScheme(LocalContext.current)</code>——壁纸取色</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/07-list-item-chip.png" alt="Paparazzi 截图:列表 + Chip" loading="lazy">
+    <figcaption><strong>05 · List item + Chip 组合</strong><br>头像 + 标题 + 副标题 + Chip 标签,真实业务组件</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/09-form-error.png" alt="Paparazzi 截图:表单错误态" loading="lazy">
+    <figcaption><strong>06 · 表单错误态</strong><br>同 Composable 不同 state——回归测试能精确捕到红边框 + 错误文案</figcaption>
+  </figure>
+</div>
+
+<div class="callout note"><b class="t">意外发现:截图回归逮到一个真实 bug</b>跑这张样图时发现:<strong>Demo01 的 <code>Column</code> 没显式背景时,会暴露设备默认深色背景</strong>。纯文字看代码看不出来,跑 Paparazzi 一目了然——这就是"AI 改 UI 后必须跑截图回归"的价值,文字描述给不了这种回归捕获能力。完整工程在 <code>drafts/paparazzi-demo/</code>,含 4 个失败版本组合的踩坑记录。</div>
+
 <h3 data-reveal>Roborazzi(Robolectric 路线,可集成 Hilt)</h3>
 <p>由 takahirom 出品,基于 Robolectric 在 JVM 渲染 Compose,支持 <code>@Preview</code> 自动生成测试、与 Hilt 等 DI 框架无冲突。<strong>优势:可以测有依赖注入的真组件</strong>。</p>
 <p>关键能力:</p>
@@ -664,6 +701,49 @@ private fun ProductDetailScreenDarkPreview() {
 
 <h4>③ Figma ↔ Code 双向(高级,需要中间层)</h4>
 <p>用 <a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a> 或 <a href="https://github.com/salesforce/theo" target="_blank">Theo</a> 做<strong>Token 单一来源</strong>(一个 JSON),Figma 用 Tokens Studio 插件同步,Compose 用 Gradle 插件生成 ColorScheme。一处改,两边自动跟。<strong>这是 2026 年设计系统工程的"正确姿势"</strong>,但要小团队愿意花一周搭基础设施。</p>
+
+<h3 data-reveal>已知空白:Figma ↔ pen.dev 没有官方双向同步</h3>
+<p>2026-08-05 核对一手文档后,确认:<strong>Figma Variables 与 pen.dev Variables 之间没有任何官方"双向同步"链路</strong>——既没有 pen.dev 官方 plugin 推变量回 Figma,也没有 Figma 端原生读 <code>.pen</code> 文件格式的桥。两端都把变量暴露成可机器读的 JSON(Figma REST API、<code>.pen</code> 文件),但 1→1 的官方接口不存在。</p>
+
+<p>如果你的设计系统在 Figma + pen.dev 之间并存,目前最实用方案是<strong>"四跳桥"</strong>(DTCG JSON 作枢纽):</p>
+<pre><code>Figma ←(Tokens Studio)→ DTCG JSON ←(Style Dictionary v4)→ .pen 文件 / Compose / iOS / Web
+
+# 示例 A:Figma Variables → 本地 JSON
+curl -sS -H "X-Figma-Token: $FIGMA_TOKEN" \
+  "https://api.figma.com/v1/files/$FILE_KEY/variables/local" \
+  | jq '.meta.variables, .meta.variableCollections' \
+  &gt; figma-variables.json
+
+# 示例 B:Figma Variables 改色(POST,需 Tier 3 + Enterprise + file_variables:write scope)
+POST https://api.figma.com/v1/files/{file_key}/variables
+{
+  "variableModeValues": [
+    { "variableId": "VariableID:1:3", "modeId": "1:0",
+      "value": { "r": 1, "g": 0, "b": 0, "a": 1 } }
+  ]
+}
+
+# 示例 C:Style Dictionary v4 编译到 Compose
+const sd = new StyleDictionary({
+  source: ['design/tokens/tokens.json'],
+  platforms: { compose: { transformGroup: 'compose',
+    buildPath: 'app/src/main/java/.../theme/',
+    files: [{ destination: 'Color.kt', format: 'compose/object',
+      options: { className: 'AppColorScheme' } }] }
+});
+await sd.buildAllPlatforms();</code></pre>
+
+<p><strong>中间桥梁的选择</strong>:</p>
+<table class="tbl">
+  <tr><th>桥梁</th><th>能力</th><th>限制</th></tr>
+  <tr><td><strong>Tokens Studio</strong>(原 Figma Tokens)</td><td>Figma Variables ↔ DTCG JSON,30 万用户,9+ sync provider(GitHub/GitLab/JSONBin)</td><td>UI 在 Figma 端,需要单独授权</td></tr>
+  <tr><td><strong>Style Dictionary v4</strong>(Amazon 出品)</td><td>DTCG JSON → Compose Kotlin / iOS Swift / Android XML / CSS / SCSS / Flutter Dart,多端覆盖</td><td>只编译,不解决 Figma ↔ JSON 那段</td></tr>
+  <tr><td><strong>自建脚本</strong>(Figma REST API + pen.dev CLI)</td><td>完全可控,定时 + 触发都可</td><td>需要写胶水代码 + CI 部署</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">小主提醒</b>Figma Variables POST 接口需要 <strong>Tier 3 + Enterprise 完整席位 + <code>file_variables:write</code> scope</strong>,个人版账号写不进去;另外每个 Collection 限制 ≤ 40 modes、≤ 5000 variables,POST 请求体 ≤ 4 MB,变更以原子事务提交。<strong>核对日期 2026-08-05</strong>——如果之后发现 Figma 或 pen.dev 出了官方双向同步,这里会更新。</div>
+
+<p>完整调研(含 4 段可执行代码、踩坑清单、来源索引)见 <a href="https://github.com/JackyMe/ai-knowledge-base/blob/main/drafts/ai-ui-collab-figma-pen-vars.md" target="_blank">drafts/ai-ui-collab-figma-pen-vars.md</a>。</p>
 
 <h3 data-reveal>设计系统维护的 6 条纪律</h3>
 <ol>
@@ -883,6 +963,199 @@ private fun ProductDetailScreenDarkPreview() {
 { "primary": "#476810", "onPrimary": "#FFFFFF", ... }
 同时生成 design/tokens/typography.json 和 spacing.json
 用 Style Dictionary 兼容的格式</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="ios-web">
+<div class="sec-tag">附录 X</div>
+<h2>跨端落地:iOS × Web(把正文 Android 那条流水线照搬)</h2>
+<p><strong>读者画像</strong>:你在读这本小册子,但<strong>自己不写 Android</strong>——写 SwiftUI 或 React/Tailwind。本附录只补两件事:① 那条五步流水线在 SwiftUI / React 里怎么照搬;② 各自的"对位机制"是什么(Compose 有 <code>MaterialTheme</code>,iOS / Web 各自叫什么)。<strong>核对日期 2026-08-05</strong>,文末 X4 有全链接。</p>
+
+<h3 data-reveal>X1. iOS 落地(SwiftUI)</h3>
+<p>Apple 没有"Design Token"这个术语,但有三套等价机制一起构成"Figma Variables → SwiftUI"的桥:</p>
+
+<h4>① 语义色 + Asset Catalog</h4>
+<p>HIG 明确建议"<strong>优先用语义色而不是硬编码十六进制</strong>",语义色自动响应 Dark Mode / Increase Contrast / Reduce Transparency。</p>
+<pre><code>// ❌ AI 经常这么写(硬编码)
+Text("Save").foregroundColor(Color(red: 0.28, green: 0.41, blue: 0.06))
+
+// ✅ 正确:走语义 / 走自家 Color Set
+Text("Save").foregroundStyle(.primary)
+Button("Save") {}.tint(Color("BrandPrimary"))   // Asset Catalog 里的 Color Set</code></pre>
+
+<h4>② 自定义 Theme 容器(iOS 18+ <code>@Entry</code> 宏)</h4>
+<p>和 Compose <code>MaterialTheme.colorScheme</code> 对位的是 iOS 18 起的 <code>@Entry</code> 宏——它让你像 Compose 一样通过 <code>@Environment</code> 拿到整套品牌 Token:</p>
+<pre><code>@Entry struct BrandTheme {                           // 1) 定义 Token 容器
+  let primary: Color; let onPrimary: Color; let surface: Color
+  let radius: CGFloat; let spacing: (xs: CGFloat, sm: CGFloat, md: CGFloat, lg: CGFloat)
+}
+extension EnvironmentValues { var brandTheme: BrandTheme { .default } }
+
+@main struct MyApp: App {                            // 2) 根注入(对应 Compose 的 ReplyTheme)
+  var body: some Scene {
+    WindowGroup { RootView().environment(\.brandTheme, .light) }
+  }
+}
+
+struct PrimaryButton: View {                         // 3) 任何子 View 取
+  @Environment(\.brandTheme) private var theme
+  var body: some View {
+    Text("Tap").foregroundStyle(theme.onPrimary)
+      .padding(.horizontal, theme.spacing.md)
+      .background(theme.primary, in: .rect(cornerRadius: theme.radius))
+  }
+}</code></pre>
+
+<h4>③ Figma Variables → Swift <code>Color</code> 的桥</h4>
+<p><strong>Figma 官方 Dev Mode 没出 "Copy as SwiftUI"</strong>(有 Compose / React / HTML / CSS)。要桥需要自己接:</p>
+<pre><code># 1) Figma Variables 拉成本地 JSON(标准 REST API,任何套餐都行)
+curl -sS -H "X-Figma-Token: $FIGMA_TOKEN" \
+  "https://api.figma.com/v1/files/$FILE_KEY/variables/local" \
+  | jq '.meta.variables' &gt; figma-vars.json
+
+# 2) Style Dictionary v4 编译到 Swift(支持 ios-swift / ios-swift-separate)
+const sd = new StyleDictionary({
+  source: ['figma-vars.json'], platforms: {
+    ios: { transformGroup: 'ios-swift',
+      buildPath: 'Sources/Theme/',
+      files: [{ destination: 'BrandTheme.swift', format: 'ios-swift/class',
+        options: { className: 'BrandTheme' } }] }
+  }
+});
+await sd.buildAllPlatforms();</code></pre>
+<div class="callout tip"><b class="t">省力的替代</b>如果只想"先看到效果",Tokens Studio for Figma 能直接在 Figma 端做 Tokens ↔ DTCG JSON ↔ Style Dictionary 串起来,免自写桥。详见 <a href="https://docs.tokens.studio/" target="_blank">docs.tokens.studio</a>。</div>
+
+<h4>④ iOS 侧"五步流水线"镜像</h4>
+<table class="tbl">
+  <tr><th>步骤</th><th>Android 正文做法</th><th>iOS 对位</th></tr>
+  <tr><td>1. Token 落库</td><td>Material Theme Builder → Color.kt</td><td>Tokens Studio + Style Dictionary → BrandTheme.swift</td></tr>
+  <tr><td>2. 组件 / 页面契约</td><td>Figma Frame</td><td>同 Figma Frame(<code>Copy as SwiftUI</code> 不存在,需自翻译)</td></tr>
+  <tr><td>3. AI 读设计</td><td>Figma MCP <code>get_design_context</code> + 翻译</td><td>同 Figma MCP,但 React→SwiftUI 是 AI 的工作量</td></tr>
+  <tr><td>4. AI 生成代码</td><td>Compose + @Preview + 截图测试</td><td>SwiftUI + #Preview + SnapshotTesting</td></tr>
+  <tr><td>5. 视觉回归</td><td>Paparazzi / Roborazzi(JVM,秒级)</td><td><strong>SnapshotTesting(simulator,慢)——目前没"无设备"等价</strong></td></tr>
+</table>
+
+<h4>⑤ AI 编码代理 SwiftUI 的真实能力边界</h4>
+<p>坦诚说,AI 写 SwiftUI 有几个<strong>明显短板</strong>(2026.8 现状):</p>
+<ul>
+  <li><strong>手势链</strong>——<code>DragGesture</code> + <code>simultaneousGesture</code> + 状态机很容易出错,AI 第一版经常漏边界 case</li>
+  <li><strong>Combine</strong>——<code>Publisher</code> 链 / debounce / switchToLatest,AI 写得出但容易过度复杂</li>
+  <li><strong>SwiftData migration</strong>——版本迁移 schema 经常需要人手审</li>
+  <li><strong>状态提升 / 复杂 navigation</strong>——navigationDestination / NavigationStack 路径控制,AI 第一版几乎都是错的</li>
+</ul>
+<p><strong>对策</strong>:这些场景让 AI 写第一版,然后<strong>跑 Preview + Snapshot</strong>,人在 diff 上审;不要直接信 AI 自报"完成了"。</p>
+
+<h4>⑥ 直接可粘贴的 Claude Code prompt(iOS 侧)</h4>
+<pre><code>读这个 Figma Frame:https://www.figma.com/file/{KEY}?node-id={NODE_ID}
+用 Figma MCP 的 get_design_context / get_variable_defs 拿结构与设计 Token。
+
+输出:
+1) SwiftUI 视图(Sources/Views/ 下,文件名 = Figma Frame 名)
+2) 用 @Entry 注入的 BrandTheme 取主色 / 间距 / 圆角,不准硬编码
+3) #Preview 用 light / dark 两套 BrandTheme 渲染
+4) 加 SnapshotTesting 测试(Tests/__Snapshots__/)
+5) 如果用 SwiftData,迁移 schema 给两个版本
+
+禁止:.foregroundColor(.red) / 硬编码十六进制 / 在 View 里 import Combine 直接编排</code></pre>
+
+<h3 data-reveal>X2. Web 落地(Tailwind v4 × shadcn)</h3>
+<p>Web 侧"设计 Token 一等公民"过去三年的演进:<strong>Tailwind v3 config.js → Tailwind v4 <code>@theme</code> CSS 变量 → shadcn 语义 CSS 变量</strong>。v4 的意义在于 Tailwind 直接吃 CSS variables,不用 <code>tailwind.config.js</code> 那条路径。</p>
+
+<h4>① Tailwind v4 <code>@theme</code> 指令</h4>
+<pre><code>/* app.css */
+@import "tailwindcss";
+
+@theme {
+  /* 颜色(走 OKLCH 色彩空间更准) */
+  --color-brand-50:  oklch(0.97 0.02 120);
+  --color-brand-500: oklch(0.55 0.18 145);
+  --color-brand-900: oklch(0.25 0.05 145);
+
+  /* 字体 / 间距 / 圆角 */
+  --font-display: "Inter", "SF Pro SC", sans-serif;
+  --spacing-app: 0.25rem;
+  --radius-card: 0.75rem;
+}</code></pre>
+<p>关键变化:v4 的 <code>@theme</code> <strong>直接生成 utility class</strong>——<code>bg-brand-500</code> / <code>font-display</code> / <code>rounded-card</code> 都是它来的,不用再写 <code>tailwind.config.js</code>。三个进阶指令(对应 Compose Token 体系):</p>
+<table class="tbl">
+  <tr><th>指令</th><th>干什么</th><th>类比 Compose</th></tr>
+  <tr><td><code>@theme inline { ... }</code></td><td>Token 直接展开成 utility,不生成 CSS variable</td><td>(类似) <code>colorScheme.primary</code> 的"展开"模式</td></tr>
+  <tr><td><code>@theme static { ... }</code></td><td><strong>不允许覆盖</strong>,真正的"硬编码"</td><td>(类似) MaterialTheme 不可在运行时改</td></tr>
+  <tr><td><code>--*: initial</code></td><td>重置 Tailwind 默认 spacing / radius,把命名权交给你</td><td>全局重置到自家设计基线</td></tr>
+</table>
+
+<h4>② shadcn 的"代码即设计"哲学</h4>
+<p>shadcn 不发 npm 包,你装的是<strong>组件源码</strong>(贴进 <code>components/ui/</code>),所以"改设计 Token" = 改源里的 <code>bg-primary</code> 那几个 CSS 变量。<strong>它和 Figma Variables 一一对应</strong>:</p>
+<table class="tbl">
+  <tr><th>shadcn CSS 变量</th><th>对位 Figma Variable</th><th>用途</th></tr>
+  <tr><td><code>--background</code> / <code>--foreground</code></td><td>surface / onSurface</td><td>容器底色 + 文字</td></tr>
+  <tr><td><code>--primary</code> / <code>--primary-foreground</code></td><td>primary / onPrimary</td><td>按钮、链接主色</td></tr>
+  <tr><td><code>--secondary</code> / <code>--muted</code> / <code>--accent</code></td><td>secondaryContainer / surfaceVariant / tertiary</td><td>次级容器 / 弱化 / 强调</td></tr>
+  <tr><td><code>--destructive</code></td><td>error</td><td>危险动作(删除、报错)</td></tr>
+  <tr><td><code>--border</code> / <code>--input</code> / <code>--ring</code></td><td>outline / outlineVariant / focus</td><td>边 / 输入框边 / 焦点环</td></tr>
+  <tr><td><code>--radius</code></td><td>shape.cornerMedium</td><td>全局圆角基准</td></tr>
+</table>
+<p><strong>小心坑</strong>:shadcn 默认中性灰色调,<strong>品牌色直接覆盖 <code>--primary</code> 即可</strong>。不要去改组件源码里的硬编码颜色——下次 <code>shadcn add</code> 加新组件又会拉回默认。</p>
+
+<h4>③ Claude Code × Next.js / Vite 流水线</h4>
+<pre><code># 在项目根跑,Claude Code 就在这个 Next.js 项目里跑
+claude
+
+# 让它一次性把 Figma 转成 shadcn 组件:
+claude&gt; 用 Figma MCP 读这个 Frame:{URL},把 Frame 转成等价的
+       shadcn 组件(Button / Card / Dialog),不准硬编码颜色,
+       所有色走 :root 下的 --primary / --background 这套变量。
+       同时:1) 写 component.test.tsx(用 testing-library)
+            2) 写 visual.spec.ts(Playwright 自动截图)</code></pre>
+<p><strong>MCP 现状</strong>:shadcn 没发布官方 MCP,<strong>但其 CLI + Registry 本身就具备 MCP 般的"AI 友好"特性</strong>(每个组件都有可独立 import 的源码)。社区有零星 MCP 包装,质量未知。</p>
+
+<h4>④ Web 侧视觉回归三选一</h4>
+<table class="tbl">
+  <tr><th>工具</th><th>基于</th><th>强项</th><th>代价</th></tr>
+  <tr><td><strong>Playwright screenshot</strong></td><td>无头浏览器</td><td>免费、最灵活、和 E2E 测试共用</td><td>需要自管基线 + diff 报告</td></tr>
+  <tr><td><strong>Chromatic</strong>(Storybook 团队)</td><td>Storybook + 云端</td><td>PR 评论直接附截图 diff,UI review 一站式</td><td>收费,需要建 Storybook</td></tr>
+  <tr><td><strong>VRT</strong>(Visual Regression Tracker)</td><td>独立服务</td><td>跨项目、自部署</td><td>运维成本</td></tr>
+</table>
+
+<h3 data-reveal>X3. 三端对比速查表</h3>
+<table class="tbl">
+  <tr><th>维度</th><th>Android(正文)</th><th>iOS(SwiftUI)</th><th>Web(Tailwind v4 + shadcn)</th></tr>
+  <tr><td><strong>Token 一等公民</strong></td><td><code>MaterialTheme.colorScheme</code></td><td><code>@Entry</code> 宏 + <code>BrandTheme</code>(iOS 18+)</td><td>CSS variables + <code>@theme</code>(Tailwind v4)</td></tr>
+  <tr><td><strong>官方桥:设计 → 代码</strong></td><td>Material Theme Builder 导出 Compose</td><td>Tokens Studio + Style Dictionary 编 Swift</td><td>shadcn CLI + CSS 变量 / Style Dictionary</td></tr>
+  <tr><td><strong>Figma MCP</strong></td><td>原生,五步流水线已跑通</td><td>原生,但 React→SwiftUI 需自翻译</td><td>原生,<code>get_design_context</code> 直接产 React + Tailwind</td></tr>
+  <tr><td><strong>AI 写 UI 代码质量</strong></td><td>强(Compose 模板化高)</td><td>强(单 View)/ 弱(手势、Combine、SwiftData migration)</td><td><strong>最强</strong>(React+Tailwind 是 AI 训练数据主场)</td></tr>
+  <tr><td><strong>真机/虚拟截图回归</strong></td><td>Paparazzi / Roborazzi(JVM,秒级)</td><td>SnapshotTesting(simulator,慢)——目前无"无设备"等价</td><td>Playwright / Chromatic / VRT</td></tr>
+  <tr><td><strong>品牌色规范</strong></td><td>Material Theme Builder</td><td>Asset Catalog Color Set(Light/Dark/High Contrast)</td><td><code>:root</code> + <code>.dark</code> 双套 CSS 变量</td></tr>
+  <tr><td><strong>动态色 vs 品牌色</strong></td><td><code>dynamicLightColorScheme()</code></td><td>Asset Catalog 语义色 + 品牌色单独定义</td><td>shadcn 默认中性,品牌色覆盖 <code>--primary</code></td></tr>
+  <tr><td><strong>响应式布局 Token</strong></td><td><code>Modifier.fillMaxWidth()</code></td><td><code>.containerRelativeFrame()</code>(iOS 17+)</td><td>Tailwind breakpoint + <code>@container</code></td></tr>
+  <tr><td><strong>设计稿同步 AI 的最快路径</strong></td><td>Figma MCP + Material Theme Builder</td><td>Figma MCP + Tokens Studio</td><td>Figma MCP + shadcn CLI</td></tr>
+  <tr><td><strong>AI 不擅长的事</strong></td><td>State hoisting / hoisted preview 顺序</td><td>手势链 / Combine / SwiftData migration</td><td>v3→v4 config 迁移 / Radix 内部</td></tr>
+</table>
+
+<h3 data-reveal>X4. 来源(核对日期 2026-08-05)</h3>
+<ol>
+  <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations" target="_blank">Apple HIG / Foundations(总目录)</a>——Color / Typography / Materials / Dark Mode / Accessibility</li>
+  <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations/color" target="_blank">Apple HIG / Foundations / Color</a>——语义色、SF Symbols、Dynamic Type、Asset Catalog 集成</li>
+  <li><a href="https://developer.apple.com/documentation/swiftui/view/containerrelativeframe(_:alignment:)" target="_blank">SwiftUI <code>containerRelativeFrame(_:alignment:)</code></a>——iOS 17+ 响应式布局官方姿势</li>
+  <li><a href="https://developer.apple.com/documentation/swiftui/entry" target="_blank">SwiftUI <code>@Entry</code> 宏</a>——iOS 18+ 自定义 <code>EnvironmentValues</code> 的简洁写法</li>
+  <li><a href="https://tailwindcss.com/docs/theme" target="_blank">Tailwind CSS v4 / Theme 文档</a>——<code>@theme</code> 完整语法、命名空间表、<code>@theme inline</code> / <code>@theme static</code> / <code>--*: initial</code></li>
+  <li><a href="https://ui.shadcn.com/docs" target="_blank">shadcn/ui 文档(总目录)</a>——"代码即设计"哲学 + CLI + Registry + AI-Ready</li>
+  <li><a href="https://ui.shadcn.com/docs/theming" target="_blank">shadcn/ui Theming</a>——语义 CSS 变量命名表、<code>components.json</code>、<code>--radius</code> 圆角基准</li>
+  <li><a href="https://ui.shadcn.com/docs/cli" target="_blank">shadcn CLI 安装</a>——<code>pnpm dlx shadcn@latest init -t &lt;framework&gt;</code>,支持 Next.js / Vite / Astro / TanStack Start / React Router / Laravel</li>
+  <li><a href="https://styledictionary.com/" target="_blank">Style Dictionary 官网</a>——多端 Token 编译器,iOS / Android / CSS / JS / HTML,DTCG 规范对齐</li>
+  <li><a href="https://docs.tokens.studio/" target="_blank">Tokens Studio for Figma 文档</a>——Figma 端 Token 管理、Style Dictionary Transforms、GitHub/GitLab/JSONBin 同步</li>
+  <li><a href="https://code.claude.com/docs/en/mcp" target="_blank">Claude Code / MCP</a>——stdio / http / sse 三种 transport</li>
+</ol>
+
+<div class="callout warn"><b class="t">未查到官方来源(诚实声明)</b>
+<ol style="padding-left:18px">
+  <li><strong>iOS 端"无设备 SwiftUI 截图回归"</strong>——Paparazzi/Roborazzi 在 Android 是秒级 JVM 渲染,iOS 目前只有 SnapshotTesting + simulator,Apple 没出官方等价物。</li>
+  <li><strong>Figma 官方 "Copy as SwiftUI"</strong>——Dev Mode 提供 Compose / React / HTML / CSS,但<strong>没看到 SwiftUI</strong>,社区插件质量参差。</li>
+  <li><strong>shadcn 官方 MCP server</strong>——shadcn 没发布官方 MCP,但其 CLI + Registry 本身就具备 MCP 般的"AI 友好"特性。</li>
+</ol>
+如果哪位读者在一手文档里查到这些,欢迎补 PR。
 </div>
 </section>
 

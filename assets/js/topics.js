@@ -136,6 +136,7 @@ const TOPICS = [
       {id:"cases",label:"真实案例(电商详情页)"},
       {id:"antipatterns",label:"反模式与避坑"},
       {id:"prompts",label:"提示词模板库"},
+      {id:"ios-web",label:"iOS / Web 跨端落地"},
       {id:"resources",label:"资源与来源"}
     ]
   },
