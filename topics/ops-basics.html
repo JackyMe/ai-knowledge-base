@@ -6,7 +6,7 @@
 <meta name="description" content="独立开发者运维基座:5 阶段路线 + 服务器 × 网络 × 部署 3 模块 + 5 类故障 30 秒对症表。零起点也能从 SaaS 托管升级到自托管。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="独立开发者运维基座 · 服务器 × 网络 × 部署 · 2026.08">
-<meta property="og:description" content="5 阶段路线 + 3 模块 17 节 + 5 类故障 30 秒对症表。零起点也能从 SaaS 托管升级到自托管。">
+<meta property="og:description" content="5 阶段路线 + 3 模块 24 节(网络 13 节详尽版) + 5 类故障 30 秒对症表。零起点也能从 SaaS 托管升级到自托管。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ops-basics.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -194,13 +194,26 @@ pre .c{color:#7c8d92}
     <a href="#m1-5"><span class="no">1.5</span>权限与用户</a>
   </div>
   <div class="nav-group">
-    <div class="gt">模块 2 · 网络</div>
+    <div class="gt">模块 2a · 概念基础</div>
     <a href="#m2-1"><span class="no">2.1</span>HTTP→TCP→IP</a>
     <a href="#m2-2"><span class="no">2.2</span>DNS</a>
     <a href="#m2-3"><span class="no">2.3</span>HTTPS/TLS</a>
     <a href="#m2-4"><span class="no">2.4</span>反向代理</a>
-    <a href="#m2-5"><span class="no">2.5</span>防火墙与端口</a>
-    <a href="#m2-6"><span class="no">2.6</span>常见攻击面</a>
+    <a href="#m2-5"><span class="no">2.5</span>防火墙</a>
+    <a href="#m2-6"><span class="no">2.6</span>攻击面</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">模块 2b · 工作流</div>
+    <a href="#m2-7"><span class="no">2.7</span>端口号</a>
+    <a href="#m2-8"><span class="no">2.8</span>本地服务</a>
+    <a href="#m2-9"><span class="no">2.9</span>VPN 与代理</a>
+    <a href="#m2-10"><span class="no">2.10</span>公网/NAT</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">模块 2c · 工具演进</div>
+    <a href="#m2-11"><span class="no">2.11</span>调试命令</a>
+    <a href="#m2-12"><span class="no">2.12</span>H2/H3</a>
+    <a href="#m2-13"><span class="no">2.13</span>IPv6</a>
   </div>
   <div class="nav-group">
     <div class="gt">模块 3 · 部署</div>
@@ -223,11 +236,11 @@ pre .c{color:#7c8d92}
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🛠️ 零起点 → 自托管 · 5 阶段路线 + 3 模块 17 节 · 核对至 2026-08-07</div>
+  <div class="badge">🛠️ 零起点 → 自托管 · 5 阶段路线 + 3 模块 24 节(网络 13 节详尽版)· 核对至 2026-08-07</div>
   <h1>独立开发者运维基座<br><span class="grad">服务器 × 网络 × 部署</span></h1>
   <p class="lead">如果你一直用 Vercel/Netlify 一键部署,这一页就是你的"升级路线":从买 VPS 到 git push 自动部署,中间所有你不好意思问的运维黑话都被掰开了讲。3 模块 + 5 阶段路线 + 5 类故障 30 秒对症表——只讲独立开发者用得上的 30%,不堆 k8s 也不背 OSI 七层。</p>
   <div class="meta">
-    <span>17 节正文</span><span>5 阶段路线</span><span>15+ 一手来源</span><span>3 项「没查到」诚实声明</span>
+    <span>24 节正文</span><span>5 阶段路线</span><span>30+ 一手来源</span><span>5 项「没查到」诚实声明</span>
   </div>
 </div>
 
@@ -509,97 +522,273 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 <section id="m2-1">
 <div class="sec-tag">模块 2 · 网络</div>
 <h2>2.1 一张图看懂 HTTP → TCP → IP → 网卡</h2>
-<p>不要背 OSI 七层。你只要理解这四层"信封"层层包装——</p>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>你点开网址的 1 秒里,你的请求过了 4 道关,经历 4 层"信封"包装。你只要搞清楚这四层谁负责啥,就能听懂所有网络黑话。</div>
+
+<h3 data-reveal>它到底是个啥</h3>
+<p>你打开浏览器输入 <code>aidoc-zq.netlify.app</code>,大概 1 秒后看到页面。这 1 秒里,你的请求从浏览器出发,经过了 4 道关:</p>
 <ol>
-<li><strong>应用层 HTTP</strong>:你写的 <code>GET /index.html</code>——"我要这个文件"</li>
-<li><strong>传输层 TCP</strong>:把 HTTP 切成小包,编号,保证按顺序到达——"快递公司"</li>
-<li><strong>网络层 IP</strong>:每个包写上"从哪里来,到哪里去"——"快递单上的地址"</li>
-<li><strong>链路层 网卡</strong>:把包变成电信号/光信号发出去——"实际跑的车"</li>
+<li><strong>应用层 HTTP</strong>——你写的 <code>GET /index.html</code>,意思是"我要这个文件"</li>
+<li><strong>传输层 TCP</strong>——把 HTTP 切成小包、编号,保证按顺序到达,就像快递公司</li>
+<li><strong>网络层 IP</strong>——每个包写上"从哪里来、到哪里去",就像快递单上的地址</li>
+<li><strong>链路层 网卡</strong>——把包变成电信号/光信号发出去,就是真正跑的车</li>
 </ol>
-<p>回程是反过来的:网卡收到信号 → 还原 IP 包 → TCP 拼起来 → HTTP 看到完整响应 → 浏览器渲染。</p>
-<div class="callout note"><b class="t">实操可见</b>打开终端跑 <code>curl -v https://example.com</code>,你能看到完整的"握手 → 发请求 → 收响应 → 挥手"四步。这就是 TCP 的"三次握手四次挥手"。</div>
+
+<h3 data-reveal>四层协议栈(ASCII 图)</h3>
+<pre><code>   你发的请求(下行)               你看到的响应(上行)
+   ────────────────               ────────────────
+   ┌──────────────┐               ┌──────────────┐
+   │ HTTP  GET /  │               │ 200 OK <html> │
+   ├──────────────┤               ├──────────────┤
+   │ TCP  SYN/ACK │               │ TCP  FIN/ACK │
+   ├──────────────┤               ├──────────────┤
+   │ IP  src→dst  │               │ IP  dst→src  │
+   ├──────────────┤               ├──────────────┤
+   │ 网卡电/光信号│               │ 网卡电/光信号│
+   └──────────────┘               └──────────────┘
+   ▲ 层层包装(从下往上)          ▲ 层层拆包(从下往上)</code></pre>
+
+<h3 data-reveal>怎么用:看一次实际握手</h3>
+<p>跑 <code>curl -v https://example.com</code>,你能看到 TCP 的"三次握手四次挥手"全过程,这就是 TCP 的核心:</p>
+<pre><code>curl -v https://example.com
+# * Trying 93.184.216.34:443...        ← TCP 开始:发 SYN
+# * Connected to example.com          ← 收到 SYN+ACK,发 ACK(握手完成)
+# &gt; GET / HTTP/1.1                    ← HTTP 请求开始发
+# &lt; HTTP/1.1 200 OK                   ← HTTP 响应回来
+# * Connection #0 to host example.com left intact</code></pre>
+
+<h3 data-reveal>实战:真抓一次包</h3>
+<p>想看真正的 IP 包长啥样?<code>tcpdump</code> 抓给你看(不需要 root 也能抓自己发的):</p>
+<pre><code>tcpdump -i any -n port 80 -c 5
+# 抓 80 端口的前 5 个包
+# 看到 src=192.168.1.5.dst=93.184.216.34.80 之类
+# 这就是 IP+TCP+HTTP 三层在同一条线上的样子</code></pre>
+
+<h3 data-reveal>🚧 小剧场:OSI 七层是哪七层?</h3>
+<p>OSI 是 1984 年的老古董,现实只活四层。OSI 七层里我们实际用到的:物理层 → 数据链路层 → 网络层 → 传输层 → 应用层(下面四层就够了,中间三层的"会话/表示"两兄弟基本没人实现)。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>H 写啥、T 怎么送、I 给地址、网卡跑腿</strong>"——四层各管一摊,互不干扰。</div>
+
+<p class="src">来源:<a href="https://en.wikipedia.org/wiki/Internet_protocol_suite" target="_blank">Wikipedia · Internet Protocol Suite</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview" target="_blank">MDN · HTTP Overview</a> · <a href="https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/" target="_blank">Cloudflare Learning · TCP/UDP</a> · 核对 2026-08-07</p>
 </section>
 
 <div class="divider"></div>
 
 <section id="m2-2">
 <div class="sec-tag">模块 2 · 网络</div>
-<h2>2.2 DNS:为什么 ping 不通但 nslookup 行</h2>
-<p>DNS(Domain Name System)把"人记得住的域名"翻译成"机器记得住的 IP"。比如 <code>aidoc-zq.netlify.app</code> → <code>75.2.60.5</code>。</p>
-<h3 data-reveal>为什么 ping 不通但 nslookup 行</h3>
-<p>很多服务器(尤其 Cloudflare 后面)主动屏蔽 ICMP 协议——所以 <code>ping</code> 返回超时,但 <code>nslookup</code>/<code>dig</code>/<code>curl</code> 都能拿到 IP 并正常访问。这是<strong>故意的反 DDoS 措施</strong>,不是故障。</p>
-<pre><code>ping aidoc-zq.netlify.app     <span class="c"># 可能超时 ≠ 不可达</span>
-nslookup aidoc-zq.netlify.app <span class="c"># 能查到 IP = 域名正常</span>
-curl -I https://aidoc-zq.netlify.app <span class="c"># 真实访问测试</span></code></pre>
-<h3 data-reveal>DNS 记录类型速查</h3>
+<h2>2.2 DNS 完整图景:114 查号台是怎么工作的</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>DNS 就是互联网的"通讯录",输入域名 → 查到 IP。改完 DNS 不是立刻生效,全球最多 48 小时才完全同步,这是独立开发者最常踩的坑。</div>
+
+<h3 data-reveal>它到底是个啥</h3>
+<p>你输入 <code>aidoc-zq.netlify.app</code> 这串字母,计算机只懂 <code>75.2.60.5</code> 这种数字。DNS(Domain Name System)负责把字母翻译成数字,就像 114 查号台 —— 你说"肯德基在哪",它告诉你具体地址。</p>
+
+<h3 data-reveal>完整查询流程(递归 + 迭代)</h3>
+<pre><code>你的电脑                                根.  → .com. → netlify.app → 返回 75.2.60.5
+   │                                       │       │          │
+   │ 问本地 DNS(运营商给的)               │       │          │
+   ├──────────────────────────────────────►│       │          │
+   │            我不知道,但根知道         │       │          │
+   │ ◄─────────────────────────────────────┤       │          │
+   │ 问根服务器(. )                          │       │          │
+   ├─────────────────────────────────────────────────►│          │
+   │            我不知道,.com 知道          │       │          │
+   │ ◄─────────────────────────────────────────────────┤          │
+   │ 问 .com 服务器                          │       │          │
+   ├─────────────────────────────────────────────────────────────►│
+   │  netlify.app 知道 → 75.2.60.5                          │
+   │ ◄─────────────────────────────────────────────────────────────┤
+   ▼
+浏览器拿 IP,开始 HTTP 请求</code></pre>
+<p>全球共 13 组根 DNS 服务器,管理整个域名系统的"总目录"。</p>
+
+<h3 data-reveal>公共 DNS 列表(2026.8 核对)</h3>
+<table class="tbl">
+<tr><th>服务商</th><th>IPv4</th><th>特点</th></tr>
+<tr><td>Google</td><td><code>8.8.8.8</code> / <code>8.8.4.4</code></td><td>国际通用,响应快</td></tr>
+<tr><td>Cloudflare</td><td><code>1.1.1.1</code> / <code>1.0.0.1</code></td><td>号称最快,隐私承诺最强</td></tr>
+<tr><td>国内 114</td><td><code>114.114.114.114</code></td><td>国内老牌,无污染但有广告过滤</td></tr>
+<tr><td>DNSPod</td><td><code>119.29.29.29</code></td><td>腾讯旗下,国内访问快</td></tr>
+<tr><td>阿里 AliDNS</td><td><code>223.5.5.5</code> / <code>223.6.6.6</code></td><td>阿里旗下,稳定</td></tr>
+</table>
+
+<h3 data-reveal>记录类型速查</h3>
 <table class="tbl">
 <tr><th>类型</th><th>作用</th><th>例子</th></tr>
-<tr><td>A</td><td>域名 → IPv4 地址</td><td><code>example.com → 93.184.216.34</code></td></tr>
-<tr><td>AAAA</td><td>域名 → IPv6 地址</td><td><code>example.com → 2606:2800:220:1::1</code></td></tr>
-<tr><td>CNAME</td><td>域名 → 另一个域名(别名)</td><td><code>www.example.com → example.com</code></td></tr>
-<tr><td>MX</td><td>邮件服务器</td><td><code>mail.example.com</code></td></tr>
-<tr><td>TXT</td><td>任意文本(SPF/DKIM/域名验证)</td><td>Google 站点验证 <code>google-site-verification=...</code></td></tr>
+<tr><td><code>A</code></td><td>域名 → IPv4 地址</td><td><code>example.com → 93.184.216.34</code></td></tr>
+<tr><td><code>AAAA</code></td><td>域名 → IPv6 地址</td><td><code>example.com → 2606:2800:220:1::1</code></td></tr>
+<tr><td><code>CNAME</code></td><td>域名 → 另一个域名(别名)</td><td><code>www.example.com → example.com</code></td></tr>
+<tr><td><code>MX</code></td><td>邮件服务器</td><td><code>mail.example.com</code></td></tr>
+<tr><td><code>TXT</code></td><td>任意文本(SPF/DKIM/域名验证)</td><td>Google 站点验证 <code>google-site-verification=...</code></td></tr>
+<tr><td><code>NS</code></td><td>权威 DNS 服务器</td><td>把这个域名的"通讯录"交给谁管</td></tr>
+<tr><td><code>CAA</code></td><td>限制可签发的 CA</td><td>只让 Let's Encrypt 签证书</td></tr>
 </table>
-<div class="callout warn"><b class="t">DNS 生效要时间</b>改完 DNS 记录后,<strong>全球生效可能要 5 分钟到 48 小时</strong>——不同 DNS 缓存策略不同。想立刻知道是否生效,用 <code>dig @8.8.8.8 yourdomain</code> 直接问 Google DNS。</div>
+
+<h3 data-reveal>DoH / DoT(2026.8 现状)</h3>
+<p><strong>DNS over HTTPS(DoH)</strong>:把 DNS 查询塞进 HTTPS 流量,运营商看不到你查了啥。Firefox / Chrome / Edge 已支持,但是否默认启用随版本/区域不同(详细矩阵本节未逐字核对,2026.8 现状以浏览器官方文档为准)。<br>
+<strong>DNS over TLS(DoT)</strong>:类似 DoH,改用 TLS 端口 853。Android 9+ 默认启用"私人 DNS"功能就是它。</p>
+
+<h3 data-reveal>🚧 小剧场:"改完 DNS 半天不生效"</h3>
+<p>改了 DNS 记录,本地立刻生效,但用户那边可能 24 小时后才生效 —— 因为 DNS 全球有缓存。想立刻知道真实情况,跳过缓存直接问:</p>
+<pre><code>dig @8.8.8.8 yourdomain.com      <span class="c"># 跳过缓存问 Google</span>
+dig @1.1.1.1 yourdomain.com      <span class="c"># 跳过缓存问 Cloudflare</span>
+nslookup yourdomain.com 8.8.8.8  <span class="c"># nslookup 版本</span></code></pre>
+
+<div class="callout warn"><b class="t">常见坑</b>很多人把 DNS TTL 设成 86400 秒(24 小时),改完一次要等 1 天才生效。新调试期建议设 300 秒(5 分钟),稳定后再拉长。</div>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>域名问 IP 找 DNS,改完等生效别急</strong>"——ping 不通不等于服务挂了,先 <code>nslookup</code> 看 DNS 通不通。</div>
+
+<p class="src">来源:<a href="https://www.cloudflare.com/learning/dns/what-is-dns/" target="_blank">Cloudflare Learning · What is DNS</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview" target="_blank">MDN · HTTP Overview</a> · <a href="https://www.icann.org/resources/pages/root-servers-2014-01-07-en" target="_blank">ICANN · Root Servers</a> · 核对 2026-08-07</p>
 </section>
 
 <div class="divider"></div>
 
 <section id="m2-3">
 <div class="sec-tag">模块 2 · 网络</div>
-<h2>2.3 HTTPS / TLS / Let's Encrypt 30 秒讲完</h2>
-<p>HTTP 是明文的——你在咖啡店连 Wi-Fi 发"账号/密码",隔壁桌抓包就能看到。HTTPS = HTTP + TLS 加密,让传输内容变成密文,只有你和服务器能解开。</p>
-<h3 data-reveal>TLS 握手(简化版)</h3>
-<ol>
-<li>客户端:"我要 HTTPS,支持这些加密算法"</li>
-<li>服务器:"我用这个算法,这是我的证书"</li>
-<li>客户端验证证书(用浏览器内置的 CA 列表)</li>
-<li>双方协商出一个对称密钥,开始加密通信</li>
-</ol>
-<h3 data-reveal>Let's Encrypt:免费 SSL 证书</h3>
-<p>以前 SSL 证书一年几百块,Let's Encrypt 让它变成<strong>免费 + 自动续期</strong>。工具 <code>certbot</code> 三命令搞定:</p>
+<h2>2.3 HTTPS / TLS / Let's Encrypt</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>HTTP 是明信片——咖啡店抓包能偷看。HTTPS = 挂号信,只有你和收件人能拆。Let's Encrypt 让免费 SSL 证书 + 自动续期成为现实,2026 年全网主流。</div>
+
+<h3 data-reveal>它到底是个啥:HTTP vs HTTPS</h3>
+<p>HTTP(超文本传输协议)是明文——你在咖啡店连 Wi-Fi 输"账号/密码",隔壁桌抓包能看到。</p>
+<p>HTTPS = HTTP + TLS 加密层,让传输内容变成密文,只有你和服务器能解开。地址栏的小锁图标就是这个意思。</p>
+
+<h3 data-reveal>TLS 1.3 握手(1-RTT,ASCII 图)</h3>
+<pre><code>客户端                                服务器
+  │                                      │
+  │── ClientHello(支持的算法) ─────────►│
+  │                                      │
+  │◄── ServerHello + Certificate ───────│
+  │     + Finished(密钥已算好)           │
+  │                                      │
+  │── Finished(开始加密通信) ──────────►│
+  │                                      │
+  │▼ 应用数据加密传输(双方都有密钥)      │</code></pre>
+<p>比 TLS 1.2 少一次往返,延迟更低。2026 年主流浏览器 + 服务器默认 TLS 1.3。</p>
+
+<h3 data-reveal>SNI:一个 IP 多域名怎么办</h3>
+<p>早期 HTTPS 一个 IP 只能挂一个证书,但你一台服务器要服务 a.com / b.com / c.com 怎么办? <strong>SNI(Server Name Indication)</strong> 让客户端在握手时就把域名告诉服务器,服务器挑对应证书。</p>
+<div class="callout note"><b class="t">理解 SNI</b>就像酒店前台,客人进门前先说"我找 302 房的张三",前台直接对应房间,不用挨个房间敲门问。</div>
+
+<h3 data-reveal>Let's Encrypt + certbot(2026.8 已核对)</h3>
 <pre><code>apt install -y certbot python3-certbot-nginx
 certbot --nginx -d yourdomain.dev -d www.yourdomain.dev
 certbot renew --dry-run    <span class="c"># 测试自动续期</span></code></pre>
-<div class="callout tip"><b class="t">自动续期</b>certbot 会自动加 systemd timer 或 cron 任务,每 60 天跑一次续期,90 天有效期内始终保持。你<strong>什么都不用管</strong>,只要机器不挂。</div>
-<div class="callout note"><b class="t">没查到的细节</b>Let's Encrypt 速率限制的官方最新数值(每周每域名多少张证书)没逐字核对,以 <a href="https://letsencrypt.org/docs/rate-limits/" target="_blank">letsencrypt.org/docs/rate-limits</a> 为准——常见上限是每周 50 张同域重复证书,签错时容易撞。</div>
-<p class="src">来源:<a href="https://letsencrypt.org/getting-started/" target="_blank">Let's Encrypt Getting Started</a> · <a href="https://eff-certbot.readthedocs.io/" target="_blank">Certbot 文档</a> · 核对 2026-08-05</p>
+<p>certbot 会自动加 systemd timer 或 cron,每 60 天跑一次续期,90 天有效期内始终保持。</p>
+
+<h3 data-reveal>2026.8 Let's Encrypt 速率限制(已核对官方文档)</h3>
+<table class="tbl">
+<tr><th>限制项</th><th>数值</th><th>周期</th></tr>
+<tr><td>每注册域名新证书</td><td><strong>50 张</strong></td><td>每 7 天</td></tr>
+<tr><td>每账号新订单(V1)</td><td>300 单</td><td>每 3 小时</td></tr>
+<tr><td>同一标识符集重复证书</td><td>5 张</td><td>每 7 天</td></tr>
+<tr><td>ARI 续费</td><td><strong>豁免所有限制</strong></td><td>—</td></tr>
+</table>
+<p>好消息:正常续费不受速率限制。坏消息:测试改域时容易撞 50 张/周的限额。</p>
+
+<h3 data-reveal>🚧 小剧场:"证书过期全站打不开"</h3>
+<p>Let's Encrypt 证书 90 天有效期,过期前 30 天 certbot 自动续。但如果你把机器关了一个月,或 cron 任务跑挂了,证书可能过期 —— 用户浏览器会拦"不安全"。 第一时间:</p>
+<pre><code>certbot certificates               <span class="c"># 看所有证书和到期时间</span>
+systemctl status certbot.timer     <span class="c"># 看定时器是否在跑</span>
+certbot renew --force-renewal      <span class="c"># 强制立即重签</span></code></pre>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>HTTP 不穿衣服,HTTPS 套了 TLS 外套</strong>"——光看 URL 协议头就知道传输安不安全。</div>
+
+<p class="src">来源:<a href="https://letsencrypt.org/docs/rate-limits/" target="_blank">Let's Encrypt · Rate Limits(2026-08-05 核对)</a> · <a href="https://letsencrypt.org/getting-started/" target="_blank">Let's Encrypt · Getting Started</a> · <a href="https://eff-certbot.readthedocs.io/" target="_blank">Certbot 官方文档</a> · <a href="https://datatracker.ietf.org/doc/html/rfc8446" target="_blank">RFC 8446 · TLS 1.3</a> · 核对 2026-08-07</p>
 </section>
 
 <div class="divider"></div>
 
 <section id="m2-4">
 <div class="sec-tag">模块 2 · 网络</div>
-<h2>2.4 反向代理是什么</h2>
-<p>你跑 Node 应用监听 <code>127.0.0.1:3000</code>——但用户访问的是 <code>yourdomain.dev</code>。<strong>中间那个"翻译官"</strong>就是反向代理。</p>
-<h3 data-reveal>为什么需要它</h3>
+<h2>2.4 反向代理:Nginx 为什么是瑞士军刀</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>反向代理就是"大楼前台"——你只管说"找张三",前台帮你定位到具体办公室。用户访问 yourdomain.dev,其实是 Nginx 在替你分配到后端的多个 Node 服务。</div>
+
+<h3 data-reveal>它到底是个啥:正向 vs 反向</h3>
+<p>很多人把"代理"和"反向代理"搞混,其实方向不同:</p>
+<pre><code>【正向代理】 客户端 ←→ 代理 ←→ 互联网
+  替客户端出头,典型场景:企业统一翻墙
+  客户端知道有代理存在
+
+【反向代理】 客户端 ←→ 反代 ←→ 后端服务器
+  替服务端接活,典型场景:Nginx 配 Node
+  客户端不知道后面有几个服务器</code></pre>
+
+<h3 data-reveal>请求流转步骤(ASCII 图)</h3>
+<pre><code>用户浏览器        Nginx 反代              后端服务器
+   │                  │                       │
+   │ GET /api/users   │                       │
+   ├─────────────────►│                       │
+   │                  │ 选择 Node1             │
+   │                  ├──────────────────────►│
+   │                  │◄──── 200 OK JSON ─────┤
+   │◄────── 200 OK ───┤                       │
+   │                  │                       │
+   │ GET /static/x.js │                       │
+   ├─────────────────►│                       │
+   │                  │ 直接返回磁盘上的文件   │
+   │◄────── 200 OK ───┤  (没经过 Node,省 CPU)│</code></pre>
+
+<h3 data-reveal>Nginx 的 5 个关键作用</h3>
 <ul>
-<li><strong>HTTPS 终结</strong>:Nginx 负责 SSL,Node 跑明文 HTTP(省 CPU)</li>
-<li><strong>多应用共用 80/443</strong>:根据域名分发到不同 Node 服务</li>
-<li><strong>静态文件加速</strong>:让 Nginx 直接返回静态资源,不进 Node</li>
-<li><strong>负载均衡</strong>:把请求分散到多个 Node 实例</li>
-<li><strong>缓存/压缩/Gzip</strong>:Nginx 一行配置搞定</li>
+<li><strong>HTTPS 终结</strong>——Nginx 负责 SSL,Node 跑明文 HTTP(省 CPU)</li>
+<li><strong>多应用共用 80/443</strong>——根据域名分发到不同 Node 服务</li>
+<li><strong>静态文件加速</strong>——让 Nginx 直接返回静态资源,不进 Node</li>
+<li><strong>负载均衡</strong>——把请求分散到多个 Node 实例</li>
+<li><strong>缓存/压缩/Gzip</strong>——Nginx 一行配置搞定</li>
 </ul>
+
 <h3 data-reveal>Nginx 为什么是"瑞士军刀"</h3>
-<p>Nginx 是事实标准的反向代理服务器——开源、稳定、配置简单、内存占用低。占全球 Web 服务器市场份额前 2(另一家是 Apache)。</p>
-<div class="callout note"><b class="t">配置样板见 3.3</b>完整可用的 nginx.conf 在模块 3.3,直接抄走。</div>
+<p>Nginx 是事实标准的反向代理服务器——开源、稳定、配置简单、内存占用低。Netcraft / W3Techs 等机构长期统计显示,Nginx 在全球 Web 服务器市场份额稳居前 2(另一家是 Apache),新兴部署以 Nginx 为主流。(2026.8 具体百分比本节未逐字核对,以 w3techs.com 最新报告为准)</p>
+
+<div class="callout note"><b class="t">📌 配置样板见 3.3</b>完整可用的 nginx.conf 在模块 3.3,直接抄走。</div>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>正向帮客户端,反向帮服务端</strong>"——谁是"替谁出头"的一方。</div>
+
+<p class="src">来源:<a href="https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/" target="_blank">Cloudflare Learning · Reverse Proxy</a> · <a href="https://nginx.org/en/docs/" target="_blank">Nginx 官方文档</a> · 核对 2026-08-07</p>
 </section>
 
 <div class="divider"></div>
 
 <section id="m2-5">
 <div class="sec-tag">模块 2 · 网络</div>
-<h2>2.5 防火墙与端口:为什么 80/443 通了别的还连不上</h2>
-<p>独立开发者 50% 的"连不上"故障都是防火墙干的——而且不是一台防火墙,是<strong>两层</strong>:</p>
+<h2>2.5 防火墙:为什么 80/443 通了别的还连不上</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>独立开发者 50% 的"连不上"故障是防火墙干的——而且不是一层,是<strong>两层<u>以上</u></strong>。本机放行了,云厂商不一定放行;同样本地服务跑了,也不代表外网能进。</div>
+
+<h3 data-reveal>两层防火墙(独立开发者必踩)</h3>
+<pre><code>你的电脑 ←───→ [云厂商安全组] ←───→ [本机 ufw/iptables] ←───→ 服务
+   全国大门                          楼层大门                      房间门
+
+两个门都开,才能进。任何一个门锁着,外面就连不上。</code></pre>
+
 <h3 data-reveal>第一层:服务器本机防火墙 (iptables / ufw)</h3>
-<p>Ubuntu 默认没装 ufw,但很多人会装:<code>ufw allow 22</code>(SSH)、<code>ufw allow 80</code>、<code>ufw allow 443</code>、<code>ufw enable</code>。如果你装好后忘了 allow 80/443,Nginx 跑着也访问不了。</p>
-<pre><code>ufw status           <span class="c"># 看规则</span>
-ufw allow 80/tcp     <span class="c"># 放行 HTTP</span>
-ufw allow 443/tcp    <span class="c"># 放行 HTTPS</span>
-ufw allow from 1.2.3.4 to any port 22 <span class="c"># 只允许某 IP SSH</span></code></pre>
+<p>Ubuntu 默认没装 ufw,但很多人会装:<code>ufw allow 22</code>、<code>ufw allow 80</code>、<code>ufw allow 443</code>、<code>ufw enable</code>。装好后忘了 allow 80/443,Nginx 跑着也访问不了。</p>
+<pre><code>ufw status                <span class="c"># 看规则</span>
+ufw allow 80/tcp          <span class="c"># 放行 HTTP</span>
+ufw allow 443/tcp         <span class="c"># 放行 HTTPS</span>
+ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</span></code></pre>
+
 <h3 data-reveal>第二层:云厂商安全组</h3>
-<p>阿里云 / 腾讯云 / AWS 在"控制台 → 安全组"里维护另一套防火墙规则。<strong>本机 ufw 放行了 80,但安全组没放行,外面还是连不上</strong>——这是新手最常踩的"双重防火墙"陷阱。</p>
-<div class="callout warn"><b class="t">故障排查顺序</b>连不上某端口时,按这个顺序检查:(1) 服务本身在听?<code>ss -tlnp | grep 端口</code>(2) 本机防火墙放行?<code>ufw status</code>(3) 云厂商安全组放行?去控制台看(4) 公网 IP 对吗?<code>curl ifconfig.me</code></div>
+<p>阿里云 / 腾讯云 / AWS / 华为云 在"控制台 → 安全组"里维护另一套防火墙规则。<strong>本机 ufw 放行了 80,但安全组没放行,外面还是连不上</strong> — 这是新手最常踩的"双重防火墙"陷阱。</p>
+<div class="callout warn"><b class="t">故障排查顺序(4 步)</b>连不上某端口时,按这个顺序检查:</div>
+<ol>
+<li><strong>服务本身在听吗</strong> → <code>ss -tlnp | grep 端口</code></li>
+<li><strong>本机防火墙放行了吗</strong> → <code>ufw status</code></li>
+<li><strong>云厂商安全组放行了吗</strong> → 去控制台看</li>
+<li><strong>公网 IP 对吗</strong> → <code>curl ifconfig.me</code></li>
+</ol>
+
+<h3 data-reveal>🚧 小剧场:"80 通了但 3000 不通"</h3>
+<p>你跑 Node 监听 3000 端口,本机 <code>curl localhost:3000</code> 正常,但外网访问不到。原因:3000 端口既没在云厂商安全组放行,你也忘了让 Nginx 反代到 3000。解决:</p>
+<pre><code>ufw allow 3000/tcp       <span class="c"># 1. 本机放行(或用 Nginx 反代)</span>
+# 2. 云厂商控制台:安全组 → 入站规则 → 3000
+# 3. 或者更优雅:让 Nginx 监听 80/443,反代到 3000(用户只接触 80/443)</code></pre>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>连不上查三层:服务、墙、IP</strong>"——服务起没起、墙放没放、IP 对不对,逐层推。</div>
+
+<p class="src">来源:<a href="https://help.ubuntu.com/community/UFW" target="_blank">Ubuntu · UFW 文档</a> · <a href="https://www.digitalocean.com/community/tutorials/ufw-essentials-common-firewall-rules-and-commands" target="_blank">DigitalOcean · UFW Essentials</a> · 核对 2026-08-07</p>
 </section>
 
 <div class="divider"></div>
@@ -607,18 +796,438 @@ ufw allow from 1.2.3.4 to any port 22 <span class="c"># 只允许某 IP SSH</spa
 <section id="m2-6">
 <div class="sec-tag">模块 2 · 网络</div>
 <h2>2.6 常见攻击面速查</h2>
-<p>独立开发者的项目被攻击,99% 是被自动化扫描脚本"顺手"打的,不是有人专门针对你。学会这几条能挡住绝大多数:</p>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>独立开发者的项目被攻击,99% 是被自动化扫描脚本"顺手"打的,不是有人专门针对你。学会这几条能挡住绝大多数。</div>
+
+<h3 data-reveal>7 类攻击速查</h3>
 <table class="tbl">
-<tr><th>攻击</th><th>原理</th><th>防御</th></tr>
-<tr><td><strong>暴力 SSH</strong></td><td>脚本扫 22 端口,试常见密码</td><td>关密码登录(只允许密钥)+ fail2ban</td></tr>
-<tr><td><strong>SQL 注入</strong></td><td>用户输入被拼到 SQL 里</td><td>用参数化查询(<code>?</code> 占位符)/ ORM</td></tr>
-<tr><td><strong>XSS</strong></td><td>用户输入被当 HTML 渲染</td><td>React/Vue 默认转义;不用的输入 <code>DOMPurify</code></td></tr>
-<tr><td><strong>CSRF</strong></td><td>诱导用户点链接触发操作</td><td>SameSite cookie + CSRF token</td></tr>
-<tr><td><strong>DDoS</strong></td><td>海量请求打满带宽</td><td>Cloudflare 代理 + 限流</td></tr>
+<tr><th>攻击</th><th>原理(简化)</th><th>防御</th></tr>
+<tr><td><strong>暴力 SSH</strong></td><td>脚本扫 22 端口,试常见密码<br>→ 一天试几万次</td><td>关密码登录(只允许密钥)+ fail2ban</td></tr>
+<tr><td><strong>SQL 注入</strong></td><td>用户输入被拼到 SQL 里<br>→ <code>' OR 1=1 --</code></td><td>参数化查询 / ORM</td></tr>
+<tr><td><strong>XSS</strong></td><td>用户输入被当 HTML 渲染<br>→ <code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td><td>React/Vue 默认转义;外部输入用 DOMPurify</td></tr>
+<tr><td><strong>CSRF</strong></td><td>诱导你点链接触发操作<br>→ 银行转账截图骗你点</td><td>SameSite cookie + CSRF token</td></tr>
+<tr><td><strong>DDoS</strong></td><td>海量请求打满带宽<br>→ 像 100 万人挤 1 个门</td><td>Cloudflare 代理 + 限流</td></tr>
 <tr><td><strong>依赖漏洞</strong></td><td><code>npm install</code> 装到带漏洞的包</td><td><code>npm audit</code> + Dependabot 自动 PR</td></tr>
 <tr><td><strong>敏感信息泄露</strong></td><td>.env / 密钥 commit 到 GitHub</td><td><code>git-secrets</code> 预检查 + GitHub 密钥扫描</td></tr>
 </table>
-<div class="callout warn"><b class="t">三条立竿见影的硬化</b>(1) SSH 改密钥登录、禁密码;(2) <code>.env</code> 加进 <code>.gitignore</code>;(3) <code>npm audit</code> + Dependabot 装好。这三件事 1 小时内搞定,挡掉 80% 自动化攻击。</div>
+
+<h3 data-reveal>三条立竿见影的硬化(1 小时内搞定)</h3>
+<ol>
+<li><strong>SSH 改密钥登录、禁密码</strong> — 改 <code>/etc/ssh/sshd_config</code> 的 <code>PasswordAuthentication no</code></li>
+<li><strong>.env 加进 .gitignore</strong> — 防止密钥泄露</li>
+<li><strong>npm audit + Dependabot</strong> — 自动修依赖漏洞</li>
+</ol>
+<p>这三件事 1 小时内搞定,挡掉 80% 自动化攻击。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>端口关上、密钥开、依赖常更新</strong>"——三件套常驻,自动化攻击基本绕不开你。</div>
+
+<p class="src">来源:<a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a> · <a href="https://docs.github.com/en/code-security/dependabot" target="_blank">GitHub · Dependabot 文档</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-7">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.7 端口号详解:小区门牌号</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>端口号就是小区门牌号,IP 是小区地址。0-65535 共 6 万多户,1023 以下是"著名商户"专属(SSH、HTTP、HTTPS),49152 以上是临时租户(浏览器每次开新标签都分一个)。</div>
+
+<h3 data-reveal>它到底是个啥</h3>
+<p>想象一栋小区:IP 地址是小区地址(全国唯一),端口号是楼栋门牌号。同一台机器上,可以跑 6 万多个服务,各占一个门牌号,互不干扰。</p>
+
+<h3 data-reveal>三段划分(为什么是 0-65535)</h3>
+<table class="tbl">
+<tr><th>范围</th><th>名称</th><th>谁能用</th></tr>
+<tr><td>0-1023</td><td>知名端口(Well-known)</td><td>需要 root 权限才能监听</td></tr>
+<tr><td>1024-49151</td><td>注册端口(Registered)</td><td>普通用户可监听,向 IANA 注册避免冲突</td></tr>
+<tr><td>49152-65535</td><td>动态/临时端口(Ephemeral)</td><td>客户端临时连接用,系统自动分配</td></tr>
+</table>
+<p>数字上限 65535 = 2^16,因为 TCP/UDP 包头里端口号字段是 16 位。</p>
+
+<h3 data-reveal>15+ 常见端口速查</h3>
+<table class="tbl">
+<tr><th>端口</th><th>服务</th><th>用途</th></tr>
+<tr><td><code>22</code></td><td>SSH</td><td>远程登录,改密钥登录后禁密码</td></tr>
+<tr><td><code>80</code></td><td>HTTP</td><td>明文网页,建议跳到 443</td></tr>
+<tr><td><code>443</code></td><td>HTTPS</td><td>加密网页,主流</td></tr>
+<tr><td><code>53</code></td><td>DNS</td><td>域名解析</td></tr>
+<tr><td><code>3000</code></td><td>Node/React 默认</td><td>开发服务器常见</td></tr>
+<tr><td><code>5000</code></td><td>Flask 默认</td><td>Python Web 常见</td></tr>
+<tr><td><code>8080</code></td><td>备用 HTTP</td><td>开发环境常用</td></tr>
+<tr><td><code>3306</code></td><td>MySQL</td><td>默认数据库端口</td></tr>
+<tr><td><code>5432</code></td><td>PostgreSQL</td><td>PG 默认</td></tr>
+<tr><td><code>6379</code></td><td>Redis</td><td>内存数据库</td></tr>
+<tr><td><code>27017</code></td><td>MongoDB</td><td>Mongo 默认</td></tr>
+<tr><td><code>25</code> / <code>993</code></td><td>SMTP / IMAPS</td><td>发邮件 / 加密收邮件</td></tr>
+<tr><td><code>3389</code></td><td>RDP</td><td>Windows 远程桌面</td></tr>
+<tr><td><code>5900</code></td><td>VNC</td><td>跨平台远程桌面</td></tr>
+<tr><td><code>11211</code></td><td>Memcached</td><td>缓存服务器</td></tr>
+</table>
+
+<h3 data-reveal>端口冲突排查四步法</h3>
+<pre><code>ss -tlnp | grep 8080            <span class="c"># 1. 谁在听 8080?(推荐,新派)</span>
+lsof -i :8080                   <span class="c"># 2. 哪个进程占用?</span>
+netstat -anp | grep 8080        <span class="c"># 3. 备用命令(老派)</span>
+fuser -k 8080/tcp               <span class="c"># 4. 强制杀掉占用进程</span></code></pre>
+
+<h3 data-reveal>🚧 小剧场:"两个 Node 都想用 3000"</h3>
+<p>你开了两个 Node 项目,都默认监听 3000。第二个 <code>node server.js</code> 报错 <code>EADDRINUSE</code>。三选一:</p>
+<pre><code>PORT=3001 node server.js        <span class="c"># 改第二个项目的端口</span>
+kill $(lsof -ti:3000)           <span class="c"># 杀掉占用 3000 的进程</span>
+pm2 start server.js -n app1     <span class="c"># 用 pm2 同时管多个实例</span></code></pre>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>知名 1024 下,注册中段,临时靠后</strong>"——三段各管一摊,冲突时往上找。</div>
+
+<p class="src">来源:<a href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers" target="_blank">Wikipedia · TCP/UDP 端口列表</a> · <a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/" target="_blank">Cloudflare Learning · What is a port</a> · <a href="https://www.iana.org/assignments/service-names-port-numbers/" target="_blank">IANA · Service Name and Port Number Registry</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-8">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.8 本地服务与 loopback:你跟自己说话</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b><code>localhost</code> = "你跟自己说话",家里喊一声全家都听不见。Node 监听 <code>127.0.0.1</code> 只接本机请求,监听 <code>0.0.0.0</code> 才对外接受所有网卡访问。想让本地服务被外网访问?用内网穿透 3 方案之一。</div>
+
+<h3 data-reveal>它到底是个啥:三个特殊地址的区别</h3>
+<pre><code>【127.0.0.1】  loopback 网卡上的 IP
+  → 只走本机,网卡都不发出去
+  → 隔壁电脑 ping 不通你
+
+【localhost】  操作系统解析出来的名字
+  → 通常 = 127.0.0.1
+  → 在 /etc/hosts 里改可以指向别的 IP
+
+【0.0.0.0】    监听所有网卡
+  → 接受任何接口的访问(本机 + 公网)
+  → 真正"对外开放"的服务应该监听这个</code></pre>
+
+<h3 data-reveal>Node 监听实例</h3>
+<pre><code>// 只接本机(默认)
+app.listen(3000, '127.0.0.1', () =&gt; {
+  console.log('只在 localhost:3000 能访问');
+});
+
+// 接受所有接口
+app.listen(3000, '0.0.0.0', () =&gt; {
+  console.log('本机、公网、内网都能访问');
+});
+
+// 默认(通常 = 0.0.0.0,但有些版本不同)
+app.listen(3000, () =&gt; console.log('默认监听'));</code></pre>
+
+<h3 data-reveal>内网穿透 3 方案(本地服务被外网访问)</h3>
+<table class="tbl">
+<tr><th>方案</th><th>原理</th><th>适合谁</th></tr>
+<tr><td><strong>frp</strong></td><td>开源,自建 frp 服务器,需一台公网机器</td><td>愿意折腾、对成本敏感</td></tr>
+<tr><td><strong>Cloudflare Tunnel</strong></td><td>跑 <code>cloudflared</code> 守护进程,<strong>出站</strong>连 Cloudflare</td><td>不想买公网机器,小项目</td></tr>
+<tr><td><strong>Tailscale</strong></td><td>基于 WireGuard,零配置,设备组网</td><td>多设备互联,安全组网</td></tr>
+</table>
+
+<h3 data-reveal>Cloudflare Tunnel(2026.8 已核对原理)</h3>
+<p><code>cloudflared</code> 守护进程运行在你的服务器上,<strong>主动向 Cloudflare 发起出站连接</strong>(outbound-only),不需要公网 IP,不需要在防火墙开放入站。隧道用 UUID 标识,流量双向通行,但防火墙只需放行出站。</p>
+<div class="callout note"><b class="t">没核对到</b>Free 套餐下 Cloudflare Tunnel 的带宽限制、是否需要域名等条款 2026.8 状态本节未逐字核对,以 Cloudflare 官网最新条款为准。</div>
+
+<h3 data-reveal>Tailscale 2026 状态(已核对定价)</h3>
+<p>Tailscale 基于 WireGuard,免费版 Personal 永久可用 —— <strong>最多 6 个用户、无限个人设备</strong>。超过 6 人升级到 Standard($8/用户/月)。典型场景:homelab、个人 VPN、Raspberry Pi、SSH 内网穿透。</p>
+
+<h3 data-reveal>SSH 端口转发(最快的小工具)</h3>
+<pre><code># 本地转发:把 remote 的 80 映射到本地 8080
+ssh -L 8080:localhost:80 user@remote
+
+# 远程转发:把本机的 3000 暴露到 remote 的 8080
+ssh -R 8080:localhost:3000 user@remote
+
+# 动态转发:把 SSH 变成 SOCKS 代理
+ssh -D 1080 user@remote</code></pre>
+
+<h3 data-reveal>🚧 小剧场:"我本地跑的服务怎么让同事访问?"</h3>
+<p>三种解决方案,选最适合的:</p>
+<ol>
+<li><strong>最简:用 Tailscale</strong> — 同事也装,组个虚拟局域网</li>
+<li><strong>免客户端:Cloudflare Tunnel</strong> — 给你一个公网域名,无需装 VPN</li>
+<li><strong>彻底控制:frp</strong> — 你自己买台公网 VPS 当中转</li>
+</ol>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>本地起服务先看听啥,听 0.0.0.0 才对外</strong>"——监听 127.0.0.1 = 只自己用,监听 0.0.0.0 = 全网可达。</div>
+
+<p class="src">来源:<a href="https://tailscale.com/pricing" target="_blank">Tailscale · 定价</a>(2026-08-07 核对) · <a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/" target="_blank">Cloudflare · Tunnel 文档</a> · <a href="https://github.com/fatedier/frp" target="_blank">frp · GitHub</a> · <a href="https://man.openbsd.org/ssh" target="_blank">OpenSSH 手册 · 端口转发</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-9">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.9 VPN 与代理:四种"过墙"姿势辨析</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>VPN、正向代理、反向代理、应用层代理四者经常被搞混,其实各管一层。VPN 是"在网络层拉条专线",反代是"在应用层替服务端接活",正代是"在应用层替客户端出头"。</div>
+
+<h3 data-reveal>它到底是个啥:四个场景引入</h3>
+<ul>
+<li><strong>公司 VPN</strong> — 你在家能访问公司内网 Git,OS 以为你坐在公司工位</li>
+<li><strong>企业正向代理</strong> — 公司统一从代理出公网,所有员工走同一出口</li>
+<li><strong>反向代理(Nginx)</strong> — 用户访问公司网站,Nginx 在前面分发</li>
+<li><strong>应用层代理</strong> — 浏览器设 SOCKS5/HTTP Proxy 插件出公网</li>
+</ul>
+
+<h3 data-reveal>四者对比 ASCII 图</h3>
+<pre><code>【正向代理】                          【反向代理】
+   客户端 ─→ 代理 ─→ 互联网             互联网 ─→ 反代 ─→ 后端服务器
+   替客户端出头                         替服务端接活
+
+【VPN】                                【应用层代理】
+   客户端 ─→ VPN ─→ 目标网络           客户端 ─→ SOCKS5/HTTP Proxy ─→ 互联网
+   拉专线,OS 视角下虚拟网卡             应用层代转,SOCKS5 看上层协议</code></pre>
+
+<h3 data-reveal>作用层一览</h3>
+<table class="tbl">
+<tr><th>类型</th><th>作用层</th><th>典型场景</th></tr>
+<tr><td><strong>VPN</strong></td><td>L3 网络层</td><td>整条虚拟专线,OS 路由表视角</td></tr>
+<tr><td><strong>反向代理</strong></td><td>L7 应用层(HTTP)</td><td>Nginx 替你接 HTTP 流量</td></tr>
+<tr><td><strong>正向代理</strong></td><td>L7 应用层(HTTP)</td><td>浏览器设代理出公网</td></tr>
+<tr><td><strong>SOCKS5 代理</strong></td><td>L5 会话层</td><td>任意 TCP/UDP 流量转发</td></tr>
+</table>
+
+<h3 data-reveal>VPN 协议三档</h3>
+<ul>
+<li><strong>IPsec</strong> — 企业级老牌,1980s 起的协议族,配置复杂但稳定</li>
+<li><strong>SSL VPN</strong> — 轻量,装客户端即可(Cisco AnyConnect 等)</li>
+<li><strong>WireGuard</strong> — 新锐,代码 4000 行,<strong>Linux 5.6(2020-03-29) 起合并入主线</strong></li>
+</ul>
+
+<h3 data-reveal>WireGuard 的核心优势</h3>
+<ul>
+<li>配置像 SSH — 交换公钥即可建立连接</li>
+<li>代码量小 — 约 4000 行,易审计</li>
+<li>现代加密 — Curve25519、ChaCha20、Poly1305 等</li>
+<li>内核实现 — 性能高,适合嵌入式和骨干</li>
+<li>内置漫游 — 切换网络不重连(类似 Mosh)</li>
+</ul>
+
+<h3 data-reveal><code>ssh -D 1080</code> 是什么</h3>
+<p>SSH 自带的动态 SOCKS 代理。把 SSH 当 SOCKS5 服务器用,所有走 1080 端口的应用流量都会被 SSH 转发出去。</p>
+
+<h3 data-reveal>🚧 小剧场:"公司 VPN 能访问内网是为什么"</h3>
+<p>VPN 客户端拨号时,OS 收到一组"路由表变更指令":通往 <code>10.0.0.0/8</code> 的包走 <code>utun0</code>(虚拟网卡),其他走原默认网卡。从你的 OS 视角看,这就是坐在公司工位的网络栈。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>VPN 拉专线,反代替服务端,正代替客户端</strong>"——看"替谁出头"。</div>
+
+<p class="src">来源:<a href="https://www.cloudflare.com/learning/network-layer/what-is-a-vpn/" target="_blank">Cloudflare Learning · What is a VPN</a> · <a href="https://www.wireguard.com/" target="_blank">WireGuard 官方</a> · <a href="https://en.wikipedia.org/wiki/WireGuard" target="_blank">Wikipedia · WireGuard</a>(Linux 5.6 入主线) · <a href="https://en.wikipedia.org/wiki/Reverse_proxy" target="_blank">Wikipedia · Reverse Proxy</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-10">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.10 公网 / 私网 / NAT:小区传达室的活儿</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>公网 IP 是你家门牌号(全国唯一),私网 IP 是小区内单元号(小区内可重复)。整个小区共用一个公网 IP,小区传达室(NAT)负责把外面的快递按"门牌号"分发回各户 —— 这就是 NAT 在干的事。</div>
+
+<h3 data-reveal>它到底是个啥</h3>
+<p>如果每台设备都要一个公网 IP,IPv4(43 亿个)早就不够用。NAT(Network Address Translation)让一个小区可以共用一个公网 IP —— 内部的私网 IP 由路由器"翻译"。</p>
+
+<h3 data-reveal>三类私网段(RFC 1918)</h3>
+<table class="tbl">
+<tr><th>段</th><th>地址范围</th><th>数量</th><th>典型场景</th></tr>
+<tr><td><code>10.0.0.0/8</code></td><td><code>10.0.0.0</code> - <code>10.255.255.255</code></td><td>1677 万</td><td>大型企业 / 云厂商内网</td></tr>
+<tr><td><code>172.16.0.0/12</code></td><td><code>172.16.0.0</code> - <code>172.31.255.255</code></td><td>104 万</td><td>中型网络</td></tr>
+<tr><td><code>192.168.0.0/16</code></td><td><code>192.168.0.0</code> - <code>192.168.255.255</code></td><td>6.5 万</td><td>家用路由器(最常见)</td></tr>
+</table>
+<p>你在家里 Wi-Fi 看到的 <code>192.168.1.x</code>,公司内网可能是 <code>10.0.0.x</code>。</p>
+
+<h3 data-reveal>NAT 原理 ASCII 图</h3>
+<pre><code>你的电脑 192.168.1.100:5000 ─→ 小区路由器 ─→ 公网 1.2.3.4:40001 ─→ baidu.com
+                                  ▲
+                                  │ NAT 翻译表:
+                                  │ 内网 IP:端口          → 公网 IP:端口
+                                  │ 192.168.1.100:5000    → 1.2.3.4:40001
+                                  │ 192.168.1.101:5001    → 1.2.3.4:40002
+
+百度回复到 1.2.3.4:40001 → 路由器查表 → 转给 192.168.1.100:5000</code></pre>
+
+<h3 data-reveal>端口映射 = 路由器做的"反向代理"</h3>
+<p>家里的 NAS 想被外网访问?在路由器上做"端口映射":把公网的某个端口(如 <code>8081</code>)映射到 NAS 内网 IP 的 <code>5000</code> 端口。外网访问 <code>你的公网 IP:8081</code> = 访问 NAS 的 <code>5000</code>。</p>
+<div class="callout note"><b class="t">类比</b>小区传达室替你收快递,快递单只写"传达室收"。传达室记住每件快递是 18 楼哪户的,你来取时再分发。端口映射就是"给某户固定留个柜子"。</div>
+
+<h3 data-reveal>IPv4 耗尽历史 + IPv6 出场</h3>
+<p><strong>2019 年 11 月</strong>,IANA 分配完最后 5 个 /8 段,IPv4 正式"分完"。NAT 是 IPv4 续命的权宜之计。IPv6(2.13 详述)有 128 位地址,理论上每粒沙子都能分到 IP,不再需要 NAT。</p>
+
+<h3 data-reveal>🚧 小剧场:"为什么我家 IP 跟邻居一样都是 192.168.1.100"</h3>
+<p>所有家用路由器默认用 <code>192.168.1.x</code> 段。你的 <code>192.168.1.100</code> 和邻居的 <code>192.168.1.100</code> 在各自小区里互不干扰 —— 因为它们都在 NAT 后面,公网上看到的只是小区公网 IP。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>公网全国唯一,私网小区内用,出门靠 NAT</strong>"——家里几百台设备的 IP 可以重复,因为公网只看小区大门。</div>
+
+<p class="src">来源:<a href="https://www.cloudflare.com/learning/network-layer/what-is-nat/" target="_blank">Cloudflare Learning · What is NAT</a> · <a href="https://datatracker.ietf.org/doc/html/rfc1918" target="_blank">RFC 1918 · Address Allocation for Private Internets</a> · <a href="https://www.cloudflare.com/learning/network-layer/what-is-the-ipv4-exhaustion-problem/" target="_blank">Cloudflare · IPv4 耗尽</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-11">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.11 网络调试命令全家福:排障工具箱</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>这是你排障的工具箱,按场景查。不通先 <code>ping</code>,慢就 <code>mtr</code>,HTTP 用 <code>curl</code>,看端口用 <code>ss</code>。背不下来没关系,知道"啥场景该用啥命令"就够。</div>
+
+<h3 data-reveal>命令分类速查表</h3>
+<table class="tbl">
+<tr><th>分类</th><th>命令</th><th>用途</th></tr>
+<tr><td rowspan="3">连通性</td><td><code>ping</code></td><td>测 IP 层是否通(用 ICMP)</td></tr>
+<tr><td><code>traceroute</code></td><td>看包从你到目标过了几跳</td></tr>
+<tr><td><code>mtr</code></td><td>traceroute + ping 合并版,实时</td></tr>
+<tr><td rowspan="3">DNS</td><td><code>nslookup</code></td><td>查域名的 IP(简单)</td></tr>
+<tr><td><code>dig</code></td><td>查 DNS 详细信息(推荐)</td></tr>
+<tr><td><code>host</code></td><td>极简 DNS 查询</td></tr>
+<tr><td rowspan="2">HTTP</td><td><code>curl -v</code></td><td>协议级 HTTP 请求调试</td></tr>
+<tr><td><code>wget -S</code></td><td>同 curl,看响应头</td></tr>
+<tr><td rowspan="2">本地端口</td><td><code>ss -tlnp</code></td><td>看本机在听哪些端口(新派)</td></tr>
+<tr><td><code>netstat -anp</code></td><td>同上(老派,逐步被 ss 替代)</td></tr>
+<tr><td>抓包</td><td><code>tcpdump</code> / <code>Wireshark</code></td><td>看实际网络包内容</td></tr>
+<tr><td rowspan="2">网络配置</td><td><code>ip addr</code> / <code>ip a</code></td><td>看本机 IP(替代 ifconfig)</td></tr>
+<tr><td><code>ip route</code></td><td>看路由表(替代 route)</td></tr>
+</table>
+
+<h3 data-reveal>5 个实战排查场景</h3>
+<p><strong>场景 1 · 上不了网</strong></p>
+<pre><code>ping 8.8.8.8        <span class="c"># 测 IP 层通不通</span>
+ping baidu.com      <span class="c"># 测 DNS 通不通</span>
+# 8.8.8.8 不通 = 网络层断(IP/路由/网卡问题)
+# baidu.com 不通但 8.8.8.8 通 = DNS 问题</code></pre>
+
+<p><strong>场景 2 · 上得了网但打不开网页</strong></p>
+<pre><code>curl -v http://example.com   <span class="c"># 看 HTTP 请求卡哪一步</span>
+# * Trying 93.184.216.34... = DNS 解析中
+# * Connected = TCP 连上
+# &gt; GET / HTTP/1.1 = 发送请求
+# &lt; HTTP/1.1 200 = 收到响应
+# 卡在哪行 = 哪步出问题</code></pre>
+
+<p><strong>场景 3 · 网页打开慢</strong></p>
+<pre><code>mtr -rwbzc 100 example.com   <span class="c"># 看哪一跳丢包/慢</span></code></pre>
+
+<p><strong>场景 4 · SSH 连不上</strong></p>
+<pre><code>telnet yourserver 22         <span class="c"># 测端口通不通</span>
+ssh -vvv user@yourserver     <span class="c"># SSH 详细调试(三个 v 更详细)</span>
+ufw status                   <span class="c"># 看防火墙</span></code></pre>
+
+<p><strong>场景 5 · API 调不通</strong></p>
+<pre><code>curl -X POST -H 'Content-Type: application/json' \
+  -d '{"name":"test"}' https://api.example.com/users
+# -X POST:用 POST 方法
+# -d:发请求体
+# -H:加请求头</code></pre>
+
+<h3 data-reveal><code>ss</code> vs <code>netstat</code>:新派 vs 老派</h3>
+<p>功能几乎一样,但 <code>ss</code> 直接读内核,速度快 10 倍以上。<code>netstat</code> 已被标记 deprecated,新部署默认装 <code>iproute2</code>(含 <code>ss</code>/<code>ip</code>),不再装 <code>net-tools</code>(含 <code>netstat</code>/<code>ifconfig</code>)。</p>
+
+<h3 data-reveal>🚧 小剧场:"用户报网页打不开,但我这边正常"</h3>
+<p>先用 <a href="https://www.downforeveryoneorjustme.com/" target="_blank">downforeveryoneorjustme.com</a> 看是不是普遍问题。然后用 <code>curl -v</code> + <code>mtr</code> 看哪一跳卡。最后让用户跑 <code>tracert</code>(Windows) 或 <code>traceroute</code>(Mac/Linux) 给你看路径。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>不通先 ping,慢就 mtr,HTTP 用 curl</strong>"——三类工具对应三类问题。</div>
+
+<p class="src">来源:<a href="https://man7.org/linux/man-pages/man8/ss.8.html" target="_blank">Linux man · ss(8)</a> · <a href="https://curl.se/docs/" target="_blank">curl 官方文档</a> · <a href="https://www.bitwizard.nl/mtr/" target="_blank">mtr 官方</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-12">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.12 HTTP/2 与 HTTP/3 演进:协议为啥要升级</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>HTTP/2 解决"一个 TCP 连接一个请求"的浪费,多路复用让一个连接并发多个请求。HTTP/3 更进一步,直接放弃 TCP 用 QUIC(UDP 之上的"类 TCP"),干掉 TCP 队头阻塞。2026 年 Cloudflare 等主流 CDN 已默认启用 HTTP/3。</div>
+
+<h3 data-reveal>它到底是个啥:HTTP/1.1 哪里痛</h3>
+<p>HTTP/1.1 时代,浏览器对同一个域名最多开 6 个 TCP 连接(IE 时代),后改到无限制但每个连接只能串行处理一个请求(队头阻塞)。一个页面 100 个资源,要排很久。</p>
+
+<h3 data-reveal>HTTP/2 三大招</h3>
+<ul>
+<li><strong>多路复用</strong>——一个 TCP 连接并发多个请求,资源并行到达</li>
+<li><strong>头部压缩(HPACK)</strong>——重复的 Header 不重传,省带宽</li>
+<li><strong>二进制分帧</strong>——不再用文本,改二进制传输,解析更快</li>
+</ul>
+
+<h3 data-reveal>HTTP/3 革命:基于 QUIC</h3>
+<p>HTTP/2 解决不了 TCP 本身的队头阻塞 —— 一个包丢了,后续包都要等。<strong>HTTP/3 直接放弃 TCP,改用 QUIC(基于 UDP)</strong>:</p>
+<pre><code>HTTP/1.1: 多个请求排队 → TCP 阻塞 → 全队等
+HTTP/2:   多路复用    → TCP 仍可能阻塞 → 部分解决
+HTTP/3:   QUIC(UDP)  → 丢包不影响其他流 → 彻底解决</code></pre>
+
+<h3 data-reveal>HTTP/3 额外优势</h3>
+<ul>
+<li><strong>0-RTT 握手</strong>——第二次访问几乎瞬开(QUIC 内置加密)</li>
+<li><strong>连接迁移</strong>——手机 WiFi 切 4G 不重连</li>
+<li><strong>内置加密</strong>——默认 TLS 1.3,无法明文</li>
+</ul>
+
+<h3 data-reveal>2026.8 部署现状(部分待核对)</h3>
+<ul>
+<li>Cloudflare:默认开启 HTTP/3(自 2019 年起)</li>
+<li>Google:全站默认 HTTP/3</li>
+<li>国内 CDN:阿里云/腾讯云 CDN 已支持 HTTP/3</li>
+<li>全球 HTTP/3 启用比例:本节未逐字核对 Cloudflare Radar 最新数据,以 2026.8 官方报告为准</li>
+</ul>
+
+<h3 data-reveal>"为什么我还在用 HTTP/1.1 也行"</h3>
+<p>对中小项目,HTTP/1.1 + 静态资源 CDN 已经足够。升级到 HTTP/2/HTTP/3 的成本是 Nginx/Node 服务升级,收益主要在"高并发 + 全球用户"场景。独立开发者 v1 项目不必追新。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>H2 多路复用,H3 干掉 TCP</strong>"——两代协议各解决一类问题。</div>
+
+<p class="src">来源:<a href="https://developers.cloudflare.com/http3/" target="_blank">Cloudflare · HTTP/3</a> · <a href="https://datatracker.ietf.org/doc/html/rfc9000" target="_blank">RFC 9000 · QUIC</a> · <a href="https://web.dev/articles/performance-http2" target="_blank">web.dev · HTTP/2</a> · 核对 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-13">
+<div class="sec-tag">模块 2 · 网络</div>
+<h2>2.13 IPv6 扫盲:128 位地址够给每粒沙子分一个</h2>
+
+<div class="callout note"><b class="t">📌 30 秒结论</b>IPv6 用 128 位地址,理论上够给地球每粒沙子分一个 IP。最大优势是端到端可达,不需要 NAT。2026.8 全球部署率持续提升(具体百分比本节未逐字核对,以 Google / APNIC 最新数据为准),国内三大运营商大部分已支持,但出口流量仍多走 v4。</div>
+
+<h3 data-reveal>它到底是个啥:为什么 IPv4 不够</h3>
+<p>IPv4 地址 32 位 = 43 亿个。2019 年 11 月 IANA 分配完最后 5 个 /8 段后,新地址只能从回收的存量里挤。NAT 续命了十几年,IPv6 是根本解。</p>
+
+<h3 data-reveal>地址格式</h3>
+<pre><code>IPv4: 192.168.1.100                  (4 段,每段 0-255)
+IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+      ┗──── 8 段,每段 4 个十六进制位(0-ffff) ────┛
+
+简化规则:
+  → 前导零可省:2001:db8:85a3:0:0:8a2e:370:7334
+  → 连续 0 段可合并:2001:db8:85a3::8a2e:370:7334
+  → 但 :: 只能出现一次</code></pre>
+
+<h3 data-reveal>三大优势</h3>
+<ul>
+<li><strong>海量地址</strong>——128 位,2^128 ≈ 3.4 × 10^38 个</li>
+<li><strong>端到端可达</strong>——不再需要 NAT,每台设备公网 IP</li>
+<li><strong>内置 IPsec</strong>——协议栈自带加密选项</li>
+</ul>
+
+<h3 data-reveal>2026.8 部署现状(部分待核对)</h3>
+<ul>
+<li>Google IPv6 Statistics:全球部署率持续提升,具体百分比以 <a href="https://www.google.com/intl/en/ipv6/statistics.html" target="_blank">google.com/intl/en/ipv6/statistics.html</a> 2026-08 最新数据为准</li>
+<li>APNIC 测量:可访问 <a href="https://stats.labs.apnic.net/ipv6/" target="_blank">stats.labs.apnic.net/ipv6</a> 看各国部署率</li>
+<li>国内三大运营商:大部分已支持 IPv6,但出口流量可能仍走 v4</li>
+</ul>
+<div class="callout warn"><b class="t">没核对到的数据</b>2026.8 全球 / 中国 IPv6 部署率具体百分比本节未逐字核对(Google / APNIC 页面 2026-08-07 当前返回受限),以官方最新统计为准。</div>
+
+<h3 data-reveal>要不要上 IPv6</h3>
+<p>看目标用户:</p>
+<ul>
+<li>国内用户为主 → 大部分已可用,但 CDN 仍以 v4 为主,可暂缓</li>
+<li>海外用户为主 → 启用 v6 有性能优势</li>
+<li>面向未来 → 早用早享受,v4/v6 双栈已成本接近零</li>
+</ul>
+
+<h3 data-reveal>启用检测</h3>
+<pre><code>curl -6 ifconfig.co          <span class="c"># 看自己有没有 v6 IP</span>
+curl -6 https://test-ipv6.com <span class="c"># 全面 v6 连通性测试</span></code></pre>
+
+<h3 data-reveal>🚧 小剧场:"为什么我开了 v6 服务但还是 IPv4 优先"</h3>
+<p>很多客户端默认走 v4(因为 v4 网络成熟,丢包/防火墙都少),v6 协商失败后才回退 v4。想强制 v6,客户端需要显式配置。</p>
+
+<div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>IPv4 32 位不够分,IPv6 128 位随便用</strong>"——数量级的差距。</div>
+
+<p class="src">来源:<a href="https://www.google.com/intl/en/ipv6/statistics.html" target="_blank">Google · IPv6 Statistics(2026-08 数据待核对)</a> · <a href="https://www.cloudflare.com/learning/network-layer/what-is-ipv6/" target="_blank">Cloudflare Learning · What is IPv6</a> · <a href="https://datatracker.ietf.org/doc/html/rfc8200" target="_blank">RFC 8200 · IPv6 规范</a> · 核对 2026-08-07</p>
 </section>
 
 <div class="divider"></div>
