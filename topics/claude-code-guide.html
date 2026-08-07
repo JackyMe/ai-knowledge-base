@@ -185,7 +185,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">CC</span>Claude Code 使用指南<span class="sub">干货版</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 v2.1.222 · 2026-08-05</span>
+    <span>核对至 v2.1.224 · 2026-08-07</span>
   </div>
 </header>
 
@@ -234,7 +234,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-05</div>
+  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-07</div>
   <h1>Claude Code<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">从心法到命令,从扩展体系到八大实战场景。以官方 Best Practices 与命令参考为底,融合社区高阶经验,压缩成一页可反复查阅的实战手册——只留干货,不讲废话。</p>
   <div class="meta">
@@ -372,6 +372,11 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3 data-reveal>🆕 新增能力:值得马上试的</h3>
 <table class="tbl">
   <tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
+  <tr><td>08-07</td><td>跨会话 <code>SendMessage</code>(v2.1.224)</td><td>Claude Code 会话可跨机器互相通信;<code>ListAgents</code> 发现当前可对话的会话(macOS/Linux)。多机协作场景告别开多个终端</td></tr>
+  <tr><td>08-07</td><td><code>claude self-hosted-runner</code>(v2.1.224)</td><td>把你的机器/容器注册成 Team/Enterprise web/mobile/desktop 会话的运行地;企业内网合规部署场景</td></tr>
+  <tr><td>08-07</td><td><code>archive</code> 插件源 + SHA-256 pin(v2.1.224)</td><td>HTTPS zip 装插件,带 SHA-256 校验,供应链更安全</td></tr>
+  <tr><td>08-06</td><td><code>/review</code> 改名为 <code>/code-review</code> 的别名(v2.1.223)</td><td>所有脚本里 <code>/review &lt;PR#&gt;</code> 改写为 <code>/code-review &lt;PR#&gt;</code>;<code>/review</code> 仍可用但语义已变</td></tr>
+  <tr><td>08-06</td><td><strong>1M 上下文默认走 auto-compaction</strong>(v2.1.223)</td><td>原生 1M 窗口的 Claude 模型都过 auto-compaction 限到 200K;不想要恢复旧行为设 <code>CLAUDE_CODE_DISABLE_1M_CONTEXT=1</code></td></tr>
   <tr><td>08-04</td><td><strong>Focus view</strong>(VSCode)</td><td><kbd>Ctrl+Alt+F</kbd> 或命令面板 "Claude Code: Toggle Focus view"。把工具活动折叠成可展开的逐回合摘要 + 实时运行指示器,长会话看输出不再刷屏</td></tr>
   <tr><td>08-04</td><td>沙箱凭证 <code>mode: "mask"</code>(Linux/WSL)</td><td>沙箱里读凭证拿到的是<strong>哨兵拷贝</strong>(全文或 <code>extract</code> 正则截取的片段),出口时由代理替换为真实值;macOS 暂 fallback 为 <code>deny</code>。CI 跑需要密钥的命令时减少暴露面</td></tr>
   <tr><td>08-04</td><td><code>claude-api</code> skill 新增 <code>prompt-audit</code></td><td>审计你自己的提示词与工具描述里"为旧模型写的模式",升级到新模型时跑一次心里有底</td></tr>
@@ -510,7 +515,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>/code-review [力度] [--fix]</code> <span class="pill c">Skill</span></td><td>评审当前 diff 找正确性 bug;--fix 直接修,--comment 发 PR 行评,ultra 走云端深评</td></tr>
   <tr><td><code>/simplify</code> <span class="pill c">Skill</span></td><td>四个并行代理只做清理:复用既有工具、化简、去冗余(不找 bug)</td></tr>
   <tr><td><code>/security-review</code></td><td>对当前分支待提交变更做安全审查(注入、越权等)</td></tr>
-  <tr><td><code>/review [PR号]</code></td><td>快速只读评审 GitHub PR</td></tr>
+  <tr><td><code>/code-review [PR号]</code>(v2.1.223 起,<code>/review</code> 是它的别名)</td><td>快速只读评审 GitHub PR</td></tr>
   <tr><td><code>/batch 指令</code> <span class="pill c">Skill</span></td><td>大规模并行改造:自动拆 5–30 个独立单元,每单元一个后台子代理 + 独立 worktree + 各开 PR</td></tr>
   <tr><td><code>/loop [间隔] [提示]</code> <span class="pill c">Skill</span></td><td>循环执行同一提示,适合"持续打磨直到满意"</td></tr>
   <tr><td><code>/run</code> / <code>/verify</code> / <code>/run-skill-generator</code> <span class="pill c">Skill</span></td><td>启动真实应用观察改动效果 / 以"跑起来"为准验证(不只靠测试)/ 录制一次构建-启动配方供两者复用</td></tr>
@@ -714,7 +719,7 @@ claude mcp login api-tool
   <div class="play">
     <div class="ph"><span class="pic">🔍</span><b>场景④ 代码评审</b><span class="pt">REVIEW</span></div>
     <div class="pb">
-      <p>四把刀按需选:<code>/code-review</code>(本地 diff 找 bug,--fix 直接修)、<code>/simplify</code>(只做清理:复用/化简/去冗余)、<code>/security-review</code>(安全专项)、<code>/review 123</code>(快速过 GitHub PR)。深度需求上 <code>/code-review ultra</code> 走云端多代理。</p>
+      <p>四把刀按需选:<code>/code-review</code>(本地 diff 找 bug,--fix 直接修;v2.1.223 起 <code>/review</code> 是它的别名)、<code>/simplify</code>(只做清理:复用/化简/去冗余)、<code>/security-review</code>(安全专项)、<code>/code-review 123</code>(快速过 GitHub PR)。深度需求上 <code>/code-review ultra</code> 走云端多代理。</p>
       <p><strong>双会话模式</strong>:A 会话写代码,B 会话(全新上下文)评审——"审查 @src/middleware/rateLimiter.ts,找边界情况、竞态,以及与现有中间件模式的一致性",再把 B 的产出喂回 A 修复。写测试同理:一个写测试,另一个写实现。</p>
     </div>
   </div>
@@ -771,7 +776,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <h3 data-reveal>1M 上下文时代,这套还成立吗</h3>
 <p>本页开篇的核心约束写于"上下文很容易装不下"的年代,而模型表里 Sonnet 5 / Opus 5 已经是原生 <strong>1M</strong> 上下文——这两处看着矛盾,但结论没变,只是支撑它的理由换了。</p>
 <div class="callout note"><b class="t">立场:依然成立,但从"装不下"变成"划不来"</b>过去的问题是物理限度:200K 窗口很快被文件和命令输出填满,不压缩就没法继续。1M 窗口把这条物理限度往后推了 5 倍,但没有消掉另外两条一直都在、只是过去被"装不下"盖住的账:<strong>①每一轮消息都要把当前的全部历史重新发一遍</strong>——官方 costs 文档原话"Claude Code sends your full conversation with every message",窗口越大、历史攒得越多,一句话追问也要为整段历史付费,账单随对话长度线性上涨;<strong>②压缩本身会丢细节</strong>——早期没写进 CLAUDE.md 的具体指令,压缩后大概率保不住(官方原话"instructions from early in the conversation can get lost",下文有完整展开)。1M 买到的是"不会突然断供"的余量,不是"可以放着不管"的许可。</div>
-<p>能放松的只有一条:<strong>短会话、当天能收尾的任务,不用再像 200K 时代那样一读大文件就紧张兮兮地手动 <code>/compact</code></strong>——大概率整场任务都碰不到自动压缩的阈值(下文有具体数字)。但凡是跨天恢复、需要长期跑、或你在乎每条消息成本的场景(CI 管道、无人值守的后台代理),下面四种手段依旧是正解,没有一条可以跳过。1M 目前只在 Sonnet 5 / Opus 5 / Fable 5 等模型上原生生效,别不看模型就假设自己已经在 1M 窗口里,以 <code>/context</code> 实际显示为准。</p>
+<p>能放松的只有一条:<strong>短会话、当天能收尾的任务,不用再像 200K 时代那样一读大文件就紧张兮兮地手动 <code>/compact</code></strong>——大概率整场任务都碰不到自动压缩的阈值(下文有具体数字)。但凡是跨天恢复、需要长期跑、或你在乎每条消息成本的场景(CI 管道、无人值守的后台代理),下面四种手段依旧是正解,没有一条可以跳过。1M 目前只在 Sonnet 5 / Opus 5 / Fable 5 等模型上原生生效,别不看模型就假设自己已经在 1M 窗口里,以 <code>/context</code> 实际显示为准。<strong>v2.1.223 行为变化</strong>:原生 1M 窗口的 Claude 模型默认都会通过 auto-compaction 限制到 200K(以前只对固定列表生效),用 <code>CLAUDE_CODE_DISABLE_1M_CONTEXT</code> 仍可恢复旧行为。</p>
 
 <h3 data-reveal>诊断:先看清再动手</h3>
 <p><code>/context</code> 用彩色网格告诉你窗口被什么占着(哪个工具重、记忆文件是否臃肿、还剩多少容量),配上 <code>/statusline</code> 的常显用量,做到心里有数。</p>

@@ -168,7 +168,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">📅</span>工具版本追踪<span class="sub">变化日志</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-08-05</span>
+    <span>核对至 2026-08-07</span>
   </div>
 </header>
 
@@ -200,7 +200,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-08-05</div>
+  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-08-07</div>
   <h1>工具版本追踪<br><span class="grad">变了什么 · 要不要改习惯</span></h1>
   <p class="lead">AI 编程工具迭代太快,官方 changelog 又长又琐碎。这一页只做一件事:把 Claude Code 与 Codex 的版本变化<strong>筛成"跟你有关的"</strong>,标清楚哪些会让你的老习惯失效,哪些值得马上试。</p>
   <div class="meta">
@@ -249,6 +249,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3 data-reveal>Claude Code</h3>
 <table class="tbl">
   <tr><th>时间 / 版本</th><th>变化</th><th>怎么改</th></tr>
+  <tr><td>2026-08-06<br><span class="src">v2.1.223</span></td><td><code>/review</code> 现为 <code>/code-review</code> 的<strong>别名</strong>,且不带 <code>effort</code> 级别时复用上次级别</td><td>脚本里所有 <code>/review &lt;PR#&gt;</code> 改写为 <code>/code-review &lt;PR#&gt;</code>;深度云审查用 <code>/code-review ultra &lt;PR#&gt;</code></td></tr>
+  <tr><td>2026-08-07<br><span class="src">Codex 0.147.0</span></td><td><strong><code>codex exec --full-auto</code> 被移除</strong></td><td>所有 CI/脚本里的 <code>--full-auto</code> 改用 <code>--sandbox workspace-write</code>(默认更安全档位)</td></tr>
   <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> 命令被<strong>移除</strong>(功能下线)</td><td>任何脚本/笔记/SOP 里出现 <code>/ultraplan</code> 的都要删;改用 <code>/plan</code> + 远程评审,或 <code>/workflows</code> 看进度</td></tr>
   <tr><td>2026-08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> 行为再加一层:<strong>fork 出去的会话自带新 worktree</strong>,不再在原 checkout 上干活</td><td>原 checkout 上"接着改"的工作流要改用 <code>/subtask</code>;<code>/fork</code> 现在等于"复制+独立 worktree",适合并行实验</td></tr>
   <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td>Remote Control 自动开启:<strong>仓库本地 <code>.claude/settings.json</code> 不再能开</strong>(仍可关)</td><td>想在仓库里默认给队友开 Remote Control,必须放到用户级 <code>/config</code>。repo-local 只能关不能开,防供应链风险</td></tr>
@@ -309,6 +311,49 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>兼容的自定义模型提供方可独立启用<strong>web 搜索</strong></td></tr>
   <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>发现 executor 提供的 skills 并安全读取其关联资源(含用户显式选中的)</td></tr>
   <tr><td>07-29</td><td>0.146.0</td><td>🔧</td><td>代理配置在 auth / 插件下载 / MCP 鉴权 / 远程执行 / WebSocket / 重定向 / LM Studio 连接等链路统一生效;Windows 导航键、TUI 渲染与 <kbd>Ctrl+Z</kbd> 恢复等多平台修复</td></tr>
+</table>
+
+<h3 data-reveal>Claude Code:2.1.223 / 2.1.224 三条值得动手的改动</h3>
+<p>本周两步版本重点:1M 上下文默认走 auto-compaction 限到 200K、<code>/review</code> 改名为 <code>/code-review</code> 别名、Bash 权限绕过 + 子代理 <code>bypassPermissions</code> 漏洞修复。其余多为功能/UI 增强。</p>
+
+<table class="tbl">
+  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td><code>claude self-hosted-runner</code>:把你的机器/容器注册成 Team/Enterprise 的 web/mobile/desktop 会话运行地</td></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td><code>archive</code> 插件源:用 HTTPS zip 装插件,支持 SHA-256 pin 校验(供应链更安全)</td></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td>跨会话 <code>SendMessage</code> + <code>ListAgents</code>:Claude Code 会话可跨机器互相通信(macOS/Linux)</td></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🔄</td><td>移除每会话 200 子代理 spawn 上限;并发与深度限制仍生效(深度默认仍 3)</td></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🔴</td><td>沙箱 <code>denyRead: "~/.aws/"</code> 尾斜杠在 Linux/macOS 可被绕过 —— 已修复;复测下你的 deny 规则</td></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🔴</td><td>沙箱违规详情从未出现在 Bash tool 结果中 —— 已修复;现在能在工具输出里直接看到为什么被拦</td></tr>
+  <tr><td>08-07</td><td>v2.1.224</td><td>🔧</td><td><code>SendMessage</code> 假报成功("Message sent" 但实际未写入)现已报为错误</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td><code>/review</code> 现为 <code>/code-review</code> 的别名;<code>/code-review &lt;level&gt; &lt;pr#&gt;</code> 不带 effort 时复用上次级别</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔄</td><td><strong>1M 上下文统一走 auto-compaction 限到 200K</strong>:<code>CLAUDE_CODE_DISABLE_1M_CONTEXT</code> 现在对所有原生 1M 模型生效(原只固定列表);<code>CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT=1</code> 可恢复旧行为</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td><strong>Bash 权限绕过</strong>:精心构造的命令可隐藏自身部分内容绕过权限检查(zsh <code>[[ ]]</code> + tab/不可见 Unicode 填充) —— 已修复</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td>子代理 <code>bypassPermissions</code> 模式忽略组织的 bypass-permissions disable 策略 —— 已修复</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td>工作流脚本 <code>import()</code> 可在工作流沙箱外执行代码 —— 已修复</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🆕</td><td>市场 owner 通配条目:<code>"owner/*"</code> 支持 <code>strictKnownMarketplaces</code> 与 <code>blockedMarketplaces</code></td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🆕</td><td>工作流 agent / forked skill / slash command / 恢复的后台 agent 在请求的子代理模型被组织限制时显式警告</td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔧</td><td>Linux 沙箱因 <code>sandbox.filesystem.denyWrite</code> 覆盖工作目录导致启动失败 —— 已修复</td></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td>Worktree 隔离会话及其子代理可对主 checkout 执行破坏性 git 命令 —— 现已隔离所有会话类型的文件编辑和 Bash</td></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td>PreToolUse auto-allow hook 绕过后台 agent 任务的工具限制 —— 已修复</td></tr>
+</table>
+
+<h3 data-reveal>Codex:0.147.0 是首次用上 0.147 系列稳定版</h3>
+<p>0.147.0 主题是<strong>插件化生态成型 + 自动审批策略收紧</strong>:便携插件目录持久化、Cursor/Claude 技能导入、MCP 2026-07-28 协议支持;同时移除 <code>--full-auto</code> 标志,本地项目需显式信任。0.146.1 顺带把 cyber 能力模型的自动审批默认值收紧。</p>
+
+<table class="tbl">
+  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>Agent Plugins 体系</strong>:支持便携式插件安装,可在本地/个人/工作区/远程四个目录搜索</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>持久化、手动排序的会话分区:增量浏览长对话,不再一次塞满侧栏</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>新增 CLI 参数 <code>--approve-for-me</code>:一次性启用自动审批模式(适合 CI)</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>从 Cursor 导入托管技能</strong>;同步已导入的 Claude/Cursor 会话,避免重复</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>MCP 协议升级:支持 <strong>2026-07-28</strong> 协议(分页发现/多轮请求/非阻塞服务启动),opt-in</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>Bedrock 增强:缓存 Web 搜索结果 + 远程会话压缩(Amazon Bedrock 提供方)</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🔴</td><td><strong><code>codex exec --full-auto</code> 被移除</strong> → 改用 <code>--sandbox workspace-write</code></td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🔄</td><td>本地项目需<strong>显式信任</strong>:未熟悉的本地项目会弹信任确认(防供应链风险)</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🔄</td><td>未托管认证受限时将阻断凭证使用(更严格的多账户/SSO 流程)</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🔧</td><td>从显示命令和重放历史中<strong>编辑脱敏</strong>密钥和 bearer token(防泄漏到日志)</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🔧</td><td>macOS 发布签名改用 Azure Key Vault,不再导出私钥(供应链更安全)</td></tr>
+  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>具备 cyber 能力的模型应用<strong>更安全的自动审批默认值</strong>,终端 UI 解释权限变更(影响 cyber 模型用户)</td></tr>
 </table>
 </section>
 

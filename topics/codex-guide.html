@@ -179,7 +179,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="logo"><span class="mark">CX</span>Codex 使用指南<span class="sub">干货版</span></div>
   <div class="right">
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-08-05</span>
+    <span>核对至 2026-08-07</span>
   </div>
 </header>
 
@@ -221,7 +221,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-08-05</div>
+  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-08-07</div>
   <h1>Codex<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">OpenAI 的代理式编码工具:一个账号,五种形态——终端 CLI、IDE 扩展、云端任务、桌面 App、GitHub 代码评审。本指南以官方 CLI 参考与斜杠命令文档为底,整理出安装配置、命令速查、沙箱审批、AGENTS.md、Skills/MCP 与实战打法。</p>
   <div class="meta">
@@ -311,11 +311,11 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <div class="sec-tag">动态</div>
 <h2>近期重要变化</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-05</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-07</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
-<h3 data-reveal>🔴 最容易踩的坑:多文件夹项目的配置发现规则</h3>
-<p>2026-07-23 起本地项目支持挂载<strong>多个相关文件夹</strong>,但配置发现有一条很容易忽略的规则:</p>
-<div class="callout warn"><b class="t">只有"主文件夹"提供配置</b><code>AGENTS.md</code>、skills、<code>config.toml</code> 的自动发现<strong>只在主文件夹里进行</strong>。副文件夹可以正常搜索、读取、编辑,但<strong>不贡献任何配置</strong>。如果你把 <code>AGENTS.md</code> 放在副文件夹里然后奇怪"为什么规则不生效",原因就在这。</div>
+<h3 data-reveal>🔴 最容易踩的坑:<code>codex exec --full-auto</code> 被移除</h3>
+<p>2026-08-07 的 Codex CLI 0.147.0 移除了 <code>--full-auto</code> 标志(原意为"全自动 = workspace-write + on-failure"),所有 CI / 脚本里写了这个标志的必须改:</p>
+<div class="callout warn"><b class="t">迁移方法</b><code>codex exec --full-auto "..."</code> 改写为 <code>codex exec --sandbox workspace-write "..."</code>(审批档显式指定为 <code>on-request</code> 即可复现旧默认)。如果你想保留"全自动 + 不问"的旧体验,新标志 <code>--approve-for-me</code> 一次性开启自动审批。</div>
 
 <h3 data-reveal>🔄 模型与形态变化</h3>
 <table class="tbl">
@@ -329,6 +329,13 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <h3 data-reveal>🆕 新增能力</h3>
 <table class="tbl">
   <tr><th>能力</th><th>说明</th></tr>
+  <tr><td><strong>Agent Plugins 便携式安装</strong>(08-07, 0.147.0)</td><td>本地/个人/工作区/远程四个目录都可搜索插件;插件元数据持久化,不会每次重装</td></tr>
+  <tr><td><strong>持久化、手动排序的会话分区</strong>(0.147.0)</td><td>侧栏增量浏览长对话,不再一次塞满;可手动排序重要会话</td></tr>
+  <tr><td><strong><code>--approve-for-me</code> CLI 参数</strong>(0.147.0)</td><td>一次性启用自动审批模式,CI 跑长任务必备</td></tr>
+  <tr><td><strong>从 Cursor 导入托管技能</strong>(0.147.0)</td><td>同步已导入的 Claude / Cursor 会话(避免重复创建);Cursor 用户迁移更顺滑</td></tr>
+  <tr><td><strong>MCP 2026-07-28 协议</strong>(0.147.0, opt-in)</td><td>分页发现、多轮请求、非阻塞服务启动;旧 MCP 服务器仍兼容</td></tr>
+  <tr><td><strong>Bedrock 增强</strong>(0.147.0)</td><td>缓存 Web 搜索结果、远程会话压缩(Amazon Bedrock 提供方)</td></tr>
+  <tr><td><strong>显示命令 / 重放历史自动脱敏</strong>(0.147.0)</td><td>密钥和 bearer token 在 TUI 输出里被替换为 <code>***</code>,防日志泄漏</td></tr>
   <tr><td><strong>rollout token 预算</strong></td><td>可配置的 token 预算,跨 agent 线程统计用量、给剩余提醒、耗尽即中止回合。长任务防失控很实用</td></tr>
   <tr><td><strong>多代理委派开关</strong></td><td>可在线程级与回合级配置为:禁用 / 仅在显式请求时 / 主动委派</td></tr>
   <tr><td><strong>索引化 web 搜索模式</strong></td><td>允许实时搜索,但直接访问页面被限制在服务端批准的 URL 范围内——安全与时效的折中</td></tr>
@@ -344,9 +351,11 @@ approval_policy = "on-request"       <span class="c"># 审批默认档</span></c
 <ul>
   <li><strong>Windows</strong>:<code>codex doctor</code> 能正确识别 npm 管理的安装;MSVC 发行版二进制不再依赖单独安装的 VC++ 运行时 DLL</li>
   <li><strong>Linux</strong>:修好了 <kbd>Ctrl+Z</kbd> 挂起后 <code>fg</code> 恢复时 TUI 渲染错乱</li>
+  <li><strong>macOS 发布签名改用 Azure Key Vault</strong>(0.147.0):不再导出私钥,供应链更安全</li>
+  <li><strong>本地项目需显式信任</strong>(0.147.0):未熟悉的本地项目会弹信任确认(防供应链风险,适合在容器/CI 里跑陌生仓库时)</li>
 </ul>
 
-<div class="callout warn"><b class="t">这份清单会过期</b>本节覆盖 2026-06 至 2026-07 的关键变化。<strong>看到本页核对日期距今超过一个月,请以<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">官方 changelog</a> 与 <code>codex debug models</code> 实际输出为准</strong>,别把这里当唯一真相。</div>
+<div class="callout warn"><b class="t">这份清单会过期</b>本节覆盖 2026-06 至 2026-08 的关键变化。<strong>看到本页核对日期距今超过一个月,请以<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">官方 changelog</a> 与 <code>codex debug models</code> 实际输出为准</strong>,别把这里当唯一真相。</div>
 </section>
 
 <div class="divider"></div>
