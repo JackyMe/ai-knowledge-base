@@ -26,7 +26,7 @@
 
 <div align="center">
 
-**10 个主题 · 130+ 章节 · 全站正文内容可搜索(含拼写容错)**
+**11 个主题 · 130+ 章节 · 全站正文内容可搜索(含拼写容错)**
 
 </div>
 
@@ -44,12 +44,13 @@
 | ⚡ [Android Crash & ANR 排查根治](topics/android-crash-anr.html) | 稳定性问题从识别到根治 | 20+ 崩溃类型图鉴、ANR 深度解剖、原创 AI 分诊 Skill |
 | 🧭 [AI 提效全景与心法](topics/ai-leverage-guide.html) | AI 到底能帮普通人干什么 | 8 大场景收益矩阵、7 条有出处的通用心法 |
 | 🧗 [AI 能力边界扩展指南](topics/ai-capability-expansion.html) | 用 AI 扩展技术能力边界的通用方法论 | 五步扩展引擎、跨域映射技法、全栈跨端 / 独立开发两条端到端案例 |
+| 🛠️ [服务器 · 运维 · 部署 · 网络扫盲(新)](topics/ops-basics.html) | 只用过 SaaS 托管,从 0 跨过 DevOps 这堵墙 | 5 阶段路线 + Linux/网络/部署 3 模块 17 节 + 5 类故障 30 秒对症表 |
 
 ## 亮点功能
 
 - **全站搜索能搜到正文里**——不只是标题和章节名,连段落内容都能命中,离线预生成索引,不依赖任何后端
 - **模糊匹配兜底**——拼错字、漏字也能大概率搜到,同时做了跨度限制,避免长文本里瞎凑巧合命中
-- **三条学习路径**——首页把 9 个主题串成"新手起步 / 工具精通 / 转型跃迁"三条课程表,不知道从哪看就跟着走
+- **四条学习路径**——首页把 10 个主题串成"新手起步 / 工具精通 / 转型跃迁 / 运维基座"四条课程表,不知道从哪看就跟着走
 - **阅读记忆**——基于 `localStorage`,回到首页自动出现"继续上次阅读"
 - **证据分级**——官方确认 / 实测强共识 / 存在分歧三档标签,读者一眼知道这条结论有多可信
 
@@ -68,7 +69,8 @@ ai-knowledge-base/
 │   ├── ai-ui-design-collab.html # AI × UI 设计协同全景(Figma+pen.dev+Material 3)
 │   ├── android-crash-anr.html
 │   ├── ai-leverage-guide.html  # AI 提效全景与心法
-│   └── ai-capability-expansion.html # AI 能力边界扩展指南
+│   ├── ai-capability-expansion.html # AI 能力边界扩展指南
+│   └── ops-basics.html         # 服务器 · 运维 · 部署 · 网络 扫盲(独立开发者基座)
 ├── assets/
 │   ├── css/site.css            # 全站共享交互样式(进度条/筛选/复制/灯箱/跳转面板)
 │   └── js/

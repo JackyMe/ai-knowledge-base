@@ -82,6 +82,17 @@ const PATHS = [
       { label: "端到端案例:选一条深入读", href: "topics/ai-capability-expansion.html#case-studies", note: "全栈跨端,或前端到后端与服务端" },
       { label: "技术型一人公司", href: "topics/ai-capability-expansion.html#indie", note: "从能写代码到能上线赚钱" }
     ]
+  },
+  {
+    icon: "🛠️", color: "#a16207", title: "运维基座",
+    desc: "从 SaaS 托管毕业,独立负责一个中小项目的服务器/部署/网络",
+    steps: [
+      { label: "服务器 / 部署 / 网络扫盲", href: "topics/ops-basics.html", note: "5 阶段路线 + Linux/网络/部署 3 模块 17 节 + 5 类故障对症表" },
+      { label: "R2 起步:装好一台 VPS", href: "topics/ops-basics.html#stage2", note: "1核1G Ubuntu + SSH + Nginx" },
+      { label: "R3 网络:域名 + DNS + HTTPS", href: "topics/ops-basics.html#stage3", note: "yourdomain.dev + 绿锁 + 反代" },
+      { label: "R4 部署:git push 自动上线", href: "topics/ops-basics.html#stage4", note: "systemd + GitHub Actions" },
+      { label: "附录 A:故障 30 秒对症表", href: "topics/ops-basics.html#appA", note: "收藏备查:502/SSH/磁盘满/OOM/SSL 过期" }
+    ]
   }
 ];
 
@@ -266,6 +277,32 @@ const TOPICS = [
       {id:"breaking",label:"破坏性变更总索引",quick:true,quickLabel:"破坏性变更速查"},
       {id:"m2026-07",label:"2026 年 7 月"},{id:"m2026-06",label:"2026 年 6 月"},
       {id:"method",label:"本页怎么维护"}
+    ]
+  },
+  {
+    href: "topics/ops-basics.html", icon: "🛠️", tag: "夯实基座", color: "#a16207",
+    title: "服务器 · 运维 · 部署 · 网络 · 独立开发者扫盲",
+    desc: "只用过 Vercel / Netlify / Cloudflare Pages 的独立开发者,从 0 跨过 DevOps 这堵墙:5 阶段路线 + Linux / 网络 / 部署 3 模块 17 节,加 5 类故障 30 秒对症表。学完能独立负责一个中小项目的服务器。",
+    keywords: "服务器 运维 部署 网络 linux vps ssh systemd nginx 反向代理 https tls ssl certbot let's encrypt dns 防火墙 ufw 安全组 github actions ci cd 进程托管 端口 包管理器 apt dnf apk 权限 sudo chmod chown docker 容器 密钥 env 环境变量 故障 502 504 ssh 连不上 磁盘满 oom ssl 过期 挖坑 独立开发者 全栈 扫盲 入门 基础 基座",
+    meta: ["5 阶段路线", "3 模块 17 节", "5 类故障对症表", "核对至 2026-08-07"],
+    sections: [
+      {id:"intro",label:"导读:为什么要学"},
+      {id:"roadmap",label:"5 阶段路线图"},
+      {id:"stage1",label:"R1 现状盘点"},{id:"stage2",label:"R2 Linux 基座"},
+      {id:"stage3",label:"R3 网络骨干"},{id:"stage4",label:"R4 部署链路"},
+      {id:"stage5",label:"R5 故障排查"},
+      {id:"m1-1",label:"1.1 什么是服务器"},{id:"m1-2",label:"1.2 文件/进程/端口"},
+      {id:"m1-3",label:"1.3 SSH 与密钥"},{id:"m1-4",label:"1.4 包管理器速查"},
+      {id:"m1-5",label:"1.5 权限与用户"},
+      {id:"m2-1",label:"2.1 HTTP→TCP→IP"},{id:"m2-2",label:"2.2 DNS 解析"},
+      {id:"m2-3",label:"2.3 HTTPS / TLS"},{id:"m2-4",label:"2.4 反向代理"},
+      {id:"m2-5",label:"2.5 防火墙与端口"},{id:"m2-6",label:"2.6 攻击面速查"},
+      {id:"m3-1",label:"3.1 部署 7 步流水线"},{id:"m3-2",label:"3.2 systemd 进程托管"},
+      {id:"m3-3",label:"3.3 Nginx 反代模板"},{id:"m3-4",label:"3.4 Docker 最小集"},
+      {id:"m3-5",label:"3.5 GitHub Actions"},{id:"m3-6",label:"3.6 密钥与 .env"},
+      {id:"appA",label:"附录 A 5 类故障对症表",quick:true,quickLabel:"故障 30 秒对症表"},
+      {id:"appB",label:"附录 B 推荐资源"},
+      {id:"appC",label:"附录 C 术语速查表"}
     ]
   }
 ];
