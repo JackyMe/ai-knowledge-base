@@ -11,6 +11,7 @@
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <title>Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08</title>
+<link rel="stylesheet" href="../assets/css/site.css">
 <style>
 :root{
   --accent:#1a73e8;        /* Google 科技蓝 */
@@ -117,11 +118,10 @@ pre code{background:none;color:inherit;padding:0}
 .tag-consensus{background:#dcfce7;color:#15803d}
 .tag-diverge{background:#fef3c7;color:#b45309}
 
-#prog{position:fixed;top:60px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));
-  transform-origin:left;transform:scaleX(0);z-index:101}
-#topBtn{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--accent);
-  color:#fff;border:none;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;
-  box-shadow:0 4px 12px rgba(26,115,232,.3);z-index:99}
+.divider{height:1px;background:var(--border);margin:48px 0}
+.footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);line-height:1.6}
+
+#prog{position:fixed;top:60px;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));z-index:101;transition:width .1s ease}
 
 @media(max-width:1024px){
   .sidebar{display:none;width:100%;top:60px;z-index:95;border-right:none;border-bottom:1px solid var(--border)}
@@ -138,7 +138,7 @@ pre code{background:none;color:inherit;padding:0}
 <div id="prog"></div>
 
 <header class="topbar">
-  <button class="menu-btn" id="menuBtn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo">
     <div class="mark">G</div>
     <span>Google AI 生态深度实战</span>
@@ -232,6 +232,8 @@ pre code{background:none;color:inherit;padding:0}
       <p class="src">来源：<a href="https://antigravity.google/docs" target="_blank">Google Antigravity Live Docs</a> · 核对至 2026-08-11</p>
     </section>
 
+    <div class="divider"></div>
+
     <section id="map">
       <h2>01 工具全景矩阵与分层定位</h2>
       <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 不少开发者往往把工具当成孤立点使用，导致效率打折。Google AI 生态的最佳使用逻辑是**分层定位、协同接力**：</p>
@@ -274,6 +276,8 @@ pre code{background:none;color:inherit;padding:0}
       </table>
     </section>
 
+    <div class="divider"></div>
+
     <!-- ==================== 模块 1 · Google Antigravity ==================== -->
     <span class="sec-tag">PART 1 · GOOGLE ANTIGRAVITY (AGY) 深度解构</span>
 
@@ -291,20 +295,22 @@ pre code{background:none;color:inherit;padding:0}
       </div>
     </section>
 
+    <div class="divider"></div>
+
     <section id="m1-2">
       <h2>1.2 四大交互形态详解</h2>
       <p><span class="tag-badge tag-official">✅ 官方确认</span> Antigravity 针对不同的开发场景，提供了 4 种相互融合的交互形态：</p>
 
-      <h3>1. Antigravity CLI (`agy`)</h3>
+      <h3 data-reveal>1. Antigravity CLI (`agy`)</h3>
       <p>轻量化终端 TUI 命令行界面。在终端直接输入 `agy` 启动。适合快捷命令行重构、CI/CD 自动化流水线或无图形化环境。</p>
       <pre><code>agy                # 启动交互式 TUI
 agy --help         # 查看命令行标志与子命令
 # 在 TUI 中使用 Ctrl+D Ctrl+D 或 /exit 退出</code></pre>
 
-      <h3>2. Antigravity 2.0 Desktop App</h3>
+      <h3 data-reveal>2. Antigravity 2.0 Desktop App</h3>
       <p>基于 Electron 打造的独立桌面级应用程序。提供独立的左侧导航栏（Conversations、Projects、Scheduled Tasks 定时任务、Customizations 管理）以及右侧**HTML 辅助面板 (Auxiliary Pane)**（可实时监控 Subagents 运行状态、查看后台 Task 进度、预览 Artifacts 渲染及 Git 差异 diff）。</p>
 
-      <h3>3. Antigravity Standalone IDE</h3>
+      <h3 data-reveal>3. Antigravity Standalone IDE</h3>
       <p>基于 VS Code 底座构建的 AI 原生开发环境，深度集成 3 种交互模式：</p>
       <ul>
         <li><b>Passive Modal (Antigravity Tab 自动补全)</b>：预测单步意图，支持 Tab 补全代码、Tab to Jump 跳转光标、Tab to Import 自动引入依赖包。</li>
@@ -312,10 +318,12 @@ agy --help         # 查看命令行标志与子命令
         <li><b>Collaborative Modal (Sidebar Chat & Agent Mode)</b>：侧边栏协同模式，启动包含任务规划、文件读写、Shell 命令执行与网页浏览的自主智能体。</li>
       </ul>
 
-      <h3>4. Antigravity Python SDK (`google-antigravity`)</h3>
+      <h3 data-reveal>4. Antigravity Python SDK (`google-antigravity`)</h3>
       <p>可通过 `pip install google-antigravity` 安装，用于在 Python 脚本或自动化测试框架中编排管理智能体：</p>
       <pre><code>pip install google-antigravity</code></pre>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m1-3">
       <h2>1.3 高效交互：Slash 命令与 @ Mentions 机制</h2>
@@ -368,11 +376,13 @@ agy --help         # 查看命令行标志与子命令
       </div>
     </section>
 
+    <div class="divider"></div>
+
     <section id="m1-4">
       <h2>1.4 自定义扩充系统 (Customizations)</h2>
       <p><span class="tag-badge tag-official">✅ 官方确认</span> Antigravity 支持两级发现根目录：全局配置根（`~/.gemini/config`）以及项目级根（`<project-root>/.agents/`）。包含五大核心扩展：</p>
 
-      <h3>1. Skills (技能)</h3>
+      <h3 data-reveal>1. Skills (技能)</h3>
       <p>存放在 `skills/<skill_name>/SKILL.md`，使用 YAML frontmatter 描述名称与作用，作为模块化 Workflow 领域指南：</p>
       <pre><code>---
 name: format-code
@@ -381,15 +391,17 @@ description: Custom code formatting style enforcement
 # Format Code Instructions
 When formatting frontend code, always use pre-configured ESLint rules...</code></pre>
 
-      <h3>2. Rules (规则)</h3>
+      <h3 data-reveal>2. Rules (规则)</h3>
       <p>定义在 `rules/*.md` 或根目录的 `AGENTS.md` / `GEMINI.md`，用于约束代码风格、禁止修改特定库或强制遵守规范。</p>
 
-      <h3>3. Hooks (钩子)</h3>
+      <h3 data-reveal>3. Hooks (钩子)</h3>
       <p>通过 `hooks.json` 配置事件监听（如 `on_subagent_start`、`before_tool_call`），在智能体触发敏感操作时执行拦截脚本。</p>
 
-      <h3>4. MCP (Model Context Protocol)</h3>
+      <h3 data-reveal>4. MCP (Model Context Protocol)</h3>
       <p>在 `mcp_config.json` 中配置第三方 MCP 服务器（如数据库连接、Figma 插件、GitHub API 等），扩展智能体的外部动作空间。</p>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m1-5">
       <h2>1.5 Planning Mode 与 Subagent 多代理协同</h2>
@@ -407,6 +419,8 @@ When formatting frontend code, always use pre-configured ESLint rules...</code><
       </div>
     </section>
 
+    <div class="divider"></div>
+
     <section id="m1-6">
       <h2>1.6 安全沙箱与权限深度把控</h2>
       <p><span class="tag-badge tag-official">✅ 官方确认</span> 智能体执行命令行操作时，默认在独立的 **Terminal Sandbox** 安全沙箱中运行：</p>
@@ -421,6 +435,8 @@ When formatting frontend code, always use pre-configured ESLint rules...</code><
         <p>可在全局或项目级的 Settings 中配置 `Command Allowlist`（如允许 `npm test`, `git status` 自动跑通）与 `Command Denylist`（禁止 `rm -rf /`, `drop database`），平衡效率与系统安全。</p>
       </div>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m1-7">
       <h2>1.7 Antigravity Python SDK 编程化实战</h2>
@@ -458,6 +474,8 @@ if __name__ == "__main__":
     asyncio.run(main())</code></pre>
     </section>
 
+    <div class="divider"></div>
+
     <!-- ==================== 模块 2 · NotebookLM 研究基座 ==================== -->
     <span class="sec-tag">PART 2 · NOTEBOOKLM 深度研究与知识基座</span>
 
@@ -465,6 +483,8 @@ if __name__ == "__main__":
       <h2>2.1 Source Grounding 核心原理</h2>
       <p><span class="tag-badge tag-official">✅ 官方确认</span> <b>NotebookLM</b> 是基于 Gemini 顶尖模型的个人 AI 研究助手。其最大的技术亮点在于 **Strict Source Grounding (源头绑定)**：只在你主动上传的 Source 文档范围内提取与回答问题，回答时会自动标注角标数字引用（Citation）。如果源文件中找不到证据，它会明确回答“未在资料中找到”，彻底消除了传统 LLM 的凭空幻觉。</p>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m2-2">
       <h2>2.2 2M 多源材料输入与预处理</h2>
@@ -474,6 +494,8 @@ if __name__ == "__main__":
         <li><b>预处理技巧</b>：上传开源项目代码包或开源 API 文档时，先打成 Markdown 单文件或结构化 PDF 注入，研究检索精准度最高。</li>
       </ul>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m2-3">
       <h2>2.3 知识二次加工与播客生成</h2>
@@ -485,10 +507,14 @@ if __name__ == "__main__":
       </ul>
     </section>
 
+    <div class="divider"></div>
+
     <section id="m2-4">
       <h2>2.4 研报 → Antigravity Spec 转换</h2>
       <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> <b>打破工具孤岛的核心步骤</b>：在 NotebookLM 中完成复杂业务逻辑或技术选型研读后，点击生成一份结构化 `System Requirement Spec`。将其复制并直接保存为项目的 `.agents/rules/spec.md` 或 `AGENTS.md`，作为 Antigravity 智能体接力编码的准确依据。</p>
     </section>
+
+    <div class="divider"></div>
 
     <!-- ==================== 模块 3 · Canvas / AI Studio 原型 ==================== -->
     <span class="sec-tag">PART 3 · CANVAS / AI STUDIO 架构原型与视觉</span>
@@ -497,6 +523,8 @@ if __name__ == "__main__":
       <h2>3.1 Canvas 与 Sketch 敏捷原型</h2>
       <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 在做 UI 组件与前端原型设计时，<b>Canvas / Sketch</b> 提供了可视化交互界面：可直接在画布上通过自然语言或草图生成 HTML/React/Tailwind 代码组件，支持点击实时预览、局部修改与高亮比对。</p>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m3-2">
       <h2>3.2 Google AI Studio 深度调优</h2>
@@ -509,10 +537,14 @@ if __name__ == "__main__":
       </ul>
     </section>
 
+    <div class="divider"></div>
+
     <section id="m3-3">
       <h2>3.3 视觉与多模态生成 (Imagen 3 / Veo)</h2>
       <p><span class="tag-badge tag-official">✅ 官方确认</span> 结合 Google 顶尖的 <b>Imagen 3</b> 图像生成与 <b>Veo</b> 视频生成能力，在 Agentic 编码过程中，智能体可通过图片工具自动生成高保真的 UI 视觉占位图、矢量 Icon 及动态素材，彻底摆脱灰块占位符。</p>
     </section>
+
+    <div class="divider"></div>
 
     <!-- ==================== 模块 4 · 效率最大化组合打法 ==================== -->
     <span class="sec-tag">PART 4 · 效率最大化组合打法与端到端实战</span>
@@ -532,6 +564,8 @@ if __name__ == "__main__":
         </ol>
       </div>
     </section>
+
+    <div class="divider"></div>
 
     <section id="m4-2">
       <h2>4.2 独立开发端到端实战案例</h2>
@@ -575,6 +609,8 @@ if __name__ == "__main__":
       </table>
     </section>
 
+    <div class="divider"></div>
+
     <!-- ==================== 模块 5 · 最佳实践与速查 ==================== -->
     <span class="sec-tag">PART 5 · 最佳实践、避坑指南与速查附录</span>
 
@@ -591,6 +627,8 @@ if __name__ == "__main__":
       </ol>
     </section>
 
+    <div class="divider"></div>
+
     <section id="m5-2">
       <h2>5.2 常见坑点与反模式图鉴</h2>
       
@@ -605,10 +643,12 @@ if __name__ == "__main__":
       </div>
     </section>
 
+    <div class="divider"></div>
+
     <section id="appA">
       <h2>附录 A · Antigravity 常用 Command & SDK 速查表</h2>
       
-      <h3>1. 常用 Slash 斜杠命令</h3>
+      <h3 data-reveal>1. 常用 Slash 斜杠命令</h3>
       <table class="tbl">
         <thead>
           <tr>
@@ -640,7 +680,7 @@ if __name__ == "__main__":
         </tbody>
       </table>
 
-      <h3>2. Python SDK 核心 API 片段</h3>
+      <h3 data-reveal>2. Python SDK 核心 API 片段</h3>
       <pre><code>from google.antigravity import Agent, LocalAgentConfig, CapabilitiesConfig
 
 # 初始化只读智能体 (适合安全审计)
@@ -650,6 +690,8 @@ read_only_config = LocalAgentConfig(system_instructions="Read-only Audit Agent")
 full_config = LocalAgentConfig(capabilities=CapabilitiesConfig())</code></pre>
     </section>
 
+    <div class="divider"></div>
+
     <section id="appB">
       <h2>附录 B · NotebookLM 高效 Prompt & Source 配置速查</h2>
       <ul>
@@ -658,6 +700,8 @@ full_config = LocalAgentConfig(capabilities=CapabilitiesConfig())</code></pre>
         <li><b>生成系统架构综述</b>：<code>“请基于上传的开源项目源码，生成一份简明扼要的系统架构设计简报 (Briefing Doc)。”</code></li>
       </ul>
     </section>
+
+    <div class="divider"></div>
 
     <section id="appC">
       <h2>附录 C · 官方资源与 Release 索引</h2>
@@ -669,20 +713,18 @@ full_config = LocalAgentConfig(capabilities=CapabilitiesConfig())</code></pre>
       </ul>
     </section>
 
+    <div class="divider"></div>
+
+    <div class="footer">
+      <p>文档基于 <a href="../index.html">AI 知识库</a>主题中心统一风格 · 内容为个人整理的学习资料，大量参考官方文档与社区一手实践，有分歧的地方标出分歧，没查到证据的地方不硬编。如需转载请遵循原始来源的版权条款。</p>
+      <p>AI 工具迭代极快，内容尽量标了核对日期 (2026.08)，但请始终以官方文档为准。</p>
+    </div>
+
   </div>
 </main>
 
-<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
 <script src="../assets/js/site.js"></script>
-<script>
-// 全站共享滚动进度条与回顶按钮逻辑
-window.addEventListener('scroll', () => {
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = total > 0 ? (window.scrollY / total) : 0;
-  document.getElementById('prog').style.transform = `scaleX(${progress})`;
-  document.getElementById('topBtn').style.display = window.scrollY > 300 ? 'flex' : 'none';
-});
-</script>
 </body>
 </html>
