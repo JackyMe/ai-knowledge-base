@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 知识库 —— AI 工具官方文档中文版与全网实践精华聚合:Claude Code、Codex、Pencil、环境急救等,持续扩充。">
+<meta name="description" content="AI 知识库 —— AI 编程工具官方文档中文版与全网实战精华聚合:Google Antigravity、Claude Code、Codex、NotebookLM、pen.dev、环境急救等。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="AI 知识库 · 主题中心">
-<meta property="og:description" content="AI 工具官方文档中文版与全网实践精华聚合:Claude Code、Codex、Pencil、环境急救等,持续扩充。">
+<meta property="og:description" content="AI 编程工具官方文档中文版与全网实战精华聚合:Google Antigravity、Claude Code、Codex、NotebookLM、pen.dev、环境急救等。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,238 +18,244 @@
   --ink:#0b1220; --bg:#f6f8fb;
   --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
   --border:#e7eaf0; --border-2:#d9dee8;
-  --brand:#5b5bf6;
+  --brand:#5b5bf6; --google-blue:#1a73e8;
   --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
   --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --ease-breathe:cubic-bezier(.22,1,.36,1);
   --dur-enter:.7s;
   --dur-hover:.3s;
   --rise-enter:16px;
-  --rise-hover:3px;
+  --rise-hover:4px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.7;font-size:15.5px}
 ::selection{background:var(--brand);color:#fff}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-[data-reveal]{opacity:0;transform:translateY(var(--rise-enter))}
-[data-reveal].is-visible{opacity:1;transform:none;
-  transition:opacity var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms),
-             transform var(--dur-enter) var(--ease-breathe) var(--reveal-delay,0ms)}
 
-.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
-  padding:0 28px;background:rgba(246,248,251,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+/* 顶部导航栏 */
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;z-index:100;display:flex;align-items:center;gap:18px;
+  padding:0 32px;background:rgba(246,248,251,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17.5px;color:var(--ink);text-decoration:none}
 .logo .mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#5b5bf6,#0ea5e9);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;letter-spacing:.5px}
-.topbar .right{margin-left:auto;font-size:12.5px;color:var(--text-3);display:flex;align-items:center;gap:8px}
-.topbar .right kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--border-2);border-radius:4px;
-  padding:1px 5px;background:#fff;color:var(--text-3)}
-.topbar .right a.gh{display:flex;align-items:center;gap:5px;color:var(--text-2);text-decoration:none;
-  padding:5px 10px;border:1px solid var(--border-2);border-radius:99px;transition:var(--dur-hover) var(--ease-breathe);margin-left:4px}
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+
+.topbar .nav-links{display:flex;align-items:center;gap:12px;margin-left:24px}
+.topbar .nav-links a{font-size:13.5px;font-weight:600;color:var(--text-2);text-decoration:none;padding:5px 12px;
+  border-radius:8px;transition:var(--dur-hover) var(--ease-breathe)}
+.topbar .nav-links a:hover{color:var(--brand);background:rgba(91,91,246,.08)}
+.topbar .nav-links a.highlight{color:var(--google-blue);background:rgba(26,115,232,.1);border:1px solid rgba(26,115,232,.25)}
+
+.topbar .right{margin-left:auto;font-size:12.5px;color:var(--text-3);display:flex;align-items:center;gap:10px}
+.topbar .right kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--border-2);border-radius:4px;
+  padding:1px 6px;background:#fff;color:var(--text-3)}
+.topbar .right a.gh{display:flex;align-items:center;gap:6px;color:var(--text-2);text-decoration:none;
+  padding:5px 12px;border:1px solid var(--border-2);border-radius:99px;font-weight:500;transition:var(--dur-hover) var(--ease-breathe)}
 .topbar .right a.gh:hover{border-color:var(--brand);color:var(--brand)}
-.topbar .right a.gh svg{width:14px;height:14px;fill:currentColor}
 
-.wrap{max-width:1080px;margin:0 auto;padding:60px 32px 100px}
+.wrap{max-width:1120px;margin:0 auto;padding:64px 32px 100px}
 
-.hero{margin-top:32px;border-radius:20px;position:relative;overflow:hidden;color:#eaf1fb;
+/* Hero 与搜索 */
+.hero{margin-top:28px;border-radius:24px;position:relative;overflow:hidden;color:#eaf1fb;
   background:
-    radial-gradient(900px 380px at 85% -30%,rgba(14,165,233,.4),transparent 60%),
-    radial-gradient(800px 380px at 0% 130%,rgba(91,91,246,.45),transparent 60%),
+    radial-gradient(1000px 420px at 85% -30%,rgba(14,165,233,.45),transparent 65%),
+    radial-gradient(800px 420px at 0% 130%,rgba(91,91,246,.5),transparent 65%),
     var(--ink);
-  padding:40px 44px 32px}
-.hero h1{font-size:28px;line-height:1.25;letter-spacing:-.5px;font-weight:800;color:#fff;display:inline}
-.hero .grad{background:linear-gradient(90deg,#818cf8,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .tagline{display:inline;margin-left:14px;font-size:13.5px;color:#94a3c0}
-.searchbar{margin-top:20px;position:relative}
-.searchbar .ic{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:15px;opacity:.5}
-.searchbar input{width:100%;padding:15px 110px 15px 46px;font-size:15.5px;font-family:var(--font);
-  border:1px solid rgba(255,255,255,.14);border-radius:14px;outline:none;color:#eef3fb;
-  background:rgba(255,255,255,.08);transition:.2s}
-.searchbar input::placeholder{color:#7e8aa3}
-.searchbar input:focus{background:rgba(255,255,255,.13);border-color:rgba(129,140,248,.6)}
-.searchbar .keys{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;gap:6px}
-.searchbar .keys kbd{font-family:var(--mono);font-size:10.5px;color:#94a3c0;border:1px solid rgba(255,255,255,.2);
-  border-radius:5px;padding:2px 7px}
-/* hero 辅助行:速查跳转 + 热门搜索合并为一行,用分隔符区分两种行为(跳转 vs 填搜索框) */
-.herobar{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;color:#7e8aa3}
-.herobar .sep{width:1px;height:14px;background:rgba(255,255,255,.18);margin:0 2px}
-.hot{display:contents}
-.hot button{font-family:var(--font);font-size:12px;color:#a5b4d4;background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:3px 12px;cursor:pointer;
-  transition:var(--dur-hover) var(--ease-breathe)}
-.hot button:hover{color:#fff;border-color:rgba(129,140,248,.7);background:rgba(129,140,248,.18)}
-.hero .qmeta{margin-top:10px;font-size:11.5px;color:#69748c}
+  padding:48px 52px 40px}
+.hero-badge{display:inline-flex;font-size:12px;font-weight:700;letter-spacing:.08em;color:#93c5fd;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:4px 14px;border-radius:99px;margin-bottom:16px}
+.hero h1{font-size:32px;line-height:1.25;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#93c5fd,#c084fc,#fca5a5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{margin-top:10px;font-size:15px;color:#cbd5e1;max-width:720px}
 
-/* 常用速查快链(来自 TOPICS.sections 里 quick:true 的章节,唯一数据源自动派生) */
+.searchbar{margin-top:24px;position:relative}
+.searchbar .ic{position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:17px;opacity:.6}
+.searchbar input{width:100%;padding:16px 120px 16px 52px;font-size:16px;font-family:var(--font);
+  border:1px solid rgba(255,255,255,.2);border-radius:16px;outline:none;color:#fff;
+  background:rgba(255,255,255,.1);transition:.2s}
+.searchbar input::placeholder{color:#94a3b8}
+.searchbar input:focus{background:rgba(255,255,255,.16);border-color:rgba(147,197,253,.8);box-shadow:0 0 0 4px rgba(147,197,253,.15)}
+.searchbar .keys{position:absolute;right:16px;top:50%;transform:translateY(-50%);display:flex;gap:6px}
+.searchbar .keys kbd{font-family:var(--mono);font-size:11px;color:#cbd5e1;border:1px solid rgba(255,255,255,.25);
+  border-radius:6px;padding:3px 8px;background:rgba(0,0,0,.2)}
+
+.herobar{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;color:#94a3b8}
+.herobar .qt{color:#cbd5e1;font-weight:600}
 .quickref{display:contents}
-.herobar .qt{color:#7e8aa3}
-.quickref a{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:12.5px;font-weight:600;
-  color:#eaf1fb;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:99px;
-  padding:4px 13px 4px 10px;text-decoration:none;transition:var(--dur-hover) var(--ease-breathe)}
-.quickref a:hover{border-color:var(--qc,rgba(129,140,248,.7));background:rgba(129,140,248,.18)}
-.quickref a .qic{font-size:13px}
+.quickref a{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+  color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:99px;
+  padding:4px 14px;text-decoration:none;transition:var(--dur-hover) var(--ease-breathe)}
+.quickref a:hover{border-color:#93c5fd;background:rgba(147,197,253,.25)}
 
-.resume{display:none;margin:18px 0 0;align-items:center;gap:12px;padding:13px 18px;background:#fff;
-  border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:var(--dur-hover) var(--ease-breathe);position:relative}
+/* 核心入口大卡片 (Featured Gateway Entrance Cards) */
+.entrance-section{margin-top:40px}
+.entrance-title{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+.entrance-title h2{font-size:21px;font-weight:800;letter-spacing:-.3px;color:var(--ink)}
+.entrance-title span{font-size:13px;color:var(--text-3)}
+
+.gateway-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.gateway-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:24px;
+  display:flex;flex-direction:column;text-decoration:none;color:var(--text);
+  transition:var(--dur-hover) var(--ease-breathe);position:relative;overflow:hidden}
+.gateway-card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--gc-color,#5b5bf6)}
+.gateway-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(15,23,42,.1);border-color:var(--gc-color,#5b5bf6)}
+.gateway-card .gc-badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;
+  padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--gc-color,#5b5bf6) 12%,#fff);
+  color:var(--gc-color,#5b5bf6);margin-bottom:14px;text-transform:uppercase}
+.gateway-card .gc-icon{font-size:28px;margin-bottom:10px}
+.gateway-card h3{font-size:17.5px;font-weight:800;line-height:1.35;margin-bottom:8px;color:var(--ink)}
+.gateway-card p{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:20px;flex:1}
+.gateway-card .gc-btn{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700;
+  color:var(--gc-color,#5b5bf6);padding-top:14px;border-top:1px solid var(--border)}
+.gateway-card:hover .gc-btn .arrow{transform:translateX(4px);transition:transform .2s ease}
+
+/* 恢复阅读记忆 */
+.resume{display:none;margin:24px 0 0;align-items:center;gap:14px;padding:16px 22px;background:#fff;
+  border:1px solid var(--border);border-radius:16px;text-decoration:none;color:var(--text);
+  transition:var(--dur-hover) var(--ease-breathe);position:relative}
 .resume.on{display:flex}
-.resume:hover{border-color:var(--brand);box-shadow:0 8px 26px rgba(91,91,246,.10)}
-.resume .ric{width:36px;height:36px;border-radius:10px;background:#eef0ff;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
-.resume .rt{font-size:11.5px;color:var(--text-3)}
-.resume .rl{font-size:14px;font-weight:650;line-height:1.4}
-.resume .go{margin-left:auto;color:var(--brand);font-weight:700;font-size:13px;white-space:nowrap}
-.resume .close{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:99px;border:1px solid var(--border-2);
-  background:#fff;color:var(--text-3);font-size:11px;cursor:pointer;line-height:1}
+.resume:hover{border-color:var(--brand);box-shadow:0 10px 30px rgba(91,91,246,.12)}
+.resume .ric{width:40px;height:40px;border-radius:12px;background:#eef0ff;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.resume .rt{font-size:12px;color:var(--text-3)}
+.resume .rl{font-size:14.5px;font-weight:700;line-height:1.4;color:var(--ink)}
+.resume .go{margin-left:auto;color:var(--brand);font-weight:700;font-size:13.5px;white-space:nowrap}
+.resume .close{position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:99px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-3);font-size:12px;cursor:pointer;line-height:1}
 
-.sec{display:flex;align-items:baseline;gap:14px;margin:40px 0 16px;flex-wrap:wrap}
-.sec h2{font-size:20px;font-weight:800;letter-spacing:-.3px}
-.sec span{font-size:12.5px;color:var(--text-3)}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:44px 0 18px;flex-wrap:wrap}
+.sec h2{font-size:21px;font-weight:800;letter-spacing:-.3px;color:var(--ink)}
+.sec span{font-size:13px;color:var(--text-3)}
 
 /* 学习路径 */
-.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.path{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px 22px 14px;position:relative;overflow:hidden}
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.path{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px 24px 16px;position:relative;overflow:hidden}
 .path::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--pc,#5b5bf6);opacity:.9}
-.path .ph{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.path .pic{font-size:20px}
-.path b{font-size:15.5px;font-weight:750}
-.path>p{font-size:12.5px;color:var(--text-2);margin:0 0 10px}
+.path .ph{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.path .pic{font-size:22px}
+.path b{font-size:16px;font-weight:800;color:var(--ink)}
+.path>p{font-size:12.5px;color:var(--text-2);margin:0 0 12px}
 .path ol{list-style:none;margin:0;padding:0}
-.path ol a{display:flex;gap:10px;padding:7px 8px;margin:0 -8px;border-radius:9px;text-decoration:none;
+.path ol a{display:flex;gap:10px;padding:8px 10px;margin:0 -10px;border-radius:10px;text-decoration:none;
   color:var(--text);font-size:13px;transition:var(--dur-hover) var(--ease-breathe);align-items:baseline}
 .path ol a:hover{background:color-mix(in srgb,var(--pc,#5b5bf6) 8%,#fff)}
 .path ol a:hover .sl{color:var(--pc,#5b5bf6)}
-.path ol .n{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--pc,#5b5bf6);flex:none;width:15px}
+.path ol .n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--pc,#5b5bf6);flex:none;width:16px}
 .path ol .sl{font-weight:600;display:block;line-height:1.45}
 .path ol .pn{font-size:11.5px;color:var(--text-3);display:block;line-height:1.5}
 
-/* 标签筛选 */
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
-.tabs button{font-family:var(--font);font-size:12.5px;font-weight:600;color:var(--text-2);background:#fff;
-  border:1px solid var(--border);border-radius:99px;padding:5.5px 15px;cursor:pointer;transition:var(--dur-hover) var(--ease-breathe);display:flex;gap:6px;align-items:center}
-.tabs button .n{font-family:var(--mono);font-size:10.5px;color:var(--text-3)}
+/* 标签筛选与主题网格 */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.tabs button{font-family:var(--font);font-size:13px;font-weight:600;color:var(--text-2);background:#fff;
+  border:1px solid var(--border);border-radius:99px;padding:6px 16px;cursor:pointer;transition:var(--dur-hover) var(--ease-breathe);display:flex;gap:6px;align-items:center}
+.tabs button .n{font-family:var(--mono);font-size:11px;color:var(--text-3)}
 .tabs button:hover{border-color:var(--brand);color:var(--brand)}
 .tabs button.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .tabs button.on .n{color:#94a3c0}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
 .topic{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);
-  border-radius:18px;padding:24px 26px 18px;color:var(--text);transition:var(--dur-hover) var(--ease-breathe);overflow:hidden}
+  border-radius:20px;padding:24px 26px 18px;color:var(--text);transition:var(--dur-hover) var(--ease-breathe);overflow:hidden}
 .topic::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--tc,#5b5bf6);opacity:.9}
 .topic:hover{transform:translateY(calc(var(--rise-hover) * -1));box-shadow:0 16px 44px rgba(15,23,42,.10);border-color:var(--tc,#5b5bf6)}
 .topic.hidden{display:none}
-/* 整卡真实链接:绝对定位覆盖层,章节快链层级更高仍可点 */
-.topic .cover{position:absolute;inset:0;z-index:1;border-radius:18px}
+.topic .cover{position:absolute;inset:0;z-index:1;border-radius:20px}
 .topic .chips,.topic .foot{position:relative;z-index:2}
 .topic .head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.topic .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  font-size:20px;background:color-mix(in srgb,var(--tc,#5b5bf6) 10%,#fff);border:1px solid color-mix(in srgb,var(--tc,#5b5bf6) 25%,#fff)}
+.topic .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:color-mix(in srgb,var(--tc,#5b5bf6) 10%,#fff);border:1px solid color-mix(in srgb,var(--tc,#5b5bf6) 25%,#fff)}
 .topic .tag{font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--tc,#5b5bf6);text-transform:uppercase}
-.topic .head .arrow{margin-left:auto;color:var(--text-3);font-size:15px;transition:var(--dur-hover) var(--ease-breathe)}
-.topic:hover .head .arrow{color:var(--tc,#5b5bf6);transform:translateX(3px)}
-.topic b.tt{font-size:16.5px;font-weight:750;line-height:1.4;display:block;margin-bottom:6px}
-.topic p{font-size:13px;color:var(--text-2);margin-bottom:14px}
-.topic .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.topic .head .arrow{margin-left:auto;color:var(--text-3);font-size:16px;transition:var(--dur-hover) var(--ease-breathe)}
+.topic:hover .head .arrow{color:var(--tc,#5b5bf6);transform:translateX(4px)}
+.topic b.tt{font-size:17px;font-weight:800;line-height:1.4;display:block;margin-bottom:8px;color:var(--ink)}
+.topic p{font-size:13px;color:var(--text-2);margin-bottom:16px;line-height:1.65}
+.topic .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
 .topic .chips a{font-size:11.5px;color:var(--text-2);background:#f4f6fa;border:1px solid var(--border);
-  padding:3.5px 11px;border-radius:99px;text-decoration:none;transition:var(--dur-hover) var(--ease-breathe);white-space:nowrap}
+  padding:4px 12px;border-radius:99px;text-decoration:none;transition:var(--dur-hover) var(--ease-breathe);white-space:nowrap}
 .topic .chips a:hover{color:var(--tc,#5b5bf6);border-color:var(--tc,#5b5bf6);background:#fff}
 .topic .chips a.more{color:var(--text-3);background:transparent;border-style:dashed}
 .topic .chips a.extra{display:none}
 .topic .chips.expanded a.extra{display:inline-flex}
 .topic .chips button.toggle{position:relative;z-index:2;font:inherit;font-size:11.5px;color:var(--tc,#5b5bf6);
-  background:transparent;border:1px dashed var(--tc,#5b5bf6);padding:3.5px 11px;border-radius:99px;
+  background:transparent;border:1px dashed var(--tc,#5b5bf6);padding:4px 12px;border-radius:99px;
   cursor:pointer;transition:var(--dur-hover) var(--ease-breathe)}
 .topic .chips button.toggle:hover{background:color-mix(in srgb,var(--tc,#5b5bf6) 10%,#fff)}
 .topic .chips.expanded button.toggle{display:none}
 .topic .foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--text-3);
   border-top:1px solid var(--border);padding-top:12px;margin-top:auto}
-.topic .foot .lastread{margin-left:auto;color:var(--tc,#5b5bf6);font-weight:600;text-decoration:none;white-space:nowrap}
-.topic .foot .lastread:hover{text-decoration:underline}
 
-.results{display:none;margin-top:26px}
+/* 搜索结果 */
+.results{display:none;margin-top:28px}
 .results.on{display:block}
-.res-count{font-size:12.5px;color:var(--text-3);margin-bottom:12px}
-.res{display:block;padding:12px 18px;background:#fff;border:1px solid var(--border);
-  border-radius:12px;text-decoration:none;color:var(--text);margin-bottom:8px;transition:.15s}
-.res:hover,.res.sel{border-color:var(--rc,#5b5bf6);box-shadow:0 6px 20px rgba(15,23,42,.07)}
+.res-count{font-size:13px;color:var(--text-3);margin-bottom:14px}
+.res{display:block;padding:14px 20px;background:#fff;border:1px solid var(--border);
+  border-radius:14px;text-decoration:none;color:var(--text);margin-bottom:10px;transition:.15s}
+.res:hover,.res.sel{border-color:var(--rc,#5b5bf6);box-shadow:0 8px 24px rgba(15,23,42,.08)}
 .res.sel{background:#fcfdff}
 .res-row{display:flex;align-items:center;gap:12px}
-.res .badge{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--rc,#5b5bf6);
-  padding:3px 10px;border-radius:99px;white-space:nowrap}
-.res b{font-size:14px;font-weight:600}
-.res .restopic{font-size:12px;color:var(--text-3);margin-left:2px}
+.res .badge{flex:none;font-size:11.5px;font-weight:700;color:#fff;background:var(--rc,#5b5bf6);
+  padding:3px 12px;border-radius:99px;white-space:nowrap}
+.res b{font-size:14.5px;font-weight:700;color:var(--ink)}
+.res .restopic{font-size:12.5px;color:var(--text-3);margin-left:4px}
 .res .go{margin-left:auto;color:var(--text-3);font-size:13px;white-space:nowrap}
 .res:hover .go,.res.sel .go{color:var(--rc,#5b5bf6)}
-.res mark{background:#fff3bf;color:inherit;border-radius:3px;padding:0 1px}
-.res .snip{margin:6px 0 0;font-size:12.5px;color:var(--text-2);line-height:1.5;
-  overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
-.res .fz{flex:none;font-size:10.5px;font-weight:600;color:var(--text-3);border:1px solid var(--border);
-  border-radius:99px;padding:1px 8px}
-.res-empty{padding:34px;text-align:center;color:var(--text-3);font-size:13.5px;background:#fff;
-  border:1px dashed var(--border-2);border-radius:14px}
+.res mark{background:#fef08a;color:inherit;border-radius:3px;padding:0 2px}
+.res .snip{margin:8px 0 0;font-size:13px;color:var(--text-2);line-height:1.55;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
-/* 精选学习站 */
-.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:8px}
+/* 外站精选 */
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-bottom:8px}
 .learn{position:relative;display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--border);
-  border-radius:14px;padding:16px 18px;color:var(--text);transition:var(--dur-hover) var(--ease-breathe)}
+  border-radius:16px;padding:18px 20px;color:var(--text);transition:var(--dur-hover) var(--ease-breathe)}
 .learn:hover{border-color:var(--lc,#5b5bf6);box-shadow:0 10px 30px rgba(15,23,42,.08);transform:translateY(-2px)}
-.learn .cover{position:absolute;inset:0;z-index:1;border-radius:14px}
+.learn .cover{position:absolute;inset:0;z-index:1;border-radius:16px}
 .learn .quick{position:relative;z-index:2}
 .learn .lh{display:flex;align-items:center;gap:8px}
-.learn .lic{font-size:17px}
+.learn .lic{font-size:18px}
 .learn .ltag{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--lc,#5b5bf6);
   background:color-mix(in srgb,var(--lc,#5b5bf6) 10%,#fff);border:1px solid color-mix(in srgb,var(--lc,#5b5bf6) 25%,#fff);
   padding:2px 8px;border-radius:99px;white-space:nowrap}
-.learn .lh .ext{margin-left:auto;color:var(--text-3);font-size:12.5px;transition:var(--dur-hover) var(--ease-breathe)}
+.learn .lh .ext{margin-left:auto;color:var(--text-3);font-size:13px;transition:var(--dur-hover) var(--ease-breathe)}
 .learn:hover .lh .ext{color:var(--lc,#5b5bf6);transform:translate(2px,-2px)}
-.learn b{font-size:14.5px;font-weight:750}
+.learn b{font-size:15px;font-weight:800;color:var(--ink)}
 .learn p{font-size:12.5px;color:var(--text-2);margin:0;flex:1;line-height:1.65}
-.learn .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.learn .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
 .learn .quick a{font-size:11.5px;font-weight:600;color:var(--lc,#5b5bf6);background:#fff;
-  border:1px solid color-mix(in srgb,var(--lc,#5b5bf6) 35%,#fff);padding:3.5px 11px;border-radius:99px;text-decoration:none;transition:var(--dur-hover) var(--ease-breathe)}
-.learn .quick a:hover{background:color-mix(in srgb,var(--lc,#5b5bf6) 8%,#fff)}
+  border:1px solid color-mix(in srgb,var(--lc,#5b5bf6) 35%,#fff);padding:4px 12px;border-radius:99px;text-decoration:none;transition:var(--dur-hover) var(--ease-breathe)}
 .learn.featured{grid-column:1/-1;background:linear-gradient(100deg,#fffbeb,#fff 65%);border-color:#fde68a}
-.learn.featured b{font-size:16.5px}
-.learn.featured p{font-size:13px}
-.learn.featured .fbadge{position:absolute;top:-10px;left:16px;font-size:10.5px;font-weight:800;color:#92400e;
-  background:#fde68a;padding:2.5px 11px;border-radius:99px;letter-spacing:.08em;z-index:2}
 
-.add-note{margin-top:22px;padding:13px 18px;border:1.5px dashed var(--border-2);border-radius:14px;
-  font-size:12.5px;color:var(--text-3);text-align:center}
-.add-note code{font-family:var(--mono);font-size:11.5px;background:#fff;border:1px solid var(--border);
-  border-radius:5px;padding:1px 6px}
+.footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+.footer a{color:var(--brand);text-decoration:none}
 
-.footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text-3);
-  display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}
-.footer a{color:var(--text-3)}
-
-@media (max-width:720px){
+@media (max-width:768px){
+  .topbar{padding:0 18px}
+  .topbar .nav-links{display:none}
   .wrap{padding:60px 18px 80px}
-  .hero{padding:28px 22px 24px}
-  .hero .tagline{display:block;margin:8px 0 0}
+  .hero{padding:32px 24px 28px}
   .searchbar input{padding-right:52px}
   .searchbar .keys{display:none}
-  .hot{display:none}
-  .topbar .right>span,.topbar .right>kbd{display:none}   /* 手机无键盘,「按 / 搜索」提示无意义,让位给 logo */
-  .topbar .right a.gh{margin-left:auto}
 }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="logo"><span class="mark">AI</span>AI 知识库</div>
+  <a class="logo" href="index.html"><span class="mark">AI</span>AI 知识库</a>
+  
+  <!-- 核心直达入口导航 -->
+  <nav class="nav-links">
+    <a class="highlight" href="topics/google-ai-ecosystem.html">🌐 Google AI 生态</a>
+    <a href="topics/claude-code-guide.html">⛏️ Claude Code</a>
+    <a href="topics/codex-guide.html">🟢 Codex</a>
+    <a href="topics/pencil-docs-zh.html">📘 pen.dev</a>
+    <a href="topics/env-auth-clinic.html">🚑 急救手册</a>
+  </nav>
+
   <div class="right">
-    <span>按</span><kbd>/</kbd><span>即可搜索全站</span>
-    <a class="gh" href="https://github.com/JackyMe/ai-knowledge-base" target="_blank" rel="noopener" title="在 GitHub 上查看源码">
-      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
-        1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68
-        0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-        0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01
-        8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+    <kbd>/</kbd> <span>搜索全站</span>
+    <a class="gh" href="https://github.com/JackyMe/ai-knowledge-base" target="_blank" rel="noopener" title="查看 GitHub 仓库">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
       GitHub
     </a>
   </div>
@@ -257,319 +263,116 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 
 <div class="wrap">
 
-<div class="hero">
-  <h1 data-reveal>AI <span class="grad">知识库</span></h1><span class="tagline" data-reveal>AI 工具文档中文版 · 全网实践精华 · 持续扩充</span>
-  <div class="searchbar">
-    <span class="ic">🔍</span>
-    <input id="q" placeholder="搜索全部主题与章节,如:快捷键、登录报错、CLAUDE.md、避坑…" autocomplete="off"
-      aria-label="搜索全部主题与章节">
-    <span class="keys"><kbd>↑↓</kbd><kbd>Enter</kbd></span>
+  <!-- Hero 搜索区 -->
+  <div class="hero">
+    <div class="hero-badge">AI 编程与研发协同 · 全网最佳实践中文聚合</div>
+    <h1 data-reveal>AI 编程实战 <span class="grad">知识库</span></h1>
+    <p class="lead">全网第一手干货总结。覆盖 Google Antigravity、Claude Code、Codex、NotebookLM 等顶尖 Agentic 开发平台。</p>
+    
+    <div class="searchbar">
+      <span class="ic">🔍</span>
+      <input id="q" placeholder="搜索全部 196 个章节... 如: Antigravity、Slash 命令、NotebookLM、沙箱、报错..." autocomplete="off" aria-label="搜索全站">
+      <span class="keys"><kbd>↑↓</kbd><kbd>Enter</kbd></span>
+    </div>
+
+    <div class="herobar">
+      <div class="quickref" id="quickref"><span class="qt">⚡ 常用速查:</span></div>
+    </div>
   </div>
-  <div class="herobar">
-    <div class="quickref" id="quickref"><span class="qt">⚡ 常用速查:</span></div>
-    <span class="sep"></span>
-    <div class="hot" id="hot"><span>热门:</span></div>
+
+  <!-- 恢复阅读记忆 -->
+  <a class="resume" id="resume" data-reveal>
+    <span class="ric">📖</span>
+    <span><span class="rt">继续上次阅读</span><br><span class="rl" id="resumeLabel"></span></span>
+    <span class="go">继续阅读 →</span>
+    <button class="close" id="resumeClose" title="不再显示" aria-label="不再显示">✕</button>
+  </a>
+
+  <!-- 搜索结果弹框区 -->
+  <div class="results" id="results" aria-live="polite"></div>
+
+  <!-- 主体浏览区 -->
+  <div id="browse">
+    
+    <!-- 核心入口区 (High Impact Entrance Cards) -->
+    <div class="entrance-section">
+      <div class="entrance-title">
+        <h2>🔥 热门主推 · 核心入口</h2>
+        <span>精选四大核心主题 · 一键直达</span>
+      </div>
+
+      <div class="gateway-grid">
+        <!-- Entrance 1: Google AI 生态 -->
+        <a class="gateway-card" href="topics/google-ai-ecosystem.html" style="--gc-color:#1a73e8;">
+          <span class="gc-badge">Google 全栈生态 (新)</span>
+          <div class="gc-icon">🌐</div>
+          <h3>Google AI 生态深度实战</h3>
+          <p>Google Antigravity (CLI/2.0/IDE/SDK) 深度解构 + NotebookLM 2M 源头零幻觉研究 + AI Studio + 5 步超级流水线。</p>
+          <div class="gc-btn"><span>进入深度指引</span><span class="arrow">→</span></div>
+        </a>
+
+        <!-- Entrance 2: Claude Code -->
+        <a class="gateway-card" href="topics/claude-code-guide.html" style="--gc-color:#d9634a;">
+          <span class="gc-badge">Claude Code 指南</span>
+          <div class="gc-icon">⛏️</div>
+          <h3>Claude Code 实战手册</h3>
+          <p>100+ 命令速查墙、五条黄金法则、8 大场景 Playbook、Skills / Hooks / MCP 模板库。</p>
+          <div class="gc-btn"><span>进入干货手册</span><span class="arrow">→</span></div>
+        </a>
+
+        <!-- Entrance 3: Codex -->
+        <a class="gateway-card" href="topics/codex-guide.html" style="--gc-color:#0d9373;">
+          <span class="gc-badge">Codex 开发全景</span>
+          <div class="gc-icon">🟢</div>
+          <h3>Codex CLI × IDE × Cloud</h3>
+          <p>OpenAI 编码代理全景：沙箱与审批 3×3 详解、AGENTS.md、云端多形态与双代理协同打法。</p>
+          <div class="gc-btn"><span>进入开发指南</span><span class="arrow">→</span></div>
+        </a>
+
+        <!-- Entrance 4: AI x UI 设计协同 -->
+        <a class="gateway-card" href="topics/ai-ui-design-collab.html" style="--gc-color:#7c3aed;">
+          <span class="gc-badge">设计与代码协同</span>
+          <div class="gc-icon">🎨</div>
+          <h3>AI × UI 设计协同全景</h3>
+          <p>Figma + pen.dev + Material 3 + Paparazzi / Roborazzi 视觉回归，Android / iOS / Web 端到端。</p>
+          <div class="gc-btn"><span>进入设计协同</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 大学习路径 -->
+    <div class="sec">
+      <h2>🧭 课程表 · 学习路径</h2>
+      <span>按需选择路线 · 循序渐进掌握</span>
+    </div>
+    <div class="paths" id="paths"></div>
+
+    <!-- 全部主题列表 -->
+    <div class="sec">
+      <h2>📚 全部主题分类</h2>
+      <span id="topicCount"></span>
+    </div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="按类型筛选主题"></div>
+    <div class="grid" id="grid"></div>
+
+    <!-- 精选外站资源 -->
+    <div class="sec">
+      <h2>🎓 精选学习站与权威第一信源</h2>
+      <span>高质量补充资料 · 点击直达外站</span>
+    </div>
+    <div class="learn-grid" id="learnGrid"></div>
+
   </div>
-  <div class="qmeta" id="qmeta"></div>
-</div>
 
-<a class="resume" id="resume" data-reveal>
-  <span class="ric">📖</span>
-  <span><span class="rt">继续上次阅读</span><br><span class="rl" id="resumeLabel"></span></span>
-  <span class="go">继续 →</span>
-  <button class="close" id="resumeClose" title="不再显示" aria-label="不再显示继续阅读">✕</button>
-</a>
-
-<div class="results" id="results" aria-live="polite"></div>
-
-<div id="browse">
-  <div class="sec"><h2>学习路径</h2><span>三条路线把主题串成课程表 · 按序走完即可</span></div>
-  <div class="paths" id="paths"></div>
-
-  <div class="sec"><h2>全部主题</h2><span id="topicCount"></span></div>
-  <div class="tabs" id="tabs" role="tablist" aria-label="按类型筛选主题"></div>
-  <div class="grid" id="grid"></div>
-
-  <div class="sec"><h2>精选学习站</h2><span>在精不在多 · 点击直达外站</span></div>
-  <div class="learn-grid" id="learnGrid"></div>
-
-  <div class="add-note">＋ 新增主题:HTML 放入 <code>topics/</code>,并在 <code>assets/js/topics.js</code> 追加一条注册(可选 <code>keywords</code> 提升可搜性)—— 卡片、筛选标签、章节快链与全站搜索自动生效</div>
-</div>
-
-<div class="footer">
-  <div>AI 知识库 · 非官方资料整理,内容以各来源原文为准 · <a href="https://github.com/JackyMe/ai-knowledge-base" target="_blank" rel="noopener">GitHub 仓库 ↗</a></div>
-  <div id="footMeta">整理:jackyz</div>
-</div>
+  <div class="footer">
+    <div>AI 知识库 · 纯静态零依赖中文实战手册 · <a href="https://github.com/JackyMe/ai-knowledge-base" target="_blank" rel="noopener">GitHub 源码仓库 ↗</a></div>
+    <div>工具持续迭代，内容以官方最新 Live Docs 为准</div>
+  </div>
 
 </div>
 
 <script src="assets/js/topics.js"></script>
-<script>
-const $=s=>document.querySelector(s);
-const escq=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-
-/* ---------- 阅读记忆(先读,供卡片“上次读到”角标使用) ---------- */
-let last=null;
-try{last=JSON.parse(localStorage.getItem('pkb-last')||'null')}catch(e){}
-
-/* ---------- 主题卡片(整卡真实链接 + 章节快链 + 上次读到) ---------- */
-const grid=$('#grid');
-grid.innerHTML=TOPICS.map((t,ti)=>{
-  const isLast=last&&last.page&&t.href.split('/').pop()===last.page;
-  const revealDelay=Math.min(ti,4)*60;
-  return `
-  <article class="topic" style="--tc:${t.color};--reveal-delay:${revealDelay}ms" data-tag="${escq(t.tag)}" data-reveal>
-    <a class="cover" href="${t.href}" aria-label="${escq(t.title)}"></a>
-    <div class="head"><div class="ic">${t.icon}</div><div class="tag">${escq(t.tag)}</div><span class="arrow">→</span></div>
-    <b class="tt">${escq(t.title)}</b>
-    <p>${escq(t.desc)}</p>
-    <div class="chips">
-      ${t.sections.slice(0,3).map(s=>`<a href="${t.href}#${s.id}">${escq(s.label)}</a>`).join('')}
-      ${t.sections.slice(3).map(s=>`<a class="extra" href="${t.href}#${s.id}">${escq(s.label)}</a>`).join('')}
-      ${t.sections.length>3?`<button type="button" class="toggle">+${t.sections.length-3} 更多</button>`:''}
-      <a class="more" href="${t.href}">全部 ${t.sections.length} 章</a>
-    </div>
-    <div class="foot">${t.meta.map(m=>`<span>${escq(m)}</span>`).join(' · ')}
-      ${isLast?`<a class="lastread" href="${t.href}#${last.anchor}">📖 上次读到:${escq(last.label)}</a>`:''}
-    </div>
-  </article>`}).join('');
-/* 卡片章节快链默认只显示 3 条,点"+N 更多"原地展开,不跳转、不冒泡到整卡链接 */
-grid.addEventListener('click',e=>{
-  const btn=e.target.closest('button.toggle');if(!btn)return;
-  e.preventDefault();e.stopPropagation();
-  btn.closest('.chips').classList.add('expanded');
-});
-const totalSections=TOPICS.reduce((n,t)=>n+t.sections.length,0);
-$('#topicCount').textContent=`${TOPICS.length} 个主题 · ${totalSections} 个章节`;
-$('#footMeta').textContent=`整理:jackyz · ${TOPICS.length} 主题 ${totalSections} 章节 · 2026-07`;
-
-/* ---------- 标签筛选(从 TOPICS 自动派生,新主题新标签自动出现) ---------- */
-const tabs=$('#tabs');
-const tagCount={};TOPICS.forEach(t=>tagCount[t.tag]=(tagCount[t.tag]||0)+1);
-const tagList=['全部',...Object.keys(tagCount)];
-tabs.innerHTML=tagList.map((tg,i)=>
-  `<button role="tab" aria-selected="${i===0}" class="${i===0?'on':''}" data-tag="${escq(tg)}">${escq(tg)}
-   <span class="n">${tg==='全部'?TOPICS.length:tagCount[tg]}</span></button>`).join('');
-tabs.addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b)return;
-  tabs.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-selected',x===b)});
-  const tg=b.dataset.tag;
-  grid.querySelectorAll('.topic').forEach(c=>
-    c.classList.toggle('hidden',tg!=='全部'&&c.dataset.tag!==tg));
-});
-
-/* ---------- 学习路径 ---------- */
-const pg=$('#paths');
-if(typeof PATHS!=='undefined'&&pg){
-  pg.innerHTML=PATHS.map(p=>`
-    <div class="path" style="--pc:${p.color}">
-      <span class="ph"><span class="pic">${p.icon}</span><b>${escq(p.title)}</b></span>
-      <p>${escq(p.desc)}</p>
-      <ol>${p.steps.map((s,i)=>`
-        <li><a href="${s.href}"${s.ext?' target="_blank" rel="noopener"':''}>
-          <span class="n">${i+1}</span>
-          <span><span class="sl">${escq(s.label)}${s.ext?' ↗':''}</span><span class="pn">${escq(s.note)}</span></span>
-        </a></li>`).join('')}
-      </ol>
-    </div>`).join('');
-}
-
-/* ---------- 精选学习站(整卡真实链接) ---------- */
-const lg=$('#learnGrid');
-if(typeof LEARN!=='undefined'&&lg){
-  lg.innerHTML=LEARN.map(l=>`
-    <div class="learn${l.featured?' featured':''}" style="--lc:${l.color}">
-      ${l.featured?'<span class="fbadge">★ 首选推荐</span>':''}
-      <a class="cover" href="${l.href}" target="_blank" rel="noopener" aria-label="${escq(l.title)}(外站)"></a>
-      <span class="lh"><span class="lic">${l.icon}</span><span class="ltag">${escq(l.tag)}</span><span class="ext">↗</span></span>
-      <b>${escq(l.title)}</b>
-      <p>${escq(l.desc)}</p>
-      ${l.links?`<span class="quick">${l.links.map(k=>
-        `<a href="${k.href}" target="_blank" rel="noopener">${escq(k.label)}</a>`).join('')}</span>`:''}
-    </div>`).join('');
-}
-
-/* ---------- 继续上次阅读横幅 ---------- */
-try{
-  const dismissed=localStorage.getItem('pkb-resume-dismissed');
-  const hit=last&&last.page&&TOPICS.find(t=>t.href.split('/').pop()===last.page);
-  if(hit&&dismissed!==String(last.ts)){
-    const r=$('#resume');
-    r.href=hit.href+'#'+last.anchor;
-    $('#resumeLabel').textContent=`${last.doc} › ${last.label}`;
-    r.classList.add('on');
-    $('#resumeClose').addEventListener('click',e=>{
-      e.preventDefault();e.stopPropagation();
-      localStorage.setItem('pkb-resume-dismissed',String(last.ts));
-      r.classList.remove('on');
-    });
-  }
-}catch(e){}
-
-/* ---------- 全站搜索(主题 + 章节直达 + 章节正文内容 + keywords 别名) ---------- */
-const INDEX=[];
-const topicByHref={};
-TOPICS.forEach(t=>{
-  topicByHref[t.href]=t;
-  const kw=(t.keywords||'').toLowerCase();
-  INDEX.push({topic:t,label:t.title,id:'',text:(t.title+' '+t.desc+' '+t.tag+' '+kw).toLowerCase(),isTopic:true});
-  t.sections.forEach(s=>INDEX.push({topic:t,label:s.label,id:s.id,
-    text:(s.label+' '+t.title+' '+kw).toLowerCase(),isTopic:false}));
-});
-if(typeof LEARN!=='undefined')LEARN.forEach(l=>INDEX.push({
-  topic:{href:l.href,color:l.color,tag:'学习站',title:l.title},
-  label:l.title,id:'',text:(l.title+' '+l.desc+' '+l.tag+' 学习 教程').toLowerCase(),isTopic:true,ext:true}));
-const q=$('#q'),results=$('#results'),browse=$('#browse'),qmeta=$('#qmeta');
-let sel=0,shown=[];
-qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目(开始搜索后自动加载章节正文内容索引)`;
-
-/* 章节正文内容索引(assets/js/search-index.js,412KB,由 scripts/build-search-index.py 扫描 topics/*.html 预生成)
-   懒加载:首屏不拖它,第一次聚焦/输入搜索框才拉取,加载完自动回填并重跑一次当前搜索 */
-let contentIndexState='idle';
-function ensureContentIndex(){
-  if(contentIndexState!=='idle')return;
-  contentIndexState='loading';
-  const s=document.createElement('script');
-  s.src='assets/js/search-index.js';
-  s.onload=()=>{
-    if(typeof CONTENT_INDEX!=='undefined')CONTENT_INDEX.forEach(c=>{
-      const t=topicByHref[c.href];if(!t)return;
-      INDEX.push({topic:t,label:c.label,id:c.id,raw:c.text,
-        text:(c.label+' '+c.text).toLowerCase(),isTopic:false,isContent:true});
-    });
-    contentIndexState='ready';
-    qmeta.textContent=`已收录 ${INDEX.length} 条可跳转条目(含章节正文内容检索)`;
-    if(q.value.trim())doSearch();
-  };
-  document.body.appendChild(s);
-}
-q.addEventListener('focus',ensureContentIndex,{once:true});
-function hl(s,kw){if(!kw)return escq(s);
-  const i=s.toLowerCase().indexOf(kw);if(i<0)return escq(s);
-  return escq(s.slice(0,i))+'<mark>'+escq(s.slice(i,i+kw.length))+'</mark>'+escq(s.slice(i+kw.length))}
-/* 从正文里摘一段包含命中词的片段,居中截取并高亮 */
-function snippet(raw,kw,radius){
-  radius=radius||46;
-  const low=raw.toLowerCase();const i=low.indexOf(kw);
-  if(i<0)return escq(raw.slice(0,radius*2))+'…';
-  const start=Math.max(0,i-radius),end=Math.min(raw.length,i+kw.length+radius);
-  const pre=(start>0?'…':'')+raw.slice(start,i);
-  const mid=raw.slice(i,i+kw.length);
-  const post=raw.slice(i+kw.length,end)+(end<raw.length?'…':'');
-  return escq(pre)+'<mark>'+escq(mid)+'</mark>'+escq(post);
-}
-/* 模糊子序列打分(fzf 思路的简化版):query 每个字符都要按顺序出现在 text 里。
-   中文本身信息密度高,纯"子序列"如果不限制跨度,会在几千字的正文里随手抓到一堆
-   风马牛不相及的字凑成"命中"(比如"预填冲"能在完全无关的段落里跳着凑出这三个字)。
-   所以这里遍历 query 首字的每个出现位置作为起点,分别贪婪匹配剩余字符,
-   只有匹配跨度落在 query 长度的合理倍数内才算数,取跨度最紧凑的一次当分数——
-   跨度越紧、位置越靠前分数越高;找不到满足跨度限制的匹配返回 null。*/
-function fuzzyScore(text,query){
-  if(!query)return null;
-  const maxSpan=Math.max(12,query.length*5);
-  let best=null,from=0;
-  while(true){
-    const start=text.indexOf(query[0],from);
-    if(start<0)break;
-    let ti=start,ok=true;
-    for(let qi=1;qi<query.length;qi++){
-      const idx=text.indexOf(query[qi],ti+1);
-      if(idx<0){ok=false;break}
-      ti=idx;
-    }
-    if(ok){
-      const span=ti-start+1;
-      if(span<=maxSpan){
-        const score=1000/span-start*0.001;
-        if(best===null||score>best)best=score;
-      }
-    }
-    from=start+1;
-  }
-  return best;
-}
-function doSearch(){
-  const kwRaw=q.value.trim();
-  const kw=kwRaw.toLowerCase();
-  if(!kw){results.classList.remove('on');browse.style.display='';shown=[];return}
-  ensureContentIndex();
-  /* 第一层:多词 AND 精确子串匹配(空格分词,全部命中才算,权威度最高) */
-  const terms=kw.split(/\s+/).filter(Boolean);
-  const exact=INDEX.filter(it=>terms.every(w=>it.text.includes(w)));
-  /* 第二层:精确结果太少时,补一批模糊子序列匹配(容错拼写/漏字/顺序不对) */
-  const exactSet=new Set(exact);
-  let fuzzy=[];const fuzzySet=new Set();
-  if(exact.length<8&&kw.replace(/\s+/g,'').length>=2){
-    const fq=kw.replace(/\s+/g,'');
-    fuzzy=INDEX.map(it=>({it,score:fuzzyScore(it.text.replace(/\s+/g,''),fq)}))
-      .filter(x=>x.score!==null&&!exactSet.has(x.it))
-      .sort((a,b)=>b.score-a.score)
-      .slice(0,15).map(x=>x.it);
-    fuzzy.forEach(it=>fuzzySet.add(it));
-  }
-  /* 排序:主题精确命中 > 章节精确命中 > 模糊命中 */
-  const all=[...exact.filter(x=>x.isTopic),...exact.filter(x=>!x.isTopic),...fuzzy];
-  shown=all.slice(0,30);
-  if(sel>=shown.length)sel=Math.max(0,shown.length-1);
-  browse.style.display='none';results.classList.add('on');
-  results.innerHTML=shown.length?
-    `<div class="res-count">${shown.length} 条结果 · Enter 打开选中项 · Esc 返回</div>`+
-    shown.map((it,i)=>`
-      <a class="res${i===sel?' sel':''}" style="--rc:${it.topic.color}" data-i="${i}"
-         href="${it.topic.href}${it.id?'#'+it.id:''}"${it.ext?' target="_blank" rel="noopener"':''}>
-        <div class="res-row">
-          <span class="badge">${escq(it.topic.tag)}</span>
-          <b>${hl(it.label,terms[0]||kw)}</b>
-          ${it.isTopic?'':`<span class="restopic">${escq(it.topic.title)}</span>`}
-          ${fuzzySet.has(it)?'<span class="fz">模糊匹配</span>':''}
-          <span class="go">${it.ext?'外站 ↗':'打开 →'}</span>
-        </div>
-        ${it.isContent?`<div class="snip">${snippet(it.raw,terms[0]||kw)}</div>`:''}
-      </a>`).join('')
-    :'<div class="res-empty">没有匹配结果——换个关键词试试,或按 Esc 浏览全部主题</div>';
-  const s=results.querySelector('.res.sel');s&&s.scrollIntoView({block:'nearest'});
-}
-q.addEventListener('input',()=>{sel=0;doSearch()});
-q.addEventListener('keydown',e=>{
-  if(e.key==='ArrowDown'){e.preventDefault();if(sel<shown.length-1)sel++;doSearch()}
-  else if(e.key==='ArrowUp'){e.preventDefault();if(sel>0)sel--;doSearch()}
-  else if(e.key==='Enter'){e.preventDefault();const it=shown[sel];
-    if(!it)return;
-    const url=it.topic.href+(it.id?'#'+it.id:'');
-    it.ext?window.open(url,'_blank','noopener'):location.href=url}
-  else if(e.key==='Escape'){q.value='';sel=0;doSearch();q.blur()}
-});
-
-/* ---------- 常用速查快链(章节对象里标 quick:true 即自动收录,唯一数据源) ---------- */
-const QUICKREF=[];
-TOPICS.forEach(t=>t.sections.forEach(s=>{
-  if(s.quick)QUICKREF.push({href:`${t.href}#${s.id}`,icon:t.icon,color:t.color,label:s.quickLabel||s.label});
-}));
-if(QUICKREF.length){
-  $('#quickref').insertAdjacentHTML('beforeend',QUICKREF.map((r,ri)=>
-    `<a href="${r.href}" style="--qc:${r.color};--reveal-delay:${Math.min(ri,4)*40}ms" data-reveal><span class="qic">${r.icon}</span>${escq(r.label)} →</a>`).join(''));
-}else{
-  $('#quickref').style.display='none';
-}
-
-/* ---------- 热门搜索建议 ---------- */
-const HOT=['登录报错','快捷键','避坑','ANR'];
-const hot=$('#hot');
-hot.insertAdjacentHTML('beforeend',HOT.map(h=>`<button type="button">${h}</button>`).join(''));
-hot.addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b)return;
-  q.value=b.textContent;sel=0;doSearch();q.focus();
-});
-
-/* ---------- 全局快捷键 ---------- */
-addEventListener('keydown',e=>{
-  const t=e.target;
-  if((e.key==='/'||((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'))
-     &&t.tagName!=='INPUT'&&t.tagName!=='TEXTAREA'){
-    e.preventDefault();q.focus();q.select();
-  }
-});
-</script>
-<script src="assets/js/motion.js"></script>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/site.js"></script>
 </body>
 </html>

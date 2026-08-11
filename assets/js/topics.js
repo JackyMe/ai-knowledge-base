@@ -63,6 +63,16 @@ const PATHS = [
     ]
   },
   {
+    icon: "🌐", color: "#1a73e8", title: "Google 全栈生态(新)",
+    desc: "Google Antigravity Agentic 编程 + NotebookLM 2M 窗口 + AI Studio 零幻觉实践",
+    steps: [
+      { label: "Google Antigravity 四大交互形态", href: "topics/google-ai-ecosystem.html#m1-2", note: "CLI / 2.0 App / IDE / Python SDK 解构" },
+      { label: "NotebookLM 深度研究与播客生成", href: "topics/google-ai-ecosystem.html#m2-1", note: "2M 材料输入 + Source Grounding 零幻觉问答" },
+      { label: "AI Studio 2M 窗口与 Thinking 模型", href: "topics/google-ai-ecosystem.html#m3-2", note: "Gemini 2.0 推理调优 + JSON Schema 结构化输出" },
+      { label: "全链路 5 步超级流水线与实战案例", href: "topics/google-ai-ecosystem.html#m4-1", note: "独立开发 3 小时全流程协同接力" }
+    ]
+  },
+  {
     icon: "⚙️", color: "#d9634a", title: "工具精通",
     desc: "把 Claude Code 与 Codex 用到专业水准,双代理协同",
     steps: [
@@ -71,16 +81,6 @@ const PATHS = [
       { label: "pen.dev × Claude Code 实践", href: "topics/pencil-claude-code-best-practices.html", note: "设计到代码的完整流水线" },
       { label: "AI × UI 设计协同全景(新)", href: "topics/ai-ui-design-collab.html", note: "Figma + pen.dev + Material 3 + 视觉回归,Android 端到端" },
       { label: "上下文工程与反模式(内功)", href: "topics/prompt-context-engineering.html#context", note: "注意力预算、长任务三板斧、安全与成本、鉴别偏方" }
-    ]
-  },
-  {
-    icon: "🧗", color: "#ea580c", title: "AI 能力扩展",
-    desc: "用 AI 扩展技术能力边界:方法论 + 两条端到端案例",
-    steps: [
-      { label: "五步扩展引擎:通用方法论", href: "topics/ai-capability-expansion.html#engine", note: "诊断差距→AI 知识速通→脚手架起步→验证闭环→深化沉淀" },
-      { label: "跨域映射技法", href: "topics/ai-capability-expansion.html#mapping", note: "把已会的心智模型喂给 AI,自动标出新概念" },
-      { label: "端到端案例:选一条深入读", href: "topics/ai-capability-expansion.html#case-studies", note: "全栈跨端,或前端到后端与服务端" },
-      { label: "技术型一人公司", href: "topics/ai-capability-expansion.html#indie", note: "从能写代码到能上线赚钱" }
     ]
   },
   {

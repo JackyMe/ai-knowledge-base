@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Google AI 生态深度实战:包含 Google Antigravity Agentic 编程平台 (CLI/2.0 App/IDE/SDK)、NotebookLM 知识库研究、Google AI Studio (2M 上下文/Thinking 模型)、Canvas/Sketch 敏捷原型与全链路超级流水线。">
+<meta name="description" content="Google AI 生态深度实战手册:包含 Google Antigravity Agentic 编程平台 (CLI/2.0 App/IDE/SDK/Customizations/Sandbox)、NotebookLM 零幻觉研究、Google AI Studio (2M 窗口/Thinking 模型)、Canvas/Sketch 敏捷原型与全链路 5 步超级流水线。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08">
-<meta property="og:description" content="全网最新完整指引:Google Antigravity 深度解构 (CLI/2.0/IDE/SDK/Customizations/Sandbox) + NotebookLM + Google AI Studio + 5 步超级流水线最佳实践。">
+<meta property="og:title" content="Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08 权威完整版">
+<meta property="og:description" content="全网最全干货指引:Google Antigravity 深度解构 (CLI/2.0/IDE/SDK/Slash Commands/Skills/Rules/Hooks/Sandbox) + NotebookLM + Google AI Studio + 5 步超级流水线最佳实践。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/google-ai-ecosystem.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08</title>
+<title>Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08 权威完整版</title>
 <link rel="stylesheet" href="../assets/css/site.css">
 <style>
 :root{
@@ -142,7 +142,7 @@ pre code{background:none;color:inherit;padding:0}
   <div class="logo">
     <div class="mark">G</div>
     <span>Google AI 生态深度实战</span>
-    <span class="sub">2026.08</span>
+    <span class="sub">2026.08 完整版</span>
   </div>
   <div class="right">
     <a href="../index.html">← 返回首页</a>
@@ -195,14 +195,14 @@ pre code{background:none;color:inherit;padding:0}
   <div class="wrap">
     
     <div class="hero">
-      <div class="badge">Google AI 全栈实战指南 · 2026.08 最新版</div>
+      <div class="badge">Google AI 全栈实战指南 · 2026.08 权威完整版</div>
       <h1>Google AI 生态深度实战 <span class="grad">从模型到 Agentic IDE</span></h1>
-      <p class="lead">打破工具独立使用的孤岛局限。全面解构 Google Antigravity (AGY)、NotebookLM、Google AI Studio 与 Canvas，打造“研究 → 原型架构 → Agentic 编码 → 部署”的全链路最高效组合打法。</p>
+      <p class="lead">全网最全干货总结。拒绝花架子与空洞概念，全面解构 Google Antigravity (AGY)、NotebookLM、Google AI Studio 与 Canvas，打造“研究 → 原型架构 → Agentic 编码 → 部署”的全链路最高效组合打法。</p>
       <div class="meta">
         <span>✅ 官方权威对齐</span>
         <span>⚡ 包含 Antigravity CLI/2.0/IDE/SDK</span>
         <span>🧠 2M 上下文 + Source Grounding</span>
-        <span>🚀 零虚构 · 全网最完整干货</span>
+        <span>🚀 零虚构 · 深度实操代码墙</span>
       </div>
     </div>
 
@@ -303,19 +303,68 @@ pre code{background:none;color:inherit;padding:0}
 
       <h3 data-reveal>1. Antigravity CLI (`agy`)</h3>
       <p>轻量化终端 TUI 命令行界面。在终端直接输入 `agy` 启动。适合快捷命令行重构、CI/CD 自动化流水线或无图形化环境。</p>
-      <pre><code>agy                # 启动交互式 TUI
-agy --help         # 查看命令行标志与子命令
-# 在 TUI 中使用 Ctrl+D Ctrl+D 或 /exit 退出</code></pre>
+      <pre><code>agy                           # 启动交互式 TUI 界面
+agy --help                    # 查看 CLI 命令行标志与帮助
+agy --model gemini-2.0-pro    # 指定特定模型启动
+agy --workspace /path/to/proj # 挂载工作区路径
+agy --non-interactive -p "跑单元测试并报告" # CI/CD 无头管道运行模式
+# 退出 TUI: 按 Ctrl+D Ctrl+D 或输入 /exit /quit</code></pre>
+
+      <div class="callout tip">
+        <b class="t">⚙️ CLI 全局配置文件说明</b>
+        <p>CLI 的配置保存在 <code>~/.gemini/antigravity-cli/settings.json</code>：</p>
+        <pre><code>{
+  "default_model": "gemini-2.0-flash",
+  "sandbox_mode": true,
+  "telemetry": false,
+  "allow_file_access_outside_workspace": "ask"
+}</code></pre>
+      </div>
 
       <h3 data-reveal>2. Antigravity 2.0 Desktop App</h3>
-      <p>基于 Electron 打造的独立桌面级应用程序。提供独立的左侧导航栏（Conversations、Projects、Scheduled Tasks 定时任务、Customizations 管理）以及右侧**HTML 辅助面板 (Auxiliary Pane)**（可实时监控 Subagents 运行状态、查看后台 Task 进度、预览 Artifacts 渲染及 Git 差异 diff）。</p>
+      <p>基于 Electron 打造的独立桌面级应用程序。提供独立的左侧导航栏以及右侧**HTML 辅助面板 (Auxiliary Pane)**：</p>
+      <ul>
+        <li><b>Left Navigation Sidebar</b>：管理 Conversations 会话、Projects 工作区、Scheduled Tasks 定时任务（Cron 与 Delayed Timers）、Customizations（Skills / Rules / MCP）以及 Settings 配置。</li>
+        <li><b>Main Chat Canvas</b>：支持 `/` 斜杠命令，`@` Mentions 上下文注入，多模态文件/图片拖拽上传。</li>
+        <li><b>Auxiliary Pane (右侧辅助面板)</b>：
+          <ul>
+            <li><i>Subagents Tree Monitor</i>：可视化监控正在运行的子智能体派生树与通信。</li>
+            <li><i>Background Tasks Manager</i>：管理后台后台 `run_command` 与定时脚本。</li>
+            <li><i>Interactive Artifacts Renderer</i>：实时渲染与交互预览生成的 Markdown、HTML/SVG 原型。</li>
+            <li><i>Git Diff Inspector</i>：直观查看改动代码 diff，支持逐项撤销或接受。</li>
+          </ul>
+        </li>
+      </ul>
 
-      <h3 data-reveal>3. Antigravity Standalone IDE</h3>
+      <h3 data-reveal>3. Antigravity Standalone IDE (VS Code Fork)</h3>
       <p>基于 VS Code 底座构建的 AI 原生开发环境，深度集成 3 种交互模式：</p>
       <ul>
-        <li><b>Passive Modal (Antigravity Tab 自动补全)</b>：预测单步意图，支持 Tab 补全代码、Tab to Jump 跳转光标、Tab to Import 自动引入依赖包。</li>
-        <li><b>Instructive Modal (Inline Command <code>⌘I</code> / <code>Ctrl+I</code>)</b>：高亮选中局部代码并给出具体修改指令（如“重构此函数”、“添加 JSDoc 注释”）。</li>
-        <li><b>Collaborative Modal (Sidebar Chat & Agent Mode)</b>：侧边栏协同模式，启动包含任务规划、文件读写、Shell 命令执行与网页浏览的自主智能体。</li>
+        <li><b>Passive Modal (Antigravity Tab 自动补全)</b>：预测单步意图。
+          <ul>
+            <li><b>Autocomplete & Supercomplete</b>：Autocomplete 在光标处建议代码，Supercomplete 在浮动窗口显示带红绿差异的大块代码修改（包含删除）。</li>
+            <li><b>Tab to Jump</b>：预测下一个光标跳转点，按 <kbd>Tab</kbd> 直接跳转。</li>
+            <li><b>Tab to Import</b>：使用新依赖时自动在文件头部补齐 `import` 语句。</li>
+            <li>快捷键：接受 <kbd>Tab</kbd>，拒绝 <kbd>Esc</kbd>，逐字接受 <kbd>⌘</kbd>+<kbd>→</kbd> (macOS) / <kbd>Ctrl</kbd>+<kbd>→</kbd> (Linux)。</li>
+          </ul>
+        </li>
+        <li><b>Instructive Modal (Inline Command <code>⌘I</code> / <code>Ctrl+I</code>)</b>：
+          <ul>
+            <li>高亮选中代码块按快捷键，针对选中内容进行局部重构、解释或修改。</li>
+            <li>未选中代码时触发，直接在光标处生成全新代码。</li>
+          </ul>
+        </li>
+        <li><b>Collaborative Modal (Sidebar Chat & Agent Mode)</b>：
+          <ul>
+            <li>侧边栏 Pair Programmer 智能体，支持完整 Planning Mode、读写文件、Shell 命令运行与网页浏览。</li>
+          </ul>
+        </li>
+        <li><b>Editor UI 集成</b>：
+          <ul>
+            <li><b>Inline Code Lenses</b>：浮现在类和函数上方的操作按钮（如 "Refactor", "Write Tests", "Explain Code"）。</li>
+            <li><b>Visual Diff Overlays</b>：编辑器内直操显示红绿代码改动对比。</li>
+            <li><b>Diagnostic Auto-Fix</b>：在编译错误或 Linter 警告上直接触发 Agent 自动修复。</li>
+          </ul>
+        </li>
       </ul>
 
       <h3 data-reveal>4. Antigravity Python SDK (`google-antigravity`)</h3>
@@ -361,6 +410,10 @@ agy --help         # 查看命令行标志与子命令
             <td><code>/teamwork-preview</code></td>
             <td>启动多 Agent 自主团队协作预览，分发子任务至并发后台智能体。</td>
           </tr>
+          <tr>
+            <td><code>/compact</code></td>
+            <td>主动压缩当前会话历史上下文，释放 Token 空间。</td>
+          </tr>
         </tbody>
       </table>
 
@@ -372,6 +425,7 @@ agy --help         # 查看命令行标志与子命令
           <li>`@terminal`：直接将当前终端最近输出的报错日志附带给智能体。</li>
           <li>`@conversation-id`：引用历史会话上下文，实现跨会话记忆复用。</li>
           <li>`@mcp-tool`：显式指定调用特定的 MCP 服务器工具。</li>
+          <li>`@rule`：显式指定生效某条 `rules/*.md` 规则。</li>
         </ul>
       </div>
     </section>
@@ -385,20 +439,34 @@ agy --help         # 查看命令行标志与子命令
       <h3 data-reveal>1. Skills (技能)</h3>
       <p>存放在 `skills/<skill_name>/SKILL.md`，使用 YAML frontmatter 描述名称与作用，作为模块化 Workflow 领域指南：</p>
       <pre><code>---
-name: format-code
-description: Custom code formatting style enforcement
+name: code-reviewer
+description: Standardized code review and security checklist for TypeScript projects
 ---
-# Format Code Instructions
-When formatting frontend code, always use pre-configured ESLint rules...</code></pre>
+
+# Code Review Instructions
+When reviewing TypeScript code, enforce the following checks:
+1. Strict Null Checks: Ensure no implicit 'any' types are introduced.
+2. Async Safety: Verify all Promises have appropriate try/catch handling.
+3. Security: Check for potential SQL injection or XSS vulnerabilities.</code></pre>
 
       <h3 data-reveal>2. Rules (规则)</h3>
       <p>定义在 `rules/*.md` 或根目录的 `AGENTS.md` / `GEMINI.md`，用于约束代码风格、禁止修改特定库或强制遵守规范。</p>
 
       <h3 data-reveal>3. Hooks (钩子)</h3>
-      <p>通过 `hooks.json` 配置事件监听（如 `on_subagent_start`、`before_tool_call`），在智能体触发敏感操作时执行拦截脚本。</p>
+      <p>通过 `hooks.json` 配置事件监听（如 `on_subagent_start`、`before_tool_call`），在智能体触发敏感操作时执行拦截脚本：</p>
+      <pre><code>{
+  "hooks": [
+    {
+      "event": "before_tool_call",
+      "tool": "run_command",
+      "action": "script",
+      "command": "python3 scripts/audit_command_safety.py"
+    }
+  ]
+}</code></pre>
 
-      <h3 data-reveal>4. MCP (Model Context Protocol)</h3>
-      <p>在 `mcp_config.json` 中配置第三方 MCP 服务器（如数据库连接、Figma 插件、GitHub API 等），扩展智能体的外部动作空间。</p>
+      <h3 data-reveal>4. MCP (Model Context Protocol) 与 Sidecars</h3>
+      <p>在 `mcp_config.json` 中配置第三方 MCP 服务器（如数据库连接、Figma 插件、GitHub API 等），扩展智能体的外部动作空间。Sidecars 则是并行随从后台进程。</p>
     </section>
 
     <div class="divider"></div>
@@ -417,6 +485,17 @@ When formatting frontend code, always use pre-configured ESLint rules...</code><
           <li><b>验证与 `walkthrough.md` 产出</b>：跑通自动化测试并产出包含改动总结与截屏的 Walkthrough。</li>
         </ol>
       </div>
+
+      <pre><code># Subagent 多代理操控伪代码/工具指令示例
+invoke_subagent(
+  Subagents=[
+    {
+      "TypeName": "research",
+      "Role": "Database Researcher",
+      "Prompt": "分析当前 Postgres 表索引结构并提出优化方案"
+    }
+  ]
+)</code></pre>
     </section>
 
     <div class="divider"></div>
@@ -490,7 +569,7 @@ if __name__ == "__main__":
       <h2>2.2 2M 多源材料输入与预处理</h2>
       <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> NotebookLM 支持在一个 Notebook 中混合注入最多 50+ 个 Sources，依靠 Gemini 2M+ 超长上下文轻松消化：</p>
       <ul>
-        <li><b>多种类文件格式</b>：支持 PDF、Google Docs/Slides、Markdown、PlainText、HTML 网页 URL、YouTube 视频链接及音频文件（MP3/WAV）。</li>
+        <li><b>多种类文件格式</b>：支持 PDF、Google Docs/Slides、Markdown、PlainText、HTML 网页 URL、YouTube 视频链接（自动提取完整字幕）及音频文件（MP3/WAV）。</li>
         <li><b>预处理技巧</b>：上传开源项目代码包或开源 API 文档时，先打成 Markdown 单文件或结构化 PDF 注入，研究检索精准度最高。</li>
       </ul>
     </section>
@@ -534,6 +613,7 @@ if __name__ == "__main__":
         <li><b>Thinking Models (思考模型)</b>：调优 Gemini 2.0 Flash/Pro Thinking 模型的推理步骤，适合解决高难度算法与复杂状态机架构设计。</li>
         <li><b>System Instructions</b>：设定智能体的核心人格、角色约束与逻辑推导路径。</li>
         <li><b>Structured Outputs (JSON Schema)</b>：通过可视化配置 JSON Schema，强约束模型输出绝对合规的结构化 JSON 数据，方便代码解析。</li>
+        <li><b>Context Caching (内容缓存 API)</b>：对大于 32k 的静态文档或代码库开启 Cache，降低 75% 以上的调用延迟与成本。</li>
       </ul>
     </section>
 
@@ -635,7 +715,7 @@ if __name__ == "__main__":
       <div class="callout warn">
         <b class="t">⚠️ 必须警惕的 4 大反模式</b>
         <ul>
-          <li><b>反模式 1：上下文窗口爆棚不清理</b><br>在单个会话里反复多次对话导致上下文充斥无关历史，应及时开启 New Conversation 或挂载具体的 `@filename`。</li>
+          <li><b>反模式 1：上下文窗口爆棚不清理</b><br>在单个会话里反复多次对话导致上下文充斥无关历史，应及时开启 New Conversation 或挂载具体的 `@filename`，必要时运行 `/compact`。</li>
           <li><b>反模式 2：绕过沙箱滥用 BypassSandbox</b><br>过度开启 BypassSandbox 容易误跑全局破坏性指令，应优先配置精准的 Allowlist 授权。</li>
           <li><b>反模式 3：直接修改底座，不沉淀为 Custom Skills</b><br>重复性较高的提效流程（如写 Unit Test）应固化为 `.agents/skills/` 下的 `SKILL.md`，避免每次重复粘贴 Prompt。</li>
           <li><b>反模式 4：把 NotebookLM 当通用聊天框</b><br>NotebookLM 的核心是 Source Grounding，如果不传高质量 Sources 就无法发挥其无幻觉优势。</li>
@@ -676,6 +756,10 @@ if __name__ == "__main__":
           <tr>
             <td><code>/learn</code></td>
             <td>将当前修正的踩坑知识持久化写入 Rules。</td>
+          </tr>
+          <tr>
+            <td><code>/compact</code></td>
+            <td>主动压缩当前会话上下文，释放 Token 空间。</td>
           </tr>
         </tbody>
       </table>
