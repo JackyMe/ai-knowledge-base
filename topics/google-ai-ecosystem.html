@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Google AI 生态深度实战:包含 Google Antigravity Agentic 编程平台 (CLI/2.0 App/IDE/SDK)、NotebookLM 知识库研究、Google AI Studio (2M 上下文/Thinking 模型)、Canvas/Sketch 敏捷原型与全链路超级流水线。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08">
+<meta property="og:description" content="全网最新完整指引:Google Antigravity 深度解构 (CLI/2.0/IDE/SDK/Customizations/Sandbox) + NotebookLM + Google AI Studio + 5 步超级流水线最佳实践。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/google-ai-ecosystem.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Google AI 生态深度实战 · 从模型到 Agentic IDE · 2026.08</title>
+<style>
+:root{
+  --accent:#1a73e8;        /* Google 科技蓝 */
+  --accent-2:#7c3aed;      /* Gemini 渐变紫 */
+  --accent-3:#ea4335;      /* 珊瑚红 */
+  --accent-soft:#e8f0fe;
+  --ink:#091428; --bg:#ffffff; --bg-side:#f8fafc;
+  --bg-code:#0b1329;
+  --text:#0f172a; --text-2:#334155; --text-3:#64748b;
+  --border:#e2e8f0; --border-2:#cbd5e1;
+  --tip-bg:#ecfdf5; --warn-bg:#fff8ec; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:280px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.5px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:24px}
+.nav-group a:hover{background:#e0f2fe;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:280px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f1f5f9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(26,115,232,.55),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(124,58,237,.45),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#93c5fd;font-weight:600;background:rgba(26,115,232,.22);
+  border:1px solid rgba(147,197,253,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#93c5fd,#c084fc,#fca5a5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbd5e1;max-width:700px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#94a3b8}
+.hero .meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:26px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:18.5px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#bae6fd}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#a7f3d0}
+.callout.tip b.t{color:#059669}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.tbl th,.tbl td{border:1px solid var(--border);padding:10px 14px;text-align:left}
+.tbl th{background:var(--bg-side);font-weight:700;color:var(--text-2)}
+
+pre{background:var(--bg-code);color:#f8fafc;padding:16px 20px;border-radius:10px;overflow-x:auto;
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;margin:18px 0}
+code{font-family:var(--mono);font-size:13.5px;background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px}
+pre code{background:none;color:inherit;padding:0}
+
+.tag-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;margin-right:6px}
+.tag-official{background:#e0f2fe;color:#0369a1}
+.tag-consensus{background:#dcfce7;color:#15803d}
+.tag-diverge{background:#fef3c7;color:#b45309}
+
+#prog{position:fixed;top:60px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));
+  transform-origin:left;transform:scaleX(0);z-index:101}
+#topBtn{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--accent);
+  color:#fff;border:none;cursor:pointer;font-size:18px;display:none;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(26,115,232,.3);z-index:99}
+
+@media(max-width:1024px){
+  .sidebar{display:none;width:100%;top:60px;z-index:95;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar.open{display:block}
+  .main{margin-left:0}
+  .wrap{padding:0 20px 80px}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div class="logo">
+    <div class="mark">G</div>
+    <span>Google AI 生态深度实战</span>
+    <span class="sub">2026.08</span>
+  </div>
+  <div class="right">
+    <a href="../index.html">← 返回首页</a>
+    <a href="#m1-1">Antigravity 快速入门</a>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <input id="sideFilter" placeholder="筛选章节…" style="width:100%;padding:8px 12px;border:1px solid var(--border-2);border-radius:8px;margin-bottom:14px;font-size:13px;" />
+  <nav id="sideNav">
+    <div class="nav-group"><div class="gt">全景导读</div>
+      <a href="#intro"><span class="no">00</span>为什么选择 2026.08 Google AI</a>
+      <a href="#map"><span class="no">01</span>工具全景矩阵与分层定位</a>
+    </div>
+    <div class="nav-group"><div class="gt">模块 1 · Google Antigravity</div>
+      <a href="#m1-1"><span class="no">1.1</span>什么是 Google Antigravity</a>
+      <a href="#m1-2"><span class="no">1.2</span>四大交互形态详解</a>
+      <a href="#m1-3"><span class="no">1.3</span>Slash 命令与 @ Mentions</a>
+      <a href="#m1-4"><span class="no">1.4</span>Customizations 定制三要素</a>
+      <a href="#m1-5"><span class="no">1.5</span>Planning Mode 与 Subagent</a>
+      <a href="#m1-6"><span class="no">1.6</span>安全沙箱与权限深度把控</a>
+      <a href="#m1-7"><span class="no">1.7</span>Python SDK 编程化实战</a>
+    </div>
+    <div class="nav-group"><div class="gt">模块 2 · NotebookLM 研究基座</div>
+      <a href="#m2-1"><span class="no">2.1</span>Source Grounding 原理</a>
+      <a href="#m2-2"><span class="no">2.2</span>2M 多源材料输入与预处理</a>
+      <a href="#m2-3"><span class="no">2.3</span>知识二次加工与播客生成</a>
+      <a href="#m2-4"><span class="no">2.4</span>研报 → Antigravity Spec 转换</a>
+    </div>
+    <div class="nav-group"><div class="gt">模块 3 · Canvas / AI Studio 原型</div>
+      <a href="#m3-1"><span class="no">3.1</span>Canvas / Sketch 敏捷原型</a>
+      <a href="#m3-2"><span class="no">3.2</span>AI Studio 2M 窗口与 Thinking</a>
+      <a href="#m3-3"><span class="no">3.3</span>Imagen 3 / Veo 视觉生成</a>
+    </div>
+    <div class="nav-group"><div class="gt">模块 4 · 效率最大化组合打法</div>
+      <a href="#m4-1"><span class="no">4.1</span>全链路 5 步超级流水线</a>
+      <a href="#m4-2"><span class="no">4.2</span>独立开发端到端实战案例</a>
+    </div>
+    <div class="nav-group"><div class="gt">模块 5 · 最佳实践与速查</div>
+      <a href="#m5-1"><span class="no">5.1</span>提效七条黄金法则</a>
+      <a href="#m5-2"><span class="no">5.2</span>常见坑点与反模式图鉴</a>
+      <a href="#appA"><span class="no">A</span>Antigravity 命令与 SDK 速查</a>
+      <a href="#appB"><span class="no">B</span>NotebookLM 高效 Prompt 速查</a>
+      <a href="#appC"><span class="no">C</span>官方资源与 Release 索引</a>
+    </div>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="wrap">
+    
+    <div class="hero">
+      <div class="badge">Google AI 全栈实战指南 · 2026.08 最新版</div>
+      <h1>Google AI 生态深度实战 <span class="grad">从模型到 Agentic IDE</span></h1>
+      <p class="lead">打破工具独立使用的孤岛局限。全面解构 Google Antigravity (AGY)、NotebookLM、Google AI Studio 与 Canvas，打造“研究 → 原型架构 → Agentic 编码 → 部署”的全链路最高效组合打法。</p>
+      <div class="meta">
+        <span>✅ 官方权威对齐</span>
+        <span>⚡ 包含 Antigravity CLI/2.0/IDE/SDK</span>
+        <span>🧠 2M 上下文 + Source Grounding</span>
+        <span>🚀 零虚构 · 全网最完整干货</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>4 大形态</b><span>CLI × App × IDE × SDK</span></div>
+      <div class="stat"><b>26 个章节</b><span>系统化渐进式拆解</span></div>
+      <div class="stat"><b>2M Token</b><span>超长上下文工程</span></div>
+      <div class="stat"><b>5 步流水线</b><span>端到端组合效率最大化</span></div>
+    </div>
+
+    <!-- ==================== 全景导读 ==================== -->
+    <span class="sec-tag">PART 0 · 全景导读</span>
+
+    <section id="intro">
+      <h2>00 为什么选择 2026.08 Google AI 生态</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> 2026 年的 AI 编程与生产力工具已全面从简单的“代码补全 (Autocompletion)”跨越到“AI-First Agentic 自主协同 (Autonomous Co-Dev)”时代。Google AI 依托底层庞大的模型基底与产品组合，构筑了一套覆盖**从知识研读到自动化交付**的完整生态环路。</p>
+
+      <div class="callout tip">
+        <b class="t">💡 为什么选择 Google AI 全栈组合？</b>
+        <ul>
+          <li><b>原生 2M+ 超长上下文 (Long-Context Window)</b>：Gemini 1.5/2.0+ 系列模型天然支持一次性喂入整包代码库、全套 API 手册或数十篇学术论文，无需繁琐切片。</li>
+          <li><b>Strict Source Grounding (源头零幻觉)</b>：NotebookLM 彻底解决了大模型回答“瞎编乱造”的痛点，所有回答 100% 绑定原始源文件并附带精准引用。</li>
+          <li><b>Google Antigravity Agentic 编程平台</b>：全新的 Agentic 协作体验，支持 Planning Mode、自定义 Skills/Rules/Hooks、Subagent 多代理并行编排与 Terminal Sandbox 安全隔离。</li>
+          <li><b>完全免费或极低成本门槛</b>：NotebookLM、AI Studio 均提供极高质量的免费或 Developer Tier 额度，大幅降低独立开发者与团队的提效成本。</li>
+        </ul>
+      </div>
+      <p class="src">来源：<a href="https://antigravity.google/docs" target="_blank">Google Antigravity Live Docs</a> · 核对至 2026-08-11</p>
+    </section>
+
+    <section id="map">
+      <h2>01 工具全景矩阵与分层定位</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 不少开发者往往把工具当成孤立点使用，导致效率打折。Google AI 生态的最佳使用逻辑是**分层定位、协同接力**：</p>
+      
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>生态分层</th>
+            <th>核心工具</th>
+            <th>解决什么问题</th>
+            <th>输入/输出产品格式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. 知识研究层</b></td>
+            <td><b>NotebookLM</b></td>
+            <td>深度文献研读、源码解析、零幻觉知识抽取</td>
+            <td>PDF/网页/视频 → 结构化研报 & 播客</td>
+          </tr>
+          <tr>
+            <td><b>2. 架构与原型层</b></td>
+            <td><b>Canvas / Sketch / Google AI Studio</b></td>
+            <td>组件敏捷生成、超长 Prompt 调参、Thinking 模型推理</td>
+            <td>文本/草图 → Web 交互组件 & JSON Spec</td>
+          </tr>
+          <tr>
+            <td><b>3. Agentic 编码层</b></td>
+            <td><b>Google Antigravity (AGY)</b></td>
+            <td>自主代码重构、Terminal 命令跑通、测试回归与部署</td>
+            <td>Spec 说明 → 落地代码文件与 Commit</td>
+          </tr>
+          <tr>
+            <td><b>4. 端侧与日常层</b></td>
+            <td><b>Gemini in Workspace / Chrome DevTools</b></td>
+            <td>文档撰写、邮件沟通、浏览器端 DevTools 实时调试</td>
+            <td>网页/DOM → 错误诊断与文本沉淀</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================== 模块 1 · Google Antigravity ==================== -->
+    <span class="sec-tag">PART 1 · GOOGLE ANTIGRAVITY (AGY) 深度解构</span>
+
+    <section id="m1-1">
+      <h2>1.1 什么是 Google Antigravity</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> <b>Google Antigravity (AGY)</b> 是 Google 推出的一款 AI 原生 Agentic 编程与协同开发平台。它不再是传统编辑器里的“下拉框提示”，而是赋予了 AI 智能体读取项目上下文、规划任务步骤、执行 shell 命令、编写/修改文件以及自我调试验证的完整能力。</p>
+      
+      <div class="callout note">
+        <b class="t">📌 Antigravity 核心设计哲学</b>
+        <ul>
+          <li><b>上下文驱动 (Context-Driven)</b>：项目根目录下的配置文件 (`.agents/` 或 `AGENTS.md`) 拥有最高响应优先级。</li>
+          <li><b>安全自主性 (Bounded Autonomy)</b>：智能体在受控的 Terminal Sandbox（终端沙箱）中运行命令，所有文件写入与命令均可随时人工审批。</li>
+          <li><b>显式规划优先 (Planning Mode First)</b>：复杂任务先生成 `implementation_plan.md` 供开发者审查，通过后再自动分发至 Subagents 逐步落地。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="m1-2">
+      <h2>1.2 四大交互形态详解</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> Antigravity 针对不同的开发场景，提供了 4 种相互融合的交互形态：</p>
+
+      <h3>1. Antigravity CLI (`agy`)</h3>
+      <p>轻量化终端 TUI 命令行界面。在终端直接输入 `agy` 启动。适合快捷命令行重构、CI/CD 自动化流水线或无图形化环境。</p>
+      <pre><code>agy                # 启动交互式 TUI
+agy --help         # 查看命令行标志与子命令
+# 在 TUI 中使用 Ctrl+D Ctrl+D 或 /exit 退出</code></pre>
+
+      <h3>2. Antigravity 2.0 Desktop App</h3>
+      <p>基于 Electron 打造的独立桌面级应用程序。提供独立的左侧导航栏（Conversations、Projects、Scheduled Tasks 定时任务、Customizations 管理）以及右侧**HTML 辅助面板 (Auxiliary Pane)**（可实时监控 Subagents 运行状态、查看后台 Task 进度、预览 Artifacts 渲染及 Git 差异 diff）。</p>
+
+      <h3>3. Antigravity Standalone IDE</h3>
+      <p>基于 VS Code 底座构建的 AI 原生开发环境，深度集成 3 种交互模式：</p>
+      <ul>
+        <li><b>Passive Modal (Antigravity Tab 自动补全)</b>：预测单步意图，支持 Tab 补全代码、Tab to Jump 跳转光标、Tab to Import 自动引入依赖包。</li>
+        <li><b>Instructive Modal (Inline Command <code>⌘I</code> / <code>Ctrl+I</code>)</b>：高亮选中局部代码并给出具体修改指令（如“重构此函数”、“添加 JSDoc 注释”）。</li>
+        <li><b>Collaborative Modal (Sidebar Chat & Agent Mode)</b>：侧边栏协同模式，启动包含任务规划、文件读写、Shell 命令执行与网页浏览的自主智能体。</li>
+      </ul>
+
+      <h3>4. Antigravity Python SDK (`google-antigravity`)</h3>
+      <p>可通过 `pip install google-antigravity` 安装，用于在 Python 脚本或自动化测试框架中编排管理智能体：</p>
+      <pre><code>pip install google-antigravity</code></pre>
+    </section>
+
+    <section id="m1-3">
+      <h2>1.3 高效交互：Slash 命令与 @ Mentions 机制</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 在 Antigravity 的 Chat Canvas 与 CLI 中，善用斜杠命令与上下文 `@` 引用是拉开使用效率差距的关键：</p>
+
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>斜杠命令 (Slash Command)</th>
+            <th>触发行为与作用场景</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/goal</code></td>
+            <td>启动长任务通宵模式，智能体将极度详尽地反复自我迭代验证，直到目标彻底完成。</td>
+          </tr>
+          <tr>
+            <td><code>/schedule</code></td>
+            <td>设置一次性定时器或 recurring cron 定时任务，在后台定期监控部署或自动体检。</td>
+          </tr>
+          <tr>
+            <td><code>/browser</code></td>
+            <td>启动无头浏览器集成，可自动登录 Web 页面、截屏分析并进行端到端视觉回归。</td>
+          </tr>
+          <tr>
+            <td><code>/grill-me</code></td>
+            <td>启动互动问答采访模式，在开始写代码前强迫智能体向你逐项确认关键设计细节。</td>
+          </tr>
+          <tr>
+            <td><code>/learn</code></td>
+            <td>记录当前会话中修正的踩坑经验，持久化写入项目 Rules 以便日后自动遵循。</td>
+          </tr>
+          <tr>
+            <td><code>/teamwork-preview</code></td>
+            <td>启动多 Agent 自主团队协作预览，分发子任务至并发后台智能体。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <b class="t">💡 `@` Mentions 菜单高频技巧</b>
+        <p>输入 `@` 即可打开上下文菜单：</p>
+        <ul>
+          <li>`@filename` / `@folder/`：快速挂载单个文件或完整目录。</li>
+          <li>`@terminal`：直接将当前终端最近输出的报错日志附带给智能体。</li>
+          <li>`@conversation-id`：引用历史会话上下文，实现跨会话记忆复用。</li>
+          <li>`@mcp-tool`：显式指定调用特定的 MCP 服务器工具。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="m1-4">
+      <h2>1.4 自定义扩充系统 (Customizations)</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> Antigravity 支持两级发现根目录：全局配置根（`~/.gemini/config`）以及项目级根（`<project-root>/.agents/`）。包含五大核心扩展：</p>
+
+      <h3>1. Skills (技能)</h3>
+      <p>存放在 `skills/<skill_name>/SKILL.md`，使用 YAML frontmatter 描述名称与作用，作为模块化 Workflow 领域指南：</p>
+      <pre><code>---
+name: format-code
+description: Custom code formatting style enforcement
+---
+# Format Code Instructions
+When formatting frontend code, always use pre-configured ESLint rules...</code></pre>
+
+      <h3>2. Rules (规则)</h3>
+      <p>定义在 `rules/*.md` 或根目录的 `AGENTS.md` / `GEMINI.md`，用于约束代码风格、禁止修改特定库或强制遵守规范。</p>
+
+      <h3>3. Hooks (钩子)</h3>
+      <p>通过 `hooks.json` 配置事件监听（如 `on_subagent_start`、`before_tool_call`），在智能体触发敏感操作时执行拦截脚本。</p>
+
+      <h3>4. MCP (Model Context Protocol)</h3>
+      <p>在 `mcp_config.json` 中配置第三方 MCP 服务器（如数据库连接、Figma 插件、GitHub API 等），扩展智能体的外部动作空间。</p>
+    </section>
+
+    <section id="m1-5">
+      <h2>1.5 Planning Mode 与 Subagent 多代理协同</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 面对大型重构或新功能开发时，**严禁直接全自动改代码**。必须启用 Antigravity 的 **Planning Mode**：</p>
+
+      <div class="callout note">
+        <b class="t">🔄 Planning Mode 标准工作流</b>
+        <ol>
+          <li><b>调研与调研报告</b>：智能体使用 Read-only 工具通读代码库与依赖链。</li>
+          <li><b>生成 `implementation_plan.md`</b>：明确 User Review Required 审核项、Open Questions、受影响文件列表以及 Verification Plan 验证步骤。</li>
+          <li><b>人工确认 (User Approval)</b>：开发者审阅 Markdown Plan，提出修改或点击 Approve。</li>
+          <li><b>执行落地与多 Agent 派生</b>：主 Agent 调用 `invoke_subagent` 分派子任务至并发后台运行，随时通过 `manage_subagents` 监控与通信。</li>
+          <li><b>验证与 `walkthrough.md` 产出</b>：跑通自动化测试并产出包含改动总结与截屏的 Walkthrough。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="m1-6">
+      <h2>1.6 安全沙箱与权限深度把控</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> 智能体执行命令行操作时，默认在独立的 **Terminal Sandbox** 安全沙箱中运行：</p>
+
+      <ul>
+        <li><b>Standard Sandbox Mode (`BypassSandbox: false`)</b>：自动拥有工作区内的读写权限，无网络且无法越界访问工作区之外的磁盘目录，命令可完全自动静默执行。</li>
+        <li><b>Bypass Sandbox Mode (`BypassSandbox: true`)</b>：解除沙箱隔离，获得网络请求与系统全盘访问权，**必须经过开发者手动弹窗批准**。</li>
+      </ul>
+
+      <div class="callout warn">
+        <b class="t">⚠️ 权限控制最佳实践</b>
+        <p>可在全局或项目级的 Settings 中配置 `Command Allowlist`（如允许 `npm test`, `git status` 自动跑通）与 `Command Denylist`（禁止 `rm -rf /`, `drop database`），平衡效率与系统安全。</p>
+      </div>
+    </section>
+
+    <section id="m1-7">
+      <h2>1.7 Antigravity Python SDK 编程化实战</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> 使用官方 Python SDK 可以轻松把 Antigravity 智能体集成至自动化脚本或 CI 管道中：</p>
+
+      <pre><code>import asyncio
+import sys
+from google.antigravity import Agent, LocalAgentConfig, CapabilitiesConfig
+
+async def main():
+    # 配置智能体：启用读写工具与命令执行能力
+    config = LocalAgentConfig(
+        system_instructions="你是一个高标准的代码评审与重构专家。",
+        capabilities=CapabilitiesConfig()
+    )
+
+    async with Agent(config) as agent:
+        # 发送 Prompt，获得异步响应句柄
+        response = await agent.chat("请检查 src/index.ts 并优化异步异常处理。")
+
+        # 1. 实时监听智能体的思考过程 (Thoughts)
+        async for thought in response.thoughts:
+            print(f"🧠 [Thinking]: {thought}")
+
+        # 2. 监听调用的工具事件 (Tool Calls)
+        async for call in response.tool_calls:
+            print(f"🛠️ [Tool Call]: {call.name} -> {call.args}")
+
+        # 3. 打印最终输出 Token
+        async for token in response:
+            sys.stdout.write(token)
+            sys.stdout.flush()
+
+if __name__ == "__main__":
+    asyncio.run(main())</code></pre>
+    </section>
+
+    <!-- ==================== 模块 2 · NotebookLM 研究基座 ==================== -->
+    <span class="sec-tag">PART 2 · NOTEBOOKLM 深度研究与知识基座</span>
+
+    <section id="m2-1">
+      <h2>2.1 Source Grounding 核心原理</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> <b>NotebookLM</b> 是基于 Gemini 顶尖模型的个人 AI 研究助手。其最大的技术亮点在于 **Strict Source Grounding (源头绑定)**：只在你主动上传的 Source 文档范围内提取与回答问题，回答时会自动标注角标数字引用（Citation）。如果源文件中找不到证据，它会明确回答“未在资料中找到”，彻底消除了传统 LLM 的凭空幻觉。</p>
+    </section>
+
+    <section id="m2-2">
+      <h2>2.2 2M 多源材料输入与预处理</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> NotebookLM 支持在一个 Notebook 中混合注入最多 50+ 个 Sources，依靠 Gemini 2M+ 超长上下文轻松消化：</p>
+      <ul>
+        <li><b>多种类文件格式</b>：支持 PDF、Google Docs/Slides、Markdown、PlainText、HTML 网页 URL、YouTube 视频链接及音频文件（MP3/WAV）。</li>
+        <li><b>预处理技巧</b>：上传开源项目代码包或开源 API 文档时，先打成 Markdown 单文件或结构化 PDF 注入，研究检索精准度最高。</li>
+      </ul>
+    </section>
+
+    <section id="m2-3">
+      <h2>2.3 知识二次加工与播客生成</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> NotebookLM 不仅仅能问答，内置的 **Studio (研讨工作台)** 能够一键生成衍生知识资产：</p>
+      <ul>
+        <li><b>Briefing Docs (简报文档)</b>：自动整理数十页长材料的核心观点与决策建议。</li>
+        <li><b>Audio Overview (播客对话)</b>：自动生成两位 AI 主播用口语化语气对答讨论该研究主题的高清音频，非常适合通勤听读。</li>
+        <li><b>Study Guides & Mindmaps</b>：自动提取关键概念问题集与思维导图提纲。</li>
+      </ul>
+    </section>
+
+    <section id="m2-4">
+      <h2>2.4 研报 → Antigravity Spec 转换</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> <b>打破工具孤岛的核心步骤</b>：在 NotebookLM 中完成复杂业务逻辑或技术选型研读后，点击生成一份结构化 `System Requirement Spec`。将其复制并直接保存为项目的 `.agents/rules/spec.md` 或 `AGENTS.md`，作为 Antigravity 智能体接力编码的准确依据。</p>
+    </section>
+
+    <!-- ==================== 模块 3 · Canvas / AI Studio 原型 ==================== -->
+    <span class="sec-tag">PART 3 · CANVAS / AI STUDIO 架构原型与视觉</span>
+
+    <section id="m3-1">
+      <h2>3.1 Canvas 与 Sketch 敏捷原型</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 在做 UI 组件与前端原型设计时，<b>Canvas / Sketch</b> 提供了可视化交互界面：可直接在画布上通过自然语言或草图生成 HTML/React/Tailwind 代码组件，支持点击实时预览、局部修改与高亮比对。</p>
+    </section>
+
+    <section id="m3-2">
+      <h2>3.2 Google AI Studio 深度调优</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> <b>Google AI Studio</b> 是开发者调优 Gemini 模型的官方大本营。在生产环境中部署或编写复杂 Prompt 时，利用 AI Studio 可以完成极其精致的控制：</p>
+
+      <ul>
+        <li><b>Thinking Models (思考模型)</b>：调优 Gemini 2.0 Flash/Pro Thinking 模型的推理步骤，适合解决高难度算法与复杂状态机架构设计。</li>
+        <li><b>System Instructions</b>：设定智能体的核心人格、角色约束与逻辑推导路径。</li>
+        <li><b>Structured Outputs (JSON Schema)</b>：通过可视化配置 JSON Schema，强约束模型输出绝对合规的结构化 JSON 数据，方便代码解析。</li>
+      </ul>
+    </section>
+
+    <section id="m3-3">
+      <h2>3.3 视觉与多模态生成 (Imagen 3 / Veo)</h2>
+      <p><span class="tag-badge tag-official">✅ 官方确认</span> 结合 Google 顶尖的 <b>Imagen 3</b> 图像生成与 <b>Veo</b> 视频生成能力，在 Agentic 编码过程中，智能体可通过图片工具自动生成高保真的 UI 视觉占位图、矢量 Icon 及动态素材，彻底摆脱灰块占位符。</p>
+    </section>
+
+    <!-- ==================== 模块 4 · 效率最大化组合打法 ==================== -->
+    <span class="sec-tag">PART 4 · 效率最大化组合打法与端到端实战</span>
+
+    <section id="m4-1">
+      <h2>4.1 全链路 5 步超级流水线</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> 结合 Google 生态多款工具，独立开发者或团队可落地如下 **5 步全链路超级流水线**：</p>
+
+      <div class="callout tip">
+        <b class="t">🚀 全链路 5 步协同数据接力图</b>
+        <ol>
+          <li><b>Step 1：知识立项与技术研读 (NotebookLM)</b><br>喂入全套官方文档/开源代码 → 导出 zero-hallucination 架构方案与需求说明。</li>
+          <li><b>Step 2：原型验证与 Prompt 调优 (AI Studio / Canvas)</b><br>在 Canvas 快速跑通前端组件原型，在 AI Studio 用 Thinking 模型调优复杂 Backend 算法 JSON Schema。</li>
+          <li><b>Step 3：Agentic 编码与自动化落盘 (Antigravity)</b><br>启动 Antigravity Planning Mode，审阅 `implementation_plan.md` 后一键交由 Subagents 并发编写代码与配置。</li>
+          <li><b>Step 4：端到端视觉与测试回归 (Antigravity `/browser`)</b><br>调用内置无头浏览器与图像工具，自动对 Web/App 进行端到端截图比对与 UI 视觉回归。</li>
+          <li><b>Step 5：自动化运维与后台监控 (Antigravity `/schedule`)</b><br>配置 Recurring Cron 定时任务，在后台自动化跑体检脚本并提醒发布上线。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="m4-2">
+      <h2>4.2 独立开发端到端实战案例</h2>
+      <p><span class="tag-badge tag-consensus">⚡ 实测强共识</span> <b>案例：3 小时从 0 到 1 打造全栈“AI 知识库微型检索插件”</b></p>
+
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>所用工具</th>
+            <th>核心提示词 / 命令范例</th>
+            <th>产出资产</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. 文档调研</td>
+            <td>NotebookLM</td>
+            <td>“提取项目 API 文档中的全部数据结构，输出 JSON 字段定义。”</td>
+            <td>`api-spec.md` 需求文档</td>
+          </tr>
+          <tr>
+            <td>2. 架构 Prompt</td>
+            <td>AI Studio</td>
+            <td>配置 System Instruction 并勾选 JSON Schema 输出结构。</td>
+            <td>`schema.json` 校验模版</td>
+          </tr>
+          <tr>
+            <td>3. 代码编写</td>
+            <td>Antigravity</td>
+            <td>`agy` 入口输入：`/grill-me 严格基于 @api-spec.md 规划重构路线`</td>
+            <td>完整全栈代码与 Commit</td>
+          </tr>
+          <tr>
+            <td>4. 定时监控</td>
+            <td>Antigravity</td>
+            <td>`/schedule CronExpression="0 */6 * * *" Prompt="检查服务健康度"`</td>
+            <td>后台 Cron 定时任务</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================== 模块 5 · 最佳实践与速查 ==================== -->
+    <span class="sec-tag">PART 5 · 最佳实践、避坑指南与速查附录</span>
+
+    <section id="m5-1">
+      <h2>5.1 提效七条黄金法则</h2>
+      <ol>
+        <li><b>法则 1：能用 NotebookLM 先研读的，绝不要直接丢给 LLM 瞎猜。</b></li>
+        <li><b>法则 2：复杂任务严格遵守 Planning Mode，先审 Plan 后落盘。</b></li>
+        <li><b>法则 3：项目级规则写入 `AGENTS.md`，善用 `/learn` 积累经验。</b></li>
+        <li><b>法则 4：耗时长任务开启 `/goal` 通宵迭代模式。</b></li>
+        <li><b>法则 5：终端命令敏感操作走 Sandbox 沙箱，配置允许/禁止清单。</b></li>
+        <li><b>法则 6：大批量文件变更分发给并发 Subagents 执行。</b></li>
+        <li><b>法则 7：多模态 UI 开发用 Canvas 与 Imagen 3 替换占位图。</b></li>
+      </ol>
+    </section>
+
+    <section id="m5-2">
+      <h2>5.2 常见坑点与反模式图鉴</h2>
+      
+      <div class="callout warn">
+        <b class="t">⚠️ 必须警惕的 4 大反模式</b>
+        <ul>
+          <li><b>反模式 1：上下文窗口爆棚不清理</b><br>在单个会话里反复多次对话导致上下文充斥无关历史，应及时开启 New Conversation 或挂载具体的 `@filename`。</li>
+          <li><b>反模式 2：绕过沙箱滥用 BypassSandbox</b><br>过度开启 BypassSandbox 容易误跑全局破坏性指令，应优先配置精准的 Allowlist 授权。</li>
+          <li><b>反模式 3：直接修改底座，不沉淀为 Custom Skills</b><br>重复性较高的提效流程（如写 Unit Test）应固化为 `.agents/skills/` 下的 `SKILL.md`，避免每次重复粘贴 Prompt。</li>
+          <li><b>反模式 4：把 NotebookLM 当通用聊天框</b><br>NotebookLM 的核心是 Source Grounding，如果不传高质量 Sources 就无法发挥其无幻觉优势。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="appA">
+      <h2>附录 A · Antigravity 常用 Command & SDK 速查表</h2>
+      
+      <h3>1. 常用 Slash 斜杠命令</h3>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Slash 命令</th>
+            <th>功能描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/goal</code></td>
+            <td>开启深度通宵自动迭代模式，直至任务彻底验证完成。</td>
+          </tr>
+          <tr>
+            <td><code>/schedule</code></td>
+            <td>设置后台定时任务与 Delayed Timers。</td>
+          </tr>
+          <tr>
+            <td><code>/browser</code></td>
+            <td>调用无头浏览器执行 Web UI 自动化与截屏分析。</td>
+          </tr>
+          <tr>
+            <td><code>/grill-me</code></td>
+            <td>开启对齐问答模式，在编码前强迫梳理细节。</td>
+          </tr>
+          <tr>
+            <td><code>/learn</code></td>
+            <td>将当前修正的踩坑知识持久化写入 Rules。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>2. Python SDK 核心 API 片段</h3>
+      <pre><code>from google.antigravity import Agent, LocalAgentConfig, CapabilitiesConfig
+
+# 初始化只读智能体 (适合安全审计)
+read_only_config = LocalAgentConfig(system_instructions="Read-only Audit Agent")
+
+# 初始化全功能 Agent (支持写文件与命令)
+full_config = LocalAgentConfig(capabilities=CapabilitiesConfig())</code></pre>
+    </section>
+
+    <section id="appB">
+      <h2>附录 B · NotebookLM 高效 Prompt & Source 配置速查</h2>
+      <ul>
+        <li><b>提炼 API Specification</b>：<code>“请扫描所有上传的文档，提取出所有的 REST API 路由、请求参数、返回 JSON 格式以及报错码，汇总成 Markdown 表格。”</code></li>
+        <li><b>对比不同技术选型分歧</b>：<code>“针对选型 A 与选型 B，请逐条比对源文件中的实操性能数据，标出两者的争议点与适用场景。”</code></li>
+        <li><b>生成系统架构综述</b>：<code>“请基于上传的开源项目源码，生成一份简明扼要的系统架构设计简报 (Briefing Doc)。”</code></li>
+      </ul>
+    </section>
+
+    <section id="appC">
+      <h2>附录 C · 官方资源与 Release 索引</h2>
+      <ul>
+        <li>🌐 <a href="https://antigravity.google/docs" target="_blank">Google Antigravity 官方主页与 Live Docs</a></li>
+        <li>📘 <a href="https://notebooklm.google.com/" target="_blank">NotebookLM 官方应用入口</a></li>
+        <li>🛠️ <a href="https://aistudio.google.com/" target="_blank">Google AI Studio 开发者平台</a></li>
+        <li>📦 <a href="https://github.com/google-antigravity/antigravity-sdk-python" target="_blank">Antigravity Python SDK GitHub 仓库</a></li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script>
+// 全站共享滚动进度条与回顶按钮逻辑
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = total > 0 ? (window.scrollY / total) : 0;
+  document.getElementById('prog').style.transform = `scaleX(${progress})`;
+  document.getElementById('topBtn').style.display = window.scrollY > 300 ? 'flex' : 'none';
+});
+</script>
+</body>
+</html>

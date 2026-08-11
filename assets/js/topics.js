@@ -308,5 +308,38 @@ const TOPICS = [
       {id:"appB",label:"附录 B 推荐资源"},
       {id:"appC",label:"附录 C 术语速查表"}
     ]
+  },
+  {
+    href: "topics/google-ai-ecosystem.html", icon: "🌐", tag: "全栈生态", color: "#1a73e8",
+    title: "Google AI 生态深度实战 · 从模型到 Agentic IDE",
+    desc: "全网最新完整指引:Google Antigravity (CLI/2.0/IDE/SDK/Customizations/Sandbox) 深度解构 + NotebookLM 知识研究 + AI Studio 2M 窗口 + 5 步超级流水线最佳实践。",
+    keywords: "google antigravity agy notebooklm ai studio gemini canvas sketch 智能体 agentic cli ide sdk slash commands subagent planning mode sandbox python sdk source grounding 2m 上下文 播客 生成 流程",
+    meta: ["4 大交互形态", "26 个章节", "Antigravity 深度解构", "5 步流水线", "核对至 2026-08-11"],
+    sections: [
+      {id:"intro",label:"00 为什么选择 2026.08 Google AI"},
+      {id:"map",label:"01 工具全景矩阵与分层定位"},
+      {id:"m1-1",label:"1.1 什么是 Google Antigravity"},
+      {id:"m1-2",label:"1.2 四大交互形态详解"},
+      {id:"m1-3",label:"1.3 Slash 命令与 @ Mentions",quick:true,quickLabel:"Antigravity 交互速查"},
+      {id:"m1-4",label:"1.4 Customizations 定制三要素"},
+      {id:"m1-5",label:"1.5 Planning Mode 与 Subagent"},
+      {id:"m1-6",label:"1.6 安全沙箱与权限深度把控"},
+      {id:"m1-7",label:"1.7 Python SDK 编程化实战"},
+      {id:"m2-1",label:"2.1 Source Grounding 原理"},
+      {id:"m2-2",label:"2.2 2M 多源材料输入与预处理"},
+      {id:"m2-3",label:"2.3 知识二次加工与播客生成"},
+      {id:"m2-4",label:"2.4 研报 → Antigravity Spec 转换"},
+      {id:"m3-1",label:"3.1 Canvas / Sketch 敏捷原型"},
+      {id:"m3-2",label:"3.2 AI Studio 2M 窗口与 Thinking"},
+      {id:"m3-3",label:"3.3 Imagen 3 / Veo 视觉生成"},
+      {id:"m4-1",label:"4.1 全链路 5 步超级流水线"},
+      {id:"m4-2",label:"4.2 独立开发端到端实战案例"},
+      {id:"m5-1",label:"5.1 提效七条黄金法则"},
+      {id:"m5-2",label:"5.2 常见坑点与反模式图鉴"},
+      {id:"appA",label:"附录 A Antigravity 命令与 SDK 速查",quick:true,quickLabel:"Antigravity 命令速查"},
+      {id:"appB",label:"附录 B NotebookLM 高效 Prompt 速查"},
+      {id:"appC",label:"附录 C 官方资源与 Release 索引"}
+    ]
   }
 ];
+

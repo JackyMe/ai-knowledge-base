@@ -44,6 +44,7 @@
 | ⚡ [Android Crash & ANR 排查根治](topics/android-crash-anr.html) | 稳定性问题从识别到根治 | 20+ 崩溃类型图鉴、ANR 深度解剖、原创 AI 分诊 Skill |
 | 🧭 [AI 提效全景与心法](topics/ai-leverage-guide.html) | AI 到底能帮普通人干什么 | 8 大场景收益矩阵、7 条有出处的通用心法 |
 | 🧗 [AI 能力边界扩展指南](topics/ai-capability-expansion.html) | 用 AI 扩展技术能力边界的通用方法论 | 五步扩展引擎、跨域映射技法、全栈跨端 / 独立开发两条端到端案例 |
+| 🌐 [Google AI 生态深度实战(新)](topics/google-ai-ecosystem.html) | 从模型到 Agentic IDE 全栈 | Antigravity (CLI/2.0/IDE/SDK/Customizations/Sandbox) 深度解构 + NotebookLM 零幻觉研究 + AI Studio 2M 窗口 + 5 步超级流水线 |
 | 🛠️ [服务器 · 运维 · 部署 · 网络扫盲(新)](topics/ops-basics.html) | 只用过 SaaS 托管,从 0 跨过 DevOps 这堵墙 | 5 阶段路线 + Linux/网络/部署 3 模块 17 节 + 5 类故障 30 秒对症表 |
 
 ## 亮点功能
