@@ -91,6 +91,13 @@ function showPage(id,anchor){
     if(el){setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),40)}}
   else scrollTo({top:0});
   onScroll();
+  setTimeout(()=>{
+    if(window.renderMermaid){
+      window.renderMermaid();
+    } else if(window.mermaid){
+      try{ window.mermaid.run({ querySelectorAll: '.mermaid' }) }catch(e){}
+    }
+  }, 100);
 }
 /* 任意锚点(含章节内 h3)→ 先切页再定位 */
 function revealAnchor(id){

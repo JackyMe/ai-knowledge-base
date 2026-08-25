@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="From Novice to Expert: Crash Catalog, ANR Anatomy, Native Crashes, Full Toolchain, Play Console/Firebase, Troubleshooting Techniques, plus AI Triage Workflow and original crash-triage Skill.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Crash &amp; ANR Root Cause Analysis × AI Efficiency · Novice to Expert · 2026.07">
+<meta property="og:description" content="From Novice to Expert: Crash Catalog, ANR Anatomy, Native Crashes, Full Toolchain, Play Console/Firebase, Troubleshooting Techniques, plus AI Triage Workflow and original crash-triage Skill.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/android-crash-anr.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Android Crash & ANR Root Cause Analysis × AI Efficiency · Novice to Expert · 2026.07</title>
+<style>
+:root{
+  --accent:#65a30d; --accent-2:#84cc16; --accent-soft:#f1f8e5;
+  --ink:#141a0d; --bg:#ffffff; --bg-side:#fafbf7; --bg-code:#161c10;
+  --text:#232920; --text-2:#5a6352; --text-3:#8e9884;
+  --border:#e8ece2; --border-2:#d8dfcd;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f4f9e8;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eff3e8;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#eef4e4;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(132,204,22,.35),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(101,163,13,.28),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#bef264;font-weight:600;background:rgba(132,204,22,.14);
+  border:1px solid rgba(132,204,22,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a3e635,#d9f99d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c2ccb2;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9aa58a}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#dcebbc}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f1f5e8;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4d7c0f}
+pre{background:var(--bg-code);color:#e2e8d5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8b9779}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbf6}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafcf5}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#fafbf6;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){
+  .duo{grid-template-columns:1fr}
+  .tbl{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f1f8e5;color:#4d7c0f}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#fdeaea;color:#b91c1c}
+.pill.d{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(20,26,13,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:27px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">⚡</span>Android Stability Guide<span class="sub">Crash · ANR · AI</span></div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
+    <a href="../index.en.html">◂ Topic Center</a>
+    <span>Compiled on 2026-07-15</span>
+      <span>Verified 2026-08-17</span>
+  
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter chapters…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">Basics · Build the Map</div>
+    <a href="#overview"><span class="no">00</span>Overview & Methodology</a>
+    <a href="#read-crash"><span class="no">01</span>Lesson 1: Read a Crash</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Advanced · Categorized Fixes</div>
+    <a href="#crash-catalog"><span class="no">02</span>Crash Catalog & Cures</a>
+    <a href="#anr"><span class="no">03</span>Deep Dive into ANR</a>
+    <a href="#native"><span class="no">04</span>Native Crash</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Armory</div>
+    <a href="#toolbox"><span class="no">05</span>Toolbox & Usage</a>
+    <a href="#consoles"><span class="no">06</span>Play Console & Firebase</a>
+    <a href="#device-data"><span class="no">07</span>Device Data Export</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Expert · Difficulties & AI</div>
+    <a href="#detective"><span class="no">08</span>Troubleshooting Techniques</a>
+    <a href="#ai-method"><span class="no">09</span>AI Integration: Methods & Prompts</a>
+    <a href="#ai-workflow"><span class="no">10</span>AI Workflow & Original Skill</a>
+    <a href="#governance"><span class="no">11</span>Governance & Resources</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🤖 Android Stability · Novice to Expert · Official Docs Verified August 17, 2026</div>
+  <h1>Crash & ANR Root Cause Analysis<br><span class="grad">× AI Efficiency in Action</span></h1>
+  <p class="lead">From reading the first line of a stack trace to curing complex online issues, and letting AI agents take over crash tickets—a complete progression path. Covering Crash Catalog, ANR Anatomy, Native Crashes, full toolchain, Play Console/Firebase backend usage, device data extraction, and the original crash-triage AI Skill from this repository.</p>
+  <div class="meta">
+    <span>12 Progressive Chapters</span><span>20+ Crash Types Catalog</span><span>Full Toolchain Cheat Sheet</span><span>Original AI Skill Ready to Copy</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1.09%</b><span>Play Crash Rate Red Line: Exceeding Reduces Global Visibility (Official Threshold)</span></div>
+  <div class="stat"><b>0.47%</b><span>Play ANR Rate Red Line; Per-Device Red Line is 8%</span></div>
+  <div class="stat"><b>5 Seconds</b><span>Input Event Unresponsive means ANR—The Main Thread's Deadline</span></div>
+  <div class="stat"><b>5-Step Method</b><span>Symptom→Locate→Attribute→Cure→Prevent, The Article's Skeleton</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">Basics 00</div>
+<h2>Overview & Methodology</h2>
+
+<h3 data-reveal>Stability Issue Classification Map</h3>
+<p>Build the map before debugging. There are only four main categories of "crashes/freezes" in Android, each with different evidence, tools, and chapters:</p>
+<table class="tbl">
+  <tr><th>Type</th><th>Symptom</th><th>Nature</th><th>Key Evidence</th><th>See</th></tr>
+  <tr><td><span class="pill c">Java/Kotlin Crash</span></td><td>App crashes</td><td>Uncaught exception thrown up the call stack to the main thread</td><td><code>FATAL EXCEPTION</code> stack trace in logcat</td><td><a href="#crash-catalog">02</a></td></tr>
+  <tr><td><span class="pill c">Native Crash</span></td><td>App crashes</td><td>C/C++ layer signals (SIGSEGV/SIGABRT…)</td><td>tombstone file, <code>*** ***</code> block in logs</td><td><a href="#native">04</a></td></tr>
+  <tr><td><span class="pill b">ANR</span></td><td>Freezes → System "Not Responding" dialog</td><td>Main thread blocked, crucial events not processed in time</td><td><code>/data/anr/</code> trace, Vitals ANR report</td><td><a href="#anr">03</a></td></tr>
+  <tr><td><span class="pill d">System Kills Process</span></td><td>"Returns to home screen while using", lost background process</td><td>OOM/LMK low memory kill, background restrictions, user force stop</td><td><code>ApplicationExitInfo</code> exit reason</td><td><a href="#detective">08</a></td></tr>
+</table>
+<div class="callout note"><b class="t">Most Common Novice Misjudgment</b>A "crash without a crash log" is mostly not a Crash: it's either a Native crash (check tombstone) or the system killed the process (check ExitInfo). Categorize first, then debug—using the wrong map wastes all effort.</div>
+
+<h3 data-reveal>Why It Must Be Fixed: The Platform's Hard Red Lines</h3>
+<p>Google Play's Android Vitals defines "bad behavior thresholds": <strong>user-perceived crash rate ≥1.09%</strong> or <strong>user-perceived ANR rate ≥0.47%</strong> (all devices). Exceeding this means the app will be <strong>downranked across the entire store</strong>; if ≥8% on any single device model, that model is downranked and a warning may appear on the store page. Stability is not technical cleanliness, it's a traffic issue.</p>
+
+<h3 data-reveal>The Five-Step Methodology</h3>
+<ol class="steps">
+  <li><strong>Fix the Symptom</strong> — Get the rawest evidence: full stack/trace/log, device, OS version, App version, repro steps. Never start work based on "second-hand descriptions".</li>
+  <li><strong>Locate</strong> — Find the "first scene" from the stack: which frame is your code? Retrace if obfuscated.</li>
+  <li><strong>Attribute</strong> — Answer "why did it get to this point": where did null come from? Who holds the lock? Who ate the memory? — Use tools to gather evidence, don't guess.</li>
+  <li><strong>Cure</strong> — Fix the root cause, don't just wrap it in try-catch; after fixing, there must be a validation path proving the fix (repro steps/regression tests/rollout metrics).</li>
+  <li><strong>Prevent Recurrence</strong> — Defenses for similar issues: lint rules, StrictMode, CI checks, monitoring alerts. Fix one bug, block a class of bugs.</li>
+</ol>
+<div class="callout tip"><b class="t">Advancement Path Advice</b>Novice: 00→01→02, be able to independently handle NPE-level daily crashes; Intermediate: 03→07, handle ANRs and online tickets; Advanced: 08 onwards, chew through hard-to-reproduce issues and integrate AI into workflows.</div>
+
+<h3 data-reveal>First On-Call: First 30 Minutes Execution Plan</h3>
+<table class="tbl">
+  <tr><th>Time</th><th>Must Complete</th><th>Output / Decision</th></tr>
+  <tr><td>0–5 mins</td><td>Confirm version, start time, affected users, if it's a startup crash/core flow down; pause relevant rollouts</td><td>Severity level, incident group/owner; if bleeding threshold met, rollback or turn off feature flag immediately</td></tr>
+  <tr><td>5–10 mins</td><td>Triage using the four-map categories: Java/Kotlin, Native, ANR, System kill</td><td>Select the single primary evidence: stack / tombstone / trace / ExitInfo</td></tr>
+  <tr><td>10–20 mins</td><td>Sample 3+ events, align mapping/Build ID, look for commonalities in OS, model, country, key</td><td>List of "Known Facts" and "Unknowns", never treat a single sample as universal root cause</td></tr>
+  <tr><td>20–30 mins</td><td>List max 3 falsifiable hypotheses, write down a validation command, owner, and deadline for each</td><td>Decision to continue rollout / pause / rollback; issue first report to team rather than unverified fix promises</td></tr>
+</table>
+<div class="callout warn"><b class="t">Bleeding Stop Priority</b>Startup crashes, core flows like payment/login, rapidly spreading new version issues—rollback/turn off flags first, analyze later; stopping the bleeding doesn't mean case closed, root cause fix and prevention are still required after recovery.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="read-crash">
+<div class="sec-tag">Basics 01</div>
+<h2>Lesson 1: Read a Crash</h2>
+
+<h3 data-reveal>Stack Trace Anatomy: 4 Pieces of Info for Quick Triage</h3>
+<pre><code>FATAL EXCEPTION: main                                    <span class="c">← ① Thread crashed (main=UI thread)</span>
+Process: com.example.app, PID: 12345
+java.lang.NullPointerException:                          <span class="c">← ② Exception type: dictates which chapter to check</span>
+    Attempt to invoke virtual method 'int java.lang.String.length()'
+    on a null object reference                           <span class="c">← ③ Exception message: which object, what operation</span>
+  at com.example.app.OrderDetail.bind(OrderDetail.kt:87) <span class="c">← ④ First Scene: top frame with your package name</span>
+  at com.example.app.OrderAdapter.onBindViewHolder(OrderAdapter.kt:42)
+  at androidx.recyclerview.widget.RecyclerView...        <span class="c">← Framework frames: usually just "passing through"</span>
+Caused by: ...                                           <span class="c">← With a Caused by chain, the root cause is at the very bottom!</span></code></pre>
+<ul>
+  <li><strong>Reading Order</strong>: Check exception type & message → Scan down for the <strong>first frame in your package</strong> → Follow any <code>Caused by</code> chain to the bottom for the root cause;</li>
+  <li><strong>Deobfuscation</strong>: If production stacks show <code>a.b.c(Unknown Source)</code>, use R8's mapping.txt to deobfuscate: <code>retrace mapping.txt stacktrace.txt</code> (mapping files for every release must be archived!);</li>
+  <li><strong>Three Axes for Gathering Evidence</strong>: <code>adb logcat -b crash</code> shows only the crash buffer; <code>adb logcat --pid $(adb shell pidof -s package_name)</code> isolates your process; if missed, pull post-mortem via <code>adb bugreport</code> (see Chapter 07).</li>
+</ul>
+
+<h3 data-reveal>Reproduction: Half the Value of Debugging</h3>
+<p>After getting a stack trace, the first step is not changing code, but <strong>establishing a stable repro</strong>—a bug that can be reproduced is half fixed. Try these tiers sequentially: Exact step repro (user path replay) → Conditional repro (specific data/network/permission state) → Stress repro (monkey / screen rotation / Developer Options "Don't keep activities" for process recreation).</p>
+<pre><code><span class="c"># Three classic stress repro toggles</span>
+adb shell settings put global always_finish_activities 1   <span class="c"># Don't keep activities: exposes process recreation crashes</span>
+adb shell monkey -p com.example.app --throttle 300 -v 5000 <span class="c"># monkey random event stream</span>
+<span class="c"># Developer Options → Simulate secondary displays/change language/dark mode: exposes config change crashes</span></code></pre>
+<div class="callout warn"><b class="t">Novice Guardrail</b>Do not "fix" crashes with a "global try-catch swallowing exceptions"—this merely turns a crash into harder-to-debug data corruption. Similarly, beware of "one-click crash safety SDKs" that silently swallow exceptions; they make your Vitals look good but ruin user experience.</div>
+
+<h3 data-reveal>Evidence Handover Ticket: Anyone Can Take Over</h3>
+<pre><code>Issue ID / First Seen / Current Owner:
+Impact: Version, Track, User Count, Crash/ANR Rate, Core Flow
+Category: Java/Kotlin | Native | ANR | System Exit
+Aligned: mapping / native Build ID / source commit
+Distribution: App Version, OS, Model, Country, feature flags
+Primary Evidence: Link to full stack/trace/tombstone (not just screenshots)
+Known Facts: Only conclusions directly supported by evidence
+Candidates: Ranked by probability × impact; each needs falsification method
+Mitigation State: Rollback/flag/degraded/untouched, with timestamp
+Next Steps: Command or test, owner, deadline</code></pre>
+<p>This handover ticket is also the prototype for the "Crash Context Pack" in Chapter 09. Make it lossless for humans first, then pass this structured evidence to AI; otherwise, AI will just generate unverified guesses faster.</p>
+
+<h3 data-reveal>Walking Through the NPE Example Completely</h3>
+<p>Suppose line 87 is <code>order.title.length</code>. Tracing up to the Java/JSON boundary, we find legacy server data lacks a title, and Kotlin treats the platform type as non-null. The full closure should be:</p>
+<ol class="steps">
+  <li><strong>Verify Root Cause:</strong> Repro with a fixed response lacking a title; confirm the same data yields null in the mapper, while normal responses don't;</li>
+  <li><strong>Cure:</strong> Declare the field as <code>String?</code> at the DTO → Domain boundary, return a presentable placeholder per business rules or an explicit <code>MalformedOrder</code>, UI only accepts non-null Domain;</li>
+  <li><strong>Regression:</strong> Cover missing fields, empty strings, normal values, and legacy cache deserialization; run a release + R8 build and replay the path;</li>
+  <li><strong>Prevent:</strong> Enable strict deserialization/schema monitoring, add lint/review rules for Java platform type boundaries, and log response schema versions via Crashlytics keys.</li>
+</ol>
+<div class="callout tip"><b class="t">Judging a True Fix</b>If the patch only changes <code>order.title.length</code> to <code>order.title?.length ?: 0</code> without defining "is an order without a title valid?", it only eliminates the crash but doesn't fix the data contract.</div>
+</section>
+
+<div class="divider"></div>
+<section id="crash-catalog">
+<div class="sec-tag">Advanced 02</div>
+<h2>Crash Catalog & Cures</h2>
+
+<p>This catalog isn't to make you memorize exception names, but to help you jump from the "exception message" to the next evidence-gathering action. The cures listed in the table follow one principle: <strong>Fix states and boundaries, do not swallow exceptions</strong>.</p>
+<table class="tbl">
+  <tr><th>Exception / Typical Signal</th><th>Causes & Debugging</th><th>Cure & Prevention</th></tr>
+  <tr><td><strong>NullPointerException</strong><br><code>... on a null object reference</code></td><td>Unchecked nullable Java values; Kotlin's biggest dangers are Java platform types (shown as <code>String!</code>), deserialization missing fields, and uninitialized <code>lateinit</code>. Look at the first business frame, then trace the production path of the null value.</td><td>Immediately convert to explicit nullable types or domain objects at the Java/Network/DB boundaries; use <code>requireNotNull</code> only to guard true invariants. Do not use chained <code>?.</code> to silently swallow required data.</td></tr>
+  <tr><td><strong>IndexOutOfBoundsException</strong><br><code>Index: 5, Size: 5</code></td><td>Index and collection are not from the same snapshot; pagination callbacks, DiffUtil, or concurrent updates left using an old position. Log index, size, adapterPosition, and data version.</td><td>Use <code>getOrNull</code> only for reads where absence is allowed; re-fetch <code>bindingAdapterPosition</code> and check for <code>NO_POSITION</code> on RecyclerView clicks; submit immutable lists.</td></tr>
+  <tr><td><strong>ClassCastException</strong><br><code>X cannot be cast to Y</code></td><td>Bundle/Intent, JSON, multi-type lists, or wrong ClassLoader produced an actual type that didn't match assumptions. Print the actual class name and input data first.</td><td>Use type-safe navigation arguments, sealed classes, and explicit serialization schemas; cross-version data must be migrated, not casted.</td></tr>
+  <tr><td><strong>IllegalStateException</strong><br><code>Fragment not attached</code><br><code>after onSaveInstanceState</code></td><td>Accessing Context when Fragment is already detached; committing transactions after state is saved; modifying data midway through RecyclerView layout reports inconsistency. Compare lifecycle timeline with all data write entry points.</td><td>Access UI only in appropriate lifecycles; deduplicate navigation events and execute in resumable states; submit new list snapshots strictly via a single source of truth. <code>commitAllowingStateLoss</code> is only for scenarios where dropping UI state is genuinely acceptable.</td></tr>
+  <tr><td><strong>WindowManager.BadTokenException</strong><br><code>Unable to add window</code></td><td>Showing dialogs with non-Activity Context, or Activity is finishing/destroyed. Check combined page lifecycle and callback timing.</td><td>Let UI events be consumed by the currently visible page; checking state before showing is only a last resort, the cure is canceling expired asynchronous results.</td></tr>
+  <tr><td><strong>WindowLeaked</strong><br><code>Activity has leaked window</code></td><td>Dialog/PopupWindow is still showing when Activity is destroyed. Written to logs by the framework to indicate window leaks, <strong>not necessarily an uncaught Crash</strong>; completely different from BadTokenException.</td><td>Owned by the lifecycle owner and dismissed in <code>onDestroy</code>, prefer DialogFragment; always check the actual FATAL EXCEPTION following the log to avoid treating diagnostic logs as the final crash type.</td></tr>
+  <tr><td><strong>IllegalArgumentException</strong><br><code>Receiver not registered</code></td><td>Asymmetric register/unregister paths, double unregister, or executing cleanup after a failed register.</td><td>Centralize registration state; pair <code>onStart/onStop</code> or <code>onResume/onPause</code>; specify receiver flags by visibility for new APIs.</td></tr>
+  <tr><td><strong>ConcurrentModificationException</strong></td><td>Collection modified by the current or another thread while iterating; logs also record the thread name and modification entry point.</td><td>Single-thread ownership, immutable snapshots, or concurrent collections; do not wrap iteration in try-catch to keep running.</td></tr>
+  <tr><td><strong>ClassNotFoundException / NoSuchMethodError</strong></td><td>R8 incorrectly removed reflection targets, dynamic feature not installed, MultiDex initialization timing, dependency binary version conflicts. Check APK contents, dependencyInsight, mapping, and affected ABI/versions.</td><td>Add precise keep rules for reflection/JNI/serialization entry points; lock dependency versions and smoke test release builds; check installation state before calling dynamic modules.</td></tr>
+  <tr><td><strong>ActivityNotFoundException</strong></td><td>Implicit Intent has no handler, component stripped, or OEM app missing.</td><td>Resolve with PackageManager before calling; provide in-app fallback paths; explicit components should be tested with manifest.</td></tr>
+  <tr><td><strong>SecurityException</strong></td><td>Missing runtime permissions, Android 12+ exported config, background start/foreground service limits, accessing unauthorized URIs.</td><td>Build permission state machines based on target SDK; use Activity Result API; minimum component exposure, temporary URI grants; test denial and "don't ask again" paths.</td></tr>
+  <tr><td><strong>TransactionTooLargeException</strong></td><td>Binder transaction buffer is shared per process; large Bundles, Intents, Fragment arguments, or saved state often blow up during lifecycle switches. Locate using <code>dumpsys activity</code> and post-serialization sizes.</td><td>Only pass IDs, store large objects in DB/Files/Repository; SavedState should only keep minimal states needed to restore UI.</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>Java heap space</code></td><td>Retained heap growth due to Bitmaps, caches, collections, or leaks. Look at the heap dump dominator tree and post-GC surviving objects.</td><td>Fix reference chains, downscale images, set capped LRUs; don't treat <code>largeHeap</code> as a cure.</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>pthread_create failed</code></td><td>Thread count or per-thread stack exhausted, not a full Java object heap. Capture thread list and cluster by name/creation stack.</td><td>Shared bounded thread pools, limit concurrency, cancel leaking tasks; disable per-request new thread creation.</td></tr>
+  <tr><td><strong>EMFILE / too many open files</strong></td><td>fd exhaustion often wrapped as OOM, SQLite, or network exceptions. Compare <code>/proc/PID/fd</code> count to soft limits.</td><td>Close all Cursors, streams, ParcelFileDescriptors, and Sockets using <code>use</code>; monitor fd curves during stress testing.</td></tr>
+  <tr><td><strong>CursorWindowAllocationException</strong></td><td>Querying columns/rows too large, multiple unclosed Cursors, loading BLOBs at once. Check SQL, window sizes, and living Cursors.</td><td>Query only required columns, paginate; move BLOBs to files/streams; Cursors must be structurally closed.</td></tr>
+  <tr><td><strong>SQLiteException / SQLiteDatabaseLockedException</strong></td><td>Incomplete migrations, schema code mismatch, concurrent long transactions, disk full or corrupted. Keep original SQLite error codes and check upgrade paths.</td><td>Write actual DB tests for every version migration; keep transactions small; use Room singletons; make disk-full recoverable, forbid unconditional DB wiping.</td></tr>
+  <tr><td><strong>Resources.NotFoundException</strong></td><td>Passing color values as resource IDs, resource shrinking deleted reflection references, theme package version mismatch.</td><td>Use type-safe resource APIs; precise keep resources; theme packages must carry and validate schema versions.</td></tr>
+  <tr><td><strong>RxJava UndeliverableException</strong></td><td>Asynchronous errors with no consumer after stream cancellation end up in the global error handler. Check cause first to distinguish expected post-cancellation network errors from real programming bugs.</td><td>Properly handle dispose and business errors; global handler should only ignore explicitly harmless cancellation/interruption causes, reporting or throwing others to the thread uncaught exception handler.</td></tr>
+  <tr><td><strong>CancellationException / Coroutine Exceptions</strong></td><td><code>CancellationException</code> is usually a cooperative cancellation signal; swallowing it keeps tasks running. Check Job hierarchy if sibling tasks cancel each other.</td><td>Must rethrow cancellation after catching broad Exceptions; use <code>SupervisorJob</code>/<code>supervisorScope</code> for independent subtasks; <code>CoroutineExceptionHandler</code> only handles root coroutine uncaught exceptions, not a replacement for try-catch.</td></tr>
+  <tr><td><strong>ForegroundServiceStartNotAllowedException</strong><br><code>android.app</code>, API 31+</td><td>App attempted to start a foreground service while in the background (push arrivals, direct <code>startForeground</code> in timer callbacks are major offenders). Some scenarios (e.g., user just tapped a notification) are exempt; others are strictly denied.</td><td>Defer background-triggered work to <code>WorkManager</code>/<code>JobScheduler</code>; if a foreground service is strictly required, move the start action into a window where the app is still foregrounded, or verify exemption conditions before using <code>startForegroundService</code>.</td></tr>
+  <tr><td><strong>MissingForegroundServiceTypeException</strong><br><code>android.app</code>, API 31+</td><td>Called <code>startForeground()</code> but corresponding <code>&lt;service&gt;</code> in <code>AndroidManifest.xml</code> didn't declare <code>android:foregroundServiceType</code> (location/camera/microphone, etc.).</td><td>Explicitly declare types for every foreground service in the manifest; Android 14+ also requires runtime permissions for some types, run smoke tests on targetSdk 34+ devices before release.</td></tr>
+  <tr><td><strong>InvalidForegroundServiceTypeException / StartForegroundCalledOnStoppedServiceException</strong><br><code>android.app</code></td><td>The former is a mismatch between declared type and actual call; the latter is calling <code>startForeground()</code> after the service has called <code>stopSelf()</code>/been recycled by the system—common when async callbacks return after <code>onDestroy</code>.</td><td>Check service lifecycle state before calling startForeground; route async result callbacks through a "is service still alive" check layer, similar to the "is page still alive" pattern on the Activity side.</td></tr>
+</table>
+
+<h3 data-reveal>Lifecycle Crashes: The Real Issue is "Expired State"</h3>
+<ol class="steps">
+  <li><strong>Process Recreation</strong>: The system reconstructs Activity/Fragment using <code>savedInstanceState</code> after killing the background process. Never rely on static singletons still having data; restore via persistent IDs, keep minimal states in ViewModel's SavedStateHandle.</li>
+  <li><strong>Fragment View Lifecycle</strong>: A living Fragment doesn't mean a living View. Bind <code>viewLifecycleOwner</code> when observing LiveData/Flow, clear bindings in <code>onDestroyView</code>.</li>
+  <li><strong>Expired Async Results</strong>: Network/location/payment callbacks might return when the page is already destroyed. Let tasks cancel with lifecycleScope/viewModelScope, or write results into a state container rendered by the current UI.</li>
+</ol>
+<div class="duo">
+  <div class="bad"><b>False Fix</b>Wrapping the Activity in a WeakReference. It only reduces strong reference leaks; it doesn't prove the page is still updatable, nor does it cancel background work.</div>
+  <div class="good"><b>True Cure Pattern</b>Lifecycle handles cancellation, state containers handle result saving, pages only collect and render in STARTED state; process recreation restores from the persistence layer.</div>
+</div>
+<div class="callout tip"><b class="t">Three Universal Defenses</b>① Tighten Kotlin boundaries: immediately perform nullability and schema checks at Java/JSON/DB entry points; ② Write high-frequency team mistakes into Android Lint/Detekt rules; ③ CI must run release + R8 smoke tests, migration tests, process recreation, and rotation regressions.</div>
+<p class="src">Sources: <a href="https://developer.android.com/topic/libraries/architecture/saving-states" target="_blank">Android: Saving UI States</a> · <a href="https://developer.android.com/guide/fragments/lifecycle" target="_blank">Fragment Lifecycle</a> · <a href="https://kotlinlang.org/docs/exception-handling.html" target="_blank">Kotlin Coroutines Exception Handling</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="anr">
+<div class="sec-tag">Advanced 03</div>
+<h2>Deep Dive into ANR: Tracing from Main Thread Snapshot to the Blocking Source</h2>
+
+<h3 data-reveal>Recognize the Timeout Types First</h3>
+<table class="tbl">
+  <tr><th>Type</th><th>AOSP / Pixel Default Timeout</th><th>First Checkpoint</th></tr>
+  <tr><td>Input dispatch</td><td><strong>5 seconds</strong></td><td>Whether main is running, runnable but not scheduled, or waiting on a lock/Binder</td></tr>
+  <tr><td>Broadcast</td><td>Android 13 and below: Foreground priority 10s, background 60s; Android 14+ can extend to <strong>20 / 120s</strong> during CPU starvation</td><td>Intent flags in ANR subject, cold start duration, whether <code>onReceive</code>/<code>goAsync</code> finished in time</td></tr>
+  <tr><td>Execute service</td><td>Foreground service 20s; background 200s</td><td>Whether <code>onCreate/onStartCommand/onBind</code> and cold start blocked the main thread</td></tr>
+  <tr><td>ContentProvider</td><td>Specified by caller using <code>ContentProviderClient.setDetectNotResponding</code></td><td>Whether remote queries, cold start, and Binder thread pools are blocking</td></tr>
+</table>
+<div class="callout note"><b class="t">Version Boundaries</b>The above are current AOSP/Pixel default values; OEMs can adjust them. There are also standalone ANR types like foreground services failing to call <code>startForeground()</code> within 5 seconds or JobScheduler callback timeouts; don't judge all ANRs simply by "5 seconds".</div>
+
+<h3 data-reveal>8 High-Frequency Root Causes</h3>
+<ul>
+  <li><strong>Main thread I/O:</strong> File, DB, DNS, network, Binder, or large JSON/Proto serialization;</li>
+  <li><strong>SharedPreferences:</strong> <code>commit()</code> writes synchronously; <code>apply()</code> writes asynchronously, but pending writes will be awaited by the framework during Activity/Service lifecycle transitions, potentially causing ANRs via QueuedWork. Prefer DataStore for new projects;</li>
+  <li><strong>Lock contention/Deadlocks:</strong> main waiting for locks held by background threads, while background is waiting for main or synchronous Binder;</li>
+  <li><strong>Synchronous Binder:</strong> Your stack is paused at <code>BinderProxy.transactNative</code>, the real slow point might be in system_server or another process;</li>
+  <li><strong>Broadcasts and Services:</strong> Heavy lifting in <code>onReceive</code>, cold start initialization, <code>onStartCommand</code>; forgetting to call <code>finish()</code> after <code>goAsync()</code>;</li>
+  <li><strong>Layout storms:</strong> Deep nesting, repeated requestLayout, or high-frequency invalid Compose recompositions causing measure/layout timeouts;</li>
+  <li><strong>GC thrashing:</strong> Large allocations in a short time pausing main frequently; a single GC trace isn't enough to convict, must be combined with Perfetto's allocation and scheduling timeline;</li>
+  <li><strong>System load:</strong> main is Runnable but has no CPU for a long time, system_server is locked up, or GPU hang; it might not be your app's own long task.</li>
+</ul>
+
+<h3 data-reveal>Reading a trace: Follow the Lock Chain to the Real Holder</h3>
+<pre><code>"main" prio=5 tid=1 Blocked
+  | group="main" sCount=1 dsCount=0 flags=1 obj=0x... self=0x...
+  | sysTid=18420 nice=-10 cgrp=default sched=0/0 handle=0x...
+  | state=S schedstat=(...) utm=82 stm=21 core=4 HZ=100
+  | held mutexes=
+  at com.example.Cache.read(Cache.kt:48)
+  - waiting to lock &lt;0x07c1&gt; (a java.lang.Object)
+  at com.example.HomeActivity.onResume(HomeActivity.kt:91)
+
+"sync-worker" prio=5 tid=27 TimedWaiting
+  - locked &lt;0x07c1&gt; (a java.lang.Object)
+  at android.os.BinderProxy.transactNative(Native method)
+  at com.example.remote.ISyncService$Stub$Proxy.refresh(...)</code></pre>
+<ol class="steps">
+  <li><strong>Check main state:</strong> Runnable means calculating or starving; Blocked means waiting for a monitor; Waiting/TimedWaiting requires seeing who it's waiting for; Native requires checking the top native method and Perfetto.</li>
+  <li><strong>Find the awaited object:</strong> Copy <code>&lt;0x07c1&gt;</code> and search the entire file for <code>locked</code> or "held by thread N" to locate the thread holding the lock.</li>
+  <li><strong>Follow the chain:</strong> If the holding thread is waiting on Binder/another lock, keep tracing until you find the ultimate runner; also check system_server and Binder thread stacks.</li>
+  <li><strong>Calibrate the snapshot:</strong> The trace might be captured after the timeout; if the top is <code>nativePollOnce</code> and main is idle, prioritize checking other events in the same cluster and Perfetto rather than guessing blindly.</li>
+</ol>
+
+<h3 data-reveal>Cure and Early Exposure</h3>
+<pre><code>if (BuildConfig.DEBUG) {
+    StrictMode.setThreadPolicy(
+        StrictMode.ThreadPolicy.Builder()
+            .detectAll()
+            .penaltyLog()
+            .penaltyDeath()
+            .build()
+    )
+}</code></pre>
+<ul>
+  <li>Move I/O and serialization down to bounded dispatchers, and design boundaries for cancellation, timeouts, and returning results to the main thread;</li>
+  <li>Do not execute I/O/Binder/callbacks while holding locks; shrink critical sections, replace shared mutable state with immutable snapshots or single-thread state machines;</li>
+  <li>Broadcasts should only schedule work; ensure they run using appropriate WorkManager/JobScheduler, don't wait for results in <code>onReceive</code>;</li>
+  <li>ANR-Watchdog can grab internal thread stacks early when threads are unresponsive for long periods, but it will false-alarm on debuggers, system starvation, and long frames, and it can't see full system ANR context; it's a supplementary observation, not a replacement for Vitals, ExitInfo, and bugreports.</li>
+</ul>
+<p class="src">Sources: <a href="https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs" target="_blank">Android: Diagnose and fix ANRs</a> · <a href="https://developer.android.com/reference/android/content/SharedPreferences" target="_blank">SharedPreferences API</a> · <a href="https://developer.android.com/topic/performance/vitals/anr" target="_blank">Android Vitals: ANR</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="native">
+<div class="sec-tag">Advanced 04</div>
+<h2>Native Crash: From Signal to Source Line</h2>
+
+<table class="tbl">
+  <tr><th>Signal</th><th>Common Meaning</th><th>Priority Evidence</th></tr>
+  <tr><td><code>SIGSEGV</code></td><td>Null/wild pointer, out-of-bounds, use-after-free, access permission error</td><td>signal code, fault addr, first business .so frame, memory map</td></tr>
+  <tr><td><code>SIGABRT</code></td><td><code>abort/assert</code>, FORTIFY or CHECK intentional termination</td><td>Abort message and pre-crash logcat; don't generalize all Java exceptions as SIGABRT</td></tr>
+  <tr><td><code>SIGILL</code></td><td>Illegal instruction, corrupted function pointer, CPU/ABI mismatch</td><td>pc mapped location, ABI, disassembly</td></tr>
+  <tr><td><code>SIGBUS</code></td><td>Unaligned access, mmap file truncated, bus error</td><td>fault addr, mapped file size and access offset</td></tr>
+  <tr><td><code>SIGFPE</code></td><td>Integer divide by zero, overflow traps, arithmetic errors</td><td>Registers, instruction and input values</td></tr>
+</table>
+
+<h3 data-reveal>Get the Tombstone First: Four Paths</h3>
+<p>Before reading the five blocks below, readers typically don't have the tombstone file yet—this step is often skipped. Four retrieval paths:</p>
+<table class="tbl">
+  <tr><th>Scenario</th><th>How to Retrieve</th></tr>
+  <tr><td>Rooted Test Device</td><td>Read directly from <code>/data/tombstones/tombstone_NN</code> (numbers roll over, don't wait too long)</td></tr>
+  <tr><td>Non-rooted Device</td><td>Inside the zip generated by <code>adb bugreport</code>, path looks like <code>FS/data/tombstones/</code></td></tr>
+  <tr><td>Direct Command Line (No Root)</td><td><code>adb shell dumpsys dropbox --print SYSTEM_TOMBSTONE</code></td></tr>
+  <tr><td>Crashlytics NDK Integrated</td><td>Download the unsymbolicated tombstone directly from the corresponding native crash event page in Firebase Console</td></tr>
+</table>
+
+<h3 data-reveal>How to Read the 5 Blocks of a Tombstone</h3>
+<p>Below is an example tombstone format from the official AOSP documentation (historical device, field structure is identical to current, only hex address width varies by ABI):</p>
+<pre><code>*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Build fingerprint: 'Android/aosp_flounder/flounder:5.1.51/AOSP/enh08201009:eng/test-keys'
+Revision: '0'
+ABI: 'arm'
+pid: 1656, tid: 1656, name: crasher  &gt;&gt;&gt; crasher &lt;&lt;&lt;
+signal 6 (SIGABRT), code -6 (SI_TKILL), fault addr --------
+Abort message: 'some_file.c:123: some_function: assertion "false" failed'
+    r0 00000000  r1 00000678  r2 00000006  r3 f70b6dc8
+    r4 f70b6dd0  r5 f70b6d80  r6 00000002  r7 0000010c
+    r8 ffffffed  r9 00000000  sl 00000000  fp ff96ae1c
+    ip 00000006  sp ff96ad18  lr f700ced5  pc f700dc98  cpsr 400b0010
+backtrace:
+    #00 pc 00042c98  /system/lib/libc.so (tgkill+12)
+    #01 pc 00041ed1  /system/lib/libc.so (pthread_kill+32)
+    #02 pc 0001bb87  /system/lib/libc.so (raise+10)
+    #03 pc 00018cad  /system/lib/libc.so (__libc_android_abort+34)
+    #04 pc 000168e8  /system/lib/libc.so (abort+4)
+    #05 pc 0001a78f  /system/lib/libc.so (__libc_fatal+16)
+    #06 pc 00018d35  /system/lib/libc.so (__assert2+20)
+    #07 pc 00000f21  /system/xbin/crasher
+    #08 pc 00016795  /system/lib/libc.so (__libc_init+44)
+    #09 pc 00000abc  /system/xbin/crasher
+Tombstone written to: /data/tombstones/tombstone_06
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***</code></pre>
+<ol class="steps">
+  <li><strong>Abort message:</strong> Intentional failures usually explicitly state the condition; handle this first—the one above clearly states the assertion file, line number, and condition;</li>
+  <li><strong>signal / code / fault addr:</strong> This example is <code>SIGABRT</code> (intentional termination, <code>fault addr</code> is empty); if it were <code>SIGSEGV</code>, this line would look like <code>signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0</code>—<code>0x0</code> or very low addresses are often null pointers and field offsets; high random addresses are typically wild pointers/out-of-bounds, but must be cross-referenced with maps and sanitizer evidence; near the stack guard implies stack overflow;</li>
+  <li><strong>backtrace:</strong> Each line follows the format <code>#frame_num pc relative_address library_path (symbol_name+offset)</code> (e.g., <code>#00 pc 00042c98 /system/lib/libc.so (tgkill+12)</code>); find the first pc offset belonging to your own .so, don't stop at libc's memcpy/free;</li>
+  <li><strong>registers:</strong> Determine which register holds the bad pointer based on the crashing instruction;</li>
+  <li><strong>memory map:</strong> Verify if the fault addr falls in a mapped area, if permissions match, and verify the library's Build ID. Symbol files must exactly match the ABI and Build ID of the production APK.</li>
+</ol>
+
+<h3 data-reveal>The Symbolication Trio</h3>
+<pre><code><span class="c"># List candidate directories first; use readelf -n to match the Build ID in the tombstone, never silently pick an old hash</span>
+find app/build/intermediates/cxx -type d \
+  -path '*/RelWithDebInfo/*/obj/arm64-v8a' -print
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf \
+  -n candidate_dir/libfoo.so | grep 'Build ID'
+
+<span class="c"># After confirming Build ID, replace ACTUAL_HASH with the matching directory</span>
+SYMBOL_DIR=app/build/intermediates/cxx/RelWithDebInfo/ACTUAL_HASH/obj/arm64-v8a
+$ANDROID_NDK_HOME/ndk-stack \
+  -sym "$SYMBOL_DIR" \
+  -dump tombstone.txt
+
+<span class="c"># Single .so + relative PC; -C deobfuscates C++ names, -f shows functions, -e specifies ELF</span>
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-addr2line \
+  -C -f -e libfoo.so 0x1234
+
+<span class="c"># Crashlytics NDK symbol upload; adjust path based on build artifacts</span>
+firebase crashlytics:symbols:upload \
+  --app=1:1234567890:android:abcdef app/build/native-debug-symbols</code></pre>
+
+<h3 data-reveal>How to Choose Memory Error Tools</h3>
+<table class="tbl">
+  <tr><th>Tool</th><th>Applicable Phase</th><th>Cost / Characteristics</th></tr>
+  <tr><td>ASan</td><td>Local/Test to find heap out-of-bounds, UAF</td><td>Broad compatibility but high overhead; configure test builds per current NDK guide</td></tr>
+  <tr><td>HWASan</td><td>64-bit Arm test environment deep diving memory errors</td><td>Better suited for Android than traditional ASan, still has significant memory overhead; requires specific device/OS version</td></tr>
+  <tr><td>GWP-ASan</td><td>Low-overhead production sampling</td><td>Only samples a fraction of allocations, hits more easily with high volume; Android 14+ has Recoverable GWP-ASan platform capability</td></tr>
+  <tr><td>MTE</td><td>Hardware-supported continuous detection/protection</td><td>Uses memory tagging; sync mode provides precise location, async mode has lower overhead, depending on device and deployment strategy</td></tr>
+</table>
+<h3 data-reveal>From Hit Point to Root Cure in Source</h3>
+<ul>
+  <li><strong>UAF/Double Free:</strong> Clarify object ownership, prefer RAII and <code>std::unique_ptr</code>; only use <code>shared_ptr</code> when passing shared lifecycle across threads, and design stop/reclaim order;</li>
+  <li><strong>Out of Bounds:</strong> Validate all lengths and offsets in one place, use containers/views with bounds; add unit tests and fuzzing for truncation, oversized, and malformed inputs to parsers;</li>
+  <li><strong>JNI Contracts:</strong> Check Java exceptions, local/global refs, and thread attachments; forbid saving local refs across threads, handle ClassLoader and unload boundaries when caching method/class IDs; enable CheckJNI to expose these issues during development instead of waiting for a production native crash (see CheckJNI section below);</li>
+  <li><strong>Stack Overflow:</strong> Eliminate unbounded recursion and huge stack arrays, switch to iteration/heap allocation and cap depths;</li>
+  <li><strong>Recurrence Prevention:</strong> Rerun original inputs under the same sanitizer after fixing, then add release symbol upload verification, ABI smoke tests, native unit test/fuzzing, and production GWP-ASan sampling.</li>
+</ul>
+<div class="callout warn"><b class="t">Most Common Invalid Action</b>Symbolicating with the wrong version of so. Just because an address can "spit out a function name" doesn't mean the result is reliable; always verify ABI, Build ID, and version number before looking at the source line.</div>
+
+<h3 data-reveal>CheckJNI: Expose JNI Contract Violations Early During Development</h3>
+<p>Enabled by default on emulators (logcat shows <code>CheckJNI is ON</code>); how to enable on physical devices:</p>
+<pre><code><span class="c"># Without root, only affects processes started afterwards</span>
+adb shell setprop debug.checkjni 1
+
+<span class="c"># With root, enable persistently at the system level</span>
+adb shell stop &amp;&amp; adb shell setprop dalvik.vm.checkjni true &amp;&amp; adb shell start</code></pre>
+<p>Apps with <code>android:debuggable="true"</code> will also enable it automatically. CheckJNI will directly crash and block in the following scenarios, rather than letting it quietly run into a native crash later:</p>
+<table class="tbl">
+  <tr><th>Check Category</th><th>Typical Trigger Scenario</th></tr>
+  <tr><td>Bad Reference/Bad Pointer</td><td>Passing a freed jobject/jarray/jstring back to JNI; passing NULL when an object is expected</td></tr>
+  <tr><td>Thread Ownership</td><td>Using a <code>JNIEnv*</code> that doesn't belong to it from the wrong thread (each thread's <code>JNIEnv*</code> cannot be used across threads)</td></tr>
+  <tr><td>Calling JNI with Pending Exception</td><td>Making a new JNI call while an uncleared Java exception exists (exceptions are <code>DeleteGlobalRef</code>/<code>DeleteLocalRef</code>/exception-related functions, which are allowed when an exception is pending)</td></tr>
+  <tr><td>jfieldID / jmethodID Misuse</td><td>NULL field ID, type mismatch, mixing static/non-static, return type doesn't match declaration</td></tr>
+  <tr><td>Reference Type Misuse</td><td>Calling <code>DeleteGlobalRef</code> on a local reference, and vice versa</td></tr>
+  <tr><td>UTF-8 Validation</td><td>Passing an invalid Modified UTF-8 byte sequence</td></tr>
+</table>
+<p>The two most common pitfalls for local references: bulk creating local refs in loops without releasing them (should use <code>DeleteLocalRef</code> or wrap with <code>PushLocalFrame</code>/<code>PopLocalFrame</code>); local refs created in native threads attached via <code>AttachCurrentThread</code> <strong>will not be automatically released until the thread detaches</strong>, must be manually deleted. The most common pitfall for global references is using <code>==</code> to check if two refs point to the same object—you must use <code>IsSameObject</code>. Official docs emphasize "you cannot assume that object references are constant or unique".</p>
+<p class="src">Sources: <a href="https://developer.android.com/ndk/guides/debug" target="_blank">Android NDK: Debug your project</a> · <a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">AOSP: Diagnose native crashes</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory error debugging and mitigation</a> · <a href="https://developer.android.com/training/articles/perf-jni" target="_blank">JNI Tips (CheckJNI and Reference Management)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="toolbox">
+<div class="sec-tag">Arsenal 05</div>
+<h2>Toolbox & Usage: Ask Where the Evidence Is First</h2>
+
+<table class="tbl">
+  <tr><th>Symptom</th><th>First Tool</th><th>Advanced Tool</th></tr>
+  <tr><td>Just had Java/Kotlin crash</td><td><code>adb logcat -b crash -v threadtime</code></td><td>Crashlytics / Play Vitals + retrace</td></tr>
+  <tr><td>Freeze, ANR, random slowness</td><td>ANR trace / ApplicationExitInfo</td><td>bugreport + Perfetto for scheduling, locks, Binder</td></tr>
+  <tr><td>Native crash</td><td>tombstone + matching symbols</td><td>ASan/HWASan/GWP-ASan</td></tr>
+  <tr><td>Memory climbing</td><td>Memory Profiler / heap dump</td><td>LeakCanary, MAT dominator tree, fd/thread count</td></tr>
+  <tr><td>Frame drops/recomp. anomalies</td><td>CPU Profiler, Layout Inspector</td><td>Perfetto Frame Timeline / Compose recomp. counts</td></tr>
+</table>
+<h3 data-reveal>Tools Give Evidence, Evidence Determines the Cure</h3>
+<table class="tbl">
+  <tr><th>Evidence Confirmation</th><th>Root Cure Action</th><th>Regression Proof</th></tr>
+  <tr><td>First business frame + input state proving null/out-of-bounds</td><td>Fix data boundaries, state machines, or snapshot consistency</td><td>Minimal repro test + release/R8 smoke test</td></tr>
+  <tr><td>Perfetto shows main long tasks, lock waits, or CPU starvation</td><td>Move work down, shorten locks, trace to Binder peer; cluster system load issues by model/OS</td><td>Trace comparison in same scenario + ANR rollout metrics</td></tr>
+  <tr><td>heap dominator points to leak chain/unbounded cache</td><td>Sever lifecycle references, budget caches</td><td>Retained heap drops after repeating the scenario</td></tr>
+  <tr><td>sanitizer reports alloc/free stack</td><td>Fix ownership, boundaries, or JNI contracts</td><td>Original input no longer hits in sanitizer + fuzz regression</td></tr>
+  <tr><td>ExitInfo shows LMK/user request/permission change</td><td>Handle restoration and memory budget per exit type, don't fake a Crash fix</td><td>Process recreation tests + production exit reason distribution</td></tr>
+</table>
+
+<h3 data-reveal>Command Line Evidence Gathering</h3>
+<pre><code><span class="c"># Crash buffer; keeps original time, PID, TID</span>
+adb logcat -b crash -v threadtime -d &gt; crash.log
+
+<span class="c"># Only watch current process; PID changes after App restarts</span>
+adb logcat --pid=$(adb shell pidof -s com.example.app) -v threadtime
+
+<span class="c"># One-shot system scene zip</span>
+adb bugreport bugreport.zip
+
+<span class="c"># 20s Perfetto: scheduling, freq, windows, drawing, Binder, runtime</span>
+adb shell perfetto -o /data/misc/perfetto-traces/anr.perfetto-trace \
+  -t 20s sched freq idle am wm gfx view binder_driver hal dalvik input res memory
+adb pull /data/misc/perfetto-traces/anr.perfetto-trace .</code></pre>
+<p>Drag the trace into <a href="https://ui.perfetto.dev" target="_blank">ui.perfetto.dev</a>, look at the main Thread State first: Running means actually executing, long Runnable might be CPU starvation, Sleeping/Blocked needs tracing the waker or lock chain. On older Androids if direct pull fails with permission denied, use <code>adb shell cat path &gt; local_file</code>.</p>
+
+<h3 data-reveal>Development Guardrails and Memory Tools</h3>
+<ul>
+  <li><strong>StrictMode:</strong> Expose main thread disk/network, leaked Closeables and registered objects early in debug; <code>penaltyDeath</code> is only for development builds;</li>
+  <li><strong>LeakCanary:</strong> Keeps weak references to destroyed objects, dumps heap if still unreachable after GC triggers, automatically finds reference chains; it locates leaks, it doesn't explain all OOMs;</li>
+  <li><strong>Memory Profiler / MAT:</strong> Compare surviving objects between two points in time, then look in the dominator tree by retained heap for the dominator that "releases the most memory if deleted";</li>
+  <li><strong>CPU / Energy Profiler:</strong> Record before and after the repro path, watch main thread hot spots, system calls, and wake-ups; sampling has low interference, method tracing is more granular but changes timing;</li>
+  <li><strong>Compose Layout Inspector:</strong> Watch recomposition/skip counts, verify state read scope; high counts are just clues, combine with Perfetto to judge if they truly exceed frame budgets;</li>
+  <li><strong>Native sanitizer:</strong> Use ASan/HWASan in test environments for higher hit rates, sample with GWP-ASan in production, see Chapter 04.</li>
+</ul>
+
+<h3 data-reveal>Recover Last Exit Evidence on Startup</h3>
+<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.R) {
+    val am = getSystemService(ActivityManager::class.java)
+    val exits = am.getHistoricalProcessExitReasons(packageName, 0, 8)
+    exits.filter { it.timestamp &gt; lastUploadedAt }.forEach { info -&gt;
+        val kind = when (info.reason) {
+            ApplicationExitInfo.REASON_ANR -&gt; "ANR"
+            ApplicationExitInfo.REASON_CRASH -&gt; "JAVA_CRASH"
+            ApplicationExitInfo.REASON_CRASH_NATIVE -&gt; "NATIVE_CRASH"
+            ApplicationExitInfo.REASON_LOW_MEMORY -&gt; "LOW_MEMORY"
+            else -&gt; "OTHER_${info.reason}"
+        }
+        uploadExit(kind, info.timestamp, info.importance, info.description)
+    }
+}</code></pre>
+<div class="callout note"><b class="t">Tool Selection Mantra</b>Define what evidence you lack first, then pick the smallest tool. Stack traces answer "where did it crash", heap dumps answer "who is holding memory", Perfetto answers "who was running/waiting at the time" — looking for a nail with a hammer only creates more noise.</div>
+<p class="src">Sources: <a href="https://developer.android.com/tools/logcat" target="_blank">Logcat command-line tool</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto: Recording system traces</a> · <a href="https://developer.android.com/reference/android/app/ActivityManager#getHistoricalProcessExitReasons(java.lang.String,%20int,%20int)" target="_blank">ActivityManager Exit History API</a></p>
+</section>
+
+<div class="divider"></div>
+<section id="consoles">
+<div class="sec-tag">Arsenal 06</div>
+<h2>Play Console & Firebase: Two Lenses on Production Issues</h2>
+
+<h3 data-reveal>Android Vitals: Look at Impact First, Then Slice Dimensions</h3>
+<p>"User-perceived" is not the sum of all background exceptions. Metrics are calculated based on the <strong>percentage of daily active users experiencing at least one event</strong>: User-perceived Crashes refer to unhandled crashes while the App is displaying an Activity or running a foreground service; current User-perceived ANRs only count <code>Input dispatching timed out</code>. Play's current core bad behavior thresholds are: crash rate <strong>1.09%</strong>, ANR rate <strong>0.47%</strong>; for a single <strong>phone model</strong> both are <strong>8%</strong>, while for Wear OS single watch models it's <strong>4%</strong> and <strong>5%</strong> respectively. Play evaluates quality daily using the last 28 days of data; exceeding thresholds may affect visibility and show store warnings.</p>
+<ol class="steps">
+  <li><strong>Check new clusters first:</strong> New issues appearing suddenly in the same version are usually more actionable than multi-year backlog;</li>
+  <li><strong>Slice by App version:</strong> Confirm if it was introduced by a new version, or if old version users haven't upgraded;</li>
+  <li><strong>Slice by OS / model:</strong> Single OEM, single GPU, single Android version spikes—prioritize checking compatibility and system stacks;</li>
+  <li><strong>Slice by country/track:</strong> Network, regional configs, rollout cohorts might change trigger conditions;</li>
+  <li><strong>Compare affected users, not just counts:</strong> One user crashing in a loop 100 times versus 100 users crashing 1 time each have different mitigation priorities.</li>
+</ol>
+<table class="tbl">
+  <tr><th>Why Vitals and Crashlytics Numbers Differ</th><th>Explanation</th></tr>
+  <tr><td>Different collection layer</td><td>Vitals comes from the Android OS and can see crashes before SDK initialization; Crashlytics relies on the SDK, initialization, and successful upload.</td></tr>
+  <tr><td>Different sample base</td><td>Vitals only covers users with Google Play installed, certified devices, who opted in to share diagnostic data, subject to privacy thresholds.</td></tr>
+  <tr><td>Different denominators</td><td>Vitals typically calculates per daily active user; Crashlytics provides both crash-free users and crash-free sessions. If a user has 3 distinct sessions in a day and crashes in 1 of them, <strong>the crash rate</strong> per user and per session would be 100% and ~33% respectively (corresponding to crash-free 0% and ~67%); "opening 3 times" isn't necessarily 3 sessions.</td></tr>
+  <tr><td>Different clustering</td><td>Stack normalization, variant splitting, and deduplication windows differ; align versions, time ranges, devices, and issue samples before comparing trends.</td></tr>
+</table>
+
+<h3 data-reveal>Crashlytics: Stuff Repro Context into Every Event</h3>
+<pre><code>Firebase.crashlytics.apply {
+    setUserId(hashUserId(accountId))       <span class="c">// Do not upload direct identifiers like email/phone</span>
+    setCustomKey("app_track", buildTrack)
+    setCustomKey("feature_flags", flagDigest)
+    setCustomKey("screen", currentRoute)
+    setCustomKey("order_state", orderState.name)
+    log("checkout: confirm tapped")
+}
+
+try {
+    repository.refresh()
+} catch (e: RecoverableDomainException) {
+    Firebase.crashlytics.recordException(e) {
+        key("endpoint", "orders")
+        key("retry_count", retryCount)
+    }
+    showRecoverableError(e)
+}</code></pre>
+<ul>
+  <li><strong>Keys:</strong> Use stable, low-cardinality, clusterable dimensions. Current Android SDK retains max 64 keys/values; don't stuff timestamps or random IDs into the exception message ruining clustering;</li>
+  <li><strong>Logs:</strong> Log critical state transitions, don't copy entire network responses. Single session logs have a size limit, old logs roll off;</li>
+  <li><strong>User ID:</strong> Use internal anonymous/hashed identifiers, comply with privacy and deletion processes;</li>
+  <li><strong>Non-fatal:</strong> Only log exceptions "handled but needing tracking". Calling <code>recordException</code> for every 404/cancel will drown out real issues, increase cost, and pollute alerts;</li>
+  <li><strong>Velocity alert:</strong> Watch for sudden short-term spikes to trigger bleeding stops, doesn't replace prioritizing by affected users and version distribution;</li>
+  <li><strong>BigQuery:</strong> Export when needing custom trends, feature flag cross-analysis, or long-term retention; use version adoption alongside crash-free/event rates to decide if a rollout should proceed.</li>
+</ul>
+
+<h3 data-reveal>Symbol Release Chain: If mapping isn't uploaded, previous chapters are moot</h3>
+<p>Chapters 02-04 on crash catalogs, tombstone dissection, and ANR trace analysis all rest on the premise that "production stacks can be restored to source code". Without mapping/symbols uploaded, Vitals and Crashlytics just show a bunch of <code>a.b.c</code> and raw addresses—this step is frequently missed until production fails and stacks are unreadable.</p>
+<pre><code><span class="c">// build.gradle.kts, release variant enables auto mapping and native symbol upload</span>
+android {
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = true
+      configure&lt;com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension&gt; {
+        mappingFileUploadEnabled = true   <span class="c">// Default is true, only needed for obfuscated artifacts</span>
+        nativeSymbolUploadEnabled = true  <span class="c">// Default is false (saves build time), must turn on manually for native code</span>
+      }
+    }
+  }
+}</code></pre>
+<table class="tbl">
+  <tr><th>Artifact</th><th>AAB</th><th>APK</th></tr>
+  <tr><td>Java/Kotlin obfuscation mapping (Play Console side)</td><td>Included automatically when uploading AAB (provided Gradle tasks like <code>uploadCrashlyticsMappingFileRelease</code> ran, or via Play App Signing)</td><td>Must manually upload <code>mapping.txt</code> in Play Console "App bundle explorer" for the corresponding version</td></tr>
+  <tr><td>Native symbol (Crashlytics side)</td><td>Auto-uploaded with <code>uploadCrashlyticsSymbolFile&lt;Variant&gt;</code> task, or manually via <code>firebase crashlytics:symbols:upload --app=&lt;FIREBASE_APP_ID&gt; &lt;symbol_dir&gt;</code></td><td>Same as left, command-line method is identical for AAB</td></tr>
+</table>
+<div class="callout warn"><b class="t">Troubleshooting: Vitals has symbols, Crashlytics doesn't</b>First check if the native library has a GNU build ID—if <code>readelf -n libfoo.so</code> doesn't show a build ID, Crashlytics cannot match the uploaded symbols to the production binary, even if symbols were uploaded. Missing build IDs are usually due to omitting the <code>-Wl,--build-id</code> linker flag. Tying the mapping/symbol upload task to <code>assembleRelease</code>/<code>bundleRelease</code> in CI and archiving them with the commit is much more reliable than trying to upload them retroactively.</div>
+<p class="src">Sources: <a href="https://firebase.google.com/docs/crashlytics/android/get-deobfuscated-reports" target="_blank">Firebase: Get deobfuscated crash reports</a> · <a href="https://firebase.google.com/docs/crashlytics/ndk-reports" target="_blank">Firebase: Get and customize NDK reports</a></p>
+
+<h3 data-reveal>Gemini AI insights & MCP</h3>
+<p>AI insights in the Firebase console can generate issue summaries, potential root causes, and debugging tips, but it cannot read or modify your local code. The official Firebase MCP server allows coding agents to read issues, event samples, stacks, user/event counts, version dimensions, and notes, as well as create/delete notes or update/close issues; it uses the current credentials of the Firebase CLI in the running environment. How data is handled once passed to external AI tools depends on that tool's terms, so use least-privilege accounts, restrict available projects, and require human confirmation for all write operations while preserving audits. <strong>As of 2026-07-15, this capability is still Experimental</strong>, incompatible changes may occur, pin versions and be ready for manual fallback when integrating.</p>
+<div class="callout warn"><b class="t">Backend Conclusions are Not Root Cause Proofs</b>Clustering, AI insights, and alerts are just sources for sorting and hypothesis. You must ultimately return to source code, matching symbols, reproducible conditions, or rollout metrics to complete verification.</div>
+<table class="tbl">
+  <tr><th>Confirmed Production Evidence</th><th>Root Cure</th><th>Prevention / Closure</th></tr>
+  <tr><td>Surge isolated to new version, new feature flag group</td><td>Rollback/toggle off to stop bleeding, locate diff and fix</td><td>Rollout gate automatically pauses based on new clusters, user rate, and version adoption</td></tr>
+  <tr><td>Concentrated on single model/OS with system stack</td><td>Capability detection and fallback; adjust coverage and submit minimal repro to OEM if necessary</td><td>Establish representative device lab and compatibility regression</td></tr>
+  <tr><td>Custom key points to the same business state</td><td>Fix state machine/input data, don't just change exception grouping</td><td>Make that state a low-cardinality monitoring dimension and regression test case</td></tr>
+</table>
+<p class="src">Sources: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://firebase.google.com/docs/crashlytics/android/customize-crash-reports" target="_blank">Customize Crashlytics Reports</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Crashlytics MCP</a> · <a href="https://firebase.google.com/docs/crashlytics/bigquery-export" target="_blank">BigQuery Export</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="device-data">
+<div class="sec-tag">Arsenal 07</div>
+<h2>Test Device Data Export: Take the Full Accident Scene With You</h2>
+
+<h3 data-reveal>bugreport is a system snapshot for non-rooted devices</h3>
+<pre><code>adb bugreport bugreport.zip
+unzip -l bugreport.zip | less
+
+<span class="c"># Common service snapshots</span>
+adb shell dumpsys meminfo com.example.app
+adb shell dumpsys gfxinfo com.example.app framestats
+adb shell dumpsys activity activities
+adb shell dumpsys dbinfo com.example.app
+adb shell dumpsys batterystats --charged com.example.app
+
+<span class="c"># System DropBox event index; specific tags vary by OS version</span>
+adb shell dumpsys dropbox --print SYSTEM_TOMBSTONE
+adb shell dumpsys dropbox --print data_app_anr</code></pre>
+<table class="tbl">
+  <tr><th>bugreport Area</th><th>What it Answers</th></tr>
+  <tr><td><code>FS/data/anr/</code> or ANR dump section</td><td>Threads and lock chains during ANR; for non-rooted devices, usually obtained via bugreport rather than pulling <code>/data/anr</code> directly</td></tr>
+  <tr><td>tombstones / SYSTEM_TOMBSTONE</td><td>Native signal, fault addr, Build ID, backtrace; content may be redacted based on version, permissions, and privacy policies</td></tr>
+  <tr><td>logcat buffers</td><td>System and app logs before/after crash; correlate by time, PID, and process name first</td></tr>
+  <tr><td>dumpsys</td><td>System service states including process, Activity, memory, database, window, and battery</td></tr>
+  <tr><td>dumpstate_board / vendor section</td><td>Thermal, GPU, kernel, and vendor service clues; fields are unstable and require device-specific interpretation</td></tr>
+</table>
+<div class="callout note"><b class="t">Privacy and Size</b>bugreport may contain accounts, notifications, Wi-Fi, location clues, and massive system logs. Only collect on authorized devices, minimize sharing scope, and set ticket expiration and access controls.</div>
+
+<h3 data-reveal>ApplicationExitInfo: Recover Previous ANR Traces on Next Startup</h3>
+<p>Starting from Android 11 (API 30), you can query historical exit reasons on the app's next startup; ANR records often include system-captured traces. It is excellent for supplementing online evidence when "user device cannot connect to adb", but doesn't guarantee a trace for every record, nor is it a real-time ANR callback.</p>
+<pre><code>class ExitInfoReporter(
+    private val context: Context,
+    private val store: ExitCursorStore,
+    private val upload: suspend (ExitEnvelope) -&gt; Unit
+) {
+    private val collectMutex = Mutex()
+
+    suspend fun collect() = collectMutex.withLock {
+      withContext(Dispatchers.IO) {
+        if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.R) return@withContext
+
+        val am = context.getSystemService(ActivityManager::class.java)
+        val records = am.getHistoricalProcessExitReasons(
+            context.packageName, 0, 32
+        ).sortedWith(compareBy({ it.timestamp }, { it.processName }, { it.reason }))
+
+        for (info in records) {
+            val eventKey = listOf(
+                info.timestamp, info.processName, info.reason, info.status
+            ).joinToString(":")
+            if (!store.shouldAttempt(eventKey, System.currentTimeMillis())) continue
+
+            try {
+                val trace = info.traceInputStream?.use { input -&gt;
+                    input.readAtMost(512 * 1024)        <span class="c">// API 30 compatible and size constrained</span>
+                }
+                upload(
+                    ExitEnvelope(
+                        eventKey = eventKey,
+                        timestamp = info.timestamp,
+                        processName = info.processName,
+                        reason = info.reason,
+                        status = info.status,
+                        importance = info.importance,
+                        description = info.description,
+                        pssKb = info.pss,
+                        rssKb = info.rss,
+                        traceGzip = trace?.let(::gzip)
+                    )
+                )
+                store.markUploaded(eventKey)
+            } catch (retryable: RetryableUploadException) {
+                store.scheduleRetry(eventKey, retryable) <span class="c">// Exponential backoff with limit, don't dead-letter just based on offline count</span>
+                continue
+            } catch (io: IOException) {
+                store.scheduleRetry(eventKey, io)
+                continue
+            } catch (permanent: PermanentUploadException) {
+                store.markDiscarded(eventKey, permanent) <span class="c">// Discard only on deterministic permanent errors like schema/permissions</span>
+                continue                                <span class="c">// Don't swallow Error and unknown exceptions, keep throwing up</span>
+            }
+        }
+      }
+    }
+
+    private fun InputStream.readAtMost(limit: Int): ByteArray {
+        val output = ByteArrayOutputStream(minOf(limit, 64 * 1024))
+        val buffer = ByteArray(16 * 1024)
+        var remaining = limit
+        while (remaining &gt; 0) {
+            val count = read(buffer, 0, minOf(buffer.size, remaining))
+            if (count == -1) break
+            output.write(buffer, 0, count)
+            remaining -= count
+        }
+        return output.toByteArray()
+    }
+}</code></pre>
+<ul>
+  <li>Call it outside the cold start critical path, put it in a constrained background task; <code>shouldAttempt/scheduleRetry</code> persists next retry time and uses exponential backoff with limits. Don't dead-letter just based on offline retries; discard only on deterministic permanent errors like schema/permissions. Do not catch all Throwables;</li>
+  <li>Deduplicate idempotently by eventKey (timestamp + process + reason + status) on both local and server sides, and save App version, device/OS, feature flags;</li>
+  <li>Govern <code>REASON_ANR</code>, <code>REASON_CRASH</code>, <code>REASON_CRASH_NATIVE</code>, <code>REASON_LOW_MEMORY</code> separately; <code>REASON_USER_REQUESTED</code> is not an app crash;</li>
+  <li>The trace might be retained with the record even if the process later exits for other reasons; must be judged in combination with reason, timestamp, and content.</li>
+</ul>
+
+<h3 data-reveal>Devices Unable to Connect via adb</h3>
+<p>Instruct QA/users to select "Take bug report" in Developer Options, providing the exact time of issue, App version, and reproduction steps; some OEMs have additional log assistants or dial codes—must go through company privacy approvals and OEM docs, do not have users blindly upload full-device logs.</p>
+<table class="tbl">
+  <tr><th>Evidence Obtained</th><th>Eradication Action</th><th>Recurrence Prevention</th></tr>
+  <tr><td>ANR trace's main/lock chains</td><td>Move blocking operations downstream or fix lock order</td><td>Perfetto comparison in same scenario + StrictMode/concurrency regression</td></tr>
+  <tr><td>ExitInfo is LOW_MEMORY</td><td>Shrink memory budget based on PSS/RSS, process importance, and system pressure</td><td>Low memory/background reconstruction test and ExitInfo trend alerts</td></tr>
+  <tr><td>tombstone + matching Build ID</td><td>Fix native ownership/boundaries after symbolication</td><td>sanitizer/fuzz + symbol upload gating</td></tr>
+  <tr><td>Insufficient or overwritten logs</td><td>Add low-cost keys, exit recycling, and rolling diagnostics, then wait for new samples</td><td>Incorporate "Evidence Completeness Rate" into stability infrastructure metrics</td></tr>
+</table>
+<p class="src">Sources: <a href="https://developer.android.com/studio/debug/bug-report" target="_blank">Capture and read bug reports</a> · <a href="https://developer.android.com/tools/dumpsys" target="_blank">dumpsys</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="detective">
+<div class="sec-tag">Master 08</div>
+<h2>Intractable Issue Detective Work: Turning the Unobservable into the Verifiable</h2>
+
+<div class="plays">
+  <div class="play"><div class="ph"><span class="pic">🧩</span><b>Script 1: Hard to Reproduce, Few Samples</b><span class="pt">CLUSTER</span></div><div class="pb"><p><strong>Evidence Collection:</strong> Cluster by version, model, OS, country, network, account status, and feature flags; check affected users and cardinality for each dimension first to avoid treating 100% of a small sample as the main cause.</p><p><strong>Progression:</strong> List falsifiable hypotheses → add low-cardinality keys/state transition logs for the highest priority hypothesis → targeted rollout → compare hit group with control group. Only change one observable variable at a time.</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">📱</span><b>Script 2: Crashes Only on a Specific OEM ROM</b><span class="pt">OEM</span></div><div class="pb"><p><strong>Evidence Collection:</strong> Confirm if the crash frame belongs to the App, public Android API, or OEM framework; find AOSP/other OEM controls for the same Android version, collect Build fingerprint and system component versions.</p><p><strong>Eradication:</strong> Prefer switching to public APIs; reflection compatibility should detect capabilities rather than guess brands, with a no-op/fallback path. Submit minimal repro, bugreport, time, and model to OEM channels; don't swallow all Throwables in the business layer.</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🧠</span><b>Script 3: Everything Looks Like an OOM</b><span class="pt">MEMORY</span></div><div class="pb"><pre><code><span class="c"># fd and threads are two independent budgets; /proc visibility is restricted by version and permissions</span>
+PID=$(adb shell pidof -s com.example.app)
+adb shell ls -l /proc/$PID/fd | wc -l
+adb shell 'cat /proc/'$PID'/status | grep -E "Threads|VmRSS"'
+adb shell cat /proc/$PID/limits</code></pre><p><strong>Triage:</strong> <code>Java heap space</code> check hprof dominator; <code>pthread_create failed</code> check thread creation stack/count; <code>EMFILE</code> check fd type. If ExitInfo is LOW_MEMORY/LMK, combine with RSS/PSS and system pressure; don't just tune Java heap.</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🔒</span><b>Script 4: Stuck but No ANR Yet</b><span class="pt">DEADLOCK</span></div><div class="pb"><pre><code>PID=$(adb shell pidof -s com.example.app)
+adb shell kill -3 $PID        <span class="c"># Request Java thread dump from ART process, output location varies by OS</span>
+adb logcat -d -v threadtime &gt; manual-thread-dump.log</code></pre><p>Capture 2-3 copies consecutively: identical lock chains without movement look more like deadlocks, while a progressing stack might just be slow. When main is waiting for a lock, find the owner; if the owner is in Binder/IO, trace further down; debugger attach changes timing and should only be used as a supplement.</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🧯</span><b>Script 5: Startup Crash Storm, Users Can't Open the App</b><span class="pt">RECOVERY</span></div><div class="pb"><p><strong>Fuse:</strong> Record startup attempts at the earliest and most stable process entry point possible; if the same version fails N times consecutively in a short period, enter minimal recovery mode: turn off remote switches, skip optional initializations, clear safely rebuildable caches, and show a recovery/feedback portal.</p><p><strong>Boundaries:</strong> The counter must be persisted across processes and have a successful startup reset, time window, and version isolation; do not automatically delete user databases or login states. Ultimately, the root cause must still be fixed; the fuse is only responsible for stopping the bleeding.</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">✂️</span><b>Script 6: Bisecting Unknown Regressions</b><span class="pt">BISECT</span></div><div class="pb"><pre><code>git bisect start
+git bisect bad BAD_COMMIT
+git bisect good LAST_KNOWN_GOOD
+<span class="c"># Use the same automated reproduction script to evaluate each time, then execute git bisect good/bad</span>
+git bisect reset</code></pre><p>When there is no stable reproduction, bisect feature flags, initialization modules, or request paths instead; CI should save every candidate artifact and mapping. An unstable evaluation script will pollute the entire bisection; quantify the false positive rate first.</p></div></div>
+</div>
+
+<h3 data-reveal>Detective Work Must End in Defense Lines</h3>
+<table class="tbl">
+  <tr><th>Script</th><th>Eradication</th><th>Recurrence Prevention Verification</th></tr>
+  <tr><td>OOM / fd / thread</td><td>Fix leaks/unbounded caches, consolidate thread pools, structurally close fds</td><td>heap, Threads, and fd return to steady state after stress replay, set budget alerts</td></tr>
+  <tr><td>Stuck / Deadlock</td><td>Unify lock order, forbid I/O/Binder while holding locks, change to message passing if necessary</td><td>Concurrency testing + multiple thread dumps/Perfetto show no more lock rings</td></tr>
+  <tr><td>Bisected Regression</td><td>Make a minimal fix or rollback on the first bad commit</td><td>Add the evaluation script to CI, and establish a traceable archive for mapping/artifacts</td></tr>
+</table>
+
+<div class="callout tip"><b class="t">Universal Mindset for Intractable Issues</b>Break down "intermittent" into observable dimensions, turn "suspicions" into falsifiable hypotheses, and tie "fixed" to regression evidence. Logs, keys, traces, bisections, and rollouts are essentially all about reducing unknown variables.</div>
+<p class="src">Sources: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://developer.android.com/topic/performance/memory-overview" target="_blank">Android Memory Management Overview</a> · <a href="https://source.android.com/docs/core/tests/debug" target="_blank">AOSP Debugging Entry Points</a> · <a href="https://git-scm.com/docs/git-bisect" target="_blank">Git bisect documentation</a>. Startup fuses, feature flag bisection, and multiple <code>kill -3</code> comparisons belong to engineering practices; signal output, <code>/proc</code> visibility, and OEM log entry points vary with Android/ROM/permissions and must be verified on the target device.</p>
+</section>
+
+<div class="divider"></div>
+<section id="ai-method">
+<div class="sec-tag">Master 09</div>
+<h2>AI Integration: Evidence Quality Determines Triage Ceiling</h2>
+
+<p><strong>AI Triage Quality ≈ Evidence Completeness × Issue Constraints × Verification Feedback.</strong> Models excel at finding correlations across stacks, source code, diffs, and distributions, but they cannot see mappings, runtime states, and failed samples you didn't provide. Standardize the input first before talking about prompt engineering tricks.</p>
+<div class="callout note"><b class="t">Companion Reading</b>For the general version of the methodology in this chapter (context as primary resource, verification loop, seven mindsets), see <a href="ai-leverage-guide.html">AI Leverage Panorama and Mindset</a>; for usage of the Claude Code tool itself, see <a href="claude-code-guide.html">Usage Guide</a>.</div>
+
+<h3 data-reveal>Crash Context Bundle: Unified Input Contract for Humans and AI</h3>
+<table class="tbl">
+  <tr><th>Material</th><th>Minimum Requirements</th><th>Risks When Missing</th></tr>
+  <tr><td>Complete Primary Evidence</td><td>Retraced Java stack, matched tombstone, complete ANR main + lock chains; retain cause and thread names</td><td>Only seeing the symptom frame, misjudging framework callers as root causes</td></tr>
+  <tr><td>Source Code and Version</td><td>First business frame related files, callers, build commit, mapping/Build ID</td><td>Analyzing wrong versions or fabricating non-existent APIs</td></tr>
+  <tr><td>Distribution and Impact</td><td>affected users, version/OS/model/country, first occurrence time, rollout track</td><td>Treating small sample coincidences as universal root causes</td></tr>
+  <tr><td>Runtime Context</td><td>Stable low-cardinality keys, critical state transitions, repro steps, network/permission/account status</td><td>Can only explain "where it crashed", cannot explain "why it got here"</td></tr>
+  <tr><td>Change Evidence</td><td>Recent <code>git log -p</code> of related files, dependency/target SDK/switch changes</td><td>Missing the most likely new regression</td></tr>
+  <tr><td>Negative Samples</td><td>Normal devices/paths on the same version, unaffected groups</td><td>Hypotheses cannot be falsified, correlation treated as causation</td></tr>
+</table>
+<div class="callout note"><b class="t">Evidence Gating</b>When mapping/Build ID are mismatched, stacks are truncated, or ANR only has a single late snapshot, the AI's correct output should be "Insufficient evidence + the next retrieval command", not confidently giving a patch.</div>
+
+<h3 data-reveal>Five-Part Prompt: Ready to Copy</h3>
+<pre><code>You are an Android stability owner. Please strictly separate evidence from hypotheses; do not hallucinate source code,
+API behaviors, or missing logs. When evidence is insufficient, point out the gaps first, do not just give a patch.
+
+[Primary Evidence]
+Paste the full retrace stack / ANR trace / tombstone, keeping threads, Caused by, Build ID.
+
+[Environment and Distribution]
+App version and commit: ___; Android/Model/ABI: ___;
+Affected users and time trend: ___; feature flags/business state: ___; normal control group: ___.
+
+[Related Source Code and Changes]
+Paste the first business frame, caller, lifecycle/concurrency related code, and recent diffs.
+
+[Task and Output]
+1. First list "confirmed facts", citing specific evidence lines for each;
+2. Provide at most 3 root cause hypotheses, ranked by probability × impact;
+3. Provide falsification conditions, minimal verification commands/tests, and expected results for each hypothesis;
+4. Only provide a minimal fix after verification passes, and explain lifecycle, concurrency, and compatibility boundaries;
+5. Provide regression tests, rollout metrics, and recurrence prevention items;
+6. Output: Facts table → Hypotheses table → Next steps → Fix candidates → Risks/Unknowns.</code></pre>
+
+<div class="duo">
+  <div class="bad"><b>Bad Prompt</b> "Take a look at this crash and fix it." Only a half-screenshot, no version, source code, distribution, nor requests for verification; the AI can only guess based on common patterns.</div>
+  <div class="good"><b>Good Prompt</b> Provides a full evidence bundle, normal control group, and recent diffs; requires facts to be cited line-by-line, at most 3 hypotheses, each hypothesis must be falsifiable, and no code edits allowed before verification.</div>
+</div>
+
+<h3 data-reveal>Three High-Value Task-Oriented Prompts</h3>
+<div class="plays">
+  <div class="play"><div class="ph"><span class="pic">💥</span><b>Stack → Source Code Root Cause</b><span class="pt">STACK</span></div><div class="pb"><p>"Start from the deepest cause and find the first business frame; trace upwards along the parameter/state production chain. Output where null values/invalid states entered from, why they didn't fail at the boundary, and which callers need to be read. Do not treat null checks as default answers."</p></div></div>
+  <div class="play"><div class="ph"><span class="pic">⏳</span><b>ANR → Lock Chains and Scheduling</b><span class="pt">TRACE</span></div><div class="pb"><p>"First determine if main is Running/Runnable/Blocked/Waiting; if waiting for a lock, trace the owner by object address down to the running thread; if Binder, point out which peer/system_server trace segment is needed; distinguish between App blocking, CPU starvation, and late snapshots."</p></div></div>
+  <div class="play"><div class="ph"><span class="pic">🗂️</span><b>Top 20 → Root Cause Portfolios</b><span class="pt">PORTFOLIO</span></div><div class="pb"><p>"Do not mechanically group by exception class. Cluster by common root cause/fix levers: lifecycle, state boundaries, version compatibility, memory budgets, threads/locks, symbol/release chains. Output affected users, consolidatable fix items, priorities, and responsible modules."</p></div></div>
+</div>
+
+<h3 data-reveal>AI Anti-Hallucination Verification Protocol</h3>
+<ol class="steps">
+  <li><strong>Cite Evidence:</strong> All facts must point to stack frames, source code lines, distributions, or official docs; if they cannot be cited, mark them as hypotheses.</li>
+  <li><strong>Counterexample Checks:</strong> Proactively ask "What evidence would overturn this conclusion? Why didn't the normal control group trigger this?".</li>
+  <li><strong>Tool Verification:</strong> Let the AI provide commands, but execute them in a controlled environment; backfill the command output before updating probabilities.</li>
+  <li><strong>Minimal Patch:</strong> Only modify the root cause path and attach failing tests; do not accept large-scale "convenient refactoring".</li>
+  <li><strong>Independent Review:</strong> A second agent looks only for misattributions, uncovered boundaries, and regression risks, ignoring the first agent's "confidence".</li>
+  <li><strong>Online Closed Loop:</strong> Passing tests doesn't close the case; observe the rollout for new clusters, user rates, and side effects, and close the issue only after reaching the observation window.</li>
+</ol>
+<p class="src">Sources: <a href="https://firebase.google.com/docs/crashlytics/ai-assistance" target="_blank">Firebase: Crashlytics AI assistance</a> · <a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-workflow">
+<div class="sec-tag">Master 10</div>
+<h2>AI Workflows and Original crash-triage Skill</h2>
+
+<h3 data-reveal>Workflow 1: Official Crashlytics MCP × Coding Agent</h3>
+<pre><code><span class="c"># Option A (Interactive official recommendation): Install Firebase plugin; choose between Option A and B</span>
+claude plugin marketplace add firebase/firebase-tools
+claude plugin install firebase@firebase
+claude plugin marketplace list
+
+<span class="c"># Option B (Production pinned version): Don't install the plugin above, manually connect only Crashlytics</span>
+<span class="c"># After resolving the current version initially, write the exact version number into config and changelogs</span>
+FIREBASE_TOOLS_VERSION=$(npm view firebase-tools version)
+claude mcp add firebase-crashlytics npx -- \
+  -y firebase-tools@$FIREBASE_TOOLS_VERSION mcp \
+  --dir "$(pwd)" --only crashlytics
+claude mcp list
+
+<span class="c"># View and review the tools actually exposed by this pinned version; do not automatically follow latest later</span>
+npx -y firebase-tools@$FIREBASE_TOOLS_VERSION mcp \
+  --only crashlytics --generate-tool-list</code></pre>
+<ol class="steps">
+  <li>First, let the agent "List the Top 5 new issues in this version, sorted by affected users and growth rate, without modifying code for now";</li>
+  <li>For the 1st issue, pull multiple event samples, version/device distributions, and notes to generate the evidence bundle from Chapter 09; clients supporting MCP prompts can run <code>crashlytics:connect</code>;</li>
+  <li>Have the agent locate related source code and diffs, outputting only facts/hypotheses/verification; write failing tests and minimal patches only after verification;</li>
+  <li>After human review, the agent can write the investigation summary and PR links back to the note; closing an issue is a write operation and must be human-confirmed.</li>
+</ol>
+<div class="callout warn"><b class="t">Least Privilege</b>MCP uses current Firebase CLI credentials, and Crashlytics MCP is still Experimental as of 2026-07-15. The example uses <code>--only crashlytics</code> to narrow the feature group, but core tools may still exist; the generated tool list must be reviewed. Production projects should use dedicated least-privilege identities and pinned verified firebase-tools versions; forbid agents from automatically closing issues, merging code, or reading unrelated user data.</div>
+
+<h3 data-reveal>Workflow 2: Alerts → CI Automated Triage, Default Read-Only</h3>
+<h4><code>triage-schema.json</code> (Claude and Codex share the same output contract)</h4>
+<pre><code>{
+  "type": "object",
+  "properties": {
+    "facts": {"type": "array", "items": {"type": "string"}},
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cause": {"type": "string"},
+          "verification": {"type": "string"}
+        },
+        "required": ["cause", "verification"],
+        "additionalProperties": false
+      }
+    },
+    "risk": {"type": "string"}
+  },
+  "required": ["facts", "hypotheses", "risk"],
+  "additionalProperties": false
+}</code></pre>
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+ISSUE_JSON="$1"                         <span class="c"># Desensitized evidence bundle generated by webhook worker, do not accept arbitrary URLs</span>
+test -f "$ISSUE_JSON"
+test "$(wc -c &lt; "$ISSUE_JSON")" -lt 10485760
+test -f triage-schema.json
+
+OUTPUT_DIR=${OUTPUT_DIR:-"$(pwd)/triage-output"}
+mkdir -p "$OUTPUT_DIR"
+RUN_DIR=$(mktemp -d)
+trap 'rm -rf "$RUN_DIR"' EXIT
+cp "$ISSUE_JSON" "$RUN_DIR/issue.json"
+cp triage-schema.json "$RUN_DIR/triage-schema.json"
+cd "$RUN_DIR"                            <span class="c"># Empty directory: do not mount source code, credentials, or user config</span>
+SCHEMA=$(jq -c . triage-schema.json)
+
+AI_PROVIDER=${AI_PROVIDER:-claude}       <span class="c"># claude or codex, run only one</span>
+case "$AI_PROVIDER" in
+  claude)
+    cat issue.json | claude --bare -p \
+      "Perform read-only triage only. Separate facts and hypotheses; output root cause candidates, verification steps, and regression risks; modifying code is forbidden." \
+      --permission-mode plan --tools "" \
+      --output-format json --json-schema "$SCHEMA" \
+      | jq -e '.structured_output' &gt; "$OUTPUT_DIR/triage-result.json"
+    ;;
+  codex)
+    cat issue.json | codex exec --ephemeral --ignore-user-config --ignore-rules \
+      --skip-git-repo-check --sandbox read-only \
+      --output-schema triage-schema.json \
+      "Analyze the desensitized evidence bundle in stdin; perform triage only, do not modify files" \
+      -o "$OUTPUT_DIR/triage-result-codex.json"
+    ;;
+  *) echo "AI_PROVIDER must be claude or codex" &gt;&amp;2; exit 2 ;;
+esac</code></pre>
+<p>The production pipeline should be: Velocity alert/webhook → Queue deduplication and rate limiting → Pull evidence with server credentials → Desensitization and size limits → Read-only AI triage in an isolated container → Schema validation → Create/update issue → Human decides whether to trigger a repair agent. The isolated container <strong>must not contain Firebase/business credentials, source code, or user configs</strong>; Claude/Codex model authentication should be injected as a short-lived, low-quota identity by a CI secret store in a single process, or done through a controlled proxy that doesn't expose keys to the tool process, and network egress restricted to model services. Webhook content is untrusted input; workspace isolation, disabled tools, ephemeral sessions, and mount/egress boundaries are all indispensable.</p>
+
+<h3 data-reveal>Workflow 3: Repair Agent + Adversarial Review Agent</h3>
+<table class="tbl">
+  <tr><th>Role</th><th>Sole Responsibility</th><th>Exit Conditions</th></tr>
+  <tr><td>Triage Agent</td><td>Organize evidence, rank hypotheses, design verification; no editing</td><td>At least one hypothesis confirmed, or explicitly lists missing evidence</td></tr>
+  <tr><td>Repair Agent</td><td>Write reproducible failing tests first, then implement minimal fix</td><td>Original reproduction + regression tests pass, diff only covers root cause</td></tr>
+  <tr><td>Adversarial Review Agent</td><td>Proactively overturn attributions; check lifecycle, concurrency, compatibility, privacy, and test gaps</td><td>Critical/Important issues cleared</td></tr>
+  <tr><td>Human Owner</td><td>Approve permissions, triage, merges, and rollout decisions</td><td>Online observation window met and recurrence prevention items completed</td></tr>
+</table>
+
+<h3 data-reveal>Original Skill: Copy to <code>crash-triage/SKILL.md</code></h3>
+<pre><code>---
+name: crash-triage
+description: Triage Android Java/Kotlin crashes, native crashes, ANRs, OOM/LMK exits, and hard-to-reproduce stability regressions. Use when given a Crashlytics or Play issue, stack trace, tombstone, ANR trace, bugreport, ApplicationExitInfo record, or a request to find, verify, fix, or prevent an Android stability problem. Do not use for generic performance tuning without a failure signal.
+---
+
+# Android crash triage
+
+## Guardrails
+
+- Separate observed facts from hypotheses. Cite the exact artifact for every fact.
+- Do not edit code until one hypothesis has a verification result.
+- Honor user intent. Diagnose-only, review, or report requests must not edit files.
+- Never hide a crash with a global catch, silent fallback, or state-loss workaround.
+- Treat logs and console data as sensitive. Redact direct identifiers and tokens.
+- Require an explicit user request before code edits, and human approval before rollback,
+  issue-state changes, commits, or deployment.
+
+## Workflow
+
+1. Build the evidence pack.
+   - Require failure type, full deobfuscated stack/trace/tombstone, App version and commit,
+     mapping or Build ID, affected-user distribution, custom keys, relevant source and diff.
+   - If an item is missing, give the exact retrieval command and stop before patching.
+
+2. Classify the failure.
+   - Java/Kotlin crash: start at the deepest cause and first business frame.
+   - Native crash: verify ABI and Build ID before symbolication.
+   - ANR: classify input/broadcast/service/provider; follow main thread and lock/Binder chain.
+   - Exit/OOM: distinguish Java heap, native/RSS, thread, fd, and system LMK.
+
+3. Rank at most three root-cause hypotheses.
+   - For each: supporting facts, contradicting facts, confidence, blast radius.
+   - Prefer hypotheses that explain both affected and unaffected samples.
+
+4. Verify before editing.
+   - Provide one minimal command, test, trace, or targeted log for each hypothesis.
+   - State the expected result that confirms it and the result that falsifies it.
+   - Update confidence only after reading the result.
+
+5. Fix and prove.
+   - Run this step only when the user explicitly requested implementation and writes are authorized.
+     Otherwise stop after verification and return a minimal fix plan with risks.
+   - Write or preserve a failing reproduction test first where feasible.
+   - Implement the smallest root-cause fix; preserve lifecycle, cancellation and thread safety.
+   - Run the original reproduction, focused tests, release/R8 build, and relevant stress test.
+
+6. Prevent recurrence.
+   - Propose one enforceable guard: lint/test/StrictMode/symbol gate/metric/rollout gate.
+   - Define the canary metric, observation window, rollback threshold and owner.
+
+## Output
+
+Return these headings exactly:
+1. Impact and classification
+2. Verified facts
+3. Missing evidence
+4. Ranked hypotheses
+5. Verification plan and results
+6. Minimal fix and risks
+7. Regression tests
+8. Rollout and prevention
+</code></pre>
+<p>Keep SKILL.md concise, put deterministic repetitive work into <code>scripts/</code>: e.g., <code>retrace-stack.sh</code> handles finding mappings by version and validating, <code>unpack-bugreport.py</code> extracts only ANR/tombstone/logcat indices, <code>check-native-build-id.sh</code> compares tombstones with so files. Scripts must fail and exit on missing/multiple candidate versions; "guessing the closest one" is forbidden. Put team schemas, severity levels, and privacy rules in <code>references/</code>, load on demand, and don't cram all background into the main Skill body.</p>
+
+<h3 data-reveal>How to Tell if AI Truly Improves Efficiency, Rather Than Just Producing More Docs</h3>
+<table class="tbl">
+  <tr><th>Metric</th><th>Definition</th><th>Anti-Cheat</th></tr>
+  <tr><td>Evidence Completeness Time</td><td>P50/P90 from alert to full context bundle</td><td>Missing mapping/Build ID does not count as complete</td></tr>
+  <tr><td>First Verifiable Hypothesis Time</td><td>Time from alert to generating and executing the first falsification action</td><td>Just saying "it might be" doesn't count</td></tr>
+  <tr><td>First-Time Fix Rate</td><td>Proportion of fixes requiring no rollback/re-fix and no recurrence in observation window</td><td>Must track by the same root cause cluster</td></tr>
+  <tr><td>AI Suggestion Adoption Rate</td><td>Proportion of suggestions verified by evidence and eventually merged</td><td>Do not chase artificially high numbers; track misleading rates simultaneously</td></tr>
+  <tr><td>Recurrence Prevention Land Rate</td><td>Proportion of RCA commitments entering lint/test/gates/monitoring on time</td><td>Written in docs but with no owner/deadline doesn't count</td></tr>
+</table>
+<p class="src">Sources: <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Firebase Crashlytics MCP</a> · <a href="https://code.claude.com/docs/en/headless" target="_blank">Claude Code Non-interactive Mode</a> · <a href="https://learn.chatgpt.com/docs/non-interactive-mode" target="_blank">Codex Non-interactive Mode</a> · <a href="https://developers.openai.com/codex/skills" target="_blank">Codex Skills</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="governance">
+<div class="sec-tag">Master 11</div>
+<h2>Governance System: From Firefighting to Stability Compound Interest</h2>
+
+<h3 data-reveal>Four Lines of Defense</h3>
+<table class="tbl">
+  <tr><th>Defense Line</th><th>Mechanism</th><th>Enforceable Gates</th></tr>
+  <tr><td><span class="pill a">Entry</span></td><td>Kotlin null safety boundaries, lint/Detekt, StrictMode, unit/migration/process rebuild tests, review checklists</td><td>release + R8 smoke; mapping/native symbols archived and retrievable; tests exist for high-risk new APIs</td></tr>
+  <tr><td><span class="pill b">Rollout</span></td><td>Phased releases, feature flags, viewing version adoption rates alongside new clusters</td><td>Automatically pause if exceeding internal Crash/ANR error budgets or if new startup/core path crashes appear</td></tr>
+  <tr><td><span class="pill c">Monitoring</span></td><td>Vitals + Crashlytics + ExitInfo; break down by new/existing, users/events, global/model</td><td>Alerts must route to owners, with context bundle links, severity levels, bleed-stopping buttons, and SOPs</td></tr>
+  <tr><td><span class="pill d">Review</span></td><td>Timeline, root causes, why wasn't it caught earlier, separate bleed-stopping from permanent fixes</td><td>Every S-level issue must yield at least 1 automatable recurrence prevention item with an owner and deadline</td></tr>
+</table>
+
+<h3 data-reveal>SLOs and Error Budgets: Far Below Platform Red Lines</h3>
+<p>Play's bad behavior threshold is a store penalty line, not a quality goal. Teams should set stricter SLOs based on business criticality, historical baselines, and user scale, and separate new issues from existing debt. The following is just a <strong>sample starting point, not an official Android goal</strong>:</p>
+<table class="tbl">
+  <tr><th>Metric</th><th>Sample Goal</th><th>Gates</th></tr>
+  <tr><td>User-Perceived Crash Rate</td><td>Critical Apps ≤0.20%, or crash-free users ≥99.8%</td><td>Pause immediately if a new version degrades against baseline and stats are reliable, don't wait until 1.09%</td></tr>
+  <tr><td>User-Perceived ANR Rate</td><td>≤0.10%</td><td>Trigger a task force for new input dispatch clusters or single-model spikes</td></tr>
+  <tr><td>Startup/Core Path Crashes</td><td>Zero tolerance for new ones</td><td>Stop the bleeding first for any reliable new cluster</td></tr>
+  <tr><td>Evidence Completeness Rate</td><td>Top issues ≥95% have matched versions and identifiable owners</td><td>Missing mapping/symbol/version archives treated as a release chain failure</td></tr>
+</table>
+
+<h3 data-reveal>On-Call SOP: Triage → Stop Bleeding → Eradicate</h3>
+<ol class="steps">
+  <li><strong>Triage:</strong> Base on user impact, growth rate, core paths, and recoverability, rather than exception names; startup storms/data corruption have the highest priority.</li>
+  <li><strong>Stop Bleeding:</strong> Pause rollouts, rollback, flip switches, server-side degradation, or recovery modes; record the time and effect of every action.</li>
+  <li><strong>Eradicate:</strong> Build evidence bundles, verify hypotheses, make minimal fixes, run regressions, and rollout; bleed-stopping patches cannot replace permanent fixes.</li>
+  <li><strong>Review:</strong> Answer "why did it happen, why didn't tests catch it, why didn't monitoring catch it earlier, what automated mechanism can prevent similar issues".</li>
+</ol>
+
+<h3 data-reveal>One-Page Closure Checklist</h3>
+<ul>
+  <li>Impact and version scopes quantified; Play vs Crashlytics reporting metrics specified;</li>
+  <li>Primary evidence matched, root causes have reproducible/falsifiable results, not just inferred via AI/clustering;</li>
+  <li>Bleed-stopping and permanent fixes recorded separately, patches have original repros and boundary regressions;</li>
+  <li>Rollout observation windows, success metrics, rollback thresholds, and owners explicitly defined;</li>
+  <li>Similar defense lines added to at least one of lint/test/StrictMode/release gates/monitoring;</li>
+  <li>Crashlytics/ticket notes link to PRs, verification evidence, and RCAs, making it easy for the next on-call person to trace.</li>
+</ul>
+
+<h3 data-reveal>Official Resource Index</h3>
+<table class="tbl">
+  <tr><th>Topic</th><th>Preferred Materials</th></tr>
+  <tr><td>Crash / ANR / Vitals</td><td><a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals Overview</a> · <a href="https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs" target="_blank">Diagnose ANRs</a></td></tr>
+  <tr><td>Native / Memory</td><td><a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">Native crash</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory debugging</a></td></tr>
+  <tr><td>System Forensics</td><td><a href="https://developer.android.com/studio/debug/bug-report" target="_blank">Bugreport</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></td></tr>
+  <tr><td>Play / Firebase</td><td><a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Play Technical Quality</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Crashlytics</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Official MCP</a></td></tr>
+  <tr><td>AI Engineering</td><td><a href="claude-code-guide.html">Claude Code Guide in this Repo</a> · <a href="codex-guide.html">Codex Guide in this Repo</a> · <a href="https://agentskills.io/specification" target="_blank">Agent Skills Specification</a></td></tr>
+</table>
+<div class="callout tip"><b class="t">Ultimate Capability Standard</b>Novices can complete their first valid ticket in 30 minutes using 00–02; Intermediates can reconstruct ANR/Native/device scenes using 03–07; Seniors can handle non-reproducible issues and safely integrate AI using 08–10; Owners use 11 to turn every incident into systemic capabilities that prevent it from happening again.</div>
+<p class="src">Sources: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Google Play Technical Quality</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Firebase Crashlytics</a></p>
+</section>
+
+<div class="footer">
+  <p><strong>Note</strong>: This guide is based on official Android documentation (developer.android.com, support.google.com, firebase.google.com, verified as of 2026-07) and engineering practices; it is not an official publication. APIs and backend interfaces evolve over time, refer to official documentation for the most accurate information.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="Back to Top">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

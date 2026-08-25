@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Login errors, configuration conflicts, and machine migration disasters cured in one page: 30-second symptom quick check table, 5-layer diagnostic method + one-click health check script, dual-tool 5-category emergency guide, shared computer / new computer / headless machine scenarios, 3-level universal reset solutions.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI CLI Environment and Login Emergency Manual · Claude Code × Codex · 2026.07">
+<meta property="og:description" content="Login errors, configuration conflicts, and machine migration disasters cured in one page: 30-second symptom quick check table, 5-layer diagnostic method + one-click health check script, dual-tool 5-category emergency guide, shared computer / new computer / headless machine scenarios, 3-level universal reset solutions.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/env-auth-clinic.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI CLI Environment and Login Emergency Manual · Claude Code × Codex · 2026.07</title>
+<style>
+:root{
+  --accent:#e11d48; --accent-2:#fb7185; --accent-soft:#fdeef2;
+  --ink:#180a10; --bg:#ffffff; --bg-side:#fdf9fa; --bg-code:#1b0f14;
+  --text:#27201f; --text-2:#645a5c; --text-3:#998e91;
+  --border:#f0e6e8; --border-2:#e3d5d8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#fdf2f5;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f8eef1;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f7ebef;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(225,29,72,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(251,113,133,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fda4af;font-weight:600;background:rgba(225,29,72,.16);
+  border:1px solid rgba(225,29,72,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fb7185,#fecdd3);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbb2ba;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a98f97}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#f6d3dc}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f8eef1;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#be123c}
+pre{background:var(--bg-code);color:#efdfe3;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#a08289}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fbf6f7}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fcf8f9}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fdeef2;color:#be123c}
+.pill.b{background:#e7f7f1;color:#0b7a5f}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+/* Five-layer diagnostic cards */
+.layers{display:flex;flex-direction:column;gap:0;margin:20px 0 24px}
+.layer{display:flex;gap:16px;border:1px solid var(--border);background:#fff;padding:16px 20px;position:relative}
+.layer:first-child{border-radius:12px 12px 0 0}
+.layer:last-child{border-radius:0 0 12px 12px}
+.layer+.layer{border-top:none}
+.layer .ln{flex:none;width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);
+  font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+.layer b{display:block;font-size:14.5px;margin-bottom:2px}
+.layer p{font-size:13px;color:var(--text-2);margin:0}
+.layer code{font-size:12px}
+
+/* Emphasize first column in symptom first-aid table */
+.er td:first-child{font-weight:600;min-width:150px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(24,10,16,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🚑</span>Environment & Login Emergency Manual<span class="sub">Claude Code × Codex</span></div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
+    <a href="../index.en.html">◂ Topic Center</a>
+    <span>Official Docs Verified · 2026-07-18</span>
+      <span>Verified 2026-08-17</span>
+  
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter sections..."><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">Methodology</div>
+    <a href="#overview"><span class="no">00</span>Symptom Quick Check + Problem Map</a>
+    <a href="#diagnose"><span class="no">01</span>5-Layer Diagnosis + Health Check Script</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Claude Code</div>
+    <a href="#claude-cred"><span class="no">02</span>Credential Mechanism & Priority</a>
+    <a href="#claude-config"><span class="no">03</span>settings.json Complete Guide</a>
+    <a href="#claude-er"><span class="no">04</span>Symptom Emergency Guide</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Codex</div>
+    <a href="#codex-cred"><span class="no">05</span>Credential Mechanism & Storage</a>
+    <a href="#codex-config"><span class="no">06</span>config.toml Complete Guide</a>
+    <a href="#codex-er"><span class="no">07</span>Symptom Emergency Guide</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Scenarios</div>
+    <a href="#shared"><span class="no">08</span>Shared Computer / Others' Configs</a>
+    <a href="#machines"><span class="no">09</span>New Computer / Multi-Device Roaming</a>
+    <a href="#headless"><span class="no">10</span>SSH / Containers / CI</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Case Studies</div>
+    <a href="#cases"><span class="no">11</span>Case Reviews: Symptoms to Root Causes</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Ultimate Solutions</div>
+    <a href="#reset"><span class="no">12</span>Universal Fix: 3-Level Reset</a>
+    <a href="#map"><span class="no">13</span>Dual Tool Comparison & Resources</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🚑 Login Errors · Config Conflicts · Migration Disasters —— Cured in One Page</div>
+  <h1>Environment & Login<br><span class="grad">Emergency Manual</span></h1>
+  <p class="lead">"I'm a Pro member, why am I charged for API?" "It breaks when I switch computers" "Someone else configured this machine, and now my login is messed up" —— These are not mysteries, they can all be pinpointed to one of the 5 layers. This manual gives you a systematic inspection method, dual-tool symptom emergency guides, three major scenario scripts, and a tiered universal reset solution.</p>
+  <div class="meta">
+    <span>5-Layer Diagnosis</span><span>1-Click Health Script</span><span>3-Level Reset</span><span>Claude Code × Codex Comparison</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5 Layers</b><span>Binary → Env Vars → Credentials → Config → Network, any symptom falls into one layer</span></div>
+  <div class="stat"><b>1 Script</b><span>Read-only check, understand full machine state in 30s</span></div>
+  <div class="stat"><b>3-Level Reset</b><span>Soft reset → Credential reset → Nuke reset, step-by-step without friendly fire</span></div>
+  <div class="stat"><b>3 Scripts</b><span>Shared PC / New PC / Headless, copy-paste by scenario</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">Methodology 00</div>
+<h2>Symptom Quick Check + Problem Map</h2>
+
+<div class="callout tip"><b class="t">⚡ 3 Sentences to Save Your Life (Try these first, 70% of problems end here)</b>
+① <code>env | grep -iE 'anthropic|openai'</code> to catch hijacked env vars, and <code>unset</code> them one by one;
+② Clean re-login: <code>/logout</code> then <code>/login</code> (Codex: <code>codex logout && codex login</code>);
+③ Verify identity: <code>/status</code> / <code>codex login status</code>, confirm the account and login method are what you expect. If not fixed, check symptoms below.</div>
+
+<h3 data-reveal>Symptom Quick Check: Pinpoint your problem in 30 seconds</h3>
+<table class="tbl er">
+  <tr><th>If you encounter...</th><th>Go to</th></tr>
+  <tr><td>Can't login / Repeatedly asks to login / Invalid API key</td><td><a href="#claude-er">Claude Code ER Guide</a> · <a href="#codex-er">Codex ER Guide</a></td></tr>
+  <tr><td>I am a Pro member, but being charged API fees / org disabled</td><td><a href="#claude-cred">Credential Priority</a> (Root Cause) → <a href="#claude-er">ER Guide · Billing & Quota</a></td></tr>
+  <tr><td>Prompts usage limit / 429 / 529</td><td>ER Guide · Billing & Quota (<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>) —— Not a login issue, don't reinstall blindly</td></tr>
+  <tr><td>Someone else configured this PC, and it messes up when I use it</td><td><a href="#shared">Script A · Shared PC</a></td></tr>
+  <tr><td>Got a new PC, want to migrate environment exactly as is</td><td><a href="#machines">Script B · New PC / Multi-device Roaming</a></td></tr>
+  <tr><td>SSH / Container / CI has no browser, how to login</td><td><a href="#headless">Script C · Headless Environment</a></td></tr>
+  <tr><td>Changed config doesn't take effect / Company PC configs locked</td><td>ER Guide · Configuration (<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>)</td></tr>
+  <tr><td>Company Proxy / Intranet: TLS errors, download failures</td><td>ER Guide · Network & Proxy (<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>)</td></tr>
+  <tr><td>Command not found / Weird versions / Updates have no effect</td><td>ER Guide · Installation & Version (<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>)</td></tr>
+  <tr><td>Can't explain what's wrong, want to systematically check</td><td><a href="#diagnose">01 · 5-Layer Diagnosis + Health Script</a></td></tr>
+  <tr><td>Want to see what a full troubleshooting process looks like</td><td><a href="#cases">11 · Case Reviews</a> —— 4 real cases from symptom to root cause</td></tr>
+  <tr><td>Tried everything, want to safely start over</td><td><a href="#reset">12 · Universal Fix: 3-Level Reset</a></td></tr>
+</table>
+
+<h3 data-reveal>Problem Map: All environment issues have 4 root causes</h3>
+<p>Claude Code and Codex "environment issues" seem diverse, but only have <strong>4 root causes</strong>. Recognize the root cause, and all following chapters will map and fix them here.</p>
+
+<table class="tbl">
+  <tr><th>Root Cause</th><th>Typical Symptoms</th><th>Why it happens</th></tr>
+  <tr><td><strong>① Multiple installations coexist</strong></td><td>Versions jump back and forth, update has no effect, command acts weird</td><td>Native installer, npm global, Homebrew/WinGet, IDE extension built-in copies —— 4 channels can coexist, whichever is earlier in PATH wins</td></tr>
+  <tr><td><strong>② Credential sources conflict</strong></td><td>"I'm logged in but says Invalid API key", Pro member billed for API, organization disabled</td><td>Keys in environment variables have <strong>higher priority than</strong> your browser OAuth subscription —— One leftover <code>export ANTHROPIC_API_KEY</code> from someone else can hijack your entire session</td></tr>
+  <tr><td><strong>③ Configuration cascading override</strong></td><td>"Changes don't take effect", company PC settings locked</td><td>Enterprise managed &gt; CLI arguments &gt; Project local &gt; Project &gt; User layer —— The layer you modified might be quietly overridden by a higher layer</td></tr>
+  <tr><td><strong>④ Network & System Environment</strong></td><td>Login stuck, TLS errors, OAuth callback failed, download 403</td><td>Company proxy/Private CA/Firewall blocking callback port; Inaccurate system clock can also fail token validation</td></tr>
+</table>
+
+<div class="callout note"><b class="t">One-Sentence Core Mantra</b>When encountering any environment issue, <strong>DO NOT just reinstall</strong>. Use the 5-layer diagnosis in the next chapter to pinpoint which layer the issue is in —— 90% of "complex issues" are category ② (Credential conflict), clearing one environment variable fixes it; reinstalling instead introduces category ① problems.</div>
+
+<h3 data-reveal>Two Tools, One Mental Model</h3>
+<p>Good news: The environment architecture of the two tools is highly isomorphic. Learn the methodology once, apply it to both.</p>
+<table class="tbl">
+  <tr><th></th><th><span class="pill a">Claude Code</span></th><th><span class="pill b">Codex</span></th></tr>
+  <tr><td>Home Directory</td><td><code>~/.claude</code> (Can be moved via <code>CLAUDE_CONFIG_DIR</code>)</td><td><code>~/.codex</code> (Can be moved via <code>CODEX_HOME</code>)</td></tr>
+  <tr><td>Subscription Login</td><td><code>/login</code> → Browser OAuth (claude.ai account)</td><td><code>codex login</code> → Browser OAuth (ChatGPT account, callback <code>localhost:1455</code>)</td></tr>
+  <tr><td>Credential Storage</td><td>macOS Keychain; Linux/Win is <code>.credentials.json</code></td><td><code>auth.json</code> (Plain text) or system keyring (configurable)</td></tr>
+  <tr><td>Health Check Cmd</td><td><code>claude doctor</code> / In-session <code>/status</code> <code>/doctor</code></td><td>In-session <code>/status</code> <code>/debug-config</code>; Login logs <code>codex-login.log</code></td></tr>
+</table>
+<p class="src">Full comparison table in <a href="#map">Chapter 13</a>. All conclusions on this page are verified against official docs 2026-07 edition, sources are in footnotes of each section.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="diagnose">
+<div class="sec-tag">Methodology 01</div>
+<h2>5-Layer Diagnosis + 1-Click Health Check Script</h2>
+
+<p>The systematic inspection method has only one rule: <strong>Check layer by layer from the bottom up, finish one before moving to the next</strong>. Each layer has specific checking commands and a definition of "what normal looks like".</p>
+
+<div class="layers">
+  <div class="layer"><span class="ln">L1</span><div><b>Binary Layer —— Which program is actually running?</b>
+    <p><code>which -a claude</code> / <code>which -a codex</code> lists all identically named commands in PATH; <code>claude --version</code> confirms the version. Normal: Only one path. Abnormal: Multiple paths → Multiple installations coexist, do subtraction first.</p></div></div>
+  <div class="layer"><span class="ln">L2</span><div><b>Environment Variable Layer —— Are any variables hijacking behavior?</b>
+    <p><code>env | grep -iE 'anthropic|claude|codex|openai|proxy'</code>. Normal: Completely blank (pure subscription user). Abnormal: Any <code>ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_BASE_URL</code> / <code>*_PROXY</code> is worth questioning its origin.</p></div></div>
+  <div class="layer"><span class="ln">L3</span><div><b>Credential Layer —— Whose credential is currently used?</b>
+    <p>Claude Code in-session <code>/status</code> check Login method (if there's an API key row, env vars took over); Codex uses <code>codex login status</code>. Confirm the account email and organization are yours.</p></div></div>
+  <div class="layer"><span class="ln">L4</span><div><b>Configuration Layer —— Which layer of config is taking effect?</b>
+    <p>Claude Code: <code>claude doctor</code> checkup, <code>/config</code> to see effective value sources; Codex: <code>/debug-config</code> prints configuration cascading. Changes not taking effect = Overridden by a higher layer or the key requires a session restart.</p></div></div>
+  <div class="layer"><span class="ln">L5</span><div><b>Network Layer —— Can requests really go out and come back?</b>
+    <p><code>curl -sI https://downloads.claude.ai/claude-code-releases/latest</code> test connectivity; for corporate networks, check proxy variables and private CAs; if OAuth is stuck, check callback ports (Codex is 1455).</p></div></div>
+</div>
+
+<div class="callout tip"><b class="t">Why this order?</b>The lower layer determines the upper layer: If the wrong program is running (L1), checking credentials is meaningless; Env vars (L2) will tamper with credential selection (L3); Only when credentials are right can we talk about config (L4); If the first four layers are correct and it still doesn't work, then it's the network (L5). Reverse troubleshooting is a waste of time.</div>
+
+<h3 data-reveal>Direct Layer Location from Error Text (Keyword Quick Check)</h3>
+<p>When you get an error, scan the keywords first, 90% of the time you can directly determine the layer —— This is faster than checking from L1 upwards:</p>
+<table class="tbl er">
+  <tr><th>Error contains...</th><th>Likely in</th><th>First Action</th></tr>
+  <tr><td><code>command not found</code> / <code>not recognized</code> / Version number weird</td><td>L1 Binary Layer</td><td><code>which -a claude</code> (or codex) to see if multiple installs/not in PATH</td></tr>
+  <tr><td><code>Invalid API key</code> / <code>organization … disabled</code> / Pro member billed</td><td>L2 Env Var Layer</td><td><code>env | grep -iE 'anthropic|openai'</code>, clear any variables whose origin you can't explain</td></tr>
+  <tr><td><code>401</code> / <code>Login expired</code> / Repeatedly asks to login / OAuth error</td><td>L3 Credential Layer</td><td><code>/status</code> or <code>codex login status</code> to check current identity, then clean re-login</td></tr>
+  <tr><td>Changes don't take effect / Weird behavior / Company PC can't change</td><td>L4 Config Layer</td><td><code>claude doctor</code>·<code>/config</code> or <code>/debug-config</code> to check effective values and sources</td></tr>
+  <tr><td><code>ENOTFOUND</code> / <code>ETIMEDOUT</code> / <code>ECONNRESET</code> / TLS·certificate / Download 403</td><td>L5 Network Layer</td><td><code>curl -sI</code> directly test target domain; check <code>*_PROXY</code> vars and company CA</td></tr>
+  <tr><td><code>usage limit</code> / <code>429</code> / <code>529 Overloaded</code></td><td>Not on your machine</td><td>This is a quota/server issue: check Billing & Quota ER guide, <strong>don't touch environment</strong></td></tr>
+</table>
+
+<h3 data-reveal>1-Click Health Check Script (Read-only, copy & use)</h3>
+<p>Combine the 5-layer check into one script. <strong>Read-only, modifies nothing</strong>, safe to run on any machine —— Run this first on an unfamiliar computer to see the full state in 30 seconds:</p>
+<pre><code><span class="c">#!/bin/bash
+# ai-env-check.sh —— Claude Code / Codex Environment 1-Click Health Check (Read-only)
+# Usage: bash ai-env-check.sh   (macOS / Linux / WSL)</span>
+echo "═══ L1 Binary Layer ═══"
+for c in claude codex; do
+  echo "--- $c ---"
+  if command -v "$c" &gt;/dev/null 2>&1; then
+    which -a "$c"; "$c" --version 2&gt;/dev/null | head -1
+  else echo "(Not installed or not in PATH)"; fi
+done
+[ -d ~/.claude/local ] && echo "⚠️  Found legacy npm install: ~/.claude/local (recommend deleting)"
+npm -g ls @anthropic-ai/claude-code 2&gt;/dev/null | grep -q claude-code && echo "⚠️  Found global npm install (will conflict with native install)"
+
+echo; echo "═══ L2 Environment Variable Layer ═══"
+env | grep -iE 'anthropic|claude|codex|openai|https?_proxy|no_proxy|node_extra_ca' \
+  || echo "(Clean: No related environment variables)"
+echo "--- Leftovers in shell config files (Focus on export left by others) ---"
+grep -nE 'ANTHROPIC|CLAUDE_|CODEX|OPENAI' ~/.zshrc ~/.zprofile ~/.bashrc ~/.bash_profile ~/.profile 2&gt;/dev/null \
+  || echo "(Clean: No related config in rc files)"
+
+echo; echo "═══ L3 Credential Layer ═══"
+codex login status 2&gt;/dev/null || echo "codex: Not logged in or not installed"
+[ -f ~/.codex/auth.json ] && echo "codex: auth.json exists (plaintext credentials)"
+echo "claude: Enter session and run /status to check Login method and account ownership"
+
+echo; echo "═══ L4 Configuration Layer (File List) ═══"
+ls -la ~/.claude/settings.json ~/.claude.json ~/.codex/config.toml 2&gt;/dev/null
+ls -la .claude/settings.json .claude/settings.local.json .mcp.json 2&gt;/dev/null \
+  || echo "(No project-level config in current directory)"
+
+echo; echo "═══ L5 Network Layer ═══"
+curl -sI --max-time 8 https://downloads.claude.ai/claude-code-releases/latest | head -1
+curl -sI --max-time 8 https://auth.openai.com | head -1
+echo "Health check complete ✅ Verify layer by layer: Multiple installs? Suspicious variables? Account ownership? Config sources? Network connectivity?"</code></pre>
+
+<div class="callout warn"><b class="t">Windows Users</b>Corresponding commands in PowerShell: <code>where.exe claude</code> for binary check; <code>Get-ChildItem Env: | Where-Object Name -match 'ANTHROPIC|CODEX|OPENAI'</code> for environment variables; Don't forget to check user variables in "System Properties → Environment Variables" and the <code>$PROFILE</code> file —— variables set via GUI won't be in rc files.</div>
+<p class="src">Checklist based on: <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">Official Troubleshoot installation and login</a> · <a href="https://code.claude.com/docs/en/authentication" target="_blank">Official Authentication</a> (2026-07 Edition)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="claude-cred">
+<div class="sec-tag">Claude Code 02</div>
+<h2>Claude Code · Credential Mechanism & Priority</h2>
+
+<p>Eighty percent of Claude Code's login issues stem from an ignored fact: <strong>It supports 7 credential sources simultaneously, with a strict priority order</strong>. You think you're using a subscription, but it might be using an environment variable you don't even know exists.</p>
+
+<h3 data-reveal>Credential Priority (Official Complete Order, Highest to Lowest)</h3>
+<ol class="steps">
+  <li><strong>Cloud Provider Channel</strong>: When <code>CLAUDE_CODE_USE_BEDROCK</code> / <code>CLAUDE_CODE_USE_VERTEX</code> / <code>CLAUDE_CODE_USE_FOUNDRY</code> are set, uses AWS/GCP/Azure credentials (Note: logged-in enterprise gateway sessions are even higher)</li>
+  <li><strong><code>ANTHROPIC_AUTH_TOKEN</code></strong>: Sent as Bearer header —— LLM gateways/proxies rely on this</li>
+  <li><strong><code>ANTHROPIC_API_KEY</code></strong>: Sent as X-Api-Key header. Interactive mode prompts for confirmation the first time; <strong>non-interactive mode (<code>-p</code>) uses it directly if it exists, without asking</strong></li>
+  <li><strong><code>apiKeyHelper</code> Script</strong>: Dynamic key retrieval script configured in settings.json (default refreshes every 5 mins or on 401)</li>
+  <li><strong><code>CLAUDE_CODE_OAUTH_TOKEN</code></strong>: 1-year token generated by <code>claude setup-token</code> (for CI)</li>
+  <li><strong>Subscription OAuth</strong>: Credentials from <code>/login</code> browser OAuth —— <strong>Ranked last</strong>. This is why any environment variable can "hijack" your subscription</li>
+</ol>
+
+<div class="callout warn"><b class="t">Must Read for Members: Why am I paying twice?</b>You are a Pro/Max member, but there is a leftover <code>ANTHROPIC_API_KEY</code> on your machine (from old experiments, former colleagues, or tutorials) —— It takes priority over your subscription, and every conversation is <strong>billed via API</strong>, or you get <code>This organization has been disabled</code> if the key's org is disabled. Fix: <code>unset ANTHROPIC_API_KEY</code> + remove export lines from shell config + check <code>/status</code> to confirm Login method is back to subscription.</div>
+
+<h3 data-reveal>Where are credentials stored (Official Stance)</h3>
+<table class="tbl">
+  <tr><th>Platform</th><th>Location</th><th>Notes</th></tr>
+  <tr><td>macOS</td><td>System <strong>Keychain</strong>, encrypted</td><td>Keychain locked or out of sync passwords will cause login save failures —— see ER Guide</td></tr>
+  <tr><td>Linux</td><td><code>~/.claude/.credentials.json</code> (Permission 0600)</td><td>If <code>CLAUDE_CONFIG_DIR</code> is set, it's under that directory</td></tr>
+  <tr><td>Windows</td><td><code>%USERPROFILE%\.claude\.credentials.json</code></td><td>Inherits user directory access controls</td></tr>
+</table>
+<p>Credentials are strictly managed by <code>/login</code> / <code>/logout</code>, <strong>do not manually edit or copy across machines</strong>. When login is within 5 days of expiration, starting up will prompt <code>Your login expires in N days</code>, run <code>/login</code> once to renew (v2.1.203+); after expiration, every request reports <code>Login expired · Please run /login</code>.</p>
+
+<h3 data-reveal>Three Essential Status Commands</h3>
+<table class="tbl">
+  <tr><th>Command</th><th>What it tells you</th></tr>
+  <tr><td><code>/status</code> (In-session)</td><td><strong>Current effective credential</strong>: Login method row shows subscription account; if API key row appears, env vars took over; shows Expired if login is expired</td></tr>
+  <tr><td><code>claude doctor</code> (Terminal)</td><td>Full health check: Install method, version, config schema errors, macOS keychain access</td></tr>
+  <tr><td><code>claude --safe-mode</code></td><td>Bare config start —— Use for control experiments when you suspect custom configs broke everything</td></tr>
+</table>
+<p class="src">Sources: <a href="https://code.claude.com/docs/en/authentication" target="_blank">Official Authentication (incl. Authentication precedence)</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">Official Settings</a> (2026-07 Edition). Configuration cascading and settings file deep dive see <a href="claude-code-guide.html#config-auth">Claude Code Guide · Config & Account Complete Guide</a>.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="claude-config">
+<div class="sec-tag">Claude Code 03</div>
+<h2>Claude Code · settings.json Complete Guide: Minimal to Full Dictionary</h2>
+<p>The previous chapter discussed "whose credential takes effect" (priority); this chapter discusses <strong>the file that solidifies it all</strong> —— what keys <code>settings.json</code> has, the minimum needed to run, what it looks like fully populated, and exactly how to write "third-party/account combinations" into the file.</p>
+
+<h3 data-reveal>I. Where is the file, who overrides whom</h3>
+<table class="tbl">
+  <tr><th>Layer</th><th>Location</th><th>Impact Scope</th><th>Team Shared</th></tr>
+  <tr><td>Enterprise Managed</td><td>Server issued / <code>managed-settings.json</code></td><td>Organization or all users on machine</td><td>Yes (IT deployment)</td></tr>
+  <tr><td>CLI Arguments</td><td><code>--xxx</code> flags at startup</td><td>Current session only, temporary override</td><td>No</td></tr>
+  <tr><td>Project Local</td><td><code>.claude/settings.local.json</code></td><td>Only you, only this repo</td><td>No (auto gitignore)</td></tr>
+  <tr><td>Project</td><td><code>.claude/settings.json</code></td><td>All collaborators in this repo</td><td>Yes (in git)</td></tr>
+  <tr><td>User (Lowest)</td><td><code>~/.claude/settings.json</code></td><td>You, all projects</td><td>No</td></tr>
+</table>
+<p>Priority from highest to lowest follows the table from top to bottom —— Enterprise Managed always wins, CLI arguments next, Project Local over Project, and User layer at the bottom. If a change doesn't take effect, it's 90% likely overridden by a higher layer; the "Setting sources" row in <code>/status</code> shows the actual loaded sources; <code>claude doctor</code> can also report invalid fields.</p>
+
+<h3 data-reveal>II. Minimum Runnable Configuration</h3>
+<p>Claude Code doesn't need any settings.json to run —— it's perfectly fine if the file doesn't exist, it uses built-in defaults after login. If you want to explicitly declare "this is the minimum config" for a team starter template, this is enough:</p>
+<pre><code>{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+}</code></pre>
+<p>Adding the schema declaration is the only "necessary" line —— it doesn't affect behavior, just provides autocomplete and validation when editing in VS Code/Cursor. A truly useful but still minimal starter config:</p>
+<pre><code>{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": ["Bash(npm run lint)", "Bash(npm run test *)"],
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
+  }
+}</code></pre>
+
+<h3 data-reveal>III. Key Configurations (20 items, grouped by purpose)</h3>
+<p>Out of 90+ keys, you'll only proactively change these in daily use —— memorize this table first, keep the full dictionary below for reference:</p>
+<table class="tbl">
+  <tr><th>Purpose</th><th>Key</th><th>Function</th></tr>
+  <tr><td rowspan="3">Auth & Network</td><td><code>apiKeyHelper</code></td><td>Script path to fetch keys dynamically, replacing static API Key (see section V)</td></tr>
+  <tr><td><code>forceLoginMethod</code></td><td>Restrict login method: <code>claudeai</code> / <code>console</code> / <code>gateway</code> (v2.1.212+)</td></tr>
+  <tr><td><code>proxyUrl</code> / <code>noProxy</code></td><td>HTTP/HTTPS proxy address; <code>noProxy</code> excludes intranet domains</td></tr>
+  <tr><td rowspan="4">Model & Quality</td><td><code>model</code></td><td>Session default model; requires session restart to take effect, use <code>/model</code> to switch temporarily</td></tr>
+  <tr><td><code>availableModels</code></td><td>Restrict selectable models (common for team compliance)</td></tr>
+  <tr><td><code>fallbackModel</code></td><td>Auto-switch sequentially when main model is overloaded, up to 3</td></tr>
+  <tr><td><code>effortLevel</code></td><td>Cross-session persistent reasoning effort (<code>low</code>→<code>xhigh</code>)</td></tr>
+  <tr><td rowspan="3">Permissions & Security</td><td><code>permissions</code></td><td><code>allow</code>/<code>deny</code>/<code>ask</code> 3-part rules + <code>defaultMode</code> starting permission mode</td></tr>
+  <tr><td><code>sandbox</code></td><td>Sandbox isolation config for sensitive files/env vars</td></tr>
+  <tr><td><code>readOnlyMode</code></td><td>Set <code>true</code> to strictly forbid file editing, for review scenarios</td></tr>
+  <tr><td rowspan="3">Storage & Privacy</td><td><code>cleanupPeriodDays</code></td><td>Session transcript auto-cleanup period, default 30 days</td></tr>
+  <tr><td><code>sessionPersistenceEnabled</code></td><td>Set <code>false</code> to disable writing transcripts to disk (for sensitive projects)</td></tr>
+  <tr><td><code>autoMemoryEnabled</code></td><td>Whether to read/write cross-session automatic memory</td></tr>
+  <tr><td rowspan="2">Extensibility & Team</td><td><code>enabledMcpjsonServers</code> / <code>disabledMcpjsonServers</code></td><td>Approve/deny specific servers in <code>.mcp.json</code></td></tr>
+  <tr><td><code>hooks</code></td><td>Main entry for lifecycle hooks</td></tr>
+  <tr><td>Env Injection</td><td><code>env</code></td><td>Hardcode a batch of env vars, injected into every session and child process (see section V)</td></tr>
+</table>
+
+<h3 data-reveal>IV. Full Dictionary (Quick search by category, 2026-07 Edition checked)</h3>
+<div class="callout note"><b class="t">How to use this dictionary</b>90+ keys are grouped into 8 categories. Those marked <code>(Enterprise)</code> only take effect in the managed layer, writing them in personal config does nothing —— they are for IT. Use the sidebar <code>/</code> filter to search key names faster than manual scrolling.</div>
+
+<h4>Authentication, Network & Deployment</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>apiKeyHelper</code></td><td>Custom command to generate API Key, output used as <code>X-Api-Key</code>/<code>Authorization</code> header</td></tr>
+  <tr><td><code>forceLoginMethod</code></td><td>Restrict login method: <code>claudeai</code> / <code>console</code> / <code>gateway</code> (v2.1.212+)</td></tr>
+  <tr><td><code>forceLoginOrgUUID</code> <code>(Enterprise)</code></td><td>Force login to specific Org UUID, login fails if it doesn't match</td></tr>
+  <tr><td><code>proxyUrl</code> / <code>noProxy</code></td><td>HTTP/HTTPS proxy address / Domains to exclude from proxy (supports <code>*</code> wildcard)</td></tr>
+  <tr><td><code>awsAuthRefresh</code> / <code>awsCredentialExport</code></td><td>Custom script to refresh <code>.aws</code> dir / Output AWS temporary credential JSON</td></tr>
+  <tr><td><code>ibmWatsonxAuthUrl</code> / <code>ibmWatsonxProjectId</code> / <code>ibmWatsonxRegion</code></td><td>IBM Watsonx channel exclusive trio</td></tr>
+  <tr><td><code>serverUrl</code> <code>(Enterprise)</code></td><td>Self-hosted deployment server URL</td></tr>
+  <tr><td><code>allowAllClaudeAiMcps</code> <code>(Enterprise)</code> / <code>disableClaudeAiConnectors</code></td><td>Whether to allow claude.ai connector MCPs</td></tr>
+</table>
+
+<h4>Model & Quality</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>model</code></td><td>Default model, supports aliases or full model ID</td></tr>
+  <tr><td><code>availableModels</code> / <code>enforceAvailableModels</code> <code>(Enterprise)</code></td><td>Limit selectable models / Apply limits to Default model as well (v2.1.175+)</td></tr>
+  <tr><td><code>fallbackModel</code></td><td>Overload auto-downgrade chain, max 3, not merged across files</td></tr>
+  <tr><td><code>advisorModel</code></td><td>Model used by advisor tool (<code>/advisor</code>)</td></tr>
+  <tr><td><code>agent</code></td><td>Main thread runs as specified sub-agent</td></tr>
+  <tr><td><code>effortLevel</code></td><td>Cross-session persistent reasoning effort</td></tr>
+  <tr><td><code>alwaysThinkingEnabled</code></td><td>Enable extended thinking by default (disable by setting <code>MAX_THINKING_TOKENS=0</code> in <code>env</code>)</td></tr>
+  <tr><td><code>fastMode</code> / <code>fastModePerSessionOptIn</code></td><td>Enable Fast mode by default / Require manual opt-in per session</td></tr>
+</table>
+
+<h4>Permissions & Security</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>permissions.allow/deny/ask</code></td><td>3-part permission rules, <code>deny</code> is evaluated first</td></tr>
+  <tr><td><code>permissions.defaultMode</code></td><td>Starting permission mode: <code>default</code>/<code>acceptEdits</code>/<code>plan</code>/<code>auto</code>/<code>bypassPermissions</code> etc.</td></tr>
+  <tr><td><code>permissions.disableBypassPermissionsMode</code> <code>(Enterprise)</code></td><td>Org-wide disable "skip all permissions" mode</td></tr>
+  <tr><td><code>permissions.additionalDirectories</code></td><td>Extra directories included in permission scope</td></tr>
+  <tr><td><code>sandbox</code></td><td>Sandbox config: isolation for sensitive items like <code>credentials.files</code>/<code>envVars</code></td></tr>
+  <tr><td><code>readOnlyMode</code></td><td>Strictly forbid all file editing</td></tr>
+  <tr><td><code>disableAutoMode</code></td><td>Set to <code>"disable"</code> to prevent auto permission mode from being activated</td></tr>
+  <tr><td><code>autoMode</code></td><td>Custom classifier rules: <code>environment</code>/<code>allow</code>/<code>soft_deny</code>/<code>hard_deny</code>, includes <code>"$defaults"</code> to inherit built-in rules</td></tr>
+  <tr><td><code>autoMode.classifyAllShell</code></td><td>Run even normal Bash commands through classifier (v2.1.193+)</td></tr>
+  <tr><td><code>globalShellAllowRules</code> / <code>globalShellDenyRules</code> <code>(Enterprise)</code></td><td>Shell whitelist/blacklist applied to all projects</td></tr>
+  <tr><td><code>allowManagedPermissionRulesOnly</code> <code>(Enterprise)</code></td><td>Forbid user/project layer from defining permission rules, only managed layer is recognized</td></tr>
+  <tr><td><code>workspaceTrustEnabled</code></td><td>Require explicit workspace trust before loading project settings</td></tr>
+  <tr><td><code>disableSideloadFlags</code> <code>(Enterprise)</code></td><td>Disable temporary injection flags like <code>--plugin-dir/--plugin-url/--agents/--mcp-config</code></td></tr>
+</table>
+
+<h4>Storage & Privacy</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>cleanupPeriodDays</code></td><td>Session transcript auto-cleanup period, default 30 days, min 1</td></tr>
+  <tr><td><code>sessionPersistenceEnabled</code></td><td>Whether to save session transcripts to disk</td></tr>
+  <tr><td><code>autoMemoryEnabled</code> / <code>autoMemoryDirectory</code> / <code>maxMemorySize</code></td><td>Enable auto memory / Custom storage directory / Max capacity (bytes)</td></tr>
+  <tr><td><code>fileCheckpointingEnabled</code></td><td>Pre-edit snapshot relied on by <code>/rewind</code>, default enabled</td></tr>
+  <tr><td><code>queryHistorySize</code></td><td>Number of prompt histories to retain, default 100</td></tr>
+  <tr><td><code>maxFileSize</code></td><td>Max file size that can be processed (bytes)</td></tr>
+  <tr><td><code>handoffEnabled</code></td><td>Whether to allow handing off the session to other users</td></tr>
+</table>
+
+<h4>Extensibility, MCP & Plugins</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>hooks</code></td><td>Main entry for lifecycle hooks config</td></tr>
+  <tr><td><code>disableAllHooks</code> / <code>allowManagedHooksOnly</code> <code>(Enterprise)</code></td><td>Disable all hooks / Only allow managed layer hooks to load</td></tr>
+  <tr><td><code>allowedHttpHookUrls</code></td><td>URL pattern whitelist that HTTP hooks are allowed to access</td></tr>
+  <tr><td><code>enabledMcpjsonServers</code> / <code>disabledMcpjsonServers</code></td><td>Approve / Deny specific servers in <code>.mcp.json</code></td></tr>
+  <tr><td><code>enableAllProjectMcpServers</code></td><td>Auto-approve all servers in project's <code>.mcp.json</code></td></tr>
+  <tr><td><code>allowedMcpServers</code> / <code>deniedMcpServers</code> <code>(Enterprise)</code></td><td>MCP server whitelist / blacklist, blacklist takes priority</td></tr>
+  <tr><td><code>allowManagedMcpServersOnly</code> <code>(Enterprise)</code> / <code>managedMcpOverridesAllowed</code></td><td>Only recognize managed MCPs / Whether users can override managed MCPs</td></tr>
+  <tr><td><code>pluginDirs</code> / <code>pluginMarketplaces</code></td><td>Extra plugin directories / Custom plugin marketplace sources</td></tr>
+  <tr><td><code>pluginAutoUpdateEnabled</code> / <code>pluginCheckInterval</code></td><td>Plugin auto-update toggle / Check interval (minutes, default 1440)</td></tr>
+  <tr><td><code>blockedMarketplaces</code> / <code>strictKnownMarketplaces</code> <code>(Enterprise)</code></td><td>Marketplace blacklist / Only allow known marketplaces</td></tr>
+  <tr><td><code>forcePluginSignatureVerification</code> <code>(Enterprise)</code></td><td>Require plugin signature verification</td></tr>
+  <tr><td><code>allowedChannelPlugins</code> / <code>channelsEnabled</code> <code>(Enterprise)</code></td><td>Whitelist of channel plugins allowed to push messages / Master switch</td></tr>
+  <tr><td><code>disableBundledSkills</code> / <code>disableWorkflows</code></td><td>Disable bundled skills / Disable dynamic workflows</td></tr>
+  <tr><td><code>disableSkillShellExecution</code></td><td>Forbid inline shell execution within skills</td></tr>
+  <tr><td><code>languageServerEnabled</code> / <code>lspConcurrency</code></td><td>Language server toggle / Max concurrent requests</td></tr>
+</table>
+
+<h4>UI & Experience</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>editorMode</code></td><td>Keybinding mode: <code>normal</code> / <code>vim</code></td></tr>
+  <tr><td><code>tui</code></td><td>Terminal rendering mode: <code>classic</code> / <code>fullscreen</code></td></tr>
+  <tr><td><code>outputStyle</code></td><td>Output style: <code>monochrome</code>/<code>code-focused</code>/<code>conversation</code>, rebuilds after <code>/clear</code></td></tr>
+  <tr><td><code>notificationLevel</code></td><td><code>silent</code> / <code>normal</code> / <code>verbose</code></td></tr>
+  <tr><td><code>keybindings</code></td><td>Custom shortcut bindings</td></tr>
+  <tr><td><code>axScreenReader</code></td><td>Screen reader friendly output (plain text, no border animations)</td></tr>
+  <tr><td><code>defaultShell</code></td><td>Default shell for <code>!</code> commands, Windows defaults to <code>powershell</code></td></tr>
+  <tr><td><code>fileSuggestion</code></td><td>Custom script for <code>@</code> file auto-completion</td></tr>
+  <tr><td><code>footerLinksRegexes</code></td><td>Render clickable badges in footer when output matches regex (e.g. Jira tickets)</td></tr>
+  <tr><td><code>spinnerTipsEnabled</code> / <code>autoScrollEnabled</code> / <code>keepConsoleOnError</code></td><td>Show tips in loading spinner / New output auto-scrolls / Keep terminal window on fatal errors</td></tr>
+  <tr><td><code>companyAnnouncements</code></td><td>Announcements displayed randomly at startup, often used in team-level config</td></tr>
+  <tr><td><code>agentPushNotifEnabled</code></td><td>Allow push notifications to mobile when Remote Control is connected (v2.1.119+)</td></tr>
+</table>
+
+<h4>Attribution & Team Governance</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>attribution</code></td><td>Custom attribution text in commit/PR, empty string to hide</td></tr>
+  <tr><td><code>gitAttributionName</code> / <code>gitAttributionEmail</code> / <code>gitAttributionUrl</code></td><td>Name/Email/URL used when Claude Code commits on your behalf</td></tr>
+  <tr><td><code>claudeMd</code> <code>(Enterprise)</code> / <code>claudeMdExcludes</code></td><td>Org-level forced injected memory / Glob to exclude specific CLAUDE.md files</td></tr>
+  <tr><td><code>requiredMinimumVersion</code> / <code>requiredMaximumVersion</code> <code>(Enterprise)</code></td><td>Forced version range, "fail open" (doesn't block) on validation failure</td></tr>
+  <tr><td><code>hideDeprecatedSettings</code></td><td>Hide deprecated keys in <code>/config</code> interface</td></tr>
+  <tr><td><code>disableRemoteControl</code> / <code>disableDeepLinkRegistration</code></td><td>Disable remote control / Forbid registering <code>claude-cli://</code> protocol</td></tr>
+  <tr><td><code>browserExternalPageTools</code> / <code>disableBrowserExternalNavigation</code> <code>(Enterprise)</code></td><td>Limit Browser panel tool calls on external pages / external navigation</td></tr>
+</table>
+
+<h4>Other: Env Injection & Runtime Details</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Function</th></tr>
+  <tr><td><code>env</code></td><td>Hardcode a batch of env vars, injected into every session and child process; set to <code>""</code> to explicitly override as empty</td></tr>
+  <tr><td><code>autoCompactEnabled</code></td><td>Auto-compact context with summary when near limit, default enabled</td></tr>
+  <tr><td><code>recallContextWindowSize</code></td><td>Max number of turns to include in context when recalling memory</td></tr>
+  <tr><td><code>nonInteractiveTtl</code></td><td>Max TTL seconds for <code>-p</code> non-interactive sessions</td></tr>
+  <tr><td><code>feedbackSurveyRate</code></td><td>Quality survey popup probability (0-1), set to 0 to completely disable; equivalent to env var <code>CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY</code></td></tr>
+  <tr><td><code>awaySummaryEnabled</code></td><td>Show one-sentence summary when returning after a few minutes away</td></tr>
+  <tr><td><code>disableArtifact</code> / <code>enableArtifact</code></td><td>Disable / Enable Artifact tool</td></tr>
+  <tr><td><code>verbose</code></td><td>Output verbose logs</td></tr>
+  <tr><td><code>askUserQuestionTimeout</code></td><td>Auto-resume after <code>AskUserQuestion</code> idles for how long, default never</td></tr>
+  <tr><td><code>autoUpdatesChannel</code></td><td>Update channel: <code>stable</code> / <code>latest</code></td></tr>
+</table>
+
+<h3 data-reveal>V. How to combine third-party/account logins into settings.json</h3>
+<p>Chapter 02 explained "what" credential priority is; here we show <strong>exactly how to write it into the file</strong>, to persist config and reuse across teams, instead of manually <code>export</code>ing every time.</p>
+<table class="tbl">
+  <tr><th>Scenario</th><th>How to write</th></tr>
+  <tr><td>Pure Subscription (Default, Zero Config)</td><td>Write nothing, <code>/login</code> once is enough, the entire settings.json doesn't need to touch auth keys</td></tr>
+  <tr><td>Enterprise LLM Gateway / Proxy</td><td>Write into <code>env</code> block for persistent effect, no need to manually export:<br><pre><code>{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "Your Token",
+    "ANTHROPIC_BASE_URL": "https://Your-Gateway-URL"
+  }
+}</code></pre></td></tr>
+  <tr><td>Key Rotation / Dynamic from Secret Manager</td><td><code>apiKeyHelper</code> points to a script outputting the key, safer than hardcoding <code>env.ANTHROPIC_API_KEY</code>, default refreshes every 5 mins or on 401</td></tr>
+  <tr><td>Cloud Provider Direct (Bypassing Anthropic Auth)</td><td>Set <code>CLAUDE_CODE_USE_BEDROCK</code>/<code>CLAUDE_CODE_USE_VERTEX</code>/<code>CLAUDE_CODE_USE_FOUNDRY</code> to <code>"1"</code> in <code>env</code>, uses respective AWS/GCP/Azure credential chains; for advanced scenarios config <code>awsAuthRefresh</code>/<code>awsCredentialExport</code> for custom refresh logic</td></tr>
+  <tr><td>Team Restricted Models</td><td>User layer writes <code>availableModels: ["sonnet","haiku"]</code>; to make it strictly un-bypassable, enterprise managed layer must write <code>enforceAvailableModels: true</code></td></tr>
+  <tr><td>CI Long-term Auth</td><td>Token generated by <code>claude setup-token</code> stored in CI Secret, runtime sets <code>CLAUDE_CODE_OAUTH_TOKEN</code> —— not recommended to write this in settings.json (would commit to git), see pure env var solution in <a href="#headless">Chapter 10</a></td></tr>
+  <tr><td>Forced Login Method & Org</td><td>Enterprise managed layer writes <code>forceLoginMethod</code> + <code>forceLoginOrgUUID</code>, individuals cannot bypass, env var credentials will be intercepted at startup</td></tr>
+</table>
+
+<h3 data-reveal>VI. settings.json Exclusive Common Conflicts</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td><code>env</code> block has <code>ANTHROPIC_API_KEY</code>, and shell also <code>export</code>ed the same var, behavior is weird</td><td>Defining the same key in both places is a pitfall, no official guarantee on who wins —— <strong>Set it in only one place</strong>, recommend <code>env</code> block for team sharing, shell for personal temporary experiments, don't overlap both</td></tr>
+  <tr><td>Configured <code>apiKeyHelper</code>, but also wrote static <code>ANTHROPIC_API_KEY</code> in <code>env</code>, <code>apiKeyHelper</code> doesn't seem to work</td><td>According to credential priority in <a href="#claude-cred">Chapter 02</a>, static <code>ANTHROPIC_API_KEY</code> takes effect before <code>apiKeyHelper</code> —— to use dynamic keys, don't leave static <code>ANTHROPIC_API_KEY</code> in <code>env</code></td></tr>
+  <tr><td>Wrote <code>availableModels</code> in project, but it's not restricted at all</td><td><code>availableModels</code> without <code>enforceAvailableModels: true</code> only limits what users can pick in <code>/model</code>, not the Default model itself —— enterprise strict compliance must write both keys in the managed layer</td></tr>
+  <tr><td>Added a <code>permissions.deny</code> rule, but it didn't take effect for others on the team</td><td>It was written in <code>.claude/settings.local.json</code> (personal layer, ignored by git): Team shared rules must be written in <code>.claude/settings.json</code></td></tr>
+  <tr><td>Changed <code>model</code> key, but current session model didn't change</td><td><code>model</code> is only read at session <strong>startup</strong>, hot-swapping doesn't take effect —— open a new session, or use <code>/model</code> for temporary switch</td></tr>
+</table>
+<p class="src">Key definitions and descriptions in this section source: <a href="https://code.claude.com/docs/en/settings" target="_blank">Official Settings</a> · <a href="https://www.schemastore.org/claude-code-settings.json" target="_blank">Official JSON Schema</a> (2026-07 Edition verified).</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="claude-er">
+<div class="sec-tag">Claude Code 04</div>
+<h2>Claude Code · Symptom ER Guide</h2>
+
+<p>Diagnose directly by <strong>5 major categories</strong>: Login Credentials / Billing Quota / Install Version / Config / Network Proxy. Each provides root cause and shortest fix path, all verified against official 2026-07 troubleshooting docs.</p>
+<div class="callout tip"><b class="t">⚡ 1-Minute Quick Fix (Run these 3 axes first, then check the detailed table)</b><code>env | grep -i anthropic</code> clear hijacked vars → <code>/logout</code> re-login → <code>claude doctor</code> checkup.</div>
+
+<h3 data-reveal>I. Login & Credentials</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Invalid API key / Repeatedly asks for /login</td><td>The king of credential conflicts: <code>env | grep -i anthropic</code> to find hijacked vars → <code>unset ANTHROPIC_API_KEY</code> → delete export from rc files → <code>/logout</code> then re-run <code>/login</code> → <code>/status</code> verify</td></tr>
+  <tr><td>403 Forbidden after login</td><td>Three checks: ① claude.ai/settings to confirm subscription is valid; ② Console users confirm assigned Claude Code or Developer roles; ③ Corporate proxy interference → see Network & Proxy</td></tr>
+  <tr><td>Wrong account/org selected during OAuth login</td><td>Cached claude.ai session in browser took you to another account (Personal vs Console is common): <code>/logout</code> to re-login, watch the account selection on the browser auth page; <code>/status</code> to verify current org and email</td></tr>
+  <tr><td>IDE extension says not logged in, but terminal CLI is fine</td><td>VS Code / JetBrains extensions ship with standalone running copies: run a separate login inside the extension panel; if IDE was launched from desktop icon, it might not have inherited environment variables from terminal</td></tr>
+  <tr><td>OAuth error: Invalid code</td><td>Login code expired or copied incompletely: retry and finish quickly; if browser doesn't pop up automatically, press <kbd>c</kbd> to copy full URL and open manually</td></tr>
+  <tr><td>Logging in inside SSH/WSL2/Container, browser won't open or callback fails</td><td>This is normal: copy terminal URL to <strong>local</strong> browser to login, paste the returned code back to terminal. If pasting does nothing, use <code>claude auth login</code> (reads code from stdin); WSL2 can set <code>BROWSER="/mnt/c/…/chrome.exe"</code></td></tr>
+  <tr><td>macOS login successful but won't save / Frequent re-login prompts</td><td>Keychain locked or passwords out of sync: <code>security unlock-keychain ~/Library/Keychains/login.keychain-db</code>; if that fails, reset login keychain password in "Keychain Access"; <code>claude doctor</code> can detect this</td></tr>
+  <tr><td>Frequent token expiration</td><td>Check system clock first (token validation relies on timestamps); multiple sessions collectively prompting for re-login after sleep/wake is a known bug before v2.1.211 —— upgrade version</td></tr>
+  <tr><td>Company PC forbids API keys / Restricts to specific org</td><td>Enterprise managed <code>forceLoginMethod</code> / <code>forceLoginOrgUUID</code> in effect, env var credentials will be intercepted at startup —— this is a policy, not a bug, contact IT</td></tr>
+</table>
+
+<h3 data-reveal>II. Billing & Quotas ("But I'm a Pro member!" Series)</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Pro/Max member, but billed via API / Insufficient balance prompt</td><td>Leftover <code>ANTHROPIC_API_KEY</code> takes priority over subscription login, every conversation is billed via API: clear vars (root cause see <a href="#claude-cred">Credential Priority</a>) → <code>/status</code> to confirm Login method is back to subscription</td></tr>
+  <tr><td><code>This organization has been disabled</code> (But my subscription is valid!)</td><td>Variation of the above: leftover key belongs to a <strong>disabled org</strong> (former company/old project most common). Clear vars; on Windows, remember to check user env var panel and <code>$PROFILE</code></td></tr>
+  <tr><td><code>usage limit reached</code> / Quota exhausted</td><td><strong>Not a login issue</strong>: Subscription quota is based on time windows, wait for window to reset, or temporarily switch to lower-tier model via <code>/model</code> —— reinstalling/re-logging does nothing. For 4 strategies to save quota and handle limits, see <a href="claude-code-guide.html#config-auth">CC Guide · Quota & Cost Management</a></td></tr>
+  <tr><td>API Error 429(rate_limit)</td><td>Rate limit on API billing channel: reduce concurrency, try again later; if subscription user sees this, first confirm you haven't been hijacked by an API key (first row of this table)</td></tr>
+  <tr><td>API Error 529 Overloaded / Widespread 500</td><td>Official server overload, nothing to do with your environment: check status.anthropic.com for recovery —— don't waste time "reinstalling and troubleshooting"</td></tr>
+  <tr><td>I just want to temporarily bill via API key (leave subscription alone)</td><td>Setting <code>ANTHROPIC_API_KEY</code> in interactive mode will prompt for confirmation once; later use "Use custom API key" toggle in <code>/config</code> to switch anytime (only visible when var exists)</td></tr>
+  <tr><td><code>Credit balance is too low</code></td><td>You are using the Console/API key channel and lack balance: either recharge at platform.claude.com, or you shouldn't be using this channel at all —— clear API key var to return to subscription (first row of this table)</td></tr>
+</table>
+
+<h3 data-reveal>III. Installation & Version</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>command not found: claude</td><td>Install dir not in PATH: native installer installs to <code>~/.local/bin/claude</code>, add <code>export PATH="$HOME/.local/bin:$PATH"</code> to rc file. Note: <strong>Installing only the VS Code extension won't give you the CLI claude</strong>, the extension has its own private copy</td></tr>
+  <tr><td>Weird version / Updated but no change</td><td>Multiple installations coexisting: <code>which -a claude</code> to see all; keep only the native one —— <code>npm uninstall -g @anthropic-ai/claude-code</code>, <code>rm -rf ~/.claude/local</code>, <code>brew uninstall --cask claude-code</code> to clean up as needed</td></tr>
+  <tr><td>Install script spits out HTML / 403 / App unavailable in region</td><td>Network routing or regional restrictions: confirm your region is supported; switch to <code>brew install --cask claude-code</code> (macOS)/ <code>winget install Anthropic.ClaudeCode</code> (Win), or try later</td></tr>
+  <tr><td>Linux server install Killed (exit 137)</td><td>Out of memory (install requires ~512MB free): add 2G swap then reinstall</td></tr>
+  <tr><td>Typing <code>claude</code> on Windows opens Desktop App</td><td>Old Claude Desktop registered Claude.exe in WindowsApps, hijacking PATH: upgrade Desktop to latest version to fix</td></tr>
+  <tr><td>Want to pin version / disable auto-update</td><td><code>claude install 2.1.x</code> to pin version; set <code>DISABLE_AUTOUPDATER=1</code> in settings env block or env vars —— for version-related weird issues, first rule out "inconsistent versions across two machines"</td></tr>
+  <tr><td>In WSL <code>exec: node: not found</code> / npm platform detection messed up</td><td>WSL referenced Node/npm on the Windows side: if <code>which node</code> starts with <code>/mnt/c/</code>, you are affected —— install node on Linux side using nvm, or just use official native install script to bypass npm entirely</td></tr>
+  <tr><td>Update fails / EACCES permission error when installing npm package</td><td>Don't force it with <code>sudo npm</code>: that will bury permission issues deeper. Correct fix is switching to official native installer (<code>curl -fsSL https://claude.ai/install.sh | bash</code>), it installs in user dir, requiring no privilege escalation</td></tr>
+</table>
+
+<h3 data-reveal>IV. Configuration</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Changed settings.json but no effect</td><td>Cascading overrides (Enterprise managed &gt; CLI &gt; Project Local &gt; Project &gt; User) or key requires session restart: check <code>/config</code> for effective value sources; use <code>--setting-sources user</code> to rule out interfering layers</td></tr>
+  <tr><td>Crashes on startup / Weird behavior</td><td>Compare with bare start using <code>claude --safe-mode</code>; <code>claude doctor</code> reports schema errors; disable custom configs in halves to binary search the issue</td></tr>
+  <tr><td>IDE doesn't recognize cloud provider credentials, but terminal does</td><td>IDE process didn't inherit shell environment: configure vars inside IDE's own settings, or launch IDE from an already exported terminal</td></tr>
+</table>
+
+<h3 data-reveal>V. Network & Proxy</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>TLS / unable to get local issuer certificate / SELF_SIGNED_CERT</td><td>Corporate proxy doing TLS interception: during install use <code>curl --cacert CompanyCA.pem …</code>; at runtime <code>export NODE_EXTRA_CA_CERTS=/path/CompanyCA.pem</code>; ask IT for certificate file</td></tr>
+  <tr><td>Download/Update fails, suspect network blocked</td><td>Direct test: <code>curl -sI https://downloads.claude.ai/claude-code-releases/latest</code>: HTTP 200 = works (just retry); Timeout/Resolve fail = Firewall or regional block, switch network or ask IT to whitelist</td></tr>
+  <tr><td>Correct configuration posture for company proxy</td><td><code>export HTTPS_PROXY=http://proxy:port</code> (recognized by both install and runtime); combine with <code>NODE_EXTRA_CA_CERTS</code> for private CAs; ask IT for proxy address or check browser proxy settings</td></tr>
+  <tr><td>Login/Requests slow, occasional timeouts, local machine is fine</td><td>First run <a href="#diagnose">health check script</a> L5 to confirm connectivity; leftover <code>*_PROXY</code> vars after switching VPN/proxy are common culprits, use <code>env | grep -i proxy</code> to clean</td></tr>
+  <tr><td><code>Connection error</code> / <code>ECONNRESET</code> occasional disconnects</td><td>Link severed by intermediate devices: try switching VPN Global/Split-tunnel modes; on corporate network confirm <code>HTTPS_PROXY</code> + <code>NODE_EXTRA_CA_CERTS</code> are configured in pairs; if it persists, use <code>curl -v</code> to capture handshake evidence for IT</td></tr>
+</table>
+<p class="src">Sources: <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">Official Troubleshoot installation and login</a> (2026-07 Edition, includes all error mappings) · <a href="https://support.claude.com/en/articles/14552646-troubleshoot-claude-code-installation-and-authentication" target="_blank">Help Center Troubleshooting Article</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="codex-cred">
+<div class="sec-tag">Codex 05</div>
+<h2>Codex · Credential Mechanism & Storage</h2>
+
+<div class="callout note"><b class="t">2026 Documentation Move Notice</b>Codex official docs have migrated from <code>developers.openai.com/codex</code> to <code>learn.chatgpt.com/docs</code> (old links 308 redirect, still accessible). When searching for tutorials, pay attention to the new domain and timeliness.</div>
+
+<h3 data-reveal>Three Login Methods</h3>
+<table class="tbl">
+  <tr><th>Method</th><th>How to Use</th><th>Key Points</th></tr>
+  <tr><td><strong>ChatGPT OAuth (Default)</strong></td><td><code>codex login</code> → Browser, callback to <code>localhost:1455</code></td><td>Subscription quota; Fast mode and similar features only available here; Subject to ChatGPT workspace permissions and data policies</td></tr>
+  <tr><td><strong>API Key</strong></td><td>Get key from platform backend and pass to <code>codex login</code></td><td>Pay-as-you-go; Some cloud-dependent features restricted; Officially recommended for CI</td></tr>
+  <tr><td><strong>Device Code</strong></td><td><code>codex login --device-auth</code></td><td>First choice for headless environments; <strong>Some workspaces require admin to enable it first</strong>, otherwise headless login will get stuck</td></tr>
+</table>
+
+<h3 data-reveal>Where Credentials Are Stored & How They Renew</h3>
+<ul>
+  <li><strong>Storage Choice of Three</strong>: In config.toml, <code>cli_auth_credentials_store = "file" | "keyring" | "auto"</code>. file = Plaintext <code>~/.codex/auth.json</code>; keyring = System keychain; auto prioritizes keychain.</li>
+  <li><strong>Auto-Renewal</strong>: When the token expires (becomes stale after ~8 days of inactivity), Codex automatically refreshes it during runtime and <strong>writes back to auth.json</strong> —— the CI persistence solution is built on this mechanism (see <a href="#headless">Chapter 10</a>).</li>
+  <li><strong>CLI and IDE Extension Share the Same Credential</strong>: If one side logs out, the other goes offline —— "IDE suddenly asking to login" mostly means you logged out from the terminal.</li>
+  <li><strong>Multi-Account</strong>: Officially no first-class support yet (upstream issue #4432 in discussion); can be achieved via <code>CODEX_HOME</code> directory isolation (see <a href="#shared">Chapter 08</a>), and community tools like codex-multi-auth exist.</li>
+  <li><strong>Enterprise Control</strong>: <code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> can lock the login method and workspace; mismatches will force an immediate logout —— "can't change login method" on company machines is a policy enforcement.</li>
+</ul>
+
+<h3 data-reveal>Credential Source Priority: Who Overrides Whom</h3>
+<div class="callout note"><b class="t">This order is not fully published in the official docs</b>learn.chatgpt.com/docs only introduces the three login methods and <code>model_providers.&lt;id&gt;.env_key</code> separately, <strong>without a complete priority table like Claude Code has</strong>. The following order is verified directly from the Codex open-source repository (<code>openai/codex</code>) source code —— it's not a guess, but note this information is at a lower level than official docs and might change in future upgrades.</div>
+
+<p>Unlike Claude Code's single linear list, Codex credential resolution has two steps: <strong>First check which model provider is being used</strong>, then check how to get the key under that provider.</p>
+
+<ol class="steps">
+  <li><strong>Custom <code>model_provider</code> Priority Short-Circuit</strong>: If the top-level <code>model_provider</code> points to a custom <code>[model_providers.&lt;id&gt;]</code>, and that table configures one of <code>env_key</code> / <code>experimental_bearer_token</code> / <code>auth.command</code> —— this credential is <strong>directly used for requests to that provider, completely skipping the ChatGPT/API key checks below</strong>, regardless of whether you are logged in or your subscription is valid (Source: <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/model-provider/src/auth.rs#L267-L279" target="_blank"><code>model-provider/src/auth.rs · bearer_auth_for_provider()</code></a>).</li>
+  <li><strong>When using the built-in <code>openai</code> provider (default, i.e., normally logging into Codex with ChatGPT/API key)</strong>, it resolves in the following order (Source: <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L1217-L1291" target="_blank"><code>login/src/auth/manager.rs · load_auth()</code></a>):</li>
+</ol>
+
+<table class="tbl">
+  <tr><th>Priority</th><th>Source</th><th>Description</th></tr>
+  <tr><td>1</td><td><code>CODEX_API_KEY</code> Env Var</td><td><strong>Only effective in <code>codex exec</code> (non-interactive execution)</strong>, the interactive <code>codex</code> TUI skips this check entirely —— in the source code, this switch is called <code>enable_codex_api_key_env</code>, <code>true</code> in exec mode, <code>false</code> in TUI</td></tr>
+  <tr><td>2</td><td>Temporary ChatGPT Session Injected by Host App</td><td>In-memory credential bridged by host apps like the IDE extension; internal mechanism, rarely encountered by regular users</td></tr>
+  <tr><td>3</td><td><code>CODEX_ACCESS_TOKEN</code> Env Var</td><td>Enterprise access token / Agent Identity, commonly used for non-interactive CI login (see <a href="#headless">Chapter 10</a>)</td></tr>
+  <tr><td>4</td><td>Persistent <code>auth.json</code> (or Keychain)</td><td>Credentials written by <code>codex login</code> (ChatGPT OAuth) / <code>codex login --with-api-key</code> / <code>--with-access-token</code> / <code>--device-auth</code>, 99% of daily scenarios fall here</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">A Common Misconception: <code>OPENAI_API_KEY</code> will NOT "hijack" the session like Claude</b>Many analogize to <code>ANTHROPIC_API_KEY</code> behavior, thinking setting <code>OPENAI_API_KEY</code> env var overrides ChatGPT login —— <strong>This logic cannot be found in the source code</strong>. <code>OPENAI_API_KEY</code> is read in only one place: during interactive <code>codex login</code> when it reaches the "enter API key" step, <strong>it is used to pre-fill the text box</strong> (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/tui/src/onboarding/auth.rs#L776-L795" target="_blank">Source</a>), and that's it —— it won't be silently read during requests, and doesn't appear in the priority table above. What truly "hijacks" built-in provider requests are items ①③④ in the table, and the variable set in <code>[model_providers.&lt;id&gt;].env_key</code>.</div>
+
+<p><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> are not "sources" in the priority sense, but <strong>a gatekeeper at startup</strong>: Codex loads the current effective credential then verifies it against policies. If the mode or workspace doesn't match, it will <strong>log you out immediately</strong> and provide the reason. For example, if policy demands an API key but you are using ChatGPT login, it reports <code>API key login is required, but ChatGPT is currently being used. Logging out.</code>; conversely, <code>ChatGPT login is required, but an API key is currently being used. Logging out.</code>; and for a workspace mismatch: <code>Login is restricted to workspace(s) &lt;Allowed Workspaces&gt;, but current credentials belong to &lt;Actual Workspace&gt;. Logging out.</code> (Source: <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L1083-L1150" target="_blank"><code>manager.rs · enforce_login_restrictions()</code></a>).</p>
+
+<h3 data-reveal>What does <code>codex login status</code> look like?</h3>
+<p>Multiple sections ask you to run this command to verify. Here is its true output —— verified directly from the source code (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/cli/src/login.rs#L424-L473" target="_blank"><code>cli/src/login.rs · run_login_status()</code></a>), not a paraphrase:</p>
+<pre><code><span class="c"># Using ChatGPT Subscription Login</span>
+$ codex login status
+Logged in using ChatGPT
+$ echo $?
+0
+
+<span class="c"># Using API Key Billing Login (Key is obfuscated: first 8 + *** + last 5 chars)</span>
+$ codex login status
+Logged in using an API key - sk-proj-a***7f3k9
+
+<span class="c"># Not Logged In / Credential logged out by forced_login_method</span>
+$ codex login status
+Not logged in
+$ echo $?
+1</code></pre>
+<p>Enterprise access token / Personal access token / Bedrock scenarios output <code>Logged in using access token</code>, <code>Logged in using personal access token</code>, and <code>Logged in using Amazon Bedrock API key</code> respectively —— exactly 6 deterministic messages, no 7th.</p>
+
+<h3 data-reveal>auth.json Obfuscated Field Structure</h3>
+<p>Official docs only say "this is a plaintext token, treat it as a password" without listing fields. Below are the actual fields verified from the open-source repository struct (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/storage.rs#L37-L61" target="_blank"><code>login/src/auth/storage.rs · AuthDotJson</code></a>), with sensitive values replaced:</p>
+<pre><code><span class="c">// auth.json during ChatGPT OAuth Login (simplified, obfuscated)</span>
+{
+  "auth_mode": "chatgpt",
+  "OPENAI_API_KEY": null,
+  "tokens": {
+    "id_token": "&lt;JWT, containing email / chatgpt_plan_type / chatgpt_account_id claims&gt;",
+    "access_token": "&lt;JWT, carried in each request&gt;",
+    "refresh_token": "&lt;For renewal, long-term valid&gt;",
+    "account_id": "..."
+  },
+  "last_refresh": "Verified August 17, 2026T08:00:00Z"
+}
+
+<span class="c">// auth.json during API key login: tokens/last_refresh are empty</span>
+{ "auth_mode": "apikey", "OPENAI_API_KEY": "sk-…", "tokens": null, "last_refresh": null }</code></pre>
+<p><strong>How to tell if it's stale</strong>: Only ChatGPT login (<code>tokens</code> non-empty) has renewal behavior —— the deciding factor is the <code>last_refresh</code> field. The threshold constant in the source code is <code>TOKEN_REFRESH_INTERVAL = 8</code> (days, <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L182" target="_blank">Source</a>), which matches the "becomes stale after ~8 days" logic from earlier in this chapter, cross-verified. Self-check method: <code>python3 -c "import json,datetime;d=json.load(open('~/.codex/auth.json'));print(d.get('last_refresh'))"</code> (For Linux/keyring mode, you can't see the file, use <code>codex login status</code> instead). If it's been more than 8 days, it means the next run will automatically refresh it; for API key logins, this field is always <code>null</code> and this check does not apply.</p>
+
+<div class="callout warn"><b class="t">auth.json = Your Account Avatar</b>Plaintext token, treat it as a password: do not commit, do not paste into chats, do not screenshot. If you need to reuse it across machines, prefer device code login. If you absolutely must copy it, use only secure channels and delete it immediately after use.</div>
+<p class="src">Sources: <a href="https://learn.chatgpt.com/docs/auth" target="_blank">Official Authentication</a> · <a href="https://learn.chatgpt.com/docs/config-file/config-reference" target="_blank">Official Config Reference</a> (2026-07 Edition). Credential priority, <code>login status</code> output, and auth.json field structures are unpublished officially; verified from <a href="https://github.com/openai/codex" target="_blank">openai/codex open-source repository</a> source code (commit <code>f6160ca</code>, 2026-07): <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs" target="_blank">auth/manager.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/storage.rs" target="_blank">auth/storage.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/cli/src/login.rs" target="_blank">cli/login.rs</a>. For config.toml cascading and Profile details, see <a href="codex-guide.html#config-auth">Codex Guide · Complete Config & Account Guide</a>.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="codex-config">
+<div class="sec-tag">Codex 06</div>
+<h2>Codex · config.toml Complete Guide: Minimal to Full Dictionary</h2>
+<p>A symmetrical chapter to Claude Code: The previous chapter discussed how credentials are stored and renewed; this chapter covers how to <strong>solidify them into files</strong> —— what sections <code>config.toml</code> has, the minimum needed to run, what a full config looks like, and exactly how to implement "third-party models/gateway integrations" in TOML.</p>
+
+<h3 data-reveal>I. File Locations and Cascading Overrides</h3>
+<table class="tbl">
+  <tr><th>Layer</th><th>Location</th><th>Description</th></tr>
+  <tr><td>CLI Single Override</td><td><code>-c key=value</code></td><td>Highest priority, value parsed as TOML/JSON, does not alter files</td></tr>
+  <tr><td>Project Layer</td><td>Repo Root <code>.codex/config.toml</code></td><td>Project file closest to current working directory takes precedence; <strong>For security, keys like <code>model_providers</code>/<code>notify</code>/<code>otel</code> are ignored at the project layer</strong> and must be written in the user layer</td></tr>
+  <tr><td>Profile Layer</td><td><code>$CODEX_HOME/&lt;Name&gt;.config.toml</code></td><td>Explicitly activated via <code>-p/--profile Name</code>, overlaps on top of the user layer</td></tr>
+  <tr><td>User Layer</td><td><code>~/.codex/config.toml</code></td><td>Personal default config, most keys are written here</td></tr>
+  <tr><td>System Layer</td><td><code>/etc/codex/config.toml</code> (Unix)</td><td>Enterprise fallback control</td></tr>
+  <tr><td>Built-in Defaults</td><td>——</td><td>Fallback behavior when all above are empty</td></tr>
+</table>
+<p>If changes don't take effect, run <code>/debug-config</code> to see the cascading result —— this is the most frequent symptom in the <a href="#codex-er">Chapter 07 ER Guide</a>, and the root cause is almost always "writing to the wrong layer".</p>
+
+<h3 data-reveal>II. Minimal Runnable Configuration</h3>
+<p>Codex <strong>does not need any <code>config.toml</code> to run</strong> —— after <code>codex login</code>, it uses built-in defaults (default model, <code>workspace-write</code> sandbox, <code>on-request</code> approvals). If you want to explicitly declare a team starter template, these three lines are the most common to change:</p>
+<pre><code><span class="c">#:schema https://developers.openai.com/codex/config-schema.json</span>
+model = "gpt-5.6"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"</code></pre>
+
+<h3 data-reveal>III. Key Configurations (20 items, grouped by purpose)</h3>
+<table class="tbl">
+  <tr><th>Purpose</th><th>Key</th><th>Description</th></tr>
+  <tr><td rowspan="4">Auth & Login</td><td><code>cli_auth_credentials_store</code></td><td>Where to store credentials: <code>file</code> (plaintext auth.json) / <code>keyring</code> (system keychain) / <code>auto</code></td></tr>
+  <tr><td><code>forced_login_method</code></td><td>Lock login method: <code>chatgpt</code> / <code>api</code></td></tr>
+  <tr><td><code>forced_chatgpt_workspace_id</code></td><td>Restrict login to a specific ChatGPT workspace</td></tr>
+  <tr><td><code>openai_base_url</code> / <code>chatgpt_base_url</code></td><td>Override request URL for built-in OpenAI provider / Override login flow URL</td></tr>
+  <tr><td rowspan="3">Security Trio</td><td><code>approval_policy</code></td><td>Approval tier: <code>untrusted</code> / <code>on-request</code> / <code>never</code></td></tr>
+  <tr><td><code>sandbox_mode</code></td><td>Sandbox tier: <code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code></td></tr>
+  <tr><td><code>sandbox_workspace_write.network_access</code></td><td>Allow outbound network access in <code>workspace-write</code> mode, restricted by default</td></tr>
+  <tr><td rowspan="3">Model & Output</td><td><code>model</code> / <code>model_provider</code></td><td>Model to use / Which provider it corresponds to (defaults to built-in openai)</td></tr>
+  <tr><td><code>model_reasoning_effort</code></td><td>Reasoning effort: <code>minimal</code> → <code>xhigh</code></td></tr>
+  <tr><td><code>model_context_window</code></td><td>Manually declare context window token size (common for custom models)</td></tr>
+  <tr><td rowspan="3">Experience & Execution</td><td><code>personality</code></td><td>Communication style: <code>none</code> / <code>friendly</code> / <code>pragmatic</code></td></tr>
+  <tr><td><code>notify</code></td><td>Command triggered when a task completes</td></tr>
+  <tr><td><code>web_search</code></td><td>Web search mode: <code>disabled</code> / <code>cached</code> (default) / <code>indexed</code> / <code>live</code></td></tr>
+  <tr><td>MCP Auth</td><td><code>mcp_oauth_credentials_store</code></td><td>Storage for MCP server OAuth credentials, same three choices as <code>cli_auth_credentials_store</code></td></tr>
+</table>
+
+<h3 data-reveal>IV. Full Dictionary (Quick search by TOML section, 2026-07 Edition verified)</h3>
+<div class="callout note"><b class="t">How to use this dictionary</b>Codex configuration naturally partitions by TOML <code>[section]</code>, making it easier to locate on-demand than Claude Code's flat JSON. <code>features.*</code> (100+ feature flags) are not repeated in this table —— for a complete list and their stable/experimental status, see <a href="codex-guide.html#hidden-config">Codex Guide · Hidden Capabilities & Easter Egg Configs</a>, or just run <code>codex features list</code>.</div>
+
+<h4>Top-level Core Keys · Auth & Network</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Description</th></tr>
+  <tr><td><code>cli_auth_credentials_store</code></td><td>CLI credential storage location (three options)</td></tr>
+  <tr><td><code>mcp_oauth_credentials_store</code></td><td>MCP OAuth credential storage location (three options)</td></tr>
+  <tr><td><code>mcp_oauth_callback_port</code> / <code>mcp_oauth_callback_url</code></td><td>Fixed MCP OAuth callback port / Custom callback URL prefix</td></tr>
+  <tr><td><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code></td><td>Lock login method / Lock workspace, mismatch triggers immediate logout</td></tr>
+  <tr><td><code>openai_base_url</code> / <code>chatgpt_base_url</code></td><td>Built-in OpenAI provider request URL override / Login flow URL override</td></tr>
+  <tr><td><code>check_for_update_on_startup</code></td><td>Whether to check for updates on startup, enabled by default</td></tr>
+  <tr><td><code>allow_login_shell</code></td><td>Whether to allow shell tools to use login shell semantics, enabled by default</td></tr>
+</table>
+
+<h4>Top-level Core Keys · Model & Execution</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Description</th></tr>
+  <tr><td><code>model</code> / <code>model_provider</code></td><td>Model name / Corresponding provider id</td></tr>
+  <tr><td><code>model_context_window</code> / <code>model_auto_compact_token_limit</code></td><td>Context window size / Token threshold to trigger auto-compaction</td></tr>
+  <tr><td><code>model_reasoning_effort</code> / <code>model_reasoning_summary</code></td><td>Reasoning effort / Reasoning summary detail: <code>auto</code>/<code>concise</code>/<code>detailed</code>/<code>none</code></td></tr>
+  <tr><td><code>model_verbosity</code></td><td>GPT-5 Responses API output verbosity override</td></tr>
+  <tr><td><code>model_instructions_file</code></td><td>File path replacing built-in system instructions</td></tr>
+  <tr><td><code>model_catalog_json</code></td><td>Custom model catalog JSON path</td></tr>
+  <tr><td><code>approval_policy</code> / <code>approvals_reviewer</code></td><td>Approval tier / Who reviews: <code>user</code> or <code>auto_review</code></td></tr>
+  <tr><td><code>sandbox_mode</code> / <code>default_permissions</code></td><td>Sandbox tier / Default permission profile name (see <code>[permissions]</code> below)</td></tr>
+  <tr><td><code>web_search</code></td><td>Web search mode (four options)</td></tr>
+  <tr><td><code>file_opener</code></td><td>Application to open when clicking file references: <code>vscode</code>/<code>cursor</code>/<code>windsurf</code>/<code>none</code></td></tr>
+  <tr><td><code>personality</code></td><td>Default communication style</td></tr>
+  <tr><td><code>notify</code></td><td>Command triggered on task completion/attention needed</td></tr>
+  <tr><td><code>hide_agent_reasoning</code></td><td>Hide reasoning process in TUI and exec output</td></tr>
+  <tr><td><code>developer_instructions</code></td><td>Extra developer-level instructions injected</td></tr>
+  <tr><td><code>service_tier</code></td><td>Service tier preference for new turns</td></tr>
+  <tr><td><code>oss_provider</code></td><td>In <code>--oss</code> mode, whether to default to <code>lmstudio</code> or <code>ollama</code></td></tr>
+  <tr><td><code>project_root_markers</code></td><td>List of marker filenames to identify "project root directory"</td></tr>
+  <tr><td><code>project_doc_fallback_filenames</code> / <code>project_doc_max_bytes</code></td><td>Fallback filenames if AGENTS.md is missing / Max bytes read for single project document</td></tr>
+  <tr><td><code>tool_output_token_limit</code></td><td>Token limit for tool output included in history</td></tr>
+  <tr><td><code>log_dir</code></td><td>Log directory, default is <code>$CODEX_HOME/log</code></td></tr>
+  <tr><td><code>review_model</code></td><td>Model override used by <code>/review</code></td></tr>
+</table>
+
+<h4>[model_providers.&lt;id&gt;] · Core Section for 3rd-party/Self-hosted Models</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Description</th></tr>
+  <tr><td><code>name</code> / <code>base_url</code></td><td>Display name / API request URL</td></tr>
+  <tr><td><code>env_key</code> / <code>env_key_instructions</code></td><td>Environment variable name supplying the API Key / Instructions shown to user for getting the key</td></tr>
+  <tr><td><code>requires_openai_auth</code></td><td>Set to <code>true</code> indicates this provider uses OpenAI auth (used when gateway proxies OpenAI models, <code>env_key</code> is ignored)</td></tr>
+  <tr><td><code>wire_api</code></td><td>Protocol, currently fixed to <code>responses</code></td></tr>
+  <tr><td><code>http_headers</code> / <code>env_http_headers</code></td><td>Static request headers / Request headers sourced from env vars</td></tr>
+  <tr><td><code>query_params</code></td><td>Extra query parameters appended to the request</td></tr>
+  <tr><td><code>auth.command</code> / <code>auth.args</code> / <code>auth.refresh_interval_ms</code></td><td>Command to dynamically generate a bearer token instead of a static key, auto-refreshed by interval</td></tr>
+  <tr><td><code>request_max_retries</code> / <code>stream_max_retries</code> / <code>stream_idle_timeout_ms</code></td><td>Request retry count / Stream retry count / Stream idle timeout</td></tr>
+  <tr><td><code>amazon-bedrock.aws.profile</code> / <code>.aws.region</code></td><td>Exclusive to built-in <code>amazon-bedrock</code> provider: AWS profile and region</td></tr>
+</table>
+
+<h4>[mcp_servers.&lt;id&gt;] · MCP Servers</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Description</th></tr>
+  <tr><td><code>command</code> / <code>args</code> / <code>cwd</code> / <code>env</code></td><td>Start command, args, working directory, and env vars for stdio-based servers</td></tr>
+  <tr><td><code>url</code> / <code>http_headers</code> / <code>bearer_token_env_var</code></td><td>Address / Static request headers / Bearer token source env var for HTTP-based servers</td></tr>
+  <tr><td><code>auth</code> / <code>scopes</code></td><td>Auth method: <code>oauth</code> or <code>chatgpt</code> / Requested OAuth scopes</td></tr>
+  <tr><td><code>enabled</code> / <code>required</code></td><td>Whether enabled (can be temporarily disabled without deleting config) / Whether to fail immediately if missing on startup</td></tr>
+  <tr><td><code>startup_timeout_sec</code> / <code>tool_timeout_sec</code></td><td>Startup timeout (default 10s) / Single tool call timeout (default 60s)</td></tr>
+  <tr><td><code>enabled_tools</code> / <code>disabled_tools</code></td><td>Tool whitelist / blacklist (blacklist takes precedence over whitelist)</td></tr>
+  <tr><td><code>default_tools_approval_mode</code></td><td>Default approval behavior for tools in this server: <code>auto</code>/<code>prompt</code>/<code>writes</code>/<code>approve</code></td></tr>
+</table>
+
+<h4>[shell_environment_policy] · What Env Vars Codex Internal Commands See</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Description</th></tr>
+  <tr><td><code>inherit</code></td><td>Baseline inheritance strategy: <code>all</code> (inherit all) / <code>core</code> (keep only common base variables, default and safer) / <code>none</code> (inherit nothing)</td></tr>
+  <tr><td><code>set</code></td><td>Explicit key-value table for appending/overriding env vars —— most used for 3rd-party login combos (see Section V)</td></tr>
+  <tr><td><code>include_only</code> / <code>exclude</code></td><td>Only keep variables matching patterns / Exclude variables matching patterns</td></tr>
+  <tr><td><code>ignore_default_excludes</code></td><td>Automatically excludes vars with KEY/SECRET/TOKEN by default; set <code>true</code> to disable this protection</td></tr>
+</table>
+
+<h4>[sandbox_workspace_write] · workspace-write Sandbox Details</h4>
+<table class="tbl">
+  <tr><th>Key</th><th>Description</th></tr>
+  <tr><td><code>writable_roots</code></td><td>List of additional writable directories besides the workspace</td></tr>
+  <tr><td><code>network_access</code></td><td>Whether to allow outbound network access, restricted by default</td></tr>
+  <tr><td><code>exclude_slash_tmp</code> / <code>exclude_tmpdir_env_var</code></td><td>Exclude <code>/tmp</code> / <code>$TMPDIR</code> from writable roots</td></tr>
+</table>
+
+<h4>Quick Lookup for Other Sections</h4>
+<table class="tbl">
+  <tr><th>Section</th><th>Description</th></tr>
+  <tr><td><code>[history]</code></td><td><code>persistence</code> (whether to save sessions), <code>max_bytes</code> (history file size limit)</td></tr>
+  <tr><td><code>[projects.&lt;path&gt;]</code></td><td><code>trust_level</code> marks if a directory is trusted, prompted once when entering an unknown repo</td></tr>
+  <tr><td><code>[agents]</code></td><td>Max concurrent agents, nesting depth, custom agent role descriptions and config paths</td></tr>
+  <tr><td><code>[apps]</code></td><td>App connectors default enabled state and approval mode</td></tr>
+  <tr><td><code>[permissions.&lt;name&gt;]</code></td><td>Custom permission profiles: fine-grained rules for filesystem/network/workspace roots, advanced usage, <code>default_permissions</code> specifies the default</td></tr>
+  <tr><td><code>[memories]</code></td><td>Cross-session memory generation and usage toggle, model overrides, retention policy</td></tr>
+  <tr><td><code>[plugins]</code></td><td>Plugin-provided MCP server tool whitelists / approval mode overrides</td></tr>
+  <tr><td><code>[tui]</code></td><td>Terminal UI: animations, notification methods, theme, status bar fields, keybindings</td></tr>
+  <tr><td><code>[hooks]</code></td><td>Lifecycle hooks (requires <code>features.hooks</code> to be enabled)</td></tr>
+  <tr><td><code>[otel]</code></td><td>OpenTelemetry export config: endpoint, protocol, TLS certificate</td></tr>
+  <tr><td><code>[windows]</code></td><td>Windows-exclusive sandbox mode (<code>unelevated</code>/<code>elevated</code>)</td></tr>
+  <tr><td><code>[skills]</code></td><td>Per-skill enable/disable overrides</td></tr>
+  <tr><td><code>[tools]</code></td><td><code>web_search</code> details (search context size, domain whitelist), <code>view_image</code> toggle</td></tr>
+</table>
+<div class="callout warn"><b class="t">Desktop App Also Writes to this File</b>If you have the Codex Desktop App installed simultaneously, <code>config.toml</code> will have auto-generated sections like <code>[marketplaces.*]</code>, <code>[desktop]</code>, <code>tui.model_availability_nux</code> —— these are internal app states not covered in official CLI docs config reference. <strong>It is NOT recommended to edit them manually</strong>; mistakes will likely be overwritten next startup or cause weird behaviors.</div>
+
+<h3 data-reveal>V. How to Combine 3rd-Party/Account Logins into config.toml</h3>
+<p>Chapter 05 covered "what" the three login methods are; here is <strong>exactly how to write them into the file</strong>, solidifying third-party models, gateways, and enterprise policies.</p>
+<table class="tbl">
+  <tr><th>Scenario</th><th>How to Write</th></tr>
+  <tr><td>Pure ChatGPT Subscription (Default, Zero Config)</td><td>No need to write anything, just run <code>codex login</code> once</td></tr>
+  <tr><td>API Key Billing</td><td>Login method is independent of <code>config.toml</code>: pass via stdin during <code>codex login</code>, no extra config needed (unless adding a custom provider)</td></tr>
+  <tr><td>Integrating OpenAI-compatible 3rd-party Gateway/Proxy</td><td>Define a custom provider, top-level <code>model_provider</code> points to it:<br><pre><code>[model_providers.my-gateway]
+name = "My Gateway"
+base_url = "https://your-gateway-address/v1"
+env_key = "MY_GATEWAY_API_KEY"
+
+model_provider = "my-gateway"
+model = "gpt-5.6"</code></pre>Then <code>export MY_GATEWAY_API_KEY=…</code> or write it in <code>[shell_environment_policy.set]</code></td></tr>
+  <tr><td>Integrating AWS Bedrock</td><td>Built-in provider, only need AWS credentials:<br><pre><code>model_provider = "amazon-bedrock"
+
+[model_providers.amazon-bedrock.aws]
+profile = "your-aws-profile"
+region = "us-east-1"</code></pre></td></tr>
+  <tr><td>Proxying OpenAI Models via Enterprise Gateway (Still using official account auth)</td><td><code>requires_openai_auth = true</code>, in this case <code>env_key</code> is ignored, continue using ChatGPT/API Key login, but requests forward through your gateway</td></tr>
+  <tr><td>Injecting Auth Vars into Codex Internal Shell</td><td>Don't want to pollute system env, only want commands executed by Codex (including CLI subprocesses it calls) to see certain variables:<br><pre><code>[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+MY_TOOL_API_KEY = "your-token"
+MY_TOOL_BASE_URL = "https://your-proxy-address"</code></pre>Common in dual-tool workflows where you "run other CLI tools conveniently inside Codex sessions" —— variables are only visible to subprocesses spawned by Codex, not written to your shell config</td></tr>
+  <tr><td>Forcing Enterprise Login Method and Workspace</td><td><code>forced_login_method = "chatgpt"</code> + <code>forced_chatgpt_workspace_id = "Workspace-UUID"</code>, written in system layer or unified user layer, individuals cannot bypass</td></tr>
+</table>
+
+<h3 data-reveal>VI. config.toml Exclusive Common Conflicts</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Configured <code>[model_providers]</code> or <code>notify</code> in project <code>.codex/config.toml</code>, completely ignored</td><td>Security policy explicitly states these keys are <strong>ignored at the project layer</strong> to prevent malicious configs in repos from hijacking your credentials/notifications —— write to user layer <code>~/.codex/config.toml</code></td></tr>
+  <tr><td>Switched to custom <code>model_provider</code> but getting <code>unauthorized</code> / 401</td><td>The env var specified by <code>env_key</code> is not actually set, or set but misspelled —— <code>echo $YOUR_VAR_NAME</code> to confirm non-empty, then check spelling of <code>env_key</code> in <code>[model_providers.&lt;id&gt;]</code></td></tr>
+  <tr><td>Internal commands fail en masse after setting <code>shell_environment_policy.inherit = "none"</code></td><td>Even basic vars like <code>PATH</code> are cleared: <code>none</code> requires manually replenishing all essential vars in <code>[shell_environment_policy.set]</code>; <code>inherit = "core"</code> is recommended for daily use</td></tr>
+  <tr><td>Switched profile with <code>--profile</code>, but provider not found</td><td>Profiles just overlay configs. If it references a custom <code>model_provider</code>, that <code>[model_providers.&lt;id&gt;]</code> table must also be defined in the user layer (or the profile itself), otherwise the profile overrides the <code>model_provider</code> field but can't find the provider definition</td></tr>
+  <tr><td>Id written in <code>model_provider</code> doesn't match name in <code>[model_providers.&lt;id&gt;]</code></td><td>TOML table name and top-level reference must be character-for-character identical (including casing); when unmatched, Codex silently falls back to built-in default <code>openai</code> provider, often mistaken as "config not applying due to other reasons"</td></tr>
+</table>
+<p class="src">Section keys and descriptions from: <a href="https://developers.openai.com/codex/config-reference" target="_blank">Official Configuration Reference</a> · <a href="https://developers.openai.com/codex/config-basic" target="_blank">Config Basics</a> (Both migrated to learn.chatgpt.com/docs, 308 redirect still accessible, verified against 2026-07 edition).</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="codex-er">
+<div class="sec-tag">Codex 07</div>
+<h2>Codex · Symptom ER Guide</h2>
+
+<p>Following the same categorization as the previous chapter: Login Credentials / Billing Quotas / Install Versions / Config Sessions / Network Proxies, perfectly aligning the troubleshooting mindset of both tools.</p>
+<div class="callout tip"><b class="t">⚡ 1-Minute Quick Fix</b><code>env | grep -iE 'openai|proxy'</code> to clear hijacked vars → <code>codex logout && codex login</code> clean re-login → <code>codex login status</code> verify; The hard evidence for login issues is in <code>codex-login.log</code>.</div>
+
+<div class="callout note"><b class="t">How English Error Text was Verified Here</b>Unlike Claude Code, Codex CLI official troubleshooting docs (learn.chatgpt.com/docs) don't list a complete error mapping. Each English error shown below is directly verified (<code>openai/codex</code> repo source line, or specific GitHub issue); <strong>If no fixed original text is found, we only provide a description and do not invent errors</strong>.</div>
+
+<h3 data-reveal>I. Login & Credentials</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Browser login stuck waiting / callback failed, or <code>Port 127.0.0.1:1455 is already in use</code></td><td>Port 1455 occupied or blocked by firewall/proxy. Source first attempts sending cancel request to old process, if still failing it downgrades to backup port 1457; only reports this error if both are used (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs#L614-L663" target="_blank">Source</a>). ① Ensure <code>localhost</code>, <code>127.0.0.1</code>, <code>::1</code> in proxy bypass list (<code>NO_PROXY</code>); ② Use <code>codex login --device-auth</code> instead; ③ For remote machines, use <code>ssh -L 1455:localhost:1455</code> to forward before logging in</td></tr>
+  <tr><td>Login successful, but submitting prompt immediately hits <code>unexpected status 401 Unauthorized</code></td><td>Token stale or proxy pollution: <code>codex logout</code> → delete <code>~/.codex/auth.json</code> → temporarily disable VPN/proxy → <code>codex login</code> for a clean re-login</td></tr>
+  <tr><td>Headless device-auth reports <code>device code login is not enabled for this Codex server. Use the browser login or verify the server URL.</code></td><td>Workspace doesn't have device code enabled (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/device_code_auth.rs#L78-L92" target="_blank">Source, reports HTTP 404</a>): Personal users turn on in ChatGPT Security settings; Enterprise users ask admin to enable in Workspace Permissions</td></tr>
+  <tr><td>IDE Extension suddenly requires login</td><td>CLI and IDE share credential cache, logout on one side cascades to the other —— just re-login. <strong>No fixed official error text verified</strong>; this is normal cascaded logout behavior, not a glitch. You can run <code>codex login status</code> on both sides to verify</td></tr>
+  <tr><td>Logged into the wrong workspace (Personal/Company)</td><td>Browser-cached ChatGPT session dragged you into default workspace: <code>codex logout</code> and pick the right workspace on the auth page during re-login. When forced by enterprise policy <code>forced_chatgpt_workspace_id</code>, mismatch immediately logs you out with <code>Login is restricted to workspace(s) &lt;Allowed Workspaces&gt;, but current credentials belong to &lt;Actual Workspace&gt;. Logging out.</code> (<a href="#codex-cred">Source in Chapter 05</a>)</td></tr>
+  <tr><td>Company machine cannot change login method</td><td>Policy config <code>forced_login_method = "chatgpt" | "api"</code> is active. Attempting reverse login precisely reports <code>ChatGPT login is disabled. Use API key login instead.</code> or vice versa <code>API key login is disabled. Use ChatGPT login instead.</code> —— Policy, not a glitch; contact admin</td></tr>
+  <tr><td>Browser inside WSL says login successful, but CLI/IDE reports <code>Token exchange failed: error sending request for url (https://auth.openai.com/oauth/token)</code></td><td>Windows and WSL are independent network namespaces, localhost doesn't bridge natively, callback often lost or times out (<a href="https://github.com/openai/codex/issues/6413" target="_blank">issue #6413</a> · <a href="https://github.com/openai/codex/issues/13342" target="_blank">#13342</a>): Disable "Run Codex in WSL" VS Code setting to run native Windows; or use <code>codex login --device-auth</code>; or login on Windows side and securely copy <code>auth.json</code> into WSL's <code>~/.codex/</code></td></tr>
+</table>
+
+<h3 data-reveal>II. Billing & Quotas</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Fast mode unavailable</td><td>It relies on ChatGPT subscription quota: API Key login doesn't have it, switch to ChatGPT login. <strong>No fixed error text verified</strong>, usually behaves as grayed-out options or silent degradation rather than pop-up errors</td></tr>
+  <tr><td><code>You've hit your usage limit.</code></td><td>ChatGPT login uses subscription quota, wait for reset or upgrade plan (Text varies by plan, Pro adds <code>Visit https://chatgpt.com/codex/settings/usage to purchase more credits</code>, Plus adds upgrade link, Source: <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L674-L718" target="_blank">error.rs</a>); For API Key login check balance/limits on platform backend —— first run <code>codex login status</code> to confirm your billing channel</td></tr>
+  <tr><td><code>Quota exceeded. Check your plan and billing details.</code></td><td>You are on API key billing and out of quota (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L135" target="_blank">Source</a>): Top up on platform.openai.com, or clear the key pointed by <code>[model_providers]</code> to fallback to ChatGPT login</td></tr>
+  <tr><td>API reports <code>exceeded retry limit, last status: 429 Too Many Requests</code></td><td>Rate limiting; original status code is only exposed after retries exhaust (<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L601-L611" target="_blank">Source</a>, historically Codex didn't expose 429 details for a long time, see <a href="https://github.com/openai/codex/issues/4840" target="_blank">issue #4840</a>): Lower concurrency, retry later; For ChatGPT sub users, ensure you aren't hijacked by a custom <code>model_provider</code> to a stricter 3rd-party gateway</td></tr>
+  <tr><td>Codex cloud access denied</td><td>Email+Password accounts must enable MFA first; cloud only supports ChatGPT login. <strong>No fixed official error text verified</strong>, but official docs confirm MFA as a prerequisite</td></tr>
+  <tr><td>Want to switch between Subscription and API billing</td><td><code>codex logout</code> then re-login as needed: ChatGPT OAuth = Subscription Quota, API Key = Pay-as-you-go; Data policies differ too (Workspace vs API Org)</td></tr>
+</table>
+
+<h3 data-reveal>III. Install & Versions</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>npm install reports <code>npm warn EBADENGINE Unsupported engine</code></td><td>Node is too old, fails <code>package.json</code>'s <code>engines.node</code> declaration (standard npm warning, not Codex exclusive): Use nvm to upgrade to current LTS then <code>npm install -g @openai/codex</code>; On macOS use <code>brew install codex</code> to bypass Node dependency</td></tr>
+  <tr><td>command not found: codex</td><td>npm global bin dir not in PATH: use <code>npm prefix -g</code> to find the dir, add <code>/bin</code> under it to your rc file; For brew, check brew PATH config</td></tr>
+  <tr><td>Version behaving weirdly / New features missing</td><td>Check <code>codex --version</code> against official releases; npm and brew installations can conflict, use <code>which -a codex</code> to verify and keep only one</td></tr>
+  <tr><td>On Windows, after <code>npm install -g @openai/codex</code>, running <code>codex</code> reports <code>Missing optional dependency @openai/codex-win32-x64</code></td><td>Platform-specific package (<code>-win32-x64</code>) was missing or lagging behind main package during that release, npm installed an incomplete version (<a href="https://github.com/openai/codex/issues/17432" target="_blank">issue #17432</a>): Switch to official <code>winget install OpenAI.Codex</code> or PowerShell script; For a temporary bypass, <code>npm install -g @openai/codex@LAST_KNOWN_GOOD_VERSION</code></td></tr>
+</table>
+
+<h3 data-reveal>IV. Config & Sessions</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Changed config.toml but no effect</td><td>Run <code>/debug-config</code> to check cascading: <code>-c</code> args &gt; profile &gt; project &gt; user; Note that keys like <code>model_providers</code>/<code>notify</code>/<code>otel</code> are ignored at the project layer by security policy, must be written to user layer</td></tr>
+  <tr><td>Swapped computers, <code>codex resume</code> reports <code>no thread with id: &lt;uuid&gt;</code></td><td>Session data lives in the old machine's <code>CODEX_HOME</code>, doesn't travel with credentials (error format <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L97-L98" target="_blank">Source</a>); Cloud tasks are unaffected</td></tr>
+  <tr><td>CLI / IDE Ext / Desktop App all installed, config.toml suddenly reports <code>failed to load configuration: ~/.codex/config.toml</code> and <code>unexpected key or value, expected newline, '#'</code> / <code>key with no value, expected '='</code></td><td>The callout in Chapter 07 warned about this: Desktop App automatically writes back sections like <code>[marketplaces.*]</code> and <code>[desktop]</code>, causing invalid TOML when colliding with manual CLI/IDE edits (Real user report <a href="https://github.com/openai/codex/issues/30045" target="_blank">issue #30045</a>, triggered after adding 3rd-party MCP). All 3 share the same <code>~/.codex/config.toml</code> —— do not manually edit Desktop-generated sections; To fix, <code>cp ~/.codex/config.toml ~/.codex/config.toml.bak</code> then delete sections block-by-block, or delete <code>[marketplaces.*]</code>/<code>[desktop]</code> entirely and let Desktop App regenerate them on restart</td></tr>
+  <tr><td>Need evidence for login issues</td><td>Check <code>codex-login.log</code> in the log directory —— dedicated login diagnostic log, use it for bug reports too</td></tr>
+</table>
+
+<h3 data-reveal>V. Network & Proxies</h3>
+<table class="tbl er">
+  <tr><th>Symptom</th><th>Root Cause → Fix</th></tr>
+  <tr><td>Company proxy intercepts TLS, login reports <code>Token exchange failed: error sending request for url (https://auth.openai.com/oauth/token)</code></td><td>Login callback uses <code>reqwest::Client</code> which defaults to trusting only system cert store, failing enterprise self-signed CAs (<a href="https://github.com/openai/codex/issues/6849" target="_blank">issue #6849</a>, Source: <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs#L786-L836" target="_blank">server.rs · exchange_code_for_tokens()</a>): <code>export CODEX_CA_CERTIFICATE=/path/company_root.pem</code> (falls back to <code>SSL_CERT_FILE</code> if unset); Login, HTTPS, and WebSockets will all route through this CA</td></tr>
+  <tr><td>Bizarre failures after switching VPN/Proxy</td><td>Residual <code>*_PROXY</code> variables causing pollution: <code>env | grep -i proxy</code> to clean; OAuth callback requires localhost family in <code>NO_PROXY</code></td></tr>
+  <tr><td>auth.openai.com unreachable</td><td>Test directly with <code>curl -sI https://auth.openai.com</code>; If failing, it's a firewall/regional issue, switch networks or use <a href="#headless">Device Code/SSH Forwarding</a> solutions</td></tr>
+</table>
+<p class="src">Sources: <a href="https://learn.chatgpt.com/docs/auth" target="_blank">Official Authentication</a> (2026-07 Edition). English error texts verified from <a href="https://github.com/openai/codex" target="_blank">openai/codex open-source repo</a> source code (commit <code>f6160ca</code>): <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs" target="_blank">protocol/error.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs" target="_blank">login/server.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/device_code_auth.rs" target="_blank">login/device_code_auth.rs</a>, and real user reports from <a href="https://github.com/openai/codex/issues" target="_blank">openai/codex issues</a> (#3927, #4840, #6413, #6849, #13342, #17432, #30045, verified 2026-07)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="shared">
+<div class="sec-tag">Scenario Playbook 08</div>
+<h2>Playbook A · Shared Computer / Inheriting a Pre-configured Machine</h2>
+
+<p>The most frequent failure scene: You are a Claude Pro user, sitting at a computer someone else used, and hitting walls of errors. <strong>The root cause is almost always the same: The previous user's credentials and env vars are still alive</strong>, and their priority is higher than your login.</p>
+
+<h3 data-reveal>The 3 Pre-Checks (Do this before configuring)</h3>
+<ol class="steps">
+  <li><strong>Check Env Vars and RC Residue</strong>: Run <a href="#diagnose">Chapter 01 Health Check script</a>, focusing on L2 output —— <code>export ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_BASE_URL</code> (proxy config) / <code>OPENAI_API_KEY</code> in someone else's rc file are ticking time bombs.</li>
+  <li><strong>Check Credential Ownership</strong>: Run <code>claude</code> into session and <code>/status</code> to see whose account is logged in; same for <code>codex login status</code>. If it's someone else's, <code>/logout</code> / <code>codex logout</code> first.</li>
+  <li><strong>Check Global Config Pollution</strong>: Check if <code>~/.claude/CLAUDE.md</code>, <code>~/.claude/settings.json</code>, <code>~/.codex/config.toml</code>, <code>~/.codex/AGENTS.md</code> contain someone else's preferences or instructions —— these will directly impact all your conversations.</li>
+</ol>
+
+<h3 data-reveal>Choose Solution Based on Sharing Level</h3>
+<table class="tbl">
+  <tr><th>Scenario</th><th>Recommended Solution</th><th>How-To</th></tr>
+  <tr><td>Temporarily borrowing</td><td><strong>Touch nothing of theirs</strong></td><td>Only clear vars in current terminal session (<code>unset ANTHROPIC_API_KEY</code> etc., do not edit rc files), <code>/logout</code> your account immediately after use</td></tr>
+  <tr><td>Long-term shared machine</td><td><strong>Create separate system accounts (Most formal)</strong></td><td>macOS/Windows per-user accounts: home dirs are naturally isolated, <code>~/.claude</code>, keychain, and <code>~/.codex</code> are invisible to each other, zero conflicts/leaks</td></tr>
+  <tr><td>Must share same system account</td><td><strong>Config Dir Isolation + Aliases</strong></td><td>See below —— both tools support "moving the whole house"</td></tr>
+</table>
+
+<h3 data-reveal>Running Multiple Config Profiles on One System Account (Isolation Solution)</h3>
+<pre><code><span class="c"># ~/.zshrc —— Independent config dir + dedicated command for each person/account</span>
+<span class="c"># Claude Code: CLAUDE_CONFIG_DIR dictates where "home" is</span>
+alias claude-me='CLAUDE_CONFIG_DIR="$HOME/.claude-me" claude'
+alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
+<span class="c"># Codex: CODEX_HOME similarly</span>
+alias codex-me='CODEX_HOME="$HOME/.codex-me" codex'
+alias codex-work='CODEX_HOME="$HOME/.codex-work" codex'</code></pre>
+<ul>
+  <li>On first use, each directory walks through its own login; credentials, history, and configs are completely isolated. <strong>No more logging in and out repeatedly</strong>;</li>
+  <li>Anti-mixup trick: Use <code>/color</code> in different account sessions to change UI theme colors, instantly recognizing "who I am right now" (community madewithlove solution);</li>
+  <li>Note that Claude Code also has a global state file <code>~/.claude.json</code> (MCP, etc.), which follows the directory if <code>CLAUDE_CONFIG_DIR</code> is set —— stop manually touching the one in the default location.</li>
+</ul>
+
+<div class="callout tip"><b class="t">Departure Checklist (Shared Computer Etiquette)</b>① <code>/logout</code> and <code>codex logout</code> yourself; ② Revert any temporarily exported variables; ③ Never write your API key into shared machine rc files; ④ Remember to clean sensitive project sessions (<code>~/.claude/projects/</code> transcripts are plaintext).</div>
+<p class="src">References: <a href="https://madewithlove.com/blog/running-multiple-claude-accounts-without-logging-out/" target="_blank">Running multiple Claude accounts without logging out (madewithlove)</a> · <a href="https://joshcgrossman.com/2026/02/04/claude-two-accounts-windows/" target="_blank">Two Claude accounts on one Windows PC (Josh Grossman)</a> · <a href="https://github.com/ndycode/codex-multi-auth" target="_blank">codex-multi-auth (community tool)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="machines">
+<div class="sec-tag">Scenario Playbook 09</div>
+<h2>Playbook B · Switching Computers / Multi-Machine Roaming</h2>
+
+<p>Core principle in one sentence: <strong>Configs travel with you, credentials login fresh per machine, history stays put</strong>. Figure out "what to take, what to leave", and swapping machines takes 10 minutes.</p>
+
+<h3 data-reveal>What to Take, What to Leave (Dual Tool Comparison)</h3>
+<table class="tbl">
+  <tr><th>Asset</th><th>Claude Code</th><th>Codex</th><th>How to Handle</th></tr>
+  <tr><td>Core Config</td><td><code>settings.json</code>, global <code>CLAUDE.md</code>, <code>skills/</code>, <code>agents/</code></td><td><code>config.toml</code>, profiles, global <code>AGENTS.md</code></td><td>✅ Goes into dotfiles repo, clone on new machine</td></tr>
+  <tr><td>Project Config</td><td><code>.claude/</code>, <code>.mcp.json</code>, project <code>CLAUDE.md</code></td><td><code>.codex/</code>, repo <code>AGENTS.md</code></td><td>✅ Already in project git repo</td></tr>
+  <tr><td><strong>Credentials</strong></td><td>Keychain / <code>.credentials.json</code></td><td><code>auth.json</code> / Keychain</td><td>❌ <strong>Do NOT copy</strong>: Re-login fresh on new machine (30 seconds), clean and secure</td></tr>
+  <tr><td>Session History</td><td><code>projects/</code>, <code>history.jsonl</code> (Plaintext!)</td><td>Session data directory</td><td>❌ Local assets don't migrate; continue sessions across machines via Claude's <code>--teleport</code>/Cloud sessions, and Codex Cloud Tasks</td></tr>
+  <tr><td>Caches/Plugins</td><td><code>plugins/</code>, <code>shell-snapshots/</code>, etc.</td><td>Log directory</td><td>➖ No backup needed, rebuilds automatically on new machine</td></tr>
+</table>
+
+<h3 data-reveal>New Machine 10-Minute Standard Procedure</h3>
+
+<h3 data-reveal>New Machine 10-Minute Standard Procedure</h3>
+<pre><code><span class="c"># 1. Install (Official native channels, do not mix with npm)</span>
+curl -fsSL https://claude.ai/install.sh | bash        <span class="c"># Claude Code</span>
+npm install -g @openai/codex                          <span class="c"># Codex (or brew install codex)</span>
+
+<span class="c"># 2. Restore Configs (dotfiles method)</span>
+git clone git@github.com:your_name/dotfiles.git ~/dotfiles
+ln -s ~/dotfiles/claude ~/.claude                     <span class="c"># Or export CLAUDE_CONFIG_DIR=~/dotfiles/claude</span>
+ln -s ~/dotfiles/codex ~/.codex                       <span class="c"># Or export CODEX_HOME=~/dotfiles/codex</span>
+
+<span class="c"># 3. Login once for each (NEVER copy credentials)</span>
+claude          <span class="c"># Browser OAuth → /status to verify account and Login method</span>
+codex login     <span class="c"># Browser OAuth → codex login status to verify</span>
+
+<span class="c"># 4. Final Health Check</span>
+claude doctor && bash ai-env-check.sh</code></pre>
+
+<div class="callout note"><b class="t">The Ultimate Fix for "Config Drift" Across Machines</b>There is no official built-in multi-machine sync yet (upstream issue #36693 is discussing it). The correct approach right now: put <strong>all manually written configs</strong> into a dotfiles repo, leaving only symlinks on the machines —— commit when changed, pull on the other machine to sync; or simply point <code>CLAUDE_CONFIG_DIR</code>/<code>CODEX_HOME</code> to a cloud sync drive folder (Note: if using a sync drive, ensure you exclude credentials and projects/ using .gitignore/ignore rules).</div>
+<p class="src">References: <a href="https://code.claude.com/docs/en/claude-directory" target="_blank">Official ~/.claude Directory Guide</a> · <a href="https://github.com/anthropics/claude-code/issues/36693" target="_blank">anthropics/claude-code#36693 (Multi-machine sync discussion)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="headless">
+<div class="sec-tag">Scenario Playbook 10</div>
+<h2>Playbook C · SSH / Containers / Headless / CI</h2>
+
+<p>In environments without a browser, logging in requires a different approach. The official recommended paths for the two tools differ, so do not mix them up.</p>
+
+<h3 data-reveal>Claude Code: Three Paths</h3>
+<ol class="steps">
+  <li><strong>SSH/WSL2/Container Interactive Use</strong>: Run <code>claude</code> normally, copy the OAuth URL from the terminal into your <strong>local browser</strong> to complete login, then paste the code back into the terminal (if pasting fails, use <code>claude auth login</code> to read from stdin).</li>
+  <li><strong>CI / Scripts (Subscription Quota)</strong>: Run <code>claude setup-token</code> locally to generate a <strong>1-year OAuth token</strong>, store it in CI Secrets, and set <code>CLAUDE_CODE_OAUTH_TOKEN</code> in the execution environment. Note that <code>--bare</code> mode ignores this; for bare scenarios, use <code>ANTHROPIC_API_KEY</code> or <code>apiKeyHelper</code> instead.</li>
+  <li><strong>CI (API Billing)</strong>: Just use the <code>ANTHROPIC_API_KEY</code> environment variable —— simplest, but uses pay-as-you-go billing.</li>
+</ol>
+
+<h3 data-reveal>Codex: Three Official Methods by Priority</h3>
+<ol class="steps">
+  <li><strong>Device Code (Preferred)</strong>: <code>codex login --device-auth</code>, enter the one-time code in any local browser. Workspace admins might need to enable device code permissions first.</li>
+  <li><strong>Copy auth.json (Official Fallback)</strong>: Log in on a machine with a browser, then securely copy <code>~/.codex/auth.json</code> to the target machine (scp / docker cp). If local credentials are in the keychain instead of a file, set <code>cli_auth_credentials_store</code> to <code>file</code> and re-login first.</li>
+  <li><strong>SSH Port Forwarding</strong>: <code>ssh -L 1455:localhost:1455 user@remote</code> then run <code>codex login</code> on the remote machine; the local browser handles the standard flow.</li>
+</ol>
+
+<h3 data-reveal>Codex CI Long-term Auth (Official auth.json Renewal Loop)</h3>
+<p>The official way to run CI using ChatGPT subscription quota —— leveraging Codex's mechanism to automatically refresh the token and write back to auth.json during runtime:</p>
+<ol class="steps">
+  <li>Run <code>codex login</code> (file storage) on a trusted machine, store the generated <code>auth.json</code> into CI Secrets management;</li>
+  <li>For each task: <strong>Restore</strong> auth.json → Run Codex (token goes stale if not refreshed for ~8 days, auto-renews during runtime) → <strong>Write back</strong> the refreshed auth.json to Secrets;</li>
+  <li>Red lines: Do not share the same auth.json across concurrent tasks; Do not overwrite with the original old file every time; If the refresh chain breaks, go back to a trusted machine to re-login and seed a new one. For self-hosted runners, just providing a persistent <code>CODEX_HOME</code> is easier.</li>
+</ol>
+
+<div class="callout tip"><b class="t">Container / DevContainer Persistent Login</b>Mount the "home directory" as a volume so you don't have to re-login when the container rebuilds: For Claude Code, mount a volume pointed to by <code>CLAUDE_CONFIG_DIR</code> (Linux credentials live in <code>.credentials.json</code> inside it); For Codex, mount the <code>CODEX_HOME</code> volume. Red line: Credentials only go into volumes, <strong>never bake them into image layers</strong>.</div>
+
+<h3 data-reveal>Company Network (Proxy / Private CA) Quick Lookup</h3>
+<table class="tbl">
+  <tr><th></th><th>Claude Code</th><th>Codex</th></tr>
+  <tr><td>HTTP Proxy</td><td><code>HTTPS_PROXY</code> / <code>HTTP_PROXY</code></td><td>Same as left, and ensure <code>NO_PROXY</code> includes localhost (for OAuth callback)</td></tr>
+  <tr><td>Private CA</td><td><code>NODE_EXTRA_CA_CERTS=/path/ca.pem</code></td><td><code>CODEX_CA_CERTIFICATE=/path/ca.pem</code></td></tr>
+  <tr><td>Login Method Locked</td><td><code>forceLoginMethod</code> (Policy)</td><td><code>forced_login_method</code> (Policy)</td></tr>
+</table>
+<p class="src">Sources: <a href="https://code.claude.com/docs/en/authentication" target="_blank">Official Authentication (setup-token)</a> · <a href="https://developers.openai.com/codex/auth/ci-cd-auth" target="_blank">Official Codex CI/CD auth</a> (2026-07 Edition)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">Case Studies 11</div>
+<h2>Case Studies: From Symptoms to Root Causes</h2>
+
+<p>Four high-frequency real-world scenarios, walking through the <a href="#diagnose">5-Layer Diagnostic Method</a> from start to finish. Understand these four, and you can solve most "voodoo problems" yourself —— note <strong>how far the error text is from the actual root cause</strong> in each case.</p>
+
+<h3 data-reveal>Case I · "I'm a Pro subscriber, but it says organization disabled"</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>Scene</strong></td><td>Took over a colleague's old PC, installed Claude Code, logged in with subscription successfully. Asked a question and got <code>API Error: 400 "This organization has been disabled"</code>. Reinstalled twice, no change.</td></tr>
+  <tr><td><strong>Triage</strong></td><td>L1 normal (single install, latest version); <strong>L2 hit</strong> —— <code>env | grep -i anthropic</code> caught an <code>ANTHROPIC_API_KEY=sk-ant-…</code>, tracing it back to <code>~/.zshrc</code> left by the previous user. The Console organization for that key was long deleted.</td></tr>
+  <tr><td><strong>Fix</strong></td><td><code>unset</code> the variable + delete the export line in rc file → Restart terminal → <code>/status</code> confirms Login method reverted to subscription. Took 3 minutes total, zero reinstalls needed.</td></tr>
+  <tr><td><strong>Lesson</strong></td><td>The error said "organization", you thought "subscription", but the actual culprit was "environment variable" —— <strong>Error text describes the result, not the root cause</strong>. This is why reinstalling (touching L1) never cures an L2 disease.</td></tr>
+</table>
+
+<h3 data-reveal>Case II · "VS Code extension keeps saying Invalid API key, but terminal is fine"</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>Scene</strong></td><td>Running <code>claude</code> in terminal is perfect; VS Code extension repeatedly pops up <code>Invalid API key · Please run /login</code>, and stays blank even after successful login. Widespread community issue (classic form documented in anthropics/claude-code#12204).</td></tr>
+  <tr><td><strong>Triage</strong></td><td>L3 Credential layer hit, but root cause is L2: <strong>Three credentials co-exist</strong> on the machine —— OAuth login, manual API key, and shell env vars. The environment the terminal reads from rc files is <strong>different</strong> from what VS Code inherits upon graphical startup. They each picked different credentials; one valid, one invalid.</td></tr>
+  <tr><td><strong>Fix</strong></td><td>Keep only one credential source: Clear all <code>ANTHROPIC_*</code> vars and manual keys → Clean re-login for both CLI and extension → Both sides show the same subscription account via <code>/status</code>.</td></tr>
+  <tr><td><strong>Lesson</strong></td><td>"Terminal good, IDE bad" almost always means <strong>the two processes are seeing different environments</strong>. When multiple credentials coexist, nobody can guarantee which process grabs which —— always keep exactly one credential source.</td></tr>
+</table>
+
+<h3 data-reveal>Case III · "Woke up and all parallel sessions demand re-login"</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>Scene</strong></td><td>Left three parallel Claude Code sessions open overnight, closed laptop lid. Woke it up in the morning and all three demanded login. Logging into one knocked the other two out —— like a ghost in the machine.</td></tr>
+  <tr><td><strong>Triage</strong></td><td>L2/L3 are clean. Counter-intuitively, it lands on <strong>L1 Version layer</strong>: Checked official changelog, versions before v2.1.211 had a known defect —— upon waking from sleep, multiple sessions concurrently renewed the same token, invalidating each other's logins.</td></tr>
+  <tr><td><strong>Fix</strong></td><td>Upgrade to ≥ v2.1.211 (renewal changed to single-process coordination), re-login once, never recurred since.</td></tr>
+  <tr><td><strong>Lesson</strong></td><td><strong>For collective, weirdly-timed phenomena, check versions and changelogs first</strong>, rather than messing with your own config —— you can never diagnose the root cause locally for a bug the vendor has already patched.</td></tr>
+</table>
+
+<h3 data-reveal>Case IV · "Codex ran stable in CI for a week, suddenly 401 across the board"</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>Scene</strong></td><td>Running CI on ChatGPT subscription quota: Saved local <code>auth.json</code> into Secrets, restored before each run. A week later, all pipelines started 401ing. Exported a fresh one locally, lasted a few more days, then repeated.</td></tr>
+  <tr><td><strong>Triage</strong></td><td>L3 Credential layer hit: Codex tokens go stale after ~8 days without refresh. During runs, it actually auto-renews and <strong>writes back</strong> to auth.json —— but the pipeline overwrites it with the "factory original" from Secrets every time, discarding all renewals. Once the refresh chain breaks, everything fails.</td></tr>
+  <tr><td><strong>Fix</strong></td><td>Close the loop per official CI docs: Restore → Run → <strong>Write the refreshed auth.json back to Secrets</strong>; Do not share the same credential across concurrent tasks. For self-hosted runners, simply providing a persistent <code>CODEX_HOME</code> fixes it once and for all.</td></tr>
+  <tr><td><strong>Lesson</strong></td><td><strong>Credentials are alive, not configuration constants</strong>. For any issue that "breaks predictably every N days", suspect a time-expiring item missing its renewal channel.</td></tr>
+</table>
+<p class="src">Case Basis: Official troubleshoot-install / authentication docs, anthropics/claude-code#12204, Codex CI/CD auth official guide (2026-07 verified); Machine and persona details are adapted for scenarios, but diagnostic paths and root causes represent real mechanisms.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="reset">
+<div class="sec-tag">Ultimate Solution 12</div>
+<h2>The Universal Fix: 3-Tier Reset Plan</h2>
+
+<p>If you genuinely can't diagnose it, do a tiered reset. <strong>Discipline: Escalate step-by-step from L1, verify after each tier, stop when fixed</strong> —— dropping the nuke immediately destroys the "scene of the crime" where the problem could be identified, and most issues are resolved at L1/L2 anyway.</p>
+
+<h3 data-reveal><span class="pill a">L1</span> Soft Reset (2 Mins) —— Fixes 70% of issues</h3>
+<pre><code><span class="c"># Clear hijacked vars in current shell (only affects this session, zero risk)</span>
+unset ANTHROPIC_API_KEY ANTHROPIC_AUTH_TOKEN ANTHROPIC_BASE_URL
+unset OPENAI_API_KEY
+
+<span class="c"># Clean re-login</span>
+claude   <span class="c"># Inside session: /logout → exit → claude again → /login → /status to verify</span>
+codex logout && codex login && codex login status</code></pre>
+
+<h3 data-reveal><span class="pill a">L2</span> Credential & Residue Reset (5 Mins) —— Fixes another 20%</h3>
+<pre><code><span class="c"># 1. Eradicate residual exports in rc files (open in editor and delete line-by-line, no blind sed)</span>
+grep -nE 'ANTHROPIC|CLAUDE_|CODEX|OPENAI' ~/.zshrc ~/.zprofile ~/.bashrc ~/.profile
+
+<span class="c"># 2. Clear credential storage then re-login</span>
+<span class="c">#    Claude Code: /logout already cleared it; macOS extreme cases, unlock keychain:</span>
+security unlock-keychain ~/Library/Keychains/login.keychain-db
+<span class="c">#    Codex: logout and delete credential file</span>
+codex logout; rm -f ~/.codex/auth.json
+
+<span class="c"># 3. Calibrate system clock (token validation relies on it) —— macOS:</span>
+sudo sntp -sS time.apple.com
+
+<span class="c"># 4. Re-login + Verify</span>
+claude   <span class="c"># /login → /status</span>
+codex login && codex login status</code></pre>
+
+<h3 data-reveal><span class="pill a">L3</span> Nuke Reset (15 Mins) —— Backup → Wipe Clean → Official Reinstall</h3>
+<pre><code><span class="c"># ═══ Step 1: Backup Core Assets (Manual configs are yours, the rest can be regenerated) ═══</span>
+mkdir -p ~/ai-cli-backup
+cp -r ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/skills ~/.claude/agents ~/.claude/commands ~/ai-cli-backup/ 2&gt;/dev/null
+cp ~/.claude.json ~/ai-cli-backup/claude.json 2&gt;/dev/null   <span class="c"># Save MCP global states, step 3 will delete it, if not backed up it's gone</span>
+cp -r ~/.codex/config.toml ~/.codex/AGENTS.md ~/.codex/prompts ~/ai-cli-backup/ 2&gt;/dev/null
+
+<span class="c"># ═══ Step 2: Uninstall All Co-existing Installations (Claude Code) ═══</span>
+npm uninstall -g @anthropic-ai/claude-code 2&gt;/dev/null
+rm -rf ~/.claude/local                        <span class="c"># legacy npm install</span>
+brew uninstall --cask claude-code 2&gt;/dev/null <span class="c"># if ever installed via brew</span>
+
+<span class="c"># ═══ Step 3: Wipe State Directories (Backed up, safe to delete) ═══</span>
+rm -rf ~/.claude ~/.claude.json
+rm -rf ~/.codex
+
+<span class="c"># ═══ Step 4: Install fresh from official channels ═══</span>
+curl -fsSL https://claude.ai/install.sh | bash
+npm install -g @openai/codex
+
+<span class="c"># ═══ Step 5: Restore Configs + Re-login + Full Verification ═══</span>
+mkdir -p ~/.claude && cp ~/ai-cli-backup/settings.json ~/ai-cli-backup/CLAUDE.md ~/.claude/ 2&gt;/dev/null
+cp -r ~/ai-cli-backup/skills ~/ai-cli-backup/agents ~/ai-cli-backup/commands ~/.claude/ 2&gt;/dev/null
+cp ~/ai-cli-backup/claude.json ~/.claude.json 2&gt;/dev/null   <span class="c"># Matching MCP global states backed up in step 1</span>
+mkdir -p ~/.codex && cp ~/ai-cli-backup/config.toml ~/ai-cli-backup/AGENTS.md ~/.codex/ 2&gt;/dev/null
+cp -r ~/ai-cli-backup/prompts ~/.codex/ 2&gt;/dev/null
+claude doctor && claude    <span class="c"># /login → /status confirm subscription active</span>
+codex login && codex login status</code></pre>
+
+<div class="callout warn"><b class="t">Three Checks Before the Nuke</b>① Are there any session transcripts you want to keep in <code>~/.claude/projects/</code> (once deleted they are gone); ② Do the files actually exist in the backup dir (verify with your own eyes <code>ls ~/ai-cli-backup</code>); ③ Windows users wipe <code>%USERPROFILE%\.claude</code> and <code>%USERPROFILE%\.codex</code> respectively, and check User Environment Variables panel.</div>
+
+<div class="callout tip"><b class="t">Still broken after reset?</b>Then you can be fairly certain it's not on your machine: ① Official service status (status.anthropic.com / status.openai.com); ② Subscription status (claude.ai/settings / ChatGPT settings); ③ Enterprise control policies (ask IT); ④ Take the <code>claude doctor</code> output / <code>codex-login.log</code> to file an issue or contact official support —— this is the only situation where you need to "wait for others".</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="map">
+<div class="sec-tag">Ultimate Solution 13</div>
+<h2>Dual Tool Concept Map + Resource Index</h2>
+
+<h3 data-reveal>One Table to Bridge Both Tools</h3>
+<table class="tbl">
+  <tr><th>Concept</th><th><span class="pill a">Claude Code</span></th><th><span class="pill b">Codex</span></th></tr>
+  <tr><td>Home Directory / Move Env Var</td><td><code>~/.claude</code> / <code>CLAUDE_CONFIG_DIR</code></td><td><code>~/.codex</code> / <code>CODEX_HOME</code></td></tr>
+  <tr><td>User Config File</td><td><code>settings.json</code> (JSON)</td><td><code>config.toml</code> (TOML)</td></tr>
+  <tr><td>Global Memory/Instructions</td><td><code>~/.claude/CLAUDE.md</code></td><td><code>~/.codex/AGENTS.md</code></td></tr>
+  <tr><td>Credential Storage</td><td>macOS Keychain / <code>.credentials.json</code></td><td><code>auth.json</code> / Keychain (<code>cli_auth_credentials_store</code>)</td></tr>
+  <tr><td>View Current Creds/Status</td><td><code>/status</code></td><td><code>codex login status</code>, <code>/status</code></td></tr>
+  <tr><td>Config Health Check</td><td><code>claude doctor</code>, <code>/doctor</code>, <code>--safe-mode</code></td><td><code>/debug-config</code>, <code>codex-login.log</code></td></tr>
+  <tr><td>Env Var Hijack Sources</td><td><code>ANTHROPIC_API_KEY</code>, <code>ANTHROPIC_AUTH_TOKEN</code></td><td><code>OPENAI_API_KEY</code> (API Billing Mode)</td></tr>
+  <tr><td>CI Long-term Auth</td><td><code>claude setup-token</code> → <code>CLAUDE_CODE_OAUTH_TOKEN</code> (1 Year)</td><td>auth.json restore→run→write loop; or API Key</td></tr>
+  <tr><td>Headless Login</td><td>Copy URL to local browser + paste code / <code>claude auth login</code></td><td><code>--device-auth</code> / SSH forward 1455</td></tr>
+  <tr><td>Private CA</td><td><code>NODE_EXTRA_CA_CERTS</code></td><td><code>CODEX_CA_CERTIFICATE</code></td></tr>
+  <tr><td>Enterprise Forced Policy</td><td><code>forceLoginMethod</code> / <code>forceLoginOrgUUID</code></td><td><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code></td></tr>
+  <tr><td>Multi-Account Isolation</td><td><code>CLAUDE_CONFIG_DIR</code> + alias</td><td><code>CODEX_HOME</code> + alias (Official 1st-class support under discussion)</td></tr>
+</table>
+
+<h3 data-reveal>Resource Index (Sorted by Reliability)</h3>
+<table class="tbl">
+  <tr><th>Resource</th><th>Description</th></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">Claude Code · Troubleshoot installation and login</a></td><td>Official install & login troubleshooting landing page —— The most complete "Error Message → Fix" mapping, check this first</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/authentication" target="_blank">Claude Code · Authentication</a></td><td>Official auth mechanism guide, the only authoritative source for credential priority order</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/settings" target="_blank">Claude Code · Settings</a> · <a href="https://code.claude.com/docs/en/claude-directory" target="_blank">~/.claude Directory Detail</a></td><td>Official word on config cascading and directory contents</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/auth" target="_blank">Codex · Authentication</a> (→ learn.chatgpt.com)</td><td>Codex official auth docs: login methods, credential storage, headless solutions</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/auth/ci-cd-auth" target="_blank">Codex · CI/CD auth</a></td><td>Official CI long-term auth solution (auth.json renewal loop)</td></tr>
+  <tr><td><a href="https://support.claude.com/en/articles/14552646-troubleshoot-claude-code-installation-and-authentication" target="_blank">Claude Help Center · Install & Auth Troubleshooting</a></td><td>Supplemental official support perspective, includes help channels</td></tr>
+  <tr><td><a href="https://madewithlove.com/blog/running-multiple-claude-accounts-without-logging-out/" target="_blank">madewithlove · Multi-account without logout</a> · <a href="https://joshcgrossman.com/2026/02/04/claude-two-accounts-windows/" target="_blank">Josh Grossman · Windows dual accounts</a></td><td>Community practice: Two representative guides on CLAUDE_CONFIG_DIR isolation</td></tr>
+  <tr><td><a href="https://claudelog.com/troubleshooting/" target="_blank">ClaudeLog Troubleshooting</a> · <a href="https://github.com/ndycode/codex-multi-auth" target="_blank">codex-multi-auth</a></td><td>Community troubleshooting cheat sheet and Codex multi-account tool</td></tr>
+  <tr><td>Related Chapters in this KB</td><td><a href="claude-code-guide.html#config-auth">Claude Code Guide · Config & Accounts Deep Dive</a> · <a href="codex-guide.html#config-auth">Codex Guide · Config & Accounts Deep Dive</a> —— Config cascading, MCP locations, full env var tables are over there</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>Disclaimer</strong>: This manual is compiled by cross-referencing Claude Code official docs (code.claude.com/docs, based on v2.1.x) and Codex official docs (2026-07 edition) with public community resources; it is not officially produced. Versions iterate fast; always refer to <code>claude doctor</code> / official docs before acting; Information verified as of 2026-07-18.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="Back to top">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

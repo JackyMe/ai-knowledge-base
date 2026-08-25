@@ -235,13 +235,24 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
   .topbar .right a.gh{margin-left:auto}
 }
 </style>
+<link rel="stylesheet" href="./assets/css/custom.css">
+<script src="./assets/js/theme-toggle.js" defer></script>
+  <script src="./assets/js/i18n.js"></script>
 </head>
 <body>
 
 <header class="topbar">
   <div class="logo"><span class="mark">AI</span>AI 知识库</div>
   <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
     <span>按</span><kbd>/</kbd><span>即可搜索全站</span>
+    <div class="toggle-switch" id="themeToggle"></div>
     <a class="gh" href="https://github.com/JackyMe/ai-knowledge-base" target="_blank" rel="noopener" title="在 GitHub 上查看源码">
       <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
         0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
@@ -283,7 +294,7 @@ body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:
 <div class="results" id="results" aria-live="polite"></div>
 
 <div id="browse">
-  <div class="sec"><h2>学习路径</h2><span>三条路线把主题串成课程表 · 按序走完即可</span></div>
+  <div class="sec"><h2>学习路径</h2><span>四条路线把主题串成课程表 · 按序走完即可</span></div>
   <div class="paths" id="paths"></div>
 
   <div class="sec"><h2>全部主题</h2><span id="topicCount"></span></div>
@@ -341,7 +352,7 @@ grid.addEventListener('click',e=>{
 });
 const totalSections=TOPICS.reduce((n,t)=>n+t.sections.length,0);
 $('#topicCount').textContent=`${TOPICS.length} 个主题 · ${totalSections} 个章节`;
-$('#footMeta').textContent=`整理:jackyz · ${TOPICS.length} 主题 ${totalSections} 章节 · 2026-07`;
+$('#footMeta').textContent=`整理:jackyz · ${TOPICS.length} 主题 ${totalSections} 章节 · 2026-08`;
 
 /* ---------- 标签筛选(从 TOPICS 自动派生,新主题新标签自动出现) ---------- */
 const tabs=$('#tabs');

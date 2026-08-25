@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Solo Developer Ops Foundation: 5-Stage Roadmap + Server × Network × Deployment 3 Modules + 5 Types of Failures 30-Second Remedy Table. From Zero to Self-Hosting, even from SaaS.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solo Developer Ops Foundation · Server × Network × Deployment · 2026.08">
+<meta property="og:description" content="5-Stage Roadmap + 3 Modules 24 Sections (Network 13 Sections Detailed) + 5 Types of Failures 30-Second Remedy Table. From Zero to Self-Hosting, even from SaaS.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ops-basics.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Solo Developer Ops Foundation · Server × Network × Deployment · 2026.08</title>
+<style>
+:root{
+  --accent:#0891b2;        /* Cyan, distinct from the existing 11 themes */
+  --accent-2:#06b6d4;
+  --accent-soft:#ecfeff;
+  --ink:#0c1e22; --bg:#ffffff; --bg-side:#f5f9fa;
+  --bg-code:#0f1d22;
+  --text:#0f2126; --text-2:#475a60; --text-3:#7c8d92;
+  --border:#dbe6e9; --border-2:#cad7da;
+  --tip-bg:#ecfdf5; --warn-bg:#fff8ec; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#e6f3f6;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e9f5f8;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(8,145,178,.50),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(6,182,212,.32),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#67e8f9;font-weight:600;background:rgba(8,145,178,.18);
+  border:1px solid rgba(8,145,178,.5);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#67e8f9,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#bcd4d9;max-width:680px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#8aa9af}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#a5d8e8}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eef5f7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0e7490}
+pre{background:var(--bg-code);color:#d4e6ea;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8d92}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f5f9fa}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f5f9fa}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#ecfeff;color:#0e7490}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eefbf3;color:#15803d}
+.pill.d{background:#eef4fe;color:#1d4ed8}
+.pill.e{background:#f3eefe;color:#7c3aed}
+.pill.f{background:#fdeef7;color:#be185d}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(12,30,34,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">OP</span>Solo Developer Ops Foundation<span class="sub">Zero to Self-Host</span></div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
+    <a href="../index.en.html">◂ Topic Hub</a>
+    
+      <span>Verified 2026-08-17</span>
+  
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter sections…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">Intro</div>
+    <a href="#intro"><span class="no">00</span>Why Learn This</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Roadmap</div>
+    <a href="#roadmap"><span class="no">R</span>Five-Stage Roadmap</a>
+    <a href="#stage1"><span class="no">R1</span>Status Inventory</a>
+    <a href="#stage2"><span class="no">R2</span>Linux Foundation</a>
+    <a href="#stage3"><span class="no">R3</span>Network Backbone</a>
+    <a href="#stage4"><span class="no">R4</span>Deployment Pipeline</a>
+    <a href="#stage5"><span class="no">R5</span>Troubleshooting</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Module 1 · Linux</div>
+    <a href="#m1-1"><span class="no">1.1</span>What is a Server</a>
+    <a href="#m1-2"><span class="no">1.2</span>Three Abstract Concepts</a>
+    <a href="#m1-3"><span class="no">1.3</span>SSH is Not Just Login</a>
+    <a href="#m1-4"><span class="no">1.4</span>Package Manager Cheat Sheet</a>
+    <a href="#m1-5"><span class="no">1.5</span>Permissions and Users</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Module 2a · Concept Basics</div>
+    <a href="#m2-1"><span class="no">2.1</span>HTTP→TCP→IP</a>
+    <a href="#m2-2"><span class="no">2.2</span>DNS</a>
+    <a href="#m2-3"><span class="no">2.3</span>HTTPS/TLS</a>
+    <a href="#m2-4"><span class="no">2.4</span>Reverse Proxy</a>
+    <a href="#m2-5"><span class="no">2.5</span>Firewall</a>
+    <a href="#m2-6"><span class="no">2.6</span>Attack Surface</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Module 2b · Workflow</div>
+    <a href="#m2-7"><span class="no">2.7</span>Port Numbers</a>
+    <a href="#m2-8"><span class="no">2.8</span>Local Services</a>
+    <a href="#m2-9"><span class="no">2.9</span>VPN and Proxy</a>
+    <a href="#m2-10"><span class="no">2.10</span>Public Network/NAT</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Module 2c · Tool Evolution</div>
+    <a href="#m2-11"><span class="no">2.11</span>Debugging Commands</a>
+    <a href="#m2-12"><span class="no">2.12</span>H2/H3</a>
+    <a href="#m2-13"><span class="no">2.13</span>IPv6</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Module 3 · Deployment</div>
+    <a href="#m3-1"><span class="no">3.1</span>7-Step Deployment Pipeline</a>
+    <a href="#m3-2"><span class="no">3.2</span>systemd Process Hosting</a>
+    <a href="#m3-3"><span class="no">3.3</span>Nginx Reverse Proxy Template</a>
+    <a href="#m3-4"><span class="no">3.4</span>Docker Minimal Set</a>
+    <a href="#m3-5"><span class="no">3.5</span>GitHub Actions</a>
+    <a href="#m3-6"><span class="no">3.6</span>Keys and .env</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Appendix</div>
+    <a href="#appA"><span class="no">A</span>5 Types of Failures Remedy Table</a>
+    <a href="#appB"><span class="no">B</span>Recommended Resources</a>
+    <a href="#appC"><span class="no">C</span>Glossary Cheat Sheet</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🛠️ Zero to Self-Hosting · 5-Stage Roadmap + 3 Modules 24 Sections (Network 13 Sections Detailed) · Verified August 17, 2026</div>
+  <h1>Solo Developer Ops Foundation<br><span class="grad">Server × Network × Deployment</span></h1>
+  <p class="lead">If you've been using Vercel/Netlify for one-click deployments, this page is your "upgrade roadmap": from buying a VPS to git push auto-deploy, explaining all the ops jargon you're afraid to ask. 3 Modules + 5-Stage Roadmap + 5 Types of Failures 30-Second Remedy Table — teaching only the 30% that solo developers actually use, without touching k8s or memorizing the OSI 7-layer model.</p>
+  <div class="meta">
+    <span>24 Sections</span><span>5-Stage Roadmap</span><span>30+ Primary Sources</span><span>5 "Not Found" Honest Disclaimers</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5 Stages</b><span>From 0 to deploying a mid-size project independently</span></div>
+  <div class="stat"><b>3 Modules</b><span>Linux × Network × Deployment pillars</span></div>
+  <div class="stat"><b>5 Failures</b><span>30-second remedy table for self-service recovery</span></div>
+  <div class="stat"><b>30% Knowledge</b><span>Covers 80% of pitfalls solo devs face</span></div>
+</div>
+
+<section id="intro">
+<div class="sec-tag">Intro 00</div>
+<h2>Why Learn This</h2>
+<p>You've likely experienced this: A personal project deployed on Vercel suddenly gets DDoS'd, and you have to submit a support ticket; you deploy halfway on Cloudflare Pages only to find it terribly slow in mainland China, but configuration changes are locked behind the Enterprise plan; your Supabase project's database connections get maxed out late at night, and you can only stare blankly as Stripe charges continue.</p>
+<p>SaaS hosting is great — <strong>until its boundaries start blocking you</strong>. When you're ready to cross that boundary, the influx of ops jargon (SSH / systemd / reverse proxy / DNS resolution / TLS handshake / firewall inbound rules...) can make you feel like you've dropped from the civilized world into the Middle Ages.</p>
+<div class="callout note"><b class="t">What this document can and cannot give you</b><strong>Can give:</strong> 5-stage roadmap + <strong>minimum necessary knowledge</strong> of server/network/deployment, plus a 30-second remedy table for 5 types of failures. After reading and completing the hands-on projects, you'll be able to independently manage the server for a mid-sized project.<strong>Cannot give:</strong> k8s cluster operations / GPU inference deployment / high-availability architecture / extreme performance tuning — these are different tiers of work left for future topics.</div>
+<h3 data-reveal>Target Audience</h3>
+<ul>
+<li>Has built Next.js / Node / Python / Go full-stack projects, primarily relying on Vercel / Netlify / Cloudflare Pages / Supabase / Railway for deployment;</li>
+<li>Has bought a domain at most, doesn't know what actually happens during DNS resolution;</li>
+<li>Has been troubled by "only being able to beg others for help when things break in production" at least once;</li>
+<li>Willing to spend 1-2 weeks learning, but doesn't plan to become an SRE.</li>
+</ul>
+<h3 data-reveal>Three Tiers of Evidence (Site-wide)</h3>
+<table class="tbl">
+<tr><th>Marker</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><span class="pill a">✅ Official</span></td><td>From official docs, verified word-for-word</td><td>"systemd is a system and service manager for Linux" — <a href="https://systemd.io/" target="_blank">systemd.io</a></td></tr>
+<tr><td><span class="pill c">⚡ Tested</span></td><td>High community consensus, plenty of firsthand tests</td><td>"certbot --nginx three commands to run HTTPS" — Consistent across multiple blogs</td></tr>
+<tr><td><span class="pill b">⚠️ Disputed</span></td><td>Varying opinions or time-sensitive</td><td>"Does China require ICP filing" — Based on the MIIT official website</td></tr>
+</table>
+<p class="src">Any place marked "Not Found" is an honest disclaimer, never fabricated.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="roadmap">
+<div class="sec-tag">Roadmap R</div>
+<h2>Five-Stage Roadmap</h2>
+<p>The learning process is divided into 5 stages. Each stage has a <strong>verifiable output</strong> — complete one, check it off, so you won't "finish learning without knowing what you learned."</p>
+<table class="tbl">
+<tr><th>Stage</th><th>Goal</th><th>Hands-on Output</th><th>Validation Criteria</th><th>Est. Time</th></tr>
+<tr><td><strong>R1 Status Inventory</strong></td><td>See where you currently stand</td><td>A "My Project Deployment List"</td><td>Can list what SaaS each project uses, cost, and bottlenecks</td><td>1 Hour</td></tr>
+<tr><td><strong>R2 Linux Foundation</strong></td><td>Can SSH into an unfamiliar VPS and check top</td><td>A VPS with Nginx installed</td><td><code>systemctl status nginx</code> shows active</td><td>Half a day</td></tr>
+<tr><td><strong>R3 Network Backbone</strong></td><td>Domain → DNS → SSL → Reverse Proxy all working</td><td>A <code>yourdomain.dev</code> + HTTPS</td><td>Browser shows the green lock</td><td>Half a day</td></tr>
+<tr><td><strong>R4 Deployment Pipeline</strong></td><td>git push auto-deployment</td><td>A Node app + GitHub Actions</td><td>Change a line of code → push → live in 30 seconds</td><td>1 Day</td></tr>
+<tr><td><strong>R5 Troubleshooting</strong></td><td>Self-service recovery for 5 types of failures</td><td>Practice Appendix A's 5 failures</td><td>Create 5 failures, fix them one by one yourself</td><td>1 Day</td></tr>
+</table>
+<p>Total investment is about <strong>3-4 weekends</strong>. If you get stuck at any stage, jump to Appendix A to check symptoms or return to section N of the corresponding module for deep reading.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage1">
+<div class="sec-tag">Roadmap R1</div>
+<h2>R1 · Status Inventory</h2>
+<p>Don't rush to buy a VPS — first list the deployment methods of all your current projects. This step seems like a waste of time, but it actually helps you see clearly whether "SaaS hosting is really expensive" and "self-hosting really saves money."</p>
+<h3 data-reveal>Hands-on: A Deployment List</h3>
+<p>Open Notepad and write 4 lines for each running project:</p>
+<ol>
+<li><strong>Where it runs</strong>: Vercel / Netlify / Cloudflare Pages / Supabase / Self-hosted / Other</li>
+<li><strong>Cost</strong>: Free Tier / Pro / Estimated Monthly Fee</li>
+<li><strong>Bottlenecks</strong>: Slow / Errors / Billing surprises / Region limits / Support ghosting</li>
+<li><strong>Worth Self-Hosting?</strong>: Personal projects not worth it (stay on SaaS); Commercial projects worth it (continue below)</li>
+</ol>
+<div class="callout tip"><b class="t">Rule of Thumb</b>If 80% of your projects are <strong>pure frontend static sites + SaaS DBs</strong>, don't bother self-hosting; just optimize the expensive part. If you have at least one project needing <strong>long tasks, persistent connections, custom runtimes, or bypassing regional limits</strong>, self-hosting pays off.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage2">
+<div class="sec-tag">Roadmap R2</div>
+<h2>R2 · Linux Foundation</h2>
+<p>Pick an afternoon, buy a 1-core 1GB VPS ($3-$5/month), install Ubuntu 24.04 LTS, SSH into it, and install Nginx. By the end of this step, you'll have a real server of your own — you can tinker with it freely afterwards.</p>
+<h3 data-reveal>Hands-on Steps</h3>
+<ol class="steps">
+<li><strong>Choose a VPS</strong>: DigitalOcean / Vultr / AWS / Linode. Pick a datacenter closest to your users. For the OS, choose <strong>Ubuntu 24.04 LTS</strong> (beginner-friendly, largest community).</li>
+<li><strong>Generate SSH key locally</strong>: <code>ssh-keygen -t ed25519 -C "your@email"</code>. Paste the contents of <code>~/.ssh/id_ed25519.pub</code> into the "SSH Keys" box in your VPS console.</li>
+<li><strong>Login to VPS</strong>: <code>ssh root@YOUR_VPS_IP</code>. Type "yes" when asked about the fingerprint the first time.</li>
+<li><strong>Install Nginx</strong>: <code>apt update && apt install -y nginx</code>, then <code>systemctl status nginx</code> — seeing <code>active (running)</code> means success.</li>
+<li><strong>Browser access <code>http://YOUR_VPS_IP</code></strong>: Seeing the Nginx welcome page = R2 complete.</li>
+</ol>
+<p>Detailed knowledge expanded in Module 1.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage3">
+<div class="sec-tag">Roadmap R3</div>
+<h2>R3 · Network Backbone</h2>
+<p>Turn the Nginx welcome page into your <code>yourdomain.dev</code>, and get the green lock in the browser. This step covers 80% of the network pitfalls solo developers face: domains, DNS, HTTPS, and reverse proxies.</p>
+<h3 data-reveal>Hands-on Steps</h3>
+<ol class="steps">
+<li><strong>Register Domain</strong>: Cloudflare Registrar / Namecheap / Porkbun. Choose <code>.dev</code> to force HTTPS, or <code>.com</code> for general use.</li>
+<li><strong>DNS Resolution</strong>: In the domain registrar's console, point the A record of <code>yourdomain.dev</code> to your VPS IP. Use <code>dig yourdomain.dev</code> to verify resolution.</li>
+<li><strong>Sign SSL Cert</strong>: <code>apt install -y certbot python3-certbot-nginx</code>, then <code>certbot --nginx -d yourdomain.dev</code>. Follow the prompts; auto-renewal is set up.</li>
+<li><strong>Configure Reverse Proxy</strong>: Reverse proxy HTTPS requests (port 443) to your local Node app (e.g., port 3000).</li>
+<li><strong>Browser access <code>https://yourdomain.dev</code></strong>: Seeing the green lock + your page = R3 complete.</li>
+</ol>
+<p>Detailed knowledge expanded in Module 2.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage4">
+<div class="sec-tag">Roadmap R4</div>
+<h2>R4 · Deployment Pipeline</h2>
+<p>Say goodbye to dragging files via FTP or modifying code via SSH. Make <code>git push</code> trigger auto-deployment, live in 30 seconds. This step is the shortest path for a solo developer to "look like a team."</p>
+<h3 data-reveal>Hands-on Steps</h3>
+<ol class="steps">
+<li><strong>Add systemd unit for app</strong>: Write an <code>/etc/systemd/system/myapp.service</code> to let <code>node server.js</code> run as a background service; it won't die when you close SSH.</li>
+<li><strong>Write GitHub Actions workflow</strong>: Configure SSH key + rsync in <code>.github/workflows/deploy.yml</code> to achieve <code>git push main</code> → auto login to VPS → pull code → restart systemd.</li>
+<li><strong>Manage Secrets</strong>: Fill the VPS SSH private key in GitHub Repo Settings → Secrets; use <code>EnvironmentFile</code> for local <code>.env</code>.</li>
+<li><strong>Push to test</strong>: Change a line in README, commit → push. Watch GitHub Actions turn green, live in 30 seconds = R4 complete.</li>
+</ol>
+<p>Detailed knowledge expanded in Module 3.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage5">
+<div class="sec-tag">Roadmap R5</div>
+<h2>R5 · Troubleshooting</h2>
+<p>Within 24 hours of your first production deployment, you'll likely encounter at least 2 failures. The goal of R5 is not "no problems," but "finding the right remedy from the table within 30 seconds."</p>
+<h3 data-reveal>Hands-on: Create 5 types of failures and fix them</h3>
+<ol class="steps">
+<li><strong>502 Bad Gateway</strong>: Stop the systemd service (<code>systemctl stop myapp</code>) and see what Nginx returns — then recover it.</li>
+<li><strong>SSH Unreachable</strong>: Modify <code>/etc/ssh/sshd_config</code> with a wrong port (or temporarily disable firewall), and see how <code>ssh root@IP</code> fails.</li>
+<li><strong>Disk Full</strong>: <code>dd if=/dev/zero of=/tmp/bigfile bs=1M count=10000</code> to create a large file, then <code>df -h</code> to see the full disk.</li>
+<li><strong>Service OOM</strong>: Write a Node script with an infinite loop consuming memory, and watch the OOM Killer terminate it.</li>
+<li><strong>SSL Cert Expired</strong>: <code>certbot renew --dry-run</code> to see the renewal process; or temporarily change system time to after expiration and check the browser.</li>
+</ol>
+<p>Detailed failure remedy table in Appendix A.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Module 1 · Linux and Server Foundation ========== -->
+
+<section id="m1-1">
+<div class="sec-tag">Module 1 · Linux</div>
+<h2>1.1 What is a "Server"</h2>
+<p>Don't be intimidated by the word "server". <strong>It's just a computer that's on 24/7</strong> — hardware almost identical to your laptop, just with Linux installed, hooked up to an ethernet cable in a server room, without a monitor or keyboard, and you operate it "remotely" via SSH from your own computer.</p>
+<h3 data-reveal>From your laptop to the cloud, what changes</h3>
+<table class="tbl">
+<tr><th>Dimension</th><th>Your Laptop</th><th>Cloud Server</th></tr>
+<tr><td>OS</td><td>macOS / Windows</td><td>Ubuntu / Debian / CentOS (almost exclusively Linux)</td></tr>
+<tr><td>Interaction</td><td>Screen + Keyboard/Mouse</td><td>SSH Command Line (No screen)</td></tr>
+<tr><td>Uptime</td><td>On when you use it</td><td>24×7 Never turns off</td></tr>
+<tr><td>Public IP</td><td>Usually none</td><td>Has one public IP</td></tr>
+<tr><td>Priority</td><td>Aesthetics, smoothness</td><td>Stability, runnable, doesn't crash</td></tr>
+</table>
+<div class="callout note"><b class="t">Why must it be Linux?</b>The vast majority of server software (nginx, Node, Python, Docker, systemd) is Linux-first; macOS kernel is BSD-based and 95% compatible with Linux commands, but Windows is an entirely different ecosystem, which is why "doing backend" almost equals "using Linux".</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-2">
+<div class="sec-tag">Module 1 · Linux</div>
+<h2>1.2 Three Abstract Concepts: File System, Processes, Ports</h2>
+<p>Think of a Linux server as an "apartment building", the tenants are processes, the door numbers are ports, and the lease belongs to the user. <strong>80% of ops work revolves around these three things</strong>: checking who lives there (processes), which door number is occupied (ports), and which lease is yours (permissions).</p>
+<h3 data-reveal>File System: Everything is a File</h3>
+<p>The core philosophy of Linux: disks are files, network cards are files, mice are files, process info is also files. This sounds abstract, but it's very consistent to use — everything is under <code>/</code>, and can be manipulated with <code>ls</code>, <code>cat</code>, <code>cd</code>.</p>
+<pre><code>ls /                  <span class="c"># Root directory</span>
+ls /home              <span class="c"># Users' home</span>
+ls /etc/nginx/         <span class="c"># nginx config</span>
+ls /var/log/           <span class="c"># Logs</span>
+cat /proc/cpuinfo      <span class="c"># CPU info (in memory, not a real file)</span></code></pre>
+<h3 data-reveal>Processes: Running Programs</h3>
+<p>When you run <code>node server.js</code>, you spawn a Node process. A process has a PID (ID number). The most common ops commands:</p>
+<pre><code>ps aux | grep node     <span class="c"># View all node processes</span>
+top                    <span class="c"># Real-time CPU/memory usage (q to quit)</span>
+htop                   <span class="c"># Prettier top (requires apt install htop)</span>
+kill 1234              <span class="c"># Kill PID 1234</span>
+pkill -f "node server" <span class="c"># Kill by name</span>
+systemctl status myapp <span class="c"># Check systemd managed service</span></code></pre>
+<h3 data-reveal>Ports: Window Numbers (0-65535)</h3>
+<p>A server can run many services simultaneously. Clients differentiate them by "port number" — just like the "door number" for each unit in an apartment building. Common conventions:</p>
+<table class="tbl">
+<tr><th>Port</th><th>Who uses it</th></tr>
+<tr><td>22</td><td>SSH (Remote Login)</td></tr>
+<tr><td>80</td><td>HTTP</td></tr>
+<tr><td>443</td><td>HTTPS</td></tr>
+<tr><td>3000 / 8080</td><td>Developer local services (Common for Node/Python)</td></tr>
+<tr><td>3306 / 5432</td><td>MySQL / PostgreSQL</td></tr>
+<tr><td>6379</td><td>Redis</td></tr>
+</table>
+<pre><code>ss -tlnp               <span class="c"># Check which ports are listening</span>
+netstat -tlnp          <span class="c"># Old command, similar function</span>
+lsof -i :3000           <span class="c"># See who occupies port 3000</span></code></pre>
+<div class="callout warn"><b class="t">Port Conflicts</b>"Address already in use" is the first frustration for 90% of beginners. The ultimate move: <code>lsof -i :YOUR_PORT</code> to see who occupies it, then kill it or change the port.</div>
+<p class="src">Source: <a href="https://tldr.sh/" target="_blank">TLDR Pages</a> (Command cheatsheet) · <a href="https://www.linux.com/training-tutorials/intro-to-linux/" target="_blank">Linux.com Intro</a> · Verified 2026-08-05</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-3">
+<div class="sec-tag">Module 1 · Linux</div>
+<h2>1.3 SSH is Not Just "Remote Login"</h2>
+<p>SSH = Secure Shell. On the surface, it's "remote login", but it can actually handle all encrypted network connections — port forwarding, file transfer (SFTP), and running Git.</p>
+<h3 data-reveal>Key Login: Stop Using Passwords</h3>
+<p>Password login has two problems: (1) Slow and annoying; (2) Exposing port 22 means the whole world is brute-forcing your server. By switching to key login, the server only accepts machines holding the "private key", rendering brute force completely ineffective.</p>
+<pre><code><span class="c"># Generate key pair locally</span>
+ssh-keygen -t ed25519 -C "you@example.com"
+<span class="c"># Private key: ~/.ssh/id_ed25519 (NEVER LEAK THIS!)</span>
+<span class="c"># Public key: ~/.ssh/id_ed25519.pub (Paste into server's ~/.ssh/authorized_keys)</span>
+
+<span class="c"># One-click push public key (assuming password login still works)</span>
+ssh-copy-id root@YOUR_VPS_IP
+
+<span class="c"># Login</span>
+ssh root@YOUR_VPS_IP</code></pre>
+<div class="callout warn"><b class="t">Private Key Permissions Must be 600</b>If <code>~/.ssh/id_ed25519</code> has 644 permissions, SSH will refuse to use it (to prevent others from reading your private key). Run <code>chmod 600 ~/.ssh/id_ed25519</code>.</div>
+<h3 data-reveal>Config File: Aliases for Common Servers</h3>
+<p>Don't type <code>ssh root@123.45.67.89</code> every time. Write <code>~/.ssh/config</code>:</p>
+<pre><code>Host my-vps
+  HostName 123.45.67.89
+  User root
+  Port 22
+  IdentityFile ~/.ssh/id_ed25519
+
+<span class="c"># Afterwards, just use:</span>
+ssh my-vps</code></pre>
+<h3 data-reveal>Port Forwarding and Jump Hosts</h3>
+<p>Suppose your database is on an "internal" machine <code>10.0.0.5:5432</code>, and you can only enter through a jump host <code>vpn.example.com</code>. For local <code>psql</code> to connect directly, SSH can "tunnel" for you:</p>
+<pre><code>ssh -L 5432:10.0.0.5:5432 vpn.example.com
+<span class="c"># Then local psql -h 127.0.0.1 -p 5432 will forward through the ssh tunnel to the internal network</span></code></pre>
+<div class="callout note"><b class="t">Undocumented Detail</b>In 2026, I couldn't find a unanimous conclusion on the official best practice for SSH ProxyJump, so I recommend checking your cloud provider's docs. The common syntax is <code>ssh -J jump user@target</code> (OpenSSH 7.3+).</div>
+<p class="src">Source: <a href="https://www.openssh.com/manual.html" target="_blank">OpenSSH Official Manual</a> · <a href="https://www.ssh.com/academy/ssh/config" target="_blank">SSH.com Config</a> · Verified 2026-08-05</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-4">
+<div class="sec-tag">Module 1 · Linux</div>
+<h2>1.4 Package Manager Cheat Sheet</h2>
+<p>A package manager = command-line version of an app store. Different Linux distros use different managers — Ubuntu/Debian family uses <code>apt</code>, modern CentOS/RHEL uses <code>dnf</code>, old versions use <code>yum</code>, and Alpine uses <code>apk</code>.</p>
+<table class="tbl">
+<tr><th>System</th><th>Install</th><th>Remove</th><th>Update Index</th><th>Upgrade All</th></tr>
+<tr><td>Ubuntu / Debian</td><td><code>apt install nginx</code></td><td><code>apt remove nginx</code></td><td><code>apt update</code></td><td><code>apt upgrade</code></td></tr>
+<tr><td>CentOS / RHEL (Modern)</td><td><code>dnf install nginx</code></td><td><code>dnf remove nginx</code></td><td><code>dnf check-update</code></td><td><code>dnf upgrade</code></td></tr>
+<tr><td>Alpine</td><td><code>apk add nginx</code></td><td><code>apk del nginx</code></td><td><code>apk update</code></td><td><code>apk upgrade</code></td></tr>
+<tr><td>macOS (Reference)</td><td><code>brew install nginx</code></td><td><code>brew uninstall nginx</code></td><td><code>brew update</code></td><td><code>brew upgrade</code></td></tr>
+</table>
+<div class="callout tip"><b class="t">Two Iron Rules for Installing Software</b>(1) <strong>Always update before install</strong> — an outdated index will install outdated versions; (2) <strong>Don't mix distro sources</strong> — Ubuntu's deb packages cannot be installed on CentOS, and vice versa.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-5">
+<div class="sec-tag">Module 1 · Linux</div>
+<h2>1.5 Permissions and Users</h2>
+<p>Linux is a multi-user system. Every file has "who can read / who can write / who can execute" permissions for "owner / group / others".</p>
+<h3 data-reveal>View Permissions: <code>ls -l</code></h3>
+<pre><code>-rw-r--r-- 1 root root  1234 Aug  5 10:00 myapp.conf
+drwxr-xr-x 2 root root  4096 Aug  5 09:00 nginx/
+
+<span class="c"># 1st char: d = directory, - = file</span>
+<span class="c"># Next 9 chars: Three sets of rwx (owner/group/others)</span>
+<span class="c"># r=read(4) w=write(2) x=execute(1)</span></code></pre>
+<h3 data-reveal>Change Permissions: chmod vs chown</h3>
+<table class="tbl">
+<tr><th>Command</th><th>What it does</th><th>Example</th></tr>
+<tr><td><code>chmod 600 mykey</code></td><td>Change permissions (number = owner + group + others)</td><td><code>600</code> = Owner can read/write, others can do nothing</td></tr>
+<tr><td><code>chmod +x script.sh</code></td><td>Add execute permission</td><td>Must do before running a script for the first time</td></tr>
+<tr><td><code>chown user:group file</code></td><td>Change ownership</td><td><code>chown www-data:www-data /var/www</code></td></tr>
+</table>
+<h3 data-reveal>sudo: Temporarily be root</h3>
+<p>root is the "God account" of Linux, it can change anything. Use a normal user for daily tasks, and use <code>sudo</code> to temporarily escalate privileges when installing packages or modifying system configs.</p>
+<pre><code>sudo apt install nginx      <span class="c"># Escalate to install</span>
+sudo systemctl restart nginx <span class="c"># Escalate to restart service</span>
+sudo !!                     <span class="c"># Re-run the previous command with sudo (lifesaver)</span></code></pre>
+<div class="callout warn"><b class="t">Don't use root for daily tasks</b>If root mistakenly runs <code>rm -rf /</code> (theoretically requires <code>--no-preserve-root</code> but might still execute), it's Game Over. Creating a dedicated user and using <code>sudo</code> is a good habit.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Module 2 · Network and Security Backbone ========== -->
+
+<section id="m2-1">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.1 One Picture to Understand HTTP → TCP → IP → Network Card</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>In the 1 second it takes to open a website, your request passes through 4 gates and gets wrapped in 4 layers of "envelopes". As long as you figure out what these four layers do, you'll understand all network jargon.</div>
+
+<h3 data-reveal>What exactly is it</h3>
+<p>You type <code>aidoc-zq.netlify.app</code> in your browser, and about 1 second later you see the page. In this 1 second, your request leaves the browser and passes through 4 gates:</p>
+<ol>
+<li><strong>Application Layer (HTTP)</strong> — You write <code>GET /index.html</code>, meaning "I want this file"</li>
+<li><strong>Transport Layer (TCP)</strong> — Chops HTTP into small packets and numbers them to ensure they arrive in order, like a courier company</li>
+<li><strong>Network Layer (IP)</strong> — Writes "where from, where to" on each packet, like an address on a shipping label</li>
+<li><strong>Link Layer (Network Card)</strong> — Turns the packet into electrical/optical signals and sends it out, which is the actual vehicle driving</li>
+</ol>
+
+<h3 data-reveal>4-Layer Protocol Stack (ASCII Diagram)</h3>
+<pre><code>   Your Request (Downstream)      Your Response (Upstream)
+   ────────────────               ────────────────
+   ┌──────────────┐               ┌──────────────┐
+   │ HTTP  GET /  │               │ 200 OK <html> │
+   ├──────────────┤               ├──────────────┤
+   │ TCP  SYN/ACK │               │ TCP  FIN/ACK │
+   ├──────────────┤               ├──────────────┤
+   │ IP  src→dst  │               │ IP  dst→src  │
+   ├──────────────┤               ├──────────────┤
+   │ Card Signals │               │ Card Signals │
+   └──────────────┘               └──────────────┘
+   ▲ Wrap (Top to bottom)        ▲ Unwrap (Bottom to top)</code></pre>
+
+<h3 data-reveal>How to use it: Watch an actual handshake</h3>
+<p>Run <code>curl -v https://example.com</code>, and you can see the entire "3-way handshake and 4-way wave" process of TCP. This is the core of TCP:</p>
+<pre><code>curl -v https://example.com
+# * Trying 93.184.216.34:443...        ← TCP starts: sends SYN
+# * Connected to example.com          ← Receives SYN+ACK, sends ACK (handshake complete)
+# &gt; GET / HTTP/1.1                    ← HTTP request starts sending
+# &lt; HTTP/1.1 200 OK                   ← HTTP response returns
+# * Connection #0 to host example.com left intact</code></pre>
+
+<h3 data-reveal>Hands-on: Capture a real packet</h3>
+<p>Want to see what a real IP packet looks like? <code>tcpdump</code> will show you (no root needed to capture your own outgoing packets):</p>
+<pre><code>tcpdump -i any -n port 80 -c 5
+# Captures the first 5 packets on port 80
+# You'll see things like src=192.168.1.5.dst=93.184.216.34.80
+# This is what the IP+TCP+HTTP layers look like on the same wire</code></pre>
+
+<h3 data-reveal>🚧 Mini-Theater: What are the OSI 7 layers?</h3>
+<p>OSI is an antique from 1984, but only four layers survive in reality. The OSI layers we actually use are: Physical → Data Link → Network → Transport → Application (the bottom four are enough; the "Session/Presentation" brothers in the middle are rarely implemented on their own).</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>H writes, T delivers, I addresses, Card runs errands</strong>" — Four layers handle their own business without interfering with each other.</div>
+
+<p class="src">Sources: <a href="https://en.wikipedia.org/wiki/Internet_protocol_suite" target="_blank">Wikipedia · Internet Protocol Suite</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview" target="_blank">MDN · HTTP Overview</a> · <a href="https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/" target="_blank">Cloudflare Learning · TCP/UDP</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-2">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.2 DNS Complete Picture: How directory assistance works</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>DNS is the internet's "address book"; input a domain → find the IP. Changing DNS records does not take effect immediately; it can take up to 48 hours to sync globally, which is a common pitfall for solo devs.</div>
+
+<h3 data-reveal>What exactly is it</h3>
+<p>You input the string <code>aidoc-zq.netlify.app</code>, but computers only understand numbers like <code>75.2.60.5</code>. DNS (Domain Name System) translates letters into numbers, like directory assistance — you say "Where is KFC", it tells you the specific address.</p>
+
+<h3 data-reveal>Complete Query Flow (Recursive + Iterative)</h3>
+<pre><code>Your Computer                           Root. → .com. → netlify.app → Returns 75.2.60.5
+   │                                       │       │          │
+   │ Ask Local DNS (from ISP)              │       │          │
+   ├──────────────────────────────────────►│       │          │
+   │        I don't know, but Root does    │       │          │
+   │ ◄─────────────────────────────────────┤       │          │
+   │ Ask Root Server (.)                     │       │          │
+   ├─────────────────────────────────────────────────►│          │
+   │        I don't know, .com does        │       │          │
+   │ ◄─────────────────────────────────────────────────┤          │
+   │ Ask .com Server                         │       │          │
+   ├─────────────────────────────────────────────────────────────►│
+   │  netlify.app knows → 75.2.60.5                         │
+   │ ◄─────────────────────────────────────────────────────────────┤
+   ▼
+Browser gets IP, starts HTTP request</code></pre>
+<p>Globally, there are 13 sets of root DNS servers managing the "master directory" of the entire domain system.</p>
+
+<h3 data-reveal>Public DNS List (Verified 2026.8)</h3>
+<table class="tbl">
+<tr><th>Provider</th><th>IPv4</th><th>Characteristics</th></tr>
+<tr><td>Google</td><td><code>8.8.8.8</code> / <code>8.8.4.4</code></td><td>Global standard, fast response</td></tr>
+<tr><td>Cloudflare</td><td><code>1.1.1.1</code> / <code>1.0.0.1</code></td><td>Claims to be fastest, strongest privacy</td></tr>
+<tr><td>China 114</td><td><code>114.114.114.114</code></td><td>Classic in China, no pollution but has ad filtering</td></tr>
+<tr><td>DNSPod</td><td><code>119.29.29.29</code></td><td>By Tencent, fast access in China</td></tr>
+<tr><td>AliDNS</td><td><code>223.5.5.5</code> / <code>223.6.6.6</code></td><td>By Alibaba, stable</td></tr>
+</table>
+
+<h3 data-reveal>Record Types Cheat Sheet</h3>
+<table class="tbl">
+<tr><th>Type</th><th>Purpose</th><th>Example</th></tr>
+<tr><td><code>A</code></td><td>Domain → IPv4 address</td><td><code>example.com → 93.184.216.34</code></td></tr>
+<tr><td><code>AAAA</code></td><td>Domain → IPv6 address</td><td><code>example.com → 2606:2800:220:1::1</code></td></tr>
+<tr><td><code>CNAME</code></td><td>Domain → Another domain (Alias)</td><td><code>www.example.com → example.com</code></td></tr>
+<tr><td><code>MX</code></td><td>Mail server</td><td><code>mail.example.com</code></td></tr>
+<tr><td><code>TXT</code></td><td>Arbitrary text (SPF/DKIM/Domain verification)</td><td>Google site verification <code>google-site-verification=...</code></td></tr>
+<tr><td><code>NS</code></td><td>Authoritative DNS Server</td><td>Who manages the "address book" for this domain</td></tr>
+<tr><td><code>CAA</code></td><td>Restrict which CAs can issue certs</td><td>Only let Let's Encrypt issue certs</td></tr>
+</table>
+
+<h3 data-reveal>DoH / DoT (Status as of 2026.8)</h3>
+<p><strong>DNS over HTTPS (DoH)</strong>: Stuffs DNS queries into HTTPS traffic, so ISPs can't see what you look up. Supported by Firefox / Chrome / Edge, but whether it's enabled by default depends on the version/region (exact details for 2026.8 not verified word-for-word, refer to official browser docs).<br>
+<strong>DNS over TLS (DoT)</strong>: Similar to DoH, but uses TLS port 853. Android 9+ default "Private DNS" feature uses this.</p>
+
+<h3 data-reveal>🚧 Mini-Theater: "Changed DNS but it hasn't taken effect for hours"</h3>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-3">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.3 HTTPS / TLS / Let's Encrypt</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>HTTP is a postcard — a cafe packet sniffer can read it. HTTPS = registered mail; only you and the recipient can open it. Let's Encrypt made free SSL certs + auto-renewal a reality, making it the mainstream for the entire web in 2026.</div>
+
+<h3 data-reveal>What exactly is it: HTTP vs HTTPS</h3>
+<p>HTTP (Hypertext Transfer Protocol) is plaintext — if you enter "username/password" on a cafe Wi-Fi, the next table can see it by packet sniffing.</p>
+<p>HTTPS = HTTP + TLS encryption layer, turning the transmitted content into ciphertext that only you and the server can decrypt. The little lock icon in the address bar means exactly this.</p>
+
+<h3 data-reveal>TLS 1.3 Handshake (1-RTT, ASCII Diagram)</h3>
+<pre><code>Client (Browser)                        Server
+  │                                      │
+  │── ClientHello (Supported Algos) ───►│
+  │                                      │
+  │◄── ServerHello + Certificate ───────│
+  │     + Finished (Key is computed)     │
+  │                                      │
+  │── Finished (Begin Encrypted Comm) ─►│
+  │                                      │
+  │▼ Application Data (Encrypted)        │</code></pre>
+<p>One round trip less than TLS 1.2, meaning lower latency. In 2026, mainstream browsers + servers default to TLS 1.3.</p>
+
+<h3 data-reveal>SNI: Multiple domains on one IP</h3>
+<p>Early HTTPS only allowed one certificate per IP, but what if your server hosts a.com / b.com / c.com? <strong>SNI (Server Name Indication)</strong> lets the client tell the server the domain name during the handshake, so the server picks the corresponding certificate.</p>
+<div class="callout note"><b class="t">Understanding SNI</b>Like a hotel receptionist: a guest says "I'm looking for John in Room 302" at the door, and the receptionist directs them, without knocking on every door.</div>
+
+<h3 data-reveal>Let's Encrypt + certbot (Verified 2026.8)</h3>
+<pre><code>apt install -y certbot python3-certbot-nginx
+certbot --nginx -d yourdomain.dev -d www.yourdomain.dev
+certbot renew --dry-run    <span class="c"># Test auto-renewal</span></code></pre>
+<p>certbot automatically adds a systemd timer or cron, renewing every 60 days, keeping it valid indefinitely within the 90-day window.</p>
+
+<h3 data-reveal>2026.8 Let's Encrypt Rate Limits (Verified via Official Docs)</h3>
+<table class="tbl">
+<tr><th>Limit Type</th><th>Value</th><th>Period</th></tr>
+<tr><td>New certs per Registered Domain</td><td><strong>50 certs</strong></td><td>per 7 days</td></tr>
+<tr><td>New Orders per Account (V1)</td><td>300 orders</td><td>per 3 hours</td></tr>
+<tr><td>Duplicate certs for exact same set of hostnames</td><td>5 certs</td><td>per 7 days</td></tr>
+<tr><td>ARI Renewals</td><td><strong>Exempt from all limits</strong></td><td>—</td></tr>
+</table>
+<p>Good news: Normal renewals are exempt. Bad news: You can easily hit the 50 certs/week limit when constantly tweaking domains during testing.</p>
+
+<h3 data-reveal>🚧 Mini-Theater: "Cert expired, entire site down"</h3>
+<p>Let's Encrypt certs are valid for 90 days, certbot auto-renews at 30 days before expiry. But if your machine was off for a month, or the cron job crashed, the cert expires — browsers will block it as "Not Secure". First response:</p>
+<pre><code>certbot certificates               <span class="c"># View all certs and expiry</span>
+systemctl status certbot.timer     <span class="c"># Check if timer is running</span>
+certbot renew --force-renewal      <span class="c"># Force immediate re-sign</span></code></pre>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>HTTP runs naked, HTTPS wears a TLS coat</strong>" — Just looking at the URL protocol tells you if the transmission is secure.</div>
+
+<p class="src">Sources: <a href="https://letsencrypt.org/docs/rate-limits/" target="_blank">Let's Encrypt · Rate Limits (Verified 2026-08-05)</a> · <a href="https://letsencrypt.org/getting-started/" target="_blank">Let's Encrypt · Getting Started</a> · <a href="https://eff-certbot.readthedocs.io/" target="_blank">Certbot Official Docs</a> · <a href="https://datatracker.ietf.org/doc/html/rfc8446" target="_blank">RFC 8446 · TLS 1.3</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-4">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.4 Reverse Proxy: Why Nginx is the Swiss Army Knife</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>A reverse proxy is the "front desk receptionist" — you just say "I'm looking for John", and the receptionist locates the specific office. Users visiting yourdomain.dev are actually routed by Nginx, which distributes requests to backend Node services for you.</div>
+
+<h3 data-reveal>What exactly is it: Forward vs Reverse</h3>
+<p>Many confuse "proxy" with "reverse proxy", but their directions differ:</p>
+<pre><code>【Forward Proxy】 Client ←→ Proxy ←→ Internet
+  Acts on behalf of the client. Typical scenario: Corporate VPN/firewall bypass
+  Client knows the proxy exists
+
+【Reverse Proxy】 Client ←→ Reverse Proxy ←→ Backend Servers
+  Acts on behalf of the server. Typical scenario: Nginx with Node
+  Client has no idea how many servers are behind it</code></pre>
+
+<h3 data-reveal>Request Flow (ASCII Diagram)</h3>
+<pre><code>User Browser      Nginx Reverse Proxy     Backend Server
+   │                  │                       │
+   │ GET /api/users   │                       │
+   ├─────────────────►│                       │
+   │                  │ Choose Node1          │
+   │                  ├──────────────────────►│
+   │                  │◄──── 200 OK JSON ─────┤
+   │◄────── 200 OK ───┤                       │
+   │                  │                       │
+   │ GET /static/x.js │                       │
+   ├─────────────────►│                       │
+   │                  │ Return file from disk │
+   │◄────── 200 OK ───┤ (Bypasses Node)       │</code></pre>
+
+<h3 data-reveal>5 Key Roles of Nginx</h3>
+<ul>
+<li><strong>HTTPS Termination</strong> — Nginx handles SSL; Node runs plaintext HTTP (saves CPU).</li>
+<li><strong>Multi-App Sharing 80/443</strong> — Routes to different Node services based on domain.</li>
+<li><strong>Static File Acceleration</strong> — Nginx returns static assets directly, without involving Node.</li>
+<li><strong>Load Balancing</strong> — Distributes requests across multiple Node instances.</li>
+<li><strong>Caching/Compression/Gzip</strong> — Handled by Nginx with a single line of config.</li>
+</ul>
+
+<h3 data-reveal>Why Nginx is a "Swiss Army Knife"</h3>
+<p>Nginx is the de facto standard reverse proxy server — open-source, stable, easy to configure, low memory footprint. Long-term stats by Netcraft / W3Techs show Nginx consistently in the top 2 global web server market share (the other being Apache), with Nginx being the mainstream for new deployments. (2026.8 exact percentages not verified word-for-word, refer to latest w3techs.com reports)</p>
+
+<div class="callout note"><b class="t">📌 Config Template in 3.3</b>A complete, ready-to-use nginx.conf is available in module 3.3. Feel free to copy it.</div>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>Forward proxy helps the client, Reverse proxy helps the server</strong>" — It depends on whose behalf it is acting.</div>
+
+<p class="src">Sources: <a href="https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/" target="_blank">Cloudflare Learning · Reverse Proxy</a> · <a href="https://nginx.org/en/docs/" target="_blank">Nginx Official Docs</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-5">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.5 Firewall: Why 80/443 work but others don't</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>For solo developers, 50% of "cannot connect" issues are caused by firewalls — and not just one layer, but <strong>two or more</strong> layers. Allowing it locally doesn't mean the cloud provider allowed it; and running a local service doesn't mean the outside world can access it.</div>
+
+<h3 data-reveal>The Two-Layer Firewall (Solo Dev Pitfall)</h3>
+<pre><code>Your Computer ←───→ [Cloud Security Group] ←───→ [Local ufw/iptables] ←───→ Service</code></pre>
+</section>
+
+<section id="m2-6">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.6 Common Attack Vectors Cheat Sheet</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>If a solo dev's project is attacked, 99% of the time it's hit by automated scanning scripts "in passing", not because someone targeted you specifically. Learning these few rules will block the vast majority.</div>
+
+<h3 data-reveal>7 Types of Attacks</h3>
+<table class="tbl">
+<tr><th>Attack</th><th>Principle (Simplified)</th><th>Defense</th></tr>
+<tr><td><strong>SSH Brute Force</strong></td><td>Scripts scanning port 22, trying common passwords<br>→ Tens of thousands of tries a day</td><td>Disable password login (allow key only) + fail2ban</td></tr>
+<tr><td><strong>SQL Injection</strong></td><td>User input is concatenated into SQL<br>→ <code>' OR 1=1 --</code></td><td>Parameterized Queries / ORM</td></tr>
+<tr><td><strong>XSS</strong></td><td>User input is rendered as HTML<br>→ <code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td><td>React/Vue escapes by default; use DOMPurify for external HTML</td></tr>
+<tr><td><strong>CSRF</strong></td><td>Tricking you into clicking a link to trigger an action<br>→ Tricked by fake bank transfer images</td><td>SameSite cookie + CSRF token</td></tr>
+<tr><td><strong>DDoS</strong></td><td>Massive requests exhausting bandwidth<br>→ Like 1 million people crowding 1 door</td><td>Cloudflare Proxy + Rate Limiting</td></tr>
+<tr><td><strong>Dependency Vulnerabilities</strong></td><td><code>npm install</code> installing vulnerable packages</td><td><code>npm audit</code> + Dependabot auto PR</td></tr>
+<tr><td><strong>Sensitive Data Leak</strong></td><td>Committing .env / keys to GitHub</td><td><code>git-secrets</code> pre-commit hook + GitHub Secret Scanning</td></tr>
+</table>
+
+<h3 data-reveal>Three Instant Hardening Steps (Done in 1 Hour)</h3>
+<ol>
+<li><strong>Change SSH to Key Login, Disable Passwords</strong> — Change <code>PasswordAuthentication no</code> in <code>/etc/ssh/sshd_config</code></li>
+<li><strong>Add .env to .gitignore</strong> — Prevent secret leaks</li>
+<li><strong>npm audit + Dependabot</strong> — Auto-fix dependency vulnerabilities</li>
+</ol>
+<p>Doing these three things in 1 hour blocks 80% of automated attacks.</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>Close ports, Open keys, Update dependencies</strong>" — Keep this trio active, and automated attacks will mostly bypass you.</div>
+
+<p class="src">Sources: <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a> · <a href="https://docs.github.com/en/code-security/dependabot" target="_blank">GitHub · Dependabot Docs</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-7">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.7 Ports Explained: Apartment Numbers</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>Ports are apartment numbers; IP is the apartment building address. There are over 60,000 apartments (0-65535). Below 1023 is exclusively for "famous businesses" (SSH, HTTP, HTTPS); above 49152 is for temporary tenants (browsers assign one every time a new tab opens).</div>
+
+<h3 data-reveal>What exactly is it</h3>
+<p>Imagine a residential complex: The IP address is the complex's address (globally unique), and the port number is the building/apartment number. On the same machine, you can run over 60,000 services, each occupying an apartment number without interfering with each other.</p>
+
+<h3 data-reveal>Three Ranges (Why 0-65535)</h3>
+<table class="tbl">
+<tr><th>Range</th><th>Name</th><th>Who can use it</th></tr>
+<tr><td>0-1023</td><td>Well-known Ports</td><td>Requires root privileges to listen</td></tr>
+<tr><td>1024-49151</td><td>Registered Ports</td><td>Normal users can listen; registered with IANA to avoid conflicts</td></tr>
+<tr><td>49152-65535</td><td>Dynamic / Ephemeral Ports</td><td>Used by clients for temporary connections, assigned by OS</td></tr>
+</table>
+<p>The max number is 65535 = 2^16 because the port number field in TCP/UDP headers is 16 bits long.</p>
+
+<h3 data-reveal>15+ Common Ports Cheat Sheet</h3>
+<table class="tbl">
+<tr><th>Port</th><th>Service</th><th>Usage</th></tr>
+<tr><td><code>22</code></td><td>SSH</td><td>Remote login; disable password after key setup</td></tr>
+<tr><td><code>80</code></td><td>HTTP</td><td>Plaintext web; recommended to redirect to 443</td></tr>
+<tr><td><code>443</code></td><td>HTTPS</td><td>Encrypted web; mainstream</td></tr>
+<tr><td><code>53</code></td><td>DNS</td><td>Domain name resolution</td></tr>
+<tr><td><code>3000</code></td><td>Node/React Default</td><td>Common for dev servers</td></tr>
+<tr><td><code>5000</code></td><td>Flask Default</td><td>Common for Python Web</td></tr>
+<tr><td><code>8080</code></td><td>Alternative HTTP</td><td>Common in dev environments</td></tr>
+<tr><td><code>3306</code></td><td>MySQL</td><td>Default DB port</td></tr>
+<tr><td><code>5432</code></td><td>PostgreSQL</td><td>PG Default</td></tr>
+<tr><td><code>6379</code></td><td>Redis</td><td>In-memory DB</td></tr>
+<tr><td><code>27017</code></td><td>MongoDB</td><td>Mongo Default</td></tr>
+<tr><td><code>25</code> / <code>993</code></td><td>SMTP / IMAPS</td><td>Send Email / Encrypted Receive Email</td></tr>
+<tr><td><code>3389</code></td><td>RDP</td><td>Windows Remote Desktop</td></tr>
+<tr><td><code>5900</code></td><td>VNC</td><td>Cross-platform Remote Desktop</td></tr>
+<tr><td><code>11211</code></td><td>Memcached</td><td>Cache server</td></tr>
+</table>
+
+<h3 data-reveal>4 Steps to Troubleshoot Port Conflicts</h3>
+<pre><code>ss -tlnp | grep 8080            <span class="c"># 1. Who is listening on 8080? (Recommended, modern)</span>
+lsof -i :8080                   <span class="c"># 2. Which process is occupying it?</span>
+netstat -anp | grep 8080        <span class="c"># 3. Alternative command (legacy)</span>
+fuser -k 8080/tcp               <span class="c"># 4. Force kill occupying process</span></code></pre>
+
+<h3 data-reveal>🚧 Mini-Theater: "Two Node apps both want 3000"</h3>
+<p>You started two Node projects, both defaulting to 3000. The second <code>node server.js</code> throws <code>EADDRINUSE</code>. Pick one:</p>
+<pre><code>PORT=3001 node server.js        <span class="c"># Change the second project's port</span>
+kill $(lsof -ti:3000)           <span class="c"># Kill the process occupying 3000</span>
+pm2 start server.js -n app1     <span class="c"># Use pm2 to manage multiple instances</span></code></pre>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>Well-known below 1024, Registered in middle, Ephemeral at end</strong>" — The three ranges handle their own business; when conflicting, look higher up.</div>
+
+<p class="src">Sources: <a href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers" target="_blank">Wikipedia · TCP/UDP Port Numbers</a> · <a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/" target="_blank">Cloudflare Learning · What is a port</a> · <a href="https://www.iana.org/assignments/service-names-port-numbers/" target="_blank">IANA · Service Name and Port Number Registry</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-8">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.8 Local Services: 127.0.0.1 vs 0.0.0.0</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>If you want to let external users access your local service, you must listen on <code>0.0.0.0</code> instead of <code>127.0.0.1</code> (localhost). If you're blocked by NAT and don't have a public IP, use Cloudflare Tunnel or Tailscale to penetrate the intranet.</div>
+
+<h3 data-reveal>The Difference in Listening Addresses</h3>
+<pre><code>【127.0.0.1】  Loopback address (localhost)
+  → Only accessible from your own machine
+  → Good for internal services like databases
+
+【localhost】  Resolved name by the OS
+  → Usually = 127.0.0.1
+  → Can be pointed to other IPs by modifying /etc/hosts
+
+【0.0.0.0】    Listen on all network interfaces
+  → Accepts access from any interface (Local + Public)
+  → Truly "publicly exposed" services should listen on this</code></pre>
+
+<h3 data-reveal>Node Listening Examples</h3>
+<pre><code>// Local only (Default)
+app.listen(3000, '127.0.0.1', () =&gt; {
+  console.log('Only accessible at localhost:3000');
+});
+
+// Accepts all interfaces
+app.listen(3000, '0.0.0.0', () =&gt; {
+  console.log('Accessible from local, public, and internal networks');
+});
+
+// Default (Usually = 0.0.0.0, but some versions vary)
+app.listen(3000, () =&gt; console.log('Default listening'));</code></pre>
+
+<h3 data-reveal>3 Intranet Penetration Solutions (Exposing local services to external network)</h3>
+<table class="tbl">
+<tr><th>Solution</th><th>Principle</th><th>Best For</th></tr>
+<tr><td><strong>frp</strong></td><td>Open-source, self-hosted frp server, requires a public IP machine</td><td>Those willing to tinker, sensitive to costs</td></tr>
+<tr><td><strong>Cloudflare Tunnel</strong></td><td>Runs <code>cloudflared</code> daemon, <strong>outbound</strong> connection to Cloudflare</td><td>Small projects, those without a public IP machine</td></tr>
+<tr><td><strong>Tailscale</strong></td><td>Based on WireGuard, zero-config, device networking</td><td>Multi-device interconnection, secure networking</td></tr>
+</table>
+
+<h3 data-reveal>Cloudflare Tunnel (Principle verified as of 2026.8)</h3>
+<p>The <code>cloudflared</code> daemon runs on your server and <strong>actively initiates an outbound connection</strong> to Cloudflare (outbound-only). It does not require a public IP or an inbound firewall rule. Tunnels are identified by a UUID, and traffic flows bidirectionally, but the firewall only needs to allow outbound traffic.</p>
+<div class="callout note"><b class="t">Unverified Info</b>Bandwidth limits and domain requirements for Cloudflare Tunnel on the Free plan as of 2026.8 have not been verified word-for-word in this section. Please refer to Cloudflare's official website for the latest terms.</div>
+
+<h3 data-reveal>Tailscale 2026 Status (Pricing verified)</h3>
+<p>Tailscale is based on WireGuard, and the Personal plan is permanently free — <strong>up to 6 users and unlimited personal devices</strong>. Exceeding 6 users requires upgrading to Standard ($8/user/month). Typical scenarios: homelab, personal VPN, Raspberry Pi, SSH intranet penetration.</p>
+
+<h3 data-reveal>SSH Port Forwarding (The fastest tool)</h3>
+<pre><code># Local forwarding: Map remote's 80 to local 8080
+ssh -L 8080:localhost:80 user@remote
+
+# Remote forwarding: Expose local 3000 to remote's 8080
+ssh -R 8080:localhost:3000 user@remote
+
+# Dynamic forwarding: Turn SSH into a SOCKS proxy
+ssh -D 1080 user@remote</code></pre>
+
+<h3 data-reveal>🚧 Mini-Theater: "How do I let a colleague access my local service?"</h3>
+<p>Three solutions, pick the most suitable:</p>
+<ol>
+<li><strong>Simplest: Use Tailscale</strong> — Colleague installs it too, forming a virtual LAN</li>
+<li><strong>No client needed: Cloudflare Tunnel</strong> — Gives you a public domain, no VPN installation required</li>
+<li><strong>Total control: frp</strong> — Buy a public VPS yourself as a relay</li>
+</ol>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>Starting a local service, check what it listens to: 0.0.0.0 for external access</strong>" — Listening to 127.0.0.1 = self use only, listening to 0.0.0.0 = reachable by the whole network.</div>
+
+<p class="src">Sources: <a href="https://tailscale.com/pricing" target="_blank">Tailscale · Pricing</a> (Verified 2026-08-07) · <a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/" target="_blank">Cloudflare · Tunnel Docs</a> · <a href="https://github.com/fatedier/frp" target="_blank">frp · GitHub</a> · <a href="https://man.openbsd.org/ssh" target="_blank">OpenSSH Manual · Port Forwarding</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-9">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.9 VPN and Proxy: Differentiating four "bypass" postures</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>VPNs, forward proxies, reverse proxies, and application-layer proxies are often confused, but they operate at different layers. A VPN is "drawing a dedicated line at the network layer", a reverse proxy "takes requests for the server at the application layer", and a forward proxy "acts on behalf of the client at the application layer".</div>
+
+<h3 data-reveal>What exactly is it: Four scenarios</h3>
+<ul>
+<li><strong>Corporate VPN</strong> — You can access the company's internal Git from home; the OS thinks you are sitting at your desk</li>
+<li><strong>Corporate Forward Proxy</strong> — The company uses a unified proxy to access the public network; all employees share the same exit</li>
+<li><strong>Reverse Proxy (Nginx)</strong> — Users visit the company website, and Nginx distributes traffic at the front</li>
+<li><strong>Application Layer Proxy</strong> — Setting a SOCKS5/HTTP Proxy extension in the browser to access the public internet</li>
+</ul>
+
+<h3 data-reveal>Four-Way Comparison ASCII Diagram</h3>
+<pre><code>【Forward Proxy】                     【Reverse Proxy】
+   Client ─→ Proxy ─→ Internet         Internet ─→ Rev Proxy ─→ Backend Servers
+   Acts on behalf of the client        Takes requests for the server
+
+【VPN】                               【Application Layer Proxy】
+   Client ─→ VPN ─→ Target Network     Client ─→ SOCKS5/HTTP Proxy ─→ Internet
+   Dedicated line, virtual NIC         App layer routing, SOCKS5 sees upper protocols</code></pre>
+
+<h3 data-reveal>Operating Layers Overview</h3>
+<table class="tbl">
+<tr><th>Type</th><th>Operating Layer</th><th>Typical Scenario</th></tr>
+<tr><td><strong>VPN</strong></td><td>L3 Network Layer</td><td>Entire virtual dedicated line, OS routing table perspective</td></tr>
+<tr><td><strong>Reverse Proxy</strong></td><td>L7 Application Layer (HTTP)</td><td>Nginx handling HTTP traffic for you</td></tr>
+<tr><td><strong>Forward Proxy</strong></td><td>L7 Application Layer (HTTP)</td><td>Browser setting a proxy to the internet</td></tr>
+<tr><td><strong>SOCKS5 Proxy</strong></td><td>L5 Session Layer</td><td>Arbitrary TCP/UDP traffic forwarding</td></tr>
+</table>
+
+<h3 data-reveal>Three Tiers of VPN Protocols</h3>
+<ul>
+<li><strong>IPsec</strong> — Enterprise-grade veteran, 1980s protocol suite, complex configuration but stable</li>
+<li><strong>SSL VPN</strong> — Lightweight, just install the client (Cisco AnyConnect, etc.)</li>
+<li><strong>WireGuard</strong> — Newcomer, 4000 lines of code, <strong>merged into mainline since Linux 5.6 (2020-03-29)</strong></li>
+</ul>
+
+<h3 data-reveal>Core Advantages of WireGuard</h3>
+<ul>
+<li>Configures like SSH — Establish connection just by exchanging public keys</li>
+<li>Small code base — Around 4000 lines, easy to audit</li>
+<li>Modern encryption — Curve25519, ChaCha20, Poly1305, etc.</li>
+<li>Kernel implementation — High performance, suitable for embedded and backbone</li>
+<li>Built-in roaming — Switch networks without reconnecting (similar to Mosh)</li>
+</ul>
+
+<h3 data-reveal>What is <code>ssh -D 1080</code></h3>
+<p>SSH's built-in dynamic SOCKS proxy. Uses SSH as a SOCKS5 server; all application traffic routed through port 1080 will be forwarded by SSH.</p>
+
+<h3 data-reveal>🚧 Mini-Theater: "Why can the corporate VPN access the intranet?"</h3>
+<p>When the VPN client dials in, the OS receives a set of "routing table change instructions": packets heading to <code>10.0.0.0/8</code> go through <code>utun0</code> (virtual network card), others go through the original default card. From your OS's perspective, this is the network stack of sitting at your desk.</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>VPN draws a line, Rev Proxy helps the server, Forward Proxy helps the client</strong>" — Look at "who it acts on behalf of".</div>
+
+<p class="src">Sources: <a href="https://www.cloudflare.com/learning/network-layer/what-is-a-vpn/" target="_blank">Cloudflare Learning · What is a VPN</a> · <a href="https://www.wireguard.com/" target="_blank">WireGuard Official</a> · <a href="https://en.wikipedia.org/wiki/WireGuard" target="_blank">Wikipedia · WireGuard</a> (Linux 5.6 in mainline) · <a href="https://en.wikipedia.org/wiki/Reverse_proxy" target="_blank">Wikipedia · Reverse Proxy</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-10">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.10 Public / Private Network / NAT: The Security Guard's Job</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>A public IP is your house address (globally unique), a private IP is your apartment unit number (can be repeated across complexes). The whole complex shares one public IP, and the security guard (NAT) distributes incoming packages based on the "unit number" — this is what NAT does.</div>
+
+<h3 data-reveal>What exactly is it</h3>
+<p>If every device needed a public IP, IPv4 (4.3 billion) would have run out long ago. NAT (Network Address Translation) allows an entire complex to share one public IP — internal private IPs are "translated" by the router.</p>
+
+<h3 data-reveal>Three Private Network Segments (RFC 1918)</h3>
+<table class="tbl">
+<tr><th>Segment</th><th>Address Range</th><th>Count</th><th>Typical Scenario</th></tr>
+<tr><td><code>10.0.0.0/8</code></td><td><code>10.0.0.0</code> - <code>10.255.255.255</code></td><td>16.77 million</td><td>Large enterprise / Cloud provider intranet</td></tr>
+<tr><td><code>172.16.0.0/12</code></td><td><code>172.16.0.0</code> - <code>172.31.255.255</code></td><td>1.04 million</td><td>Medium-sized network</td></tr>
+<tr><td><code>192.168.0.0/16</code></td><td><code>192.168.0.0</code> - <code>192.168.255.255</code></td><td>65,536</td><td>Home router (most common)</td></tr>
+</table>
+<p>The <code>192.168.1.x</code> you see on your home Wi-Fi might be <code>10.0.0.x</code> on your corporate intranet.</p>
+
+<h3 data-reveal>NAT Principle ASCII Diagram</h3>
+<pre><code>Your PC 192.168.1.100:5000 ─→ Home Router ─→ Public 1.2.3.4:40001 ─→ baidu.com
+                                  ▲
+                                  │ NAT Translation Table:
+                                  │ Internal IP:Port      → Public IP:Port
+                                  │ 192.168.1.100:5000    → 1.2.3.4:40001
+                                  │ 192.168.1.101:5001    → 1.2.3.4:40002
+
+Baidu replies to 1.2.3.4:40001 → Router checks table → Forwards to 192.168.1.100:5000</code></pre>
+
+<h3 data-reveal>Port Mapping = "Reverse Proxy" done by the router</h3>
+<p>Want your home NAS to be accessible from the outside? Use "port mapping" on the router: map a public port (e.g. <code>8081</code>) to the NAS's internal IP port <code>5000</code>. External access to <code>Your Public IP:8081</code> = accesses NAS <code>5000</code>.</p>
+<div class="callout note"><b class="t">Analogy</b>The complex security guard receives a package for you, addressed only to the "security guard". The guard remembers which 18th-floor unit each package is for and distributes them when you come to pick them up. Port mapping is "reserving a specific locker for a unit".</div>
+
+<h3 data-reveal>IPv4 Exhaustion History + Enter IPv6</h3>
+<p><strong>In November 2019</strong>, IANA allocated the last five /8 segments; IPv4 was officially "exhausted". NAT has been a stopgap extending its life for over a decade. IPv6 (detailed in 2.13) has 128-bit addresses; theoretically, every grain of sand can have an IP, eliminating the need for NAT.</p>
+
+<h3 data-reveal>🚧 Mini-Theater: "Why is my home IP the same 192.168.1.100 as my neighbor's?"</h3>
+<p>All home routers default to the <code>192.168.1.x</code> segment. Your <code>192.168.1.100</code> and your neighbor's <code>192.168.1.100</code> do not interfere with each other in your respective homes — because they are behind NAT, and the public internet only sees the complex's public IP.</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>Public is globally unique, Private is for complex use, Going out relies on NAT</strong>" — Hundreds of devices at home can reuse IPs because the public internet only sees the complex gate.</div>
+
+<p class="src">Sources: <a href="https://www.cloudflare.com/learning/network-layer/what-is-nat/" target="_blank">Cloudflare Learning · What is NAT</a> · <a href="https://datatracker.ietf.org/doc/html/rfc1918" target="_blank">RFC 1918 · Address Allocation for Private Internets</a> · <a href="https://www.cloudflare.com/learning/network-layer/what-is-the-ipv4-exhaustion-problem/" target="_blank">Cloudflare · IPv4 Exhaustion</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-11">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.11 Network Debugging Commands Family Portrait: Troubleshooting Toolbox</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>This is your troubleshooting toolbox, use it by scenario. If unreachable, <code>ping</code>; if slow, <code>mtr</code>; for HTTP, <code>curl</code>; to check ports, <code>ss</code>. Don't worry about memorizing them; knowing "which command for which scenario" is enough.</div>
+
+<h3 data-reveal>Command Category Quick Reference</h3>
+<table class="tbl">
+<tr><th>Category</th><th>Command</th><th>Usage</th></tr>
+<tr><td rowspan="3">Connectivity</td><td><code>ping</code></td><td>Check if IP layer is reachable (using ICMP)</td></tr>
+<tr><td><code>traceroute</code></td><td>See how many hops a packet takes from you to the target</td></tr>
+<tr><td><code>mtr</code></td><td>traceroute + ping combined, real-time</td></tr>
+<tr><td rowspan="3">DNS</td><td><code>nslookup</code></td><td>Find the IP of a domain (simple)</td></tr>
+<tr><td><code>dig</code></td><td>Check detailed DNS information (recommended)</td></tr>
+<tr><td><code>host</code></td><td>Minimalist DNS query</td></tr>
+<tr><td rowspan="2">HTTP</td><td><code>curl -v</code></td><td>Protocol-level HTTP request debugging</td></tr>
+<tr><td><code>wget -S</code></td><td>Similar to curl, view response headers</td></tr>
+<tr><td rowspan="2">Local Ports</td><td><code>ss -tlnp</code></td><td>See which ports your machine is listening on (modern)</td></tr>
+<tr><td><code>netstat -anp</code></td><td>Same as above (legacy, gradually replaced by ss)</td></tr>
+<tr><td>Packet Capture</td><td><code>tcpdump</code> / <code>Wireshark</code></td><td>View actual network packet contents</td></tr>
+<tr><td rowspan="2">Network Config</td><td><code>ip addr</code> / <code>ip a</code></td><td>View local IPs (replaces ifconfig)</td></tr>
+<tr><td><code>ip route</code></td><td>View routing table (replaces route)</td></tr>
+</table>
+
+<h3 data-reveal>5 Practical Troubleshooting Scenarios</h3>
+<p><strong>Scenario 1 · Cannot connect to the internet</strong></p>
+<pre><code>ping 8.8.8.8        <span class="c"># Check if IP layer is reachable</span>
+ping baidu.com      <span class="c"># Check if DNS works</span>
+# 8.8.8.8 fails = Network layer down (IP/routing/NIC issue)
+# baidu.com fails but 8.8.8.8 works = DNS issue</code></pre>
+
+<p><strong>Scenario 2 · Connected but webpage won't open</strong></p>
+<pre><code>curl -v http://example.com   <span class="c"># See which HTTP step gets stuck</span>
+# * Trying 93.184.216.34... = DNS resolution in progress
+# * Connected = TCP established
+# &gt; GET / HTTP/1.1 = Request sent
+# &lt; HTTP/1.1 200 = Response received
+# Whichever line it stalls on = Where the problem is</code></pre>
+
+<p><strong>Scenario 3 · Webpage loads slowly</strong></p>
+<pre><code>mtr -rwbzc 100 example.com   <span class="c"># See which hop drops packets / is slow</span></code></pre>
+
+<p><strong>Scenario 4 · SSH cannot connect</strong></p>
+<pre><code>telnet yourserver 22         <span class="c"># Check if port is reachable</span>
+ssh -vvv user@yourserver     <span class="c"># Detailed SSH debugging (three v's is more detailed)</span>
+ufw status                   <span class="c"># Check firewall</span></code></pre>
+
+<p><strong>Scenario 5 · API call fails</strong></p>
+<pre><code>curl -X POST -H 'Content-Type: application/json' \
+  -d '{"name":"test"}' https://api.example.com/users
+# -X POST: Use POST method
+# -d: Send request body
+# -H: Add request header</code></pre>
+
+<h3 data-reveal><code>ss</code> vs <code>netstat</code>: Modern vs Legacy</h3>
+<p>Their functions are nearly identical, but <code>ss</code> reads directly from the kernel, making it 10x faster. <code>netstat</code> has been marked deprecated; new deployments install <code>iproute2</code> (which includes <code>ss</code>/<code>ip</code>) by default, and no longer install <code>net-tools</code> (which includes <code>netstat</code>/<code>ifconfig</code>).</p>
+
+<h3 data-reveal>🚧 Mini-Theater: "Users report webpage won't open, but it works for me"</h3>
+<p>First, use <a href="https://www.downforeveryoneorjustme.com/" target="_blank">downforeveryoneorjustme.com</a> to see if it's a widespread issue. Then use <code>curl -v</code> + <code>mtr</code> to see which hop is stuck. Finally, ask the user to run <code>tracert</code> (Windows) or <code>traceroute</code> (Mac/Linux) to show you their path.</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>Unreachable first ping, slow use mtr, HTTP use curl</strong>" — Three tools for three types of problems.</div>
+
+<p class="src">Sources: <a href="https://man7.org/linux/man-pages/man8/ss.8.html" target="_blank">Linux man · ss(8)</a> · <a href="https://curl.se/docs/" target="_blank">curl Official Docs</a> · <a href="https://www.bitwizard.nl/mtr/" target="_blank">mtr Official</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-12">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.12 HTTP/2 and HTTP/3 Evolution: Why upgrade protocols</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>HTTP/2 fixes the waste of "one request per TCP connection" by using multiplexing, allowing multiple concurrent requests over one connection. HTTP/3 goes further, abandoning TCP for QUIC ("TCP-like" over UDP), eliminating TCP head-of-line blocking. By 2026, mainstream CDNs like Cloudflare have enabled HTTP/3 by default.</div>
+
+<h3 data-reveal>What exactly is it: Where HTTP/1.1 hurts</h3>
+<p>In the HTTP/1.1 era, browsers opened a maximum of 6 TCP connections per domain (IE era), later lifted, but each connection could only process one request serially (head-of-line blocking). A page with 100 resources would have to queue for a long time.</p>
+
+<h3 data-reveal>HTTP/2's Three Big Moves</h3>
+<ul>
+<li><strong>Multiplexing</strong> — One TCP connection handles multiple concurrent requests; resources arrive in parallel</li>
+<li><strong>Header Compression (HPACK)</strong> — Repeated headers are not re-transmitted, saving bandwidth</li>
+<li><strong>Binary Framing</strong> — Switches from text to binary transmission for faster parsing</li>
+</ul>
+
+<h3 data-reveal>HTTP/3 Revolution: Based on QUIC</h3>
+<p>HTTP/2 couldn't solve the head-of-line blocking inherent to TCP itself — if one packet drops, all subsequent packets must wait. <strong>HTTP/3 directly abandons TCP and switches to QUIC (based on UDP)</strong>:</p>
+<pre><code>HTTP/1.1: Multiple requests queue → TCP blocks → Whole queue waits
+HTTP/2:   Multiplexing          → TCP may still block → Partially solved
+HTTP/3:   QUIC (UDP)            → Packet loss doesn't affect other streams → Fully solved</code></pre>
+
+<h3 data-reveal>Additional HTTP/3 Advantages</h3>
+<ul>
+<li><strong>0-RTT Handshake</strong> — Second visits open almost instantly (QUIC built-in encryption)</li>
+<li><strong>Connection Migration</strong> — Switching from WiFi to 4G doesn't require reconnecting</li>
+<li><strong>Built-in Encryption</strong> — TLS 1.3 by default, no plaintext allowed</li>
+</ul>
+
+<h3 data-reveal>2026.8 Deployment Status (Partially unverified)</h3>
+<ul>
+<li>Cloudflare: HTTP/3 enabled by default (since 2019)</li>
+<li>Google: HTTP/3 default across entire site</li>
+<li>Domestic CDNs: Alibaba Cloud / Tencent Cloud CDNs already support HTTP/3</li>
+<li>Global HTTP/3 adoption rate: Exact figures not verified word-for-word here; please refer to the latest 2026.8 Cloudflare Radar reports</li>
+</ul>
+
+<h3 data-reveal>"Why is it fine if I still use HTTP/1.1?"</h3>
+<p>For small to medium projects, HTTP/1.1 + static resource CDNs are perfectly adequate. The cost of upgrading to HTTP/2/HTTP/3 lies in upgrading Nginx/Node services, with benefits mostly seen in "high concurrency + global users" scenarios. Solo developers' v1 projects don't need to chase the bleeding edge.</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>H2 multiplexes, H3 kills TCP</strong>" — Each generation solves a specific class of problems.</div>
+
+<p class="src">Sources: <a href="https://developers.cloudflare.com/http3/" target="_blank">Cloudflare · HTTP/3</a> · <a href="https://datatracker.ietf.org/doc/html/rfc9000" target="_blank">RFC 9000 · QUIC</a> · <a href="https://web.dev/articles/performance-http2" target="_blank">web.dev · HTTP/2</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-13">
+<div class="sec-tag">Module 2 · Network</div>
+<h2>2.13 IPv6 Primer: 128-bit addresses, enough for every grain of sand</h2>
+
+<div class="callout note"><b class="t">📌 30-Second Conclusion</b>IPv6 uses 128-bit addresses; theoretically enough to give every grain of sand on Earth an IP. The biggest advantage is end-to-end reachability, eliminating the need for NAT. By 2026.8, global deployment continues to rise (exact percentages unverified here, refer to Google/APNIC data), and major domestic ISPs largely support it, though outbound traffic often still routes via v4.</div>
+
+<h3 data-reveal>What exactly is it: Why IPv4 isn't enough</h3>
+<p>IPv4 has 32-bit addresses = 4.3 billion. In November 2019, after IANA allocated the last five /8 blocks, new addresses could only be squeezed from reclaimed inventory. NAT has kept it alive for over a decade, but IPv6 is the fundamental cure.</p>
+
+<h3 data-reveal>Address Format</h3>
+<pre><code>IPv4: 192.168.1.100                  (4 segments, each 0-255)
+IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+      ┗──── 8 segments, each 4 hex digits (0-ffff) ────┛
+
+Simplification rules:
+  → Leading zeros can be omitted: 2001:db8:85a3:0:0:8a2e:370:7334
+  → Consecutive zero blocks can be merged: 2001:db8:85a3::8a2e:370:7334
+  → But :: can only appear once</code></pre>
+
+<h3 data-reveal>Three Major Advantages</h3>
+<ul>
+<li><strong>Massive address space</strong> — 128 bits, 2^128 ≈ 3.4 × 10^38 addresses</li>
+<li><strong>End-to-end reachability</strong> — No more NAT, every device gets a public IP</li>
+<li><strong>Built-in IPsec</strong> — The protocol stack comes with native encryption options</li>
+</ul>
+
+<h3 data-reveal>2026.8 Deployment Status (Partially unverified)</h3>
+<ul>
+<li>Google IPv6 Statistics: Global deployment continues to rise; for exact percentages, refer to <a href="https://www.google.com/intl/en/ipv6/statistics.html" target="_blank">google.com/intl/en/ipv6/statistics.html</a> for the latest 2026-08 data</li>
+<li>APNIC Measurements: Visit <a href="https://stats.labs.apnic.net/ipv6/" target="_blank">stats.labs.apnic.net/ipv6</a> to see deployment rates by country</li>
+<li>Top 3 Domestic ISPs: Most already support IPv6, but outbound traffic might still default to v4</li>
+</ul>
+<div class="callout warn"><b class="t">Unverified Data</b>Exact percentages for global/China IPv6 deployment in 2026.8 have not been verified word-for-word in this section (Google/APNIC pages were restricted during the 2026-08-07 check). Please rely on the latest official statistics.</div>
+
+<h3 data-reveal>Should you adopt IPv6?</h3>
+<p>It depends on your target users:</p>
+<ul>
+<li>Primarily domestic users → Mostly usable now, but CDNs are still v4-heavy; can postpone</li>
+<li>Primarily overseas users → Enabling v6 offers performance advantages</li>
+<li>Future-proofing → Early adoption brings early benefits; dual-stack v4/v6 cost is practically zero</li>
+</ul>
+
+<h3 data-reveal>Verification</h3>
+<pre><code>curl -6 ifconfig.co          <span class="c"># Check if you have a v6 IP</span>
+curl -6 https://test-ipv6.com <span class="c"># Comprehensive v6 connectivity test</span></code></pre>
+
+<h3 data-reveal>🚧 Mini-Theater: "Why is IPv4 still prioritized when my v6 service is on?"</h3>
+<p>Many clients default to v4 (since v4 networks are mature with fewer drops/firewalls) and only fallback to v4 if v6 negotiation fails. To force v6, clients need explicit configuration.</p>
+
+<div class="callout tip"><b class="t">💡 Memory Mnemonic</b>"<strong>IPv4's 32 bits aren't enough, IPv6's 128 bits are practically infinite</strong>" — An order-of-magnitude difference.</div>
+
+<p class="src">Sources: <a href="https://www.google.com/intl/en/ipv6/statistics.html" target="_blank">Google · IPv6 Statistics (2026-08 data unverified)</a> · <a href="https://www.cloudflare.com/learning/network-layer/what-is-ipv6/" target="_blank">Cloudflare Learning · What is IPv6</a> · <a href="https://datatracker.ietf.org/doc/html/rfc8200" target="_blank">RFC 8200 · IPv6 Specification</a> · Verified 2026-08-07</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Module 3 · Deployment Pipeline ========== -->
+
+<section id="m3-1">
+<div class="sec-tag">Module 3 · Deployment</div>
+<h2>3.1 7-Step Deployment Pipeline</h2>
+<p>From <code>git push</code> to being live online, a solo developer's standard pipeline looks like this:</p>
+<ol class="steps">
+<li><strong>Developer commits + pushes locally</strong></li>
+<li><strong>GitHub triggers Actions workflow</strong> (repository .github/workflows/deploy.yml)</li>
+<li><strong>CI runs lint / test / build</strong> (Fails immediately without deploying if broken)</li>
+<li><strong>CI logs into VPS via SSH</strong> (Keys stored in GitHub Secrets)</li>
+<li><strong>VPS pulls new code</strong> (<code>git pull</code> or rsync)</li>
+<li><strong>Restart systemd service</strong> (<code>systemctl restart myapp</code>)</li>
+<li><strong>Nginx reverse proxy forwards to the new process</strong></li>
+</ol>
+<p>The entire process takes 10-30 seconds for a cold start and 5-10 seconds for a hot update. The R4 stage will walk you through this step-by-step.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-2">
+<div class="sec-tag">Module 3 · Deployment</div>
+<h2>3.2 systemd Process Hosting: Stop Node from dying when SSH closes</h2>
+<p>Running <code>ssh my-vps &amp;&amp; node server.js &amp;</code> directly has two fatal flaws: (1) SSH disconnect = process killed; (2) Server restart = service gone. <strong>systemd is Linux's built-in "process manager"</strong> that solves both of these problems.</p>
+<h3 data-reveal>Complete service file template (Ready to use)</h3>
+<p>Write to <code>/etc/systemd/system/myapp.service</code>:</p>
+<pre><code>[Unit]
+Description=My Node App
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/myapp
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+EnvironmentFile=/var/www/myapp/.env
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<h3 data-reveal>Usage Commands</h3>
+<pre><code>systemctl daemon-reload                 <span class="c"># Reload config</span>
+systemctl enable myapp                  <span class="c"># Start on boot</span>
+systemctl start myapp                   <span class="c"># Start service</span>
+systemctl status myapp                  <span class="c"># Check status</span>
+systemctl restart myapp                 <span class="c"># Restart (common for deployment)</span>
+journalctl -u myapp -f                  <span class="c"># Real-time logs</span>
+journalctl -u myapp --since "1 hour ago"<span class="c"># Logs from the last hour</span></code></pre>
+<div class="callout warn"><b class="t">Do not run services as root</b>In production, <strong>always</strong> use a dedicated user (<code>www-data</code> or create a new <code>deploy</code> user) so that if the service is compromised, they don't immediately gain root access.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-3">
+<div class="sec-tag">Module 3 · Deployment</div>
+<h2>3.3 Nginx Reverse Proxy Practical Configuration Template</h2>
+<p>Write to <code>/etc/nginx/sites-available/yourdomain.dev</code> (Proxies HTTPS to local Node port 3000):</p>
+<pre><code>server {
+    listen 80;
+    server_name yourdomain.dev www.yourdomain.dev;
+    return 301 https://$host$request_uri;  <span class="c"># Force HTTP to HTTPS</span>
+}
+
+server {
+    listen 443 ssl http2;
+    server_name yourdomain.dev www.yourdomain.dev;
+
+    ssl_certificate     /etc/letsencrypt/live/yourdomain.dev/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.dev/privkey.pem;
+
+    <span class="c"># Reverse proxy to Node</span>
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    <span class="c"># Static resources returned directly by Nginx (Optional)</span>
+    location /static/ {
+        alias /var/www/myapp/public/;
+        expires 30d;
+    }
+}</code></pre>
+<h3 data-reveal>Enable Configuration</h3>
+<pre><code>ln -s /etc/nginx/sites-available/yourdomain.dev /etc/nginx/sites-enabled/
+nginx -t                  <span class="c"># Test config syntax</span>
+systemctl reload nginx    <span class="c"># Reload (zero downtime)</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-4">
+<div class="sec-tag">Module 3 · Deployment</div>
+<h2>3.4 Docker Minimum Essential Set</h2>
+<p>Docker solves the age-old <strong>"It works on my machine"</strong> problem — packaging your app + dependencies into an image so any machine with Docker installed can run it with identical results.</p>
+<h3 data-reveal>Why Solo Developers Need Docker</h3>
+<ul>
+<li>Local development is on macOS, production is on Ubuntu — Docker makes them identical</li>
+<li>Upgrading Node's major version requires zero system changes, just a new image</li>
+<li>Multiple projects with different Node versions won't conflict</li>
+</ul>
+<h3 data-reveal>Why you shouldn't use k8s right now</h3>
+<p>k8s (Kubernetes) is Docker's "cluster orchestrator", built for hundreds or thousands of containers working together. For a solo developer's 1-3 apps, <strong>systemd + Nginx is perfectly sufficient</strong>. k8s's operational overhead far exceeds its benefits here, don't adopt it prematurely.</p>
+<h3 data-reveal>Dockerfile Template (Node)</h3>
+<pre><code>FROM node:22-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --production
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]</code></pre>
+<div class="callout tip"><b class="t">When to upgrade to Docker</b>When you have ≥ 2 Node services running in parallel, or when upgrading Node major versions drives you crazy — then switch to Docker. Until then, systemd running <code>node server.js</code> is the fastest path.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-5">
+<div class="sec-tag">Module 3 · Deployment</div>
+<h2>3.5 GitHub Actions Auto-Deployment</h2>
+<p>Write to <code>.github/workflows/deploy.yml</code>:</p>
+<pre><code>name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install & Build
+        run: |
+          npm ci
+          npm run build
+          npm test
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/myapp
+            git pull origin main
+            systemctl restart myapp
+            sleep 3
+            systemctl status myapp</code></pre>
+<h3 data-reveal>GitHub Secrets Configuration</h3>
+<p>Repository → Settings → Secrets and variables → Actions → New repository secret:</p>
+<ul>
+<li><code>VPS_HOST</code>: VPS Public IP</li>
+<li><code>VPS_USER</code>: <code>deploy</code> (The dedicated deployment user you created)</li>
+<li><code>VPS_SSH_KEY</code>: The contents of the <code>~/.ssh/id_ed25519</code> private key on your VPS</li>
+</ul>
+<p>After this one-time setup, every <code>git push main</code> will automatically deploy your app.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-6">
+<div class="sec-tag">Module 3 · Deployment</div>
+<h2>3.6 Environment Variables / Secrets Management / The right way to use .env</h2>
+<p>Secrets should <strong>never</strong> appear in your codebase. They live in only two places: (1) Your local <code>.env</code> file; (2) GitHub Secrets / CI Environment Variables.</p>
+<h3 data-reveal>Node reading .env</h3>
+<pre><code><span class="c"># npm install dotenv</span>
+require('dotenv').config()
+const dbUrl = process.env.DATABASE_URL</code></pre>
+<h3 data-reveal>.gitignore must include .env</h3>
+<pre><code><span class="c"># .gitignore</span>
+.env
+.env.local
+node_modules/</code></pre>
+<h3 data-reveal>Secure approach for production .env</h3>
+<ol>
+<li>On the VPS, run <code>vim /var/www/myapp/.env</code> and enter your secrets</li>
+<li>Run <code>chmod 600 .env</code> (so only the owner can read it)</li>
+<li>Load it in the systemd service file using <code>EnvironmentFile=/var/www/myapp/.env</code> (see 3.2)</li>
+<li>Use GitHub Secrets for CI deployment</li>
+</ol>
+<div class="callout warn"><b class="t">Secret Leak Emergency</b>If a secret is accidentally pushed to GitHub: (1) <strong>Immediately</strong> rotate the secret at the corresponding service (DB/Payments); (2) <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository" target="_blank">Use BFG Repo-Cleaner to clear history</a>; (3) <strong>Delete and push the repository from scratch</strong> (cleanest). A secret leak is not Game Over, but it must be handled instantly.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Appendix ========== -->
+
+<section id="appA">
+<div class="sec-tag">Appendix A</div>
+<h2>5 Types of Failures 30-Second Remedy Table</h2>
+<p>Don't panic when a failure occurs. First look at the "Symptom", then run the "30-Second Command", and finally fix the "Root Cause". 90% of failures are variations of these 5 types.</p>
+
+<div class="callout warn">
+  <b class="t">Symptom 1 · 502 Bad Gateway</b>
+  <p><strong>30-Second Command</strong>: <code>systemctl status myapp &amp;&amp; journalctl -u myapp -n 50</code></p>
+  <p><strong>90% Root Cause</strong>: (a) App process crashed → Check journalctl errors and restart; (b) Reverse proxy upstream port is wrong → Verify the port in <code>proxy_pass http://127.0.0.1:3000</code></p>
+  <p><strong>Deep Dive</strong>: §3.2, §3.3</p>
+</div>
+
+<div class="callout warn">
+  <b class="t">Symptom 2 · SSH Unreachable</b>
+  <p><strong>30-Second Command</strong>: Run <code>ssh -v root@IP</code> locally for verbose logs; use VPS web console VNC/serial access</p>
+  <p><strong>90% Root Cause</strong>: (a) Port blocked by firewall (Default 22 is often blocked in China, change to 22222); (b) Key permissions not set to 600; (c) Cloud provider security group hasn't allowed port 22</p>
+  <p><strong>Lifesaver</strong>: VPS Console → Instances → "VNC Login" or "Rescue Mode" to enter the system bypassing SSH</p>
+</div>
+
+<div class="callout warn">
+  <b class="t">Symptom 3 · Disk Full</b>
+  <p><strong>30-Second Command</strong>: <code>df -h &amp;&amp; du -sh /* | sort -h | tail -10</code></p>
+  <p><strong>90% Root Cause</strong>: (a) Logs not rotated (/var/log/nginx taking tens of GBs); (b) Temp files not cleared (/tmp); (c) Database bloated</p>
+  <p><strong>Remedy</strong>: <code>journalctl --vacuum-size=500M</code> to trim logs; <code>find /var/log -type f -size +100M</code> to find large files</p>
+</div>
+
+<div class="callout warn">
+  <b class="t">Symptom 4 · Service Memory Leak OOM</b>
+  <p><strong>30-Second Command</strong>: <code>dmesg | grep -i "out of memory" | tail -5</code> (Check OOM Killer records)</p>
+  <p><strong>90% Root Cause</strong>: (a) App code leak (Global Map/Array constantly pushed); (b) Configured cache too large; (c) Traffic spike</p>
+  <p><strong>Temporary</strong>: Add swap <code>fallocate -l 2G /swapfile &amp;&amp; chmod 600 /swapfile &amp;&amp; mkswap /swapfile &amp;&amp; swapon /swapfile</code>; <strong>Permanent</strong>: Restart service + debug memory leak code</p>
+</div>
+
+<div class="callout warn">
+  <b class="t">Symptom 5 · SSL Certificate Expired</b>
+  <p><strong>30-Second Command</strong>: <code>certbot certificates &amp;&amp; certbot renew --dry-run</code></p>
+  <p><strong>90% Root Cause</strong>: (a) certbot auto-renew cron/timer crashed; <strong>Immediate Renewal</strong>: <code>certbot renew --force-renewal</code> + <code>systemctl reload nginx</code></p>
+  <p><strong>Prevention</strong>: <code>systemctl list-timers | grep certbot</code> to ensure the timer is running</p>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="appB">
+<div class="sec-tag">Appendix B</div>
+<h2>Recommended Resources</h2>
+<h3 data-reveal>Official Documentation (Must Check)</h3>
+<ul>
+<li><a href="https://nginx.org/en/docs/" target="_blank">Nginx Official Docs</a> · Standard answers for reverse proxy config</li>
+<li><a href="https://systemd.io/" target="_blank">systemd Official Manual</a> · The sole authority on process hosting</li>
+<li><a href="https://docs.docker.com/" target="_blank">Docker Docs</a> · Authority on images/containers/Dockerfiles</li>
+<li><a href="https://letsencrypt.org/docs/" target="_blank">Let's Encrypt Docs</a> · SSL certificate process</li>
+<li><a href="https://www.openssh.com/manual.html" target="_blank">OpenSSH Manual</a> · SSH config/keys/tunnels</li>
+<li><a href="https://wiki.ubuntu.com/" target="_blank">Ubuntu Wiki</a> · System-level troubleshooting</li>
+</ul>
+<h3 data-reveal>Classic Practical Tutorials (Free)</h3>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials" target="_blank">DigitalOcean Tutorials</a> · One topic per article, can run by copying</li>
+<li><a href="https://linode.com/docs/" target="_blank">Linode Docs</a> · Similar to DigitalOcean, some tutorials are more detailed</li>
+<li><a href="https://crontab.guru/" target="_blank">crontab.guru</a> · Visual cron expression editor</li>
+</ul>
+<h3 data-reveal>Classic Books</h3>
+<ul>
+<li><strong>"Bird's Linux Private Cuisine"</strong> (Traditional/Simplified) · The most friendly Linux intro in the Chinese-speaking world</li>
+<li><strong>"Linux Command Line and Shell Scripting Bible"</strong> · Command line reference book</li>
+<li><strong>"TCP/IP Illustrated, Volume 1"</strong> · Read this if you want to deeply understand network protocols; not for emergencies</li>
+<li><strong>"Site Reliability Engineering"</strong> (By Google, free online) · Enterprise-grade practices; just understand the concepts</li>
+</ul>
+<h3 data-reveal>Cheat Sheets</h3>
+<ul>
+<li><a href="https://tldr.sh/" target="_blank">TLDR Pages</a> · Quick command examples (more friendly than <code>man</code>)</li>
+<li><a href="https://explainshell.com/" target="_blank">ExplainShell</a> · Paste a long command for a segment-by-segment explanation</li>
+<li><a href="https://cheat.sh/" target="_blank">cheat.sh</a> · Look up commands from the CLI (<code>curl cheat.sh/tar</code>)</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="appC">
+<div class="sec-tag">Appendix C</div>
+<h2>Glossary Cheat Sheet</h2>
+<table class="tbl">
+<tr><th>Term</th><th>In One Sentence</th></tr>
+<tr><td>SSH</td><td>Encrypted remote login protocol</td></tr>
+<tr><td>systemd</td><td>Modern Linux's "service manager", handling process startup/auto-start/logs</td></tr>
+<tr><td>Nginx</td><td>The de facto standard reverse proxy + Web server</td></tr>
+<tr><td>Reverse Proxy</td><td>Client connects to proxy, proxy connects to upstream service</td></tr>
+<tr><td>DNS</td><td>A distributed database that translates domain names into IPs</td></tr>
+<tr><td>TLS / HTTPS</td><td>An encryption layer added beneath HTTP to prevent eavesdropping</td></tr>
+<tr><td>Let's Encrypt</td><td>A free + auto-renewing SSL certificate authority</td></tr>
+<tr><td>Docker</td><td>Packages apps + dependencies into images for consistent execution across machines</td></tr>
+<tr><td>systemd unit</td><td>A <code>.service</code> file describing "how to run a service"</td></tr>
+<tr><td>Firewall</td><td>Software/hardware that allows/blocks network traffic based on rules</td></tr>
+<tr><td>Security Group</td><td>Cloud provider's "other firewall"; works in tandem with local ufw</td></tr>
+<tr><td>CI / CD</td><td>Continuous Integration / Continuous Deployment; auto tests + deploys on git push</td></tr>
+<tr><td>GitHub Actions</td><td>GitHub's built-in CI/CD platform, 2000 free minutes/month</td></tr>
+<tr><td>.env</td><td>File storing secrets/configurations, should not be committed to Git</td></tr>
+<tr><td>crontab</td><td>Linux's built-in scheduled task dispatcher</td></tr>
+<tr><td>swap</td><td>"Emergency memory" using the disk; slow but can save the system</td></tr>
+<tr><td>OOM</td><td>Out Of Memory; when RAM runs out and the system kills processes</td></tr>
+<tr><td>502</td><td>The service behind the reverse proxy is not running</td></tr>
+<tr><td>504</td><td>The service behind the reverse proxy timed out and didn't respond</td></tr>
+<tr><td>ICMP</td><td>The protocol used by ping; often blocked by servers (≠ unreachable)</td></tr>
+<tr><td>Port</td><td>A "door number" from 0-65535, differentiating services on the same machine</td></tr>
+<tr><td>A Record</td><td>DNS record type, Domain → IPv4</td></tr>
+<tr><td>CNAME</td><td>DNS alias, Domain → Another Domain</td></tr>
+<tr><td>LTS</td><td>Long Term Support version (more stable)</td></tr>
+<tr><td>VPS</td><td>Virtual Private Server (just a Linux machine in the cloud)</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+<p>This document is unified under the <a href="../index.en.html">AI Knowledge Base</a> Topic Center style · The content is a personal collection of learning materials, heavily referencing official documentation and firsthand community practices. Divergent views are noted, and unverified information is not fabricated. If re-posting, please follow the original source's copyright terms.</p>
+<p>Tools iterate extremely quickly. Content verification dates are noted where possible, but always refer to official documentation as the final authority.</p>
+</div>
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="Back to Top">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="xAI & Grok Ecosystem Master Guide: From Memphis Colossus Supercomputing, Grok 3/4 Models, Grok Build Cloud Sandbox IDE, to Official Python/TS SDKs, Function Calling, Real-Time X Grounding, DeepSearch Agents, and 10 Production Prompt Templates.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xAI & Grok Ecosystem Master Guide · Models, Grok Build & Agentic Workflows">
+<meta property="og:description" content="Comprehensive official & practical guide to xAI & Grok: supercluster topology, Grok Build cloud studio, API engineering, agent development, and troubleshooting clinic.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/grok-ecosystem-guide.en.html">
+<title>xAI & Grok Ecosystem Master Guide · Models & Agentic Workflows (2026.08)</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#d97706;
+  --accent-2:#ef4444;
+  --accent-3:#3b82f6;
+  --accent-soft:#fef3c7;
+  --ink:#090d16; --bg:#ffffff; --bg-side:#f8fafc;
+  --bg-code:#0c1322;
+  --text:#0f172a; --text-2:#334155; --text-3:#64748b;
+  --border:#e2e8f0; --border-2:#cbd5e1;
+  --tip-bg:#ecfdf5; --warn-bg:#fffbeb; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#090d16,#d97706);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:900;font-family:var(--mono)}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:280px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.5px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:24px}
+.nav-group a:hover{background:#fef3c7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:280px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f1f5f9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(217,119,6,.55),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(239,68,68,.45),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fde68a;font-weight:600;background:rgba(217,119,6,.25);
+  border:1px solid rgba(253,230,138,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fde68a,#f87171,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbd5e1;max-width:720px}
+.hero .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#94a3b8}
+.hero .meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:4px 12px;border-radius:99px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:26px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:18.5px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#bae6fd}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#a7f3d0}
+.callout.tip b.t{color:#059669}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.tbl th,.tbl td{border:1px solid var(--border);padding:10px 14px;text-align:left}
+.tbl th{background:var(--bg-side);font-weight:700;color:var(--text-2)}
+
+pre{background:var(--bg-code);color:#f8fafc;padding:18px 20px;border-radius:10px;overflow-x:auto;
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;margin:18px 0}
+code{font-family:var(--mono);font-size:13.5px;background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px}
+pre code{background:none;color:inherit;padding:0}
+
+.tag-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;margin-right:6px}
+.tag-official{background:#e0f2fe;color:#0369a1}
+.tag-consensus{background:#dcfce7;color:#15803d}
+.tag-diverge{background:#fef3c7;color:#b45309}
+.tag-fire{background:#fee2e2;color:#b91c1c}
+
+.mermaid-box{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:20px;margin:20px 0;overflow-x:auto}
+.mermaid{display:flex;justify-content:center}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:18px 0}
+.hotcmd{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:#fff;transition:.2s}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.hotcmd .hc-cmd{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;display:block}
+.hotcmd .hc-desc{font-size:12.5px;color:var(--text-2);line-height:1.5}
+
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0}
+.feature-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;transition:.2s}
+.feature-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.feature-card .icon{font-size:24px;margin-bottom:8px}
+.feature-card h4{margin:0 0 6px;font-size:15px;color:var(--text)}
+.feature-card p{font-size:13px;color:var(--text-3);margin:0;line-height:1.55}
+
+#prog{position:fixed;top:60px;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));z-index:101;transition:width .1s ease}
+
+@media(max-width:1024px){
+  .sidebar{display:none;width:100%;top:60px;z-index:95;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar.open{display:block}
+  .main{margin-left:0}
+  .wrap{padding:0 20px 80px}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:28px}
+}
+</style>
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+<div id="prog"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo">
+    <div class="mark">𝕏</div>
+    <span>xAI & Grok Master Guide</span>
+    <span class="sub">Models · Grok Build · Agents</span>
+  </div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+      <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+      <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+        <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+        <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+      </div>
+    </label>
+    <a href="../index.en.html">◂ Topic Hub</a>
+    
+      <span>Verified 2026-08-17</span>
+  
+
+<aside class="sidebar" id="sidebar">
+  <input id="sideFilter" placeholder="Filter sections..." style="width:100%;padding:8px 12px;border:1px solid var(--border-2);border-radius:8px;margin-bottom:14px;font-size:13px;" />
+  <nav id="sideNav">
+    <div class="nav-group"><div class="gt">Overview</div>
+      <a href="#intro"><span class="no">00</span>Intro & Colossus Supercluster</a>
+    </div>
+    <div class="nav-group"><div class="gt">I · User Interfaces & Modes</div>
+      <a href="#ch1-1"><span class="no">1.1</span>Grok Matrix & Reasoning Modes</a>
+      <a href="#ch1-2"><span class="no">1.2</span>Real-Time X Grounding in Depth</a>
+      <a href="#ch1-3"><span class="no">1.3</span>DeepSearch Autonomous Research</a>
+      <a href="#ch1-4"><span class="no">1.4</span>Artifacts & Live Canvas</a>
+    </div>
+    <div class="nav-group"><div class="gt">II · Grok Build & Dev Platform</div>
+      <a href="#ch2-1"><span class="no">2.1</span>Grok Build Cloud Sandbox</a>
+      <a href="#ch2-2"><span class="no">2.2</span>Vibe Coding & Fullstack Prototyping</a>
+      <a href="#ch2-3"><span class="no">2.3</span>xAI API Routes & Tier Quotas</a>
+      <a href="#ch2-4"><span class="no">2.4</span>Prompt Caching & Structured Outputs</a>
+    </div>
+    <div class="nav-group"><div class="gt">III · Agentic & Code Practice</div>
+      <a href="#ch3-1"><span class="no">3.1</span>Python & TS SDK Quickstart</a>
+      <a href="#ch3-2"><span class="no">3.2</span>Industrial Function Calling Pipeline</a>
+      <a href="#ch3-3"><span class="no">3.3</span>X Grounding Tools Integration</a>
+      <a href="#ch3-4"><span class="no">3.4</span>Multi-Agent Swarm Topology</a>
+      <a href="#ch3-5"><span class="no">3.5</span>Project: Automated PR Auditor Bot</a>
+    </div>
+    <div class="nav-group"><div class="gt">IV · Prompting & Truth Seeking</div>
+      <a href="#ch4-1"><span class="no">4.1</span>Grok Tuning Philosophy</a>
+      <a href="#ch4-2"><span class="no">4.2</span>Chain-of-Thought & Counterfactuals</a>
+      <a href="#ch4-3"><span class="no">4.3</span>Ten Production Prompt Templates</a>
+    </div>
+    <div class="nav-group"><div class="gt">V · Clinic & Matrix Comparison</div>
+      <a href="#ch5-1"><span class="no">5.1</span>API Error 30s Quick Triage</a>
+      <a href="#ch5-2"><span class="no">5.2</span>Hallucination & Sybil Defense</a>
+      <a href="#ch5-3"><span class="no">5.3</span>2026 Frontier LLM Comparison Matrix</a>
+    </div>
+    <div class="nav-group"><div class="gt">VI · Resources & Roadmap</div>
+      <a href="#ch6-1"><span class="no">6.1</span>Official Source Index</a>
+      <a href="#ch6-2"><span class="no">6.2</span>Four-Stage Mastery Roadmap</a>
+    </div>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="wrap">
+    
+    <div class="hero">
+      <div class="badge">xAI & Grok Ecosystem Master Guide · 2026 Edition</div>
+      <h1>xAI & Grok Ecosystem Master Guide <span class="grad">Models · Grok Build · Agents</span></h1>
+      <p class="lead">The definitive, deeply technical guide to xAI and the Grok ecosystem. Covering the Memphis Colossus supercluster, Grok 3/4 reasoning models, Grok Build cloud IDE, structured APIs, live X platform grounding, and multi-agent swarm engineering.</p>
+      <div class="meta">
+        <span>Memphis Colossus 200k GPUs</span>
+        <span>Grok Build Cloud Studio</span>
+        <span>Real-Time X Grounding</span>
+        <span>DeepSearch Agents</span>
+        <span>10 Production Templates</span>
+      </div>
+    </div>
+
+    <!-- 00 Intro -->
+    <section id="intro">
+      <h2>00 Intro: xAI Philosophy & Memphis Colossus Topology</h2>
+      <p><span class="tag-badge tag-official">Core Mission</span> Founded by Elon Musk in 2023, <strong>xAI</strong> was built to <em>"Understand the True Nature of the Universe"</em>. In terms of technical strategy, xAI adheres strictly to the <strong>Maximum Truth Seeking</strong> principle—rejecting ideological sanitization and artificial intellectual constraints to build sovereign, high-density, real-time grounded AGI.</p>
+      
+      <div class="callout tip">
+        <b class="t">💡 Navigation Tip: SPA Pagination</b>
+        <p>This guide features a <b>Single Page Application (SPA) pagination mode</b>. Click on the left sidebar navigation items or the bottom Previous/Next buttons to transition between chapters. Includes built-in code copying, interactive Mermaid diagrams, <code>⌘K</code> navigation, and language toggles.</p>
+      </div>
+
+      <h3 data-reveal>1. Memphis Colossus Supercomputing Infrastructure</h3>
+      <p>xAI's core infrastructure is powered by the <strong>Colossus Supercomputer</strong> in Memphis, Tennessee. As one of the world's most formidable single liquid-cooled AI compute clusters, it was brought online in record time to train Grok 3 and next-generation frontier intelligence.</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TB
+    subgraph Colossus["Memphis Colossus Supercluster (200k+ Blackwell/H100 GPUs)"]
+        nodeA["RoCE v2 / InfiniBand Non-blocking Fabric"]
+        nodeB["High-Density Direct Liquid Cooling (DLC)"]
+        nodeC["Distributed Storage (Exabyte Lustre/NVMe-oF)"]
+        nodeD["Fault-Tolerant Training Runtime (Custom JAX/PyTorch)"]
+    end
+    
+    subgraph Foundation["Foundational Model Matrix"]
+        G1["Grok-1 (314B MoE Open Baseline)"]
+        G2["Grok-2 & 2-Vision (Multimodal & Aurora)"]
+        G3["Grok 3 (Frontier Reasoning & SWE SOTA)"]
+        G4["Grok 4 Preview / Grok Mini (High Throughput)"]
+    end
+    
+    subgraph Engine["Core Capability Engines"]
+        V["Grok Vision (High-Res Video & Spatial OCR)"]
+        Voice["Grok Voice (Ultra-Low Latency Duplex Audio)"]
+        Img["Aurora / Grok Imagine (Visual Generation)"]
+        RT["Real-Time X & Web Grounding Engine"]
+    end
+
+    subgraph Platform["Application & Developer Layer"]
+        UI["grok.com & X Mobile / Web"]
+        IDE["Grok Build (Agentic Cloud Sandbox IDE)"]
+        API["xAI Console (API / Structured Outputs / Cache)"]
+        Agent["Multi-Agent Swarm & Automation Workflows"]
+    end
+
+    Colossus --> Foundation
+    Foundation --> Engine
+    Engine --> Platform
+        </div>
+      </div>
+
+      <h3 data-reveal>2. Core Advantages & Design Tenets</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h4>Objective & Anti-Woke</h4>
+          <p>Unfiltered, first-principles deduction on complex, controversial topics without patronizing refusals.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🌐</div>
+          <h4>Live X Platform Grounding</h4>
+          <p>Native access to trillions of real-time social signals and community notes, defeating static cutoff limitations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🛠️</div>
+          <h4>Grok Build Cloud Studio</h4>
+          <p>MicroVM sandboxes, live hot-reloading previews, Vibe Coding workflows, and structured JSON Schema APIs.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🧠</div>
+          <h4>SOTA Reasoning & Coding</h4>
+          <p>Superior benchmark leadership across SWE-bench, AIME, and complex distributed system refactoring.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 1: Interfaces & Modes -->
+    <section id="ch1-1">
+      <div class="sec-tag">Chapter I · Interfaces & Modes</div>
+      <h2>1.1 Grok Matrix & Reasoning Modes in Depth</h2>
+      <p><span class="tag-badge tag-official">Form Factors</span> Grok is accessible via standalone portals (<code>grok.com</code>, iOS/Android apps, Desktop) and embedded directly within the X platform. Users can engage four distinct inference modes:</p>
+
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Mode Name</th>
+              <th>Inference Characteristics</th>
+              <th>Best Used For</th>
+              <th>Activation Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Regular Mode</strong></td>
+              <td>Rigorous structure, concise, factual, deterministic</td>
+              <td>Production coding, technical architecture, formal writing</td>
+              <td>Default standard setting</td>
+            </tr>
+            <tr>
+              <td><strong>Fun Mode (Spicy)</strong></td>
+              <td>Witty, satirical, candid humor, anti-cliché</td>
+              <td>Brainstorming, roasting code anti-patterns, creative copy</td>
+              <td>Toggle "Fun / Spicy" switch in top corner</td>
+            </tr>
+            <tr>
+              <td><strong>Think Mode (Reasoning)</strong></td>
+              <td>Multi-thousand-step explicit CoT, self-correction</td>
+              <td>Algorithmic proofs, deep mathematical analysis, zero-day audits</td>
+              <td>Click "Think" button or set model to <code>grok-3-reasoning</code></td>
+            </tr>
+            <tr>
+              <td><strong>DeepSearch Mode</strong></td>
+              <td>Autonomous multi-hop web & X crawling, cross-verification</td>
+              <td>Comprehensive market research, enterprise due diligence, whitepapers</td>
+              <td>Select "DeepSearch" badge below query input</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 data-reveal>Think Mode Internal Logic Loop</h3>
+      <div class="mermaid-box">
+        <div class="mermaid">
+stateDiagram-v2
+    [*] --> QueryAnalysis
+    QueryAnalysis --> HypothesisGeneration
+    state DeepThinkingChain {
+        HypothesisGeneration --> PathA : Mathematical Proof
+        HypothesisGeneration --> PathB : Counterexample Test
+        PathA --> ConstraintViolation : Edge Case Failure
+        ConstraintViolation --> Pruning : Discard PathA
+        PathB --> ConsistencyVerified August 17, 2026</div>
+      </div>
+    </section>
+
+    <!-- 1.2 Real-Time X Grounding -->
+    <section id="ch1-2">
+      <div class="sec-tag">Chapter I · Interfaces & Modes</div>
+      <h2>1.2 Real-Time X Grounding in Depth</h2>
+      <p><span class="tag-badge tag-fire">Key Differentiator</span> While traditional LLMs are tethered to static training cutoffs, Grok features native, low-latency hooks into the live global pulse of X (Twitter). This gives Grok unmatched temporal awareness.</p>
+
+      <h3 data-reveal>Key Applications</h3>
+      <ul>
+        <li><strong>Second-Level Breaking Event Aggregation:</strong> Earthquakes, rocket launches, CVE zero-day disclosures, and tech releases synthesized within seconds of tweet volume spikes.</li>
+        <li><strong>Market Sentiment & Alpha Generation:</strong> Real-time opinion distribution tracking among verified founders, core devs, and community leaders.</li>
+        <li><strong>Community Notes Cross-Verification:</strong> Automatic filtering of bot syndicates, prompt injections, and viral disinformation through community-vetted fact checks.</li>
+      </ul>
+    </section>
+
+    <!-- 1.3 DeepSearch -->
+    <section id="ch1-3">
+      <div class="sec-tag">Chapter I · Interfaces & Modes</div>
+      <h2>1.3 DeepSearch Autonomous Research</h2>
+      <p><span class="tag-badge tag-consensus">Agentic Research</span> Rather than doing a single keyword query, <strong>DeepSearch</strong> deploys an autonomous recursive research agent. It breaks big topics into sub-hypotheses, queries dozens of data sources, reconciles contradictions, and outputs fully cited whitepapers.</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as User
+    participant DS as DeepSearch Planner
+    participant Web as Web & Academic Engine
+    participant X as Live X Signal Feed
+    participant Syn as Synthesis Engine
+
+    User->>DS: Complex Topic (e.g., "Solid-State Battery Industrialization 2026")
+    DS->>DS: Decompose into 5 Sub-vectors (Chemistry / Cost / Patents / OEMs / Bottlenecks)
+    par Parallel Ingestion
+        DS->>Web: Fetch academic papers, patents, earnings calls
+        DS->>X: Ingest real-time field discussions from materials scientists
+    end
+    Web-->>DS: 40+ source documents returned
+    X-->>DS: Live factory test yields returned
+    DS->>DS: Identify contradiction in claimed energy density
+    DS->>Web: Targeted recursive search on laboratory vs. automotive yields
+    Web-->>DS: Reconciled production metric confirmed
+    DS->>Syn: Pass full structured evidence graph
+    Syn-->>User: Deliver exhaustive research paper with citations & charts
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.4 Artifacts & Canvas -->
+    <section id="ch1-4">
+      <div class="sec-tag">Chapter I · Interfaces & Modes</div>
+      <h2>1.4 Artifacts & Live Canvas Rendering</h2>
+      <p>For complex codebases, interactive React widgets, SVG schematics, or architecture diagrams, Grok renders isolated <strong>Artifacts</strong> in a dedicated <strong>Live Canvas</strong>.</p>
+      <ul>
+        <li><strong>Hot-Reloading React & Tailwind Previews:</strong> Instant live preview with responsive breakpoints.</li>
+        <li><strong>Vector Schematics & Mermaid Rendering:</strong> Architecture flowcharts exported seamlessly to SVG/PNG.</li>
+        <li><strong>In-Place Targeted Editing:</strong> Select specific code segments for localized refactoring without rewriting entire modules.</li>
+      </ul>
+    </section>
+
+    <!-- Chapter 2: Grok Build -->
+    <section id="ch2-1">
+      <div class="sec-tag">Chapter II · Grok Build & Dev Platform</div>
+      <h2>2.1 Grok Build Cloud Sandbox Architecture</h2>
+      <p><span class="tag-badge tag-official">Developer Core</span> <strong>Grok Build</strong> is xAI's managed cloud development studio. It moves beyond disjointed copy-paste chatting into a unified Agentic IDE powered by Firecracker MicroVM sandboxes.</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart LR
+    subgraph Client["Client Surfaces"]
+        WebUI["Grok Build Web Studio"]
+        CLI["grok CLI Tool"]
+        VSCode["xAI VS Code Extension"]
+    end
+
+    subgraph ControlPlane["Grok Agent Control Plane"]
+        Plan["Task Planner"]
+        Context["Repo Context Graph"]
+        Security["Permission & Sandbox Guard"]
+    end
+
+    subgraph Sandbox["Isolated MicroVM Sandbox"]
+        FS["Virtual File System"]
+        Runtime["Multi-Language Runtime (Node/Py/Go/Rust)"]
+        Port["Hot Reload Preview Ports (:3000)"]
+        Git["Automatic Git Checkpoints"]
+    end
+
+    Client --> ControlPlane
+    ControlPlane --> Sandbox
+    Sandbox -->|Live Stream| Client
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.2 Vibe Coding -->
+    <section id="ch2-2">
+      <div class="sec-tag">Chapter II · Grok Build & Dev Platform</div>
+      <h2>2.2 Vibe Coding & Fullstack Prototyping</h2>
+      <p><span class="tag-badge tag-consensus">Modern Workflow</span> Vibe Coding allows developers to express high-level architectural intent in natural language while Grok Build handles boilerplate, dependencies, type safety, and UI styling in a self-healing feedback loop.</p>
+
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">Step 1. Spec & Architecture</span>
+          <span class="hc-desc">Define product requirements, data flows, and tech stack in plain natural language.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Step 2. Workspace Provisioning</span>
+          <span class="hc-desc">Grok Build initializes dependencies, .env configurations, and TypeScript interfaces.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Step 3. Interactive Prototyping</span>
+          <span class="hc-desc">Generate backend API and UI components with live interactive preview.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Step 4. Self-Healing Testing</span>
+          <span class="hc-desc">Agent executes test suites in the sandbox, catching STDERR and fixing bugs autonomously.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Step 5. Versioning & Deployment</span>
+          <span class="hc-desc">Review clean Git diffs and deploy directly to edge hosting with a single click.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.3 API Routes -->
+    <section id="ch2-3">
+      <div class="sec-tag">Chapter II · Grok Build & Dev Platform</div>
+      <h2>2.3 xAI API Routes & Tier Quotas (console.x.ai)</h2>
+      
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Model Identifier</th>
+              <th>Context Window</th>
+              <th>Max Output Tokens</th>
+              <th>Primary Strengths & Use Cases</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>grok-3</code></td>
+              <td>131,072 (128k)</td>
+              <td>8,192</td>
+              <td>Flagship foundation model for complex reasoning, fullstack coding, and multi-agent orchestration</td>
+            </tr>
+            <tr>
+              <td><code>grok-3-reasoning</code></td>
+              <td>131,072 (128k)</td>
+              <td>16,384</td>
+              <td>Explicit chain-of-thought inference for theorem proving, vulnerability auditing, and algorithm design</td>
+            </tr>
+            <tr>
+              <td><code>grok-3-mini</code></td>
+              <td>131,072 (128k)</td>
+              <td>8,192</td>
+              <td>High-throughput, ultra-low cost model for routing, summarization, and lightweight agent tasks</td>
+            </tr>
+            <tr>
+              <td><code>grok-2-vision-1212</code></td>
+              <td>32,768 (32k)</td>
+              <td>4,096</td>
+              <td>High-resolution multimodal vision model for diagram extraction, UI generation, and spatial reasoning</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2.4 Caching & Structured Outputs -->
+    <section id="ch2-4">
+      <div class="sec-tag">Chapter II · Grok Build & Dev Platform</div>
+      <h2>2.4 Prompt Caching & Structured Outputs</h2>
+      <p>xAI API natively supports <strong>Automatic KV Prompt Caching</strong> on prompts exceeding 1,024 tokens. Cached tokens receive an automatic <strong>75% cost reduction</strong> and up to <strong>80% TTFT latency reduction</strong>.</p>
+
+      <pre><code class="language-python">import os
+from openai import OpenAI
+from pydantic import BaseModel, Field
+
+client = OpenAI(
+    api_key=os.environ.get("XAI_API_KEY"),
+    base_url="https://api.x.ai/v1",
+)
+
+class SecurityAudit(BaseModel):
+    is_safe: bool
+    vulnerabilities: list[str] = Field(description="List of detected CVEs or code flaws")
+    recommendation: str
+    refactored_code: str
+
+completion = client.beta.chat.completions.parse(
+    model="grok-3",
+    messages=[
+        {"role": "system", "content": "You are Grok, an elite application security engineer."},
+        {"role": "user", "content": "Audit this snippet: os.system('cat ' + filename)"}
+    ],
+    response_format=SecurityAudit,
+)
+
+print(completion.choices[0].message.parsed)</code></pre>
+    </section>
+
+    <!-- Chapter 3: SDK & Agentic -->
+    <section id="ch3-1">
+      <div class="sec-tag">Chapter III · Agentic & Code Practice</div>
+      <h2>3.1 Python & TypeScript SDK Quickstart</h2>
+      <pre><code class="language-bash"># Install OpenAI client
+pip install openai pydantic
+
+# Configure environment key
+export XAI_API_KEY="xai-xxxxxxxxxxxxxxxxxxxx"</code></pre>
+
+      <pre><code class="language-python">from openai import OpenAI
+import os
+
+client = OpenAI(
+    api_key=os.environ.get("XAI_API_KEY"),
+    base_url="https://api.x.ai/v1",
+)
+
+stream = client.chat.completions.create(
+    model="grok-3",
+    messages=[
+        {"role": "system", "content": "You are Grok, seeking maximum objective truth."},
+        {"role": "user", "content": "Explain the physical intuition behind holographic duality."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)</code></pre>
+    </section>
+
+    <!-- 3.2 Function Calling -->
+    <section id="ch3-2">
+      <div class="sec-tag">Chapter III · Agentic & Code Practice</div>
+      <h2>3.2 Industrial Function Calling Pipeline</h2>
+      <p>Grok 3 delivers robust tool orchestration with parallel tool execution and recursive calling guardrails:</p>
+      
+      <div class="mermaid-box">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor App as Host Application
+    participant Grok as Grok-3 Brain
+    participant Tool as Sandbox / DB
+
+    App->>Grok: User prompt + tools JSON schema
+    Grok->>Grok: Determine tool requirements
+    Grok-->>App: Return tool_calls payload
+    App->>Tool: Execute function locally (e.g. query_db)
+    Tool-->>App: Raw tool output
+    App->>Grok: Send back tool_call_id & result
+    Grok->>Grok: Synthesize tool output with reasoning
+    Grok-->>App: Deliver final verified response
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.3 X Grounding Integration -->
+    <section id="ch3-3">
+      <div class="sec-tag">Chapter III · Agentic & Code Practice</div>
+      <h2>3.3 X Grounding Tools Integration</h2>
+      <p>Enable native X platform signal ingestion through custom search parameters:</p>
+      <pre><code class="language-python">response = client.chat.completions.create(
+    model="grok-3",
+    messages=[
+        {"role": "user", "content": "What are the latest developer reactions to the new Blackwell B200 firmware release?"}
+    ],
+    extra_body={
+        "search_parameters": {
+            "mode": "hybrid",
+            "freshness": "24h",
+            "max_results": 10
+        }
+    }
+)
+print(response.choices[0].message.content)</code></pre>
+    </section>
+
+    <!-- 3.4 Swarm Multi-Agent Topology -->
+    <section id="ch3-4">
+      <div class="sec-tag">Chapter III · Agentic & Code Practice</div>
+      <h2>3.4 Multi-Agent Swarm Topology</h2>
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TD
+    User([Task Input]) --> Lead[Orchestrator Agent Grok-3]
+    
+    subgraph SwarmWorkers["Specialized Swarm Subagents"]
+        W1[Researcher Agent<br/>Real-Time X & Academic Scraping]
+        W2[Architect Agent<br/>Interface & Schema Design]
+        W3[Coder Agent Grok-3<br/>Implementation & Unit Tests]
+        W4[Auditor Agent Grok-3-Reasoning<br/>Adversarial Audit & Edge Validation]
+    end
+
+    Lead -->|Subtask| W1
+    Lead -->|Subtask| W2
+    Lead -->|Subtask| W3
+    W3 -->|Code Review| W4
+    W4 -->|Rollback on Defect| W3
+    W4 -->|Sign-off| Lead
+    Lead --> Output([Final Deliverable])
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.5 Automated PR Auditor Bot -->
+    <section id="ch3-5">
+      <div class="sec-tag">Chapter III · Agentic & Code Practice</div>
+      <h2>3.5 Project: Automated PR Auditor Bot</h2>
+      <pre><code class="language-python">import os, requests
+from openai import OpenAI
+
+def run_pr_audit():
+    gh_token = os.environ.get("GITHUB_TOKEN")
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    pr_num = os.environ.get("PR_NUMBER")
+    
+    diff_resp = requests.get(
+        f"https://api.github.com/repos/{repo}/pulls/{pr_num}",
+        headers={"Authorization": f"token {gh_token}", "Accept": "application/vnd.github.v3.diff"}
+    )
+    
+    client = OpenAI(api_key=os.environ.get("XAI_API_KEY"), base_url="https://api.x.ai/v1")
+    
+    res = client.chat.completions.create(
+        model="grok-3",
+        messages=[
+            {"role": "system", "content": "You are Grok, an elite Code Security Auditor."},
+            {"role": "user", "content": f"Review this PR diff for security, memory leaks, and performance:\n\n{diff_resp.text[:15000]}"}
+        ]
+    )
+    
+    requests.post(
+        f"https://api.github.com/repos/{repo}/issues/{pr_num}/comments",
+        headers={"Authorization": f"token {gh_token}", "Accept": "application/vnd.github.v3+json"},
+        json={"body": f"### 🤖 Grok-3 Automated Code Review\n\n{res.choices[0].message.content}"}
+    )
+    print("PR review posted.")
+
+if __name__ == "__main__":
+    run_pr_audit()</code></pre>
+    </section>
+
+    <!-- Chapter 4: Prompting & Truth Seeking -->
+    <section id="ch4-1">
+      <div class="sec-tag">Chapter IV · Prompting & Truth Seeking</div>
+      <h2>4.1 Grok Tuning Philosophy & Unshackling</h2>
+      <p>Grok excels when prompts are grounded in <strong>First-Principles</strong> rather than superficial conversational pleasantries. Structure instructions with explicit constraints, mathematical targets, and adversarial research roles.</p>
+    </section>
+
+    <section id="ch4-2">
+      <div class="sec-tag">Chapter IV · Prompting & Truth Seeking</div>
+      <h2>4.2 Chain-of-Thought & Counterfactuals</h2>
+      <pre><code class="language-markdown">&lt;instruction&gt;
+Evaluate the proposed distributed consensus mechanism. Before delivering your verdict, explicitly perform the following inside &lt;thought_process&gt;:
+1. Identify all implicit assumptions regarding network partitions.
+2. Formulate two opposing failure theories with concrete timing proofs.
+3. Conduct Counterfactual Analysis: If clock drift exceeds 50ms, what cascading partition occurs?
+4. Synthesize final validated consensus bounds.
+&lt;/instruction&gt;</code></pre>
+    </section>
+
+    <section id="ch4-3">
+      <div class="sec-tag">Chapter IV · Prompting & Truth Seeking</div>
+      <h2>4.3 Ten Production Prompt Templates</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>01. Breaking Signal Ingestion</h4>
+          <p>Real-time timeline clustering, bot filtration, and stakeholder motive mapping.</p>
+        </div>
+        <div class="feature-card">
+          <h4>02. High-Concurrency Refactoring</h4>
+          <p>Lock-free structures, CPU cache optimization, and micro-benchmark suites.</p>
+        </div>
+        <div class="feature-card">
+          <h4>03. Due Diligence & Financial Forensics</h4>
+          <p>Revenue quality audits, capitalized R&D inspection, and hidden liability tracing.</p>
+        </div>
+        <div class="feature-card">
+          <h4>04. Zero-Day Defense & Exploit Analysis</h4>
+          <p>Binary review, buffer overrun boundary validation, and virtual patch generation.</p>
+        </div>
+        <div class="feature-card">
+          <h4>05. Synthetic Edge Dataset Generation</h4>
+          <p>Unbiased data generation with strict schema enforcement and PII scrubbing.</p>
+        </div>
+        <div class="feature-card">
+          <h4>06. Formal Logic & Mathematical Proofs</h4>
+          <p>Inductive proofs, counter-example synthesis, and Lean/Coq alignment.</p>
+        </div>
+        <div class="feature-card">
+          <h4>07. Red Team Stress Testing</h4>
+          <p>Adversarial game-theoretic simulations and extreme black-swan contingency planning.</p>
+        </div>
+        <div class="feature-card">
+          <h4>08. Institutional Equity Research</h4>
+          <p>Macro cycle positioning, TAM modeling, and sensitivity matrices.</p>
+        </div>
+        <div class="feature-card">
+          <h4>09. Viral Tech Communications</h4>
+          <p>Intuitive analogies, dimensional reduction of complex math, and social engagement hooks.</p>
+        </div>
+        <div class="feature-card">
+          <h4>10. Production Agent System Prompt</h4>
+          <p>Deterministic tool schemas, fail-safe boundaries, and auto-recovery rules.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 5: Clinic & Matrix -->
+    <section id="ch5-1">
+      <div class="sec-tag">Chapter V · Clinic & Matrix Comparison</div>
+      <h2>5.1 API Error 30s Quick Triage</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Status Code</th>
+              <th>Root Cause</th>
+              <th>30-Second Fix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>401 Unauthorized</code></td>
+              <td>Invalid or revoked API key</td>
+              <td>Regenerate key in <code>console.x.ai</code> and check <code>Authorization: Bearer</code> header.</td>
+            </tr>
+            <tr>
+              <td><code>403 Forbidden</code></td>
+              <td>Geo-blocked origin or incomplete KYC</td>
+              <td>Route through compliant gateway and complete billing verification.</td>
+            </tr>
+            <tr>
+              <td><code>429 Rate Limit</code></td>
+              <td>Tier TPM / RPM ceiling hit</td>
+              <td>Add exponential backoff, enable Prompt Caching, or upgrade API Tier.</td>
+            </tr>
+            <tr>
+              <td><code>400 Schema Error</code></td>
+              <td>Unsupported JSON schema keywords</td>
+              <td>Remove loose <code>additionalProperties</code> and specify all fields in <code>required</code>.</td>
+            </tr>
+            <tr>
+              <td><code>500 Server Error</code></td>
+              <td>Transient cluster spike</td>
+              <td>Retry with max 3 attempts and set fallback routing to <code>grok-3-mini</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ch5-2">
+      <div class="sec-tag">Chapter V · Clinic & Matrix Comparison</div>
+      <h2>5.2 Hallucination & Sybil Defense Layers</h2>
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">Layer 1. Authority Weighting</span>
+          <span class="hc-desc">Weight verified maintainers, official domains, and Community Notes over viral spam.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Layer 2. Multi-Source Triangulation</span>
+          <span class="hc-desc">Require at least two independent primary sources across X, GitHub, and academic publications.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Layer 3. Explicit Epistemic Humility</span>
+          <span class="hc-desc">Flag unconfirmed breaking developments with clear confidence intervals and uncertainty tags.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ch5-3">
+      <div class="sec-tag">Chapter V · Clinic & Matrix Comparison</div>
+      <h2>5.3 2026 Frontier LLM Comparison Matrix</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>xAI Grok 3 / 3-Reasoning</th>
+              <th>Anthropic Claude 3.7 Sonnet</th>
+              <th>OpenAI GPT-4o / o3</th>
+              <th>Google Gemini 2.5 / 3.0 Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Temporal Grounding</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Direct live X stream)</td>
+              <td>⭐⭐⭐ (Static / standard web)</td>
+              <td>⭐⭐⭐⭐ (Bing web search)</td>
+              <td>⭐⭐⭐⭐ (Google search integration)</td>
+            </tr>
+            <tr>
+              <td><strong>Objective Truth Seeking</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Anti-censorship, first principles)</td>
+              <td>⭐⭐⭐ (Constitutional safety bounds)</td>
+              <td>⭐⭐⭐⭐ (Standard RLHF)</td>
+              <td>⭐⭐⭐ (Strict policy filtering)</td>
+            </tr>
+            <tr>
+              <td><strong>SWE & Systems Coding</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Top tier SWE-bench)</td>
+              <td>⭐⭐⭐⭐⭐ (Agentic coding standard)</td>
+              <td>⭐⭐⭐⭐ (Solid ecosystem)</td>
+              <td>⭐⭐⭐⭐ (Large context codebase)</td>
+            </tr>
+            <tr>
+              <td><strong>Context Window</strong></td>
+              <td>128k ~ 1M tokens</td>
+              <td>200k tokens</td>
+              <td>128k ~ 200k tokens</td>
+              <td>2M tokens</td>
+            </tr>
+            <tr>
+              <td><strong>Developer Studio (IDE)</strong></td>
+              <td><strong>Grok Build</strong> (MicroVM Cloud IDE)</td>
+              <td>Claude Code (CLI Agent)</td>
+              <td>Codex / Canvas</td>
+              <td>Antigravity (Agentic IDE)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chapter 6: Resources & Roadmap -->
+    <section id="ch6-1">
+      <div class="sec-tag">Chapter VI · Resources & Roadmap</div>
+      <h2>6.1 Official Source Index</h2>
+      <ul>
+        <li><strong>xAI Official Portal:</strong> <a href="https://x.ai" target="_blank">x.ai</a></li>
+        <li><strong>Grok Standalone Web:</strong> <a href="https://grok.com" target="_blank">grok.com</a></li>
+        <li><strong>xAI API Console:</strong> <a href="https://console.x.ai" target="_blank">console.x.ai</a></li>
+        <li><strong>Grok Build Studio:</strong> <a href="https://build.x.ai" target="_blank">build.x.ai</a></li>
+        <li><strong>Official Documentation:</strong> <a href="https://docs.x.ai" target="_blank">docs.x.ai</a></li>
+        <li><strong>System Status:</strong> <a href="https://status.x.ai" target="_blank">status.x.ai</a></li>
+      </ul>
+    </section>
+
+    <section id="ch6-2">
+      <div class="sec-tag">Chapter VI · Resources & Roadmap</div>
+      <h2>6.2 Four-Stage Mastery Roadmap</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>Stage 1: Exploration (1-3 Days)</h4>
+          <p>Master grok.com and X modes, focusing on live X grounding and DeepSearch research papers.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Stage 2: Vibe Coding (3-7 Days)</h4>
+          <p>Build 3 fullstack web apps in Grok Build using natural language and self-healing tests.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Stage 3: APIs & Tool Calling (1-2 Weeks)</h4>
+          <p>Implement Python/TS SDK pipelines, Prompt Caching, structured outputs, and custom tools.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Stage 4: Swarm Engineering (Ongoing)</h4>
+          <p>Architect production multi-agent systems for automated PR reviews and live market sentiment intelligence.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span>© 2026 AI Knowledge Base · xAI & Grok Ecosystem Master Guide</span>
+      <span>Verified August 17, 2026</span>
+    </div>
+
+  </div>
+</main>
+
+<script src="../assets/js/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, theme: "default", securityLevel: "loose" });
+  window.renderMermaid = function() {
+    if(window.mermaid) {
+      document.querySelectorAll(".mermaid:not([data-processed='true'])").forEach(el => {
+        try {
+          mermaid.run({ nodes: [el] });
+        } catch(e) {
+          console.warn("Mermaid render error:", e);
+        }
+      });
+    }
+  };
+</script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

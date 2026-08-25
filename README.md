@@ -26,7 +26,7 @@
 
 <div align="center">
 
-**11 个主题 · 130+ 章节 · 全站正文内容可搜索(含拼写容错)**
+**15 个主题 · 170+ 章节 · Docker 35 讲通关 · 全站正文内容可搜索(含拼写容错)**
 
 </div>
 
@@ -45,13 +45,17 @@
 | 🧭 [AI 提效全景与心法](topics/ai-leverage-guide.html) | AI 到底能帮普通人干什么 | 8 大场景收益矩阵、7 条有出处的通用心法 |
 | 🧗 [AI 能力边界扩展指南](topics/ai-capability-expansion.html) | 用 AI 扩展技术能力边界的通用方法论 | 五步扩展引擎、跨域映射技法、全栈跨端 / 独立开发两条端到端案例 |
 | 🌐 [Google AI 生态深度实战(新)](topics/google-ai-ecosystem.html) | 从模型到 Agentic IDE 全栈 | Antigravity (CLI/2.0/IDE/SDK/Customizations/Sandbox) 深度解构 + NotebookLM 零幻觉研究 + AI Studio 2M 窗口 + 5 步超级流水线 |
-| 🛠️ [服务器 · 运维 · 部署 · 网络扫盲(新)](topics/ops-basics.html) | 只用过 SaaS 托管,从 0 跨过 DevOps 这堵墙 | 5 阶段路线 + Linux/网络/部署 3 模块 17 节 + 5 类故障 30 秒对症表 |
+| 🛸 [Antigravity 深度使用指南(新)](topics/antigravity-usage.html) | Agentic 编程基座实战 | CLI 子命令速查 + .agents 定制体系 + Subagents 深度编排 + 沙箱安全最佳实践 |
+| 𝕏 [xAI & Grok 全生态实战指南(新)](topics/grok-ecosystem-guide.html) | 超算、Grok Build 到智能体工程 | Memphis Colossus 200k 超算 + Grok 3/4 推理矩阵 + Grok Build 云沙箱 + 实时 X Grounding + 10 套 Prompt 模板 |
+| 🛠️ [服务器 · 运维 · 部署 · 网络扫盲(新)](topics/ops-basics.html) | 只用过 SaaS 托管,从 0 跨过 DevOps 这堵墙 | 5 阶段路线 + Linux/网络/部署 3 模块 24 节 + 5 类故障 30 秒对症表 |
+| 🐳 [Docker 零基础实战闯关指南(新)](topics/docker/01-intro.html) | 35 节保姆级通关专栏 | 概念破冰、三剑客、多阶段构建、Volume/网络探秘、Compose 编排与 CI/CD 实战 |
+| 📅 [工具版本追踪 · 变了什么](topics/toolchain-changelog.html) | 升级必看与破坏性变更 | 按月归档跟踪 Claude Code / Codex / Antigravity 最新特性与弃用迁移 |
 
 ## 亮点功能
 
 - **全站搜索能搜到正文里**——不只是标题和章节名,连段落内容都能命中,离线预生成索引,不依赖任何后端
 - **模糊匹配兜底**——拼错字、漏字也能大概率搜到,同时做了跨度限制,避免长文本里瞎凑巧合命中
-- **四条学习路径**——首页把 10 个主题串成"新手起步 / 工具精通 / 转型跃迁 / 运维基座"四条课程表,不知道从哪看就跟着走
+- **四条学习路径**——首页把 15 个主题串成"新手起步 / 工具精通 / 运维基座 / 全栈生态与进阶"四条课程表,不知道从哪看就跟着走
 - **阅读记忆**——基于 `localStorage`,回到首页自动出现"继续上次阅读"
 - **证据分级**——官方确认 / 实测强共识 / 存在分歧三档标签,读者一眼知道这条结论有多可信
 
@@ -60,7 +64,8 @@
 ```
 ai-knowledge-base/
 ├── index.html                  # 主题中心(入口):全站搜索 / 标签筛选 / 继续阅读 / 主题卡片
-├── topics/                     # 各主题页(每页自包含主题样式)
+├── index.en.html               # 英文主题中心入口
+├── topics/                     # 各主题页(每页自包含主题样式与全站交互)
 │   ├── claude-code-guide.html
 │   ├── codex-guide.html
 │   ├── prompt-context-engineering.html
@@ -71,15 +76,24 @@ ai-knowledge-base/
 │   ├── android-crash-anr.html
 │   ├── ai-leverage-guide.html  # AI 提效全景与心法
 │   ├── ai-capability-expansion.html # AI 能力边界扩展指南
-│   └── ops-basics.html         # 服务器 · 运维 · 部署 · 网络 扫盲(独立开发者基座)
+│   ├── google-ai-ecosystem.html # Google AI 生态深度实战
+│   ├── antigravity-usage.html  # Antigravity 深度使用指南
+│   ├── grok-ecosystem-guide.html # xAI & Grok 全生态实战指南
+│   ├── ops-basics.html         # 服务器 · 运维 · 部署 · 网络 扫盲(独立开发者基座)
+│   ├── toolchain-changelog.html # 工具链版本追踪
+│   └── docker/                 # Docker 35 讲通关专栏
+│       ├── 01-intro.html
+│       └── ... 35-cicd-concept.html
 ├── assets/
 │   ├── css/site.css            # 全站共享交互样式(进度条/筛选/复制/灯箱/跳转面板)
 │   └── js/
 │       ├── site.js             # 全站共享交互脚本(所有主题页引用同一份)
-│       ├── topics.js           # 主题注册表 —— 唯一数据源
-│       └── search-index.js     # 章节正文内容搜索索引(自动生成,见下)
+│       ├── topics.js           # 中文主题注册表
+│       ├── topics.en.js        # 英文主题注册表
+│       ├── search-index.js     # 中文正文搜索索引(自动生成)
+│       └── search-index-en.js  # 英文正文搜索索引(自动生成)
 ├── scripts/
-│   └── build-search-index.py   # 扫描 topics/*.html 生成 search-index.js
+│   └── build-search-index.py   # 扫描 topics/ 生成双语 search-index.js
 ├── package.json                # 本地预览脚本
 └── README.md
 ```

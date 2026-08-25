@@ -34,6 +34,12 @@ const LEARN = [
     links: [ { label: "Best Practices →", href: "https://developers.openai.com/codex/learn/best-practices" } ]
   },
   {
+    href: "https://codexguide.io/paths", icon: "🚀", tag: "实战 · 系统教程", color: "#10b981",
+    title: "CodexGuide 实战指南",
+    desc: "4 条目标导向学习路径、选型三棱镜、长任务四权分立、收尾记忆闭环、浏览器 E2E 验收与实战案例库。",
+    links: [ { label: "学习路线 →", href: "https://codexguide.io/paths" } ]
+  },
+  {
     href: "https://blakecrosley.com/guides/claude-code", icon: "🧭", tag: "英文 · 实战通关", color: "#6366f1",
     title: "Blake Crosley Guides",
     desc: "Claude Code 与 Codex 各一篇长文通关:Hooks / MCP / Skills 讲得最透的单页,示例即抄即用。",
@@ -62,16 +68,7 @@ const PATHS = [
       { label: "环境急救手册(收藏备查)", href: "topics/env-auth-clinic.html", note: "登录报错时 30 秒对症自救" }
     ]
   },
-  {
-    icon: "🌐", color: "#1a73e8", title: "Google 全栈生态(新)",
-    desc: "Google Antigravity Agentic 编程 + NotebookLM 2M 窗口 + AI Studio 零幻觉实践",
-    steps: [
-      { label: "Google Antigravity 四大交互形态", href: "topics/google-ai-ecosystem.html#m1-2", note: "CLI / 2.0 App / IDE / Python SDK 解构" },
-      { label: "NotebookLM 深度研究与播客生成", href: "topics/google-ai-ecosystem.html#m2-1", note: "2M 材料输入 + Source Grounding 零幻觉问答" },
-      { label: "AI Studio 2M 窗口与 Thinking 模型", href: "topics/google-ai-ecosystem.html#m3-2", note: "Gemini 2.0 推理调优 + JSON Schema 结构化输出" },
-      { label: "全链路 5 步超级流水线与实战案例", href: "topics/google-ai-ecosystem.html#m4-1", note: "独立开发 3 小时全流程协同接力" }
-    ]
-  },
+
   {
     icon: "⚙️", color: "#d9634a", title: "工具精通",
     desc: "把 Claude Code 与 Codex 用到专业水准,双代理协同",
@@ -91,7 +88,19 @@ const PATHS = [
       { label: "R2 起步:装好一台 VPS", href: "topics/ops-basics.html#stage2", note: "1核1G Ubuntu + SSH + Nginx" },
       { label: "R3 网络:域名 + DNS + HTTPS", href: "topics/ops-basics.html#stage3", note: "yourdomain.dev + 绿锁 + 反代" },
       { label: "R4 部署:git push 自动上线", href: "topics/ops-basics.html#stage4", note: "systemd + GitHub Actions" },
+      { label: "R5 容器:Docker 零基础闯关", href: "topics/docker/01-intro.html", note: "彻底告别环境坑,多页闯关实战" },
       { label: "附录 A:故障 30 秒对症表", href: "topics/ops-basics.html#appA", note: "收藏备查:502/SSH/磁盘满/OOM/SSL 过期" }
+    ]
+  },
+  {
+    icon: "🌐", color: "#1a73e8", title: "全栈生态与进阶",
+    desc: "打通 Google AI (Gemini/Antigravity)、xAI (Grok/Grok Build) 与全栈能力扩展",
+    steps: [
+      { label: "Google AI 生态深度实战", href: "topics/google-ai-ecosystem.html", note: "Gemini 2.5/3.0 + NotebookLM + Antigravity" },
+      { label: "xAI & Grok 全生态实战", href: "topics/grok-ecosystem-guide.html", note: "Colossus 超算 + Grok Build 沙箱 + 实时 X" },
+      { label: "Antigravity 深度使用指南", href: "topics/antigravity-usage.html", note: "CLI / IDE / SDK / Subagents / MCP 实战" },
+      { label: "AI 能力边界扩展指南", href: "topics/ai-capability-expansion.html", note: "五步扩展引擎 + 跨域映射 + 一人公司" },
+      { label: "Android 稳定性与 AI 分诊", href: "topics/android-crash-anr.html", note: "Crash/ANR 图鉴 + 原创 AI triage 技能" }
     ]
   }
 ];
@@ -172,18 +181,18 @@ const TOPICS = [
   },
   {
     href: "topics/codex-guide.html", icon: "🟢", tag: "使用指南", color: "#0d9373",
-    title: "Codex 使用指南 · CLI × IDE × Cloud",
-    desc: "OpenAI 编码代理全景:20+ 子命令与 40+ 斜杠命令速查、沙箱与审批 3×3 详解、AGENTS.md、Skills/MCP,以及与 Claude Code 的协同打法。",
-    keywords: "codex openai 沙箱 审批 agents.md 云端 cloud 命令 协同 gpt",
-    meta: ["5 种形态", "沙箱 3 档详解", "双代理协同", "基于 0.14x"],
+    title: "Codex 使用指南 · CLI × IDE × Cloud 全景实战手册",
+    desc: "OpenAI 编码代理全景: 20+ 子命令与 40+ 斜杠命令速查、沙箱与审批 3×3 详解、4 条进阶学习路线、选型三棱镜、长任务四权分立、收尾记忆系统、浏览器 E2E 验收、Issue 到 PR 闭环、Skills/MCP 以及与 Claude Code 的协同打法。",
+    keywords: "codex openai 沙箱 审批 agents.md 云端 cloud 命令 协同 gpt 选型三棱镜 学习路线 四权分立 收尾记忆 e2e 浏览器验收 github issue pr tdd wsl 性能调优",
+    meta: ["5 种形态", "3×3 沙箱矩阵", "四权分立长任务", "E2E 浏览器验收", "双代理协同"],
     sections: [
-      {id:"overview",label:"Codex 全景"},{id:"setup",label:"安装与登录"},
-      {id:"whats-new",label:"近期重要变化"},
-      {id:"commands",label:"命令速查手册",quick:true,quickLabel:"Codex 命令速查"},{id:"sandbox",label:"沙箱与审批"},
-      {id:"agents-md",label:"AGENTS.md 与记忆"},{id:"skills-mcp",label:"Skills / 插件 / MCP"},
-      {id:"config-auth",label:"配置与账号全解"},
-      {id:"cloud",label:"云端与多形态"},{id:"playbook",label:"实战场景手册"},
-      {id:"pitfalls",label:"避坑与协同"},{id:"hidden-config",label:"隐藏能力与彩蛋配置"},
+      {id:"overview",label:"全景与选型三棱镜"},{id:"learning-paths",label:"4 条学习路线"},
+      {id:"setup",label:"安装与平台调优"},{id:"whats-new",label:"近期关键动态"},
+      {id:"commands",label:"命令速查手册",quick:true,quickLabel:"Codex 命令速查"},
+      {id:"sandbox",label:"沙箱与审批 3×3"},{id:"methodology",label:"核心心法与避坑"},
+      {id:"long-tasks",label:"长任务四权分立"},{id:"memory-system",label:"收尾与记忆闭环"},
+      {id:"skills-mcp",label:"Skill / MCP / 浏览器"},{id:"config-auth",label:"配置与账号全解"},
+      {id:"playbook",label:"场景与 GitHub 流水线"},{id:"hidden-config",label:"底层反查与双代理"},
       {id:"resources",label:"资源索引"}
     ]
   },
@@ -271,11 +280,11 @@ const TOPICS = [
     title: "工具版本追踪 · 变了什么",
     desc: "Claude Code 与 Codex 的版本变化摘要,只收录会改变实际使用习惯的更新:破坏性变更单独索引(升级后出问题先查这里)、行为变化与新增能力分类标注、按月归档、附官方源与本地自查命令。",
     keywords: "更新 变化 版本 changelog 发布 release notes 升级 破坏性变更 breaking change 新功能 新版本 弃用 deprecated 迁移 opus 5 sonnet 5 gpt-5.6 subtask fork 权限模式 manual 新特性 最新 时效",
-    meta: ["破坏性变更索引", "按月归档", "三级分类标注", "核对至 2026-07-28"],
+    meta: ["破坏性变更索引", "按月归档", "三级分类标注", "核对至 2026-08-17"],
     sections: [
       {id:"how-to-read",label:"怎么用这一页"},
       {id:"breaking",label:"破坏性变更总索引",quick:true,quickLabel:"破坏性变更速查"},
-      {id:"m2026-07",label:"2026 年 7 月"},{id:"m2026-06",label:"2026 年 6 月"},
+      {id:"m2026-08",label:"2026 年 8 月"},{id:"m2026-07",label:"2026 年 7 月"},{id:"m2026-06",label:"2026 年 6 月"},
       {id:"method",label:"本页怎么维护"}
     ]
   },
@@ -314,31 +323,88 @@ const TOPICS = [
     title: "Google AI 生态深度实战 · 从模型到 Agentic IDE",
     desc: "全网最新完整指引:Google Antigravity (CLI/2.0/IDE/SDK/Customizations/Sandbox) 深度解构 + NotebookLM 知识研究 + AI Studio 2M 窗口 + 5 步超级流水线最佳实践。",
     keywords: "google antigravity agy notebooklm ai studio gemini canvas sketch 智能体 agentic cli ide sdk slash commands subagent planning mode sandbox python sdk source grounding 2m 上下文 播客 生成 流程",
-    meta: ["4 大交互形态", "26 个章节", "Antigravity 深度解构", "5 步流水线", "核对至 2026-08-11"],
+    meta: ["4 大交互形态", "26 个章节", "Antigravity 深度解构", "5 步流水线", "核对至 2026-08-17"],
     sections: [
-      {id:"intro",label:"00 为什么选择 2026.08 Google AI"},
-      {id:"map",label:"01 工具全景矩阵与分层定位"},
-      {id:"m1-1",label:"1.1 什么是 Google Antigravity"},
-      {id:"m1-2",label:"1.2 四大交互形态详解"},
-      {id:"m1-3",label:"1.3 Slash 命令与 @ Mentions",quick:true,quickLabel:"Antigravity 交互速查"},
-      {id:"m1-4",label:"1.4 Customizations 定制三要素"},
-      {id:"m1-5",label:"1.5 Planning Mode 与 Subagent"},
-      {id:"m1-6",label:"1.6 安全沙箱与权限深度把控"},
-      {id:"m1-7",label:"1.7 Python SDK 编程化实战"},
-      {id:"m2-1",label:"2.1 Source Grounding 原理"},
-      {id:"m2-2",label:"2.2 2M 多源材料输入与预处理"},
-      {id:"m2-3",label:"2.3 知识二次加工与播客生成"},
-      {id:"m2-4",label:"2.4 研报 → Antigravity Spec 转换"},
-      {id:"m3-1",label:"3.1 Canvas / Sketch 敏捷原型"},
-      {id:"m3-2",label:"3.2 AI Studio 2M 窗口与 Thinking"},
-      {id:"m3-3",label:"3.3 Imagen 3 / Veo 视觉生成"},
-      {id:"m4-1",label:"4.1 全链路 5 步超级流水线"},
-      {id:"m4-2",label:"4.2 独立开发端到端实战案例"},
-      {id:"m5-1",label:"5.1 提效七条黄金法则"},
-      {id:"m5-2",label:"5.2 常见坑点与反模式图鉴"},
-      {id:"appA",label:"附录 A Antigravity 命令与 SDK 速查",quick:true,quickLabel:"Antigravity 命令速查"},
-      {id:"appB",label:"附录 B NotebookLM 高效 Prompt 速查"},
-      {id:"appC",label:"附录 C 官方资源与 Release 索引"}
+      {id:"intro",label:"00 前言：构建全生态知识体系"},
+      {id:"ch1-1",label:"1.1 Google AI Studio 与 API 全景"},
+      {id:"ch1-2",label:"1.2 Context Caching 上下文缓存实战"},
+      {id:"ch1-3",label:"1.3 Structured Outputs 结构化约束",quick:true,quickLabel:"Structured Outputs 实战"},
+      {id:"ch2-1",label:"2.1 NotebookLM 核心与 Source Grounding"},
+      {id:"ch2-2",label:"2.2 长文本与代码库喂入姿势"},
+      {id:"ch2-3",label:"2.3 Audio Overview 知识提纯"},
+      {id:"ch3-1",label:"3.1 Canvas 的 UI 敏捷转化"},
+      {id:"ch3-2",label:"3.2 Imagen 3 与视觉管线"},
+      {id:"ch4-1",label:"4.1 Antigravity 四大形态全解"},
+      {id:"ch4-2",label:"4.2 极客高阶打法 (Slash & Mentions)",quick:true,quickLabel:"Antigravity 隐秘打法"},
+      {id:"ch4-3",label:"4.3 Python SDK 与定制化拦截"},
+      {id:"ch5-1",label:"5.1 四剑客超级流水线"},
+      {id:"ch5-2",label:"5.2 血泪避坑：4 大反模式",quick:true,quickLabel:"AI 避坑图鉴"}
+    ]
+  },
+  {
+    href: "topics/antigravity-usage.html", icon: "🛸", tag: "全栈生态", color: "#8b5cf6",
+    title: "Antigravity 深度使用指南 · CLI × IDE × SDK",
+    desc: "Google Agentic 编程基座深度手册:CLI 子命令、Agentic IDE 交互、.agents 工作流定制、子代理并行编排、MCP 工具扩展与沙箱安全防御实战。",
+    keywords: "antigravity agy ide cli sdk google gemini subagents mcp custom skill rule plugin sandbox bypass reactive wakeup",
+    meta: ["4 大形态", "10 个核心章节", "Subagent 隔离", "核对至 2026-08-17"],
+    sections: [
+      {id:"sec1",label:"01 基础概念与心智模型"},
+      {id:"sec2",label:"02 安装与环境初始化"},
+      {id:"sec3",label:"03 CLI 子命令与 IDE 快捷键",quick:true,quickLabel:"AGY 常用命令速查"},
+      {id:"sec4",label:"04 Customizations 工作流"},
+      {id:"sec5",label:"05 子代理 (Subagents) 深度编排"},
+      {id:"sec6",label:"06 进阶工具链与自动化"},
+      {id:"sec7",label:"07 性能与沙箱安全最佳实践"},
+      {id:"sec8",label:"08 常见坑点与 30 秒规避方案",quick:true,quickLabel:"AGY 避坑急救表"},
+      {id:"sec9",label:"09 实战案例：端到端工作流"},
+      {id:"sec10",label:"10 快速参考与速查表"}
+    ]
+  },
+  {
+    href: "topics/grok-ecosystem-guide.html", icon: "𝕏", tag: "全栈生态", color: "#d97706",
+    title: "xAI & Grok 全生态实战指南 · 从模型、Grok Build 到 Agentic 智能体工程",
+    desc: "全网最硬核实战:Memphis Colossus 200k 超算基座 + Grok 3/4 推理矩阵 + Grok Build 云端沙箱 IDE + Python/TS SDK 结构化输出 + 实时 X Grounding + 10 套工业级 Prompt 模板库。",
+    keywords: "xai grok grok3 grok4 grokbuild build colossus x search grounding think deepsearch reasoning function calling prompt 缓存 智能体 提示词 模板 agent swarm memphis",
+    meta: ["Memphis 200k 超算", "Grok Build 云沙箱", "Real-Time X", "10 套 Prompt 模板", "核对至 2026-08-17"],
+    sections: [
+      {id:"intro",label:"00 前言与 Colossus 超算拓扑"},
+      {id:"ch1-1",label:"1.1 Grok 矩阵与四大推理模式"},
+      {id:"ch1-2",label:"1.2 Real-Time X Grounding 深度实战",quick:true,quickLabel:"实时 X 检索实战"},
+      {id:"ch1-3",label:"1.3 DeepSearch 深度调研与研报生成"},
+      {id:"ch1-4",label:"1.4 Artifacts & Live Canvas 渲染"},
+      {id:"ch2-1",label:"2.1 Grok Build 云端沙箱架构"},
+      {id:"ch2-2",label:"2.2 Vibe Coding 与全栈敏捷开发",quick:true,quickLabel:"Vibe Coding 流水线"},
+      {id:"ch2-3",label:"2.3 xAI API 路由与配额体系"},
+      {id:"ch2-4",label:"2.4 Prompt Caching 与结构化输出"},
+      {id:"ch3-1",label:"3.1 Python & TS SDK 快速起步"},
+      {id:"ch3-2",label:"3.2 Function Calling 工业级流水线"},
+      {id:"ch3-3",label:"3.3 X 原生检索工具链集成"},
+      {id:"ch3-4",label:"3.4 多智能体 Swarm 协同架构"},
+      {id:"ch3-5",label:"3.5 实战项目：全自动 PR 审计与舆情机器人"},
+      {id:"ch4-1",label:"4.1 Grok 独特调教哲学与去束缚"},
+      {id:"ch4-2",label:"4.2 思维链 (CoT) 与反事实推理"},
+      {id:"ch4-3",label:"4.3 十套工业级生产提示词模板库",quick:true,quickLabel:"Grok 提示词模板库"},
+      {id:"ch5-1",label:"5.1 API 常见报错 30 秒急救表",quick:true,quickLabel:"Grok API 急救表"},
+      {id:"ch5-2",label:"5.2 实时检索幻觉与水军防护三道防线"},
+      {id:"ch5-3",label:"5.3 2026 前沿大模型横向对比矩阵"},
+      {id:"ch6-1",label:"6.1 官方第一信源与工具链索引"},
+      {id:"ch6-2",label:"6.2 四阶段进阶通关学习路线"}
+    ]
+  },
+  {
+    href: "topics/docker/01-intro.html", icon: "🐳", tag: "夯实基座", color: "#0284c7",
+    title: "Docker 零基础实战闯关指南",
+    desc: "从概念破冰、三剑客、Dockerfile 魔法、数据持久化到 Compose 微服务架构。重磅扩容为 35 节保姆级图解干货专栏，带你手把手消灭报错。",
+    keywords: "docker 容器 container 镜像 image 仓库 registry dockerfile compose 部署 微服务 环境 入门 零基础 教程 volume wsl2 network cgroups healthcheck multi-stage",
+    meta: ["35 节干货专栏", "Mermaid 图解", "踩坑自救室", "核对至 2026-08-17"],
+    sections: [
+      {id:"",label:"阶段一：概念破冰 (01-04 讲)"},
+      {id:"",label:"阶段二：环境搭建与避坑 (05-08 讲)"},
+      {id:"",label:"阶段三：容器驾驶与资源枷锁 (09-14 讲)"},
+      {id:"",label:"阶段四：镜像定制与多阶段构建 (15-21 讲)"},
+      {id:"",label:"阶段五：数据持久化与备份 (22-25 讲)"},
+      {id:"",label:"阶段六：网络探秘与 Compose 编排 (26-31 讲)"},
+      {id:"",label:"阶段七：安全红线与生产部署 (32-35 讲)"}
     ]
   }
 ];

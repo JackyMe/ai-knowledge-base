@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Not a transformation story, but a methodology: A 5-step engine to expand technical capability boundaries using AI, complete with cross-domain mapping techniques and two end-to-end case studies (full-stack cross-platform / technical indie hacking), plus an AI-assisted learning system and common pitfalls.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Capability Expansion Guide · 2026.07">
+<meta property="og:description" content="Not a transformation story, but a methodology: A 5-step engine to expand technical capability boundaries using AI, complete with cross-domain mapping techniques and two end-to-end case studies (full-stack cross-platform / technical indie hacking), plus an AI-assisted learning system and common pitfalls.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-capability-expansion.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI Capability Expansion Guide · 2026.07</title>
+<style>
+:root{
+  --accent:#ea580c; --accent-2:#fb923c; --accent-soft:#fef1e7;
+  --ink:#1a1008; --bg:#ffffff; --bg-side:#fdfaf7; --bg-code:#1c130b;
+  --text:#292420; --text-2:#6a5f56; --text-3:#9c9188;
+  --border:#f1e8e0; --border-2:#e5d8cc;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#fef4ec;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f7efe7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f9efe6;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(234,88,12,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(251,146,60,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fdba74;font-weight:600;background:rgba(234,88,12,.16);
+  border:1px solid rgba(234,88,12,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fb923c,#fed7aa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbb8a8;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a99483}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+.q4{display:block;margin:20px 0 6px;font-size:13.5px;font-weight:700;color:var(--accent);letter-spacing:.02em;text-transform:uppercase}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#f6dcc4}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f7efe7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#c2410c}
+pre{background:var(--bg-code);color:#f0e4d8;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#a08d7c}
+
+/* Dual-column code comparison */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 20px}
+.cmp>div{min-width:0}
+.cmp .lbl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.cmp .lbl.k{color:#7f52ff}.cmp .lbl.t{color:#3178c6}
+.cmp pre{margin:0;height:calc(100% - 24px)}
+@media (max-width:860px){.cmp{grid-template-columns:1fr}.cmp pre{height:auto}}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fbf7f2}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fcf9f5}
+.er td:first-child{font-weight:600;min-width:130px}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fef1e7;color:#c2410c}
+.pill.b{background:#e7f7f1;color:#0b7a5f}
+.pill.c{background:#fef2f2;color:#dc2626}
+.pill.s{background:#fdf4d7;color:#a16207}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(26,16,8,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🧗</span>AI Capability Expansion<span class="sub">Methodology Guide</span></div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
+    <a href="../index.en.html">◂ Topic Center</a>
+    <span>2026-07</span>
+      <span>Verified 2026-08-17</span>
+  
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter sections…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">Mindset & Methodology</div>
+    <a href="#mindset"><span class="no">00</span>Cognitive Framework</a>
+    <a href="#engine"><span class="no">01</span>5-Step Expansion Engine</a>
+    <a href="#mapping"><span class="no">02</span>Cross-Domain Mapping</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">End-to-End Cases</div>
+    <a href="#case-studies"><span class="no">03</span>Two Practical Routes</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Deepening</div>
+    <a href="#indie"><span class="no">04</span>Technical Solopreneur</a>
+    <a href="#learning-system"><span class="no">05</span>AI-Assisted Learning System</a>
+    <a href="#pitfalls"><span class="no">06</span>Pitfalls & Mindset</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Resources</div>
+    <a href="#resources"><span class="no">07</span>Resource Library</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🧗 Not a transformation story, but a methodology</div>
+  <h1>AI Capability Expansion Guide<br><span class="grad">General Tactics for Technical Personnel</span></h1>
+  <p class="lead">Not aimed at transitioning to a specific tech stack, but a general methodology for using AI to expand the boundaries of your technical capabilities—diagnosing gaps, AI-assisted knowledge speed-running, scaffolding start, verification loop, and deep precipitation. Paired with two end-to-end practical cases (full-stack cross-platform / technical indie hacking) to prove its practical application, along with cross-domain mapping techniques, an AI-assisted learning system, and common pitfalls.</p>
+  <div class="meta">
+    <span>5-Step Methodology</span><span>2 End-to-End Cases</span><span>Cross-Domain Mapping</span><span>2026-07</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5-Step Engine</b><span>Diagnose gaps → AI speed-run → Scaffolding → Verification → Deepen, covering what/how to learn and use in each step</span></div>
+  <div class="stat"><b>2 Cases</b><span>Full-stack cross-platform (Mobile/Web/Backend), Technical indie hacking, choose one for deep reading</span></div>
+  <div class="stat"><b>1 Technique</b><span>Cross-domain mapping: Feed your existing mental models to AI to automatically identify truly new concepts</span></div>
+  <div class="stat"><b>0 Fluff</b><span>Directly copyable prompt templates for each step, avoiding vague advice like "just ask AI"</span></div>
+</div>
+
+<section id="mindset">
+<div class="sec-tag">Mindset 00</div>
+<h2>Cognitive Framework</h2>
+
+<p>In the past, when stepping into an unfamiliar tech stack, what really consumed time wasn't the concepts themselves, but the <strong>process of checking documentation and trial-and-error</strong>—spending half a day digging through forums for an error, reading official docs three times just to figure out the parameters of a foreign API before daring to use it. AI compresses this time to near real-time: paste the error in and locate the probable cause in seconds, ask one sentence to understand a foreign usage, and extract actionable conclusions within ten minutes from documentation that would originally take a whole day to chew through. <strong>But what hasn't been compressed is the other end—whether the answers provided by AI are actually correct, a judgment that still relies solely on human verification.</strong>&nbsp;<span class="pill b">Empirical Consensus</span>&nbsp;A thematic analysis of 1,110 open-ended responses in the Google DORA team's "2025 State of AI-assisted Software Development" report reached a similar conclusion: a significant portion of the time saved during the generation phase has been reallocated to the overhead of the verification phase; the article also quotes data from the "2025 DORA report" noting that three out of ten developers still have very low trust in AI-generated code—this data comes from another DORA report. In other words, the real new bottleneck on the path of expanding capability boundaries is not "unable to learn new syntax"—AI can basically handle the syntax layer; what gets people stuck is "is what AI wrote correct, and can I judge it?"</p>
+<p class="src">Core arguments verified from <a href="https://dora.dev/insights/balancing-ai-tensions/" target="_blank">DORA official insight "Balancing AI tensions"</a>—the verification overhead conclusion comes from the thematic analysis of 1,110 open-ended responses in the article (not the overall report sample of about 5000 people); the trust data is quoted from the official page of <a href="https://dora.dev/research/2025/dora-report/" target="_blank">"2025 DORA report"</a> linked in the article, the original text did not disclose the specific sample size for this data, verified in 2026-07.</p>
+
+<p>But expanding boundaries does not equate to omnipotence, and this line must be drawn honestly: <strong>If the new field is isomorphic to a mental model you already master</strong>—for example, you already know a language with a type system, switching to a language with different syntax but a similar paradigm; you already understand declarative UI, switching to a framework that implements the same mental model—AI efficiency gains are very obvious, and most of the saved time is on "remembering exactly how to write this language/framework", which is exactly what AI is best at filling. <strong>But if the new field is completely foreign to you, with no transferable mental model</strong>—for example, making architectural decisions in a business domain for the first time, judging "is this solution good" requires experience accumulated by falling into pits and bearing consequences, this kind of judgment cannot be provided by AI; it can list options and lay out trade-off lists, but making the final call requires you to accumulate to the point where you can make the final call. Without drawing this line clearly, expanding boundaries can easily be misunderstood as "having AI makes you omnipotent".</p>
+
+<div class="callout warn">
+<b class="t">Two Common Misconceptions</b>
+<strong>Misconception 1: Installing AI programming tools is equal to mastering a new tech stack.</strong> Just because AI can write a piece of code that runs doesn't mean you can independently read it, debug the errors when things go wrong, or provide quality feedback during a review—"it runs" and "you mastered it" are two different things.<br>
+<strong>Misconception 2: Treating AI's output as truth and using it without verification.</strong> This is exactly the "uncompressed half" in the above argument; exactly how to turn verification into a viable closed loop, rather than vague advice like "test more," will be elaborated in step ④ of the methodology engine in the next section.
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="engine">
+<div class="sec-tag">Methodology 01</div>
+<h2>General Methodology: 5-Step Expansion Engine</h2>
+
+<p>The five steps are not five isolated tips, but a chain: ① first diagnose "what is truly unfamiliar," ② do a speed-run on learning only this part, ③ immediately build a runnable minimal product (scaffolding), ④ verify its correctness in a verifiable way, ⑤ look back and turn the pitfalls encountered into something you truly understand and can precipitate. Each step unfolds with four questions "what to learn / how to learn / what to use / how to use", and "how to use" gives prompt templates that can be directly copied, not vague statements like "ask AI more".</p>
+
+<h3 data-reveal>① Diagnose Gaps</h3>
+
+<h4>What to Learn</h4>
+<p>This step isn't about learning new technology, but clarifying one thing first: <strong>which parts of the new field can my existing mental models cover</strong>. The diagnostic result directly dictates how the next four steps will proceed—the covered parts don't need to be relearned, and the uncovered parts are the real hard bones to chew (exactly how to feed "existing mental models" to AI for mapping will be elaborated in the next section <a href="#mapping">Cross-Domain Mapping</a>). Three specific questions need to be clarified in the diagnostic phase, rather than stopping at "how much I feel I know":</p>
+<ul>
+  <li>How much conceptual model overlap is there between this new field and my familiar fields?</li>
+  <li>Which are pure terminology translations, and which are truly foreign new concepts?</li>
+  <li>What is the first concrete deliverable I want to achieve right now?</li>
+</ul>
+
+<h4>How to Learn</h4>
+<p>The action in this step isn't "learning", it's "asking"—and letting <strong>AI ask you</strong> instead, rather than making a self-assessment checklist yourself. The practice of a self-assessment checklist is unreliable inherently: you easily overestimate the parts of the field you are familiar with (thinking "I definitely know this" only to find it full of holes when asked in detail), and easily underestimate the unfamiliar fields (thinking "I know nothing about this" when it's actually something you use every day, just under a different name). Letting AI proactively ask follow-up questions, judging your knowledge boundaries revealed in your answers along the way, is much more accurate than scoring yourself.</p>
+
+<h4>What to Use</h4>
+<p>This step requires no project context; pure chat mode is enough—<strong>Claude Code / Codex conversation mode</strong>, just start a new session, no need to mount any codebases.</p>
+
+<h4>How to Use</h4>
+<pre><code>I am a [Your background, e.g.: Backend developer with 5 years of Java experience, familiar with Spring / MySQL / Message Queues].
+I now want to expand my capability boundary to: [Target new field, e.g.: Distributed system architecture design].
+The first concrete deliverable I want to achieve right now is: [As specific as possible, e.g.: Design a workable multi-active disaster recovery solution for our existing system].
+
+Before I say more, ask me 3-5 diagnostic questions first, aimed at figuring out my actual knowledge boundaries in this new field—
+Don't assume I know nothing, and don't assume I know everything. The questions must be specific enough that I can judge at a glance "I know this" or "I really haven't heard of this".
+
+After I finish answering, categorize this new field into three types based on my answers, listed in a table:
+① Overlap Zone: Conceptually basically the same as my existing fields, just under different terminology
+② Translation Zone: Concepts are not strictly equivalent, but can be understood by analogy using my existing concepts—you must specifically point out how to draw the analogy
+③ Brand-new Zone: I have absolutely no corresponding mental models, concepts that need to be built from scratch</code></pre>
+
+<h3 data-reveal>② AI Knowledge Speed-run</h3>
+
+<h4>What to Learn</h4>
+<p>Only learn the <strong>minimal set of concepts in the "brand-new zone" diagnosed in the previous step that prevents you from verifying the correctness of the output</strong>—nothing else. We must explicitly exclude an intuitive approach here: systematically reading the official documentation or textbook end-to-end. That's the old way of learning a new tech stack, which is very inefficient in capability boundary expansion scenarios, because the "brand-new zone" often accounts for only a small fraction of the new field. Reading the whole documentation equals relearning the "overlap zone" and "translation zone" from scratch, which is a waste of time.</p>
+
+<h4>How to Learn</h4>
+<p>Use AI to do <strong>"concept translation"</strong>, rather than "listening to a lecture from scratch". Specific technique: for every new concept learned, immediately draw an analogy with the corresponding old concept in the "overlap zone" confirmed in step ①, and ask AI to <strong>test you in reverse</strong> to verify that you really understand it—it explaining doesn't count, you answering the questions correctly does. The easiest mistake to make in this step is "assuming you've learned it because you understood what it said", reverse testing is the only means to pop this illusion.</p>
+
+<h4>What to Use</h4>
+<p><strong>AI conversation + official documentation</strong>, you need both. Official documentation is not an optional supplement, it is a necessary step to verify AI's claims—AI's analogy explanations may be vivid but inaccurate, especially regarding version details or edge conditions. Relying purely on AI's explanation can easily lead to memorizing an incorrect analogy as fact.</p>
+
+<h4>How to Use</h4>
+<pre><code>I have completely no mental model of [Specific concept in the brand-new zone, e.g.: Saga pattern in distributed transactions].
+In my existing mental models, what might relate to it is: [Corresponding old concept in the overlap zone, e.g.: ACID of database transactions, business compensation/reversal mechanisms].
+
+Please:
+1. Use my existing [corresponding old concept] as an analogy to explain exactly what [new concept] is, what problem it solves, and what the fundamental differences are from what I'm familiar with
+2. After explaining, don't stop, immediately give me 3 true/false or scenario questions to test me—the questions must test whether "I just memorized your words" or "I truly understand it", don't give gimmes
+3. After I answer, first judge right or wrong, then point out exactly which step in my understanding I got wrong
+
+Finally, tell me: if my understanding is wrong, which section in the official documentation/authoritative materials can I verify directly? Give specific sections or keywords, don't just say "check the official documentation".</code></pre>
+
+<h3 data-reveal>③ Scaffolding Start</h3>
+
+<h4>What to Learn</h4>
+<p>This step does not aim to "understand all principles", the goal is to <strong>build a runnable minimal product and establish a feel for it</strong>. Deliberately allow "knowing what it does without knowing why"—this is the fundamental difference between this step and step ②: step ② learns the minimal concept set needed to "verify if the output is correct", while step ③ is to get things running first, leaving the gaps in principles to be filled in step ⑤.</p>
+
+<h4>How to Learn</h4>
+<p><strong>Build as you ask, dig deep only when stuck</strong>; do not try to thoroughly learn all concepts before getting hands-on. This is the anti-pattern most likely to slow progress: always feeling "I'll be ready to start after learning just a bit more," resulting in being stuck in the learning phase without output. The minimal runnable product itself is the best feedback—if it doesn't run or throws an error, go back and ask about the corresponding concept; the pertinence is much higher than learning everything in advance.</p>
+
+<h4>What to Use</h4>
+<p>This step requires two assets that can be directly copied into the project: a <strong>configuration template</strong> placed in the project root to constrain how AI collaborates, and a <strong>prompt library</strong> covering high-frequency scenarios. Both are universal versions, not tied to any specific tech stack; fill in the placeholders according to your actual project.</p>
+
+<h4>How to Use</h4>
+<p><strong>Asset 1: AI Collaboration Configuration Template</strong> (Save as <code>CLAUDE.md</code> in the project root directory, or the rule file read by the corresponding tool, so AI obeys it automatically in every interaction):</p>
+<pre><code># Project Conventions —— [Your project name / one-sentence description]
+
+## Tech Stack
+[Your tech stack: Language / Framework / Data Layer / Deployment Method —— list clearly according to actual project status, so AI doesn't guess the environment]
+
+## Hard Rules
+- Provide a plan before making changes; if a solution involves modifying 3 or more files, a checklist must be provided for confirmation before starting
+- Ask directly about uncertainties, don't guess the implementation—guessing wrong and reworking is much more expensive than asking a question
+- Before introducing new dependencies / new concepts, explain why they are needed and if there's a simpler alternative
+- Run after modifications are complete: [Your lint / typecheck / test command, e.g., npm run lint && npm test, or pytest, or go vet && go test ./...]
+
+## Communication Conventions
+- I am familiar with [Your existing tech stack/field], use it as an analogy to explain new concepts, don't assume I'm starting from scratch
+- When giving me code, explain in passing how the correctness of this code can be verified (echoing ④ Verification Loop below)</code></pre>
+
+<p><strong>Asset 2: Prompt Library</strong> (six high-frequency scenarios, copy directly, replace placeholders according to current task):</p>
+<table class="tbl">
+  <tr><th>Scenario</th><th>Prompt (Fully copyable)</th></tr>
+  <tr><td>Feature Dev</td><td>"Implement [feature]. Goal: [one sentence]; Context: related files are X/Y; Constraints: abide by the project convention file, do not introduce new dependencies; Done-when: [acceptance criteria] + tests pass. Give the plan first."</td></tr>
+  <tr><td>Data Structure Change</td><td>"Design data structure for [business]: provide schema/table creation plan + reasons for indexes or validation rules + access control strategy (if applicable at this layer, such as permissions/RLS/field-level validation) + rollback method, and use 2 edge or attack scenarios to verify the plan holds up."</td></tr>
+  <tr><td>Code Review</td><td>"Review this code: list problems in 3 categories: ① Security (keys/validation/permissions) ② Edge cases ③ Performance, providing fixes for each; finally answer: would you let it go live?"</td></tr>
+  <tr><td>Debugging</td><td>"Error: [Full text]. First list 3 possible root causes in order of probability, then provide minimal verification experiments to eliminate them one by one—don't just say 'try this'. What problem in [your familiar field] does this equate to?"</td></tr>
+  <tr><td>Learning Concepts</td><td>"Use [corresponding concept you are familiar with] as an analogy to explain [new concept], then give me 3 true/false questions to test me; I will answer, and you grade."</td></tr>
+  <tr><td>Weekly Review</td><td>"Here is my code diff and problem log for this week. Summarize: ① Patterns of mistakes I repeatedly make ② What I should deliberately practice next week ③ Which knowledge points I thought I understood but actually didn't."</td></tr>
+</table>
+
+<h3 data-reveal>④ Verification Loop</h3>
+
+<h4>What to Learn</h4>
+<p>The correctness of AI's output <strong>cannot be judged merely by "looking right"</strong>—this is exactly the uncompressed part mentioned at the beginning of this page: a significant portion of the time saved in the generation phase needs to be spent in the verification phase. What needs to be learned is not how to use a specific tool, but the judgment to <strong>choose the appropriate verification method for the new field</strong>: unit tests, type checking, running in a real environment, or checking against official documentation line by line; which one can confirm the output in your hands is correct depends on the type of output, not applying a one-size-fits-all verification method.</p>
+
+<h4>How to Learn</h4>
+<p>The specific technique is to <strong>require AI to state how its output can be verified</strong>, rather than thinking of verification methods yourself. AI usually knows what tests should accompany the code it writes and where errors are most likely to occur, but defaults to not providing this proactively—it stops after giving you the code, and unless you explicitly request it, the "how to verify this code" step is skipped by both sides.</p>
+
+<h4>What to Use</h4>
+<p>Remember these types of tools by category, no need to tie them to a specific tech stack: <strong>Unit testing frameworks</strong> (which have counterparts in most tech stacks, like Jest/Vitest in JS ecosystem, pytest in Python, built-in testing package in Go), <strong>Type checkers</strong> (like tsc in TypeScript, mypy in Python), <strong>linter/static analysis tools</strong> (like ESLint in JS ecosystem, Ruff/Pylint in Python, golangci-lint in Go, specifically catching code style issues and common pitfalls that type checkers ignore), and the <strong>official documentation</strong> for that field as the ultimate source of truth.</p>
+
+<h4>How to Use</h4>
+<pre><code>After implementing [feature/change], please attach the following along with the code—don't wait for me to ask:
+
+1. How can the correctness of this code be verified? List in order of priority:
+   ① Can unit tests be written? Provide a test case skeleton (using the testing framework already in my project; if none, specify the recommended one)
+   ② Are there type checks/static checks that can directly catch the most common errors for this type of change?
+   ③ Under what real environment/real data must this code be run to count? Provide specific verification steps
+   ④ For parts involving external APIs/official behavior, from which version of official docs did you get your claims? List the sources so I can verify line by line; I cannot rely solely on your paraphrasing
+
+2. If some of the above four categories are not applicable (e.g., this change cannot be unit tested), explicitly state why it is not applicable, do not skip over it without mentioning.
+
+3. Finally tell me in one sentence: If this code was given to you by someone else to review, would you merge it directly yourself?</code></pre>
+
+<h3 data-reveal>⑤ Deepening and Precipitation</h3>
+
+<h4>What to Learn</h4>
+<p>From "it runs" to "<strong>understanding why</strong>". The specific method is to look back at the pitfalls encountered in steps ③ and ④, and ask AI "why is this way of writing correct, and are there other ways to write it"—the "knowing what it does without knowing why" allowed in the scaffolding stage must be filled in at this stage.</p>
+
+<h4>How to Learn</h4>
+<p><strong>The AI version of the Feynman Technique</strong>: Try explaining what you just learned to the AI yourself, and have AI point out your mistakes, rather than passively receiving its explanations. Being able to explain it clearly is the most honest test of whether you "truly understand" or just "think you understand"—the feeling of "I get it" when passively listening to explanations is easily an illusion; explaining it yourself will immediately reveal where you actually can't express it clearly.</p>
+
+<h4>What to Use</h4>
+<p><strong>AI conversation + your own note files</strong>. The key to the word "precipitation" is "settling"—it must land in a document or template you continuously maintain; just leaving it in the chat history means no precipitation, and two weeks later you still won't remember what pitfalls you encountered or why you changed the way you wrote it back then.</p>
+
+<h4>How to Use</h4>
+<p>Feynman Verification—do this step first after finishing a module:</p>
+<pre><code>Let me explain the [concept/module] I learned this week to you. Don't interrupt me until I finish.
+After I finish, point out my mistakes in these three areas:
+① Where was my explanation wrong or inaccurate
+② What key points did I miss (even if what I explained was correct, but the overall understanding is incomplete)
+③ Ask me 1-2 questions like "why is doing it this way correct, and would another way work", forcing me to provide reasons instead of reciting answers</code></pre>
+<p>Periodic Review—precipitate the issues exposed in the Feynman session along with the output from this period:</p>
+<pre><code>Here is my code diff, pitfall log for this period, and the errors pointed out in the Feynman session just now. Please summarize:
+① What are my recurring mistake patterns
+② What should I deliberately practice in the next period, giving specific advice down to "what scenarios to practice with", don't just say "practice more"
+③ Which knowledge points did I think I understood, but the Feynman session revealed I actually didn't
+④ Format ①②③ into markdown that can be directly pasted into my notes file ([Your note file name/path]); don't just leave it in this chat round and consider it done</code></pre>
+
+</section>
+
+<div class="divider"></div>
+
+<section id="mapping">
+<div class="sec-tag">Methodology 02</div>
+<h2>Cross-Domain Mapping Technique</h2>
+
+<p><strong>Cross-domain mapping</strong> is the specific operational method for the three classifications of "overlap zone / translation zone / brand-new zone" in <a href="#engine">step ① "Diagnose Gaps" of the 5-step expansion engine</a>: feed your complete A-domain mental model to AI, and let AI help you sort new concepts into two actionable buckets—<strong>"This is a translation of A"</strong> (corresponding to ① overlap zone + ② translation zone: concepts basically match, just changing terms or requiring a little analogy to understand, learning cost is low) and <strong>"This is a new concept A doesn't have"</strong> (corresponding to ③ brand-new zone: the parts that actually require time to understand). The three classifications in the diagnosis phase are responsible for "seeing where the gaps are clearly," and these two buckets are responsible for "deciding how to handle each gap specifically"—once sorted, what can be translated is directly mapped over, and only what is truly new deserves your learning time. This technique is not a one-time action strictly for "learning a new field for the first time," but a <strong>reusable capability</strong>: from now on, every time you switch to a new domain—mobile to web today, frontend to backend tomorrow, monolith to distributed the day after—you can reuse the exact same questioning structure to maximize your existing experience and only spend effort on the truly unfamiliar parts.</p>
+
+<h3 data-reveal>Three Cross-Domain Examples</h3>
+<p>The three groups below are specific output examples of this mapping technique, not meant for you to memorize—focus on "how to convert existing concepts into analogies for new concepts," this conversion method is the reusable part.</p>
+
+<h4>Android ↔ iOS: Declarative UI Paradigm Translation</h4>
+<table class="tbl">
+  <tr><th>Concept</th><th>Android (Compose)</th><th>iOS (SwiftUI)</th></tr>
+  <tr><td>Declarative UI Unit</td><td><code>@Composable</code> function</td><td>struct conforming to <code>View</code> protocol + <code>body</code></td></tr>
+  <tr><td>Component Local State</td><td><code>remember { mutableStateOf() }</code></td><td><code>@State</code></td></tr>
+  <tr><td>Object State Shared Across Views</td><td>ViewModel + <code>StateFlow</code></td><td>Object annotated with <code>@Observable</code> macro (new syntax, replacing old <code>ObservableObject</code> + <code>@Published</code>)</td></tr>
+  <tr><td>Async Task Bound to View Lifecycle</td><td><code>LaunchedEffect(key)</code></td><td><code>.task</code> / <code>.task(id:)</code> modifier—automatically cancelled when view disappears</td></tr>
+</table>
+<div class="callout tip"><b class="t">Analogy Focus</b>Both are "state changes, declarative description is automatically re-evaluated"; the difference lies mainly in syntactic sugar and memory model (value vs. reference type), not paradigm differences—this area is basically the "translation zone".</div>
+
+<h4>Mobile → Web Frontend: Compose/Kotlin → React/TS Essence Summary</h4>
+<table class="tbl">
+  <tr><th>Mobile (Compose/Kotlin)</th><th>Web Frontend (React/TS)</th><th>Key Differences</th></tr>
+  <tr><td><code>remember { mutableStateOf(0) }</code></td><td><code>useState(0)</code></td><td>Same mindset: state change → function rerun; but in React, <strong>mutating an object/array directly won't trigger re-render</strong>, you must create a new reference (<code>setItems([...items, x])</code>)</td></tr>
+  <tr><td><code>LaunchedEffect(userId) { … }</code></td><td><code>useEffect(() => { … }, [userId])</code></td><td>Dependency array ≈ key; the returned cleanup function runs "before re-running + on unmount", mapping to <code>onDispose</code></td></tr>
+  <tr><td>Sealed class <code>sealed interface</code> + <code>when</code></td><td>Discriminated union <code>{ kind: "…" }</code> + <code>switch</code></td><td>The heart of TS modeling, API responses/form states/event types all rely on it, same mindset as sealed+when</td></tr>
+</table>
+
+<h4>Web Frontend → Backend/Server: Three Intuitions Frontend Devs Easily Get Wrong</h4>
+<table class="tbl">
+  <tr><th>Frontend Mindset (You Have)</th><th>Backend New Concept</th><th>Analogy Focus</th></tr>
+  <tr><td>Every <code>setState</code> re-renders from scratch, no variables are preserved across renders</td><td>HTTP requests are <strong>stateless</strong> by default; the server won't "remember" who the last request was from</td><td>Your familiar "side-effect free re-render" mindset, backend moves this to the "request" granularity—state must be explicitly saved into a database/cache, you can't expect the server to remember for you</td></tr>
+  <tr><td>Browser manages TCP connections and reuses Tabs for you</td><td>Database <strong>connection pool</strong></td><td>Analogy: "Create a batch of reusable connections in advance, borrow one when a request comes in, return it when done", instead of handshaking for every request. The principle is consistent with "reuse instead of creating new every time"</td></tr>
+  <tr><td>Frontend "debounce/disable button" prevents user accidental double-clicks</td><td>API <strong>Idempotency</strong></td><td>Frontend intuition is "don't let the user click twice"; backend idempotency is a stricter contract: no matter how many times the same request is sent, the server's final state only changes once—GET/PUT/DELETE are naturally idempotent by semantics, POST defaults to not being idempotent and needs extra design (like an idempotency key) to guarantee it</td></tr>
+</table>
+
+<h3 data-reveal>Cross-Domain Analogy Prompting Technique (Universal Version)</h3>
+<p>The table below adapts the "Android Analogy Prompting Technique" into a universal version not bound to a specific tech stack—fill in the placeholders with the two domains you are crossing between; the same questioning structure can be reused in any cross-domain learning.</p>
+<table class="tbl">
+  <tr><th>❌ Mediocre Prompts</th><th>✅ Veteran Prompts</th></tr>
+  <tr><td>"Teach me [new tech/field]"</td><td>"Use [corresponding mechanism I'm familiar with] as an analogy for the core mindset and trigger timing of [new concept], then give me a test"</td></tr>
+  <tr><td>"What to do when there's an error"</td><td>"Full error text below, list 3 root cause hypotheses and provide minimal validation experiments; what problem in [familiar field] is this like?"</td></tr>
+  <tr><td>"What is [mechanism in new field]"</td><td>"Explain it using the framework '[old corresponding mechanism] vs essential differences of this new mechanism', and give the practical consequences of each"</td></tr>
+  <tr><td>"Help me write [feature]"</td><td>"Minimal implementation + step-by-step comments + point out key differences from [familiar field solution] + list common pitfalls"</td></tr>
+  <tr><td>"How to write [security/boundary mechanism in new field]"</td><td>"Give a specific scenario, provide a strategy + use 2 attack or boundary counter-examples to prove it can hold up"</td></tr>
+  <tr><td>(Accepting AI code directly)</td><td>"List 3 boundary issues and 1 security risk in your code, then provide a fixed version"</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="case-studies">
+<div class="sec-tag">Practical Cases 03</div>
+<h2>End-to-End Deep Cases</h2>
+
+<p>The two cases below both go through the 5-step methodology above completely; choose the one closer to your direction to read deeply, or read both—their internal structure is identical, reading one is enough to master the method, and the other can serve as a reference.</p>
+<ul>
+  <li><a href="#case-a">Case A: Starting from mobile, expanding to full-stack cross-platform →</a></li>
+  <li><a href="#case-b">Case B: Starting from frontend/client, expanding to backend and server-side →</a></li>
+</ul>
+
+<h3 data-reveal id="case-a">Case A: Mobile → Full-Stack Cross-Platform</h3>
+<p>You are a mobile engineer with an Android or iOS background. You already have a solid mental model of declarative UI, ViewModel/StateFlow state management, and Room local persistence. Now you want to go one layer higher—not just "writing an app that runs on a phone," but being able to independently build a full-stack application covering frontend rendering, backend write operations, and database read/writes all by yourself, without waiting for backend colleagues to schedule it. Below, we'll walk through this transition using the <a href="#engine">5-Step Expansion Engine</a>, using the Next.js full-stack framework as the technology choice example; the principles apply equally to Nuxt, SvelteKit, and other full-stack frameworks.</p>
+
+<h4>① Diagnose Gaps (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Combining the two mapping tables from <a href="#mapping">Cross-Domain Mapping</a> (Android↔iOS <code>remember</code>/<code>@State</code> translation, Mobile→Web Frontend <code>remember</code>→<code>useState</code>, <code>LaunchedEffect</code>→<code>useEffect</code>), clarify one thing: the two layers full-stack adds compared to "mobile→frontend" are <strong>backend services</strong> and <strong>databases</strong>—you currently have absolutely no mental model for these two layers, which makes them the ③ brand-new zone that this diagnosis needs to draw out. The frontend layer likely falls into the ① overlap zone / ② translation zone because you already have declarative UI intuition, so you don't need to spend time relearning it.</p>
+<b class="q4">How to Learn</b>
+<p>Don't estimate "how much I think I know" yourself. Based on the frontend mapping provided in <a href="#mapping">#mapping</a>, apply the same "overlap zone / translation zone / brand-new zone" three-way classification to the backend and database layers, and let AI actively ask follow-up questions instead of listing a checklist yourself.</p>
+<b class="q4">What to Use</b>
+<p>AI conversational diagnosis, pure chat mode is sufficient, no need to mount codebases.</p>
+<b class="q4">How to Use</b>
+<pre><code>I am an [Android/iOS] mobile engineer with [N] years of experience in [Kotlin+Compose / Swift+SwiftUI],
+familiar with declarative UI, ViewModel/StateFlow state management, Room local persistence, and Retrofit network layer.
+
+I now want to expand my capability boundary to: independently building a full-stack application where I handle frontend + backend + database all by myself
+(Using Next.js as an example, principles apply to other full-stack frameworks).
+The first concrete deliverable I want to achieve right now is: [e.g., a personal project management tool with login and private data persistence].
+
+Before I say more, ask me 3-5 diagnostic questions, covering:
+① Frontend rendering layer—what overlaps with my declarative UI intuition
+② Backend service layer—I've never written an API, focus on this layer
+③ Database layer—I've only used local embedded DBs like Room, never touched real server-side databases or permission models
+
+After I answer, categorize the results into three layers in a table: ① Overlap Zone ② Translation Zone ③ Brand-new Zone,
+and specifically highlight: in the "backend service layer" and "database layer," which concepts have absolutely no counterpart in mobile development and must be built from scratch.</code></pre>
+
+<h4>② AI Knowledge Speed-run (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Pick a real blocker from the diagnosed ③ brand-new zone: "where exactly does which piece of code run"—the boundary between server components and client components, and when page HTML is generated (SSR/SSG/ISR). This is a part where the mobile mental model has absolutely no counterpart: in an app, all code runs on the device, while a full-stack app introduces for the first time the fact that "the same codebase has one part running on the server and one part running in the browser."</p>
+<b class="q4">How to Learn</b>
+<p>Use your existing intuition of "which layer handles what capabilities" as an analogy primer, but demand that AI tests you immediately after explaining, rather than thinking you understand it after hearing the analogy—this is the application of the <a href="#engine">#engine</a> step ② "reverse testing" technique in this specific brand-new zone.</p>
+<b class="q4">What to Use</b>
+<p>AI conversation is enough; no need to mount real project code during the concept clarification phase.</p>
+<b class="q4">How to Use</b>
+<pre><code>I am a mobile engineer, very familiar with the mental model that "code only runs on the device." Please explain the boundary between "server components" and "client components" in Next.js (or similar full-stack frameworks):
+
+1. By default, where do the components I write run? What declaration makes them switch to run on the other side?
+2. Give a specific counter-example: if I put database query logic inside a component that is supposed to run in the browser, what are the consequences—
+   does it throw a compile-time error, blow up at runtime, or worse (like secrets being sent to the browser)?
+3. Then explain the three patterns of "when page HTML is generated" (SSR/SSG/ISR), and map them to which types of pages in the app I want to build (personalized dashboard after login / pure display landing page / infrequently updated detail page)?
+4. After explaining, give me 3 true/false questions to test if I really differentiate between "default capabilities of server components" and "capabilities client components only have after explicit declaration."</code></pre>
+<p>A reliable answer usually looks like this (structure is more important than exact wording; judging "did AI really explain it clearly" depends on these three pieces): first, a decision table—can you use <code>useState</code>/<code>onClick</code>, can you query the DB or read secrets directly, which is the default—this table should be memorizable in 30 seconds. Second, specific counter-examples—putting database queries in a component declared with <code>"use client"</code> will fail directly at build time because the browser can't get database connections, whereas conversely, "wanting to use <code>onClick</code> in a server component but forgetting to declare <code>"use client"</code>" is the most common pitfall missed in AI-generated code. Finally, a one-sentence conclusion for SSR/SSG/ISR—use SSG for static content, ISR with <code>revalidate</code> for infrequently updated content pages, SSR for personalized dashboards after login, which exactly corresponds to the "whether to cache, how long to cache" judgment you're already familiar with in Room/local caching, just applied at the page granularity this time.</p>
+
+<h4>③ Scaffolding Start (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Don't aim to learn the whole tech stack; first build a minimal full-stack product "with login, and one piece of private data you can read and write"—this bar is a notch higher than a "runnable Hello World" because it simultaneously verifies whether the frontend rendering, backend writing, and database permissions layers are truly connected, rather than just getting a simple static page to run.</p>
+<b class="q4">How to Learn</b>
+<p>Build as you ask, query whichever layer you get stuck on, combined with the universal startup commands and CLAUDE.md template provided in <a href="#engine">#engine Step ③</a>—you don't need to read the framework or database documentation thoroughly in the startup phase.</p>
+<b class="q4">What to Use</b>
+<p>We use Next.js as an example here for specific commands; the principles apply to other full-stack frameworks. Database uses Supabase/Postgres as an example; principles apply to other database services.</p>
+<b class="q4">How to Use</b>
+<pre><code>npx create-next-app@latest my-app --yes
+cd my-app
+npm run dev   <span class="c"># http://localhost:3000</span></code></pre>
+<p>After building the project, confirm that <code>"strict": true</code> is still in <code>tsconfig.json</code> (this is the foundation for the next step ④ Verification Loop to work), then do just one thing to prop up the scaffolding: integrate Auth (Supabase Auth or OAuth/Email login from a similar service) + create a table <strong>that only the owner can read and write</strong>. Log in, write a piece of your own data, and read it back seeing only yours—getting these three steps to run is the first passing mark for crossing over from mobile to full-stack, and the principle applies to other full-stack frameworks and DB services. You can also add a <code>proxy.ts</code> (Next.js 16 renamed <code>middleware.ts</code>, behavior is unchanged, official codemod provided) to redirect unauthenticated users to the login page, which corresponds to the Interceptor auth interception you are familiar with.</p>
+
+<h4>④ Verification Loop (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Following <a href="#engine">#engine Step ④</a> "AI output correctness cannot be judged merely by looking right," the most representative part in the full-stack case is <strong>data permissions</strong>: AI can easily write code that "looks like it runs" but has permission loopholes—forgetting the owner filter in a query, or using an omnipotent secret key that ignores permissions on the browser side. What you need to learn in this step is to pair this kind of "must be verified, cannot just read code" output with an executable verification method.</p>
+<b class="q4">How to Learn</b>
+<p>Take Row Level Security (RLS) in Supabase/Postgres as an example; the principle applies to other DB permission models (like middleware auth + ORM layer filtering in a self-built backend, or row-level permissions in other cloud DBs): first let AI provide the policy, then let AI play the attacker to list several bypass attempts, and use <strong>two real test accounts querying each other</strong> to verify it holds up—this is the concrete implementation of <a href="#engine">#engine</a> Step ④ "require AI to state how its output can be verified".</p>
+<b class="q4">What to Use</b>
+<p>The database's policy configuration interface or SQL Editor + two test accounts (you cannot self-test with one account; two identities must attack each other to count as verification).</p>
+<b class="q4">How to Use</b>
+<pre><code><span class="c">-- Taking Supabase/Postgres as an example, enable RLS on a table and write a minimal policy (principles apply to other DB permission models)</span>
+alter table projects enable row level security;
+<span class="c">-- After enabling, all access is denied by default—this is its value; a missing policy = request denied, not data running naked</span>
+
+create policy "Can only read own projects"
+  on projects for select
+  using ( owner_id = (select auth.uid()) );</code></pre>
+<pre><code>This table has RLS enabled and the above policy written. Please play the attacker and provide 3 attempts that might bypass this policy and read someone else's data (e.g., forgetting to write a policy for a certain operation, writing the policy condition backwards, bypassing with the wrong secret key).
+
+Then I will use two real test accounts (log in as Account A and try to query Account B's data) to reproduce and verify each one—
+you tell me exactly how to execute each attempt first, and I will report the results back to you after verifying.</code></pre>
+<div class="callout warn"><b class="t">Verification Cannot Rely on Code Alone</b>The boundary between the two keys must also be re-checked: the browser-facing public key is constrained by permission policies and can appear on the frontend; the omnipotent secret key that ignores permission policies is only allowed in server-side environment variables—this red line applies regardless of database brand. Review any write operation generated by AI using this "policy + attack scenario verification" template.</div>
+
+<h4>⑤ Deepening and Precipitation (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>From "runnable" to "long-term stable operation"—the engineering habits mobile engineers are familiar with like "crash rate dashboards" and "canary releases" need to be re-implemented as another set of concrete actions in full-stack; the deepening phase is about filling these in one by one.</p>
+<b class="q4">How to Learn</b>
+<p>Following the Feynman technique in <a href="#engine">#engine Step ⑤</a>, go through each item in the table below and explain to yourself "why I need this, what old habit of mine it corresponds to"; anything you can't explain clearly means it hasn't truly precipitated, so go back and study it specifically.</p>
+<b class="q4">What to Use</b>
+<p>The tools below are listed by category, not locking into specific brands—use GitHub Actions or equivalents for CI, Sentry or equivalents for monitoring.</p>
+<b class="q4">How to Use</b>
+<p>Use this table to migrate "existing mobile engineering habits" to full-stack item by item:</p>
+<table class="tbl">
+  <tr><th>Existing Mobile Habit</th><th>Full-Stack Equivalent Action</th><th>In One Sentence</th></tr>
+  <tr><td>Test Pyramid (Unit/Integration/UI tests)</td><td>Unit tests for pure logic functions + E2E smoke tests for lifeline flows (login, core features, payment)</td><td>Only write E2E for lifeline flows, don't get greedy</td></tr>
+  <tr><td>CI running build + checks (e.g., Gradle tasks)</td><td>GitHub Actions or similar running lint + type checks + tests on PRs</td><td>Don't merge unless PR is fully green</td></tr>
+  <tr><td>Build Variant differentiating debug/release keys</td><td>Hierarchical management of local/preview/production environment variables</td><td>Variables with public prefixes will be bundled to the browser; never give secret keys this prefix</td></tr>
+  <tr><td>Crash rate dashboard</td><td>Error monitoring (Sentry equivalent) connected to frontend and backend</td><td>The first dashboard to watch after going live</td></tr>
+  <tr><td>App Store review + Canary release</td><td>Push code to auto-deploy, generate independent preview environment for each PR</td><td>Rollback becomes one-click, much happier than App Store review rollbacks</td></tr>
+  <tr><td>Pre-release checklist</td><td>Full coverage of permission policies, key boundaries, input validation, signature verification, rate limiting, monitoring, backup, dependency audit</td><td>Review again before every major release, not just write it once and be done</td></tr>
+</table>
+<p class="src">The fact about <code>proxy.ts</code> renaming was verified against the Next.js official documentation <a href="https://nextjs.org/docs/app/api-reference/file-conventions/proxy" target="_blank">proxy.js file reference</a> (Migration to Proxy section, effective from v16.0.0), verified in 2026-07.</p>
+
+<h3 data-reveal id="case-b">Case B: Frontend/Client → Backend and Server-Side Engineering</h3>
+<p>You are an engineer with a frontend (React/Vue, etc.) or client-side background. You are already proficient in the mental models of componentization, state management, and "sending a request, getting data, and rendering it." Now you want to dive one layer deeper—not just consuming APIs written by others, but designing the API contract yourself, choosing a backend language to get the service actually running, and taking responsibility for its stability in a production environment. Below, we'll go through the <a href="#engine">5-Step Expansion Engine</a> again, using Fastify (Node.js) as the primary tech choice; the principles apply equally to other backend frameworks. The starting point is exactly the "Web Frontend → Backend/Server" mapping table in <a href="#mapping">#mapping</a>—that table has already pointed out the three intuitions frontend developers most easily get wrong (stateless requests, connection pools, idempotency); we will continue the diagnosis from there.</p>
+
+<h4>① Diagnose Gaps (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>The three mappings provided in <a href="#mapping">#mapping</a> basically fall into the ① overlap zone / ② translation zone—you already have the intuition for "controlled side effects", you're just moving the granularity from "component re-rendering" to "a single HTTP request". What really needs to be categorized into the ③ brand-new zone in this step are two areas not covered by that table: <strong>Routing and Contract Design</strong> (you've always been the "consumer" of APIs, now you must become the "designer" of this contract—how to layer paths, which status codes to use, how to unify error structures, all must be decided by you, no longer just reading docs and taking what's there) and <strong>the Server-Side Perspective of Authentication</strong> (the frontend only needs to "read" the login state—getting the token to decide whether to show a button or redirect to the login page; the backend needs to "write" and be responsible for its security boundaries—how the token is issued, how it's validated, how expiration is handled, and how to revoke it if leaked, things the frontend never has to worry about).</p>
+<b class="q4">How to Learn</b>
+<p>Don't estimate yourself first. Directly paste the mapping table from <a href="#mapping">#mapping</a> to the AI as the "confirmed overlap zone", and let the AI only ask follow-up questions on the remaining parts—this saves the effort of re-diagnosing what's already been diagnosed, focusing the questioning power on the truly unfamiliar areas of contract design and authentication.</p>
+<b class="q4">What to Use</b>
+<p>AI conversational diagnosis, pure chat mode is sufficient, no need to mount codebases.</p>
+<b class="q4">How to Use</b>
+<pre><code>I am a frontend/client engineer with [N] years of experience in [React/Vue/Mobile],
+familiar with component-driven development, state management, consuming REST or GraphQL APIs using fetch/axios, handling loading/error states, and using received tokens to determine login status and redirect.
+
+I now want to expand my capability boundary to: independently designing APIs, choosing a backend language to get the service running, and understanding the basics of deployment and ops (don't need to be an ops expert, but need to be able to deploy the service myself and know if it's running normally).
+The first concrete deliverable I want to achieve right now is: [e.g., a minimal backend service with login and CRUD operations for one table].
+
+The confirmed overlap/translation zones are as follows, no need to ask me about these again:
+- HTTP requests are stateless by default; state must be explicitly saved to a DB/cache
+- Database connection pool ≈ reusing connections instead of creating new ones every time
+- API idempotency: resending the same request multiple times only changes the server's final state once
+
+Beyond these, please ask me 3-5 diagnostic questions, focusing on:
+① Routing and API contract design—I've always been the consumer, now I need to be the designer
+② Server-side perspective of authentication and session management—issuing, validating, expiring, and revoking tokens
+③ Parts I have absolutely no concept of: database design basics (normal forms, indexes)
+
+After I answer, break it down into a table of ① Overlap Zone ② Translation Zone ③ Brand-new Zone, highlighting which ones must be built from scratch.</code></pre>
+
+<h4>② AI Knowledge Speed-run (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Pick three real blockers from the diagnosed ③ brand-new zone: <strong>server-side implementation of stateless request processing</strong> (not just knowing "stateless" conceptually, but knowing exactly where state is stored and how it's read/written when handling concurrent requests), <strong>database design basics</strong> (at least being able to understand and design: what first/second/third normal forms actually mean when creating tables, what problems indexes solve and their costs), and <strong>the server-side perspective of authentication and session management</strong> (the differences from the frontend "consuming login state" perspective—the server has to decide whether to use sessions or tokens, how to store tokens, and how to prevent tampering).</p>
+<b class="q4">How to Learn</b>
+<p>Use your frontend intuitions like "props flowing one way, lifting state up to a common parent component" as analogy primers, but strictly demand that the AI tests you immediately after explaining—this is the application of the <a href="#engine">#engine</a> step ② "reverse testing" technique in these three brand-new zones. Understanding an analogy doesn't mean you can actually use it correctly when designing a table or choosing an authentication method.</p>
+<b class="q4">What to Use</b>
+<p>AI conversation is enough; no need to mount real project code during the concept clarification phase.</p>
+<b class="q4">How to Use</b>
+<pre><code>I am a frontend engineer, very familiar with the mental model of "lifting state up to a common parent component to avoid duplicated sources of truth."
+Please explain clearly in three parts:
+
+1. Stateless request processing: If I want to "remember" a user's state across multiple requests on the server (like a shopping cart or login state), where is it actually stored? List at least two options (session storage / token with embedded state) and their respective trade-offs, and use my familiar "lifting state up" intuition to explain why I can't rely on the server process memory being reliable long-term.
+
+2. Database design basics: Use a concrete example (like three tables: "Article + Author + Tags") to explain clearly what duplication/anomaly problems the first/second/third normal forms solve, which fields to index to speed up queries, and what the costs of indexing are (slower writes, takes up space).
+
+3. Server-side perspective of authentication: Compared to my familiar "frontend reads token to decide whether to show the login page," what extra responsibilities does the server have—how are tokens issued and validated, how are they handled after expiration, and how are they revoked if leaked.
+
+After each part, immediately give me 2 scenario questions to test me; the questions must test whether I can actually use it correctly in the design phase, don't give me gimme "true or false" questions.</code></pre>
+
+<h4>③ Scaffolding Start (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Don't aim to learn the entire backend tech stack; first build "a minimal runnable API service + one readable/writable table"—this bar is also a notch higher than "Hello World" because it simultaneously verifies whether the routing, request processing, and data persistence layers are truly connected.</p>
+<b class="q4">How to Learn</b>
+<p>Build as you ask, combined with the universal startup commands and CLAUDE.md template provided in <a href="#engine">#engine Step ③</a>—you don't need to read the framework documentation thoroughly in the startup phase.</p>
+<b class="q4">What to Use</b>
+<p>There are many mainstream choices for backend languages/frameworks today. Here we name an example whose active ecosystem has been verified by WebFetch as the main thread: if your frontend background is JS/TS, <strong>Fastify in the Node.js ecosystem</strong> is a natural extension, reusing the same language. The principles apply equally to Go (like net/http+chi), Java (Spring Boot), Python (FastAPI, whose adoption rate has shown a rare surge in recent years), and other languages and frameworks. Start with a minimal table for the database; you don't need to spin up a standalone database service first—Node.js 24 LTS onwards can use the built-in <code>node:sqlite</code> module without extra flags. Its official stability is marked as 1.2 (Release Candidate, close to stable, API can be directly used for startup verification). But note that <code>DatabaseSync</code> is synchronous blocking I/O—in an event-loop-based asynchronous framework like Fastify, one synchronous query will block the entire process and stall other concurrent requests. This is exactly why the advice "only suitable for minimal verification in the teaching/startup phase; before really going to production, you should evaluate more mature async database solutions (like PostgreSQL with an async driver, or a dedicated ORM)" truly holds water.</p>
+<b class="q4">How to Use</b>
+<pre><code><span class="c"># Using Node.js + Fastify as an example, principles apply to FastAPI/Spring Boot and other frameworks</span>
+mkdir my-api && cd my-api
+npm init -y
+npm i fastify
+<span class="c"># Add "type": "module" in package.json to use the import syntax below</span></code></pre>
+<pre><code><span class="c">// server.js —— Minimal runnable API + one table, using built-in node:sqlite, zero external dependencies</span>
+import Fastify from 'fastify'
+import { DatabaseSync } from 'node:sqlite'
+
+<span class="c">// export function build() only assembles the instance, doesn't listen on a port—test.js relies on it to get an injectable app</span>
+export function build() {
+  const db = new DatabaseSync('app.db')
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS todos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      done INTEGER DEFAULT 0
+    )
+  `)
+
+  const app = Fastify({ logger: true })
+
+  app.get('/todos', (req, reply) => {
+    const rows = db.prepare('SELECT * FROM todos').all()
+    reply.send(rows)
+  })
+
+  app.post('/todos', (req, reply) => {
+    const { title } = req.body
+    const stmt = db.prepare('INSERT INTO todos (title) VALUES (?)')
+    const info = stmt.run(title)
+    reply.code(201).send({ id: info.lastInsertRowid, title, done: 0 })
+  })
+
+  app.get('/me', (req, reply) => {
+    if (!req.headers.authorization) {
+      reply.code(401).send({ error: 'unauthorized' })
+      return
+    }
+    reply.send({ id: 1 })
+  })
+
+  return app
+}
+
+<span class="c">// Only running this file directly (node server.js) actually listens on a port; it won't execute here when imported as a module by test.js</span>
+if (import.meta.url === `file://${process.argv[1]}`) {
+  build().listen({ port: 3000 })
+}</code></pre>
+<p>After running it, test once with <code>curl -X POST localhost:3000/todos -d '{"title":"First Item"}' -H 'content-type: application/json'</code> and once with <code>curl localhost:3000/todos</code>—if both a write and a read go through, that is the minimal passing mark for this crossover.</p>
+
+<h4>④ Verification Loop (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>Following <a href="#engine">#engine Step ④</a> "AI output correctness cannot be judged merely by looking right," the three places in backend services most easily fudged by AI-generated code are: <strong>API Contract</strong> (is the response structure and status code really consistent with the documentation/frontend agreement?), <strong>Authentication Boundaries</strong> (are requests without login/permissions truly rejected, rather than "the check is written in code but missed on a certain path?"), and <strong>Data Consistency under Concurrency</strong> (if two requests modify the same row of data at the same time, is the final result correct?—this is a problem frontend devs almost never encounter; there is no true concurrency like "two users clicking submit at the same time" in a single browser).</p>
+<b class="q4">How to Learn</b>
+<p>Just like Case A, first ask AI to provide a verification plan, then turn it around and have it play the "nitpicker" to list edge cases that might be missed—this is the concrete implementation of <a href="#engine">#engine</a> Step ④ "require AI to state how its output can be verified," only this time the verification target has changed from "database row-level permissions" to "API contract + authentication + concurrency."</p>
+<b class="q4">What to Use</b>
+<p>The testing method officially recommended by Fastify is <code>fastify.inject()</code> combined with Node.js's built-in <code>node:test</code> test runner—no need to actually start a port to listen, inject requests directly to test, which is enough to cover contract testing and auth boundary testing; for concurrency consistency, you need to spin up a real port and hit it with multiple concurrent requests.</p>
+<b class="q4">How to Use</b>
+<pre><code><span class="c">// test.js —— using fastify.inject() + node:test, zero extra test dependencies (Fastify officially recommended approach)</span>
+import { test } from 'node:test'
+import assert from 'node:assert'
+import { build } from './server.js'   <span class="c">// encapsulate server into a reusable build() function, no need to actually listen on a port before inject</span>
+
+test('POST /todos returns 201 and the created record', async () => {
+  const app = build()
+  const res = await app.inject({
+    method: 'POST',
+    url: '/todos',
+    payload: { title: 'Test Todo' }
+  })
+  assert.strictEqual(res.statusCode, 201)
+  assert.strictEqual(JSON.parse(res.body).title, 'Test Todo')
+})
+
+test('Accessing protected route without auth header should return 401', async () => {
+  const app = build()
+  const res = await app.inject({ method: 'GET', url: '/me' })
+  assert.strictEqual(res.statusCode, 401)
+})</code></pre>
+<pre><code>Here is the route list for my API service: [paste route list, marking which ones require login].
+Please:
+1. For each route, provide contract testing key points: expected status code/response structure for normal input, and expected behavior for at least 2 types of abnormal input (missing fields, wrong types, unauthorized access to someone else's data).
+2. For routes marked "requires login", list 3 scenarios that should be rejected but are easiest to miss in code (e.g., expired token, correct token format but wrong signature, valid token but accessing someone else's resource).
+3. For [specific write operation, e.g., "inventory deduction" / "balance transfer"], provide a concurrency scenario description—will two requests arriving at the same time cause data inconsistency, and what means should be used to prevent it (like database transactions, version field for optimistic locking, unique constraints). Explain the principle in one sentence, don't just say the word "lock".</code></pre>
+<div class="callout warn"><b class="t">Verification Cannot Rely on Code Alone</b>"Auth checks are written in the code" and "auth checks actually block unauthorized requests" are two different things—AI-generated middlewares/decorators are very easy to forget to attach to a newly added route. Both contract tests and auth boundary tests must be run with real requests; you cannot simply read the code and confirm "the logic looks right."</div>
+
+<h4>⑤ Deepening and Precipitation (Case Study)</h4>
+<b class="q4">What to Learn</b>
+<p>From "runnable" to "can be deployed live and knowing if it's running normally"—a frontend engineer's experience with "deployment" usually stops at "pushing a static site." Backend services require taking on two more responsibilities: <strong>Deployment Basics</strong> (containerization concepts, how to manage environment variables hierarchically) and <strong>Observability Basics</strong> (minimal awareness of logging and monitoring). The deepening phase is about filling in these two gaps.</p>
+<b class="q4">How to Learn</b>
+<p>Following the Feynman technique in <a href="#engine">#engine Step ⑤</a>, go through the checklist below and explain to yourself "what specific problem does each item prevent"; whatever you can't explain clearly means it hasn't truly precipitated.</p>
+<b class="q4">What to Use</b>
+<p>List concepts by category, not locking into specific brands—for containerization, just understand Docker multi-stage builds and using slim base images; for monitoring, use Sentry or similar services provided by cloud vendors.</p>
+<b class="q4">How to Use</b>
+<p>"From Runnable to Production-Ready" Checklist:</p>
+<table class="tbl">
+  <tr><th>Stage</th><th>Action to Fill</th><th>In One Sentence</th></tr>
+  <tr><td>Containerization</td><td>Package the service into a multi-stage build Docker image, use a slim base image (like alpine)</td><td>"Runnable locally" and "runnable on any machine" are two different things; images bridge this gap</td></tr>
+  <tr><td>Env Var Hierarchy</td><td>Manage Dev/Test/Prod configurations separately; never write secrets into code or commit to the repo</td><td>This is the backend version of the same red line as "public variables will be bundled to the browser" in Case A</td></tr>
+<tr><td>Health Check</td><td>Expose a <code>/health</code> route for the deployment platform to judge if the service is alive</td><td>Without it, if the service crashes, no one knows immediately</td></tr>
+  <tr><td>Structured Logging</td><td>Log critical paths (login, write operations, errors) with a request ID to string them together for troubleshooting</td><td>When things go wrong, rely on logs to reconstruct the scene, not on guessing</td></tr>
+  <tr><td>Basic Monitoring</td><td>Integrate Sentry or similar tool to catch unhandled exceptions, add a dashboard for response times/error rates</td><td>The first dashboard to watch after going live, the backend version of Case A's crash rate dashboard</td></tr>
+  <tr><td>Pre-release Checklist</td><td>Full path auth coverage, secrets not in logs, rate limiting, backup strategy, dependency audit</td><td>Review again before every major release</td></tr>
+</table>
+<p class="src">Fastify installation commands, minimal service code, and <code>fastify.inject()</code> official recommended testing approach were verified against the <a href="https://fastify.dev/docs/latest/Guides/Getting-Started/" target="_blank">Fastify Official Getting Started</a> and <a href="https://fastify.dev/docs/latest/Guides/Testing/" target="_blank">Fastify Official Testing Guide</a>; <code>node:sqlite</code> API usage (<code>DatabaseSync</code>/<code>exec</code>/<code>prepare</code>/<code>run</code>/<code>all</code>) and stability marker (1.2 Release Candidate) verified against <a href="https://nodejs.org/api/sqlite.html" target="_blank">Node.js Official SQLite Docs</a>; Node.js 24 (Krypton) being the current Active LTS verified against <a href="https://nodejs.org/en/about/previous-releases" target="_blank">Node.js Official Releases Page</a>; FastAPI adoption rate rising significantly in two years verified against <a href="https://blog.jetbrains.com/pycharm/2025/08/the-state-of-python-2025/" target="_blank">JetBrains/PSF "State of Python 2025" Official Blog</a>, verified in 2026-07.</p>
+
+</section>
+
+<div class="divider"></div>
+
+<section id="indie">
+<div class="sec-tag">Deepening 04</div>
+<h2>Technical Solo Company / Indie Hacker</h2>
+
+<h3 data-reveal>① Topic Selection: 5-Question Filter (Must Answer Before Starting)</h3>
+<table class="tbl">
+  <tr><th>Question</th><th>Passing Mark</th></tr>
+  <tr><td>1. Am I a user of this problem myself?</td><td>Yes—the iteration intuition for a product you use yourself crushes guessing requirements</td></tr>
+  <tr><td>2. Do target users have a habit of paying?</td><td>Dev tools / Productivity tools / B2B mini tools &gt; Consumer-facing free habit zones</td></tr>
+  <tr><td>3. Can it be found via search?</td><td>Clear search terms exist (e.g., "xxx generator/converter")—this gives SEO a grip</td></tr>
+  <tr><td>4. Can one person build the MVP in a short cycle?</td><td>Only if it still works after stripping down to a single core action</td></tr>
+  <tr><td>5. Is it monopolized by giants?</td><td>Having 3-5 surviving small competitors = Market is validated and has room for small players (a completely blank market is actually dangerous)</td></tr>
+</table>
+
+<h3 data-reveal>② User Acquisition: SEO is your whole reason for choosing Web Full-Stack, fully utilize it</h3>
+<ul>
+  <li><strong>Product is Content</strong>: Every feature page/tutorial page/comparison page is a search entrance, SSG is inherently indexable—technically, you need to implement site-level SEO infrastructure like <code>generateMetadata</code>/<code>sitemap.ts</code>/<code>robots.ts</code>/JSON-LD. Look up the specific syntax in official framework docs, don't just memorize the slogan without checking the code;</li>
+  <li><strong>Programmatic SEO</strong>: Use data to batch generate long-tail pages ("X vs Y" matrices, template libraries)—this relies on routing powered by <code>generateStaticParams</code>. The combination of AI + Next.js allows one person to build a thousand-page site;</li>
+  <li><strong>Cold Start 3 Channels</strong>: Build in public (indie hacker communities / Jike), Q&A acquisition (solving real problems where others ask and dropping a link), and pivoting retrospectives themselves are content (your iteration process is serialized material).</li>
+</ul>
+<table class="tbl">
+  <tr><th>Post-Launch Iteration Rhythm</th><th>What to Do</th></tr>
+  <tr><td>Launch Day</td><td>Verify site in Search Console + manually submit sitemap.xml; open robots.txt to confirm you didn't accidentally block pages that shouldn't be blocked</td></tr>
+  <tr><td>First Content Cycle</td><td>Write the first content page—not "About Me", but the kind that can be searched: directly target that confirmed explicit search term from the ① 5-Question Filter for your opening piece</td></tr>
+  <tr><td>Initial Validation Phase</td><td>First batch of backlinks: put links to your product on personal homepages/GitHub profiles/indie hacker community profiles; submit to 3-5 relevant tool directory sites—early backlink quality beats quantity, don't spam</td></tr>
+  <tr><td>Continuous Publishing Phase</td><td>Start "build in public" serialization: every progress update includes the product link; watch Search Console for index volume and impressions curve, not rankings (looking at rankings this early will just scare you)</td></tr>
+  <tr><td>Review based on Feedback</td><td>Review Search Console: which terms have "impressions but no clicks" (time to change title/description), which pages are "discovered - currently not indexed" (check if sitemap/robots are written backwards), and write the next batch of content pages based on this</td></tr>
+</table>
+<p class="src">Specific operation paths for Search Console are subject to Google's official help documentation. Platform UI changes frequently, so only the action sequence is given here, without screenshot steps that will expire.</p>
+
+<h3 data-reveal>③ Payments Collection: Realities for Domestic Entities (Often Avoided in Tutorials)</h3>
+<table class="tbl">
+  <tr><th>Solution</th><th>Applicability</th><th>Reality Check</th></tr>
+  <tr><td>Stripe</td><td>Overseas users</td><td>Requirements for entity location; direct access for domestic individuals has high barriers. A common path is an overseas entity, but calculate the costs first</td></tr>
+  <tr><td>MoR (Paddle / Lemon Squeezy, etc.)</td><td>Overseas collection, want hassle-free</td><td>Merchant of Record handles tax compliance for you with a slightly higher cut—extremely worthwhile for early-stage solo companies</td></tr>
+  <tr><td>Domestic Channels (WeChat/Alipay)</td><td>Domestic users</td><td>Corporate qualifications are basically a hard barrier; research this thoroughly before deciding on the domestic market</td></tr>
+</table>
+<div class="callout note"><b class="t">Default Recommendation</b>The common optimal solution for a solo company: English product + Overseas market + MoR collection—large market, high average order value, shortest compliance path. Platform policies change quickly; rely on the latest official instructions before taking action.</div>
+
+<h3 data-reveal>④ From 0 to $1000 MRR: Milestone Action Plan</h3>
+<table class="tbl">
+  <tr><th>Milestone</th><th>Primary Contradiction</th><th>Action Focus</th></tr>
+  <tr><td>$0 → First Sale</td><td>"Does anyone want it?"</td><td>Pre-launch: Landing page + Waitlist validation (50 emails > 5000 lines of code); Initial Launch: Waitlist + Community + Limited-time Early Bird; Goal is real feedback from 10 paying users, not revenue</td></tr>
+  <tr><td>→ $100 MRR</td><td>"Will they renew?"</td><td>Watch three numbers: Visitors→Signups, Signups→Paid, Monthly Churn; have live conversations with 2 users per week; cut features nobody uses</td></tr>
+  <tr><td>→ $1000 MRR</td><td>"Is it replicable?"</td><td>Double down on effective acquisition channels; scale Programmatic SEO; Pricing experiments (raising prices is often more effective than adding features); all other metrics before this are noise</td></tr>
+</table>
+<p>Pricing mental model: Don't set the starting subscription price too low (hard to raise, easy to lower), offer annual discounts, create a 3-tier pricing model to establish a psychological anchor.</p>
+
+<h3 data-reveal>⑤ What AI Can Do for You in Commercialization</h3>
+<b class="q4">What to Learn</b>
+<p>Many tasks in the commercialization phase are not technical work, but "thinking clearly + writing clearly". This type of task is most suitable for AI acceleration: use AI to help spot loopholes when validating topic hypotheses with the ① 5-Question Filter, quickly convert topic conclusions into a testable landing page copy skeleton, and build a basic Customer Support/FAQ page to catch the most common repetitive questions early on. These aren't questions of "can it be done," but rather "is it worth writing from scratch yourself." Letting AI draft them can save more than half your time.</p>
+<b class="q4">How to Learn</b>
+<p>You don't need to "learn," here it's "use"—just adapt the prompt templates below with your own product information and run them; no need to learn prompt engineering first.</p>
+<b class="q4">What to Use</b>
+<p>General AI conversational tools (ChatGPT/Claude equivalents) are sufficient; no need to mount additional codebases or install plugins.</p>
+<b class="q4">How to Use</b>
+<pre><code>【Validating Topic Hypotheses】
+Here are my answers to the 5 questions from the "5-Question Filter":
+1. [Am I a user myself—Answer]
+2. [Target users' payment habit—Answer]
+3. [Can it be found via search, with a few candidate search terms]
+4. [MVP core action that can be stripped down to in a short cycle]
+5. [List of 3-5 surviving competitors]
+
+Please play a critical angel investor, point out one or two of the weakest assumptions in these five answers,
+and provide concrete methods to validate these assumptions at the lowest cost (without writing code).</code></pre>
+<pre><code>【Writing Testable Landing Page Copy Skeleton】
+Based on the validated product hypotheses above, please write a landing page copy skeleton for me.
+Requirement: Do not use generic marketing fluff. Follow the "Hero Headline (value proposition) → Sub-headline (how it works) → 3 Core Pain Points & Solutions → Social Proof (even if it's just my own usage data) → CTA (Join Waitlist)" structure.
+Give me direct usable copy, do not describe the structure.</code></pre>
+
+<pre><code>【Building Basic Customer Support/FAQ】
+Here is a description of my product's core features: [...]. Please list 8-10 questions users are most likely to ask repeatedly in the first month after launch (refer to 1-2 competitors [...]), give a concise, no-human-intervention-needed answer for each, and mark which 2-3 questions MUST be transferred to a human rather than being answered automatically by AI/FAQ.</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="learning-system">
+<div class="sec-tag">Deepening 05</div>
+<h2>AI-Assisted Learning System</h2>
+
+<h3 data-reveal>3-Layer Learning Method (Master Plan)</h3>
+<table class="tbl">
+  <tr><th>Layer</th><th>Goal</th><th>Approach</th><th>Investment</th></tr>
+  <tr><td>① Rapid Literacy</td><td>Know "what it is"</td><td>Have AI explain the outline using analogies to establish a map first; strictly avoid getting bogged down in details</td><td>Do intensively when entering every new field</td></tr>
+  <tr><td>② Learn by Doing</td><td>True Mastery</td><td>Project blocker → Ask AI → Hands-on solution → Keep moving forward; crystallize each problem into a knowledge point</td><td>Runs throughout the entire expansion process</td></tr>
+  <tr><td>③ Deliberate Internalization</td><td>Convert to Long-term Memory</td><td>Use the Feynman technique to explain it for AI grading + Periodic retrospectives + Dynamic self-testing below</td><td>Continuously repeat in each learning cycle</td></tr>
+</table>
+
+<h3 data-reveal>Letting AI Generate Your Dynamic Self-Test Checklist</h3>
+<p>Don't memorize a fixed question bank tied to a specific tech stack. Whether you are currently in the literacy, project execution, or internalization phase, and what you've actually learned recently, determines what you most need to be quizzed on right now. In each learning cycle, feed your <strong>phase, learned content, deliverables produced, and still-fuzzy areas</strong> to the AI, and let it specifically attack those blind spots where you "thought you knew it after reading." If you can't answer a question, go back to the project or materials for remedial learning, and regenerate it based on new progress in the next cycle.</p>
+<p><strong>Copy-and-pasteable Self-Test Prompt:</strong></p>
+<pre><code>My current learning phase is: [Rapid Literacy / Learn by Doing / Deliberate Internalization].
+Here is the content list I learned in my current learning cycle:
+- [Content 1]
+- [Content 2]
+- [Content 3]
+
+The deliverables I actually produced are: [Projects, Code, Articles, or Demos].
+The areas I'm still fuzzy on are: [List them; you can write "unsure" if you don't know].
+
+Based on the above information, give me 10 self-test questions where "being able to speak the answer fluently to thin air counts as a pass."
+Requirements:
+1. Cover concept boundaries, underlying mechanisms, solution trade-offs, fault diagnosis, and verification methods;
+2. Prioritize testing areas I might think I understand but actually don't; do not test rote memorization of nouns;
+3. Match the difficulty to my current phase, and include at least 3 scenario questions tied to actual deliverables;
+4. Provide only the questions first, no answers. After I dictate my answers one by one, point out errors, omissions, and vague expressions,
+   give the minimal remedial action, and finally organize a checklist of gaps to heavily re-check in the next round of self-testing.</code></pre>
+
+<div class="callout tip"><b class="t">5 Iron Rules + Daily Rhythm</b><strong>Don't Wait · Don't Copy · Get Hands-on · Take Notes · Output.</strong> The daily rhythm doesn't need a locked duration: do a short review first, focus main energy on project execution, and record new concepts, unsolved problems, and daily output before finishing. In each learning cycle, conduct a retrospective according to <a href="#engine">Step ⑤ of the 5-Step Expansion Engine</a>, turning your daily notes into inputs for the next round of deliberate practice and dynamic self-testing.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="pitfalls">
+<div class="sec-tag">Deepening 06</div>
+<h2>Pitfalls and Mental Models</h2>
+
+<table class="tbl er">
+  <tr><th>Pitfall</th><th>Symptom → Solution</th></tr>
+  <tr><td>Tutorial Hell</td><td>Constantly hoarding courses, always feeling the foundation isn't solid yet → <strong>Get a minimal example running first in the startup phase</strong>, then embed learning into your own real project; targeted learning only for what's missing</td></tr>
+  <tr><td>Stale Material Trap</td><td>Copying old materials only to find APIs, toolchains, or best practices have changed → Prioritize official docs and changelogs, verify versions and release dates, then test in the current project to confirm conclusions</td></tr>
+  <tr><td>Type System / Linter Escape Addiction</td><td>Using <code>any</code>, disabling checks, or skipping rules when facing constraints, eventually making the safety net useless → Document the reason for every escape and record it as tech debt; exceptions with unclear boundaries do not enter main</td></tr>
+  <tr><td>Tech Gluttony</td><td>Core problem isn't solved, but constantly wanting to switch frameworks, chase new models, or learn new tools on the side → Ask just one question: <strong>Is this currently blocking delivery, validation, or revenue?</strong> If no, put it back on the candidate list</td></tr>
+  <tr><td>Perfectionism Freeze</td><td>Polishing architecture and experience long-term, afraid to show it to real users → Launch the minimal version that can validate core assumptions first, use real feedback to dictate the next step, rather than filling in all details with imagination</td></tr>
+  <tr><td>AI Dependency Syndrome</td><td>Code and solutions are all generated by AI; you cannot explain, modify, or migrate them → Treat AI as a coach, not a proxy player; for critical logic, you must be able to dictate constraints, manually change a spot, and explain the impact</td></tr>
+  <tr><td>Cognitive Cliff Misjudgment</td><td>Entering deep water, new abstractions, boundaries, and toolchains flood in at once, cognitive load spikes, leading to doubts about choosing the wrong direction → <strong>This is a normal steep climb, not a failure signal</strong>; narrow the problem, map it layer by layer, only verify one boundary at a time</td></tr>
+  <tr><td>Security Negligence</td><td>Treating auth, permissions, secrets, and data isolation as "I'll add it later" → Complete minimum security acceptance before touching real data, payments, or external access; let AI help checklist, but verify item by item yourself</td></tr>
+  <tr><td>Loneliness / Income Anxiety</td><td>Motivation wanes due to lack of feedback; judging exploration a failure due to short-term lack of income → Build in public, establish peer feedback, and separate leading indicators from revenue results; first validate someone is willing to use and pay, then decide whether to scale investment</td></tr>
+  <tr><td>Skipping the Verification Loop</td><td>AI gives a quick answer, so you copy, run, or publish directly, skipping verification → Force a return to <a href="#engine">Step ④ of the 5-Step Expansion Engine</a>: define observable results first, then cross-verify using tests, logs, docs, and counter-examples</td></tr>
+  <tr><td>Mistaking Confidence for Evidence</td><td>AI sounds complete and jargon-rich, so you mistake the conclusion for reliable → Separate fluency from correctness; demand sources, premises, and uncertainties; high-risk conclusions must be double-checked with primary sources or experiments</td></tr>
+  <tr><td>Learning Speed-run Hollowing</td><td>Every blocker is directly solved by AI, progress seems fast, but you've never independently solved a real problem → Periodically reserve debug rounds where AI is not allowed to answer for you: reproduce, narrow scope, propose hypotheses, verify, and document evidence yourself; only ask AI to review the process after getting stuck</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">Resources 07</div>
+<h2>Resource Library</h2>
+
+<div class="callout note"><b class="t">Index On-Demand, Check Back from Cases</b>Choose an <a href="#case-studies">End-to-End Case</a> to advance first; when encountering specific technology, tooling, or delivery problems, return to this section to search by goal. We do not provide a fixed tech stack roadmap here.</div>
+
+<h3 data-reveal>Rating Explanation: S = Mainline Must-Use · A = Highly Recommended · B = Use in Specific Phases</h3>
+
+<h3 data-reveal>Learning Resources and Material Selection</h3>
+<table class="tbl">
+  <tr><th>Tier</th><th>Resource / Method</th><th>Why / How to Use</th></tr>
+  <tr><td><span class="pill s">S</span></td><td>Target technology's official docs, official tutorials, and changelogs</td><td>First determine the tech stack based on the real deliverable you want to build, then check official materials for the target version; versions, commands, and migration notes follow official changelogs. Do not treat old tutorials as current standards.</td></tr>
+  <tr><td><span class="pill s">S</span></td><td><a href="#case-studies">End-to-end Cases on this page</a></td><td>Use the "Diagnose → Speed-run → Scaffolding → Verify → Deepen" loop in the cases to drive learning; every piece learned should land on real project validation, not just saving links.</td></tr>
+  <tr><td><span class="pill a">A</span></td><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang AI Programming Guide</a> · <a href="https://datawhalechina.github.io/easy-vibe/zh-cn/stage-1/learning-map/" target="_blank">DataWhale Easy-Vibe</a></td><td>Refer to these as needed for Chinese tool introductions; the specific technology mainline should still return to the corresponding versions of official materials and project practice.</td></tr>
+  <tr><td><span class="pill a">A</span></td><td>Filtering Tech Videos and Courses</td><td>Prioritize content that specifies versions, provides complete projects, and verification steps; check the table of contents and update time first, treat courses as supplementary explanations, and immediately check official docs if discrepancies arise.</td></tr>
+  <tr><td><span class="pill b">B</span></td><td>Bilibili / YouTube Fragmented Videos</td><td>Only use to build introductory feel or track tech trends; do not substitute project loops with scattered videos, and do not skip version checking just because a lecturer recommended it.</td></tr>
+</table>
+
+<h3 data-reveal>Tools, Templates, and Tech Stack Supplements</h3>
+<table class="tbl">
+  <tr><th>Tier</th><th>Resource</th><th>Description</th></tr>
+  <tr><td><span class="pill s">S</span></td><td>Official Scaffoldings and Official Examples</td><td>When needing to start, find the official template or example for the target tech stack first. Read and understand the generated directories, configurations, and run commands before modifying; use a minimal real feature to verify each integration.</td></tr>
+  <tr><td><span class="pill a">A</span></td><td>README, Issues, and Changelogs within the Project</td><td>For troubleshooting and upgrading, first pinpoint the current project's actual version, configuration, and errors; then check official docs and known issues to avoid blindly copying someone else's environment answers.</td></tr>
+  <tr><td><span class="pill b">B</span></td><td>Next.js / React / Supabase Official Materials</td><td>Only consult these as needed when you choose the corresponding direction in this page's cases: <a href="https://nextjs.org/learn" target="_blank">Next.js Learn</a>, <a href="https://react.dev/learn" target="_blank">React Learn</a>, <a href="https://supabase.com/docs" target="_blank">Supabase Docs</a>. They are not the primary textbooks for everyone.</td></tr>
+  <tr><td><span class="pill b">B</span></td><td>Paid Scaffoldings and Finished Templates</td><td>During the learning phase, prioritize completing the minimal loop yourself; when the delivery speed of the second product is truly more important than the cost of understanding, then evaluate buying, first confirming maintenance status, licensing, and upgrade paths.</td></tr>
+</table>
+
+<h3 data-reveal>Community and Repo Interconnectivity</h3>
+<table class="tbl">
+  <tr><th>Resource</th><th>Usage</th></tr>
+  <tr><td><a href="https://www.indiehackers.com/" target="_blank">Indie Hackers</a> · Indie Hacker Community Apps · Jike / V2EX</td><td>Observe build in public, real income cases, and user feedback to verify if problems are real and if demands are worth pursuing, rather than copying others' tech choices.</td></tr>
+  <tr><td>This Repo's Core Four</td><td><a href="ai-leverage-guide.html">Mindset Page</a> (General Methodology) · <a href="claude-code-guide.html">Claude Code Guide</a> · <a href="codex-guide.html">Codex Guide</a> (Tool Depth) · <a href="env-auth-clinic.html">Environment First Aid Manual</a> (Environment and Auth Troubleshooting)</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">Material Discipline</b>Official materials first · Verify against target version · Validate with real projects · Less is more. Exhausting S-tier resources beats saving a hundred links; when encountering tech stack differences, first confirm your own goals and current version, do not blindly apply fixed paths.</div>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>Note</strong>: This page was fully rewritten in 2026-07, repositioned from the original "Android Transition to Full-Stack" manual to a general methodology guide. Methodology and tool recommendations evolve with AI capabilities, please verify periodically; refer to respective official docs for specific version numbers/APIs.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="Back to Top">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

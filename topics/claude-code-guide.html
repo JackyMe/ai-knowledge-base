@@ -177,6 +177,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 }
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
 </head>
 <body>
 
@@ -184,10 +185,17 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">CC</span>Claude Code 使用指南<span class="sub">干货版</span></div>
   <div class="right">
-    <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 v2.1.224 · 2026-08-07</span>
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
   </div>
-</header>
+</label>
+    <a href="../index.html">◂ 主题中心</a>
+    
+      <span>核对至 2026-08-25</span>
+   
 
 <div class="progress" id="prog"></div>
 
@@ -234,7 +242,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-07</div>
+  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-25</div>
   <h1>Claude Code<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">从心法到命令,从扩展体系到八大实战场景。以官方 Best Practices 与命令参考为底,融合社区高阶经验,压缩成一页可反复查阅的实战手册——只留干货,不讲废话。</p>
   <div class="meta">
@@ -342,7 +350,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">动态</div>
 <h2>近期重要变化</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-05</strong> · 对照 Claude Code <strong>v2.1.222</strong>(2026-08-04 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-25</strong> · 对照 Claude Code <strong>最新版</strong>(2026-08 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
 <h3 data-reveal>🔴 破坏性变更:老习惯会失效</h3>
 <table class="tbl">
@@ -367,20 +375,29 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong><code>/code-review</code> 改为后台子代理执行</strong>(07-22)—— 评审过程不再刷屏,对话记录更干净。</li>
   <li><strong>后台会话新默认收尾</strong>(08-04,v2.1.221)—— 自动 commit + push 保住成果,需要时再开 draft PR;遵循 CLAUDE.md 里的 git 指令;最后主动汇报"工作落在哪"</li>
   <li><strong><code>/usage</code> 不再把整回合算到 MCP 上</strong>(08-04,v2.1.222)—— MCP 工具的用量份额只看"实际消费其工具结果的请求",不是"调过它的整回合"——成本拆分终于合理</li>
+  <li><strong>修复 Bash 工具权限校验绕过</strong>(08-11,v2.1.226)—— zsh 的 <code>[[ ]]</code> 正则条件中隐藏的命令现在会正确触发权限确认</li>
+  <li><strong><code>claude agents</code> 增加工作区信任弹窗</strong>(08-08,v2.1.225)—— 在未信任目录执行时需二次确认(与 <code>claude</code> 保持一致)</li>
 </ul>
 
 <h3 data-reveal>🆕 新增能力:值得马上试的</h3>
 <table class="tbl">
   <tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
+  <tr><td>08-17</td><td><strong><code>/design</code> Skill (预览版)</strong></td><td>在终端直接基于想法或现有图片生成可编辑的设计画板 (Artboards)，实现设计与代码的无缝衔接。</td></tr>
+  <tr><td>08-下旬</td><td><strong>Concise 输出风格</strong></td><td>配置 <code>"outputStyle": "Concise"</code>，极致精简回答废话，减少大段叙述，代码和结果先行。</td></tr>
+  <tr><td>08-下旬</td><td><strong>自动继续 (Auto-Continue)</strong></td><td>遇到配额上限卡住后，当配额刷新时现在会自动继续之前的任务。</td></tr>
+  <tr><td>08-下旬</td><td><strong>GitLab 集成</strong></td><td>对于配置了 <code>glab</code> 权限的仓库，现在会在状态栏直接显示 Merge Request 角标。</td></tr>
+  <tr><td>08-14</td><td><strong>Auto Mode 默认开启</strong>(v2.1.228)</td><td>Pro, Max, Team 计划新会话默认使用自动模式(Auto mode)，用风险评估器替代频繁手动确认。</td></tr>
+  <tr><td>08-08</td><td><strong>网关硬性预算上限</strong>(v2.1.225)</td><td>可为单个会话设置硬性成本上限(Budgeting)，超额即止，防止账单爆炸。</td></tr>
   <tr><td>08-07</td><td>跨会话 <code>SendMessage</code>(v2.1.224)</td><td>Claude Code 会话可跨机器互相通信;<code>ListAgents</code> 发现当前可对话的会话(macOS/Linux)。多机协作场景告别开多个终端</td></tr>
   <tr><td>08-07</td><td><code>claude self-hosted-runner</code>(v2.1.224)</td><td>把你的机器/容器注册成 Team/Enterprise web/mobile/desktop 会话的运行地;企业内网合规部署场景</td></tr>
   <tr><td>08-07</td><td><code>archive</code> 插件源 + SHA-256 pin(v2.1.224)</td><td>HTTPS zip 装插件,带 SHA-256 校验,供应链更安全</td></tr>
   <tr><td>08-06</td><td><code>/review</code> 改名为 <code>/code-review</code> 的别名(v2.1.223)</td><td>所有脚本里 <code>/review &lt;PR#&gt;</code> 改写为 <code>/code-review &lt;PR#&gt;</code>;<code>/review</code> 仍可用但语义已变</td></tr>
   <tr><td>08-06</td><td><strong>1M 上下文默认走 auto-compaction</strong>(v2.1.223)</td><td>原生 1M 窗口的 Claude 模型都过 auto-compaction 限到 200K;不想要恢复旧行为设 <code>CLAUDE_CODE_DISABLE_1M_CONTEXT=1</code></td></tr>
-  <tr><td>08-04</td><td><strong>Focus view</strong>(VSCode)</td><td><kbd>Ctrl+Alt+F</kbd> 或命令面板 "Claude Code: Toggle Focus view"。把工具活动折叠成可展开的逐回合摘要 + 实时运行指示器,长会话看输出不再刷屏</td></tr>
-  <tr><td>08-04</td><td>沙箱凭证 <code>mode: "mask"</code>(Linux/WSL)</td><td>沙箱里读凭证拿到的是<strong>哨兵拷贝</strong>(全文或 <code>extract</code> 正则截取的片段),出口时由代理替换为真实值;macOS 暂 fallback 为 <code>deny</code>。CI 跑需要密钥的命令时减少暴露面</td></tr>
-  <tr><td>08-04</td><td><code>claude-api</code> skill 新增 <code>prompt-audit</code></td><td>审计你自己的提示词与工具描述里"为旧模型写的模式",升级到新模型时跑一次心里有底</td></tr>
-  <tr><td>08-04</td><td><code>claude plugin validate</code> 命名预警</td><td>marketplace / 插件名会被 Claude Desktop 托管同步拒绝时给出告警,避免装上去才发现用不了</td></tr>
+  <tr><td>08-11</td><td><strong>Focus view</strong>(VSCode)</td><td><kbd>Ctrl+Alt+F</kbd> 或命令面板 "Claude Code: Toggle Focus view"。把工具活动折叠成可展开的逐回合摘要 + 实时运行指示器,长会话看输出不再刷屏</td></tr>
+  <tr><td>08-11</td><td>沙箱凭证 <code>mode: "mask"</code>(Linux/WSL)</td><td>沙箱里读凭证拿到的是<strong>哨兵拷贝</strong>(全文或 <code>extract</code> 正则截取的片段),出口时由代理替换为真实值;macOS 暂 fallback 为 <code>deny</code>。CI 跑需要密钥的命令时减少暴露面</td></tr>
+  <tr><td>08-11</td><td><code>claude-api</code> skill 新增 <code>prompt-audit</code></td><td>审计你自己的提示词与工具描述里"为旧模型写的模式",升级到新模型时跑一次心里有底</td></tr>
+  <tr><td>08-11</td><td><code>claude plugin validate</code> 命名预警</td><td>marketplace / 插件名会被 Claude Desktop 托管同步拒绝时给出告警,避免装上去才发现用不了</td></tr>
+  <tr><td>08-08</td><td>网关用量警告增强</td><td>触达上限时显示网关额度、重置时间与管理员留言</td></tr>
   <tr><td>07-24</td><td><strong>Opus 5</strong> 成为默认 Opus 模型</td><td>1M 上下文。<code>/fast</code> 快速档现适用于 Opus 5 与 4.8(4.7 已移出)</td></tr>
   <tr><td>06-30</td><td><strong>Sonnet 5</strong> 成为默认模型</td><td>原生 1M 上下文</td></tr>
   <tr><td>07-17</td><td><code>/subtask</code></td><td>派生子代理办侧线任务(即原 <code>/fork</code>)</td></tr>

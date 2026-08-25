@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12. 侦探视角：怎么查日志 - Docker 35 级通关专栏</title>
+<style>
+:root {
+  --accent: #0284c7;
+  --accent-light: #0ea5e9;
+  --accent-soft: #f0f9ff;
+  --accent-border: #bae6fd;
+  --ink: #0f172a;
+  --bg: #ffffff;
+  --bg-side: #f8fafc;
+  --bg-code: #0f172a;
+  --text: #1e293b;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --border-2: #cbd5e1;
+  --tip-bg: #f0fdf4;
+  --tip-border: #bbf7d0;
+  --warn-bg: #fffbeb;
+  --warn-border: #fde68a;
+  --note-bg: #f0f9ff;
+  --note-border: #bae6fd;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, "JetBrains Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.8; font-size: 15.5px; -webkit-font-smoothing: antialiased; }
+
+/* 顶部阅读进度条 */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, #0ea5e9, #0284c7, #38bdf8);
+  z-index: 1000; transition: width 0.1s ease;
+}
+
+/* 顶栏 */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.menu-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
+  align-items: center; justify-content: center; font-size: 18px; color: var(--text-2);
+}
+.menu-toggle:hover { background: var(--bg-side); color: var(--ink); }
+
+.logo {
+  font-weight: 800; font-size: 16px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff;
+}
+.logo-badge {
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 2px 8px; border-radius: 99px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 13.5px; }
+.topbar-right a {
+  color: var(--text-2); text-decoration: none; font-weight: 500;
+  display: flex; align-items: center; gap: 4px; transition: color 0.15s;
+}
+.topbar-right a:hover { color: var(--accent); }
+
+/* 侧边栏 */
+.sidebar {
+  position: fixed; top: 60px; left: 0; bottom: 0; width: 310px;
+  overflow-y: auto; background: var(--bg-side);
+  border-right: 1px solid var(--border); padding: 18px 14px 60px;
+  z-index: 90; transition: transform 0.25s ease;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+/* 侧边栏搜索框 */
+.side-search-box { margin-bottom: 16px; position: relative; }
+.side-search-input {
+  width: 100%; padding: 8px 32px 8px 12px; border: 1px solid var(--border-2);
+  border-radius: 8px; font-size: 13px; font-family: var(--font);
+  background: #fff; color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.side-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15); }
+.side-search-icon {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-3); pointer-events: none;
+}
+
+/* 阶段分组 */
+.nav-group { margin-bottom: 18px; }
+.nav-group-title {
+  font-size: 11.5px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px;
+  margin-bottom: 2px;
+}
+
+.nav-item {
+  display: flex; align-items: flex-start; padding: 8px 10px;
+  border-radius: 8px; color: var(--text-2); text-decoration: none;
+  font-size: 13.5px; margin-bottom: 1px; transition: all 0.15s; line-height: 1.45;
+}
+.nav-item:hover { background: var(--border); color: var(--ink); }
+.nav-item.on {
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; border-left: 3px solid var(--accent);
+}
+.nav-item .n {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  margin-right: 8px; flex: none; margin-top: 1px;
+}
+.nav-item.on .n { color: var(--accent); font-weight: 700; }
+
+/* 遮罩层 (移动端) */
+.sidebar-backdrop {
+  position: fixed; inset: 60px 0 0 0; background: rgba(15, 23, 42, 0.45);
+  z-index: 85; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
+
+/* 主内容区 */
+.main-wrap {
+  margin-left: 310px; padding: 40px 48px 120px;
+  max-width: 960px; min-height: 100vh;
+}
+
+/* 章节徽章 */
+.chapter-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 4px 10px; border-radius: 99px; margin-bottom: 16px;
+}
+
+h1 { font-size: 28px; font-weight: 800; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.5px; line-height: 1.35; }
+h2 { font-size: 20px; font-weight: 700; color: var(--ink); margin: 40px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 28px 0 14px; }
+p { margin-bottom: 16px; color: var(--text); }
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+ul, ol { margin: 0 0 20px 22px; }
+li { margin-bottom: 8px; color: var(--text); }
+strong { color: var(--ink); font-weight: 700; }
+
+/* 代码块 */
+code {
+  font-family: var(--mono); font-size: 85%; background: #f1f5f9;
+  color: #e11d48; padding: 2px 6px; border-radius: 4px;
+}
+pre {
+  position: relative; background: var(--bg-code); color: #e2e8f0;
+  padding: 20px; border-radius: var(--radius); overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; margin: 24px 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+
+/* 代码高亮配色 */
+.bash-cmd { color: #38bdf8; font-weight: 600; }
+.bash-arg { color: #c084fc; }
+.bash-comment { color: #64748b; font-style: italic; }
+.bash-str { color: #a3e635; }
+
+/* 代码复制按钮 */
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1; font-size: 11px; font-family: var(--font);
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  opacity: 0; transition: all 0.15s ease;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.copy-btn.copied { background: #16a34a; border-color: #22c55e; color: #fff; }
+
+/* 提示卡片 */
+.alert {
+  padding: 18px 20px; border-radius: var(--radius); margin: 24px 0;
+  font-size: 14.5px; display: flex; gap: 14px; border: 1px solid var(--border);
+}
+.alert.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+.alert.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.alert.note { background: var(--note-bg); border-color: var(--note-border); }
+.alert .ic { font-size: 22px; flex: none; }
+.alert .tt { font-weight: 750; color: var(--ink); display: block; margin-bottom: 6px; font-size: 15.5px; }
+
+/* 步骤面板 */
+.step-panel {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin: 28px 0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+.step-header {
+  background: var(--bg-side); padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-weight: 700; color: var(--ink); font-size: 15px; display: flex; align-items: center; gap: 8px;
+}
+.step-body { padding: 20px; }
+
+/* 踩坑自救室 */
+.trouble-box {
+  background: #fff5f5; border: 1px dashed #fca5a5; border-radius: var(--radius);
+  padding: 22px; margin: 32px 0;
+}
+.trouble-title {
+  color: #dc2626; font-weight: 800; font-size: 16.5px;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.trouble-item { margin-bottom: 14px; }
+.trouble-item:last-child { margin-bottom: 0; }
+.trouble-item .q { font-weight: 700; color: var(--ink); margin-bottom: 4px; font-size: 14.5px; }
+.trouble-item .a { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+
+/* Mermaid 图表容器 */
+.mermaid-box {
+  display: flex; justify-content: center; margin: 28px 0;
+  background: #f8fafc; border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); overflow-x: auto;
+}
+
+/* 底部上一节/下一节导航 */
+.page-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border);
+}
+.page-nav-link {
+  display: flex; flex-direction: column; padding: 14px 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; transition: all 0.15s ease; flex: 1; max-width: 48%;
+  background: #fff;
+}
+.page-nav-link:hover {
+  border-color: var(--accent); background: var(--accent-soft);
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+.page-nav-link .dir { font-size: 11.5px; color: var(--text-3); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
+.page-nav-link .title { font-size: 14.5px; font-weight: 700; color: var(--accent); }
+.page-nav-link.next { text-align: right; margin-left: auto; }
+
+/* 快捷键提示 */
+.keyboard-hints {
+  margin-top: 30px; text-align: center; font-size: 12px; color: var(--text-3);
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.kbd {
+  background: #f1f5f9; border: 1px solid var(--border-2); border-radius: 4px;
+  padding: 1px 6px; font-family: var(--mono); font-size: 11px; color: var(--text-2);
+}
+
+/* 回到顶部按钮 */
+.back-to-top {
+  position: fixed; bottom: 30px; right: 30px; width: 42px; height: 42px;
+  background: #fff; border: 1px solid var(--border-2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-2); cursor: pointer; opacity: 0;
+  pointer-events: none; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  z-index: 80;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* 移动端自适应 */
+@media (max-width: 960px) {
+  .menu-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); width: 290px; }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }
+  .main-wrap { margin-left: 0; padding: 30px 20px 100px; }
+  .logo-badge { display: none; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+  .page-nav-link.next { text-align: left; }
+}
+</style>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+</script>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle" aria-label="切换目录">☰</button>
+    <a href="01-intro.html" class="logo">
+      <div class="logo-icon">🐳</div>
+      <span>Docker 35 级通关专栏</span>
+      <span class="logo-badge">干货图解版</span>
+    </a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../index.html"><span>←</span> 返回知识库首页</a>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="side-search-box">
+    <input type="text" class="side-search-input" id="sideSearch" placeholder="🔍 快速过滤 35 章节..." autocomplete="off">
+    <span class="side-search-icon">⌘K</span>
+  </div>
+  <div class="nav-group">
+  <div class="nav-group-title">💡 第一阶段：概念破冰</div>
+  <a class="nav-item" href="01-intro.html"><span class="n">01.</span><span>楔子：小明的世纪难题</span></a>
+  <a class="nav-item" href="02-what-is-docker.html"><span class="n">02.</span><span>用“搬家”讲透 Docker</span></a>
+  <a class="nav-item" href="03-vm-vs-container.html"><span class="n">03.</span><span>降维打击：VM vs 容器</span></a>
+  <a class="nav-item" href="04-core-components.html"><span class="n">04.</span><span>图解三剑客架构</span></a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
+  <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
+  <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-title">🚀 第三阶段：容器驾驶</div>
+  <a class="nav-item" href="09-run-detached.html"><span class="n">09.</span><span>后台跑一个 Nginx 网站</span></a>
+  <a class="nav-item" href="10-lifecycle-cmds.html"><span class="n">10.</span><span>掌控生杀大权 (状态机)</span></a>
+  <a class="nav-item" href="11-exec-into.html"><span class="n">11.</span><span>破门而入：钻进容器内部</span></a>
+  <a class="nav-item on" href="12-logs-detective.html"><span class="n">12.</span><span>侦探视角：怎么查日志</span></a>
+  <a class="nav-item" href="13-resource-limits.html"><span class="n">13.</span><span>资源枷锁：防 OOM 宕机</span></a>
+  <a class="nav-item" href="14-healthcheck.html"><span class="n">14.</span><span>健康检查：容器自我把脉</span></a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-title">📦 第四阶段：镜像定制</div>
+  <a class="nav-item" href="15-why-dockerfile.html"><span class="n">15.</span><span>告别人工配环境</span></a>
+  <a class="nav-item" href="16-dockerfile-syntax.html"><span class="n">16.</span><span>语法大扫盲</span></a>
+  <a class="nav-item" href="17-dockerignore.html"><span class="n">17.</span><span>.dockerignore 避坑指南</span></a>
+  <a class="nav-item" href="18-build-practice.html"><span class="n">18.</span><span>实战打包 Web 项目</span></a>
+  <a class="nav-item" href="19-layer-caching.html"><span class="n">19.</span><span>图解：分层缓存魔法</span></a>
+  <a class="nav-item" href="20-frontend-deploy.html"><span class="n">20.</span><span>优雅上线 Vue/React</span></a>
+  <a class="nav-item" href="21-multi-stage.html"><span class="n">21.</span><span>终极瘦身：多阶段构建</span></a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-title">💾 第五阶段：数据持久化</div>
+  <a class="nav-item" href="22-ephemeral-data.html"><span class="n">22.</span><span>短命容器与消失的数据</span></a>
+  <a class="nav-item" href="23-volumes.html"><span class="n">23.</span><span>终极保命符：数据卷 Volumes</span></a>
+  <a class="nav-item" href="24-bind-mounts.html"><span class="n">24.</span><span>开发神技：绑定挂载</span></a>
+  <a class="nav-item" href="25-volume-backup.html"><span class="n">25.</span><span>保险箱搬家：数据备份</span></a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-title">🌐 第六阶段：网络与编排</div>
+  <a class="nav-item" href="26-network-types.html"><span class="n">26.</span><span>网络探秘：Bridge 与 Host</span></a>
+  <a class="nav-item" href="27-container-network.html"><span class="n">27.</span><span>容器相亲记：告别 IP</span></a>
+  <a class="nav-item" href="28-why-compose.html"><span class="n">28.</span><span>为什么需要 Compose？</span></a>
+  <a class="nav-item" href="29-yaml-syntax.html"><span class="n">29.</span><span>YAML 语法速成班</span></a>
+  <a class="nav-item" href="30-compose-up-part1.html"><span class="n">30.</span><span>终极之战(上)：Web+缓存</span></a>
+  <a class="nav-item" href="31-compose-up-part2.html"><span class="n">31.</span><span>终极之战(下)：微服务网络</span></a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-title">🛡️ 第七阶段：安全与生产</div>
+  <a class="nav-item" href="32-env-security.html"><span class="n">32.</span><span>护城河：.env 保护密码</span></a>
+  <a class="nav-item" href="33-system-prune.html"><span class="n">33.</span><span>空间大扫除</span></a>
+  <a class="nav-item" href="34-production-root.html"><span class="n">34.</span><span>毕业红线：绝不用 Root</span></a>
+  <a class="nav-item" href="35-cicd-concept.html"><span class="n">35.</span><span>尾声：CI/CD 自动化流水线</span></a>
+</div>
+
+</aside>
+
+<main class="main-wrap">
+  <div class="chapter-badge">🐳 阶段：容器驾驶 · 第 12 / 35 讲</div>
+  <h1>12. 侦探视角：怎么查日志</h1>
+
+<div class="step-panel">
+  <div class="step-header">🕵️‍♂️ 凌晨三点的崩溃</div>
+  <div class="step-body">
+    <p>凌晨三点，老板打来电话：“小明啊，我们的网站崩了，赶紧看看！”</p>
+    <p>你揉着惺忪的睡眼，连上服务器输入 <code>docker ps</code>，却发现那个叫做 <code>payment-service</code> 的容器不见了！加上 <code>-a</code> 一看，它的状态变成了 <code>Exited (1) 2 hours ago</code>。</p>
+    <p>容器已经死了，你没法 <code>docker exec</code> 进去看报错。这时候，你唯一的线索，就是它生前留下的“遗言”——日志。</p>
+  </div>
+</div>
+
+<h2>一、时光倒流：基础日志查看</h2>
+<p>获取容器日志最简单的命令，就是 <code>docker logs</code> 加上容器的名字或 ID：</p>
+<pre><code><span class="bash-cmd">docker logs</span> payment-service</code></pre>
+<p>如果这个容器跑了很久，这行命令会把它从出生到死亡的<strong>所有</strong>日志像瀑布一样刷在你的屏幕上，让你瞬间看花眼。</p>
+
+<h3>1. 只看最后的遗言 (<code>--tail</code>)</h3>
+<p>通常我们只关心崩溃前最后发生了什么。用 <code>--tail</code> 参数可以只看最后 N 行：</p>
+<pre><code><span class="bash-comment"># 只看最后 50 行日志</span>
+<span class="bash-cmd">docker logs</span> --tail 50 payment-service</code></pre>
+
+<h3>2. 案发时间的精确过滤 (<code>--since</code> / <code>--until</code>)</h3>
+<p>如果你知道大老板是昨晚 2 点反馈的问题，你可以只看那段时间的日志：</p>
+<pre><code><span class="bash-comment"># 查看过去 2 小时内的日志</span>
+<span class="bash-cmd">docker logs</span> --since 2h payment-service
+
+<span class="bash-comment"># 或者指定具体的 ISO 时间</span>
+<span class="bash-cmd">docker logs</span> --since "2023-10-01T01:50:00" --until "2023-10-01T02:10:00" payment-service</code></pre>
+
+<h3>3. 让每条日志都有时间戳 (<code>-t</code> / <code>--timestamps</code>)</h3>
+<p>有些程序的日志自己不带时间打印，这就很让人抓狂。Docker 贴心地提供了一个参数，给每行日志强行打上容器系统时间：</p>
+<pre><code><span class="bash-cmd">docker logs</span> -t payment-service
+<span class="bash-comment"># 输出效果：2023-10-01T02:05:11.123456789Z Exception in thread "main"...</span></code></pre>
+
+<h2>二、盯盘模式：实时追踪日志 (<code>-f</code>)</h2>
+<p>如果容器还在运行，你想实时看着日志来排查刚上线的 Bug，你需要加上 <code>-f</code> (follow) 参数。这和 Linux 里的 <code>tail -f</code> 是一样的感觉：</p>
+<pre><code><span class="bash-cmd">docker logs</span> -f --tail 20 payment-service</code></pre>
+<p>屏幕会停住，每当程序打印一行新日志，屏幕就会实时刷出一条。按 <code>Ctrl + C</code> 可以退出这种盯盘模式。</p>
+
+<h2>三、底层揭秘：日志去哪了？</h2>
+<p>很多新手会有个疑问：“我的程序明明是把日志写在屏幕上 (stdout) 的，Docker 关在后台跑，这些日志存哪了？”</p>
+<p>在 Docker 默认配置下，它使用了 <code>json-file</code> 日志驱动。容器里所有输出到 <strong>stdout (标准输出)</strong> 和 <strong>stderr (标准错误)</strong> 的内容，都会被 Docker 截获，并悄悄存在宿主机的一个隐藏 JSON 文件里。</p>
+
+<div class="alert warn">
+  <span class="ic">⚠️</span>
+  <div>
+    <span class="tt">严重警告：日志撑爆硬盘！</span>
+    <p>Docker 默认是<strong>不会自动清理日志</strong>的！如果你的程序日志输出极快（比如高并发网关），几天时间那个 JSON 文件就能膨胀到几十上百 GB，把宿主机硬盘彻底撑爆，导致整个服务器宕机！</p>
+  </div>
+</div>
+
+<h3>防撑爆指南：设置日志轮转策略</h3>
+<p>在运行容器时，一定要养成加上 <code>--log-opt</code> 参数限制日志大小的好习惯：</p>
+<pre><code><span class="bash-cmd">docker run</span> -d   --log-opt max-size=10m   --log-opt max-file=3   --name safe-app my-app</code></pre>
+<p>这表示：每个日志文件最大 10MB，最多保留 3 个滚动文件。再也不用担心半夜被“Disk Full”警报叫醒了。</p>
+
+<h2>四、除了查日志，还能怎么“查房”？</h2>
+
+<h3>1. 查“户口本”：docker inspect</h3>
+<p>想看容器到底分配了哪个 IP？挂载了哪个目录？环境变量传对没？用 inspect 查它的元数据：</p>
+<pre><code><span class="bash-comment"># 会输出一大串 JSON，建议配合 grep 使用</span>
+<span class="bash-cmd">docker inspect</span> my-app | <span class="bash-cmd">grep</span> "IPAddress"</code></pre>
+
+<h3>2. 查“心电图”：docker stats</h3>
+<p>想看看是不是程序内存泄漏了？类似 Linux 的 <code>top</code> 命令，你可以实时查看所有容器的 CPU、内存、网络 IO 占用：</p>
+<pre><code><span class="bash-cmd">docker stats</span></code></pre>
+
+<h3>3. 隔空看进程：docker top</h3>
+<p>不用进入容器，直接在宿主机上看容器里跑着什么进程：</p>
+<pre><code><span class="bash-cmd">docker top</span> my-app</code></pre>
+
+<div class="trouble-box">
+  <div class="trouble-title">🚑 踩坑自救室</div>
+  
+  <div class="trouble-item">
+    <div class="q">Q1: 为什么我用 docker logs 查出来的日志是空的？</div>
+    <div class="a">A: 这通常是因为你的应用程序把日志写到了容器内的<strong>某个文件</strong>里（比如 /var/log/app.log），而不是输出到了终端 (stdout/stderr)。Docker 只能捕获到标准输出。解决办法是：要么改代码把日志打到终端，要么用挂载卷把那个日志文件挂载出来看。</div>
+  </div>
+</div>
+
+<div class="alert tip">
+  <span class="ic">🚀</span>
+  <div>
+    <span class="tt">Pro-tip / 老鸟技巧：结构化日志</span>
+    <p>如果你在做企业级微服务开发，千万不要让程序输出纯文本日志。建议输出 <strong>JSON 格式的结构化日志</strong>。<br>
+    Docker 原生支持将日志直接发送到 Syslog、Fluentd 或 ELK 栈，当日志本身是 JSON 时，后续的自动化日志收集、分词、检索、报警都会变得如丝般顺滑。</p>
+  </div>
+</div>
+  
+  <div class="page-nav">
+  <a href="11-exec-into.html" class="page-nav-link prev"><span class="dir">← 上一节</span><span class="title">11. 破门而入：钻进容器内部</span></a>
+  <a href="13-resource-limits.html" class="page-nav-link next"><span class="dir">下一节 →</span><span class="title">13. 资源枷锁：防 OOM 宕机</span></a>
+</div>
+
+  <div class="keyboard-hints">
+    <span>💡 快捷键：按 <span class="kbd">←</span> 上一节</span>
+    <span>按 <span class="kbd">→</span> 下一节</span>
+    <span>按 <span class="kbd">/</span> 聚焦搜索</span>
+  </div>
+</main>
+
+<button class="back-to-top" id="backToTop" title="回到顶部">↑</button>
+
+<script>
+// 1. 阅读进度条
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+  
+  // 回到顶部按钮可见性
+  const btt = document.getElementById('backToTop');
+  if (winScroll > 300) {
+    btt.classList.add('show');
+  } else {
+    btt.classList.remove('show');
+  }
+});
+
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// 2. 移动端侧边栏切换
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function toggleSidebar() {
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('active');
+}
+
+menuToggle.addEventListener('click', toggleSidebar);
+backdrop.addEventListener('click', toggleSidebar);
+
+// 3. 代码复制功能
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.innerText = '复制';
+  btn.addEventListener('click', () => {
+    const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = '已复制 ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = '复制';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// 4. 侧边栏即时过滤搜索
+const searchInput = document.getElementById('sideSearch');
+searchInput.addEventListener('input', (e) => {
+  const val = e.target.value.toLowerCase().trim();
+  const navItems = document.querySelectorAll('.sidebar .nav-item');
+  const groups = document.querySelectorAll('.sidebar .nav-group');
+  
+  navItems.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    if (!val || text.includes(val)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  // 如果组内所有项目都被隐藏，则隐藏组标题
+  groups.forEach(group => {
+    const visibleChildren = group.querySelectorAll('.nav-item:not([style*="display: none"])');
+    if (visibleChildren.length === 0 && val) {
+      group.style.display = 'none';
+    } else {
+      group.style.display = 'block';
+    }
+  });
+});
+
+// 5. 键盘导航
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  
+  if (e.key === 'ArrowLeft') {
+    const prevLink = document.querySelector('.page-nav-link.prev');
+    if (prevLink) prevLink.click();
+  } else if (e.key === 'ArrowRight') {
+    const nextLink = document.querySelector('.page-nav-link.next');
+    if (nextLink) nextLink.click();
+  } else if (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Network-wide research aggregation: One table of capability boundaries, 8 major scenario benefit matrices, 5 paradigms for programming/writing/research/data automation/life, 3 major tool selections, 7 universal mental models with sources, reproducible case collections, and learning paths for ordinary people.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What can AI actually do for you? · Efficiency Panorama and Mental Models · 2026.07">
+<meta property="og:description" content="Network-wide research aggregation: One table of capability boundaries, 8 major scenario benefit matrices, 5 paradigms for programming/writing/research/data automation/life, 3 major tool selections, 7 universal mental models with sources, reproducible case collections, and learning paths for ordinary people.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-leverage-guide.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>What can AI actually do for you? · Efficiency Panorama and Mental Models · 2026.07</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#a78bfa; --accent-soft:#f3eefe;
+  --ink:#150f26; --bg:#ffffff; --bg-side:#fbfafd; --bg-code:#141021;
+  --text:#232030; --text-2:#5d5a6b; --text-3:#928fa0;
+  --border:#eae7f1; --border-2:#d9d4e6;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f3eefe;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#efeaf8;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#efeaf9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(124,58,237,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(167,139,250,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.16);
+  border:1px solid rgba(124,58,237,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a78bfa,#ddd6fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c2bdd6;max-width:640px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a29dbb}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#ddd2f5}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f1eefa;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#6d28d9}
+pre{background:var(--bg-code);color:#e4dff0;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8b87a0}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#faf9fd}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fbfafe}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#faf9fd;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f3eefe;color:#6d28d9}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(21,15,38,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">AI</span>AI Efficiency Panorama and Mental Models<span class="sub">Practical Edition</span></div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
+    <a href="../index.en.html">◂ Topic Hub</a>
+    <span>Network-wide Research · 2026-07-20</span>
+      <span>Verified 2026-08-17</span>
+  
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter chapters…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">Cognition</div>
+    <a href="#map"><span class="no">00</span>Panorama Map: One Table of Boundaries</a>
+    <a href="#matrix"><span class="no">01</span>Scenario × Benefit Matrix</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Scenario Paradigms</div>
+    <a href="#coding"><span class="no">02</span>Programming: Best Paradigms</a>
+    <a href="#writing"><span class="no">03</span>Writing & Documentation</a>
+    <a href="#research"><span class="no">04</span>Research & Learning</a>
+    <a href="#data-auto"><span class="no">05</span>Data & Automation</a>
+    <a href="#life"><span class="no">06</span>Life & Self-Management</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Tool Selection</div>
+    <a href="#tools"><span class="no">07</span>How to Choose the 3 Major Tools</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Inner Skills</div>
+    <a href="#principles"><span class="no">08</span>7 Universal Mental Models</a>
+    <a href="#cases"><span class="no">09</span>Real Case Collection</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Getting Started</div>
+    <a href="#learning-path"><span class="no">10</span>Learning Path for Ordinary People</a>
+    <a href="#resources"><span class="no">11</span>Resource Index</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🧭 Network-wide Research Aggregation · Official Docs + Research Reports + Community Consensus · Verified August 17, 2026</div>
+  <h1>What can AI actually do for you?<br><span class="grad">Efficiency Panorama and Mental Models</span></h1>
+  <p class="lead">No exaggeration: Which scenarios have the most dramatic efficiency gains, the correct approach for each scenario, how to choose between the three major coding agents, cross-scenario universal mental models, and the path from zero to proficiency for ordinary people. Every key assertion has a source—including the harsh truth that "AI can sometimes make you slower."</p>
+  <div class="meta">
+    <span>8 Major Scenarios</span><span>7 Mental Models</span><span>7 Reproducible Cases</span><span>Misconceptions List</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>57%</b><span>Tasks on the Claude platform are "human-AI collaboration" rather than fully automatic (Anthropic Economic Index)</span></div>
+  <div class="stat"><b>42%</b><span>Proportion of personal life use cases is still rising rapidly in 2026 — non-programming scenarios are underestimated</span></div>
+  <div class="stat"><b>-19%</b><span>METR test: Using the wrong paradigm, senior developers were 19% slower (yet felt 20% faster)</span></div>
+  <div class="stat"><b>+10%</b><span>Experienced users have an ~10% higher task success rate than novices: Knowing how to use it is trained, not innate</span></div>
+</div>
+
+<section id="map">
+<div class="sec-tag">Cognition 00</div>
+<h2>Panorama Map: What AI is Good at and What it isn't</h2>
+
+<p>First establish an honest understanding of capability boundaries, then talk about efficiency. By mid-2026, general large models (Claude / GPT / Gemini) are already "stably usable" in the left column of the table below, while the right column still requires human backup—putting tasks in the wrong column is the source of all disappointment.</p>
+
+<table class="tbl">
+  <tr><th>✅ Good at (safe to delegate)</th><th>⚠️ Not good at (human must check)</th></tr>
+  <tr><td>First draft generation: Articles, code, plans, emails—from 0 to 60 points extremely fast</td><td>The last 20 points: Perspectives, taste, trade-offs, still human work</td></tr>
+  <tr><td>Format conversion & structuring: Messy notes→tables, transcripts→minutes, requirements→code skeleton</td><td>Factual accuracy: Can invent seriously (hallucinations), important facts must be verified</td></tr>
+  <tr><td>Summary compression: Extract key points from long docs, papers, meeting records</td><td>Timely information: Events after training cutoff are unreliable without web search</td></tr>
+  <tr><td>Translation & polishing: Near-native level, controllable style</td><td>Long-chain unverified tasks: Multi-step tasks without checkpoints, errors compound</td></tr>
+  <tr><td>Brainstorming: 10 options at once, human picks</td><td>Precise calculation & counting: Let it write code to calculate, don't let it do mental math</td></tr>
+  <tr><td>Cross-domain intro explanations: A "patient tutor" for any subject</td><td>Responsibility & decision-making: High-risk medical/legal/investment decisions, AI is just an advisor</td></tr>
+  <tr><td>Code: Scripts, bug fixes, error explanations—compilers and tests are natural safety nets</td><td>"Do it all for me": The more vague the full delegation, the higher the failure rate</td></tr>
+</table>
+
+<h3 data-reveal>Three Counter-intuitive Data Points</h3>
+<ul>
+  <li><strong>Programming is still the #1 use, but personal life usage is surging.</strong> Anthropic Economic Index shows tasks related to "Computer & Math" professions account for ~35% of Claude chats, the highest of all categories; meanwhile, personal usage rose from 35% to 42% (2025-11 → 2026-02).</li>
+  <li><strong>Over half of tasks are "collaboration" not "automation".</strong> 57% of tasks are iterative human-AI collaboration, 43% are delegated automation—showing the current best approach remains "AI works, human directs and verifies."</li>
+  <li><strong>Wrong paradigm makes you slower with AI.</strong> METR 2025 RCT: 16 senior open-source developers using AI tools on their familiar large codebases were actually <strong>19% slower</strong> in completing tasks—but self-reported feeling 20% faster.</li>
+</ul>
+
+<div class="callout warn"><b class="t">Correct Interpretation of METR Research</b>It proves not that "AI is useless," but: <strong>In fields where you are "already extremely proficient," AI gains are minimal; the perceived efficiency heavily overestimates the actual efficiency.</strong> Inversely—the greatest AI gains are in unfamiliar fields, repetitive manual labor, and first drafts from scratch. Choosing the right scenario + paradigm brings true efficiency. The rest of this page answers "how to choose, how to use."</div>
+<p class="src">Source:<a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index (2026 Jan/Mar/Jun Reports)</a> · <a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR:Measuring the Impact of Early-2025 AI on Experienced Developer Productivity</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="matrix">
+<div class="sec-tag">Cognition 01</div>
+<h2>Scenario × Benefit Matrix: Where Efficiency Gains Are Greatest</h2>
+
+<p>Eight major scenarios ranked by "efficiency potential". The potential isn't determined by how cool the tech is, but by three questions: <strong>Is there a way to verify? How high is the cost of being wrong? Is it highly repetitive?</strong> The easier the verification, higher the fault tolerance, and more repetition, the more it deserves immediate AI adoption.</p>
+
+<table class="tbl">
+  <tr><th>Scenario</th><th>Efficiency Potential</th><th>Why</th><th>Action to Take Today</th></tr>
+  <tr><td><strong>Programming / Scripts</strong></td><td>★★★★★</td><td>Compilers, tests, errors form a natural verification loop; shortest path from draft→usable</td><td>Have AI write a small script you've manually done 3+ times (e.g. batch rename files)</td></tr>
+  <tr><td><strong>Writing / Docs</strong></td><td>★★★★★</td><td>Drafting cost drops to zero; structure, polishing, multi-versions all speed up; human handles views/facts</td><td>Toss a pile of materials to AI, ask for 3 outlines with different focuses first</td></tr>
+  <tr><td><strong>Research / Decisions</strong></td><td>★★★★☆</td><td>Deep Research functions yield cited reports in 10-30 mins, equaling half a day of manual work</td><td>Pick a current purchase/selection dilemma, run deep research and click sources to verify</td></tr>
+  <tr><td><strong>Learning New Fields</strong></td><td>★★★★☆</td><td>Infinitely patient tutor: deep follow-ups, explains at your level, quizzes on demand</td><td>Pick a topic you wanted to learn, ask AI to "test me first, then set a study plan"</td></tr>
+  <tr><td><strong>Data Analysis</strong></td><td>★★★★☆</td><td>Natural language querying of tables is mature; AI writing code combines flexibility and verifyability</td><td>Throw an Excel/CSV to a chat model, ask 3 business questions in English</td></tr>
+  <tr><td><strong>Office Automation</strong></td><td>★★★☆☆</td><td>High return but needs manual dry-runs first; unverified automation creates disasters</td><td>Write down a weekly process as a checklist, have AI run it semi-automatically first</td></tr>
+  <tr><td><strong>Life Tasks</strong></td><td>★★★☆☆</td><td>Itineraries, diets, gift ideas, contract reading—low risk, high frequency small decisions</td><td>Before cooking next: list fridge contents, ask for 3 recipes + grocery list</td></tr>
+  <tr><td><strong>Emotional Support / Self-Sorting</strong></td><td>★★★☆☆</td><td>#1 use case on HBR Top 100 in 2025; but note it's not a licensed therapist</td><td>Start with "Help me organize these messy thoughts into 3 questions to decide on"</td></tr>
+</table>
+
+<div class="callout note"><b class="t">Don't just focus on programming</b>HBR's annual review of actual web usage shows the top 3 use cases from 2025 are <strong>psychological counseling/companionship, life organization, and finding purpose</strong>—all non-technical. The developer community's loud voice creates the illusion that "AI = writing code"; for ordinary people, the compounding benefits in writing, research, learning, and life may be greater.</div>
+<p class="src">Source:<a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR:Top 10 Gen AI Use Cases (Marc Zao-Sanders, 2025-04)</a> · <a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="coding">
+<div class="sec-tag">Scenario Paradigms 02</div>
+<h2>Programming Scenario Best Paradigms (Claude Code / Codex)</h2>
+
+<p>The official best practices of both companies have highly converged in 2026, and can be summarized as a four-step workflow + five core habits. For detailed operations, see the <a href="claude-code-guide.html">Claude Code Guide</a> and <a href="codex-guide.html">Codex Guide</a> in this repository. Here we only talk about "paradigms".</p>
+
+<h3 data-reveal>Official Consensus: Four-Step Workflow</h3>
+<ol class="steps">
+  <li><strong>Explore</strong>——Enter plan mode (Claude Code's plan mode / Codex's <code>/plan</code>), let AI read code and answer questions first without making changes</li>
+  <li><strong>Plan</strong>——Require specific implementation plans: what files to change, in what order, how to verify; reviewing plans is 10x cheaper than reviewing code</li>
+  <li><strong>Implement</strong>——Exit plan mode to execute, write while running tests; small tasks (where the diff can be explained in one sentence) can skip the first two steps</li>
+  <li><strong>Commit</strong>——Review diffs, run full verification, write clear commit messages; AI's work must also pass human review</li>
+</ol>
+
+<h3 data-reveal>Five Core Habits</h3>
+<table class="tbl">
+  <tr><th>Habit</th><th>Practice</th></tr>
+  <tr><td><strong>Give AI runnable verification</strong></td><td>Official words: Give it a pass/fail check (test, build, script, screenshot diff), the loop runs automatically; without verification, "looks done" is the only signal, making you a manual QA tester</td></tr>
+  <tr><td><strong>State completion criteria clearly</strong></td><td>Codex recommended task structure: <strong>Goal + Context (files/docs) + Constraints + Done when (criteria)</strong>—With all four elements, rework drops off a cliff</td></tr>
+  <tr><td><strong>Iterate in small steps, correct early</strong></td><td>If it goes off track, interrupt immediately with <kbd>Esc</kbd>; if it's still wrong after correcting the same issue twice, stop correcting—restart with <code>/clear</code>, and write a better initial prompt using what you learned</td></tr>
+  <tr><td><strong>Manage context well</strong></td><td>Context window is the primary resource: use <code>/clear</code> between unrelated tasks; delegate broad searches to sub-agents, don't let the main chat fill up with file contents</td></tr>
+  <tr><td><strong>Solidify project memory</strong></td><td>Write repeatedly explained rules into <code>CLAUDE.md</code> / <code>AGENTS.md</code>, and keep them concise—only keep them if "AI will make a mistake if this line is deleted"</td></tr>
+</table>
+
+<div class="duo">
+  <div class="bad"><b>✗ Vague delegation</b>"Fix the login bug"<br><br>AI can only guess: Which login? What symptoms? What constitutes fixed?</div>
+  <div class="good"><b>✓ Verified delegation</b>"Users report login fails after session timeout. Check token refresh logic in src/auth/. Write a failing test to reproduce the issue first, then fix it, and finally run the full auth test suite to ensure it's green."</div>
+</div>
+
+<h3 data-reveal>Non-programmers can play too: vibe coding</h3>
+<p>"Vibe coding" (coined by Karpathy in Feb 2025, Collins Dictionary Word of the Year 2025), which uses natural language to let AI write and debug code from start to finish, has enabled many zero-foundation users to create personal tools like bookkeeping apps, habit trackers, and cutting calculators. Community stats claim over half of such users have never written code. But recognize the boundaries: <strong>Build personal tools freely; for products that charge money or store others' data, security and ops still need professional oversight.</strong></p>
+<p class="src">Source:<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Official Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Official Best Practices</a> · <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier:Vibe coding examples</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="writing">
+<div class="sec-tag">Scenario Paradigms 03</div>
+<h2>Writing & Documentation Scenario Paradigms</h2>
+
+<p>Core division of labor in one sentence: <strong>AI provides drafts and structure, human provides viewpoints and facts.</strong> Treat AI as a "tireless draft machine + structural editor", not a ghostwriter.</p>
+
+<h3 data-reveal>Four Prompt Elements (MIT Sloan Teaching Consensus)</h3>
+<p>Effective writing prompt = <strong>Role/Context</strong> (who you are, who you write to) + <strong>Task & Format</strong> (what to produce, what structure) + <strong>Tone & Audience</strong> + <strong>Constraints</strong> (word count, things to include/avoid). Provide all four for the highest first-try success rate; then refine iteratively via chat: "Shorter", "Expand the 2nd paragraph", "Change to a tone for the boss".</p>
+
+<h3 data-reveal>Verified High-Return Use Cases</h3>
+<table class="tbl">
+  <tr><th>Use Case</th><th>How to do it</th></tr>
+  <tr><td><strong>3-Version Outline Method</strong></td><td>Provide materials, ask for 3 outlines with different focuses → human picks one (or mixes them) → then expands section by section. Much higher quality than asking for the full text upfront</td></tr>
+  <tr><td><strong>Meeting Recording → Minutes</strong></td><td>Throw the full transcript to AI: "Extract three lists: decisions, action items (owner + deadline), and leftover issues"</td></tr>
+  <tr><td><strong>Long Text Compression</strong></td><td>"Compress into a 200-word summary + 10 bullet points, preserving all numbers and conclusions"—read the summary before reading the doc to decide if close reading is needed</td></tr>
+  <tr><td><strong>Reverse Outline</strong></td><td>Throw your own draft back to AI: "Outline this article in reverse, point out logical gaps and repetitions"—more effective than "help me polish"</td></tr>
+  <tr><td><strong>De-AI Flavor</strong></td><td>Give it 2-3 paragraphs of your old writing as a style sample; explicitly ban clichés ("In today's fast-paced era..."); require short sentences, specific nouns, and numbers</td></tr>
+  <tr><td><strong>Multilingual Polishing</strong></td><td>Chinese thoughts → English email/doc, specify occasion and relationship, output is near-native</td></tr>
+</table>
+
+<ol class="steps">
+  <li>Give all raw materials (notes/data/links) to AI at once, ask for an outline first, not full text</li>
+  <li>Human defines the outline and core viewpoints—this is the soul of the article, do not outsource</li>
+  <li>Generate drafts section by section, giving specific instructions for each (points, examples, length)</li>
+  <li>Manually verify all facts, numbers, citations—AI's citations must be clicked and confirmed one by one</li>
+  <li>Finally, read through and edit it yourself: tweak it until it "sounds like you"</li>
+</ol>
+
+<div class="callout warn"><b class="t">Two Red Lines</b>① Facts and citations must be manually verified—models confidently invent literature and data, fatal in academic and business scenarios. ② Don't paste sensitive info (customer data, unreleased business numbers, others' privacy) into public AI services; use enterprise or local solutions.</div>
+<p class="src">Source:<a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan:Effective Prompts for AI</a> · Consensus from multiple communities (practices can be directly replicated in general chat models)</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="research">
+<div class="sec-tag">Scenario Paradigms 04</div>
+<h2>Research & Learning Scenario Paradigms</h2>
+
+<h3 data-reveal>Research: Deep Research Four-Step Method</h3>
+<ol class="steps">
+  <li><strong>Clarify problem boundaries first</strong>—What to research, what not to research, judgment criteria, expected output format; the clearer the boundaries, the more useful the report</li>
+  <li><strong>Run deep research</strong>—ChatGPT / Gemini / Claude's Deep Research-like features will autonomously retrieve, cross-read, and produce cited reports in 10-30 mins</li>
+  <li><strong>Follow-up and trace</strong>—Follow up on key conclusions one by one: "What's the source for this?", click links to verify; fake citations are a high-risk area</li>
+  <li><strong>Cross-validation</strong>—For important decisions, run the same prompt with a second model and compare differences; differences are usually where human deep-dives are needed</li>
+</ol>
+
+<h3 data-reveal>Learning: Treat AI as a tutor, not an answer machine</h3>
+<table class="tbl">
+  <tr><th>Paradigm</th><th>Prompt Template</th></tr>
+  <tr><td><strong>Custom Baseline</strong></td><td>"I want to learn X. Give me 5 questions first to test my level, then set a 4-week study plan based on the results"</td></tr>
+  <tr><td><strong>Socratic</strong></td><td>"Don't give the answer directly, use questions to guide me to figure it out"—combats the "illusion of understanding"</td></tr>
+  <tr><td><strong>Feynman Test</strong></td><td>"I'll explain X in my own words, you point out where I'm wrong or vague"</td></tr>
+  <tr><td><strong>Difficulty Tuning</strong></td><td>"Explain it to a 12-year-old first, then the pro version, then give me a minimal hands-on exercise"</td></tr>
+  <tr><td><strong>Deliberate Practice</strong></td><td>"Give me 3 progressively harder questions daily; after I answer, grade and explain mistakes"</td></tr>
+</table>
+
+<div class="callout tip"><b class="t">Research Endorsement: Usability is Trained</b>Anthropic's "Learning curves" report (2026-03) found: Experienced users have an ~10% higher task success rate than novices, and they <strong>use iterative collaboration more than one-shot delegation</strong>, matching model capability to task difficulty better. The best way to learn AI is high-frequency use + reviewing which prompts work.</div>
+
+<h3 data-reveal>Academic Scenario Tools Quick Glance</h3>
+<p>Literature discovery: Elicit, Consensus, Semantic Scholar; Paper close reading & Q&A: NotebookLM, Claude (long docs); Review comparison: Elicit's cross-study extraction table. The principle remains: <strong>Leave discovery and summaries to AI, keep conclusions and critique for yourself.</strong></p>
+<p class="src">Source:<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic: Learning curves (2026-03)</a> · <a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify: Best AI Tools for Academic Research 2026</a> · <a href="https://lumivero.com/resources/blog/ai-tools-for-academic-research/" target="_blank">Lumivero Academic Tools Review</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="data-auto">
+<div class="sec-tag">Scenario Paradigms 05</div>
+<h2>Data & Automation Scenario Paradigms</h2>
+
+<h3 data-reveal>Data Analysis: Three Levels</h3>
+<table class="tbl">
+  <tr><th>Level</th><th>Practice</th><th>Suitable For</th></tr>
+  <tr><td><strong>L1 Natural Language Table Queries</strong></td><td>Throw Excel/CSV directly to a chat model (or Julius etc.), ask in English, request charts</td><td>Zero foundation; quickly explore unfamiliar data</td></tr>
+  <tr><td><strong>L2 AI Writes Analysis Code</strong></td><td>Let AI write Python/SQL scripts to run analysis—code is reviewable and rerun-able, results verifiable, low hallucination space</td><td>Need reuse, precision, large data</td></tr>
+  <tr><td><strong>L3 Coding Agent Full Process</strong></td><td>Claude Code / Codex directly reads files, cleans, analyzes, generates reports; human verifies conclusions</td><td>Multi-file, multi-step analysis tasks</td></tr>
+</table>
+<div class="callout tip"><b class="t">Why prioritize letting AI "write code to calculate" instead of "answer directly"?</b>Models' mental math is unreliable, but their code executes deterministically—this changes "trust AI" to "trust code", and you can review code. This is the most important mindset shift in data scenarios.</div>
+
+<h3 data-reveal>Automation: Five-Level Ladder, Step by Step</h3>
+<ol class="steps">
+  <li><strong>Manual chat</strong>—throw repetitive tasks to AI each time, human monitors throughout</li>
+  <li><strong>Prompt templates</strong>—save successful prompts as templates/skills for 1-click reuse</li>
+  <li><strong>CLI non-interactive</strong>—<code>claude -p "prompt"</code> / <code>codex exec</code> in scripts for batch processing</li>
+  <li><strong>Scheduling & hooks</strong>—run daily automatically: organize files, summarize dailies, monitor (Codex scheduled tasks / system cron)</li>
+  <li><strong>Agent workflows</strong>—n8n / Zapier / custom agents linking systems; must have failure alerts and manual spot-checks</li>
+</ol>
+
+<div class="callout warn"><b class="t">Two Iron Rules of Automation</b>① <strong>Must run manually 3 times before automating</strong>—automating an unstable process scales errors. ② <strong>No automation without verification</strong>—each level needs verifiable outputs (logs, diffs, reports) and fallbacks (alerts, manual approval points). Official best practices for unattended runs require: checks first, let go later.</div>
+<p class="src">Source:<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices (headless / fan-out modes)</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices (scheduled tasks)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="life">
+<div class="sec-tag">Scenario Paradigms 06</div>
+<h2>Life & Self-Management Scenario Paradigms</h2>
+
+<p>The Section 01 matrix ranked "Life Tasks" and "Emotional Support / Self-Sorting" on the benefit list, and HBR's annual review even ranked them ahead of programming—but Sections 02-05 were all technical/knowledge work paradigms, and the two most recommended categories lacked corresponding approaches. This section fills in three gaps: the prompt skeleton for life decisions, practices and boundaries for self-sorting, and an entry point not mentioned in the matrix—photos / screenshots / voice.</p>
+
+<h3 data-reveal>Life Decisions: Itineraries / Diets / Purchases / Contract Reading</h3>
+<p>The commonality of these scenarios is <strong>low risk, high frequency, and clear constraints</strong>—exactly the kind of tasks AI is best at. The skeleton is the same: state all constraints at once, then ask for multiple options instead of a single "standard answer".</p>
+
+<table class="tbl">
+  <tr><th>Sub-scenario</th><th>Prompt Skeleton (Copyable)</th><th>Output Requirements</th></tr>
+  <tr><td><strong>Itinerary Planning</strong></td><td>"We are [number+relationship], going to [destination] from [dates], budget [amount], preferences [details]. Plan a day-by-day itinerary, marking daily transport and buffer times."</td><td>Require 2 alternative plans with different focuses, not just one</td></tr>
+  <tr><td><strong>Diet Plan</strong></td><td>"Fridge has: [list]. Dietary restrictions: [list]. Plan a week of dinners, doable in 30 mins, output a menu table + grocery list sorted by supermarket layout."</td><td>Require key steps for each meal, not just a dish name, for easy following</td></tr>
+  <tr><td><strong>Purchase Comparison</strong></td><td>"Budget [amount] for [category]. Core needs: [max 3]. Compare 3-5 models on sale, give common negative feedback points + source links."</td><td>Click and verify sources one by one; don't trust AI's aggregated "overall score"</td></tr>
+  <tr><td><strong>Contract / Manual Reading</strong></td><td>"This is a [contract/manual type]. Explain clause by clause in plain English: which terms are unfavorable, which are industry norms, and what 3 questions should I prioritize asking the other party."</td><td>Treat it as "helping you understand," not "deciding whether to sign"—important contracts still need human/lawyer review</td></tr>
+</table>
+
+<div class="duo">
+  <div class="bad"><b>✗ Vague delegation</b>"Help me plan a National Day trip"<br><br>AI can only give a generic guide; numbers, budget, and preferences are all guesses.</div>
+  <div class="good"><b>✓ Constrained delegation</b>"Two adults one child (age 6), Oct 1-5 to Chengdu, budget 8000 RMB excluding flights, child can't eat spicy, needs naps. Give 2 itineraries: one packed with sights, one relaxed, marking daily transport and buffer times."</div>
+</div>
+
+<h3 data-reveal>Self-Sorting: From "Messy Thoughts" to "Decision-Ready List"</h3>
+<p>This use case consistently ranks high in HBR's annual review (see Section 01 callout), but community discussions often confuse it with "psychological counseling"—let's draw the boundaries first, then provide a skeleton.</p>
+<p><strong>Prompt Skeleton:</strong> "I have a bunch of messy thoughts about [topic]. Please help me: ① distill them into 3-5 specific Yes/No or A/B questions; ② list current options and their costs for each question; ③ point out which question affects the others most and what I should think about first. Do not decide for me, just help me see the problems clearly."</p>
+
+<div class="callout warn"><b class="t">Boundary Declaration, Read This First</b>The role of the "self-sorting" prompt is to turn messy emotions and thoughts into an actionable list of questions. <strong>It is not psychological counseling, and AI is not a licensed therapist.</strong> If you are experiencing thoughts of self-harm, suicidal ideation, or long-term, severe depression/anxiety, <strong>please contact a psychiatrist, therapist, or local crisis hotline immediately. Do not hand these issues solely to AI.</strong> AI can help sort out decision-making confusions like "should I change jobs" or "should I continue this relationship," but it cannot handle mental health issues requiring professional diagnosis and intervention.</div>
+
+<h3 data-reveal>Multimodal Entries: Photo / Screenshot / Voice Transcription</h3>
+<p>All previous paradigms assumed "typing prompts", but this was a missing piece in the 8 major scenarios: many people's first "AI is useful" moment comes from taking a photo. Mainstream chat apps (ChatGPT / Gemini / Claude) support image uploads and voice inputs; UI specifics depend on current versions, so interfaces aren't detailed here.</p>
+
+<table class="tbl">
+  <tr><th>Entry</th><th>How to use (Copyable phrasing)</th><th>Suitable Scenarios</th></tr>
+  <tr><td><strong>Photo</strong></td><td>Photo + Text: "This is a [manual/medical report/whiteboard/recipe], explain the key points in plain English, I don't understand [field] jargon."</td><td>Appliance manuals, confusing medical metrics, whiteboard notes, recipe conversions</td></tr>
+  <tr><td><strong>Screenshot</strong></td><td>Screenshot + Text: "What does this mean? What should I do?"</td><td>App/system errors, confusing web tables, a chat discussion you couldn't follow</td></tr>
+  <tr><td><strong>Voice</strong></td><td>Speak loose thoughts for 2-3 mins, Text: "Transcribe and organize into an [outline/to-do list/structured note]."</td><td>Inspiration while driving/walking, live meeting notes, long rants when too lazy to type</td></tr>
+</table>
+
+<div class="callout note"><b class="t">When NOT to use</b>Photos of ID cards, bank cards, original medical records, or contracts containing sensitive info should not be uploaded to public free services—think "what if this image leaked?" before uploading. Also, OCR for numbers, dates, and amounts has misreading risks; always double-check numbers used for decisions manually.</div>
+
+<p class="src">Source: High frequency of self-sorting scenarios see <a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR: Top 10 Gen AI Use Cases (2025-04)</a> (already cited in Sec 01); other prompt skeletons are reproducible templates. For mental health help channels, please rely on information published by local health departments or platforms; this page does not list specific hotline numbers to avoid expiration.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="tools">
+<div class="sec-tag">Tool Selection 07</div>
+<h2>3 Major Tool Selections: Claude Code vs Codex vs Gemini</h2>
+
+<div class="callout warn"><b class="t">⚠️ 2026-06 Major Change: Gemini CLI has Curtained</b>Google announced at I/O on 2026-05-19 and <strong>ceased</strong> Gemini CLI services for Free and AI Pro/Ultra users on <strong>2026-06-18</strong>, shifting to the closed-source Go-rewritten <strong>Antigravity CLI</strong> (command <code>agy</code>); the free tier plummeted from ~1000/day to ~20/day. Only enterprise Gemini Code Assist licenses and paid APIs are unaffected. Personal users have effectively exited the "pick one of three" scenario, subject to official announcements.</div>
+
+<h3 data-reveal>Selection Comparison Table (2026-07)</h3>
+<table class="tbl">
+  <tr><th>Dimension</th><th>Claude Code</th><th>Codex</th><th>Gemini Family (Antigravity CLI)</th></tr>
+  <tr><td>Positioning Tag</td><td><span class="pill a">Quality & Ecosystem</span></td><td><span class="pill b">Sandbox & Value</span></td><td><span class="pill c">Search & Enterprise</span></td></tr>
+  <tr><td>Recognized Strengths</td><td>Output quality for complex multi-file refactoring; thickest Skills/Hooks/Sub-agent ecosystem</td><td>OS-level sandbox on by default; Cloud task matrix; open-source</td><td>Best web search integration; Google ecosystem integration</td></tr>
+  <tr><td>Payment Intuition</td><td>No free tier, subscription is best for heavy use</td><td>Bundled with ChatGPT subscription, "basically free" if already paying</td><td>Personal free bonus has ended, now an enterprise choice</td></tr>
+  <tr><td>Form</td><td>CLI / Desktop / Web / IDE extension</td><td>CLI / IDE / Cloud / Desktop / GitHub review</td><td>Antigravity Platform + <code>agy</code> CLI</td></tr>
+  <tr><td>Project Memory</td><td>CLAUDE.md (AGENTS.md compatible)</td><td>AGENTS.md (Open standard)</td><td>Evolves with Antigravity platform, refer to official docs</td></tr>
+</table>
+
+<h3 data-reveal>Complementary Combinations</h3>
+<ul>
+  <li><strong>Dual-wielding without conflict:</strong> Claude Code and Codex authenticate and run independently; a common combo is "use the bundled one daily, switch for tough refactors"; <code>AGENTS.md</code> and Agent Skills are open standards, so knowledge lives at the standard layer, making agent switching zero-cost (Codex also has <code>/import</code> to eat Claude Code configs directly).</li>
+  <li><strong>General chat model division of labor (frequent community play):</strong> Use Gemini / ChatGPT's Deep Research for timely search and deep research; use Claude for long doc reading, writing, and code; treat models as "colleagues with different strengths" rather than a multiple choice.</li>
+</ul>
+<p class="src">Source:<a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">google-gemini/gemini-cli official announcement #27274</a> · <a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ Tool Comparison (2026)</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs Comparison</a> · <a href="https://www.tomsguide.com/ai/how-i-use-claude-for-strategy-gemini-for-research-and-chatgpt-for-the-grind" target="_blank">Tom's Guide: Multi-model practice</a></p>
+
+<h3 data-reveal>How to Choose General Chat Models</h3>
+<p>The above compares "coding agent CLIs". If you don't write code and use the web/app chat products of ChatGPT, Claude, and Gemini, the logic is entirely different—it's about long-doc capabilities, web search quality, and Deep Research quotas. The following is verified from their official help centers (2026-07):</p>
+<table class="tbl">
+  <tr><th>Dimension</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th></tr>
+  <tr><td>Best for what task type</td><td>General writing, multimodal (image/voice), open research reports; frequent model tweaks, new models launch fast</td><td>Close reading of long docs, complex writing, and code are recognized strengths (see above table); Research mode excels at integrating web search with internal knowledge bases/Workspaces into comprehensive reports</td><td>Needs real-time info checking during chat, multimodal (image/video), deep integration with Gmail/Drive/Workspace</td></tr>
+  <tr><td>Long-doc capability</td><td>Distinct stratification by model and sub tier: Official docs show GPT-5.6 Luna/Terra at <strong>128K tokens</strong>, GPT-5.6 Sol at <strong>272K tokens</strong>; depends on available models in account</td><td>Official support article lists Opus 5 / Sonnet 5 offering <strong>1M token</strong> context across <strong>all paid tiers</strong>; Opus 4.6-4.8, Sonnet 4.6 at <strong>500K tokens</strong>; others at <strong>200K tokens</strong> (~500 pages). Free tier limit not listed in that article</td><td>Official tiers are clearest: No sub is <strong>32K tokens</strong>, AI Plus is <strong>128K tokens</strong>, AI Pro/Ultra is <strong>1M tokens</strong> (~1500 pages). The gap between free and paid is the widest among the three</td></tr>
+  <tr><td>Web search quality</td><td>Built-in web search, can specify source scope (websites/uploaded files/connected Apps), drafts research plan first, can be adjusted before running</td><td>Web Search needs manual toggle, must be enabled to link with Research mode for auto-retrieval and inline citations; Since 2026-02, Research mode can connect to any MCP server for enterprise data</td><td>Defaults to Google Search as source, can add/remove sources (Gmail, Drive, NotebookLM, etc.). None publish comparable "search quality" scores, only qualitative judgments apply; for actual results, cross-validate using the 4 steps in <a href="#research">Research & Learning Scenario Paradigms</a></td></tr>
+  <tr><td>Deep Research quota & time</td><td>Official quote: Deep research "takes more time than regular search to read and analyze multiple sources"; <strong>Official pages give no fixed number for quotas</strong>, stating it "varies by subscription tier, check account usage counter for remaining tries". Fixed monthly quotas reset rolling "30 days from first use"</td><td>Officially "delivers detailed answers in minutes"; <strong>No separate quota</strong>—uses standard chat message limits, but multi-source retrieval depletes it faster; only available on Pro/Max/Team/Enterprise paid tiers, <strong>not supported on Free</strong></td><td>Officially typical reports take "~5-10 mins, complex ones longer"; Quota text says "limits on daily research requests and concurrent research requests, AI Pro/Ultra have higher limits", <strong>no specific numbers published</strong>. Must be 18+ and logged in to use</td></tr>
+  <tr><td>Known shortcomings</td><td>Officially "availability depends on subscription tier and country/region"; Deep research can only perform "read-only" operations on connected Apps, cannot submit/send on your behalf</td><td>Does not automatically judge "should I use Research for this"—officials recommend explicit instructions (e.g., "please use the research tool"), and manual web search toggle must be on, otherwise Research fails</td><td>Free tier explicitly stated: "During peak demand, high-compute features like Deep Research may be unavailable"; if sources include Workspace services like Gmail/Drive, some visual report features (charts, etc.) are unavailable</td></tr>
+</table>
+<div class="callout note"><b class="t">Quota numbers will change, look at these two places</b>All three explicitly put Deep Research quotas in the "account usage counter" in real-time, not hardcoded in help docs—meaning <strong>any specific numbers (e.g. "X times/month") in third-party articles may be outdated</strong>. For true comparison, log into the accounts to view the current dashboard or rely on current official statements.</div>
+<p class="src">Source:<a href="https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt" target="_blank">OpenAI Help Center: Deep research in ChatGPT</a> · <a href="https://help.openai.com/en/articles/12003714-chatgpt-business-models-limits" target="_blank">OpenAI Help Center: ChatGPT Business - Models & Limits</a> · <a href="https://support.claude.com/en/articles/11088861-use-research-on-claude" target="_blank">Claude Help Center: Use research on Claude</a> · <a href="https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans" target="_blank">Claude Help Center: context window on paid plans</a> · <a href="https://support.google.com/gemini/answer/15719111" target="_blank">Gemini Apps Help: Use Deep Research</a> · <a href="https://support.google.com/gemini/answer/16275805" target="_blank">Gemini Apps Help: limits & upgrades for Google AI subscribers</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="principles">
+<div class="sec-tag">Inner Skills 08</div>
+<h2>7 Universal Mental Models (Cross-Scenario)</h2>
+
+<p>Each of the following is backed by official docs or research reports, not just pep talk. Writing, programming, research, automation—change the scenario, don't change the mental model.</p>
+<div class="callout note"><b class="t">🎯 Technical Expansion of Mental Models</b>Mental models talk about "why"; specific "how to say it, how to feed it" is in a sister topic: <a href="prompt-context-engineering.html">Prompt & Context Engineering</a>—7 techniques ❌/✅ comparison, 9 verbatim templates, attention budget and long-task tri-axes, anti-pattern encyclopedia.</div>
+
+<table class="tbl">
+  <tr><th>#</th><th>Mental Model</th><th>One-Sentence Expansion</th><th>Source</th></tr>
+  <tr><td>1</td><td><strong>Context is the primary resource</strong></td><td>Provide enough relevant materials, cut out irrelevant noise; model performance degrades when context is full, "what to feed" is more important than "how to ask"</td><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic Context Engineering</a></td></tr>
+  <tr><td>2</td><td><strong>Plan first, act later</strong></td><td>Ask for a plan for complex tasks, human reviews plan before execution; reviewing plans is an order of magnitude cheaper than reviewing products</td><td>Claude Code / Codex Official Consensus</td></tr>
+  <tr><td>3</td><td><strong>Give AI a verifiable loop</strong></td><td>Tests, examples, checklists, control samples—AI can self-correct only with pass/fail signals; don't let go without verification</td><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a></td></tr>
+  <tr><td>4</td><td><strong>State completion criteria clearly</strong></td><td>Goal + Context + Constraints + "Done when"; vague delegation is the mother of rework</td><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></td></tr>
+  <tr><td>5</td><td><strong>Iterate in small steps, restart after two corrections</strong></td><td>First answer is just a start; interrupt immediately if off track; if correcting twice is invalid, clear and restart with the lesson</td><td>Official Best Practices + Learning curves (pros use iterative collaboration more)</td></tr>
+  <tr><td>6</td><td><strong>Humans handle taste & facts, AI handles labor</strong></td><td>Viewpoints, trade-offs, fact-checking, ultimate responsibility always on humans; treat AI output as "drafts", not "answers"</td><td>METR / HBR / Multi-party consensus</td></tr>
+  <tr><td>7</td><td><strong>Solidify repetition into assets</strong></td><td>Save successful prompts as templates, write project rules into CLAUDE.md / AGENTS.md, make processes into skills—personal prompt library is compounding interest</td><td>Both official docs (Skills / memory files)</td></tr>
+</table>
+
+<div class="callout note"><b class="t">One-Sentence Master Guide</b>Treat AI as a <strong>highly capable, zero-background, amnesiac new colleague</strong>: Provide enough context (1), align on plan first (2), set acceptance criteria (3, 4), give frequent feedback (5), make key decisions yourself (6), write good collaboration methods into the employee handbook (7). Seven mental models are just this one sentence.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">Inner Skills 09</div>
+<h2>Real Cases: One Reproducible Template per Scenario</h2>
+
+<p>The following cases instantiate the paradigms on this page; prompts can be copied and modified directly. Those marked "transcript" are from public reports; others are paradigm reproduction templates.</p>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🐛</span><b>Programming · Fix a bug</b><span class="pt">CODING</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> "User feedback: Re-login after session timeout shows a white screen. Related code in <code>src/auth/</code>, focus on token refresh. First write a failing test to reproduce it, then fix it, passing the whole auth test suite counts as done."</p>
+      <p><strong>Iteration:</strong> AI submits plan → Human confirms "only touch auth, don't refactor others" → AI writes test (red) → Fixes (green) → Human reviews diff.</p>
+      <p><strong>Output:</strong> A fix commit with a regression test. The key is "failing test first"—this is the minimal implementation of a verification loop.</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">📝</span><b>Writing · From materials to weekly report/article</b><span class="pt">WRITING</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> Paste all scattered records of the week (chat excerpts, data, to-do completion) + "Write for a non-technical boss, under 300 words, three-part structure: Results / Risks / Next week's plan. Give me 3 outline versions first."</p>
+      <p><strong>Iteration:</strong> Pick outline → Generate paragraph by paragraph → "Risk in paragraph 2 is too vague, quantify it" → Human verifies all numbers.</p>
+      <p><strong>Output:</strong> Produce a weekly report in 10 mins that used to take 40 mins, with stable week-to-week structure.</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔍</span><b>Research · Large purchase decision</b><span class="pt">RESEARCH</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> "Budget X amount for a home NAS. Needs: Photo backup, 2 users, silent priority, no-fuss. Use deep research to compare 3-5 models on sale in 2026, provide a comparison table + concentrated negative reviews for each, with source links."</p>
+      <p><strong>Iteration:</strong> After report, follow up on negative review sources and click to verify → Run the same prompt on another model → Only deep-dive into the differences between the two reports.</p>
+      <p><strong>Output:</strong> Get conclusions in half an hour that used to take two nights of forum scrolling, and it's verifiable.</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">📊</span><b>Data · Monthly report analysis</b><span class="pt">DATA</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> Upload sales CSV + "Summarize sales by category monthly, find categories with >20% MoM fluctuation, analyze possible reasons, output charts. Calculate using code, and give me the code too."</p>
+      <p><strong>Iteration:</strong> Verify total matches original table (validation!) → "Consider holiday factors and rerun" → Have AI parameterize the script for direct reuse next month.</p>
+      <p><strong>Output:</strong> Analysis conclusion + a rerun-able script—analyze once, compound monthly.</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">⚙️</span><b>Automation · Auto-categorize downloads folder</b><span class="pt">AUTOMATION</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> To Claude Code: "Write a script to archive files in ~/Downloads into subfolders by type; move screenshots over 30 days old to a trash candidate list (don't delete directly). Run a dry-run mode first, only print plan, don't touch files."</p>
+      <p><strong>Iteration:</strong> View dry-run output → Fix misclassification rules → Real run → After manually confirming it works 3 times, set up a cron job.</p>
+      <p><strong>Output:</strong> A weekly auto-run cleanup task. Note the paradigm: dry-run mode + no irreversible deletion + run successfully 3 times before automating.</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎓</span><b>Learning · 30 days to start a new field</b><span class="pt">LEARNING</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> "I want to learn basic investment concepts (no stock picking). First give 5 questions to test my level → set 4-week plan based on results, one theme per week → 15 mins daily: you explain a concept + give 2 questions for me to answer + grade and explain."</p>
+      <p><strong>Iteration:</strong> Use Feynman method every weekend: "I recount this week's content, you find errors" → Drill vague areas next week.</p>
+      <p><strong>Output:</strong> A personalized tutor course tailored to your level with daily feedback, at zero cost.</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🏠</span><b>Life · Week's dinner + grocery (Transcript style)</b><span class="pt">LIFE</span></div>
+    <div class="pb">
+      <p><strong>Input:</strong> "Two adults one child, age 5; fridge has: (photo or list). Plan a week of dinners: doable in 30 mins, low deep-fry, must have fish on Wednesday. Output: Menu table + grocery list sorted by supermarket layout."</p>
+      <p><strong>Iteration:</strong> "Change Friday's meal, child doesn't eat eggplant" → Save "family dietary restrictions" as a fixed template header next week.</p>
+      <p><strong>Output:</strong> Saves about an hour of decision fatigue weekly. Same for non-programmers making personal tools: public reports show zero-foundation users making a family expense App with Claude + 8 hours of chat (see Zapier case collection, transcript).</p>
+    </div>
+  </div>
+</div>
+<p class="src">Source: Paradigms based on Sections 02-05; transcript cases from <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier: Vibe coding examples (real non-developer projects)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="learning-path">
+<div class="sec-tag">Getting Started 10</div>
+<h2>Ordinary Person's Learning Path: From Zero to Proficient</h2>
+
+<p>Research conclusion first: AI proficiency is <strong>trained usage intuition</strong>, not learned theory—pros have ~10% higher success rates, the difference mainly comes from "knowing how to iterate, how to provide context, and how to pick tasks". So the path design has only one principle: <strong>Always practice around your real tasks, don't take abstract classes.</strong></p>
+<div class="callout note"><b class="t">🧗 Deepened Version: Capability Boundary Expansion Methodology</b>If you want to use AI to expand technical capabilities to full-stack cross-platform (Mobile/Web/Backend) or do indie tech development, this page's methodology has a deepened sister piece: <a href="ai-capability-expansion.html">AI Capability Boundary Expansion Guide</a>—5-step expansion engine, cross-domain mapping techniques, with two end-to-end practical cases.</div>
+
+<h3 data-reveal>4-Step Ladder</h3>
+<ol class="steps">
+  <li><strong>Weeks 1-2 · Build Feel:</strong> Use chat models to solve 1 real small task daily (edit email, read medical report, make recipe). Practice only one thing: if unsatisfied, follow up and add info instead of giving up. Goal: Feel that "the first answer is just a start".</li>
+  <li><strong>Weeks 3-4 · Learn to Feed Context:</strong> Practice giving all background materials at once (files, screenshots, old examples); compare quality between "dry asking" and "asking with materials". Goal: Internalize mental models 1 & 4 (Context + Completion criteria).</li>
+  <li><strong>Month 2 · Scenario Depth:</strong> Pick 2 of your most frequent scenarios (e.g., writing + research), run the full process 5 times each using paradigms in Sec 03/04; save successful prompts as a personal template library. Goal: Form reusable assets.</li>
+  <li><strong>Month 3+ · Agents & Automation:</strong> Install a coding agent (Claude Code or Codex), start with "writing a small automation script", level up using Sec 05 ladder; start using deep research for big decisions. Goal: Evolve from "chatting" to "delegating tasks with verification".</li>
+</ol>
+
+<h3 data-reveal>Common Pitfalls Comparison Table</h3>
+<table class="tbl">
+  <tr><th>Pitfall</th><th>Correction</th></tr>
+  <tr><td>Expecting one-shot perfection, saying "AI sucks" if first answer fails</td><td>AI is an iterative tool: follow up, give feedback, supplement materials—this is the main gap between pros and novices</td></tr>
+  <tr><td>Treating AI as a search engine, just throwing keywords</td><td>Give full task: Background + Requirements + Done criteria; it's an executor, not an index</td></tr>
+  <tr><td>Blindly trusting output, directly forwarding/submitting</td><td>Facts, numbers, citations must be verified; high-risk content (legal/medical/financial) is only for reference</td></tr>
+  <tr><td>Outsourcing thinking: letting AI decide viewpoints and stances for you</td><td>AI provides options and arguments, humans judge; long-term thinking outsourcing destroys judgment itself</td></tr>
+  <tr><td>Hoarding tutorials, chasing new tools, not executing</td><td>Switching tools often is worse than practicing one scenario 5 times; scenario first, tools later</td></tr>
+  <tr><td>Abstractly learning AI (chewing on principles, memorizing prompt encyclopedias)</td><td>Pick a real output due in 2 weeks, practice around it; principles can be learned later</td></tr>
+  <tr><td>Casually pasting sensitive info</td><td>Personal privacy, client data, company secrets don't go into public services; use enterprise versions or anonymize before asking</td></tr>
+</table>
+<p class="src">Source:<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic: Learning curves (2026-03)</a> · <a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan: Effective Prompts</a> · Pitfalls section synthesizes high-frequency consensus from multiple 2026 beginner guides</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">Getting Started 11</div>
+<h2>Resource Index (Sorted by Credibility)</h2>
+
+<h3 data-reveal>Tier 1 · Official Docs & Engineering Blogs</h3>
+<table class="tbl">
+  <tr><th>Resource</th><th>Description</th></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Official Best Practices</a></td><td>Verification loop, plan first, context management, parallel expansion—main foundation for Sec 02/05/07</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Official Best Practices</a></td><td>Goal/Context/Constraints/Done-when task structure, AGENTS.md, skill-ification, scheduled tasks</td></tr>
+  <tr><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic: Effective Context Engineering</a></td><td>Systematic discussion of "Context is the primary resource" (2025-09)</td></tr>
+  <tr><td><a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">Gemini CLI → Antigravity CLI Official Announcement</a></td><td>First source for the 2026-06-18 change</td></tr>
+  <tr><td><a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan: Effective Prompts for AI</a></td><td>Textbook-level articulation of the 4 prompt elements</td></tr>
+</table>
+
+<h3 data-reveal>Tier 2 · Research & Data Reports</h3>
+<table class="tbl">
+  <tr><th>Resource</th><th>Description</th></tr>
+  <tr><td><a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index (Series)</a></td><td>Global real use-case distribution, collaboration/automation ratio, Learning curves report</td></tr>
+  <tr><td><a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR Randomized Controlled Trial (2025)</a></td><td>"Actually 19% slower, felt 20% faster"—must-read literature for correcting efficiency bias</td></tr>
+  <tr><td><a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR: Top Gen AI Use Cases (2025)</a></td><td>Top 100 real use-cases web-wide, magnitude evidence for non-technical scenarios</td></tr>
+</table>
+
+<h3 data-reveal>Tier 3 · High-Quality Community Assets</h3>
+<table class="tbl">
+  <tr><th>Resource</th><th>Description</th></tr>
+  <tr><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang: AI Programming Guide (Chinese)</a></td><td>92 newbie-friendly systemic tutorials, top choice for programming scenario entry</td></tr>
+  <tr><td><a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier: Vibe coding examples</a></td><td>Real project case collection by non-developers</td></tr>
+  <tr><td><a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs</a> · <a href="https://colombani.ai/en/blog/cli-agents-comparison-2026/" target="_blank">colombani.ai</a></td><td>2026 three-tool comparison, multi-party cross-credibility is decent</td></tr>
+  <tr><td><a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify Academic Tools Review</a></td><td>Academic research tool selection</td></tr>
+  <tr><td>This Knowledge Base</td><td><a href="claude-code-guide.html">Claude Code User Guide</a> · <a href="codex-guide.html">Codex User Guide</a> · <a href="env-auth-clinic.html">Environment & Login First Aid Manual</a></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>Note</strong>: This page is a 2026-07 web-wide research aggregation, not an official release. Use-case distribution, tool landscape, and product capabilities evolve rapidly; numbers and conclusions are cited with source and time. For product status (especially Gemini/Antigravity), refer to the latest official announcements. For high-risk decisions in medical, legal, or investment fields, AI is for reference only.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="Back to Top">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

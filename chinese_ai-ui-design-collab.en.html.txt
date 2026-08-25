@@ -1,0 +1,111 @@
+121:/* 工具卡片网格 */
+133:/* 流水线 */
+144:/* Paparazzi 截图网格 */
+153:/* 对比表 */
+162:/* prompt 样例框 */
+341:    <td><span class="pill d">导出物</span></td>
+342:    <td>Figma Dev Mode "Copy as Compose"、pen.dev 导出 React、Stitch "Export to Code"</td>
+343:    <td>设计工具自己生成的代码片段</td>
+344:    <td>高(但有工具的固有限制)</td>
+345:    <td>一次性的复制粘贴,没法双向同步</td>
+622:<h3 data-reveal>Roborazzi(Robolectric 路线,可集成 Hilt)</h3>
+623:<p>由 takahirom 出品,基于 Robolectric 在 JVM 渲染 Compose,支持 <code>@Preview</code> 自动生成测试、与 Hilt 等 DI 框架无冲突。<strong>优势:可以测有依赖注入的真组件</strong>。</p>
+624:<p>关键能力:</p>
+626:  <li><code>captureRoboImage()</code> 给定节点截图</li>
+627:  <li><code>generateComposePreviewRobolectricTests</code> Gradle 任务:扫所有 <code>@Preview</code> 注解,自动生成截图测试</li>
+628:  <li>(实验)<code>roborazzi-ai-gemini</code> / <code>roborazzi-ai-openai</code>:用 AI 做"截图差异语义判定",能区分"故意改"和"误改"</li>
+630:<p>关键 Gradle 任务:</p>
+631:<pre><code>./gradlew :app:recordRoborazziDebug           # 录基线
+632:./gradlew :app:verifyRoborazziDebug           # diff 模式
+633:./gradlew :app:verifyAndRecordRoborazziDebug  # 边验证边更新基线(本地用)
+634:./gradlew :app:compareRoborazziDebug          # 三个对比图叠看</code></pre>
+636:<p>最妙的是它发了一个 <strong>Claude Code / Codex 可安装的 skill</strong>:</p>
+638:<p>装上后,AI 编码代理遇到"加截图测试""调基线""看 Roborazzi 失败"这类问题会自动加载正确知识,不用你手把手教。</p>
+1024:<h3 data-reveal>X2. Web 落地(Tailwind v4 × shadcn)</h3>
+1025:<p>Web 侧"设计 Token 一等公民"过去三年的演进:<strong>Tailwind v3 config.js → Tailwind v4 <code>@theme</code> CSS 变量 → shadcn 语义 CSS 变量</strong>。v4 的意义在于 Tailwind 直接吃 CSS variables,不用 <code>tailwind.config.js</code> 那条路径。</p>
+1027:<h4>① Tailwind v4 <code>@theme</code> 指令</h4>
+1032:  /* 颜色(走 OKLCH 色彩空间更准) */
+1037:  /* 字体 / 间距 / 圆角 */
+1042:<p>关键变化:v4 的 <code>@theme</code> <strong>直接生成 utility class</strong>——<code>bg-brand-500</code> / <code>font-display</code> / <code>rounded-card</code> 都是它来的,不用再写 <code>tailwind.config.js</code>。三个进阶指令(对应 Compose Token 体系):</p>
+1044:  <tr><th>指令</th><th>干什么</th><th>类比 Compose</th></tr>
+1045:  <tr><td><code>@theme inline { ... }</code></td><td>Token 直接展开成 utility,不生成 CSS variable</td><td>(类似) <code>colorScheme.primary</code> 的"展开"模式</td></tr>
+1046:  <tr><td><code>@theme static { ... }</code></td><td><strong>不允许覆盖</strong>,真正的"硬编码"</td><td>(类似) MaterialTheme 不可在运行时改</td></tr>
+1047:  <tr><td><code>--*: initial</code></td><td>重置 Tailwind 默认 spacing / radius,把命名权交给你</td><td>全局重置到自家设计基线</td></tr>
+1050:<h4>② shadcn 的"代码即设计"哲学</h4>
+1051:<p>shadcn 不发 npm 包,你装的是<strong>组件源码</strong>(贴进 <code>components/ui/</code>),所以"改设计 Token" = 改源里的 <code>bg-primary</code> 那几个 CSS 变量。<strong>它和 Figma Variables 一一对应</strong>:</p>
+1053:  <tr><th>shadcn CSS 变量</th><th>对位 Figma Variable</th><th>用途</th></tr>
+1054:  <tr><td><code>--background</code> / <code>--foreground</code></td><td>surface / onSurface</td><td>容器底色 + 文字</td></tr>
+1055:  <tr><td><code>--primary</code> / <code>--primary-foreground</code></td><td>primary / onPrimary</td><td>按钮、链接主色</td></tr>
+1056:  <tr><td><code>--secondary</code> / <code>--muted</code> / <code>--accent</code></td><td>secondaryContainer / surfaceVariant / tertiary</td><td>次级容器 / 弱化 / 强调</td></tr>
+1057:  <tr><td><code>--destructive</code></td><td>error</td><td>危险动作(删除、报错)</td></tr>
+1058:  <tr><td><code>--border</code> / <code>--input</code> / <code>--ring</code></td><td>outline / outlineVariant / focus</td><td>边 / 输入框边 / 焦点环</td></tr>
+1059:  <tr><td><code>--radius</code></td><td>shape.cornerMedium</td><td>全局圆角基准</td></tr>
+1061:<p><strong>小心坑</strong>:shadcn 默认中性灰色调,<strong>品牌色直接覆盖 <code>--primary</code> 即可</strong>。不要去改组件源码里的硬编码颜色——下次 <code>shadcn add</code> 加新组件又会拉回默认。</p>
+1063:<h4>③ Claude Code × Next.js / Vite 流水线</h4>
+1064:<pre><code># 在项目根跑,Claude Code 就在这个 Next.js 项目里跑
+1067:# 让它一次性把 Figma 转成 shadcn 组件:
+1068:claude&gt; 用 Figma MCP 读这个 Frame:{URL},把 Frame 转成等价的
+1069:       shadcn 组件(Button / Card / Dialog),不准硬编码颜色,
+1070:       所有色走 :root 下的 --primary / --background 这套变量。
+1071:       同时:1) 写 component.test.tsx(用 testing-library)
+1072:            2) 写 visual.spec.ts(Playwright 自动截图)</code></pre>
+1073:<p><strong>MCP 现状</strong>:shadcn 没发布官方 MCP,<strong>但其 CLI + Registry 本身就具备 MCP 般的"AI 友好"特性</strong>(每个组件都有可独立 import 的源码)。社区有零星 MCP 包装,质量未知。</p>
+1075:<h4>④ Web 侧视觉回归三选一</h4>
+1077:  <tr><th>工具</th><th>基于</th><th>强项</th><th>代价</th></tr>
+1078:  <tr><td><strong>Playwright screenshot</strong></td><td>无头浏览器</td><td>免费、最灵活、和 E2E 测试共用</td><td>需要自管基线 + diff 报告</td></tr>
+1079:  <tr><td><strong>Chromatic</strong>(Storybook 团队)</td><td>Storybook + 云端</td><td>PR 评论直接附截图 diff,UI review 一站式</td><td>收费,需要建 Storybook</td></tr>
+1080:  <tr><td><strong>VRT</strong>(Visual Regression Tracker)</td><td>独立服务</td><td>跨项目、自部署</td><td>运维成本</td></tr>
+1083:<h3 data-reveal>X3. 三端对比速查表</h3>
+1085:  <tr><th>维度</th><th>Android(正文)</th><th>iOS(SwiftUI)</th><th>Web(Tailwind v4 + shadcn)</th></tr>
+1086:  <tr><td><strong>Token 一等公民</strong></td><td><code>MaterialTheme.colorScheme</code></td><td><code>@Entry</code> 宏 + <code>BrandTheme</code>(iOS 18+)</td><td>CSS variables + <code>@theme</code>(Tailwind v4)</td></tr>
+1087:  <tr><td><strong>官方桥:设计 → 代码</strong></td><td>Material Theme Builder 导出 Compose</td><td>Tokens Studio + Style Dictionary 编 Swift</td><td>shadcn CLI + CSS 变量 / Style Dictionary</td></tr>
+1088:  <tr><td><strong>Figma MCP</strong></td><td>原生,五步流水线已跑通</td><td>原生,但 React→SwiftUI 需自翻译</td><td>原生,<code>get_design_context</code> 直接产 React + Tailwind</td></tr>
+1089:  <tr><td><strong>AI 写 UI 代码质量</strong></td><td>强(Compose 模板化高)</td><td>强(单 View)/ 弱(手势、Combine、SwiftData migration)</td><td><strong>最强</strong>(React+Tailwind 是 AI 训练数据主场)</td></tr>
+1090:  <tr><td><strong>真机/虚拟截图回归</strong></td><td>Paparazzi / Roborazzi(JVM,秒级)</td><td>SnapshotTesting(simulator,慢)——目前无"无设备"等价</td><td>Playwright / Chromatic / VRT</td></tr>
+1091:  <tr><td><strong>品牌色规范</strong></td><td>Material Theme Builder</td><td>Asset Catalog Color Set(Light/Dark/High Contrast)</td><td><code>:root</code> + <code>.dark</code> 双套 CSS 变量</td></tr>
+1092:  <tr><td><strong>动态色 vs 品牌色</strong></td><td><code>dynamicLightColorScheme()</code></td><td>Asset Catalog 语义色 + 品牌色单独定义</td><td>shadcn 默认中性,品牌色覆盖 <code>--primary</code></td></tr>
+1093:  <tr><td><strong>响应式布局 Token</strong></td><td><code>Modifier.fillMaxWidth()</code></td><td><code>.containerRelativeFrame()</code>(iOS 17+)</td><td>Tailwind breakpoint + <code>@container</code></td></tr>
+1094:  <tr><td><strong>设计稿同步 AI 的最快路径</strong></td><td>Figma MCP + Material Theme Builder</td><td>Figma MCP + Tokens Studio</td><td>Figma MCP + shadcn CLI</td></tr>
+1095:  <tr><td><strong>AI 不擅长的事</strong></td><td>State hoisting / hoisted preview 顺序</td><td>手势链 / Combine / SwiftData migration</td><td>v3→v4 config 迁移 / Radix 内部</td></tr>
+1098:<h3 data-reveal>X4. 来源(核对日期 2026-08-05)</h3>
+1100:  <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations" target="_blank">Apple HIG / Foundations(总目录)</a>——Color / Typography / Materials / Dark Mode / Accessibility</li>
+1101:  <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations/color" target="_blank">Apple HIG / Foundations / Color</a>——语义色、SF Symbols、Dynamic Type、Asset Catalog 集成</li>
+1102:  <li><a href="https://developer.apple.com/documentation/swiftui/view/containerrelativeframe(_:alignment:)" target="_blank">SwiftUI <code>containerRelativeFrame(_:alignment:)</code></a>——iOS 17+ 响应式布局官方姿势</li>
+1103:  <li><a href="https://developer.apple.com/documentation/swiftui/entry" target="_blank">SwiftUI <code>@Entry</code> 宏</a>——iOS 18+ 自定义 <code>EnvironmentValues</code> 的简洁写法</li>
+1104:  <li><a href="https://tailwindcss.com/docs/theme" target="_blank">Tailwind CSS v4 / Theme 文档</a>——<code>@theme</code> 完整语法、命名空间表、<code>@theme inline</code> / <code>@theme static</code> / <code>--*: initial</code></li>
+1105:  <li><a href="https://ui.shadcn.com/docs" target="_blank">shadcn/ui 文档(总目录)</a>——"代码即设计"哲学 + CLI + Registry + AI-Ready</li>
+1106:  <li><a href="https://ui.shadcn.com/docs/theming" target="_blank">shadcn/ui Theming</a>——语义 CSS 变量命名表、<code>components.json</code>、<code>--radius</code> 圆角基准</li>
+1107:  <li><a href="https://ui.shadcn.com/docs/cli" target="_blank">shadcn CLI 安装</a>——<code>pnpm dlx shadcn@latest init -t &lt;framework&gt;</code>,支持 Next.js / Vite / Astro / TanStack Start / React Router / Laravel</li>
+1108:  <li><a href="https://styledictionary.com/" target="_blank">Style Dictionary 官网</a>——多端 Token 编译器,iOS / Android / CSS / JS / HTML,DTCG 规范对齐</li>
+1109:  <li><a href="https://docs.tokens.studio/" target="_blank">Tokens Studio for Figma 文档</a>——Figma 端 Token 管理、Style Dictionary Transforms、GitHub/GitLab/JSONBin 同步</li>
+1110:  <li><a href="https://code.claude.com/docs/en/mcp" target="_blank">Claude Code / MCP</a>——stdio / http / sse 三种 transport</li>
+1113:<div class="callout warn"><b class="t">未查到官方来源(诚实声明)</b>
+1115:  <li><strong>iOS 端"无设备 SwiftUI 截图回归"</strong>——Paparazzi/Roborazzi 在 Android 是秒级 JVM 渲染,iOS 目前只有 SnapshotTesting + simulator,Apple 没出官方等价物。</li>
+1116:  <li><strong>Figma 官方 "Copy as SwiftUI"</strong>——Dev Mode 提供 Compose / React / HTML / CSS,但<strong>没看到 SwiftUI</strong>,社区插件质量参差。</li>
+1117:  <li><strong>shadcn 官方 MCP server</strong>——shadcn 没发布官方 MCP,但其 CLI + Registry 本身就具备 MCP 般的"AI 友好"特性。</li>
+1119:如果哪位读者在一手文档里查到这些,欢迎补 PR。
+1126:<div class="sec-tag">附录 R</div>
+1127:<h2>资源与来源索引</h2>
+1129:<h3 data-reveal>官方文档(第一信源)</h3>
+1131:  <li><a href="https://docs.pencil.dev/" target="_blank">pen.dev 官方文档</a>——已收录在本库 <a href="pencil-docs-zh.html">《pen.dev 文档中文版》</a></li>
+1132:  <li><a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">pen.dev AI Integration</a>——MCP 集成、Claude Code / Codex 工作流</li>
+1133:  <li><a href="https://github.com/figma/mcp-server-guide" target="_blank">Figma MCP Server 指南</a>——安装、工具集、Code Connect</li>
+1134:  <li><a href="https://help.figma.com/hc/en-us/sections/14506167395095-AI" target="_blank">Figma AI 能力中心</a></li>
+1135:  <li><a href="https://developer.android.com/develop/ui/compose/designsystems/material3" target="_blank">Material 3 in Jetpack Compose</a>——官方 ColorScheme / Typography / Shapes</li>
+1136:  <li><a href="https://m3.material.io/theme-builder" target="_blank">Material Theme Builder</a>——Figma Variables → Compose 官方桥</li>
+1140:<h3 data-reveal>工具仓库</h3>
+1142:  <li><a href="https://github.com/cashapp/paparazzi" target="_blank">Paparazzi</a>——JVM 截图测试</li>
+1143:  <li><a href="https://github.com/takahirom/roborazzi" target="_blank">Roborazzi</a>——Robolectric 截图测试 + AI skill(<code>npx skills add takahirom/roborazzi</code>)</li>
+1144:  <li><a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a>——设计 Token 单一来源</li>
+1145:  <li><a href="https://github.com/salesforce/theo" target="_blank">Theo</a>——另一种 Token 工具</li>
+1148:<h3 data-reveal>本库相关专题(对照阅读)</h3>
+1150:  <li><a href="pencil-claude-code-best-practices.html">pen.dev × Claude Code 最佳实践</a>——深扎一对组合的实战手册</li>
+1151:  <li><a href="pencil-docs-zh.html">pen.dev 官方文档中文版</a>——逐页翻译</li>
+1152:  <li><a href="claude-code-guide.html">Claude Code 使用指南</a>——命令、Skill、MCP 通用基础</li>
+1153:  <li><a href="codex-guide.html">Codex 使用指南</a>——OpenAI 编码代理对照</li>
+1154:  <li><a href="android-crash-anr.html">Android Crash & ANR 排查根治</a>——AI 改 UI 不影响稳定性</li>
+1155:  <li><a href="prompt-context-engineering.html">提示词与上下文工程</a>——本页所有提示词的底层方法论</li>
+1158:<div class="callout warn"><b class="t">时效声明</b>本页基于 2026-08-05 公开资料整理。Figma / pen.dev / Compose Material 3 / Paparazzi / Roborazzi 都在快速迭代——以官方文档为准。<strong>看到本页核对日期距今超过 1 个月</strong>,请重新跑一次 token 同步验证 + 看 Paparazzi 基线是否还匹配。设计工具和 AI 编码代理都在狂奔,这是这一类页面的宿命。</div>
+1162:  <div>本页内容遵循 AI 知识库的总原则:每条结论标了来源,争议处标了分歧,没查到的直接写"没查到"。设计工具与 AI 编码代理的协同是 2026 年才真正"能用"的事——一年前本页不可能写出来,因为 MCP、Material 3 在 Compose 的成熟、Paparazzi 的稳定缺一不可。</div>
+1163:  <div style="margin-top:8px">最后核对 <strong>2026-08-05</strong> · 适用工具版本:Claude Code v2.1.222 · Codex 0.146.0 · pen.dev docs 2026-07-27 · Paparazzi 2.0.0-alpha05 · Roborazzi 最新 stable</div>
+1169:<button class="top-btn" id="topBtn" title="回到顶部">↑</button>

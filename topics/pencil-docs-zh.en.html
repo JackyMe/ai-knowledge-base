@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Covers all 16 pages of docs.pencil.dev, including official videos and images, with original links for each section.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pen.dev Documentation English Guide · Based on Official Docs">
+<meta property="og:description" content="Covers all 16 pages of docs.pencil.dev, including official videos and images, with original links for each section.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/pencil-docs-zh.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>pen.dev Documentation English Guide · Based on Official Docs</title>
+<style>
+:root{
+  --accent:#5b5bf6; --accent-2:#8b5cf6; --accent-soft:#eef0ff;
+  --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0f172a;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef4ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.75;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:.2px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);margin-left:2px;padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-3)}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:block;padding:6.5px 12px;border-radius:8px;color:var(--text-2);text-decoration:none;
+  font-size:13.8px;transition:.15s}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:880px;margin:0 auto;padding:0 44px 120px}
+
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--border)}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);font-weight:600;
+  background:var(--accent-soft);padding:5px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-size:40px;line-height:1.25;letter-spacing:-.5px;font-weight:800}
+.hero h1 .grad{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16.5px;color:var(--text-2);max-width:640px}
+.hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--text-3)}
+.hero .meta span{background:#f4f6fa;border:1px solid var(--border);padding:4px 12px;border-radius:99px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:34px 0 8px}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 20px 18px;text-decoration:none;
+  color:var(--text);transition:var(--dur-hover,.3s) var(--ease-breathe,ease);background:#fff}
+.card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(91,91,246,.10);transform:translateY(-2px)}
+.card .ic{font-size:20px;margin-bottom:10px}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:13px;color:var(--text-3);line-height:1.55;display:block}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:28px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19.5px;font-weight:700;margin:34px 0 12px;scroll-margin-top:84px}
+h4{font-size:16px;font-weight:700;margin:24px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.origin{font-size:12.5px;color:var(--text-3);margin:-14px 0 20px}
+.origin a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c9dcff}
+.callout.note b.t{color:#2563eb}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4338ca}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafbff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+details{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 18px;font-weight:600;font-size:14px;background:#fafbfd;list-style:none}
+details summary::before{content:"▸ ";color:var(--accent)}
+details[open] summary::before{content:"▾ "}
+details .inner{padding:16px 18px 6px;border-top:1px solid var(--border)}
+
+.dot{display:inline-block;width:10px;height:10px;border-radius:99px;margin-right:6px}
+.dot.blue{background:#3b82f6}.dot.magenta{background:#d946ef}.dot.violet{background:#8b5cf6}
+
+/* Images & Videos */
+figure{margin:20px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 2px 10px rgba(15,23,42,.04)}
+figure img{display:block;width:100%;height:auto}
+figure.tall img{max-height:460px;object-fit:cover;object-position:top}
+figure figcaption{padding:10px 16px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--border);background:#fafbfd}
+figure figcaption a{color:var(--text-3)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:18px 0}
+.img-grid figure{margin:0}
+.video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  margin:18px 0 6px;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cap{font-size:12.5px;color:var(--text-3);margin:6px 2px 20px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero h1{font-size:30px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">✎</span>pen.dev Docs<span class="sub">English Guide</span></div>
+  <div class="right">
+    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
+  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
+  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
+    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
+    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
+  </div>
+</label>
+    <a href="../index.en.html">◂ Topic Center</a>
+    <span>Compiled on 2026-07-28</span>
+    <a href="https://docs.pencil.dev/" target="_blank">Official English Version ↗</a>
+      <span>Verified 2026-08-17</span>
+  
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter sections…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">Overview</div>
+    <a href="#home">Documentation Home</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Getting Started</div>
+    <a href="#installation">Installation</a>
+    <a href="#authentication">Authentication</a>
+    <a href="#ai-integration">AI Integration</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Core Concepts</div>
+    <a href="#pen-files">.pen Files</a>
+    <a href="#design-as-code">Design as Code</a>
+    <a href="#interface">pen.dev Interface</a>
+    <a href="#variables">Variables</a>
+    <a href="#components">Components</a>
+    <a href="#slots">Slots</a>
+    <a href="#code-on-canvas">Code on Canvas</a>
+    <a href="#design-libraries">Design Libraries</a>
+    <a href="#import-export">Import &amp; Export</a>
+    <a href="#shortcuts">Keyboard Shortcuts</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Design &amp; Code</div>
+    <a href="#design-to-code">Design ↔ Code</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Troubleshooting</div>
+    <a href="#troubleshooting">Troubleshooting</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Developers</div>
+    <a href="#pen-format">The .pen Format</a>
+    <a href="#pencil-cli">pen.dev CLI</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="home">
+  <div class="badge">⚡ Unofficial English Guide · Covers all pages of official docs</div>
+  <h1>pen.dev Documentation<br><span class="grad">Complete English Guide</span></h1>
+  <p class="lead">pen.dev is a powerful vector design tool embedded directly in your IDE: design on the canvas, implement in code. This guide is based on the official docs.pencil.dev (updated Verified August 17, 2026, including the rebrand to pen.dev and CLI/MCP terminology updates), translated section by section with original links for reference.</p>
+  <div class="meta">
+    <span>Source: docs.pencil.dev</span><span>Official Update: 2026-07-27</span><span>English Translation: 2026-07-28</span>
+  </div>
+</div>
+
+<div class="sec-tag">Overview</div>
+<h2>What is pen.dev?</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/" target="_blank">pen.dev Documentation (Home)</a></p>
+
+<p>pen.dev is a powerful vector design tool <strong>integrated directly into your development environment</strong>. Unlike traditional design tools that run in a separate app or browser tab, pen.dev lives inside your IDE and works alongside your code.</p>
+<p><strong>Why choose pen.dev?</strong> It bridges the gap between design and development by placing both in the same environment: design components on the canvas, keep them synced with code, and let AI assistants help you maintain consistency between design and implementation, fundamentally accelerating engineering velocity.</p>
+
+<div class="video"><iframe src="https://www.youtube.com/embed/mduKhXvmsyA" title="pen.dev Official Intro Video" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ Official Intro Video (from docs home)</p>
+
+<div class="cards">
+  <a class="card" href="#installation"><div class="ic">🚀</div><b>Quick Start</b><span>Installation, activation &amp; AI integration, take the first step</span></a>
+  <a class="card" href="#pen-files"><div class="ic">🧩</div><b>Core Concepts</b><span>Understand .pen files, variables, components &amp; slots</span></a>
+  <a class="card" href="#design-to-code"><div class="ic">🔄</div><b>Design &amp; Code</b><span>Keep your design and codebase in two-way sync</span></a>
+  <a class="card" href="#troubleshooting"><div class="ic">🛠️</div><b>Troubleshooting</b><span>Quick reference for common issues and solutions</span></a>
+  <a class="card" href="#pen-format"><div class="ic">📦</div><b>Developer Docs</b><span>.pen format specs and pen.dev CLI</span></a>
+</div>
+
+<div class="divider"></div>
+
+<section id="installation">
+<div class="sec-tag">Quick Start 01</div>
+<h2>Installation</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/getting-started/installation" target="_blank">Getting Started / Installation</a></p>
+
+<p>pen.dev provides both an <strong>IDE extension</strong> and a <strong>standalone desktop app</strong>. Choose according to your workflow.</p>
+
+<h3 data-reveal>VS Code Extension</h3>
+<ol class="steps">
+  <li>Open VS Code, go to Extensions panel (<kbd>Cmd/Ctrl + Shift + X</kbd>)</li>
+  <li>Search "pen.dev" and click <strong>Install</strong></li>
+  <li>Verify: Create a new <code>.pen</code> file (e.g., <code>test.pen</code>) and open it; the pen.dev icon should appear in the top-right corner.</li>
+</ol>
+<div class="callout note"><b class="t">Can't see the icon?</b> Open the Command Palette (<kbd>Cmd/Ctrl + Shift + P</kbd>), search for "pen.dev" to see available commands, and ensure the extension is enabled.</div>
+
+<h3 data-reveal>Cursor Extension</h3>
+<p>Installation is the same as VS Code: search "pen.dev" in the Extensions panel, install, then create a <code>.pen</code> file to verify.</p>
+<h4>Common Issues</h4>
+<ul>
+  <li><strong>Extension fails to connect</strong>: Ensure Claude Code is logged in (run <code>claude</code>), activation is complete, and the pen.dev MCP server is connected.</li>
+  <li><strong>Can't see the prompt input box</strong>: Check activation/login status, restart Cursor, or reinstall the extension if it persists.</li>
+  <li><strong>Prompt says "You need Cursor Pro"</strong>: This may relate to Cursor's subscription/tool limits. Check your subscription status.</li>
+</ul>
+
+<h3 data-reveal>Desktop App</h3>
+<h4>macOS</h4>
+<ul>
+  <li>Download the latest <code>.dmg</code> from the official site or release page, drag it into Applications, and launch it.</li>
+  <li>If you encounter a security prompt on first launch, right-click → Open. Complete activation, and log in to Claude Code to use AI features.</li>
+</ul>
+<h4>Linux</h4>
+<pre><code><span class="c"># Example for .deb package</span>
+sudo dpkg -i pencil-*.deb
+
+<span class="c"># Example for .AppImage</span>
+chmod +x pencil-*.AppImage
+./pencil-*.AppImage</code></pre>
+<div class="callout warn"><b class="t">Known Issues</b> Wayland / Hyprland environments may experience UI glitches. X11 is more stable.</div>
+<h4>Windows</h4>
+<p>pen.dev runs on Windows. Windows users can also use the VS Code or Cursor extension directly. Installation steps are identical to macOS/Linux.</p>
+
+<h3 data-reveal>Claude Code CLI</h3>
+<p>pen.dev's AI features rely on an installed and authenticated Claude Code:</p>
+<pre><code><span class="c"># Install Claude Code CLI</span>
+npm install -g @anthropic-ai/claude-code-cli
+
+<span class="c"># Or use the official install script</span>
+curl https://claude.ai/cli/install.sh | sh
+
+<span class="c"># Login (follow the browser authentication flow)</span>
+claude
+
+<span class="c"># Verify login status</span>
+claude --version</code></pre>
+<div class="callout note"><b class="t">Editor's Note</b> The above reflects the original official documentation. The current npm package for Claude Code is <code>@anthropic-ai/claude-code</code>, and the install script is <code>curl -fsSL https://claude.ai/install.sh | bash</code>. Refer to the <a href="https://code.claude.com/docs" target="_blank">official Claude Code docs</a>. For more details, see the <a href="claude-code-guide.html#setup">Installation section of the "Claude Code Guide"</a> in this repo.</div>
+
+<h3 data-reveal>MCP Server</h3>
+<p>The pen.dev MCP (Model Context Protocol) server will <strong>automatically start and run locally</strong> when you use pen.dev, providing AI assistants with tools to read and write <code>.pen</code> files. No extra configuration is needed for basic use.</p>
+<ul>
+  <li><strong>Verify in Cursor</strong>: Go to Settings → Tools &amp; MCP, confirm pen.dev appears in the list.</li>
+  <li><strong>Verify in Codex CLI</strong>: Run pen.dev first, then execute <code>/mcp</code> in Codex; pen.dev should appear in the MCP list.</li>
+</ul>
+
+<h3 data-reveal>After Installation</h3>
+<ol class="steps">
+  <li><strong>Complete Activation</strong> — Use your email to activate pen.dev</li>
+  <li><strong>Log into Claude Code</strong> — Required for AI features</li>
+  <li><strong>Open Welcome File</strong> — Right-click on canvas → Open Welcome File</li>
+  <li><strong>Create your first design</strong> — See <a href="#pen-files">.pen Files</a></li>
+</ol>
+
+<h3 data-reveal>Updating pen.dev</h3>
+<ul>
+  <li><strong>VS Code / Cursor Extension</strong>: Updates automatically by default. To update manually, find pen.dev in the Extensions panel and click Update.</li>
+  <li><strong>Desktop App</strong>: Prompts when a new version is available. Download and install the latest version from the official site.</li>
+</ul>
+
+<h3 data-reveal>Installation Troubleshooting</h3>
+<ul>
+  <li><strong>Extension installed but not connecting</strong>: Ensure Claude Code is logged in → Complete activation → Restart IDE.</li>
+  <li><strong>Not receiving activation email</strong>: Check spam folder; try a different email; reinstall the extension.</li>
+  <li><strong>"Invalid API key" or "Please run /login"</strong>: Run <code>claude</code> to complete authentication. Ensure there are no conflicting auth configs (like environment variable keys or custom Providers).</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="authentication">
+<div class="sec-tag">Quick Start 02</div>
+<h2>Authentication</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/getting-started/authentication" target="_blank">Getting Started / Authentication</a></p>
+
+<p>pen.dev requires two layers of identity verification: <strong>Activation</strong> (using pen.dev itself) + <strong>Claude Code Authentication</strong> (to use AI features).</p>
+
+<h3 data-reveal>pen.dev Activation</h3>
+<ol class="steps">
+  <li>On first launch, follow the prompt to <strong>enter your email</strong></li>
+  <li><strong>Check your email</strong> to get the activation code</li>
+  <li><strong>Enter the activation code</strong> in pen.dev to complete activation</li>
+</ol>
+<h4>Activation Common Issues</h4>
+<ul>
+  <li><strong>Not receiving activation email</strong>: Check your spam folder; try another email; wait a few minutes (emails can be delayed).</li>
+  <li><strong>"Invite for your email address was not found. Please join the waitlist."</strong>: Try reinstalling the Cursor/VS Code extension, contact support if it persists.</li>
+  <li><strong>Repeatedly asked to activate</strong>: Known issue in some versions—restart your IDE, reinstall the extension if it persists.</li>
+  <li><strong>Activation stuck during migration</strong>: Reinstall the extension, clear extension data, and try again.</li>
+</ul>
+
+<h3 data-reveal>Claude Code Authentication</h3>
+<p>Logging in via CLI is recommended:</p>
+<pre><code><span class="c"># Launch Claude Code, follow browser auth flow</span>
+claude</code></pre>
+<p>This flow opens the browser → log in with Anthropic account → save credentials locally. Verification: run <code>claude --version</code>, or confirm there's no "Claude Code not connected" warning in pen.dev and the AI panel (<kbd>Cmd/Ctrl + K</kbd>) works normally.</p>
+
+<h3 data-reveal>Common Authentication Issues</h3>
+<h4>"Claude Code isn't connected / not logged in"</h4>
+<p>Open the terminal in your project directory → run <code>claude</code> to complete auth → return to pen.dev and try again.</p>
+<h4>"Invalid API key" or "Please run /login"</h4>
+<p><strong>Cause</strong>: Authentication incomplete; conflicting auth methods (Console login + env var key + custom Provider); expired credentials.<br>
+<strong>Solution</strong>: Run <code>claude</code> to complete auth; if using CLI auth, remove the <code>ANTHROPIC_API_KEY</code> environment variable, clear unneeded custom Provider configurations; do a clean fresh login if necessary.</p>
+<h4>"Claude CLI works, but pen.dev still shows not logged in"</h4>
+<p>Usually caused by auth conflicts from third-party/custom Providers or the extension failing to detect the CLI auth: keep a clean Claude Code login session (no custom Provider), restart the IDE after auth, and check for conflicting environment variables.</p>
+
+<h3 data-reveal>Authentication Methods Comparison</h3>
+<table class="tbl">
+  <tr><th>Method</th><th>Description</th><th>Recommendation</th></tr>
+  <tr><td><strong>Claude CLI (Recommended)</strong></td><td>Run <code>claude</code> in terminal, browser login, all features automatically available</td><td>Simplest and most reliable</td></tr>
+  <tr><td>API Key</td><td>Set <code>ANTHROPIC_API_KEY</code> environment variable</td><td>May conflict with CLI auth, generally not recommended</td></tr>
+</table>
+
+<h3 data-reveal>A Complete Viable Workflow</h3>
+<ol class="steps">
+  <li>Install pen.dev (extension or desktop app)</li>
+  <li>Complete pen.dev activation (email verification code)</li>
+  <li>Install Claude Code CLI</li>
+  <li>Authenticate Claude Code (<code>claude</code> command)</li>
+  <li>Create a <code>.pen</code> file in your project</li>
+  <li>Start working — pen.dev and AI features should both be ready</li>
+</ol>
+
+<h3 data-reveal>Permissions and Access</h3>
+<ul>
+  <li><strong>"pen.dev / Claude cannot access other folders"</strong>: Mostly due to folder permissions or system security settings—accept the authorization prompt when it appears; update folder permissions in system settings; run the IDE/pen.dev with appropriate permissions.</li>
+  <li><strong>"Never saw the permission prompt"</strong>: Try executing the action in a standalone Claude Code session outside pen.dev; check system notification settings and IDE permissions.</li>
+</ul>
+
+<h3 data-reveal>Security and Privacy</h3>
+<ul>
+  <li>The pen.dev MCP server <strong>runs locally on your machine</strong>; aside from using AI features (prompts sent to Claude), design data is not sent to remote servers. The repository is currently private.</li>
+  <li>You can view MCP tool definitions in your IDE: Settings → Tools &amp; MCP in Cursor; check MCP configuration in VS Code. Tool definitions show what the AI can do to your designs.</li>
+</ul>
+
+<h3 data-reveal>Still Have Issues?</h3>
+<p>If authentication issues remain unresolved:</p>
+<ul>
+  <li>Consult the <a href="#troubleshooting">Troubleshooting</a> doc</li>
+  <li>Confirm you are using the latest versions of pen.dev and Claude Code</li>
+  <li>Try completely reinstalling both pen.dev and Claude Code CLI</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-integration">
+<div class="sec-tag">Quick Start 03</div>
+<h2>AI Integration</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">Getting Started / AI Integration</a></p>
+
+<p>pen.dev deeply integrates with AI assistants via <strong>MCP (Model Context Protocol)</strong> to enable powerful design automation workflows.</p>
+
+<h3 data-reveal>Supported AI Assistants</h3>
+<p>Claude Code (CLI and IDE), Claude Desktop, Cursor, Windsurf IDE (Codeium), Codex CLI (OpenAI), Antigravity IDE, OpenCode CLI.</p>
+
+<h3 data-reveal>What is MCP and How it Works</h3>
+<p>MCP is a protocol that gives AI assistants "tools to operate your design files"—think of it as an API that lets AI read and write <code>.pen</code> files programmatically.</p>
+<ol class="steps">
+  <li><strong>pen.dev MCP server runs locally</strong> — Design operations don't rely on the cloud</li>
+  <li><strong>AI assistants connect via MCP</strong> — They can connect as soon as pen.dev is running</li>
+  <li><strong>AI calls tools</strong> — To read, modify, and generate designs</li>
+  <li><strong>You stay in control</strong> — AI proposes, you approve</li>
+</ol>
+
+<h3 data-reveal>Using in Claude Code</h3>
+<p><strong>Prerequisites</strong>: Install Claude Code CLI → run <code>claude</code> to authenticate → keep pen.dev running → open a <code>.pen</code> file.</p>
+
+<div class="video"><iframe src="https://player.vimeo.com/video/1158682767" title="pen.dev in Antigravity / VS Code with Claude Code panel" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ Official Demo: Using pen.dev in Antigravity / VS Code with the Claude Code panel</p>
+
+<h4>Basic Workflow</h4>
+<ol class="steps">
+  <li>Press <kbd>Cmd/Ctrl + K</kbd> to open the AI prompt panel</li>
+  <li>Describe your request in natural language, for example: "Create a login form with email and password" or "Add a navbar to this page"</li>
+  <li>AI uses MCP tools to modify your <code>.pen</code> file</li>
+  <li>Changes reflect instantly on the canvas</li>
+</ol>
+<h4>Prompt Examples</h4>
+<table class="tbl">
+  <tr><th>Scenario</th><th>Example Prompt</th></tr>
+  <tr><td>Create Design</td><td>"Design a dashboard with a sidebar and main content area" / "Create a three-tier pricing table" / "Add a Hero section with title and CTA button"</td></tr>
+  <tr><td>Modify Design</td><td>"Change all primary buttons to blue" / "Make the sidebar narrower" / "Add spacing between these elements"</td></tr>
+  <tr><td>Design System</td><td>"Create a button component with variants" / "Generate a color palette based on #3b82f6" / "Build a typography scale"</td></tr>
+  <tr><td>Code Sync</td><td>"Generate React code for this component" / "Import Header from my codebase" / "Generate Tailwind config from these variables"</td></tr>
+</table>
+
+<h3 data-reveal>Using in Cursor</h3>
+<ol class="steps">
+  <li>Install the pen.dev extension in Cursor and complete activation</li>
+  <li>Authenticate Claude Code</li>
+  <li>Verify MCP connection: Settings → Tools &amp; MCP</li>
+</ol>
+
+<div class="video"><iframe src="https://player.vimeo.com/video/1158019699" title="Using pen.dev Extension in Cursor" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ Official Demo: Using pen.dev Extension in Cursor</p>
+<ul>
+  <li><strong>Inline Editing</strong>: Select elements in pen.dev, modify using Cursor's AI chat, and changes are written directly to the <code>.pen</code> file.</li>
+  <li><strong>Codebase Awareness</strong>: Cursor can see both code and design simultaneously; you can ask it to sync components between the two and keep them automatically consistent.</li>
+</ul>
+
+<h3 data-reveal>Using in Codex CLI</h3>
+<ol class="steps">
+  <li>Run pen.dev first (desktop app or IDE extension)</li>
+  <li>Open Codex in the terminal, execute <code>/mcp</code> to verify connection</li>
+  <li>pen.dev should appear in the MCP server list</li>
+</ol>
+<p>You can give design commands directly in the terminal, offering the benefits of a command-line workflow, scriptable design generation, and integration with build tools.</p>
+<div class="callout warn"><b class="t">Known Issue</b> pen.dev might modify or repeatedly write to Codex's <code>config.toml</code>. Officially confirmed and under investigation—please back up your config before first use.</div>
+
+<h3 data-reveal>Available MCP Tools</h3>
+<p>As of 2026-07-27, the official documentation consolidated the toolset from 5-6 fine-grained tools into 5 (execute / get state / screenshot / export / load guidelines). For a complete old-vs-new comparison and a warning about your local environment potentially not being updated yet, see <a href="#pencil-cli">"pen.dev CLI" Chapter · Supported MCP Tools</a>.</p>
+<table class="tbl">
+  <tr><th>Category</th><th>Tool</th><th>Capability</th></tr>
+  <tr><td>Design</td><td><code>execute</code></td><td>Create/modify/manipulate design elements: Insert/Copy/Update/Replace/Move/Delete operations; manage variables and themes via <code>GetVariables</code>/<code>SetVariables</code> sub-operations; generate and place images</td></tr>
+  <tr><td>Analysis</td><td><code>get_screenshot</code></td><td>Render design previews, verify visual output, before/after comparisons</td></tr>
+  <tr><td>Analysis</td><td><code>get_app_state</code></td><td>Current editor context, selection info, active file</td></tr>
+</table>
+
+<h3 data-reveal>Advanced Workflows</h3>
+<ul>
+  <li><strong>Automated Design Generation</strong>: Specify style ("Create a dashboard following Material Design principles"); batch operations ("Generate 5 variants for this button component", "Design a full landing page with Hero, features, pricing, and footer").</li>
+  <li><strong>Design System Management</strong>: Consistency constraints ("Ensure all buttons use the primary color variable", "Apply an 8px spacing grid to all elements"); component libraries ("Create a button component with all variants", "Generate text/dropdown/checkbox/radio form input components").</li>
+  <li><strong>Code-Design Linkage</strong>: Import existing app ("Recreate all components under src/components in pen.dev", "Import design system from Tailwind config"); sync changes ("Keep all React components consistent with pen.dev design", "Sync font variables between CSS and pen.dev").</li>
+</ul>
+
+<h3 data-reveal>Official Best Practices</h3>
+<ul>
+  <li><strong>Be Specific</strong>: ❌ "Make it look better" → ✅ "Increase button padding to 16px and change color to blue"</li>
+  <li><strong>Give Context</strong>: ❌ "Add a form" → ✅ "Add a login form: email, password, remember me checkbox, and submit button"</li>
+  <li><strong>Reference Design System</strong>: "Use our existing button component", "Follow the spacing scale in variables", "Match the style of the Header component"</li>
+  <li><strong>Iterative Design</strong>: Scaffold first ("Create dashboard layout") → Refine ("Add sidebar with nav items") → Polish ("Add hover states to nav items") → Finalize ("Align spacing to 8px grid")</li>
+  <li><strong>Verification</strong>: Visually check the canvas after AI modifications → verify structure in layers panel → ask AI for screenshots to verify complex layouts if necessary</li>
+</ul>
+
+<h3 data-reveal>AI Integration Troubleshooting</h3>
+<ul>
+  <li><strong>Connection Issues</strong>: "Claude Code not connected" → run <code>claude</code> to log in, restart pen.dev; MCP server not appearing → confirm pen.dev is running, check IDE's MCP settings, restart both pen.dev and the AI assistant.</li>
+  <li><strong>Permissions Issues</strong>: Accept permission prompts; check system folder permissions; if prompts don't appear, try executing in a standalone Claude Code session.</li>
+  <li><strong>Output Issues</strong>: "Invalid API key" → Re-authenticate, clear conflicting env vars; AI makes unexpected changes → make prompts more specific, ask for explanation before execution, use version control to rollback if needed.</li>
+</ul>
+
+<h3 data-reveal>Example Session</h3>
+<pre><code><span class="c"># 1. Launch pen.dev and Claude Code</span>
+claude
+<span class="c"># 2. Open design.pen in IDE; press Cmd+K to start designing</span>
+User: "Create a modern landing page Hero section"
+AI:   [Generates Hero with main title, subtitle, CTA button]
+User: "Add a three-column features section below it"
+AI:   [Adds features section below Hero]
+User: "Use our primary color variable for the CTA button"
+AI:   [Changes button to reference color variable]
+User: "Generate React code for the entire page"
+AI:   [Exports as React + Tailwind components]
+<span class="c"># 3. Review, tweak, and commit to Git</span>
+git add design.pen src/pages/landing.tsx
+git commit -m "Add landing page design and implementation"</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="pen-files">
+<div class="sec-tag">Core Concepts 01</div>
+<h2>.pen Files</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/pen-files" target="_blank">Core Concepts / .pen Files</a></p>
+
+<p><code>.pen</code> is pen.dev's design file format, featuring three key characteristics:</p>
+<ul>
+  <li><strong>JSON-based</strong> — Structured, human-readable data format</li>
+  <li><strong>Version-control friendly</strong> — Manage with Git just like code files</li>
+  <li><strong>Portable</strong> — Shareable across teams and platforms</li>
+</ul>
+<table class="tbl">
+  <tr><th>Action</th><th>Method</th></tr>
+  <tr><td>Create</td><td>IDE: create a file with a <code>.pen</code> extension; Desktop: File → New or <kbd>Cmd/Ctrl + N</kbd></td></tr>
+  <tr><td>Open</td><td>Double-click a <code>.pen</code> file, or open it in the IDE like a normal file; pen.dev activates automatically</td></tr>
+  <tr><td>Save</td><td><kbd>Cmd/Ctrl + S</kbd>; <strong>Note: no auto-save yet, save frequently!</strong> Commit via Git to keep history</td></tr>
+</table>
+<div class="callout tip"><b class="t">Best Practices</b> Save often (no auto-save yet); commit to Git regularly; keep <code>.pen</code> files and code in the same project workspace; use semantic names like <code>dashboard.pen</code>, <code>components.pen</code>.</div>
+<p>Want to read/write .pen files programmatically? See <a href="#pen-format">The .pen Format (Developers)</a>.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-as-code">
+<div class="sec-tag">Core Concepts 02</div>
+<h2>Design as Code</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/design-as-code" target="_blank">Core Concepts / Design as Code</a></p>
+
+<p>Because <code>.pen</code> is a text format, design files can be collaborated on and version-controlled exactly like code—this is the fundamental philosophy separating pen.dev from cloud design tools like Figma.</p>
+<ul>
+  <li><strong>Same Repository</strong> — <code>.pen</code> and code live in the same Git repo, sharing one version history;</li>
+  <li><strong>Diffable</strong> — Design changes appear as text diffs in PRs, so you review design changes just like code;</li>
+  <li><strong>Branchable &amp; Mergeable</strong> — Design follows feature branches, merging and rolling back together so design and code never drift apart;</li>
+  <li><strong>Single Source of Truth</strong> — No more "one version in Figma, another in code".</li>
+</ul>
+<div class="callout tip"><b class="t">Best Practices</b> Commit frequently, write clear commit messages; put designs in feature branches so "what changed in design" and "what changed in code" are reviewed together in the same PR.</div>
+<div class="callout note"><b class="t">How this philosophy becomes a workflow</b> "Design as Code" is more than a storage format; it unlocks a set of two-way design-code sync strategies (shared variables, single-prompt design-to-code, reverse-engineering existing components into designs). For full workflows and real cases, see <a href="pencil-claude-code-best-practices.html#workflows">pen.dev × Claude Code Best Practices · Four Core Workflows</a> in this repo.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="interface">
+<div class="sec-tag">Core Concepts 03</div>
+<h2>pen.dev Interface</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/pencil-interface" target="_blank">Core Concepts / pen.dev Interface</a></p>
+
+<h3 data-reveal>Infinite Canvas</h3>
+<p>The canvas provides a borderless workspace with interaction habits identical to professional design tools. <strong>Hold space and drag to pan</strong>; use your trackpad or hold <kbd>Cmd/Ctrl</kbd> and scroll to zoom.</p>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Space + Drag</kbd></td><td>Pan canvas</td></tr>
+  <tr><td><kbd>Shift + Scroll</kbd></td><td>Horizontal pan</td></tr>
+  <tr><td><kbd>0</kbd></td><td>Zoom to 100%</td></tr>
+  <tr><td><kbd>1</kbd></td><td>Zoom to fit all</td></tr>
+</table>
+
+<h3 data-reveal>Frames</h3>
+<p>Frames are containers for your design: they group related elements and define screen boundaries. Use <kbd>Cmd/Ctrl + Option/Alt + G</kbd> to apply Flex layout to a selection.</p>
+
+<h3 data-reveal>Selection &amp; Highlights</h3>
+<p>Click or box-select canvas elements. The bounding box color indicates the element type:</p>
+<ul>
+  <li><span class="dot blue"></span><strong>Blue</strong> — Regular elements: Frames, shapes, text</li>
+  <li><span class="dot magenta"></span><strong>Magenta</strong> — Component origin: The single source of truth; edits here apply to all instances automatically</li>
+  <li><span class="dot violet"></span><strong>Violet</strong> — Component instance</li>
+</ul>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Click</kbd></td><td>Select element</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Click</kbd></td><td>Direct select (deepest element)</td></tr>
+  <tr><td><kbd>Shift + Click</kbd></td><td>Add to selection</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + A</kbd></td><td>Select all</td></tr>
+</table>
+
+<h3 data-reveal>Layers Panel</h3>
+<p>Located on the left, it lists all elements on the canvas, letting you clearly browse, edit, and organize the design hierarchy in complex nested structures. Double-click a layer to rename it; click the "Layers" icon to toggle the panel.</p>
+
+<h3 data-reveal>Properties Panel</h3>
+<p>Appears on the right when one or more elements are selected. You can view and edit alignment, layout, appearance, fill, stroke, effects, etc. Supports exporting the selection as PNG / JPEG / WEBP / PDF; click the top-right icon to minimize.</p>
+
+<h3 data-reveal>AI Chat</h3>
+<p>pen.dev's AI chat is the gateway to "vibe-designing": you can have it design from scratch, or edit existing designs on the canvas. The chat panel is built into the desktop app; when using IDE extensions, you collaborate via the IDE's native AI chat.</p>
+<ul>
+  <li>Selections on the canvas are automatically added to context.</li>
+  <li>Click "New Agent" to start a new session and clear the context window.</li>
+</ul>
+
+<h3 data-reveal>Undo / Redo</h3>
+<p><kbd>Cmd/Ctrl + Z</kbd> to undo, <kbd>Cmd/Ctrl + Shift + Z</kbd> to redo. Note: undo/redo capabilities might be more limited than typical design editors.</p>
+<div class="callout tip"><b class="t">Best Practices</b> Press <kbd>Cmd/Ctrl + S</kbd> frequently to save; commit to Git before major changes; use Git history to rollback if needed.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="variables">
+<div class="sec-tag">Core Concepts 04</div>
+<h2>Variables</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/variables" target="_blank">Core Concepts / Variables</a></p>
+
+<p>pen.dev variables are like CSS custom properties or design tokens: HEX colors, spacing/radius/size values, font family strings—<strong>define once, reference anywhere</strong>. Modify a variable in the variables panel, and all references update instantly.</p>
+
+<h3 data-reveal>Three Ways to Create Variables</h3>
+<ul>
+  <li><strong>Manual Creation</strong> — Click the variables icon in the toolbar to open the panel, define variables, and set values for different themes.</li>
+  <li><strong>Import from CSS</strong> — Have an AI agent create variables based on your <code>globals.css</code>, automatically extracting colors, spacing, and fonts.</li>
+  <li><strong>Import from Figma</strong> — Paste a screenshot of your variables table and ask AI to recreate it in pen.dev; or simply copy single token values from Figma.</li>
+</ul>
+
+<h3 data-reveal>Using Variables</h3>
+<ul>
+  <li><strong>Apply to Elements</strong> — Use variable references instead of hardcoded values; change a variable once, and all elements referencing it update automatically.</li>
+  <li><strong>Theming</strong> — Add a new column in the variables panel to create light/dark or other themes; switch themes in the properties panel to preview your design instantly.</li>
+</ul>
+
+<h3 data-reveal>Code Synchronization</h3>
+<p>Variables can be kept in sync between pen.dev and your codebase: ask AI to update CSS variables based on a pen.dev file, or import CSS changes back into pen.dev—this is the foundation of a two-way design-to-code workflow.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="components">
+<div class="sec-tag">Core Concepts 05</div>
+<h2>Components</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/components" target="_blank">Core Concepts / Components</a></p>
+
+<h3 data-reveal>Why Use Components</h3>
+<p>Components ensure design consistency: edit the main component once, and all instances update automatically. Components are the building blocks of a design system.</p>
+
+<h3 data-reveal>Creating Components</h3>
+<p>Any standard design element (Frame, shape, text) can be converted into a reusable component:</p>
+<ol class="steps">
+  <li>Select an element</li>
+  <li>Press <kbd>Cmd/Ctrl + Option/Alt + K</kbd>, or click "Create component" at the top of the properties panel</li>
+  <li>The element becomes the <strong>component origin</strong>, showing a magenta bounding box when selected</li>
+</ol>
+<p>More complex structures can be turned into nested components.</p>
+
+<h3 data-reveal>Using Components</h3>
+<p>Simply <strong>copy the component origin on the canvas to create instances</strong>; instances show a violet bounding box when selected. Click the "Go to component" button in the properties panel to quickly jump back to the origin.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="slots">
+<div class="sec-tag">Core Concepts 06</div>
+<h2>Slots</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/slots" target="_blank">Core Concepts / Slots</a></p>
+
+<p>Slots are designated drop zones inside components, used to define flexible, customizable content areas within a component.</p>
+
+<h3 data-reveal>Creating Slots</h3>
+<ol class="steps">
+  <li>Create a Frame and turn it into a component (<kbd>Cmd/Ctrl + Option/Alt + K</kbd> or "Create component" in the properties panel)</li>
+  <li>Style it as needed</li>
+  <li>Click the "Make a slot" button at the top of the properties panel</li>
+</ol>
+<div class="callout note"><b class="t">Rule</b> Only an <strong>empty Frame</strong> inside a component origin can become a slot; slots on the canvas are indicated by a diagonal slash texture marking it as a drop zone.</div>
+
+<h3 data-reveal>Suggested Slot Components</h3>
+<p>Other components within the same .pen file can be marked as "suggested components" for a slot. For example, a <code>table</code> component's slot could suggest a <code>table-row</code> as its expected content—this provides guidance to both human and AI designers on "what should go in this slot".</p>
+<ol class="steps">
+  <li>Select a layer with a slot inside a component origin</li>
+  <li>Click the <code>+</code> button on the "Slots" row at the top of the properties panel</li>
+  <li>Select the component(s) to set as suggested</li>
+</ol>
+
+<h3 data-reveal>Dropping Elements into Slots</h3>
+<p>After creating a component instance, drag or copy-paste elements into the slot to populate the content.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="code-on-canvas">
+<div class="sec-tag">Core Concepts 07</div>
+<h2>Code on Canvas</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">Core Concepts / Code on Canvas</a></p>
+
+<p>pen.dev brings code directly to the canvas via <strong>Script nodes</strong>: place a node, point it to a <code>.js</code> file, and the script's output renders as nested layers—pie charts, grids, decorative patterns, anything that can be described with code. It's perfect for structures that are tedious to build manually: data-driven designs, repeated elements with variations, or scenarios where you want to tweak parameters interactively with a few "knobs".</p>
+
+<h3 data-reveal>Quick Start</h3>
+<ol class="steps">
+  <li><strong>Create a Script node</strong>: Open the shapes dropdown in the toolbar → select Script (<code>&lt;/&gt;</code> icon) → click on the canvas to place a 200×200 node (shows a green "No script file selected" placeholder until linked)</li>
+  <li><strong>Link a .js file</strong>: Enter the path in the script field in the properties panel; paths are resolved relative to the <code>.pen</code> file, so just write <code>chart.js</code> for a file in the same folder</li>
+  <li><strong>Tweak parameters on canvas</strong>: Drag handles to resize, and the script reruns and reflows in real-time; every <code>@input</code> generates a control in the properties panel; save the .js file and the canvas updates instantly</li>
+</ol>
+<p>You don't have to write scripts manually. Two shortcuts: grab ready-made examples (charts, grids, patterns, etc.) maintained by the official team at <a href="https://github.com/highagency/pencil-scripts" target="_blank">highagency/pencil-scripts</a>; or open the AI panel, describe your needs, and AI will create the <code>.js</code> file and link it to the selected Script node.</p>
+
+<h3 data-reveal>Minimal Example</h3>
+<pre><code>/**
+ * @schema 2.11
+ *
+ * @input columns: number(min=1) = 3
+ * @input color: color = #3B82F6
+ */
+const cols = Math.floor(pencil.input.columns);
+const cellW = pencil.width / cols;
+
+const nodes = [];
+for (let c = 0; c &lt; cols; c++) {
+  nodes.push({
+    type: "rectangle",
+    x: c * cellW,
+    y: 0,
+    width: cellW - 4,
+    height: pencil.height,
+    fill: pencil.input.color,
+  });
+}
+return nodes;</code></pre>
+
+<figure>
+  <img src="https://docs.pencil.dev/_next/static/media/docs-code-on-canvas.44613d68.png" data-fallback="  <figcaption>The actual rendering of the above script in a 200×200 Script node · Image source: <a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">Official Docs Code on Canvas</a></figcaption>
+</figure>
+
+<h3 data-reveal>Key Mechanisms</h3>
+<ul>
+  <li>The <code>.js</code> file is independent of the <code>.pen</code> file; the node only stores the path. Multiple nodes can point to the same file, each maintaining its own size and input values.</li>
+  <li>Inputs are declared with <code>@input</code> comments at the top of the file; the properties panel updates automatically if you rename or remove them.</li>
+  <li>The script must <strong>return an array of nodes</strong>. Each object follows the .pen format and is inserted as a child of the Script node.</li>
+  <li>The output is <strong>derived state</strong>: it reruns and re-renders every time, and doesn't enter the undo history. To manually edit the generated content, click "Convert to layers" at the bottom of the properties panel to turn it into a snapshot of regular layers.</li>
+  <li>Scripts run in a <strong>sandbox</strong>: no DOM, network, or filesystem access. They must execute synchronously (no async / setTimeout).</li>
+  <li><code>Math.random()</code> is deterministic (re-seeded on every run): identical inputs guarantee identical outputs.</li>
+  <li>Errors and missing files are displayed directly on the node with the error line highlighted, no need to open a console.</li>
+</ul>
+
+<h3 data-reveal>API Reference</h3>
+<h4>File Header</h4>
+<pre><code>/**
+ * @schema &lt;version&gt;     <span class="c">// Required, current schema version is 2.14</span>
+ * @input &lt;name&gt;: &lt;type&gt;[(&lt;args&gt;)] [= &lt;default&gt;]   <span class="c">// 0 or more</span>
+ */</code></pre>
+<h4>Input Types</h4>
+<table class="tbl">
+  <tr><th>Type</th><th>Example</th><th>Description</th></tr>
+  <tr><td><code>number</code></td><td><code>@input size: number(min=0, max=100) = 10</code></td><td>Optional min/max constraints, clamps value before running</td></tr>
+  <tr><td><code>string</code></td><td><code>@input label: string = "Hello"</code></td><td>Renders as a multi-line text input in the panel</td></tr>
+  <tr><td><code>boolean</code></td><td><code>@input filled: boolean = true</code></td><td>Renders as a checkbox</td></tr>
+  <tr><td><code>color</code></td><td><code>@input fill: color = #3B82F6</code></td><td>HEX literal or quoted string</td></tr>
+  <tr><td><code>enum</code></td><td><code>@input layout: enum("grid", "stack") = "grid"</code></td><td>Renders as a dropdown menu</td></tr>
+  <tr><td><code>ref</code></td><td><code>@input target: ref</code></td><td>Reference to a reusable component, pickable from a thumbnail grid</td></tr>
+</table>
+<h4><code>pencil</code> Global Object</h4>
+<table class="tbl">
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>pencil.width</code></td><td>number</td><td>Current width of the Script node</td></tr>
+  <tr><td><code>pencil.height</code></td><td>number</td><td>Current height of the Script node</td></tr>
+  <tr><td><code>pencil.input.&lt;name&gt;</code></td><td>Matches @input type</td><td>Current value of the input (clamped and validated)</td></tr>
+</table>
+<div class="callout warn"><b class="t">Limits</b> Can return at most <strong>1000 nodes</strong> per run, and must complete within <strong>2 seconds</strong>. If you bind an input to a <a href="#variables">variable</a> (e.g., <code>$primary</code>), the script will automatically respond to theme switches.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-libraries">
+<div class="sec-tag">Core Concepts 08</div>
+<h2>Design Libraries</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/design-libraries" target="_blank">Core Concepts / Design Libraries</a></p>
+
+<p>Design libraries are collections of components that can be imported by other .pen files. Modifying components in a library file syncs the changes to everywhere they are used.</p>
+
+<h3 data-reveal>Creating a Design Library</h3>
+<ol class="steps">
+  <li>Create a new .pen file and fill it with components</li>
+  <li>Click the "Libraries" icon in the left layers panel</li>
+  <li>Click "Turn this file into a library" at the bottom</li>
+</ol>
+<div class="callout warn"><b class="t">Note</b> Design library files use the <code>.lib.pen</code> extension. Once a file is marked as a design library, it <strong>cannot be undone</strong>.</div>
+
+<h3 data-reveal>Importing a Library</h3>
+<p>Layers Panel → "Libraries" icon → Select the library to import (you can also pick from default libraries).</p>
+
+<h3 data-reveal>Using Library Assets</h3>
+<p>Layers Panel → "Assets" icon → Scroll through the grid or search by name → Drag or click to place them on the canvas.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="import-export">
+<div class="sec-tag">Core Concepts 09</div>
+<h2>Import &amp; Export</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/import-and-export" target="_blank">Core Concepts / Import &amp; Export</a></p>
+
+<h3 data-reveal>Import</h3>
+<table class="tbl">
+  <tr><th>Source</th><th>Method</th></tr>
+  <tr><td>Full Figma File</td><td>Toolbar: click the arrow below the Rectangle icon → <code>Import Figma</code>; Desktop app: File → Import Image/SVG/Figma...</td></tr>
+  <tr><td>Single Figma Layer</td><td>Copy the element in Figma, paste directly onto pen.dev canvas (⚠️ Image elements aren't supported via copy/paste—import the full file or add images manually)</td></tr>
+  <tr><td>Images</td><td>Drag &amp; drop / Copy-paste / Toolbar <code>Import Image or SVG...</code> / File menu in Desktop app; supports PNG, JPEG, SVG</td></tr>
+  <tr><td>Icons</td><td>Built-in libraries: Material Symbols (Outlined/Rounded/Sharp), Lucide, Feather, Phosphor; you can also import custom SVG icons just like images</td></tr>
+</table>
+
+<h3 data-reveal>Export</h3>
+<ul>
+  <li><strong>Design to Code</strong>: Press <kbd>Cmd/Ctrl + K</kbd> to open AI chat and ask it to generate code based on your design.</li>
+  <li><strong>Export Single Element</strong>: Select element → Choose size and format at the bottom of the properties panel (PNG / JPEG / WEBP / PDF) → Click <strong>Export layer</strong> and choose where to save.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="shortcuts">
+<div class="sec-tag">Core Concepts 10</div>
+<h2>Keyboard Shortcuts</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/core-concepts/keyboard-shortcuts" target="_blank">Core Concepts / Keyboard Shortcuts</a></p>
+
+<h3 data-reveal>AI Chat</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + K</kbd></td><td>Toggle AI chat</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + T</kbd></td><td>New Agent tab</td></tr>
+  <tr><td><kbd>Ctrl + Tab</kbd> / <kbd>Ctrl + Shift + Tab</kbd></td><td>Next / Previous chat tab</td></tr>
+  <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Prompt history</td></tr>
+</table>
+
+<h3 data-reveal>Tools</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Tool</th></tr>
+  <tr><td><kbd>V</kbd></td><td>Move</td></tr>
+  <tr><td><kbd>H</kbd></td><td>Hand</td></tr>
+  <tr><td><kbd>R</kbd></td><td>Rectangle</td></tr>
+  <tr><td><kbd>O</kbd></td><td>Ellipse</td></tr>
+  <tr><td><kbd>A</kbd> / <kbd>F</kbd></td><td>Frame</td></tr>
+  <tr><td><kbd>T</kbd></td><td>Text</td></tr>
+  <tr><td><kbd>N</kbd></td><td>Note</td></tr>
+</table>
+
+<h3 data-reveal>Editing</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + C</kbd> / <kbd>V</kbd> / <kbd>X</kbd></td><td>Copy / Paste / Cut</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + D</kbd></td><td>Duplicate</td></tr>
+  <tr><td><kbd>Delete/Backspace</kbd></td><td>Delete selection</td></tr>
+  <tr><td><kbd>Arrow keys</kbd> / <kbd>Shift + Arrows</kbd></td><td>Move 1px / 10px; swap order in Flex layout</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + G</kbd> / <kbd>Cmd/Ctrl + Shift + G</kbd></td><td>Group / Ungroup</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Option/Alt + G</kbd></td><td>Apply Flex layout to selection</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + [</kbd> / <kbd>]</kbd></td><td>Send backward / Bring forward</td></tr>
+  <tr><td><kbd>[</kbd> / <kbd>]</kbd></td><td>Send to back / Bring to front</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Z</kbd> / <kbd>Cmd/Ctrl + Shift + Z</kbd></td><td>Undo / Redo</td></tr>
+</table>
+
+<h3 data-reveal>Selection</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + A</kbd></td><td>Select all</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Click</kbd></td><td>Direct select (deepest element under cursor)</td></tr>
+  <tr><td><kbd>Shift + Click</kbd></td><td>Add to selection</td></tr>
+  <tr><td><kbd>Shift + Enter</kbd></td><td>Select parent of current element</td></tr>
+  <tr><td><kbd>Enter</kbd></td><td>Select children of current element</td></tr>
+  <tr><td><kbd>Esc</kbd></td><td>Deselect</td></tr>
+</table>
+
+<h3 data-reveal>Components</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + Option/Alt + K</kbd></td><td>Element → Component, or Component → Detach to regular elements</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Option/Alt + X</kbd></td><td>Detach instance from component</td></tr>
+</table>
+
+<h3 data-reveal>Canvas Navigation</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + Scroll</kbd></td><td>Zoom</td></tr>
+  <tr><td><kbd>Space + Drag</kbd> / <kbd>Middle Click</kbd></td><td>Pan canvas</td></tr>
+  <tr><td><kbd>Shift + Scroll</kbd></td><td>Horizontal pan</td></tr>
+  <tr><td><kbd>=</kbd> / <kbd>-</kbd></td><td>Zoom in / Zoom out</td></tr>
+  <tr><td><kbd>0</kbd> / <kbd>1</kbd> / <kbd>2</kbd></td><td>100% / Zoom to fit all / Zoom to fit selection</td></tr>
+</table>
+
+<h3 data-reveal>Canvas Settings &amp; File Ops</h3>
+<table class="tbl">
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Cmd/Ctrl + '</kbd></td><td>Toggle pixel grid</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + Shift + '</kbd></td><td>Toggle snap to pixel grid</td></tr>
+  <tr><td><kbd>Cmd/Ctrl + S</kbd> / <kbd>N</kbd> / <kbd>O</kbd></td><td>Save / New / Open file</td></tr>
+</table>
+<div class="callout tip"><b class="t">Tip</b> Click the keyboard icon in the app toolbar to pull up the shortcuts list anytime.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-to-code">
+<div class="sec-tag">Design &amp; Code</div>
+<h2>Design ↔ Code</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/design-and-code/design-to-code" target="_blank">Design and Code / Design ↔ Code</a></p>
+
+<p>pen.dev supports a <strong>bidirectional workflow</strong> between design and code: Design → Code (generate components from pen.dev design), Code → Design (import existing code into pen.dev).</p>
+
+<h3 data-reveal>Design → Code</h3>
+<ol class="steps">
+  <li>Design screens, layouts, or individual UI components on the pen.dev canvas</li>
+  <li>Save the <code>.pen</code> file in your project workspace</li>
+  <li>Press <kbd>Cmd/Ctrl + K</kbd> to open AI chat</li>
+  <li>Ask pen.dev to generate the code</li>
+</ol>
+<table class="tbl">
+  <tr><th>Scenario</th><th>Example Prompt</th></tr>
+  <tr><td>Component Generation</td><td>"Create a React component for this button" / "Generate TypeScript types for this form" / "Export this card as a reusable component"</td></tr>
+  <tr><td>Full Page Generation</td><td>"Generate a Next.js page from this design" / "Create a landing page component with Tailwind CSS" / "Export this dashboard as a React component"</td></tr>
+  <tr><td>Specific Libraries</td><td>"Generate code using shadcn/ui components" / "Implement this form with React Hook Form" / "Use Lucide icons instead of Material Icons"</td></tr>
+</table>
+
+<h3 data-reveal>Code → Design</h3>
+<p>Existing components in your codebase can be visually reconstructed on the pen.dev canvas. <strong>Prerequisite</strong>: The <code>.pen</code> file and code must be in the same workspace, so the AI agent can access both.</p>
+<pre><code>Recreate the Button component from src/components/Button.tsx
+Import the LoginForm from my codebase into this design
+Add the Header component from src/layouts/Header.tsx</code></pre>
+<p><strong>What gets imported</strong>: Component structure and hierarchy, layout and positioning, styles (colors, typography, spacing).</p>
+
+<h3 data-reveal>Bidirectional Sync</h3>
+<p>The most powerful workflow combines both directions:</p>
+<ol class="steps">
+  <li><strong>Start from Code</strong> — Import existing components into pen.dev</li>
+  <li><strong>Make visual improvements in pen.dev</strong></li>
+  <li><strong>Ask AI to write changes back to the code</strong></li>
+  <li><strong>Iterate</strong></li>
+</ol>
+
+<h3 data-reveal>Syncing Variables &amp; Design Tokens</h3>
+<ul>
+  <li><strong>CSS → pen.dev</strong>: "Create pen.dev variables from my globals.css" / "Import design tokens from src/styles/tokens.css"</li>
+  <li><strong>pen.dev → CSS</strong>: "Update globals.css with these pen.dev variables" / "Sync these design tokens to my CSS"</li>
+</ul>
+
+<h3 data-reveal>Best Practices</h3>
+<h4>File Organization: Put .pen in the repo</h4>
+<pre><code>my-project/
+├── src/
+│   ├── components/
+│   └── styles/
+├── design.pen           ← Design file
+└── package.json</code></pre>
+<p>Benefits: AI agents can see both design and code at the same time; version control tracks both together; synchronized maintenance is easier.</p>
+<h4>Workflow Suggestions</h4>
+<ul>
+  <li><strong>New Features</strong>: Design in pen.dev first → Generate initial code → Refine implementation → Write back to design when needed.</li>
+  <li><strong>Modifying Existing Features</strong>: Import component to pen.dev → Modify design → Sync back to code.</li>
+  <li><strong>Design System Maintenance</strong>: Define variables in pen.dev → Sync to CSS → Design and code share variables → Update in one place, effective everywhere.</li>
+</ul>
+
+<h3 data-reveal>Common Tech Stacks</h3>
+<p>pen.dev is framework-agnostic, you can ask AI to generate code for any tech stack. Common choices: Frameworks (React / Next.js / Vue / Svelte / Vanilla HTML+CSS), Styling (Tailwind CSS / CSS Modules / Styled Components / Vanilla CSS), Component Libraries (shadcn/ui / Radix UI / Chakra UI / Material UI / Custom components). <strong>Specify your tech stack in the prompt</strong>, e.g., "Generate Next.js 14 code with Tailwind CSS".</p>
+
+<h3 data-reveal>Icon Libraries</h3>
+<p>pen.dev has built-in support for Material Symbols (Outlined/Rounded/Sharp), Lucide, Feather, Phosphor; custom SVG icons can be imported as images. Specify your preferred library in the prompt when generating code (Lucide, Heroicons, FontAwesome, React Icons, etc.), e.g., "Generate this design using Lucide icons".</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="troubleshooting">
+<div class="sec-tag">Troubleshooting</div>
+<h2>Troubleshooting</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/troubleshooting" target="_blank">Troubleshooting</a></p>
+
+<h3 data-reveal>Installation &amp; Setup</h3>
+<ul>
+  <li><strong>Extension installed but not working</strong> (no icon / can't open .pen): Confirm Claude Code is logged in (<code>claude</code>) → Complete email activation → Check MCP is connected (Settings → MCP) → Create a new .pen file and try to open it → Restart IDE → Reinstall if it still fails.</li>
+  <li><strong>Can't see pen.dev icon</strong>: Create and open a <code>.pen</code> file; Check extension version; Search "pen.dev" in Command Palette; Ensure extension is enabled.</li>
+</ul>
+
+<h3 data-reveal>Authentication &amp; Activation</h3>
+<ul>
+  <li><strong>Not receiving activation email</strong>: Check spam folder → Wait a few minutes → Try another email → Reinstall extension if stuck.</li>
+  <li><strong>"Invite not found"</strong>: Reinstall extension and reactivate; contact support if it persists.</li>
+  <li><strong>Repeatedly asked to activate</strong>: Restart IDE, reactivate once, reinstall if necessary.</li>
+  <li><strong>Claude Code connection issues</strong>: See the full troubleshooting steps in the <a href="#authentication">Authentication</a> section.</li>
+</ul>
+
+<h3 data-reveal>IDE Related</h3>
+<ul>
+  <li><strong>Cursor</strong>: Prompt box doesn't appear → Check activation/login, restart, verify MCP, reinstall; "You need Cursor Pro" → Check subscription, or use basic features first.</li>
+  <li><strong>VS Code</strong>: Extension doesn't activate → Make sure a .pen file is open, check extension enabled status, check developer tools console for errors, reinstall.</li>
+</ul>
+
+<h3 data-reveal>Welcome File &amp; New Projects</h3>
+<ul>
+  <li><strong>Didn't get the welcome file</strong>: Right-click anywhere on the canvas → <strong>Open Welcome File</strong> (might open in a separate window).</li>
+  <li><strong>Recommended setup for new projects with pen.dev</strong>: Create <code>design.pen</code> in the workspace → Open in IDE → Activate pen.dev → Keep .pen in the same repo as code, so AI can see both.</li>
+</ul>
+
+<h3 data-reveal>Canvas and Interface</h3>
+<ul>
+  <li><strong>Nested elements hard to select</strong>: <kbd>Cmd/Ctrl + Click</kbd> to direct select deepest layer; <kbd>Shift + Enter</kbd> to select parent; or just use the layers panel.</li>
+  <li><strong>Bounding box colors</strong>: Blue = regular element; Magenta/Violet = reusable component and its instances.</li>
+  <li><strong>No magenta box after converting to component</strong>: Deselect and reselect to make it appear.</li>
+</ul>
+
+<h3 data-reveal>Import &amp; Export</h3>
+<ul>
+  <li><strong>macOS image import fails</strong>: The File menu method might fail—use drag and drop instead, it's stable across platforms.</li>
+  <li><strong>Figma images won't paste over</strong>: Known limitation, copy-paste doesn't support images—use SVG or re-import separately.</li>
+  <li><strong>Export to Claude Code fails ("Process exited with code 1")</strong>: Check Claude Code auth and permissions; try exporting in an independent Claude Code session; check env vars.</li>
+  <li><strong>Export result differs from canvas</strong>: Known issue—take a screenshot for record, try re-exporting or tweaking the design, and report the specific case to the official team.</li>
+</ul>
+
+<h3 data-reveal>MCP &amp; AI</h3>
+<ul>
+  <li><strong>Is MCP local or remote?</strong> Runs locally, no cloud dependency for design operations. To verify: in Cursor check Settings → Tools &amp; MCP; in Codex run <code>/mcp</code>.</li>
+  <li><strong>Codex config.toml got modified</strong>: Back it up before first use; officially under investigation.</li>
+  <li><strong>AI can't access folder / permission prompt missing</strong>: Accept permission prompts, check system permissions, or try a separate session.</li>
+</ul>
+
+<h3 data-reveal>Saving &amp; Version Control</h3>
+<ul>
+  <li><strong>No auto-save</strong> (planned): Press <kbd>Cmd/Ctrl + S</kbd> frequently, use Git commits for version history.</li>
+  <li><strong>Limited undo/redo</strong>: Save/commit before major changes; make small iterative edits; use Git rollback when needed.</li>
+  <li><strong>No real-time collaboration</strong>: Currently collaborate via Git—branch, pull → edit → commit → push → PR, and review designs via PRs.</li>
+</ul>
+
+<h3 data-reveal>Platform Specifics</h3>
+<ul>
+  <li><strong>Linux</strong>: Desktop app available; Wayland/Hyprland might have UI issues, X11 is more stable, fallback to IDE extension if necessary.</li>
+  <li><strong>Windows</strong>: If desktop app is unavailable, use VS Code / Cursor extensions, functionality is identical.</li>
+</ul>
+
+<h3 data-reveal>Getting More Help</h3>
+<p>If your issue persists, follow these steps in order:</p>
+<ol class="steps">
+  <li>Review docs: Installation, Authentication, AI Integration</li>
+  <li>Update all components to the latest version: pen.dev, Claude Code CLI, IDE</li>
+  <li>Try a clean reinstall: uninstall extension → clear extension data → reinstall</li>
+  <li>When contacting support, include: your platform (macOS/Windows/Linux), pen.dev version, IDE and version, exact error message, and repro steps</li>
+</ol>
+
+<h3 data-reveal>Reporting Bugs</h3>
+<p>When reporting issues, please provide:</p>
+<ul>
+  <li><strong>Environment</strong>: OS &amp; version, IDE (VS Code/Cursor/Desktop) &amp; version, pen.dev version, Claude Code CLI version</li>
+  <li><strong>Details</strong>: What you tried to do, what actually happened, exact error message, repro steps</li>
+  <li><strong>Helpful attachments</strong>: Screenshots, console logs (if any), minimal <code>.pen</code> file to reproduce the issue</li>
+</ul>
+
+<h3 data-reveal>Common Errors Cheat Sheet</h3>
+<table class="tbl">
+  <tr><th>Error</th><th>Possible Cause</th><th>Solution</th></tr>
+  <tr><td>"Claude Code not connected"</td><td>Not logged in</td><td>Run <code>claude</code></td></tr>
+  <tr><td>"Invalid API key"</td><td>Auth conflict</td><td>Clear env vars and re-authenticate</td></tr>
+  <tr><td>"Process exited with code 1"</td><td>Export/auth issue</td><td>Check Claude Code config</td></tr>
+  <tr><td>"Need Cursor Pro"</td><td>Plan limit</td><td>Check Cursor subscription</td></tr>
+  <tr><td>"Invite not found"</td><td>Activation issue</td><td>Reinstall extension</td></tr>
+  <tr><td>"Can't access folder"</td><td>Permissions</td><td>Update folder permissions</td></tr>
+</table>
+
+<h3 data-reveal>Prevention Checklist</h3>
+<ol>
+  <li>Save often (no auto-save yet)</li>
+  <li>Keep Claude Code authentication valid</li>
+  <li>Keep .pen files inside your project workspace</li>
+  <li>Commit to Git regularly</li>
+  <li>Keep pen.dev and Claude Code updated</li>
+  <li>Accept permission prompts</li>
+  <li>Use supported workflows (do not manually edit .pen files)</li>
+</ol>
+<div class="callout tip"><b class="t">Summary in one sentence</b> Most issues can be fixed by "making sure Claude Code auth is valid + keeping pen.dev updated"; when in doubt, restart your IDE and re-authenticate.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="pen-format">
+<div class="sec-tag">For Developers 01</div>
+<h2>The .pen Format</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/for-developers/the-pen-format" target="_blank">For Developers / The .pen Format</a></p>
+
+<div class="callout warn"><b class="t">Living Document</b> This section is a bird's-eye view of the .pen format; for an authoritative and comprehensive reference, please consult the TypeScript Schema at the end of the original document. The official team reserves the right to introduce breaking changes to the format.</div>
+
+<h3 data-reveal>Overview</h3>
+<ul>
+  <li>A .pen file is a JSON structure describing an <strong>object tree</strong> (similar to HTML or SVG).</li>
+  <li>Each object is a graphical entity on an infinite 2D canvas.</li>
+  <li>Objects must have a document-unique <code>id</code>, and a <code>type</code> (such as <code>rectangle</code>, <code>frame</code>, <code>text</code>, <code>script</code>, etc.).</li>
+</ul>
+
+<h3 data-reveal>Layout</h3>
+<ul>
+  <li>Top-level objects are placed on the infinite canvas, with their top-left corner described by <code>x</code>, <code>y</code>; nested objects are positioned relative to their parent's top-left corner.</li>
+  <li>Parent objects can take over the sizing and positioning of children in a <strong>Flexbox style</strong> via properties like <code>layout</code>, <code>justifyContent</code>, <code>alignItems</code>.</li>
+  <li>Child objects can choose to fill the parent (<code>fill_container</code>) or have fixed dimensions; parent objects can choose to fit content (<code>fit_content</code>) or have fixed dimensions.</li>
+</ul>
+
+<h3 data-reveal>Graphical Appearance</h3>
+<ul>
+  <li>Controlled by <code>fill</code>, <code>stroke</code>, and <code>effect</code>.</li>
+  <li>Fills can be solid colors, gradients (linear/radial/angular), images, mesh gradients, or even WebGL shaders; an object can stack multiple fills, drawn in document order.</li>
+  <li>There is only one stroke, but the stroke can have multiple fills; effects (blur, background blur, inner/drop shadow) can be stacked and applied in order.</li>
+</ul>
+
+<h3 data-reveal>Components &amp; Instances</h3>
+<p>The key difference between .pen and HTML/SVG: Fragments of the object tree in the document can be <strong>reused</strong> elsewhere—this is the component system.</p>
+<h4>Defining a Component: <code>reusable: true</code></h4>
+<pre><code>{
+  "id": "foo",
+  "type": "rectangle",
+  "reusable": true,   <span class="c">// ← This object is now a reusable component</span>
+  "x": 0, "y": 0, "width": 100, "height": 100,
+  "fill": "#FF0000"
+}</code></pre>
+<h4>Creating an Instance: <code>type: "ref"</code></h4>
+<pre><code>{
+  "id": "bar",
+  "type": "ref",
+  "ref": "foo",       <span class="c">// ← An instance of foo (also a 100×100 red square)</span>
+  "x": 120, "y": 0
+}</code></pre>
+<h4>Property Overrides</h4>
+<p>Instances can override properties defined in the component—in the example below, <code>baz</code> is still an instance of <code>foo</code>, but overwrites the inherited fill to blue:</p>
+<pre><code>{
+  "id": "baz",
+  "type": "ref",
+  "ref": "foo",
+  "x": 240, "y": 0,
+  "fill": "#0000FF"   <span class="c">// ← A 100×100 blue square</span>
+}</code></pre>
+<h4>Nested Customization: <code>descendants</code></h4>
+<p>Instances copy everything under the component root; via the <code>descendants</code> mapping you can customize any descendant node inside (the key is the descendant id, for descendants inside nested instances use the <code>instanceId/descendantId</code> path):</p>
+<pre><code>{
+  "id": "red-round-button",
+  "type": "ref",
+  "ref": "round-button",
+  "fill": "#FF0000",
+  "descendants": {
+    "label": {                <span class="c">// ← Customize the node with id 'label' inside the component</span>
+      "text": "Cancel",
+      "fill": "#FFFFFF"
+    }
+  }
+}</code></pre>
+<p>Rules: An entry in <code>descendants</code> <strong>without a <code>type</code></strong> indicates a property override; <strong>with a <code>type</code></strong> indicates full node replacement. You can also keep the node itself and only replace its <code>children</code> (suitable for container components like panels, cards, sidebars). Components can be composed of instances of other components.</p>
+<h4>Slots (Format Level)</h4>
+<p>When a Frame inside a component exists solely to "have its children replaced", use the <code>slot</code> property, where the array value is a list of suggested component ids to drop in:</p>
+<pre><code>{
+  "id": "content",
+  "type": "frame",
+  "slot": ["round-button", "icon-button"]   <span class="c">// ← Suggested components to drop in</span>
+}</code></pre>
+
+<h3 data-reveal>Variables &amp; Themes</h3>
+<p>Common colors and values (padding, radius, opacity, etc.) can be extracted into document-level variables, referenced with a <code>$</code> prefix:</p>
+<pre><code>{
+  "variables": {
+    "color.background": { "type": "color", "value": "#FFFFFF" },
+    "text.title":       { "type": "number", "value": 72 }
+  },
+  "children": [
+    { "id": "page", "type": "frame", "fill": "$color.background",
+      "children": [
+        { "id": "title", "type": "text", "fontSize": "$text.title", "content": "Welcome!" }
+      ]
+    }
+  ]
+}</code></pre>
+<p><strong>Theming System</strong>: Variables can have multiple values, each bound to a set of theme conditions; when evaluating, the value of the <strong>last</strong> matc<section id="pencil-cli">
+<div class="sec-tag">For Developers 02</div>
+<h2>pen.dev CLI</h2>
+<p class="origin">Original: <a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">For Developers / pen.dev CLI</a></p>
+<div class="callout note"><b class="t">Editor's Note (2026-07-28): Rebranding</b> The official documentation has been completely rebranded from "Pencil" to <strong>pen.dev</strong>: the CLI binary is now <code>pen</code> (was <code>pencil</code>), the npm package is <code>@pen.dev/cli</code> (was <code>@pencil.dev/cli</code>), and environment variables are <code>PEN_CLI_KEY</code>/<code>PEN_API_BASE</code> (were <code>PENCIL_CLI_KEY</code>/<code>PENCIL_API_BASE</code>). The following section has been updated to reflect the new version; the session file path <code>~/.pencil/session-cli.json</code> was not changed by the official team and remains as is.</div>
+
+<p>The pen.dev CLI is a standalone command-line tool that allows you to create and edit <code>.pen</code> files in the terminal. It runs the <strong>exact same editor engine</strong> as the desktop app / IDE extensions, fully headless with no GUI required. It can be used to run AI agents with prompts, invoke MCP tools directly in an interactive shell, batch process multiple designs, or export PNG/JPEG/WEBP/PDF files.</p>
+
+<h3 data-reveal>Installation</h3>
+<pre><code>npm install -g @pen.dev/cli
+
+<span class="c"># Verify installation (requires Node.js 18+)</span>
+pen version</code></pre>
+
+<h3 data-reveal>Authentication</h3>
+<table class="tbl">
+  <tr><th>Method</th><th>Description</th></tr>
+  <tr><td><code>pen login</code></td><td>Interactive login (email+password or email+OTP); session token is stored in <code>~/.pencil/session-cli.json</code></td></tr>
+  <tr><td><code>PEN_CLI_KEY</code></td><td>CLI Key for CI/CD, created in the Developer Keys section of your organization settings in the pen.dev web app; <strong>always takes precedence</strong> over the stored session token</td></tr>
+  <tr><td><code>pen status</code></td><td>Shows current auth method, validates the session with the backend, and displays account info</td></tr>
+</table>
+
+<h3 data-reveal>Quick Start</h3>
+<pre><code><span class="c"># Login</span>
+pen login
+
+<span class="c"># Create a design from scratch</span>
+pen --out design.pen --prompt "Create a login page with email and password fields"
+
+<span class="c"># Modify an existing design</span>
+pen --in existing.pen --out modified.pen --prompt "Add a blue submit button"
+
+<span class="c"># Export to PNG</span>
+pen --in design.pen --export design.png
+
+<span class="c"># Interactive shell</span>
+pen interactive -o design.pen
+
+<span class="c"># List available models</span>
+pen --list-models</code></pre>
+
+<h3 data-reveal>Agent Mode Options</h3>
+<table class="tbl">
+  <tr><th>Option</th><th>Description</th></tr>
+  <tr><td><code>--in, -i &lt;path&gt;</code></td><td>Input .pen file (optional, starts with an empty canvas if omitted)</td></tr>
+  <tr><td><code>--out, -o &lt;path&gt;</code></td><td>Output .pen file path (required unless using --export)</td></tr>
+  <tr><td><code>--prompt, -p &lt;text&gt;</code></td><td>Prompt for the AI agent</td></tr>
+  <tr><td><code>--model, -m &lt;id&gt;</code></td><td>Model to use (defaults to <code>claude-opus-4-6</code>)</td></tr>
+  <tr><td><code>--custom, -c</code></td><td>Use a custom Claude model config (e.g., AWS Bedrock, Vertex AI)</td></tr>
+  <tr><td><code>--tasks, -t &lt;path&gt;</code></td><td>Batch tasks JSON file</td></tr>
+  <tr><td><code>--workspace, -w &lt;path&gt;</code></td><td>Workspace directory for the agent</td></tr>
+  <tr><td><code>--export, -e &lt;path&gt;</code> / <code>--export-scale &lt;n&gt;</code> / <code>--export-type &lt;type&gt;</code></td><td>Export the final result image; scale multiplier (default 1); format png/jpeg/webp/pdf (default png)</td></tr>
+  <tr><td><code>--list-models</code> / <code>--verbose-mcp</code> / <code>--help</code></td><td>List models / output full MCP errors / help</td></tr>
+</table>
+
+<h3 data-reveal>Available Models</h3>
+<table class="tbl">
+  <tr><th>Model ID</th><th>Features</th><th>Default</th></tr>
+  <tr><td><code>claude-opus-4-6</code></td><td>Most capable, higher cost</td><td>✓</td></tr>
+  <tr><td><code>claude-sonnet-4-6</code></td><td>Fast, balanced performance</td><td></td></tr>
+  <tr><td><code>claude-haiku-4-5</code></td><td>Fastest, lowest cost</td><td></td></tr>
+</table>
+
+<h3 data-reveal>Interactive Mode</h3>
+<p><code>pen interactive</code> starts a shell where you can invoke MCP tools directly against a .pen file—ideal for scripting, debugging, and agentic workflows requiring fine-grained control over design operations.</p>
+<table class="tbl">
+  <tr><th>Parameter</th><th>Description</th></tr>
+  <tr><td><code>--app, -a &lt;name&gt;</code></td><td>Connect to a running pen.dev app (e.g., desktop, vscode)</td></tr>
+  <tr><td><code>--in, -i &lt;path&gt;</code></td><td>Input .pen file (optional—starts with an empty canvas if omitted)</td></tr>
+  <tr><td><code>--out, -o &lt;path&gt;</code></td><td>Output .pen file (required in headless mode)</td></tr>
+  <tr><td><code>--help, -h</code></td><td>Show detailed tool reference documentation</td></tr>
+</table>
+<ul>
+  <li><strong>App Mode</strong>: <code>pen interactive -a desktop -i my-design.pen</code> — connects via WebSocket to a running desktop app or extension, changes apply in real-time.</li>
+  <li><strong>Headless Mode</strong>: <code>pen interactive -i input.pen -o output.pen</code> — spins up a GUI-less local editor; use <code>save()</code> to write to disk.</li>
+</ul>
+<pre><code><span class="c"># Commands available in shell</span>
+tool_name({ key: value })   <span class="c">// Invoke MCP tool with arguments</span>
+tool_name()                 <span class="c">// Invoke with no arguments</span>
+save()                      <span class="c">// Save document to disk</span>
+exit()                      <span class="c">// Exit</span>
+
+<span class="c"># Example session (As of 2026-07-27, the toolset has been changed to execute / get_app_state / get_screenshot / export_nodes / get_guidelines, see "Supported MCP Tools" below)</span>
+pen &gt; get_app_state({ include_schema: true })
+pen &gt; get_guidelines()
+pen &gt; execute({ operations: 'hero=Insert(document,{type:"frame",name:"Hero",x:0,y:0,width:1440,height:900,fill:"#0A0A0A"})' })
+pen &gt; get_screenshot({ nodeId: "hero" })
+pen &gt; save()
+pen &gt; exit()</code></pre>
+<div class="callout warn"><b class="t">Operation Names Unverified</b> The <code>Insert(...)</code> syntax used inside <code>execute</code> above is an inferred illustrative example based on the official documentation's "Insert / Copy / Update / Replace / Move / Delete" operation family—the official docs do not provide a complete JSON example for <code>execute</code> parameters. Please test it yourself with <code>pen interactive</code> to verify the real signature before copying this snippet into production scripts.</div>
+
+<h3 data-reveal>Batch Processing</h3>
+<p><code>pen --tasks batch.json</code> executes multiple tasks in sequential order as defined in a JSON file, with each task running in a separate editor instance. Task fields: <code>out</code> (required), <code>prompt</code> (required), <code>in</code>, <code>model</code>.</p>
+<pre><code>{
+  "tasks": [
+    { "out": "landing-page.pen",
+      "prompt": "Create a SaaS landing page with hero, features, and pricing sections" },
+    { "in": "existing-app.pen", "out": "existing-app-v2.pen",
+      "prompt": "Add a dark mode toggle to the header" },
+    { "out": "mobile-menu.pen", "model": "claude-haiku-4-5",
+      "prompt": "Create a mobile hamburger menu component" }
+  ]
+}</code></pre>
+
+<h3 data-reveal>Supported MCP Tools</h3>
+<div class="callout note"><b class="t">Toolset Major Overhaul (as of 2026-07-27)</b> The official docs have consolidated the original 5-6 granular tools into <strong>5 tools</strong> (not 3 as written in earlier versions; verified line-by-line against the original HTML of the official page): names like <code>batch_design</code>, <code>batch_get</code>, <code>get_editor_state</code>, <code>get_variables</code>, and <code>snapshot_layout</code> <strong>can no longer be found in the official documentation</strong>. However, as of this review, the pen.dev MCP server actually connected to by the author of this knowledge base <strong>still exposes the entire old set of tool names</strong>—meaning while the docs talk about the new version, many people locally/online might still have the old version installed. Before using them, run <code>pen interactive</code> or check your MCP client to list the tools and rely on the names you actually get in your environment.</div>
+<table class="tbl">
+  <tr><th>Category</th><th>Tool (New Version)</th><th>Description</th><th>Corresponding Old Tool (If not updated)</th></tr>
+  <tr><td rowspan="2">Design Operations</td><td><code>execute</code></td><td>Insert/Update/Delete/Move/Copy/Replace nodes; read nodes and computed bounds; read/write variables via <code>GetVariables</code>/<code>SetVariables</code> sub-operations</td><td>Consolidates old <code>batch_design</code> / <code>batch_get</code> / <code>get_variables</code></td></tr>
+  <tr><td><code>get_app_state</code></td><td>Get document metadata and structure</td><td>Corresponds to old <code>get_editor_state</code> / <code>snapshot_layout</code></td></tr>
+  <tr><td rowspan="2">Visual Operations</td><td><code>get_screenshot</code></td><td>Render a node as a PNG image</td><td>Name unchanged</td></tr>
+  <tr><td><code>export_nodes</code></td><td>Export nodes as PNG/JPEG/WEBP/PDF</td><td>Name unchanged, officially kept separate</td></tr>
+  <tr><td>Image Generation</td><td><code>G()</code> operation in <code>execute</code></td><td><code>G(nodeId, "ai", prompt)</code> for AI-generated images; <code>G(nodeId, "stock", keywords)</code> for Unsplash stock images</td><td>Not a standalone tool, hangs under <code>execute</code></td></tr>
+  <tr><td>Style &amp; Guidelines</td><td><code>get_guidelines</code></td><td>Load .pen working guidelines and styles</td><td>Name unchanged, officially kept separate</td></tr>
+</table>
+<p class="src">Source: <a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">Official pen.dev CLI · Supported MCP Tools</a> (Verification method: manual side-by-side comparison with the raw HTML of the page, as WebFetch summaries returned inconsistent results and shouldn't be the sole basis). The official documentation does not provide full JSON examples for <code>execute</code> parameters; the operation names in the example session are transcribed from text descriptions and are not guaranteed to match the actual invocation signature verbatim.</p>
+
+<h3 data-reveal>CI/CD &amp; Environment Variables</h3>
+<pre><code>export PEN_CLI_KEY=pen_cli_...
+export ANTHROPIC_API_KEY=sk-ant-...
+
+pen --out onboarding.pen --prompt "Create a 3-step onboarding flow"</code></pre>
+<table class="tbl">
+  <tr><th>Variable</th><th>Description</th></tr>
+  <tr><td><code>PEN_CLI_KEY</code></td><td>CLI Key for CI/CD (takes precedence over stored session)</td></tr>
+  <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Anthropic API Key</td></tr>
+  <tr><td><code>PEN_API_BASE</code></td><td>Backend API URL (default <code>https://api.pen.dev</code>)</td></tr>
+  <tr><td><code>DEBUG</code></td><td>Enable debug logging</td></tr>
+</table>
+<p>The CLI uses a different session file (<code>~/.pencil/session-cli.json</code>, this path was not adjusted by official rebranding) than the desktop app, making it easier for the backend to distinguish client types.</p>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>Note</strong>: This page is an unofficial Chinese summary based on the official English documentation at <a href="https://docs.pencil.dev/" target="_blank">docs.pencil.dev</a> (updated to 2026-07-27), and was updated on 2026-07-28 to reflect the official rebranding (Pencil → pen.dev), syncing terms like CLI commands, env vars, and MCP tool names. The documentation continues to evolve; please refer to the official English original as the authoritative source.</p>
+</div><b class="t">Unverified Operation Names</b>The <code>Insert(...)</code> syntax inside <code>execute</code> above is an inferred illustrative example based on the official documentation's "Insert / Copy / Update / Replace / Move / Delete" operation family—the official docs themselves do not provide a complete JSON example of <code>execute</code> parameters. Please run <code>pen interactive</code> to verify the actual signature yourself before copying this snippet directly into production scripts.</div>
+
+<h3 data-reveal>Batch Processing</h3>
+<p><code>pen --tasks batch.json</code> executes multiple tasks sequentially according to the JSON file, with a separate editor instance for each task. Task fields: <code>out</code> (required), <code>prompt</code> (required), <code>in</code>, <code>model</code>.</p>
+<pre><code>{
+  "tasks": [
+    { "out": "landing-page.pen",
+      "prompt": "Create a SaaS landing page with hero, features, and pricing sections" },
+    { "in": "existing-app.pen", "out": "existing-app-v2.pen",
+      "prompt": "Add a dark mode toggle to the header" },
+    { "out": "mobile-menu.pen", "model": "claude-haiku-4-5",
+      "prompt": "Create a mobile hamburger menu component" }
+  ]
+}</code></pre>
+
+<h3 data-reveal>Supported MCP Tools</h3>
+<div class="callout note"><b class="t">Major Toolset Overhaul since 2026-07-27</b>The official docs have consolidated the original 5-6 granular tools into <strong>5 tools</strong> (not 3 as written in earlier versions, verified line-by-line against the original HTML of the official page): names like <code>batch_design</code>/<code>batch_get</code>/<code>get_editor_state</code>/<code>get_variables</code>/<code>snapshot_layout</code> <strong>can no longer be found in the official documentation</strong>. However, as of this review, the pen.dev MCP server actually connected by the author of this knowledge base <strong>still exposes this entire set of old tool names</strong>—meaning that while the documentation mentions the new version, many may still have the old version installed locally/online. Before using them, please use <code>pen interactive</code> or your MCP client to list the tools to confirm the actual names available in your environment.</div>
+<table class="tbl">
+  <tr><th>Category</th><th>Tool (New Version)</th><th>Description</th><th>Corresponding Old Tool (If not upgraded)</th></tr>
+  <tr><td rowspan="2">Design Operations</td><td><code>execute</code></td><td>Insert/Update/Delete/Move/Copy/Replace nodes; read nodes and computed boundaries; read/write variables via <code>GetVariables</code>/<code>SetVariables</code> sub-operations</td><td>Corresponds to the merger of the old <code>batch_design</code> / <code>batch_get</code> / <code>get_variables</code></td></tr>
+  <tr><td><code>get_app_state</code></td><td>Get document metadata and structure</td><td>Corresponds to the old <code>get_editor_state</code> / <code>snapshot_layout</code></td></tr>
+  <tr><td rowspan="2">Visual Operations</td><td><code>get_screenshot</code></td><td>Render nodes as PNG images</td><td>Name unchanged</td></tr>
+  <tr><td><code>export_nodes</code></td><td>Export nodes as PNG/JPEG/WEBP/PDF</td><td>Name unchanged, officially still kept separate</td></tr>
+  <tr><td>Image Generation</td><td><code>G()</code> operation in <code>execute</code></td><td><code>G(nodeId, "ai", prompt)</code> AI generated image; <code>G(nodeId, "stock", keywords)</code> Unsplash stock image</td><td>Not a separate tool, nested under <code>execute</code></td></tr>
+  <tr><td>Style &amp; Guidelines</td><td><code>get_guidelines</code></td><td>Load .pen working guidelines and styles</td><td>Name unchanged, officially still kept separate</td></tr>
+</table>
+<p class="src">Source: <a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">Official pen.dev CLI · Supported MCP Tools</a> (Verification method: directly fetch the raw HTML of the page and compare line by line, WebFetch summaries gave inconsistent results on this page and should not be used as the sole basis). The official docs do not provide full JSON examples of <code>execute</code> parameters; the operation names in the example session are transcribed based on the text description in the docs and are not guaranteed to match the actual invocation signature verbatim.</p>
+
+<h3 data-reveal>CI/CD &amp; Environment Variables</h3>
+<pre><code>export PEN_CLI_KEY=pen_cli_...
+export ANTHROPIC_API_KEY=sk-ant-...
+
+pen --out onboarding.pen --prompt "Create a 3-step onboarding flow"</code></pre>
+<table class="tbl">
+  <tr><th>Variable</th><th>Description</th></tr>
+  <tr><td><code>PEN_CLI_KEY</code></td><td>CLI Key for CI/CD (takes precedence over existing session)</td></tr>
+  <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Anthropic API Key</td></tr>
+  <tr><td><code>PEN_API_BASE</code></td><td>Backend API address (default <code>https://api.pen.dev</code>)</td></tr>
+  <tr><td><code>DEBUG</code></td><td>Enable debug logging</td></tr>
+</table>
+<p>The CLI and desktop app use different session files (<code>~/.pencil/session-cli.json</code>, this path was not adjusted along with the official brand name change), making it easier for the backend to distinguish client types.</p>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>Note</strong>: This page is an unofficial Chinese compilation, reorganized and written based on the official English documentation of <a href="https://docs.pencil.dev/" target="_blank">docs.pencil.dev</a> (updated to 2026-07-27), and updated on 2026-07-28 to synchronize CLI commands, environment variables, MCP tool names and other terms according to the official brand name change (Pencil → pen.dev). The documentation is continuously updated, please refer to the official English original version.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="Back to top">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>
