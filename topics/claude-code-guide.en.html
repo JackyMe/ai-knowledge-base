@@ -185,15 +185,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">CC</span>Claude Code Guide<span class="sub">Essential Edition</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.en.html">◂ Topic Hub</a>
-    <span>Verified 2026-08-25</span> 
+    <span>Verified 2026-08-31</span> 
 
 <div class="progress" id="prog"></div>
 
@@ -240,7 +239,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ Official Docs × Community Highlights · All-scenario extraction · Verified August 25, 2026</div>
+  <div class="badge">⛏️ Official Docs × Community Highlights · All-scenario extraction · Verified August 31, 2026</div>
   <h1>Claude Code<br><span class="grad">Guide · Essential Edition</span></h1>
   <p class="lead">From mental models to commands, from extension systems to eight practical scenario playbooks. Based on official Best Practices and command references, fused with advanced community experience, compressed into a single-page practical manual for repeated reference—only the essentials, no fluff.</p>
   <div class="meta">
@@ -348,7 +347,7 @@ dig into hard problems I might not have considered. After asking, write the comp
 <div class="sec-tag">Updates</div>
 <h2>Recent Important Changes</h2>
 
-<div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-25</strong> · Against Claude Code <strong>Latest Release</strong> (August 2026) · Data source: <a href="https://code.claude.com/docs/en/changelog" target="_blank">Official changelog</a>. This section only includes changes that <strong>will alter your habits</strong>, not a comprehensive log; for the full history see <a href="toolchain-changelog.html">Tool Version Tracking</a>.</div>
+<div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-31</strong> · Against Claude Code <strong>v2.1.251</strong> (August 2026) · Data source: <a href="https://code.claude.com/docs/en/changelog" target="_blank">Official changelog</a>. This section only includes changes that <strong>will alter your habits</strong>, not a comprehensive log; for the full history see <a href="toolchain-changelog.en.html">Tool Version Tracking</a>.</div>
 
 <h3 data-reveal>🔴 Breaking Changes: Old Habits Will Fail</h3>
 <table class="tbl">
@@ -380,6 +379,8 @@ dig into hard problems I might not have considered. After asking, write the comp
 <h3 data-reveal>🆕 New Features: Worth Trying Immediately</h3>
 <table class="tbl">
   <tr><th>Date</th><th>New Feature</th><th>How to Use</th></tr>
+  <tr><td>08-28</td><td><strong>Lifecycle Hooks</strong></td><td>Added <code>PreModelSwitch</code> and <code>PostModelSwitch</code> hooks to execute automation logic before/after switching models.</td></tr>
+  <tr><td>08-24</td><td><strong>Loops Tracking & Console Sign-in</strong></td><td>Support for keyless login via Anthropic Console, and loop cost tracking in <code>/usage</code>. Configure <code>modelPicker</code> to curate available models.</td></tr>
   <tr><td>08-17</td><td><strong><code>/design</code> Skill (Preview)</strong></td><td>Generate editable design artboards directly in the terminal from ideas or screenshots, seamlessly connecting design and code implementation.</td></tr>
   <tr><td>Late-08</td><td><strong>Concise Output Style</strong></td><td>Configure <code>"outputStyle": "Concise"</code> to minimize boilerplate text and long narratives, prioritizing code and results.</td></tr>
   <tr><td>Late-08</td><td><strong>Auto-Continue</strong></td><td>Automatically resumes tasks that were blocked by usage limits once the quota resets (enable via <code>/config</code>).</td></tr>
@@ -417,7 +418,7 @@ dig into hard problems I might not have considered. After asking, write the comp
 <section id="setup">
 <div class="sec-tag">Cheat Sheet 02</div>
 <h2>Setup and Initial Configuration</h2>
-<div class="callout warn"><b class="t">🚑 Install Failed / Login Error / Changed Computers?</b>All troubleshooting for installation and login (credential conflicts, shared computers, SSH/CI, universal reset) is in a dedicated topic: <a href="env-auth-clinic.html">Environment and Login First Aid Manual</a>. Follow the symptoms for a 30-second fix.</div>
+<div class="callout warn"><b class="t">🚑 Install Failed / Login Error / Changed Computers?</b>All troubleshooting for installation and login (credential conflicts, shared computers, SSH/CI, universal reset) is in a dedicated topic: <a href="env-auth-clinic.en.html">Environment and Login First Aid Manual</a>. Follow the symptoms for a 30-second fix.</div>
 
 <h3 data-reveal>Installation and Login</h3>
 <pre><code><span class="c"># Install (npm method)</span>
@@ -907,7 +908,7 @@ claude --permission-mode auto -p "fix all lint errors"</code></pre>
 <div class="sec-tag">Practice 10</div>
 <h2>Complete Guide to Configuration and Accounts</h2>
 <p>"Where does config go, how to switch logins, what if I change computers?"—This chapter consolidates config and account knowledge scattered across official docs into one complete map, organized by "What it is → Where it is → How to change it → How to troubleshoot."</p>
-<div class="callout note"><b class="t">Encountering Login Errors / Environment Crashes?</b>This knowledge base has a dedicated topic for this: <a href="env-auth-clinic.html">Environment and Login First Aid Manual</a>—5-layer diagnostics, one-click health check scripts, shared/new computer playbooks, and 3-level universal resets, comparing Claude Code and Codex.</div>
+<div class="callout note"><b class="t">Encountering Login Errors / Environment Crashes?</b>This knowledge base has a dedicated topic for this: <a href="env-auth-clinic.en.html">Environment and Login First Aid Manual</a>—5-layer diagnostics, one-click health check scripts, shared/new computer playbooks, and 3-level universal resets, comparing Claude Code and Codex.</div>
 
 <h3 data-reveal>I. Configuration Carrier Overview</h3>
 <p>All Claude Code configurations are distributed across these locations (On Windows, <code>~/.claude</code> corresponds to <code>%USERPROFILE%\.claude</code>):</p>
@@ -994,7 +995,7 @@ git clone your-dotfiles && ln -s …/claude ~/.claude   <span class="c"># Or set
   <tr><td>Save quota · Model tiers</td><td>Match task to tier: use high-tier models for tough problems, <code>/model</code> down for mechanical tasks; Auto mode routes automatically and is usually cheaper than staying on max manually</td></tr>
   <tr><td>Save quota · Context is Cost</td><td>Larger context = more expensive turns: <code>/clear</code> between unrelated tasks, <code>/compact</code> long sessions, delegate large-scale read-only scans to subagents (isolating context, main session only receives conclusions), only install necessary MCPs (tool definitions consume context)</td></tr>
   <tr><td>Save quota · Reduce wasted turns</td><td>Use Plan Mode to review plans before executing; if two corrections fail, /clear and retry—endless tug-of-war is the most expensive usage pattern</td></tr>
-  <tr><td>What if I hit the limit?</td><td>Four options: Wait for reset / <code>/model</code> down to continue / Temporarily switch to API billing (set <code>ANTHROPIC_API_KEY</code> + /config toggle, watch the bill!) / Upgrade plan. <strong>"usage limit reached" is not a bug, reinstalling/relogging won't help</strong>—troubleshoot at <a href="env-auth-clinic.html#claude-er">First Aid Manual · Billing and Quotas</a></td></tr>
+  <tr><td>What if I hit the limit?</td><td>Four options: Wait for reset / <code>/model</code> down to continue / Temporarily switch to API billing (set <code>ANTHROPIC_API_KEY</code> + /config toggle, watch the bill!) / Upgrade plan. <strong>"usage limit reached" is not a bug, reinstalling/relogging won't help</strong>—troubleshoot at <a href="env-auth-clinic.en.html#claude-er">First Aid Manual · Billing and Quotas</a></td></tr>
 </table>
 
 <h3 data-reveal>VIII. High-Frequency Issues First Aid Table</h3>
@@ -1035,7 +1036,7 @@ git clone your-dotfiles && ln -s …/claude ~/.claude   <span class="c"># Or set
   <tr><td><strong>GitHub MCP</strong></td><td>Universally recognized as highest impact: full-chain direct connection for issues/PRs/CI (Lightweight alternative: use <code>gh</code> CLI directly, zero context overhead)</td></tr>
   <tr><td><strong>Context7</strong></td><td>Real-time querying of latest API signatures, significantly reduces "writing APIs from faulty memory"—few tools, low context cost</td></tr>
   <tr><td><strong>Playwright (Official Microsoft)</strong></td><td>Lets the agent drive a real browser to self-verify UI changes; uses accessibility trees instead of screenshots, low context usage—essential for frontend</td></tr>
-  <tr><td><strong>Pencil</strong></td><td>Design canvas directly connected to code, see this KB's <a href="pencil-claude-code-best-practices.html">Pencil × Claude Code topic</a></td></tr>
+  <tr><td><strong>Pencil</strong></td><td>Design canvas directly connected to code, see this KB's <a href="pencil-claude-code-best-practices.en.html">Pencil × Claude Code topic</a></td></tr>
   <tr><td>As needed: Sentry / Postgres / Figma / Notion…</td><td>Connect systems in your actual workflow, don't install just to have them</td></tr>
 </table>
 <div class="callout warn"><b class="t">Anti-Consensus Warning (Benchmark Verified)</b>Two "popular recommendations" should actually be avoided: <strong>Filesystem MCP</strong>—Claude Code's built-in file tools + permission system are vastly superior; <strong>Sequential Thinking</strong>—The model has native reasoning, stacking this just burns context. Every installed MCP consumes window space, periodically review with <code>/context</code> and disable idle ones in <code>/mcp</code>.</div>
@@ -1053,7 +1054,7 @@ git clone your-dotfiles && ln -s …/claude ~/.claude   <span class="c"># Or set
   <tr><td>Full UI Dev Loop</td><td>Pencil MCP (Design) + Implementation + Playwright MCP / <code>/verify</code> (Real browser self-check)</td><td>Design → Code → Visual Verification, zero manual screenshot comparisons</td></tr>
   <tr><td>Unfamiliar Framework</td><td>Context7 (Lookup signatures) + <code>/goal all tests green</code></td><td>No more writing new APIs based on old memories</td></tr>
   <tr><td>Fully Automated PRs</td><td><code>gh</code> CLI + <code>/install-github-app</code> + <code>/autofix-pr</code></td><td>CI fails or reviews come in, cloud session fixes them automatically</td></tr>
-  <tr><td>Dual-Agent Cross Check</td><td>Claude Code × Codex as MCPs for each other (see <a href="codex-guide.html#skills-mcp">Codex topic</a>)</td><td>Different model perspectives expose blind spots</td></tr>
+  <tr><td>Dual-Agent Cross Check</td><td>Claude Code × Codex as MCPs for each other (see <a href="codex-guide.en.html#skills-mcp">Codex topic</a>)</td><td>Different model perspectives expose blind spots</td></tr>
   <tr><td>Large-scale Migration</td><td>SPEC Doc + <code>/batch</code> (or Ralph Loop) + Stop hook running tests</td><td>Breakdown → Parallel Execution → Verification pipeline</td></tr>
 </table>
 
@@ -1067,7 +1068,7 @@ git clone your-dotfiles && ln -s …/claude ~/.claude   <span class="c"># Or set
 <section id="pitfalls">
 <div class="sec-tag">Knowledge 12</div>
 <h2>Checklist of Pitfalls</h2>
-<p>The 5 official failure modes + high-frequency community pitfalls. Note: Environment and login pitfalls (credential conflicts, config ignored, machine migration crashes) are excluded—see the <a href="env-auth-clinic.html">Environment and Login First Aid Manual</a>.</p>
+<p>The 5 official failure modes + high-frequency community pitfalls. Note: Environment and login pitfalls (credential conflicts, config ignored, machine migration crashes) are excluded—see the <a href="env-auth-clinic.en.html">Environment and Login First Aid Manual</a>.</p>
 <table class="tbl">
   <tr><th>Pitfall</th><th>Symptom</th><th>Solution</th></tr>
   <tr><td><strong>Hodgepodge Sessions</strong></td><td>Task A half-done, interrupt for Task B, then back to A. Context filled with noise.</td><td>Use <code>/clear</code> between unrelated tasks, no exceptions.</td></tr>
@@ -1215,7 +1216,7 @@ claude -p "Task description, output OK on success, FAIL on failure" \
   <tr><td><code>CLAUDE_CODE_SUBAGENT_MODEL</code> / <code>CLAUDE_CODE_BG_CLASSIFIER_MODEL</code> / <code>CLAUDE_CODE_AUTO_MODE_MODEL</code></td><td>Overrides the model for subagents / bg classifier / auto-mode to cheaper options, correlating with Chapter 7 "Cost Management"</td></tr>
   <tr><td><code>CLAUDE_CODE_PLAN_V2_AGENT_COUNT</code></td><td>Controls how many agents parallelize exploration in Plan mode—the closest knob to true "multi-agent parallelism"</td></tr>
   <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code> / <code>CLAUDE_CODE_MAX_TURNS</code></td><td>Hard limits, useful for preventing runaways in CI/scripts</td></tr>
-  <tr><td><code>CLAUDE_CODE_HTTP_PROXY</code> / <code>CLAUDE_CODE_HTTPS_PROXY</code> / <code>CLAUDE_CODE_PROXY_URL</code></td><td>For corporate proxy environments, pair with <a href="env-auth-clinic.html">First Aid Manual</a> to debug proxy login failures</td></tr>
+  <tr><td><code>CLAUDE_CODE_HTTP_PROXY</code> / <code>CLAUDE_CODE_HTTPS_PROXY</code> / <code>CLAUDE_CODE_PROXY_URL</code></td><td>For corporate proxy environments, pair with <a href="env-auth-clinic.en.html">First Aid Manual</a> to debug proxy login failures</td></tr>
   <tr><td><code>CLAUDE_CODE_OVERRIDE_DATE</code></td><td>Tricks the assistant into thinking it's a different date, for testing time-sensitive behavior, don't use daily</td></tr>
 </table>
 
@@ -1250,7 +1251,7 @@ claude -p "Task description, output OK on success, FAIL on failure" \
   <tr><td>Skills Ecosystem</td><td><a href="https://www.totalum.app/blog/claude-code-skills-totalum" target="_blank">Totalum: Skills vs Hooks vs Subagents vs MCP</a> · <a href="https://www.firecrawl.dev/blog/best-claude-code-skills" target="_blank">Firecrawl: Best Skills</a> · <a href="https://www.developersdigest.tech/blog/best-claude-code-skills-2026" target="_blank">Developers Digest Directory</a></td></tr>
   <tr><td>Engineering Workflows</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Best Practices That Ship Code</a> · <a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">GitHub: claude-code-best-practice</a></td></tr>
   <tr><td>Chinese Community</td><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang: AI Programming Guide</a> · <a href="https://zhuanlan.zhihu.com/p/2009744974980331332" target="_blank">Zhihu: Best Practices Guide</a> · <a href="https://www.cnblogs.com/knqiufan/p/19449849" target="_blank">Cnblogs: Complete Guide</a> · <a href="https://www.cnblogs.com/leadingcode/p/19064358" target="_blank">Cnblogs: Official Team Practices</a></td></tr>
-  <tr><td>Related KB Topics</td><td><a href="codex-guide.html">Codex Guide</a> · <a href="pencil-claude-code-best-practices.html">Pencil × Claude Code</a> · <a href="env-auth-clinic.html">Auth Clinic</a> · <a href="ai-leverage-guide.html">AI Leverage Guide</a> · <a href="prompt-context-engineering.html">Context Engineering</a> · <a href="ai-capability-expansion.html">AI Capability Expansion</a></td></tr>
+  <tr><td>Related KB Topics</td><td><a href="codex-guide.en.html">Codex Guide</a> · <a href="pencil-claude-code-best-practices.en.html">Pencil × Claude Code</a> · <a href="env-auth-clinic.en.html">Auth Clinic</a> · <a href="ai-leverage-guide.en.html">AI Leverage Guide</a> · <a href="prompt-context-engineering.en.html">Context Engineering</a> · <a href="ai-capability-expansion.en.html">AI Capability Expansion</a></td></tr>
 </table>
 
 <div class="callout note"><b class="t">One Key Takeaway</b>Claude Code's ceiling isn't determined by how many commands you memorize, but by three things: <strong>Is your context clean, is your verification loop closed, and are fail-safes delegated to the system</strong> (Hooks for enforcement, Skills for knowledge, Subagents for isolation). Command tables will expire; these three things will not.</div>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>26. ネットワーク探求：BridgeとHost - Docker 35段階完全マスター</title>
+<style>
+:root {
+  --accent: #0284c7;
+  --accent-light: #0ea5e9;
+  --accent-soft: #f0f9ff;
+  --accent-border: #bae6fd;
+  --ink: #0f172a;
+  --bg: #ffffff;
+  --bg-side: #f8fafc;
+  --bg-code: #0f172a;
+  --text: #1e293b;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --border-2: #cbd5e1;
+  --tip-bg: #f0fdf4;
+  --tip-border: #bbf7d0;
+  --warn-bg: #fffbeb;
+  --warn-border: #fde68a;
+  --note-bg: #f0f9ff;
+  --note-border: #bae6fd;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, "JetBrains Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.8; font-size: 15.5px; -webkit-font-smoothing: antialiased; }
+
+/* トップ進捗バー */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, #0ea5e9, #0284c7, #38bdf8);
+  z-index: 1000; transition: width 0.1s ease;
+}
+
+/* トップバー */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.menu-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
+  align-items: center; justify-content: center; font-size: 18px; color: var(--text-2);
+}
+.menu-toggle:hover { background: var(--bg-side); color: var(--ink); }
+
+.logo {
+  font-weight: 800; font-size: 16px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff;
+}
+.logo-badge {
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 2px 8px; border-radius: 99px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 13.5px; }
+.topbar-right a {
+  color: var(--text-2); text-decoration: none; font-weight: 500;
+  display: flex; align-items: center; gap: 4px; transition: color 0.15s;
+}
+.topbar-right a:hover { color: var(--accent); }
+
+/* サイドバー */
+.sidebar {
+  position: fixed; top: 60px; left: 0; bottom: 0; width: 310px;
+  overflow-y: auto; background: var(--bg-side);
+  border-right: 1px solid var(--border); padding: 18px 14px 60px;
+  z-index: 90; transition: transform 0.25s ease;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+/* サイドバー検索ボックス */
+.side-search-box { margin-bottom: 16px; position: relative; }
+.side-search-input {
+  width: 100%; padding: 8px 32px 8px 12px; border: 1px solid var(--border-2);
+  border-radius: 8px; font-size: 13px; font-family: var(--font);
+  background: #fff; color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.side-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15); }
+.side-search-icon {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-3); pointer-events: none;
+}
+
+/* フェーズグループ */
+.nav-group { margin-bottom: 18px; }
+.nav-group-title {
+  font-size: 11.5px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px;
+  margin-bottom: 2px;
+}
+
+.nav-item {
+  display: flex; align-items: flex-start; padding: 8px 10px;
+  border-radius: 8px; color: var(--text-2); text-decoration: none;
+  font-size: 13.5px; margin-bottom: 1px; transition: all 0.15s; line-height: 1.45;
+}
+.nav-item:hover { background: var(--border); color: var(--ink); }
+.nav-item.on {
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; border-left: 3px solid var(--accent);
+}
+.nav-item .n {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  margin-right: 8px; flex: none; margin-top: 1px;
+}
+.nav-item.on .n { color: var(--accent); font-weight: 700; }
+
+/* マスク層 (モバイル用) */
+.sidebar-backdrop {
+  position: fixed; inset: 60px 0 0 0; background: rgba(15, 23, 42, 0.45);
+  z-index: 85; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
+
+/* メインコンテンツエリア */
+.main-wrap {
+  margin-left: 310px; padding: 40px 48px 120px;
+  max-width: 960px; min-height: 100vh;
+}
+
+/* チャプターバッジ */
+.chapter-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 4px 10px; border-radius: 99px; margin-bottom: 16px;
+}
+
+h1 { font-size: 28px; font-weight: 800; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.5px; line-height: 1.35; }
+h2 { font-size: 20px; font-weight: 700; color: var(--ink); margin: 40px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 28px 0 14px; }
+p { margin-bottom: 16px; color: var(--text); }
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+ul, ol { margin: 0 0 20px 22px; }
+li { margin-bottom: 8px; color: var(--text); }
+strong { color: var(--ink); font-weight: 700; }
+
+/* コードブロック */
+code {
+  font-family: var(--mono); font-size: 85%; background: #f1f5f9;
+  color: #e11d48; padding: 2px 6px; border-radius: 4px;
+}
+pre {
+  position: relative; background: var(--bg-code); color: #e2e8f0;
+  padding: 20px; border-radius: var(--radius); overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; margin: 24px 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+
+/* コードシンタックスハイライト */
+.bash-cmd { color: #38bdf8; font-weight: 600; }
+.bash-arg { color: #c084fc; }
+.bash-comment { color: #64748b; font-style: italic; }
+.bash-str { color: #a3e635; }
+
+/* コピーボタン */
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1; font-size: 11px; font-family: var(--font);
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  opacity: 0; transition: all 0.15s ease;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.copy-btn.copied { background: #16a34a; border-color: #22c55e; color: #fff; }
+
+/* アラートボックス */
+.alert {
+  padding: 18px 20px; border-radius: var(--radius); margin: 24px 0;
+  font-size: 14.5px; display: flex; gap: 14px; border: 1px solid var(--border);
+}
+.alert.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+.alert.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.alert.note { background: var(--note-bg); border-color: var(--note-border); }
+.alert .ic { font-size: 22px; flex: none; }
+.alert .tt { font-weight: 750; color: var(--ink); display: block; margin-bottom: 6px; font-size: 15.5px; }
+
+/* ステップパネル */
+.step-panel {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin: 28px 0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+.step-header {
+  background: var(--bg-side); padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-weight: 700; color: var(--ink); font-size: 15px; display: flex; align-items: center; gap: 8px;
+}
+.step-body { padding: 20px; }
+
+/* トラブルシューティング救急室 */
+.trouble-box {
+  background: #fff5f5; border: 1px dashed #fca5a5; border-radius: var(--radius);
+  padding: 22px; margin: 32px 0;
+}
+.trouble-title {
+  color: #dc2626; font-weight: 800; font-size: 16.5px;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.trouble-item { margin-bottom: 14px; }
+.trouble-item:last-child { margin-bottom: 0; }
+.trouble-item .q { font-weight: 700; color: var(--ink); margin-bottom: 4px; font-size: 14.5px; }
+.trouble-item .a { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+
+/* Mermaid チャートボックス */
+.mermaid-box {
+  display: flex; justify-content: center; margin: 28px 0;
+  background: #f8fafc; border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); overflow-x: auto;
+}
+
+/* ページネーション */
+.page-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border);
+}
+.page-nav-link {
+  display: flex; flex-direction: column; padding: 14px 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; transition: all 0.15s ease; flex: 1; max-width: 48%;
+  background: #fff;
+}
+.page-nav-link:hover {
+  border-color: var(--accent); background: var(--accent-soft);
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+.page-nav-link .dir { font-size: 11.5px; color: var(--text-3); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
+.page-nav-link .title { font-size: 14.5px; font-weight: 700; color: var(--accent); }
+.page-nav-link.next { text-align: right; margin-left: auto; }
+
+/* キーボードショートカットヒント */
+.keyboard-hints {
+  margin-top: 30px; text-align: center; font-size: 12px; color: var(--text-3);
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.kbd {
+  background: #f1f5f9; border: 1px solid var(--border-2); border-radius: 4px;
+  padding: 1px 6px; font-family: var(--mono); font-size: 11px; color: var(--text-2);
+}
+
+/* トップへ戻るボタン */
+.back-to-top {
+  position: fixed; bottom: 30px; right: 30px; width: 42px; height: 42px;
+  background: #fff; border: 1px solid var(--border-2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-2); cursor: pointer; opacity: 0;
+  pointer-events: none; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  z-index: 80;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* レスポンシブ対応 */
+@media (max-width: 960px) {
+  .menu-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); width: 290px; }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }
+  .main-wrap { margin-left: 0; padding: 30px 20px 100px; }
+  .logo-badge { display: none; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+  .page-nav-link.next { text-align: left; }
+}
+</style>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+</script>
+<script src="../../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle" aria-label="目次を開閉">☰</button>
+    <a href="01-intro.ja.html" class="logo">
+      <div class="logo-icon">🐳</div>
+      <span>Docker 35段階完全マスター</span>
+      <span class="logo-badge">図解実践版</span>
+    </a>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../../index.ja.html"><span>←</span> ナレッジベースへ戻る</a>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="side-search-box">
+    <input type="text" class="side-search-input" id="sideSearch" placeholder="🔍 35チャプターをクイック検索..." autocomplete="off">
+    <span class="side-search-icon">⌘K</span>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💡 第1フェーズ：概念入門</div>
+    <a class="nav-item" href="01-intro.ja.html"><span class="n">01.</span><span>プロローグ：小明の世紀の難題</span></a>
+    <a class="nav-item" href="02-what-is-docker.ja.html"><span class="n">02.</span><span>「引越し」で理解するDocker</span></a>
+    <a class="nav-item" href="03-vm-vs-container.ja.html"><span class="n">03.</span><span>次元の違い：VM vs コンテナ</span></a>
+    <a class="nav-item" href="04-core-components.ja.html"><span class="n">04.</span><span>図解：三種の神器アーキテクチャ</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
+    <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
+    <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🚀 第3フェーズ：コンテナ操作</div>
+    <a class="nav-item" href="09-run-detached.ja.html"><span class="n">09.</span><span>バックグラウンドでNginxサイトを起動</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.ja.html"><span class="n">10.</span><span>コンテナのライフサイクル完全掌握</span></a>
+    <a class="nav-item" href="11-exec-into.ja.html"><span class="n">11.</span><span>内部潜入：execでコンテナに入る</span></a>
+    <a class="nav-item" href="12-logs-detective.ja.html"><span class="n">12.</span><span>探偵の視点：ログ調査の極意</span></a>
+    <a class="nav-item" href="13-resource-limits.ja.html"><span class="n">13.</span><span>リソース制限：OOMクラッシュを防ぐ</span></a>
+    <a class="nav-item" href="14-healthcheck.ja.html"><span class="n">14.</span><span>ヘルスチェック：コンテナの自己診断</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">📦 第4フェーズ：イメージのカスタマイズ</div>
+    <a class="nav-item" href="15-why-dockerfile.ja.html"><span class="n">15.</span><span>手動環境構築からの脱却</span></a>
+    <a class="nav-item" href="16-dockerfile-syntax.ja.html"><span class="n">16.</span><span>Dockerfile基本構文の総まとめ</span></a>
+    <a class="nav-item" href="17-dockerignore.ja.html"><span class="n">17.</span><span>.dockerignore落とし穴回避ガイド</span></a>
+    <a class="nav-item" href="18-build-practice.ja.html"><span class="n">18.</span><span>実践：Webプロジェクトのイメージビルド</span></a>
+    <a class="nav-item" href="19-layer-caching.ja.html"><span class="n">19.</span><span>図解：レイヤーキャッシュの魔法</span></a>
+    <a class="nav-item" href="20-frontend-deploy.ja.html"><span class="n">20.</span><span>Vue/Reactのエレガントなデプロイ</span></a>
+    <a class="nav-item" href="21-multi-stage.ja.html"><span class="n">21.</span><span>究極の軽量化：マルチステージビルド</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💾 第5フェーズ：データの永続化</div>
+    <a class="nav-item" href="22-ephemeral-data.ja.html"><span class="n">22.</span><span>短命なコンテナと消えるデータ</span></a>
+    <a class="nav-item" href="23-volumes.ja.html"><span class="n">23.</span><span>究極のデータ保護：ボリューム（Volumes）</span></a>
+    <a class="nav-item" href="24-bind-mounts.ja.html"><span class="n">24.</span><span>開発の神技：バインドマウント</span></a>
+    <a class="nav-item" href="25-volume-backup.ja.html"><span class="n">25.</span><span>金庫の引越し：データのバックアップとリストア</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🌐 第6フェーズ：ネットワークとオーケストレーション</div>
+    <a class="nav-item on" href="26-network-types.ja.html"><span class="n">26.</span><span>ネットワーク探求：BridgeとHost</span></a>
+    <a class="nav-item" href="27-container-network.ja.html"><span class="n">27.</span><span>コンテナ間通信：IP直打ちからの脱却</span></a>
+    <a class="nav-item" href="28-why-compose.ja.html"><span class="n">28.</span><span>なぜDocker Composeが必要なのか？</span></a>
+    <a class="nav-item" href="29-yaml-syntax.ja.html"><span class="n">29.</span><span>YAML構文超速マスター</span></a>
+    <a class="nav-item" href="30-compose-up-part1.ja.html"><span class="n">30.</span><span>実践バトル(前編)：Web＋キャッシュ連携</span></a>
+    <a class="nav-item" href="31-compose-up-part2.ja.html"><span class="n">31.</span><span>実践バトル(後編)：マイクロサービスネットワーク</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛡️ 第7フェーズ：セキュリティと本番運用</div>
+    <a class="nav-item" href="32-env-security.ja.html"><span class="n">32.</span><span>城壁の防御：.envによる機密情報の保護</span></a>
+    <a class="nav-item" href="33-system-prune.ja.html"><span class="n">33.</span><span>ディスク大掃除：system prune</span></a>
+    <a class="nav-item" href="34-production-root.ja.html"><span class="n">34.</span><span>本番の鉄則：root実行の絶対禁止</span></a>
+    <a class="nav-item" href="35-cicd-concept.ja.html"><span class="n">35.</span><span>エピローグ：CI/CD自動化パイプライン</span></a>
+  </div>
+</aside>
+
+<main class="main-wrap">
+  <div class="chapter-badge">🐳 フェーズ：ネットワークとオーケストレーション · 第 26 / 35 レッスン</div>
+  <h1>第26レッスン：ネットワーク探求：BridgeとHost</h1>
+
+<p>Docker を学び始めた当初、小明はコンテナを「外界から完全に隔離された孤島」のように捉えていました。しかし、実務のアプリケーションが孤立したままで成立することはありません。Web サーバーはデータベースに接続し、フロントエンドはバックエンド API を呼び出し、サービス全体は外部のインターネットからアクセス可能でなければなりません。これこそが本フェーズの主題である<strong>Docker ネットワーク</strong>です。</p>
+
+<p>今回は、Docker がどのようにコンテナ同士を相互接続し、コンテナのサービスをホスト外部へ公開しているのか、その全体構造と基本モードを徹底解説します。</p>
+
+<h2>1. 全体像：Docker ネットワークのアーキテクチャ</h2>
+
+<p>具体的なコマンドに入る前に、Docker ネットワークの全体像を図解で確認しましょう。Docker エンジンはホスト内部に「仮想スイッチ（仮想ブリッジ）」を構築し、複数のコンテナを効率よく束ねています。</p>
+
+<div class="mermaid-box">
+<pre><code class="language-mermaid">
+flowchart TD
+    Internet((インターネット)) <--> HostPort["ホストポート: 8080"]
+    HostPort <--> DockerEngine{"Docker Engine (NAT)"}
+    
+    subgraph HostOS ["ホストOS Host OS"]
+        DockerEngine <--> Bridge["Bridge ネットワーク (docker0)<br/>172.17.0.0/16"]
+        Bridge <--> C1["コンテナ 1: Web<br/>(172.17.0.2)"]
+        Bridge <--> C2["コンテナ 2: DB<br/>(172.17.0.3)"]
+        
+        HostNet["Host ネットワーク"] <--> C3["コンテナ 3: 高速アプリ<br/>(ホストのIPを直接利用)"]
+    end
+</code></pre>
+</div>
+
+<h2>2. Docker 標準の主要ネットワークモード</h2>
+
+<p>現在利用可能なネットワーク一覧は <code>docker network ls</code> でいつでも確認できます：</p>
+
+<pre><span class="bash-cmd">docker</span> <span class="bash-arg">network</span> ls
+<span class="bash-comment">NETWORK ID     NAME      DRIVER    SCOPE
+1f1621cb3483   bridge    bridge    local
+8cc0547ba5ef   host      host      local
+0a7a40b3abf2   none      null      local</span></pre>
+
+<p>デフォルトで用意されている3つの標準ネットワークを順に紐解いていきましょう：</p>
+
+<div class="step-panel">
+  <div class="step-header">1. Bridge (ブリッジモード) - デフォルト標準</div>
+  <div class="step-body">
+    <p>ネットワークを指定せずに起動したコンテナ（例: <code>docker run nginx</code>）は、自動的にこのデフォルトの <code>bridge</code> ネットワークに接続されます。</p>
+    <ul>
+      <li><strong>仕組み：</strong> Docker はホスト上に <code>docker0</code> という仮想ブリッジを作成します。このネットワークに所属するすべてのコンテナには、同一サブネット（通常 <code>172.17.0.0/16</code>）のプライベート IP が自動採番されます。</li>
+      <li><strong>相互通信：</strong> 同一ブリッジ内のコンテナは IP アドレスを指定して相互に通信（PING 等）できます。ただし、<strong>デフォルト bridge ではコンテナ名による名前解決（DNS）はサポートされていません</strong>（※実務上極めて重要な注意点です）。</li>
+    </ul>
+    <p><code>inspect</code> コマンドでネットワークの詳細設定を確認できます：</p>
+    <pre><span class="bash-cmd">docker</span> <span class="bash-arg">network inspect</span> bridge
+<span class="bash-comment">[
+    {
+        "Name": "bridge",
+        "Driver": "bridge",
+        "IPAM": {
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        }
+    }
+]</span></pre>
+  </div>
+</div>
+
+<div class="step-panel">
+  <div class="step-header">2. Host (ホストモード) - 極限のネットワーク性能</div>
+  <div class="step-body">
+    <p>起動時に <code>--network host</code> を指定すると、コンテナはネットワーク名前空間を分離せず、ホストマシンのネットワークスタックを直接共有します。コンテナ独自のアドレスは割り当てられず、コンテナ内のアプリが 80 番ポートでリッスンすれば、ホストの 80 番ポートが直接使用されます。</p>
+    <ul>
+      <li><strong>メリット：</strong> NAT 変換のオーバーヘッドがなく、ネットワークスループットとレイテンシが極めて優秀。高トラフィックな通信処理に適しています。</li>
+      <li><strong>デメリット：</strong> ポート衝突のリスク。同一ホスト上で 80 番ポートを使うコンテナを host モードで複数同時に起動することはできません。</li>
+    </ul>
+  </div>
+</div>
+
+<div class="step-panel">
+  <div class="step-header">3. None (ネットワーク無効モード) - 完全な隔離</div>
+  <div class="step-body">
+    <p><code>--network none</code> を指定すると、コンテナにはループバック（lo）以外の仮想 NIC が一切与えられません。</p>
+    <p><strong>ユースケース：</strong> 機密データに対するバッチ処理や暗号鍵生成など、ネットワーク経由の情報漏洩を物理的に遮断したいタスクに最適です。</p>
+  </div>
+</div>
+
+<div class="alert note">
+  <span class="ic">💡</span>
+  <div>
+    <span class="tt">プロの知恵：Macvlan モード</span>
+    コンテナをローカル LAN 内の独立した物理端末のように見せかけ、ルーターから直接ホストと同セグメントの IP（例: <code>192.168.1.x</code>）と MAC アドレスを割り当てたい場合は <strong>macvlan</strong> ドライバを使用します。ネットワーク監視装置やルーティング機器のエミュレーションなどに用いられます。
+  </div>
+</div>
+
+<h2>3. ポートフォワーディング：サービスを外部へ公開する</h2>
+
+<p>Bridge ネットワーク上のコンテナは外のインターネットへアクセスできますが、外部からコンテナへ直接通信することはできません（家庭内 LAN のルーター配下と同じ仕組みです）。外部からコンテナへ接続させるには<strong>ポートフォワーディング（Port Mapping）</strong>が必要です。</p>
+
+<p>基本書式：<code>-p [ホストIP]:[ホストポート]:[コンテナポート]</code></p>
+
+<ul>
+  <li><code>-p 8080:80</code>：ホストマシンの 8080 番ポートへの全インターフェースからの通信を、コンテナ内の 80 番ポートへ転送。</li>
+  <li><code>-p 127.0.0.1:8080:80</code>：<strong>セキュリティ重視！</strong> ホストのローカルループバックのみにバインド。外部ネットワークからは到達できず、ホストマシン自身からのみアクセス可能な内部管理画面などに使用。</li>
+  <li><code>-P</code> (大文字)：コンテナ側で <code>EXPOSE</code> されているポートに対し、ホスト側の一時ポート（通常 32768〜61000 番）をランダムに自動割り当て。</li>
+</ul>
+
+<h2>4. ユーザー定義ブリッジ (User-defined Bridge) の重要性</h2>
+
+<p>前述の通り、デフォルトの <code>bridge</code> ネットワークには<strong>「コンテナ名による自動 DNS 解決ができない」</strong>という重大な制限があります。データベース接続時に <code>172.17.0.3</code> のような動的 IP をハードコードするのは運用の破綻を招きます。</p>
+<p>そのため実務では、<strong>プロジェクトごとに独自のユーザー定義ブリッジを作成して運用する</strong>のが鉄則です：</p>
+
+<pre><span class="bash-comment"># my-net という名前のカスタムネットワークを作成</span>
+<span class="bash-cmd">docker</span> <span class="bash-arg">network create</span> my-net</pre>
+
+<p>コンテナ起動時に作成したネットワークを指定：</p>
+<pre><span class="bash-cmd">docker</span> <span class="bash-arg">run -d --name</span> db1 <span class="bash-arg">--network</span> my-net mysql:8.0</pre>
+
+<p>ユーザー定義ネットワーク内では、Docker 内蔵の DNS サーバーが機能し、<code>ping db1</code> や接続文字列 <code>db1:3306</code> で自動的に名前解決が可能になります。この実践テクニックは次章で詳しく掘り下げます。</p>
+
+<h2>5. コンテナの IP アドレスを調べる</h2>
+
+<p>デバッグや接続テストの際、コンテナに割り振られた IP を手軽に調べるには <code>docker inspect</code> と <code>grep</code> を組み合わせます：</p>
+
+<pre><span class="bash-cmd">docker</span> <span class="bash-arg">inspect</span> my-nginx <span class="bash-arg">|</span> <span class="bash-cmd">grep</span> <span class="bash-str">"IPAddress"</span>
+<span class="bash-comment">            "IPAddress": "172.17.0.2",
+                    "IPAddress": "172.17.0.2",</span></pre>
+
+<div class="trouble-box">
+  <div class="trouble-title">🚨 トラブルシューティング救急室</div>
+  <div class="trouble-item">
+    <div class="q">Q: "Bind for 0.0.0.0:8080 failed: port is already allocated" エラーでコンテナが起動しません。</div>
+    <div class="a">A: ホスト側の 8080 番ポートが他のコンテナやホスト上のプロセス（Apache/Node.js 等）によって既に使用されています。ホスト側のマッピングポートを <code>-p 8081:8080</code> など空いている別のポートに変更してください。</div>
+  </div>
+  <div class="trouble-item">
+    <div class="q">Q: コンテナ内部から外部のインターネット（例: google.com）へ接続できません。</div>
+    <div class="a">A: 主な原因は2つ考えられます：1. ホストマシン自身のネットワーク・DNS 不調。2. Linux ホストの IP フォワーディングが無効になっている。ホスト側で <code>sysctl net.ipv4.ip_forward=1</code> を有効化してください。また、起動時に <code>--dns 8.8.8.8</code> を付与して DNS 解決を直接指定して確認することも有効です。</div>
+  </div>
+</div>
+  
+<div class="page-nav">
+  <a href="25-volume-backup.ja.html" class="page-nav-link prev"><span class="dir">← 前のレッスン</span><span class="title">25. 金庫の引越し：データのバックアップとリストア</span></a>
+  <a href="27-container-network.ja.html" class="page-nav-link next"><span class="dir">次のレッスン →</span><span class="title">27. コンテナ間通信：IP直打ちからの脱却</span></a>
+</div>
+
+<div class="keyboard-hints">
+  <span>💡 ショートカット：<span class="kbd">←</span> 前のレッスン</span>
+  <span><span class="kbd">→</span> 次のレッスン</span>
+  <span><span class="kbd">/</span> 検索にフォーカス</span>
+</div>
+</main>
+
+<button class="back-to-top" id="backToTop" title="トップへ戻る">↑</button>
+
+<script>
+// 1. 読書進捗バー
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+  
+  // トップへ戻るボタンの表示制御
+  const btt = document.getElementById('backToTop');
+  if (winScroll > 300) {
+    btt.classList.add('show');
+  } else {
+    btt.classList.remove('show');
+  }
+});
+
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// 2. モバイル用サイドバー切り替え
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function toggleSidebar() {
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('active');
+}
+
+menuToggle.addEventListener('click', toggleSidebar);
+backdrop.addEventListener('click', toggleSidebar);
+
+// 3. コードコピー機能
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.innerText = 'コピー';
+  btn.addEventListener('click', () => {
+    const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = 'コピー完了 ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = 'コピー';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// 4. サイドバー絞り込み検索
+const searchInput = document.getElementById('sideSearch');
+searchInput.addEventListener('input', (e) => {
+  const val = e.target.value.toLowerCase().trim();
+  const navItems = document.querySelectorAll('.sidebar .nav-item');
+  const groups = document.querySelectorAll('.sidebar .nav-group');
+  
+  navItems.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    if (!val || text.includes(val)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  // グループ内の全項目が非表示ならタイトルも非表示
+  groups.forEach(group => {
+    const visibleChildren = group.querySelectorAll('.nav-item:not([style*="display: none"])');
+    if (visibleChildren.length === 0 && val) {
+      group.style.display = 'none';
+    } else {
+      group.style.display = 'block';
+    }
+  });
+});
+
+// 5. キーボードナビゲーション
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  
+  if (e.key === 'ArrowLeft') {
+    const prevLink = document.querySelector('.page-nav-link.prev');
+    if (prevLink) prevLink.click();
+  } else if (e.key === 'ArrowRight') {
+    const nextLink = document.querySelector('.page-nav-link.next');
+    if (nextLink) nextLink.click();
+  } else if (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+</script>
+
+</body>
+</html>

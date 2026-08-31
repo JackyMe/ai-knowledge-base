@@ -1,34 +1,56 @@
 /**
  * i18n.js
- * Handles language auto-detection, redirection, and the CN/EN toggle.
+ * Handles language auto-detection, 4-way routing (zh / en / ja / ko),
+ * and the [ 中 | EN | JA | KO ] segmented language switcher.
  */
 (function() {
-  const isEnPage = window.location.pathname.endsWith('.en.html');
-  
+  function getCurrentPageLang() {
+    const path = window.location.pathname;
+    if (path.endsWith('.ko.html')) return 'ko';
+    if (path.endsWith('.ja.html')) return 'ja';
+    if (path.endsWith('.en.html')) return 'en';
+    return 'zh';
+  }
+
+  function getPathForLang(targetLang) {
+    let path = window.location.pathname;
+    if (path.endsWith('/') || !path.endsWith('.html')) {
+      path = path.replace(/\/?$/, '/index.html');
+    }
+    
+    // Normalize to base .html
+    let basePath = path.replace(/\.(en|ja|ko)\.html$/, '.html');
+    
+    if (targetLang === 'zh') {
+      return basePath;
+    } else if (targetLang === 'en') {
+      return basePath.replace(/\.html$/, '.en.html');
+    } else if (targetLang === 'ja') {
+      return basePath.replace(/\.html$/, '.ja.html');
+    } else if (targetLang === 'ko') {
+      return basePath.replace(/\.html$/, '.ko.html');
+    }
+    return path;
+  }
+
   function getPreferredLang() {
     let savedLang = localStorage.getItem('site_lang');
-    if (savedLang === 'en' || savedLang === 'zh') return savedLang;
+    if (savedLang === 'en' || savedLang === 'zh' || savedLang === 'ja' || savedLang === 'ko') return savedLang;
     
     // Auto-detect based on browser language
-    let browserLang = navigator.language || navigator.userLanguage || '';
-    return browserLang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+    let browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (browserLang.startsWith('ko')) return 'ko';
+    if (browserLang.startsWith('ja')) return 'ja';
+    if (browserLang.startsWith('zh')) return 'zh';
+    return 'en';
   }
 
   function applyLanguageRedirect() {
+    const currentLang = getCurrentPageLang();
     const targetLang = getPreferredLang();
     
-    if (targetLang === 'en' && !isEnPage) {
-      // Avoid redirecting if the page might not exist (optional safety, but we ensure all .en.html are created)
-      let currentPath = window.location.pathname;
-      if (currentPath.endsWith('/')) currentPath += 'index.html';
-      
-      let newPath = currentPath.replace(/\.html$/, '.en.html');
-      if (newPath === currentPath) newPath = currentPath + 'index.en.html';
-      
-      window.location.replace(newPath + window.location.search + window.location.hash);
-    } 
-    else if (targetLang === 'zh' && isEnPage) {
-      let newPath = window.location.pathname.replace(/\.en\.html$/, '.html');
+    if (currentLang !== targetLang) {
+      const newPath = getPathForLang(targetLang);
       window.location.replace(newPath + window.location.search + window.location.hash);
     }
   }
@@ -38,24 +60,40 @@
 
   // Setup UI toggle on DOM loaded
   document.addEventListener('DOMContentLoaded', () => {
+    const currentLang = getCurrentPageLang();
+
+    // 1. Support 4-way segmented buttons (.lang-switcher)
+    const buttons = document.querySelectorAll('.lang-switcher .lang-btn');
+    buttons.forEach(btn => {
+      const lang = btn.dataset.lang;
+      const isActive = lang === currentLang;
+      btn.classList.toggle('active', isActive);
+      // Remove hardcoded inline styles so CSS theme handles active state
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.boxShadow = '';
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (lang === currentLang) return;
+        localStorage.setItem('site_lang', lang);
+        const targetPath = getPathForLang(lang);
+        window.location.href = targetPath + window.location.search + window.location.hash;
+      });
+    });
+
+    // 2. Backward-compatibility for old checkbox toggle if any remains
     const toggleCb = document.getElementById('lang-toggle-cb');
     if (toggleCb) {
-      const currentLang = isEnPage ? 'en' : 'zh';
-      
-      // Update checkbox state
       toggleCb.checked = currentLang === 'en';
-      
-      // Move knob based on state
-      const knob = toggleCb.nextElementSibling.querySelector('.knob');
+      const knob = toggleCb.nextElementSibling ? toggleCb.nextElementSibling.querySelector('.knob') : null;
       if (knob) {
         knob.style.transform = currentLang === 'en' ? 'translateX(28px)' : 'translateX(0)';
       }
-      
       toggleCb.addEventListener('change', () => {
         const newLang = toggleCb.checked ? 'en' : 'zh';
         localStorage.setItem('site_lang', newLang);
-        // Reload will trigger the redirect script
-        window.location.reload();
+        window.location.href = getPathForLang(newLang) + window.location.search + window.location.hash;
       });
     }
   });

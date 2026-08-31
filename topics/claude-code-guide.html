@@ -185,17 +185,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">CC</span>Claude Code 使用指南<span class="sub">干货版</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.html">◂ 主题中心</a>
-    
-      <span>核对至 2026-08-25</span>
-   
+    <span>核对至 2026-08-31</span>
 
 <div class="progress" id="prog"></div>
 
@@ -242,7 +239,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-25</div>
+  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-31</div>
   <h1>Claude Code<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">从心法到命令,从扩展体系到八大实战场景。以官方 Best Practices 与命令参考为底,融合社区高阶经验,压缩成一页可反复查阅的实战手册——只留干货,不讲废话。</p>
   <div class="meta">
@@ -350,7 +347,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">动态</div>
 <h2>近期重要变化</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-25</strong> · 对照 Claude Code <strong>最新版</strong>(2026-08 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-31</strong> · 对照 Claude Code <strong>v2.1.251</strong>(2026-08 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
 <h3 data-reveal>🔴 破坏性变更:老习惯会失效</h3>
 <table class="tbl">
@@ -382,6 +379,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3 data-reveal>🆕 新增能力:值得马上试的</h3>
 <table class="tbl">
   <tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
+  <tr><td>08-28</td><td><strong>生命周期 Hooks</strong></td><td>新增 <code>PreModelSwitch</code> 和 <code>PostModelSwitch</code> hooks，在切换模型前后执行自动化逻辑。</td></tr>
+  <tr><td>08-24</td><td><strong>Loops 任务追踪与控制台登录</strong></td><td>支持通过 Anthropic Console 无密钥登录，并在 <code>/usage</code> 中查看 Loops 长程任务的开销追踪。配置 <code>modelPicker</code> 定制可选模型。</td></tr>
   <tr><td>08-17</td><td><strong><code>/design</code> Skill (预览版)</strong></td><td>在终端直接基于想法或现有图片生成可编辑的设计画板 (Artboards)，实现设计与代码的无缝衔接。</td></tr>
   <tr><td>08-下旬</td><td><strong>Concise 输出风格</strong></td><td>配置 <code>"outputStyle": "Concise"</code>，极致精简回答废话，减少大段叙述，代码和结果先行。</td></tr>
   <tr><td>08-下旬</td><td><strong>自动继续 (Auto-Continue)</strong></td><td>遇到配额上限卡住后，当配额刷新时现在会自动继续之前的任务。</td></tr>

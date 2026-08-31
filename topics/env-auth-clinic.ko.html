@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Code 및 Codex 환경 설정 및 인증 응급 처치 매뉴얼: 5계층 진단법, 원클릭 진단 스크립트, 로그인 장애/401/403/429/인증서 오류 즉시 해결, 공용 PC 초기화, 새 PC 마이그레이션, SSH/Docker 헤드리스 인증 및 3단계 완전 리셋 절차.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="환경 & 로그인 응급실 · Claude Code × Codex 문제 해결 매뉴얼">
+<meta property="og:description" content="로그인 실패, 설정 충돌, PC 마이그레이션 오류를 5계층 진단법과 3단계 리셋 SOP로 30초 만에 해결하는 실전 응급 처치 가이드.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/env-auth-clinic.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>환경 & 로그인 응급실 · Claude Code × Codex 트러블슈팅</title>
+<style>
+:root{
+  --accent:#e11d48; --accent-2:#f43f5e; --accent-soft:#ffe4e6;
+  --ink:#180a10; --bg:#ffffff; --bg-side:#fffbfb; --bg-code:#180a10;
+  --text:#27121b; --text-2:#633e4f; --text-3:#996b7f;
+  --border:#f9e2e8; --border-2:#f0c6d3;
+  --tip-bg:#f0fdf4; --warn-bg:#fffbeb; --note-bg:#ffe4e6;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.side-filter{position:relative;margin-bottom:14px;padding:0 4px}
+.side-filter input{width:100%;padding:6px 28px 6px 10px;border:1px solid var(--border-2);border-radius:8px;
+  font-size:12.5px;background:#fff;color:var(--text);outline:none;font-family:inherit}
+.side-filter input:focus{border-color:var(--accent)}
+.side-filter .fk{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;
+  color:var(--text-3);background:var(--border);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#fdf2f4;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#ffe4e6;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(225,29,72,.40),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(244,63,94,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fecdd3;font-weight:600;background:rgba(225,29,72,.16);
+  border:1px solid rgba(225,29,72,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fb7185,#fda4af);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#fecdd3;max-width:760px;line-height:1.75}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#fda4af}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3);line-height:1.5;display:block;margin-top:4px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#fecdd3}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbf7d0}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#ffe4e6;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#be123c}
+pre{background:var(--bg-code);color:#ffe4e6;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#996b7f}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fff9fa}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fdf2f4}
+
+.layers{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+.layer{display:flex;gap:16px;border:1px solid var(--border);border-radius:12px;padding:16px 18px;background:#fff}
+.layer .ln{font-family:var(--mono);font-size:16px;font-weight:800;color:var(--accent);min-width:32px}
+.layer b{display:block;font-size:15px;margin-bottom:4px}
+.layer p{font-size:13.5px;color:var(--text-2);margin:0}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 16px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#ffe4e6;color:#be123c}
+.pill.b{background:#fefce8;color:#a16207}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(24,10,16,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🚑</span>환경 & 로그인 응급실<span class="sub">Claude Code × Codex</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증일: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 필터링…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">방법론</div>
+    <a href="#overview"><span class="no">00</span>증상별 빠른 진단 + 장애 맵</a>
+    <a href="#diagnose"><span class="no">01</span>5계층 진단법 + 진단 스크립트</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Claude Code</div>
+    <a href="#claude-cred"><span class="no">02</span>인증 메커니즘과 우선순위</a>
+    <a href="#claude-config"><span class="no">03</span>settings.json 완전 해설</a>
+    <a href="#claude-er"><span class="no">04</span>증상별 응급 처치표</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Codex</div>
+    <a href="#codex-cred"><span class="no">05</span>인증 메커니즘과 저장 포맷</a>
+    <a href="#codex-config"><span class="no">06</span>config.toml 완전 해설</a>
+    <a href="#codex-er"><span class="no">07</span>증상별 응급 처치표</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">시나리오별 실전</div>
+    <a href="#shared"><span class="no">08</span>공용 PC / 설정 인수인계</a>
+    <a href="#machines"><span class="no">09</span>PC 교체 / 멀티 머신 동기화</a>
+    <a href="#headless"><span class="no">10</span>SSH / 컨테이너 / CI 헤드리스</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">만능 복구</div>
+    <a href="#reset"><span class="no">12</span>만능 복구: 3단계 리셋</a>
+    <a href="#map"><span class="no">13</span>2대 툴 비교 대조표 & 리소스</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🚑 로그인 에러 · 설정 충돌 · PC 마이그레이션 실패 — 이 한 장으로 완전 해결</div>
+  <h1>환경 & 로그인<br><span class="grad">응급 트러블슈팅 매뉴얼</span></h1>
+  <p class="lead">"구독 결제를 마쳤는데 왜 API 과금이 되는가", "새 PC로 교체한 뒤 실행이 안 된다", "다른 사람이 쓰던 PC에서 설정이 꼬였다" — 이 모든 문제는 원인 불명의 오류가 아니라 5개의 명확한 레이어 중 하나에 속합니다. 체계적인 5계층 진단법, 2대 도구 증상별 응급 처치표, 3대 시나리오별 처방전, 단계별 만능 리셋 절차를 제공합니다.</p>
+  <div class="meta">
+    <span>5계층 진단법</span><span>원클릭 진단 스크립트</span><span>3단계 리셋 SOP</span><span>Claude Code × Codex 완전 대조</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5 계층</b><span>바이너리 → 환경 변수 → 자격 증명 → 설정 → 네트워크. 모든 증상은 이 5층 중 하나에 귀결</span></div>
+  <div class="stat"><b>1개 스크립트</b><span>읽기 전용 자가진단. 30초 내에 머신의 전체 환경 상태를 시각화</span></div>
+  <div class="stat"><b>3단계 리셋</b><span>소프트 리셋 → 인증 리셋 → 완전 초기화. 피해를 최소화하는 단계적 복구</span></div>
+  <div class="stat"><b>3대 시나리오</b><span>공용 PC / PC 마이그레이션 / 헤드리스 환경(SSH/Docker). 실전 즉효 처방</span></div>
+</div>
+
+<!-- ================= SECTION 00 ================= -->
+<section id="overview">
+<div class="sec-tag">방법론 00</div>
+<h2>증상별 빠른 진단 + 장애 분류 맵</h2>
+
+<div class="callout tip"><b class="t">⚡ 3줄 요약 해결 (문제의 70%는 여기서 즉시 해결)</b>
+① <code>env | grep -iE 'anthropic|openai'</code>로 세션을 가로채고 있는 환경 변수를 찾아 <code>unset</code> 처리;<br>
+② 깔끔한 재로그인: <code>/logout</code> 후 <code>/login</code> (Codex: <code>codex logout && codex login</code>);<br>
+③ 자격 증명 확인: <code>/status</code> 또는 <code>codex login status</code>로 정상 계정과 로그인 방식인지 확인.</div>
+
+<h3 data-reveal>4대 근본 원인 맵</h3>
+<table class="tbl">
+  <tr><th>근본 원인</th><th>전형적인 증상</th><th>발생 이유</th></tr>
+  <tr><td><strong>① 복수 설치 경로 충돌</strong></td><td>버전이 제멋대로 바뀌거나 업데이트가 반영되지 않음</td><td>공식 네이티브 설치, npm 글로벌, Homebrew, IDE 내장 바이너리가 공존하며 PATH 우선순위 충돌</td></tr>
+  <tr><td><strong>② 자격 증명 소스 충돌</strong></td><td>"로그인했는데 Invalid API key가 뜸", 구독 계정인데 API 종량 과금됨</td><td>환경 변수에 설정된 API Key가 브라우저 OAuth 구독 자격 증명보다 <strong>우선순위가 높기 때문</strong></td></tr>
+  <tr><td><strong>③ 설정 계층 오버라이드</strong></td><td>"설정을 바꿨는데 적용이 안 됨", 회사 PC에서 설정이 잠김</td><td>Enterprise 정책 &gt; CLI 인자 &gt; 프로젝트 로컬 &gt; 프로젝트 공유 &gt; 사용자 전역 순으로 덮어씀</td></tr>
+  <tr><td><strong>④ 네트워크 및 시스템 환경</strong></td><td>로그인 콜백 멈춤, TLS/인증서 오류, 다운로드 403</td><td>기업 프록시, 사설 CA, 방화벽이 로컬 콜백 포트(Codex는 1455) 차단</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 01 ================= -->
+<section id="diagnose">
+<div class="sec-tag">방법론 01</div>
+<h2>5계층 진단법 + 원클릭 진단 스크립트</h2>
+
+<p>유일한 진단 원칙: <strong>하위 계층부터 상위 계층으로 순차 확인하고, 한 층의 확인이 끝난 뒤 다음 층으로 넘어갈 것</strong>.</p>
+
+<div class="layers">
+  <div class="layer"><span class="ln">L1</span><div><b>바이너리 계층 —— 실제로 실행되는 프로그램은 무엇인가?</b>
+    <p><code>which -a claude</code> / <code>which -a codex</code>로 PATH 내 중복 바이너리 확인; <code>claude --version</code> 확인.</p></div></div>
+  <div class="layer"><span class="ln">L2</span><div><b>환경 변수 계층 —— 동작을 가로채는 변수가 있는가?</b>
+    <p><code>env | grep -iE 'anthropic|claude|codex|openai|proxy'</code> 실행. 의도치 않은 <code>ANTHROPIC_API_KEY</code> 확인.</p></div></div>
+  <div class="layer"><span class="ln">L3</span><div><b>자격 증명 계층 —— 현재 어느 계정으로 인증되어 있는가?</b>
+    <p>Claude Code 세션 내 <code>/status</code> 실행; Codex는 <code>codex login status</code> 확인.</p></div></div>
+  <div class="layer"><span class="ln">L4</span><div><b>설정 계층 —— 어떤 계층의 설정이 적용 중인가?</b>
+    <p>Claude Code: <code>claude doctor</code> 및 <code>/config</code>; Codex: <code>/debug-config</code> 확인.</p></div></div>
+  <div class="layer"><span class="ln">L5</span><div><b>네트워크 계층 —— API 서버와 정상 통신 가능한가?</b>
+    <p><code>curl -sI https://api.anthropic.com</code> 또는 <code>curl -sI https://api.openai.com</code> 연결성 테스트.</p></div></div>
+</div>
+
+<h3 data-reveal>원클릭 진단 스크립트 (읽기 전용)</h3>
+<pre><code><span class="c">#!/bin/bash
+# ai-env-check.sh —— Claude Code / Codex 환경 원클릭 자가진단 (읽기 전용)
+# 사용법: bash ai-env-check.sh</span>
+echo "═══ L1 바이너리 계층 ═══"
+for c in claude codex; do
+  if command -v "$c" &gt;/dev/null 2>&1; then
+    which -a "$c"; "$c" --version 2&gt;/dev/null | head -1
+  else echo "(미설치 또는 PATH에 없음: $c)"; fi
+done
+
+echo; echo "═══ L2 환경 변수 계층 ═══"
+env | grep -iE 'anthropic|claude|codex|openai|https?_proxy|no_proxy' || echo "(깨끗함: 관련 환경 변수 없음)"
+
+echo; echo "═══ L3/L4 설정 및 디렉토리 ═══"
+[ -d ~/.claude ] && echo "Claude Home: ~/.claude (존재함)"
+[ -d ~/.codex ] && echo "Codex Home: ~/.codex (존재함)"
+echo "═══ 진단 완료 ═══"</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 02 ================= -->
+<section id="claude-cred">
+<div class="sec-tag">Claude Code 02</div>
+<h2>Claude Code 인증 메커니즘과 우선순위</h2>
+
+<h3 data-reveal>자격 증명 우선순위 (높은 순서대로)</h3>
+<ol class="steps">
+  <li><strong>환경 변수 <code>ANTHROPIC_API_KEY</code></strong>: 이것이 설정되어 있으면 브라우저 OAuth 로그인을 완전히 무시하고 종량제 API Key로 동작합니다! (가장 흔한 과금 오류의 원인)</li>
+  <li><strong>클라우드 프로바이더 환경 변수</strong>: <code>CLAUDE_CODE_USE_BEDROCK=1</code> 또는 <code>CLAUDE_CODE_USE_VERTEX=1</code></li>
+  <li><strong>브라우저 OAuth 구독 자격 증명</strong>: <code>claude.ai</code> 웹 OAuth 로그인 (macOS 키체인 또는 <code>~/.claude/.credentials.json</code>)</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 05 ================= -->
+<section id="codex-cred">
+<div class="sec-tag">Codex 05</div>
+<h2>Codex 인증 메커니즘과 저장 포맷</h2>
+
+<p>Codex는 <code>~/.codex/auth.json</code>에 평문으로 OAuth 토큰을 저장합니다. 브라우저 로그인 시 로컬 <code>http://localhost:1455</code>로 콜백을 수신합니다. 포트가 차단되면 로그인이 멈추므로 방화벽을 확인해야 합니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 08 ================= -->
+<section id="shared">
+<div class="sec-tag">시나리오 08</div>
+<h2>공용 PC / 타인 설정 인수인계 시 정화 절차</h2>
+
+<ol class="steps">
+  <li><strong>환경 변수 정화</strong>: <code>~/.zshrc</code>, <code>~/.bashrc</code>에서 이전 사용자의 <code>export ANTHROPIC_API_KEY</code> 또는 프록시 설정 제거;</li>
+  <li><strong>자격 증명 삭제</strong>: <code>rm -rf ~/.claude/.credentials.json ~/.codex/auth.json</code>;</li>
+  <li><strong>순수한 본인 계정으로 재로그인</strong>: <code>claude</code> 및 <code>codex login</code> 실행.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 10 ================= -->
+<section id="headless">
+<div class="sec-tag">시나리오 10</div>
+<h2>SSH / Docker / CI 헤드리스 환경 인증</h2>
+
+<p>브라우저가 없는 원격 서버에서는 <strong>SSH 포트 포워딩</strong>을 이용하거나 터미널 출력 URL을 로컬 브라우저에서 열어 인증 코드를 붙여넣습니다:</p>
+<pre><code><span class="c"># Codex 로컬 포트 포워딩 (콜백 수신용)</span>
+ssh -L 1455:localhost:1455 user@remote-server
+
+<span class="c"># Claude Code 헤드리스 인증</span>
+claude login --no-browser   <span class="c"># 표시된 URL을 로컬에서 열고 코드를 터미널에 입력</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 12 ================= -->
+<section id="reset">
+<div class="sec-tag">만능 복구 12</div>
+<h2>만능 복구: 3단계 리셋 SOP</h2>
+
+<ol class="steps">
+  <li><strong>1단계 소프트 리셋 (Soft Reset)</strong>: 세션 내 <code>/logout</code> 후 <code>/login</code>;</li>
+  <li><strong>2단계 자격 증명 리셋 (Auth Reset)</strong>: <code>~/.claude/.credentials.json</code> 및 <code>~/.codex/auth.json</code> 삭제 후 재로그인;</li>
+  <li><strong>3단계 완전 초기화 (Nuclear Reset)</strong>: <code>rm -rf ~/.claude ~/.codex</code> 실행 후 툴 재설치 (최후의 수단).</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 13 ================= -->
+<section id="map">
+<div class="sec-tag">비교 13</div>
+<h2>2대 도구 비교 대조표 & 리소스</h2>
+
+<table class="tbl">
+  <tr><th>항목</th><th>Claude Code</th><th>Codex</th></tr>
+  <tr><td><strong>설정 디렉토리</strong></td><td><code>~/.claude/</code></td><td><code>~/.codex/</code></td></tr>
+  <tr><td><strong>설정 파일</strong></td><td><code>settings.json</code></td><td><code>config.toml</code></td></tr>
+  <tr><td><strong>자격 증명 파일</strong></td><td>키체인 또는 <code>.credentials.json</code></td><td><code>auth.json</code></td></tr>
+  <tr><td><strong>로그인 명령어</strong></td><td><code>claude</code> (자동 프롬프트) 또는 <code>/login</code></td><td><code>codex login</code></td></tr>
+  <tr><td><strong>로그아웃 명령어</strong></td><td><code>/logout</code></td><td><code>codex logout</code></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>안내</strong>: 본 매뉴얼은 Claude Code 및 Codex의 공식 환경 아키텍처(2026-08 기준)를 바탕으로 작성되었습니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

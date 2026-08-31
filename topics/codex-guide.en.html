@@ -180,15 +180,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">CX</span>Codex Guide<span class="sub">Flagship Edition</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-      <input type="checkbox" id="lang-toggle-cb" checked style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-      <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-        <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-        <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;transform:translateX(28px);"></div>
-      </div>
-    </label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.en.html">◂ Topic Hub</a>
-    <span>Verified to 2026-08-25</span>
+    <span>Verified to 2026-08-31</span>
   </div>
 </header>
 
@@ -234,7 +233,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI Coding Agent · Deep CodexGuide Integration · Verified to 2026-08-25</div>
+  <div class="badge">🟢 OpenAI Coding Agent · Deep CodexGuide Integration · Verified to 2026-08-31</div>
   <h1>Codex<br><span class="grad">Comprehensive Practical Guide</span></h1>
   <p class="lead">OpenAI's agentic coding system: from your first terminal command to enterprise-grade code delivery. Combining official docs with real-world CodexGuide.io insights, covering <strong>decision prisms, 3×3 sandbox matrix, 4-stage long task discipline, memory closeout loop, browser E2E acceptance, GitHub automated pipelines</strong>, and <strong>Claude Code dual-agent synergy</strong>.</p>
   <div class="meta">
@@ -367,7 +366,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">Setup 02</div>
 <h2>Setup & Platform Tuning</h2>
 
-<div class="callout warn"><b class="t">🚑 Login or Environment Errors?</b> For port 1455 callback blocks, proxy TLS issues, headless server auth, or multi-account clashes, visit the dedicated <a href="env-auth-clinic.html">Environment & Auth Clinic</a>.</div>
+<div class="callout warn"><b class="t">🚑 Login or Environment Errors?</b> For port 1455 callback blocks, proxy TLS issues, headless server auth, or multi-account clashes, visit the dedicated <a href="env-auth-clinic.en.html">Environment & Auth Clinic</a>.</div>
 
 <h3 data-reveal>1. Cross-Platform Installation</h3>
 <pre><code><span class="c"># Method 1: Global npm install (Node >= 18 recommended)</span>
@@ -397,19 +396,19 @@ codex update</code></pre>
 <div class="sec-tag">Updates</div>
 <h2>Recent Updates & Breaking Changes</h2>
 
-<div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-25</strong> · Data source: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex Official Changelog</a>. This section only includes changes that <strong>affect your usage habits</strong>; for complete history see <a href="toolchain-changelog.en.html">Toolchain Version Tracker</a>.</div>
+<div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-31</strong> · Data source: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex Official Changelog</a>. This section only includes changes that <strong>affect your usage habits</strong>; for complete history see <a href="toolchain-changelog.en.html">Toolchain Version Tracker</a>.</div>
 
-<h3 data-reveal>🆕 0.148.0 New Features (2026-08-18)</h3>
+<h3 data-reveal>🆕 0.150.0 New Features (2026-08)</h3>
 <ul>
-  <li><strong>Markdown Export</strong>: Added <code>/export</code> command to save complete TUI conversation logs to Markdown format.</li>
-  <li><strong>Headless Session Forking</strong>: Introduced <code>codex exec fork</code> for headless environments, supporting session archive and restore capabilities.</li>
-  <li><strong>Cost Estimation</strong>: Enabled thread credit/cost estimation based on tokens in <code>/status</code>, status bar, and terminal title.</li>
-  <li><strong>Infrastructure Expansion</strong>: Added support for Amazon Bedrock Runtime as a built-in provider, and enabled hooks to run commands asynchronously or invoke MCP tools.</li>
+  <li><strong>Interactive Agents Dashboard</strong>: 0.149.0 introduces the <strong>Agents Dashboard</strong>, allowing you to search, rename, and manage multiple concurrent tasks from a single view.</li>
+  <li><strong>Cross-Tool Integration</strong>: Added the <code>/import</code> command to bring in setups and recent chat history directly from Claude Code and Cursor.</li>
+  <li><strong>Visualization Customization</strong>: 0.150.0 adds iOS-style appearance settings for inline visualizations and data rendering.</li>
+  <li><strong>Markdown Export & Headless Forking</strong>: 0.148.0 added the <code>/export</code> command and <code>codex exec fork</code> for session branching, and enabled token-based cost estimation.</li>
 </ul>
 
 <h3 data-reveal>🚨 Key Breaking Changes</h3>
 <ul>
-  <li><strong>GPT-5.4 Retirement</strong>: OpenAI confirmed <strong>GPT-5.4</strong> and <strong>mini</strong> retire on 2026-08-31. Migrate <code>config.toml</code> to <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>, or <code>gpt-5.6-luna</code>.</li>
+  <li><strong>GPT-5.4 Retirement Complete</strong>: OpenAI has officially retired <strong>GPT-5.4</strong> and <strong>mini</strong> as of <strong>2026-08-31</strong>. If you encounter errors, immediately migrate <code>config.toml</code> to <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>, or <code>gpt-5.6-luna</code>.</li>
   <li><strong><code>codex exec --full-auto</code> Removed</strong>: Replaced in 0.147.0 with <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code>. For unattended auto-approval, use <code>--approve-for-me</code>.</li>
   <li><strong>Explicit Trust for Local Repos</strong>: Opening untrusted folders requires manual confirmation to guard against malicious workspace instruction injections.</li>
   <li><strong>Sensitive Token Redaction</strong>: Bearer tokens and API keys are automatically masked as <code>***</code> in terminal logs.</li>

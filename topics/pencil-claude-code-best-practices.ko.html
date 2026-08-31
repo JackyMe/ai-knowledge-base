@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="9개 이상의 공식/실무 출처 집약: 4대 핵심 워크플로, 프롬프트 템플릿 모음, 디자인 시스템 엔지니어링, CI/CD 연동 기법, 안티패턴 체크리스트, 실제 적용 사례까지 완벽 정리.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pen.dev × Claude Code 모범 사례 실전 가이드 · 2026.07">
+<meta property="og:description" content="9개 이상의 정보원에서 집약: 4대 핵심 워크플로, 실무 프롬프트 템플릿, 디자인 시스템 엔지니어링, CI/CD 자동화, 체크리스트 및 실전 사례.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/pencil-claude-code-best-practices.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>pen.dev × Claude Code 모범 사례 실전 가이드 · 2026.07</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#0ea5e9; --accent-2:#6366f1; --accent-soft:#e8f6fe;
+  --ink:#0b1220; --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0b1220;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef6fe;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3)}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:880px;margin:0 auto;padding:0 44px 120px}
+
+/* Dark hero */
+.hero{margin:40px 0 0;border-radius:20px;background:
+  radial-gradient(1000px 400px at 80% -20%,rgba(14,165,233,.35),transparent 60%),
+  radial-gradient(800px 400px at 10% 120%,rgba(99,102,241,.35),transparent 60%),
+  var(--ink);
+  color:#eaf1fb;padding:56px 52px 48px;position:relative;overflow:hidden}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#7dd3fc;font-weight:600;background:rgba(14,165,233,.14);
+  border:1px solid rgba(14,165,233,.35);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#38bdf8,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#b7c3d8;max-width:620px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#94a3b0}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+/* Stat bars */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c3e3fb}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0369a1}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafcff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+/* Workflow cards */
+.flows{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin:20px 0}
+.flow{border:1px solid var(--border);border-radius:var(--radius);padding:22px;background:#fff;transition:var(--dur-hover,.3s) var(--ease-breathe,ease)}
+.flow:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(14,165,233,.10)}
+.flow .fno{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.08em;margin-bottom:8px}
+.flow b{display:block;font-size:16px;margin-bottom:8px}
+.flow p{font-size:13.5px;color:var(--text-2);margin-bottom:10px}
+.flow .chain{font-size:12.5px;font-family:var(--mono);color:var(--text-3);background:#f6f8fb;border-radius:8px;padding:8px 12px}
+
+/* Prompt sample box */
+.prompt-box{border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 18px;margin:14px 0;background:#fafcff;font-size:14px}
+.prompt-box .pt{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.prompt-box code{background:none;border:none;padding:0;color:var(--text);font-size:13.5px;white-space:pre-wrap;display:block}
+
+/* Comparison */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+/* Images */
+figure{margin:20px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 2px 10px rgba(15,23,42,.04)}
+figure img{display:block;width:100%;height:auto}
+figure.tall img{max-height:440px;object-fit:cover;object-position:top}
+figure figcaption{padding:10px 16px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--border);background:#fafbfd}
+figure figcaption a{color:var(--text-3)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:18px 0}
+.img-grid figure{margin:0}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">P×C</span>pen.dev × Claude Code<span class="sub">모범 사례 가이드</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div><a href="../index.ko.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ 주제 목록</a>&nbsp;&nbsp;<span>검증 완료: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…" /><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">시작하기</div>
+    <a href="#intro"><span class="no">00</span>왜 이 조합인가</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">퀵스타트</div>
+    <a href="#setup"><span class="no">01</span>환경 설정 표준 플로우</a>
+    <a href="#workflows"><span class="no">02</span>4대 핵심 워크플로</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">실전 활용</div>
+    <a href="#prompts"><span class="no">03</span>실무 프롬프트 모음</a>
+    <a href="#design-system"><span class="no">04</span>디자인 시스템 엔지니어링</a>
+    <a href="#prompt-patterns"><span class="no">05</span>고효율 프롬프트 패턴</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">심화 응용</div>
+    <a href="#advanced"><span class="no">06</span>고급 활용 기법</a>
+    <a href="#pitfalls"><span class="no">07</span>함정 체크리스트</a>
+    <a href="#cases"><span class="no">08</span>실전 케이스 스터디</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">부록</div>
+    <a href="#resources"><span class="no">09</span>리소스 및 출처 인덱스</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">⚡ 최신 실무 노하우 집약 · 검증 완료: 2026-08-17</div>
+  <h1>pen.dev × Claude Code<br><span class="grad">모범 사례 실전 가이드</span></h1>
+  <p class="lead">pen.dev는 코드 에디터 내에 상주하는 AI 디자인 캔버스이고, Claude Code는 터미널에서 자율 작동하는 코딩 에이전트입니다. 두 도구를 MCP(Model Context Protocol)로 연결하면 '디자인 맥락 유실 제로'의 직결 파이프라인이 완성됩니다. 공식 문서와 현장 실무 노하우를 통합한 실전 가이드입니다.</p>
+  <div class="meta">
+    <span>9개 이상 1차 출처</span><span>설치부터 CI/CD까지 총망라</span><span>실무 프롬프트 템플릿 포함</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>무손실 연계</b><span>스크린샷 추측 불필요, 디자인 데이터에서 직접 코드 생성</span></div>
+  <div class="stat"><b>.pen = JSON</b><span>Git으로 버전 관리, 브랜치 비교 및 머지 가능</span></div>
+  <div class="stat"><b>7개 도구 지원</b><span>Claude Code / Cursor / Codex 등 공식 AI 통합 지원</span></div>
+  <div class="stat"><b>로컬 완결</b><span>MCP 서버는 로컬 구동, 디자인 데이터 외부 전송 없음</span></div>
+</div>
+
+<section id="intro">
+<div class="sec-tag">시작하기 00</div>
+<h2>왜 pen.dev + Claude Code인가</h2>
+
+<h3 data-reveal>해결하는 본질적 문제: 디자인과 코드의 단절</h3>
+<p>기존 개발 플로우에서는 디자이너가 Figma로 만든 시안을 개발자가 눈대중으로 보며 코드로 옮겨 적었습니다. 미세한 마진 오차, 폰트 웨이트 오해, 누락된 hover 상태 등으로 인해 최종 결과물이 "디자인 시안과 미묘하게 다른" 문제가 반복되었습니다.</p>
+<p>범용 AI 코딩 도구 역시 이 문제를 완전히 해결하지는 못했습니다. 개별 프로젝트의 고유한 디자인 시스템, 브랜드 컬러, 여백 규약을 알지 못하므로 웹상의 일반적인 패턴을 짜깁기한 '그럴듯한' 코드만 출력했기 때문입니다.</p>
+<div class="callout note"><b class="t">이 조합이 가져온 혁신</b>pen.dev는 디자인 파일을 코드와 동일한 저장소(<code>.pen</code> 파일)에서 관리하고, Claude Code는 MCP를 통해 캔버스 상의 <strong>정확한 좌표, 토큰, 계층 구조</strong>를 직접 읽어 코드를 생성합니다. 이미지 추정이 아닌 구조화된 데이터 기반 판독입니다. 자연어로 UI를 생성하고 → Git으로 관리하며 → 명령어 한 줄로 코드로 변환하는 이 새로운 경험을 'Vibe Design'이라 부릅니다.</div>
+
+<h3 data-reveal>도구별 역할 분담</h3>
+<table class="tbl">
+  <tr><th>도구/요소</th><th>제공 기능 및 역할</th></tr>
+  <tr><td><strong>pen.dev</strong></td><td>무한 캔버스, 컴포넌트/변수/슬롯 시스템, Figma 임포트, AI 대화, .pen 형식, 헤드리스 CLI</td></tr>
+  <tr><td><strong>Claude Code</strong></td><td>자율형 코딩 에이전트: 다중 파일 읽기/쓰기, 명령어 실행, Plan 모드, Skills, MCP 확장</td></tr>
+  <tr><td><strong>MCP</strong></td><td>브리지 프로토콜: <code>execute</code>, <code>get_app_state</code>, <code>get_screenshot</code>, <code>export_nodes</code>, <code>get_guidelines</code> 등 도구 제공 (상세 내용은 <a href="pencil-docs-zh.ko.html#pencil-cli">pen.dev 공식 가이드</a> 참조)</td></tr>
+</table>
+<p class="src">출처: <a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow</a> · <a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">Official AI Integration Docs</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="setup">
+<div class="sec-tag">퀵스타트 01</div>
+<h2>환경 설정 표준 플로우</h2>
+<p>공식 문서와 실무 튜토리얼을 바탕으로 가장 안정적인 설정 절차를 정리합니다 (VS Code 기준이나 Cursor 등에서도 동일합니다):</p>
+
+<ol class="steps">
+  <li><strong>Claude Code 설치 및 로그인</strong>: 공식 설치 스크립트 <code>curl -fsSL https://claude.ai/install.sh | bash</code> 실행 후 <code>claude</code>로 브라우저 인증 완료. 오류 발생 시 <a href="env-auth-clinic.ko.html">환경 설정·인증 긴급 매뉴얼</a> 참조.</li>
+  <li><strong>pen.dev 확장 프로그램 설치</strong>: VS Code 확장 탭에서 'pen.dev'(게시자: <code>highagency.pencildev</code>) 검색 후 설치.</li>
+  <li><strong>pen.dev 실행</strong>: 상태 표시줄 왼쪽 하단의 연필 아이콘 클릭 (안 보일 경우 VS Code 재시작).</li>
+  <li><strong>이메일 인증</strong>: 첫 실행 시 이메일을 입력하고 수신된 인증 코드를 입력하여 활성화.</li>
+  <li><strong>MCP 연결 확인</strong>: Claude Code 터미널에서 <code>/mcp</code> 실행 후 pencil이 connected로 표시되는지 확인 (자동 등록됨).</li>
+  <li><strong><code>design.pen</code> 생성</strong>: 워크스페이스 루트 디렉터리에 생성하여 코드와 동일한 Git 저장소로 관리.</li>
+</ol>
+
+<p><code>.claude.json</code>에 자동 생성되는 MCP 설정 예시:</p>
+<pre><code>"mcpServers": {
+  "pencil": {
+    "command": ".../highagency.pencildev-x.y.z/out/mcp-server-darwin-arm64",
+    "args": ["--app", "visual_studio_code"],
+    "type": "stdio"
+  }
+}</code></pre>
+
+<div class="img-grid">
+  <figure>
+    <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772438866/2026/03/02/h7hqhqbkfv7xqcrwlsjj.png" alt="VS Code 상태 표시줄의 Pencil 아이콘" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>확장 프로그램 설치 후 상태 표시줄 왼쪽 하단 연필 아이콘으로 실행 · 출처: <a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a></figcaption>
+  </figure>
+  <figure>
+    <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772438583/2026/03/02/k4gmaecckax1hdljchix.png" alt="Claude Code에서 /mcp로 pencil connected 확인" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>Claude Code에서 <code>/mcp</code> 실행 시 pencil이 connected로 나타나면 준비 완료 · 출처: <a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a></figcaption>
+  </figure>
+</div>
+
+<div class="callout tip"><b class="t">새 프로젝트 권장 플로우</b><code>design.pen</code> 생성 → 에디터로 열기 → 활성화 → 코드와 함께 커밋. 초기에는 캔버스 우클릭 후 "Open Welcome File"로 튜토리얼을 체험해 보는 것을 추천합니다.</div>
+<div class="callout warn"><b class="t">주의사항 3가지</b>① AI 기능 사용을 위해 <code>claude</code> 로그인이 선행되어야 합니다. ② 자동 저장 기능이 없으므로 수시로 <kbd>Cmd/Ctrl + S</kbd>를 누르세요. ③ Codex 사용 시 config.toml 백업을 권장합니다.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="workflows">
+<div class="sec-tag">퀵스타트 02</div>
+<h2>4대 핵심 워크플로</h2>
+<p>실전 경험을 통해 검증된 4가지 재사용 가능한 워크플로입니다:</p>
+
+<div class="flows">
+  <div class="flow">
+    <div class="fno">WORKFLOW A</div>
+    <b>자연어 프로토타이핑 (Vibe Design)</b>
+    <p>Claude Code에 몇 줄의 요구사항을 전달하는 것만으로 전체 페이지 디자인을 자동 생성. 캔버스에서 수동 미세 조정을 수행합니다. 여행 사진 앨범, 베이커리 주문 화면, 카페 관리 대시보드, 지역 게시판 등에서 실무 수준의 완성도가 입증되었습니다.</p>
+    <div class="chain">요구사항 입력 → AI가 .pen 생성 → 캔버스 미세 조정 → Git 커밋</div>
+  </div>
+  <div class="flow">
+    <div class="fno">WORKFLOW B</div>
+    <b>디자인 → 코드 생성</b>
+    <p>캔버스 디자인이 완료되면 "이 디자인을 바탕으로 Next.js 페이지를 작성해 줘"라고 지시합니다. Claude Code가 정확한 구조와 Design Token을 판독하여 코드를 생성합니다. React/Vue/Tailwind/shadcn-ui 등 기술 스택을 명시하면 최고 품질을 얻을 수 있습니다.</p>
+    <div class="chain">캔버스 디자인 → Cmd/Ctrl+K → 스택 지정 코드 생성 → 검토 & 머지</div>
+  </div>
+  <div class="flow">
+    <div class="fno">WORKFLOW C</div>
+    <b>코드 → 디자인 역생성</b>
+    <p>기존 <code>src/components/Button.tsx</code> 등의 코드를 캔버스 상의 컴포넌트로 역복원합니다. "src/components의 Button 컴포넌트를 재현해 줘"라고 지시하여 레거시 코드에서 디자인 시안을 추출할 수 있습니다.</p>
+    <div class="chain">코드 판독 → 캔버스에 재현 → 비주얼 개선 → 코드 역반영</div>
+  </div>
+  <div class="flow">
+    <div class="fno">WORKFLOW D</div>
+    <b>양방향 동기화 + Git 단일 진실 공급원 (SSOT)</b>
+    <p>CSS 변수와 pen.dev 변수를 양방향 동기화합니다. "globals.css에서 pen.dev 변수를 생성해 줘". 코드와 <code>.pen</code> 파일을 동일 커밋으로 묶어 관리함으로써 디자인과 구현의 불일치(Drift)를 완전히 방지합니다.</p>
+    <div class="chain">변수 동기화 → 디자인 & 코드 동시 수정 → 단일 커밋 완료</div>
+  </div>
+</div>
+
+<h3 data-reveal>Workflow A 실증 샘플</h3>
+<div class="img-grid">
+  <figure class="tall">
+    <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772439458/2026/03/02/pv56vdnjtk1tymiu2k9n.png" alt="여행 사진 사이트 디자인 결과" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>여행 사진 사이트 (지도 핀 + 타일형 앨범 + 어스 톤)</figcaption>
+  </figure>
+  <figure class="tall">
+    <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772439478/2026/03/02/gqr6j4ubfnkcuvrocjjv.png" alt="베이커리 주문 페이지 디자인 결과" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>베이커리 주문 페이지 (캐러셀 + 카테고리 메뉴 + 크림·브라운 톤)</figcaption>
+  </figure>
+  <figure class="tall">
+    <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772439319/2026/03/02/nndee5zt9p8fmhnadlmp.png" alt="카페 매출 관리 대시보드 디자인 결과" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>카페 매출 대시보드 (막대그래프 + 랭킹 + 재고 경고)</figcaption>
+  </figure>
+  <figure class="tall">
+    <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772439503/2026/03/02/fisceebzxycwhqjmvcsh.png" alt="지역 게시판 디자인 결과" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>지역 커뮤니티 게시판 (그레이 그린 톤, 시인성 높은 유니버설 디자인)</figcaption>
+  </figure>
+</div>
+
+<h3 data-reveal>기존 프로젝트 리뉴얼 실전</h3>
+<ol class="steps">
+<li><strong>디자인 생성</strong>: Claude Code에 "설정 화면 디자인 생성: 화이트 카드 폼, AI 분석 설정, 모델 선택 라디오 버튼..."을 지시하여 <code>.pen</code> 생성.</li>
+<li><strong>디자인 적용</strong>: "이 디자인을 프로젝트에 적용해 줘"라고 지시하면 기존 소스 코드에 즉시 스타일이 반영됩니다.</li>
+</ol>
+<figure class="tall">
+  <img src="https://devio2024-media.developers.io/image/upload/f_auto/q_auto/v1772439978/2026/03/02/dwzam4z3hfbczzvmtmba.png" alt="설정 화면 디자인 적용 예시" loading="lazy" referrerpolicy="no-referrer">
+  <figcaption>기존 설정 화면에 '.pen 생성 → 한 줄 명령 적용' 반영 결과 · 출처: <a href="https://dev.classmethod.jp/en/articles/claude-code-pencil-mcp-web-design/" target="_blank">DevelopersIO</a></figcaption>
+</figure>
+</section>
+
+<div class="divider"></div>
+
+<section id="prompts">
+<div class="sec-tag">실전 활용 03</div>
+<h2>실무 프롬프트 모음</h2>
+<p><strong>"페이지 종류 + 콘텐츠 목록 + 색상/톤" 3요소</strong>를 포함한 프롬프트가 가장 정밀한 결과를 만듭니다.</p>
+
+<h3 data-reveal>전체 페이지 생성 (3요소 템플릿)</h3>
+<div class="prompt-box"><div class="pt">기본 템플릿</div><code>[페이지 종류 / 타깃 사용자]를 디자인해 주세요.
+[기능 및 콘텐츠 목록: 모듈1, 모듈2, 모듈3...]
+[배색 및 톤앤매너: 컬러 팔레트 + 분위기 형용사]</code></div>
+
+<div class="prompt-box"><div class="pt">실전 예시 · 베이커리 주문 페이지</div><code>동네 베이커리의 온라인 주문 페이지를 디자인해 주세요.
+오늘 구운 빵 사진 캐러셀, 카테고리 메뉴, 수령 시간 선택, 장바구니 기능을 포함하세요.
+크림색과 브라운을 기본으로 한 따뜻한 톤으로 구성해 주세요.</code></div>
+
+<div class="prompt-box"><div class="pt">실전 예시 · 매출 대시보드</div><code>개인 카페의 매출 관리 대시보드를 디자인해 주세요.
+일일 매출 막대그래프, 인기 메뉴 랭킹, 재고 부족 경고, 금일 예약 목록을 포함하세요.
+차분한 웜 브라운 계열의 컬러 팔레트로 작성해 주세요.</code></div>
+
+<h3 data-reveal>디자인 → 코드 변환 (기술 스택 지정)</h3>
+<div class="prompt-box"><div class="pt">컴포넌트 단위</div><code>이 버튼의 React 컴포넌트를 작성해 주세요.
+이 폼의 TypeScript 타입 정의를 생성해 주세요.
+이 카드를 재사용 가능한 컴포넌트로 export 해 주세요.</code></div>
+<div class="prompt-box"><div class="pt">페이지 단위 + 스택 지정</div><code>Next.js (App Router) + Tailwind CSS로 코드를 생성해 주세요.
+shadcn/ui 컴포넌트를 사용하여 레이아웃을 구성해 주세요.
+아이콘은 Lucide Icons를 사용해 주세요.</code></div>
+
+<h3 data-reveal>코드 → 디자인 역생성</h3>
+<div class="prompt-box"><div class="pt">기존 컴포넌트 임포트</div><code>src/components/Button.tsx에서 Button 컴포넌트를 캔버스에 재현해 주세요.
+코드베이스 내 LoginForm을 이 디자인으로 가져와 주세요.</code></div>
+
+<h3 data-reveal>변수 및 Design Tokens 동기화</h3>
+<div class="prompt-box"><div class="pt">양방향 동기화</div><code>globals.css에서 pen.dev 변수를 생성해 주세요.
+pen.dev의 변수로 globals.css를 업데이트해 주세요.
+CSS와 pen.dev의 타이포그래피 변수를 동기화해 주세요.</code></div>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-system">
+<div class="sec-tag">실전 활용 04</div>
+<h2>디자인 시스템 엔지니어링</h2>
+<p>단일 페이지 생성을 넘어, pen.dev와 Claude Code를 <strong>디자인 시스템 구축 및 유지보수 파이프라인</strong>으로 활용하는 실무 방법론입니다.</p>
+
+<h3 data-reveal>5단계 접근법 (create-design-system Skill)</h3>
+<table class="tbl">
+  <tr><th>단계</th><th>목적 및 내용</th><th>주요 작업</th></tr>
+  <tr><td><strong>① 요구사항 정의</strong></td><td>대상 사용자, 핵심 워크플로, MVP 범위 명확화</td><td>플랫폼(Web/Mobile), 톤앤매너, 핵심 5~7개 화면 식별</td></tr>
+  <tr><td><strong>② 스타일 탐색</strong></td><td>비주얼 방향성 탐색</td><td>무드와 키워드를 바탕으로 2~3가지 방향 제안, 레퍼런스 이미지 활용</td></tr>
+  <tr><td><strong>③ 무드보드</strong></td><td><code>.pen</code> 내에 2~3개 무드보드 작성</td><td>컬러 팔레트, 타이포그래피 스케일, 기본 컴포넌트 후보 선정</td></tr>
+  <tr><td><strong>④ 컴포넌트 세트</strong></td><td>확정된 방향성에 따라 컴포넌트 라이브러리 구축</td><td>Design Tokens 정의 후 Button, Input, Card, Nav 등 제작</td></tr>
+  <tr><td><strong>⑤ 화면 조합</strong></td><td>컴포넌트 인스턴스를 조합하여 실제 화면 완성</td><td>더미 텍스트 대신 실제에 가까운 데이터를 사용하여 화면 완성</td></tr>
+</table>
+
+<h3 data-reveal>엔터프라이즈 실사례: Lullabot 브랜드 라이브러리</h3>
+<p>Lullabot의 Jerad Bitner는 전체 브랜드 시스템을 1개의 재사용 가능한 디자인 라이브러리(56개 컬러 변수, 폰트 토큰, 4px 그리드 여백, 16개 공통 컴포넌트)로 패키징했습니다. 이후 신규 프로젝트는 항상 이 라이브러리를 임포트하여 시작합니다.</p>
+<figure class="tall">
+  <img src="https://jeradbitner.com/img/pencil-post/lullabot-design-library.png" alt="Lullabot 디자인 라이브러리" loading="lazy" referrerpolicy="no-referrer">
+  <figcaption>Lullabot Design Library: 56개 컬러 변수, 타이포그래피, 16개 공통 컴포넌트를 1개의 .pen 라이브러리에 집약 · 출처: <a href="https://jeradbitner.com/2026/04/designing-with-pencil-and-claude-code/" target="_blank">Jerad Bitner</a></figcaption>
+</figure>
+</section>
+
+<div class="divider"></div>
+
+<section id="prompt-patterns">
+<div class="sec-tag">실전 활용 05</div>
+<h2>고효율 프롬프트 패턴</h2>
+
+<h3 data-reveal>구체성의 원칙</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 모호하고 비효율적</b>"예쁘게 디자인해 줘", "폼 추가해 줘", "페이지 만들어 줘"</div>
+  <div class="good"><b>✅ 구체적이고 정밀함</b>"버튼 패딩을 16px로 넓히고 색상을 프라이머리 블루로 변경해 줘", "로그인 폼: 이메일, 비밀번호, 자동 로그인 체크박스, 전송 버튼", "3요소 지정: 종류 + 내용 + 톤"</div>
+</div>
+
+<h3 data-reveal>점진적 피라미드 (공식 권장 호흡)</h3>
+<ol class="steps">
+  <li><strong>골격 구축</strong> — "대시보드 전체 레이아웃 구성"</li>
+  <li><strong>구조 구체화</strong> — "사이드바에 네비게이션 메뉴 항목 추가"</li>
+  <li><strong>상태 추가</strong> — "각 메뉴 항목에 hover 상태 추가"</li>
+  <li><strong>최종 정렬</strong> — "여백을 8px 그리드 시스템에 맞춰 엄격히 정렬"</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="advanced">
+<div class="sec-tag">심화 응용 06</div>
+<h2>고급 활용 기법</h2>
+
+<h3 data-reveal>pen.dev CLI: 헤드리스 자동화</h3>
+<p>GUI 없이 스크립트나 터미널에서 직접 디자인 생성 및 이미지 추출을 수행할 수 있습니다:</p>
+<pre><code><span class="c"># 명령어 한 줄로 디자인 파일 생성</span>
+pen --out login.pen --prompt "Create a modern login page with email, password, social login"
+
+<span class="c"># 기존 디자인 수정 후 2배 해상도 PNG 출력</span>
+pen --in dashboard.pen --out dashboard-v2.pen --prompt "Add a sidebar navigation"
+pen --in design.pen --export hero.png --export-scale 2</code></pre>
+
+<h3 data-reveal>CI/CD 파이프라인 자동화</h3>
+<p>GitHub Actions에서 <code>.pen</code> 파일의 변경을 감지하여 자동으로 PNG 미리보기를 생성하고 PR에 첨부하는 워크플로를 구축할 수 있습니다:</p>
+<pre><code>name: pen.dev Design Preview
+on:
+  pull_request:
+    paths:
+      - '**/*.pen'
+jobs:
+  design-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g @pen.dev/cli
+      - name: Export modified .pen to PNG
+        env:
+          PEN_CLI_KEY: ${{ secrets.PEN_CLI_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          mkdir -p design-previews
+          for f in $(git diff --name-only "origin/${{ github.base_ref }}"...HEAD -- '*.pen'); do
+            [ -f "$f" ] || continue
+            name=$(echo "$f" | tr '/' '_' | sed 's/\.pen$//')
+            pen --in "$f" --export "design-previews/${name}.png" --export-scale 2
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: design-previews
+          path: design-previews/</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="pitfalls">
+<div class="sec-tag">심화 응용 07</div>
+<h2>함정 체크리스트</h2>
+
+<h3 data-reveal>자주 발생하는 실수와 대응법</h3>
+<table class="tbl">
+  <tr><th>흔한 함정</th><th>해결책</th></tr>
+  <tr><td>요소가 캔버스에 흩어져 있어 AI가 인식하지 못함</td><td><strong>반드시 이름이 지정된 Frame 내부에 요소를 배치</strong> (MCP는 Frame 단위로 인식)</td></tr>
+  <tr><td>레이어 이름이 'Group 47' 등으로 방치됨</td><td>의미 있는 시맨틱 네이밍(<code>PrimaryActionButton</code> 등)을 적용하여 AI 이해도 향상</td></tr>
+  <tr><td>시각 정보 외의 인터랙션 맥락 누락</td><td>반응형 규칙, 접근성, 호버/클릭 인터랙션을 주석이나 지시사항에 명시</td></tr>
+  <tr><td>거대한 단일 프롬프트로 일괄 생성 시도</td><td>작은 단위로 생성 → 확인 → 수정의 점진적 반복 수행</td></tr>
+  <tr><td>저장을 잊어 작업 내용 유실</td><td>수시로 <kbd>Cmd/Ctrl + S</kbd>를 누르고 큰 변경 전 Git 커밋 실행</td></tr>
+  <tr><td>.pen 파일을 텍스트 에디터로 직접 수동 편집하여 문법 손상</td><td><code>.pen</code> 파일은 직접 수정하지 말고 반드시 에디터나 MCP 도구를 통해 편집</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">심화 응용 08</div>
+<h2>실전 케이스 스터디</h2>
+
+<h3 data-reveal>Case 1: OpptyNet — 7개 버전, 3시간 만의 대화형 디자인</h3>
+<p>Lullabot의 공모 사업 선별 도구. V1(단순 카드 목록)에서 V3(이메일 클라이언트 스타일 2분할 패널), V6(필터 개선), V7(비주얼 완성)까지 대화형으로 초고속 반복 완성.</p>
+<div class="img-grid">
+  <figure class="tall">
+    <img src="https://jeradbitner.com/img/pencil-post/opptynet-v1-cards.png" alt="OpptyNet V1" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>V1 · 카드 목록 (시각적으로는 깔끔하나 정보 밀도 한계)</figcaption>
+  </figure>
+  <figure class="tall">
+    <img src="https://jeradbitner.com/img/pencil-post/opptynet-v3-split-panel.png" alt="OpptyNet V3" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>V3 · 이메일 스타일 2분할 패널 레이아웃 (채택된 골격)</figcaption>
+  </figure>
+  <figure class="tall">
+    <img src="https://jeradbitner.com/img/pencil-post/opptynet-v7-polished.png" alt="OpptyNet V7" loading="lazy" referrerpolicy="no-referrer">
+    <figcaption>V7 · 최종 비주얼 피니시 (세련된 그림자 및 그라데이션 적용)</figcaption>
+  </figure>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">부록 09</div>
+<h2>리소스 및 출처 인덱스</h2>
+
+<h3 data-reveal>관련 주제</h3>
+<table class="tbl">
+  <tr><th>주제</th><th>링크</th></tr>
+  <tr><td>Claude Code 실전 가이드</td><td><a href="claude-code-guide.ko.html">Claude Code 실전 가이드</a></td></tr>
+  <tr><td>Codex 가이드</td><td><a href="codex-guide.ko.html">Codex 가이드</a></td></tr>
+  <tr><td>pen.dev 공식 문서 상세</td><td><a href="pencil-docs-zh.ko.html">pen.dev 공식 문서 가이드</a></td></tr>
+  <tr><td>AI 활용 효율 맵 & 마인드셋</td><td><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 & 마인드셋</a></td></tr>
+  <tr><td>환경 설정·로그인 긴급 매뉴얼</td><td><a href="env-auth-clinic.ko.html">환경 설정·로그인 긴급 매뉴얼</a></td></tr>
+</table>
+
+<div class="callout note"><b class="t">핵심 요약</b>AI의 코드 생성 품질은 주입되는 맥락(Context)의 품질에 정비례합니다. pen.dev × Claude Code의 진정한 가치는 "정확한 디자인 맥락(캔버스, 스타일 가이드, 변수, 저장소 구조)을 누락 없이 AI에 온전히 전달하는 것"에 있습니다.</div>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>참고</strong>: 본 문서는 공식 문서 및 커뮤니티의 실무 노하우를 집약하여 작성되었습니다. 도구 버전 업데이트에 따라 최신 공식 사양도 함께 확인하시기 바랍니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

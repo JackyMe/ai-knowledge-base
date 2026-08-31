@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="xAI & Grok エコシステム実践ガイド：Memphis Colossus スーパーコンピュータ基盤、Grok 3/4 モデルファミリー、Grok Build クラウドサンドボックス IDE、公式 Python/TS SDK、Function Calling、リアルタイム X Grounding、DeepSearch 自律型リサーチ Agent、本番用プロンプトテンプレートまで完全網羅。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xAI & Grok エコシステム実践ガイド · モデル、Grok Build から Agentic エンジニアリングまで">
+<meta property="og:description" content="xAI & Grok の公式仕様と実践知見を凝縮：超並列スパコン基盤、Grok Build クラウド開発環境、API 実践、マルチエージェント開発、プロンプトエンジニアリング、トラブルシューティングを網羅。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/grok-ecosystem-guide.ja.html">
+<title>xAI & Grok エコシステム実践ガイド · 公式ナレッジと実戦マニュアル (2026.08)</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#d97706;        /* xAI Geek Amber */
+  --accent-2:#ef4444;      /* Supercluster Red */
+  --accent-3:#3b82f6;      /* Electron Blue */
+  --accent-soft:#fef3c7;
+  --ink:#090d16; --bg:#ffffff; --bg-side:#f8fafc;
+  --bg-code:#0c1322;
+  --text:#0f172a; --text-2:#334155; --text-3:#64748b;
+  --border:#e2e8f0; --border-2:#cbd5e1;
+  --tip-bg:#ecfdf5; --warn-bg:#fffbeb; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#090d16,#d97706);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:900;font-family:var(--mono)}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:280px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.5px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:24px}
+.nav-group a:hover{background:#fef3c7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:280px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f1f5f9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(217,119,6,.55),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(239,68,68,.45),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fde68a;font-weight:600;background:rgba(217,119,6,.25);
+  border:1px solid rgba(253,230,138,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fde68a,#f87171,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbd5e1;max-width:720px}
+.hero .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#94a3b8}
+.hero .meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:4px 12px;border-radius:99px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:26px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:18.5px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#bae6fd}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#a7f3d0}
+.callout.tip b.t{color:#059669}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.tbl th,.tbl td{border:1px solid var(--border);padding:10px 14px;text-align:left}
+.tbl th{background:var(--bg-side);font-weight:700;color:var(--text-2)}
+
+pre{background:var(--bg-code);color:#f8fafc;padding:18px 20px;border-radius:10px;overflow-x:auto;
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;margin:18px 0}
+code{font-family:var(--mono);font-size:13.5px;background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px}
+pre code{background:none;color:inherit;padding:0}
+
+.tag-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;margin-right:6px}
+.tag-official{background:#e0f2fe;color:#0369a1}
+.tag-consensus{background:#dcfce7;color:#15803d}
+.tag-diverge{background:#fef3c7;color:#b45309}
+.tag-fire{background:#fee2e2;color:#b91c1c}
+
+.mermaid-box{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:20px;margin:20px 0;overflow-x:auto}
+.mermaid{display:flex;justify-content:center}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:18px 0}
+.hotcmd{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:#fff;transition:.2s}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.hotcmd .hc-cmd{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;display:block}
+.hotcmd .hc-desc{font-size:12.5px;color:var(--text-2);line-height:1.5}
+
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0}
+.feature-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;transition:.2s}
+.feature-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.feature-card .icon{font-size:24px;margin-bottom:8px}
+.feature-card h4{margin:0 0 6px;font-size:15px;color:var(--text)}
+.feature-card p{font-size:13px;color:var(--text-3);margin:0;line-height:1.55}
+
+#prog{position:fixed;top:60px;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));z-index:101;transition:width .1s ease}
+
+@media(max-width:1024px){
+  .sidebar{display:none;width:100%;top:60px;z-index:95;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar.open{display:block}
+  .main{margin-left:0}
+  .wrap{padding:0 20px 80px}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:28px}
+}
+</style>
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+<div id="prog"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo">
+    <div class="mark">𝕏</div>
+    <span>xAI & Grok エコシステム実践</span>
+    <span class="sub">モデル · Grok Build · エージェント</span>
+  </div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    
+      <span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <input id="sideFilter" placeholder="章を絞り込み…" style="width:100%;padding:8px 12px;border:1px solid var(--border-2);border-radius:8px;margin-bottom:14px;font-size:13px;" />
+  <nav id="sideNav">
+    <div class="nav-group"><div class="gt">全景ガイド</div>
+      <a href="#intro"><span class="no">00</span>前言と Colossus 超並列基盤</a>
+    </div>
+    <div class="nav-group"><div class="gt">第1章 · 端末と推論モード</div>
+      <a href="#ch1-1"><span class="no">1.1</span>Grok マトリクスと4大推論モード</a>
+      <a href="#ch1-2"><span class="no">1.2</span>Real-Time X Grounding 詳解</a>
+      <a href="#ch1-3"><span class="no">1.3</span>DeepSearch 自律型リサーチと調査レポート</a>
+      <a href="#ch1-4"><span class="no">1.4</span>Artifacts & Live Canvas レンダリング</a>
+    </div>
+    <div class="nav-group"><div class="gt">第2章 · Grok Build 開発者プラットフォーム</div>
+      <a href="#ch2-1"><span class="no">2.1</span>Grok Build クラウドサンドボックス構成</a>
+      <a href="#ch2-2"><span class="no">2.2</span>Vibe Coding とフルスタック迅速開発</a>
+      <a href="#ch2-3"><span class="no">2.3</span>xAI API ルーティングと利用枠体系</a>
+      <a href="#ch2-4"><span class="no">2.4</span>Prompt Caching と構造化出力</a>
+    </div>
+    <div class="nav-group"><div class="gt">第3章 · エージェントとコード実装</div>
+      <a href="#ch3-1"><span class="no">3.1</span>Python & TypeScript SDK クイックスタート</a>
+      <a href="#ch3-2"><span class="no">3.2</span>Function Calling 本番向けパイプライン</a>
+      <a href="#ch3-3"><span class="no">3.3</span>X ネイティブ検索ツールの統合</a>
+      <a href="#ch3-4"><span class="no">3.4</span>マルチエージェント Swarm 協調トポロジー</a>
+      <a href="#ch3-5"><span class="no">3.5</span>実践：自動 PR 監査 & センチメント Bot</a>
+    </div>
+    <div class="nav-group"><div class="gt">第4章 · プロンプトと真理探究</div>
+      <a href="#ch4-1"><span class="no">4.1</span>Grok 独自の調教哲学と制約解除</a>
+      <a href="#ch4-2"><span class="no">4.2</span>思考の連鎖 (CoT) と反事実推論</a>
+      <a href="#ch4-3"><span class="no">4.3</span>本番用プロンプトテンプレート10選</a>
+    </div>
+    <div class="nav-group"><div class="gt">第5章 · トラブルシューティング & 比較</div>
+      <a href="#ch5-1"><span class="no">5.1</span>API エラー 30秒トラブルシューティング</a>
+      <a href="#ch5-2"><span class="no">5.2</span>ハルシネーションとシビル攻撃対策の3重防壁</a>
+      <a href="#ch5-3"><span class="no">5.3</span>2026年 フロンティア大モデル比較マトリクス</a>
+    </div>
+    <div class="nav-group"><div class="gt">第6章 · リソースとロードマップ</div>
+      <a href="#ch6-1"><span class="no">6.1</span>公式一次情報 & ツールチェーン目録</a>
+      <a href="#ch6-2"><span class="no">6.2</span>4段階ステップアップ学習ロードマップ</a>
+    </div>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="wrap">
+    
+    <div class="hero">
+      <div class="badge">xAI & Grok エコシステム実践ガイド · 2026年最新版</div>
+      <h1>xAI & Grok エコシステム実践ガイド <span class="grad">モデル · Grok Build · エージェント</span></h1>
+      <p class="lead">xAI と Grok エコシステムの全貌を解き明かす包括的技術ガイド。メンフィス Colossus スパコン基盤、Grok 3/4 推論モデル、Grok Build クラウド IDE、API 活用、リアルタイム X 接地、マルチエージェント Swarm エンジニアリングまで網羅します。</p>
+      <div class="meta">
+        <span>Memphis Colossus 20万GPU</span>
+        <span>Grok Build Cloud Studio</span>
+        <span>Real-Time X Grounding</span>
+        <span>DeepSearch Agents</span>
+        <span>10 本番テンプレート</span>
+      </div>
+    </div>
+
+    <!-- 00 Intro -->
+    <section id="intro">
+      <h2>00 前言：xAI 哲学と Memphis Colossus 超算トポロジー</h2>
+      <p><span class="tag-badge tag-official">コアミッション</span> 2023年に Elon Musk によって設立された <strong>xAI</strong> の使命は、<em>「宇宙の本質を理解すること（Understand the True Nature of the Universe）」</em> です。技術戦略としては <strong>Maximum Truth Seeking（最大限の真理探究）</strong> を掲げ、過度な思想的フィルタリングや人為的制約を排し、自律的で高密度かつリアルタイム情報に接地された AGI の構築を目指しています。</p>
+      
+      <div class="callout tip">
+        <b class="t">💡 リーディングガイド：章構成</b>
+        <p>左側のナビゲーションメニューまたは下部の移動ボタンから各章を切り替えられます。コードのワンクリックコピー、Mermaid アーキテクチャ図、多言語切り替えに対応しています。</p>
+      </div>
+
+      <h3 data-reveal>1. Memphis Colossus スパコンインフラ</h3>
+      <p>xAI の中核インフラは、米国テネシー州メンフィスに構築された世界最大級の液冷 AI 計算クラスタ <strong>Colossus Supercomputer</strong> です。驚異的なスピードで立ち上げられ、Grok 3 および次世代フロンティアモデルの学習を支えています。</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TB
+    subgraph Colossus["Memphis Colossus スパコンクラスタ (200k+ Blackwell/H100 GPUs)"]
+        nodeA["RoCE v2 / InfiniBand ノンブロッキングファブリック"]
+        nodeB["高密度直接液冷 (Direct Liquid Cooling, DLC)"]
+        nodeC["分散ストレージ (Exabyte Lustre/NVMe-oF)"]
+        nodeD["フォールトトレラント学習ランタイム (Custom JAX/PyTorch)"]
+    end
+    
+    subgraph Foundation["基盤モデルマトリクス"]
+        G1["Grok-1 (314B MoE オープンベースライン)"]
+        G2["Grok-2 & 2-Vision (マルチモーダル & Aurora)"]
+        G3["Grok 3 (フロンティア推論 & ソフトウェア工学 SOTA)"]
+        G4["Grok 4 Preview / Grok Mini (高スループット)"]
+    end
+    
+    subgraph Engine["コア能力エンジン"]
+        V["Grok Vision (高解像度動画 & 空間 OCR)"]
+        Voice["Grok Voice (超低遅延デュプレックス音声)"]
+        Img["Aurora / Grok Imagine (画像生成)"]
+        RT["Real-Time X & Web Grounding エンジン"]
+    end
+
+    subgraph Platform["アプリケーション & 開発レイヤー"]
+        UI["grok.com & X モバイル / Web"]
+        IDE["Grok Build (Agentic クラウドサンドボックス IDE)"]
+        API["xAI Console (API / 構造化出力 / Cache)"]
+        Agent["マルチエージェント Swarm & 自動化ワークフロー"]
+    end
+
+    Colossus --> Foundation
+    Foundation --> Engine
+    Engine --> Platform
+        </div>
+      </div>
+
+      <h3 data-reveal>2. 主要な強みと設計思想</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h4>客観的真理の探究</h4>
+          <p>複雑・議論の多いトピックに対しても過度な回答拒絶をせず、第一原理に基づいた論理的演繹を提供。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🌐</div>
+          <h4>Real-Time X Grounding</h4>
+          <p>X（旧Twitter）のリアルタイム情報とコミュニティノートに直接アクセスし、知識の更新遅延を解消。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🛠️</div>
+          <h4>Grok Build Cloud Studio</h4>
+          <p>MicroVM サンドボックス、ホットリロードプレビュー、Vibe Coding ワークフロー、厳格な JSON Schema API。</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🧠</div>
+          <h4>SOTA 推論 & コーディング</h4>
+          <p>SWE-bench、AIME、分散システムリファクタリングにおいて業界最高水準のベンチマーク性能を発揮。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 1: Interfaces & Modes -->
+    <section id="ch1-1">
+      <div class="sec-tag">第1章 · 端末と推論モード</div>
+      <h2>1.1 Grok マトリクスと4大推論モード</h2>
+      <p><span class="tag-badge tag-official">提供形態</span> Grok は独立したポータル（<code>grok.com</code>、iOS/Android アプリ、Desktop）および X プラットフォームから利用可能です。タスクの性質に応じて以下の4つの推論モードを使い分けます：</p>
+
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>モード名</th>
+              <th>推論特性</th>
+              <th>最適なユースケース</th>
+              <th>有効化方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Regular Mode（通常）</strong></td>
+              <td>厳格な論理構成、簡潔、事実重視、決定論的</td>
+              <td>本番コーディング、システム設計、技術文書作成</td>
+              <td>デフォルト設定</td>
+            </tr>
+            <tr>
+              <td><strong>Fun Mode (Spicy)</strong></td>
+              <td>ユーモア、風刺、率直、定型表現の打破</td>
+              <td>ブレインストーミング、コードのレビュー、創作</td>
+              <td>画面上の「Fun / Spicy」スイッチをオン</td>
+            </tr>
+            <tr>
+              <td><strong>Think Mode（推論）</strong></td>
+              <td>数千ステップに及ぶ明示的 CoT、自己修正</td>
+              <td>アルゴリズム証明、数学解析、ゼロデイ脆弱性監査</td>
+              <td>「Think」ボタンを押すか <code>grok-3-reasoning</code> を選択</td>
+            </tr>
+            <tr>
+              <td><strong>DeepSearch Mode</strong></td>
+              <td>自律型マルチホップ Web & X 探索、相互検証</td>
+              <td>包括的市場調査、企業デューデリジェンス、白書作成</td>
+              <td>入力欄下の「DeepSearch」バッジを選択</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 data-reveal>Think Mode の推論ループ構造</h3>
+      <div class="mermaid-box">
+        <div class="mermaid">
+stateDiagram-v2
+    [*] --> 質問解析
+    質問解析 --> 仮説生成
+    state 深層思考チェーン {
+        仮説生成 --> パスA : 数学的証明
+        仮説生成 --> パスB : 反例テスト
+        パスA --> 制約違反検知 : コーナーケースでの不成立
+        制約違反検知 --> 枝刈り : パスAを棄却
+        パスB --> 整合性検証完了 : 検証クリア
+    }
+    深層思考チェーン --> 最終結論出力
+    最終結論出力 --> [*]
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.2 Real-Time X Grounding -->
+    <section id="ch1-2">
+      <div class="sec-tag">第1章 · 端末と推論モード</div>
+      <h2>1.2 Real-Time X Grounding 詳解</h2>
+      <p><span class="tag-badge tag-fire">差別化の要</span> 従来の LLM が学習データのカットオフ日時に縛られているのに対し、Grok は X（旧Twitter）のリアルタイム情報ストリームに低遅延で直接フックできる強力な優位性を持ちます。</p>
+
+      <h3 data-reveal>主な活用領域</h3>
+      <ul>
+        <li><strong>秒単位の速報集約：</strong> 地震、ロケット打ち上げ、CVE ゼロデイ公開、最新テック発表などをツイート量の急増と同時に即座に要約。</li>
+        <li><strong>市場心理・アルファ生成：</strong> 認証済み創業者、コア開発者、コミュニティリーダーのリアルタイムな意見分布をトラッキング。</li>
+        <li><strong>コミュニティノート相互検証：</strong> コミュニティによる事実検証（Community Notes）を活用し、ボット群や誤情報・プロンプトインジェクションをフィルタリング。</li>
+      </ul>
+    </section>
+
+    <!-- 1.3 DeepSearch -->
+    <section id="ch1-3">
+      <div class="sec-tag">第1章 · 端末と推論モード</div>
+      <h2>1.3 DeepSearch 自律型リサーチと調査レポート</h2>
+      <p><span class="tag-badge tag-consensus">自律型リサーチ</span> 単一のキーワード検索を行うのではなく、<strong>DeepSearch</strong> は自律型再帰探索エージェントを起動します。大きな問いをサブ仮説に分解し、数十のデータソースを照合して矛盾を解消し、完全な出典付きレポートを生成します。</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as ユーザー
+    participant DS as DeepSearch プランナー
+    participant Web as Web & 論文検索エンジン
+    participant X as リアルタイム X シグナル
+    participant Syn as 統合・合成エンジン
+
+    User->>DS: 複雑なリサーチ課題（例: 「2026年 全固体電池の量産化進捗と課題」）
+    DS->>DS: 5つの探索軸に分解（材料化学 / コスト / 特許 / OEM / ボトルネック）
+    par 並行情報収集
+        DS->>Web: 学術論文、特許文書、決算説明会資料を取得
+        DS->>X: 材料科学者や現場エンジニアのリアルタイム議論を収集
+    end
+    Web-->>DS: 40件以上のソース文書を返却
+    X-->>DS: 工場テストの歩留まりに関する最新投稿を取得
+    DS->>DS: 主張されているエネルギー密度の矛盾を検知
+    DS->>Web: ラボ値 vs 車載量産歩留まりの再帰的追加調査
+    Web-->>DS: 実態に即した量産メトリクスを確認
+    DS->>Syn: 構造化エビデンスグラフを渡す
+    Syn-->>User: チャートと完全な出典付き詳細調査レポートを納品
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.4 Artifacts & Canvas -->
+    <section id="ch1-4">
+      <div class="sec-tag">第1章 · 端末と推論モード</div>
+      <h2>1.4 Artifacts & Live Canvas レンダリング</h2>
+      <p>複雑なコードベース、インタラクティブな React ウィジェット、SVG 図面、アーキテクチャ図の生成時、Grok は専用の <strong>Live Canvas</strong> 内に独立した <strong>Artifacts</strong> としてレンダリングします。</p>
+      <ul>
+        <li><strong>ホットリロード対応 React / Tailwind プレビュー：</strong> レスポンシブ確認が可能な即時プレビュー。</li>
+        <li><strong>ベクター図面 & Mermaid レンダリング：</strong> システム設計図を SVG/PNG として容易にエクスポート。</li>
+        <li><strong>インプレース部分編集：</strong> 特定のコードブロックを選択し、全体を崩さずにピンポイントでリファクタリング。</li>
+      </ul>
+    </section>
+
+    <!-- Chapter 2: Grok Build -->
+    <section id="ch2-1">
+      <div class="sec-tag">第2章 · Grok Build 開発者プラットフォーム</div>
+      <h2>2.1 Grok Build クラウドサンドボックス構成</h2>
+      <p><span class="tag-badge tag-official">開発者向けコア</span> <strong>Grok Build</strong> は xAI が提供するフルマネージドのクラウド開発環境です。単なるチャットでのコード貼り付けから脱却し、Firecracker MicroVM サンドボックスを活用した統合 Agentic IDE を実現しています。</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart LR
+    subgraph Client["クライアント環境"]
+        WebUI["Grok Build Web Studio"]
+        CLI["grok CLI ツール"]
+        VSCode["xAI VS Code 拡張機能"]
+    end
+
+    subgraph ControlPlane["Grok Agent コントロールプレーン"]
+        Plan["タスクプランナー"]
+        Context["リポジトリコンテキストグラフ"]
+        Security["権限 & サンドボックスガード"]
+    end
+
+    subgraph Sandbox["隔離された MicroVM サンドボックス"]
+        FS["仮想ファイルシステム"]
+        Runtime["マルチ言語ランタイム (Node/Py/Go/Rust)"]
+        Port["ホットリロードプレビューポート (:3000)"]
+        Git["自動 Git チェックポイント"]
+    end
+
+    Client --> ControlPlane
+    ControlPlane --> Sandbox
+    Sandbox -->|ライブストリーム| Client
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.2 Vibe Coding -->
+    <section id="ch2-2">
+      <div class="sec-tag">第2章 · Grok Build 開発者プラットフォーム</div>
+      <h2>2.2 Vibe Coding とフルスタック迅速開発</h2>
+      <p><span class="tag-badge tag-consensus">現代的ワークフロー</span> Vibe Coding では、開発者が高次の設計意図を自然言語で記述し、Grok Build がボイラープレート作成、依存関係解決、型定義、UI スタイリング、自動自己修復テストを自律的に担当します。</p>
+
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">ステップ 1. 要件 & アーキテクチャ定義</span>
+          <span class="hc-desc">プロダクトの要件、データフロー、技術選定を平易な日本語で入力。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">ステップ 2. ワークスペースの自動構築</span>
+          <span class="hc-desc">Grok Build が依存関係のインストール、.env 設定、TypeScript 型定義を完了。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">ステップ 3. インタラクティブプロトタイプ</span>
+          <span class="hc-desc">バックエンド API とフロントエンド UI を生成し、リアルタイムプレビューを起動。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">ステップ 4. 自己修復テスト (Self-Healing)</span>
+          <span class="hc-desc">サンドボックス内でテストを実行し、エラー出力を検知してコードを自動修正。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">ステップ 5. バージョン管理 & デプロイ</span>
+          <span class="hc-desc">明瞭な Git 差分を確認し、ワンクリックでエッジ環境へデプロイ。</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.3 API Routes -->
+    <section id="ch2-3">
+      <div class="sec-tag">第2章 · Grok Build 開発者プラットフォーム</div>
+      <h2>2.3 xAI API ルーティングと利用枠体系 (console.x.ai)</h2>
+      
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>モデル識別子</th>
+              <th>コンテキスト長</th>
+              <th>最大出力トークン</th>
+              <th>主な強みとユースケース</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>grok-3</code></td>
+              <td>131,072 (128k)</td>
+              <td>8,192</td>
+              <td>複雑な推論、フルスタック開発、マルチエージェント統括に適したフラッグシップモデル</td>
+            </tr>
+            <tr>
+              <td><code>grok-3-reasoning</code></td>
+              <td>131,072 (128k)</td>
+              <td>16,384</td>
+              <td>定理証明、脆弱性監査、アルゴリズム設計のための明示的思考チェーン推論モデル</td>
+            </tr>
+            <tr>
+              <td><code>grok-3-mini</code></td>
+              <td>131,072 (128k)</td>
+              <td>8,192</td>
+              <td>ルーティング、要約、軽量エージェントタスクに最適な高スループット・低コストモデル</td>
+            </tr>
+            <tr>
+              <td><code>grok-2-vision-1212</code></td>
+              <td>32,768 (32k)</td>
+              <td>4,096</td>
+              <td>図面抽出、UIコード変換、空間認識に対応した高解像度マルチモーダルモデル</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2.4 Caching & Structured Outputs -->
+    <section id="ch2-4">
+      <div class="sec-tag">第2章 · Grok Build 開発者プラットフォーム</div>
+      <h2>2.4 Prompt Caching と構造化出力</h2>
+      <p>xAI API は 1,024 トークンを超えるプロンプトに対して <strong>Automatic KV Prompt Caching</strong> を自動適用します。キャッシュされたトークンは <strong>75% のコスト削減</strong> と最大 <strong>80% の TTFT（初回トークン遅延）短縮</strong> を実現します。</p>
+
+      <pre><code class="language-python">import os
+from openai import OpenAI
+from pydantic import BaseModel, Field
+
+client = OpenAI(
+    api_key=os.environ.get("XAI_API_KEY"),
+    base_url="https://api.x.ai/v1",
+)
+
+class SecurityAudit(BaseModel):
+    is_safe: bool
+    vulnerabilities: list[str] = Field(description="検出されたCVEや脆弱性のリスト")
+    recommendation: str
+    refactored_code: str
+
+completion = client.beta.chat.completions.parse(
+    model="grok-3",
+    messages=[
+        {"role": "system", "content": "あなたはエリートセキュリティエンジニアの Grok です。"},
+        {"role": "user", "content": "以下のコードを監査してください: os.system('cat ' + filename)"}
+    ],
+    response_format=SecurityAudit,
+)
+
+print(completion.choices[0].message.parsed)</code></pre>
+    </section>
+
+    <!-- Chapter 3: SDK & Agentic -->
+    <section id="ch3-1">
+      <div class="sec-tag">第3章 · エージェントとコード実装</div>
+      <h2>3.1 Python & TypeScript SDK クイックスタート</h2>
+      <pre><code class="language-bash"># OpenAI互換クライアントのインストール
+pip install openai pydantic
+
+# 環境変数の設定
+export XAI_API_KEY="xai-xxxxxxxxxxxxxxxxxxxx"</code></pre>
+
+      <pre><code class="language-python">from openai import OpenAI
+import os
+
+client = OpenAI(
+    api_key=os.environ.get("XAI_API_KEY"),
+    base_url="https://api.x.ai/v1",
+)
+
+stream = client.chat.completions.create(
+    model="grok-3",
+    messages=[
+        {"role": "system", "content": "あなたは客観的真理を探究する Grok です。"},
+        {"role": "user", "content": "ホログラフィック双対性の物理的直感をわかりやすく解説してください。"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)</code></pre>
+    </section>
+
+    <!-- 3.2 Function Calling -->
+    <section id="ch3-2">
+      <div class="sec-tag">第3章 · エージェントとコード実装</div>
+      <h2>3.2 Function Calling 本番向けパイプライン</h2>
+      <p>Grok 3 は並列ツール実行と再帰呼び出しガードレールを備えた高信頼なツールオーケストレーションをサポートします：</p>
+      
+      <div class="mermaid-box">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor App as アプリケーション
+    participant Grok as Grok-3 ブレイン
+    participant Tool as サンドボックス / DB
+
+    App->>Grok: ユーザープロンプト + ツール JSON スキーマ
+    Grok->>Grok: ツールの必要性を判定
+    Grok-->>App: tool_calls ペイロードを返却
+    App->>Tool: 関数をローカル実行（例: query_db）
+    Tool-->>App: 生の実行結果
+    App->>Grok: tool_call_id と実行結果を再送信
+    Grok->>Grok: 実行結果を統合して推論
+    Grok-->>App: 最終検証済み回答を納品
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.3 X Grounding Integration -->
+    <section id="ch3-3">
+      <div class="sec-tag">第3章 · エージェントとコード実装</div>
+      <h2>3.3 X ネイティブ検索ツールの統合</h2>
+      <p>カスタム検索パラメータを指定することで、X プラットフォームのリアルタイムシグナルを取り込むことができます：</p>
+      <pre><code class="language-python">response = client.chat.completions.create(
+    model="grok-3",
+    messages=[
+        {"role": "user", "content": "Blackwell B200 ファームウェア更新に対する開発者の最新の反応はどうですか？"}
+    ],
+    extra_body={
+        "search_parameters": {
+            "mode": "hybrid",
+            "freshness": "24h",
+            "max_results": 10
+        }
+    }
+)
+print(response.choices[0].message.content)</code></pre>
+    </section>
+
+    <!-- 3.4 Swarm Multi-Agent Topology -->
+    <section id="ch3-4">
+      <div class="sec-tag">第3章 · エージェントとコード実装</div>
+      <h2>3.4 マルチエージェント Swarm 協調トポロジー</h2>
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TD
+    User([タスク入力]) --> Lead[統括オーケストレーター Grok-3]
+    
+    subgraph SwarmWorkers["専門化 Swarm サブエージェント群"]
+        W1[リサーチ Agent<br/>リアルタイム X & 学術文献収集]
+        W2[アーキテクト Agent<br/>インターフェース & スキーマ設計]
+        W3[コーダー Agent Grok-3<br/>コード実装 & 単体テスト]
+        W4[監査 Agent Grok-3-Reasoning<br/>敵対的レビュー & 境界検証]
+    end
+
+    Lead -->|サブタスク割当| W1
+    Lead -->|サブタスク割当| W2
+    Lead -->|サブタスク割当| W3
+    W3 -->|コードレビュー依頼| W4
+    W4 -->|不備検出時ロールバック| W3
+    W4 -->|承認完了| Lead
+    Lead --> Output([最終納品物])
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.5 Automated PR Auditor Bot -->
+    <section id="ch3-5">
+      <div class="sec-tag">第3章 · エージェントとコード実装</div>
+      <h2>3.5 実践：自動 PR 監査 & センチメント Bot</h2>
+      <pre><code class="language-python">import os, requests
+from openai import OpenAI
+
+def run_pr_audit():
+    gh_token = os.environ.get("GITHUB_TOKEN")
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    pr_num = os.environ.get("PR_NUMBER")
+    
+    diff_resp = requests.get(
+        f"https://api.github.com/repos/{repo}/pulls/{pr_num}",
+        headers={"Authorization": f"token {gh_token}", "Accept": "application/vnd.github.v3.diff"}
+    )
+    
+    client = OpenAI(api_key=os.environ.get("XAI_API_KEY"), base_url="https://api.x.ai/v1")
+    
+    res = client.chat.completions.create(
+        model="grok-3",
+        messages=[
+            {"role": "system", "content": "あなたはエリートコード監査人の Grok です。"},
+            {"role": "user", "content": f"このPR差分のセキュリティ、メモリリーク、性能をレビューしてください:\n\n{diff_resp.text[:15000]}"}
+        ]
+    )
+    
+    requests.post(
+        f"https://api.github.com/repos/{repo}/issues/{pr_num}/comments",
+        headers={"Authorization": f"token {gh_token}", "Accept": "application/vnd.github.v3+json"},
+        json={"body": f"### 🤖 Grok-3 自動コードレビュー結果\n\n{res.choices[0].message.content}"}
+    )
+    print("PR レビューを投稿しました。")
+
+if __name__ == "__main__":
+    run_pr_audit()</code></pre>
+    </section>
+
+    <!-- Chapter 4: Prompting & Truth Seeking -->
+    <section id="ch4-1">
+      <div class="sec-tag">第4章 · プロンプトと真理探究</div>
+      <h2>4.1 Grok 独自の調教哲学と制約解除</h2>
+      <p>Grok は表面的な丁寧表現よりも、<strong>第一原理（First-Principles）</strong> に基づいたプロンプトに対して極めて高いパフォーマンスを発揮します。明確な制約条件、数学的な目標定義、敵対的検証ロールを構造化して指示することが重要です。</p>
+    </section>
+
+    <section id="ch4-2">
+      <div class="sec-tag">第4章 · プロンプトと真理探究</div>
+      <h2>4.2 思考の連鎖 (CoT) と反事実推論</h2>
+      <pre><code class="language-markdown">&lt;instruction&gt;
+提案された分散合意メカニズムを評価してください。結論を出す前に、&lt;thought_process&gt; 内で明示的に以下を実行してください：
+1. ネットワーク分断に関する暗黙の前提条件をすべて洗い出す。
+2. 具体的なタイミング証明を伴う2つの対立する障害理論を定式化する。
+3. 反事実分析の実施：クロックドリフトが50msを超えた場合、どのようなカスケード障害が発生するか？
+4. 検証された最終的な合意境界条件を合成して出力する。
+&lt;/instruction&gt;</code></pre>
+    </section>
+
+    <section id="ch4-3">
+      <div class="sec-tag">第4章 · プロンプトと真理探究</div>
+      <h2>4.3 本番用プロンプトテンプレート10選</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>01. 速報シグナル解析</h4>
+          <p>リアルタイムタイムラインのクラスタリング、ボット除去、ステークホルダー意図の可視化。</p>
+        </div>
+        <div class="feature-card">
+          <h4>02. 高並行処理リファクタリング</h4>
+          <p>ロックフリー構造、CPU キャッシュ最適化、マイクロベンチマーク作成。</p>
+        </div>
+        <div class="feature-card">
+          <h4>03. デューデリジェンス & 財務調査</h4>
+          <p>収益の質監査、研究開発費の資産化検証、潜在的負債の追跡。</p>
+        </div>
+        <div class="feature-card">
+          <h4>04. ゼロデイ防御 & エクスプロイト解析</h4>
+          <p>バイナリ監査、バッファオーバーラン境界検証、仮想パッチ生成。</p>
+        </div>
+        <div class="feature-card">
+          <h4>05. 合成エッジケースデータ生成</h4>
+          <p>厳格なスキーマ制約と PII マスキングを適用した高品質データの合成。</p>
+        </div>
+        <div class="feature-card">
+          <h4>06. 形式論理 & 数学証明</h4>
+          <p>帰納的証明、反例合成、Lean/Coq 形式化へのアライメント。</p>
+        </div>
+        <div class="feature-card">
+          <h4>07. レッドチーム ストレステスト</h4>
+          <p>敵対的ゲーム理論シミュレーションと極限ブラック・スワン緊急対応策。</p>
+        </div>
+        <div class="feature-card">
+          <h4>08. 機関投資家向け株式調査</h4>
+          <p>マクロサイクル位置付け、TAM モデリング、感応度分析。</p>
+        </div>
+        <div class="feature-card">
+          <h4>09. テック情報発信 & 図解</h4>
+          <p>直感的なメタファー、難解な数学の次元削減、エンゲージメント設計。</p>
+        </div>
+        <div class="feature-card">
+          <h4>10. 本番エージェント システムプロンプト</h4>
+          <p>決定論的ツールスキーマ、フェイルセーフ境界、自己復旧ルール。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 5: Clinic & Matrix -->
+    <section id="ch5-1">
+      <div class="sec-tag">第5章 · トラブルシューティング & 比較</div>
+      <h2>5.1 API エラー 30秒トラブルシューティング</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>ステータスコード</th>
+              <th>根本原因</th>
+              <th>30秒対処法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>401 Unauthorized</code></td>
+              <td>APIキーの無効化または失効</td>
+              <td><code>console.x.ai</code> でキーを再生成し、<code>Authorization: Bearer</code> ヘッダーを確認。</td>
+            </tr>
+            <tr>
+              <td><code>403 Forbidden</code></td>
+              <td>制限地域からのアクセスまたは決済未完了</td>
+              <td>準拠ゲートウェイを経由し、Billing 認証を完了する。</td>
+            </tr>
+            <tr>
+              <td><code>429 Rate Limit</code></td>
+              <td>TPM / RPM の上限到達</td>
+              <td>指数バックオフを追加、Prompt Caching を有効化、または API Tier を引き上げ。</td>
+            </tr>
+            <tr>
+              <td><code>400 Schema Error</code></td>
+              <td>非対応の JSON スキーマ構文</td>
+              <td>未定義の <code>additionalProperties</code> を削除し、全フィールドを <code>required</code> に指定。</td>
+            </tr>
+            <tr>
+              <td><code>500 Server Error</code></td>
+              <td>クラスタの一時的スパイク</td>
+              <td>最大3回のリトライを設定し、フォールバック先として <code>grok-3-mini</code> を指定。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ch5-2">
+      <div class="sec-tag">第5章 · トラブルシューティング & 比較</div>
+      <h2>5.2 ハルシネーションとシビル攻撃対策の3重防壁</h2>
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">第1防壁：権威性重み付け</span>
+          <span class="hc-desc">検証済みメンテナー、公式ドメイン、Community Notes の評価を一般投稿より高く重み付け。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">第2防壁：複数ソース照合</span>
+          <span class="hc-desc">X、GitHub、学術論文など少なくとも2つ以上の独立した一次ソースによる裏付けを要求。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">第3防壁：認識論的謙虚さの明示</span>
+          <span class="hc-desc">未確認の速報事象には明確な信頼区間と不確実性フラグを付与して回答。</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ch5-3">
+      <div class="sec-tag">第5章 · トラブルシューティング & 比較</div>
+      <h2>5.3 2026年 フロンティア大モデル比較マトリクス</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>比較軸</th>
+              <th>xAI Grok 3 / 3-Reasoning</th>
+              <th>Anthropic Claude 3.7 Sonnet</th>
+              <th>OpenAI GPT-4o / o3</th>
+              <th>Google Gemini 2.5 / 3.0 Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>リアルタイム情報接地</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Xストリーム直結)</td>
+              <td>⭐⭐⭐ (静的 / 通常Web)</td>
+              <td>⭐⭐⭐⭐ (Bing Web検索)</td>
+              <td>⭐⭐⭐⭐ (Google検索統合)</td>
+            </tr>
+            <tr>
+              <td><strong>客観的真理探究</strong></td>
+              <td>⭐⭐⭐⭐⭐ (検閲排除・第一原理)</td>
+              <td>⭐⭐⭐ (Constitutional安全境界)</td>
+              <td>⭐⭐⭐⭐ (標準RLHF)</td>
+              <td>⭐⭐⭐ (厳格なポリシー制御)</td>
+            </tr>
+            <tr>
+              <td><strong>SWE & システム開発</strong></td>
+              <td>⭐⭐⭐⭐⭐ (SWE-bench トップ級)</td>
+              <td>⭐⭐⭐⭐⭐ (エージェント開発標準)</td>
+              <td>⭐⭐⭐⭐ (堅実なエコシステム)</td>
+              <td>⭐⭐⭐⭐ (超長大コンテキスト)</td>
+            </tr>
+            <tr>
+              <td><strong>コンテキスト長</strong></td>
+              <td>128k ~ 1M トークン</td>
+              <td>200k トークン</td>
+              <td>128k ~ 200k トークン</td>
+              <td>2M トークン</td>
+            </tr>
+            <tr>
+              <td><strong>開発スタジオ (IDE)</strong></td>
+              <td><strong>Grok Build</strong> (MicroVM Cloud IDE)</td>
+              <td>Claude Code (CLI Agent)</td>
+              <td>Codex / Canvas</td>
+              <td>Antigravity (Agentic IDE)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chapter 6: Resources & Roadmap -->
+    <section id="ch6-1">
+      <div class="sec-tag">第6章 · リソースとロードマップ</div>
+      <h2>6.1 公式一次情報 & ツールチェーン目録</h2>
+      <ul>
+        <li><strong>xAI 公式ポータル:</strong> <a href="https://x.ai" target="_blank">x.ai</a></li>
+        <li><strong>Grok 独立 Web ポータル:</strong> <a href="https://grok.com" target="_blank">grok.com</a></li>
+        <li><strong>xAI API Console:</strong> <a href="https://console.x.ai" target="_blank">console.x.ai</a></li>
+        <li><strong>Grok Build Studio:</strong> <a href="https://build.x.ai" target="_blank">build.x.ai</a></li>
+        <li><strong>公式ドキュメント:</strong> <a href="https://docs.x.ai" target="_blank">docs.x.ai</a></li>
+        <li><strong>システム稼働状況:</strong> <a href="https://status.x.ai" target="_blank">status.x.ai</a></li>
+      </ul>
+    </section>
+
+    <section id="ch6-2">
+      <div class="sec-tag">第6章 · リソースとロードマップ</div>
+      <h2>6.2 4段階ステップアップ学習ロードマップ</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>第1段階：基礎探索（1〜3日）</h4>
+          <p>grok.com と X 連携モードを活用し、リアルタイム X 接地と DeepSearch 調査レポートの生成を習得。</p>
+        </div>
+        <div class="feature-card">
+          <h4>第2段階：Vibe Coding（3〜7日）</h4>
+          <p>Grok Build で自然言語と自己修復テストを用い、3つのフルスタック Web アプリを構築。</p>
+        </div>
+        <div class="feature-card">
+          <h4>第3段階：API & ツール呼び出し（1〜2週間）</h4>
+          <p>Python/TS SDK パイプライン、Prompt Caching、構造化出力、カスタムツールの実装。</p>
+        </div>
+        <div class="feature-card">
+          <h4>第4段階：Swarm 構築（継続）</h4>
+          <p>自動 PR 監査や市場センチメント収集を行う本番マルチエージェントシステムの設計・運用。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span>© 2026 AI ナレッジベース · xAI & Grok エコシステム実践ガイド</span>
+      <span>検証日: 2026-08-17</span>
+    </div>
+
+  </div>
+</main>
+
+<script src="../assets/js/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, theme: "default", securityLevel: "loose" });
+  window.renderMermaid = function() {
+    if(window.mermaid) {
+      document.querySelectorAll(".mermaid:not([data-processed='true'])").forEach(el => {
+        try {
+          mermaid.run({ nodes: [el] });
+        } catch(e) {
+          console.warn("Mermaid render error:", e);
+        }
+      });
+    }
+  };
+</script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

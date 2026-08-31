@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI活用を支える基盤技術：7大基本技法（❌/✅対比）、マルチモーダル＆RAG向け入力設計、3大フロンティアモデルのプロンプト差分、モデルルーティング、プロンプトインジェクション防御、Token経済学とコスト管理、6大書き換え事例、12の実践テンプレート、Claude Code / Codex への設定配置まで網羅。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="プロンプト & コンテキストエンジニアリング · 技法から思考法まで · 2026.07">
+<meta property="og:description" content="AI活用を支える基盤技術：7大基本技法（❌/✅対比）、マルチモーダル＆RAG向け入力設計、3大フロンティアモデルのプロンプト差分、モデルルーティング、プロンプトインジェクション防御、Token経済学とコスト管理、6大書き換え事例、12の実践テンプレートまで網羅。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/prompt-context-engineering.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>プロンプト & コンテキストエンジニアリング · 技法から思考法まで · 2026.07</title>
+<style>
+:root{
+  --accent:#0891b2; --accent-2:#22d3ee; --accent-soft:#e6f7fb;
+  --ink:#082129; --bg:#ffffff; --bg-side:#f7fbfc; --bg-code:#0b1b20;
+  --text:#1f2a2e; --text-2:#586a70; --text-3:#8b9ba1;
+  --border:#e3eef1; --border-2:#d0e2e7;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#ecf8fb;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eaf4f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e8f4f7;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(8,145,178,.45),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(34,211,238,.20),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#67e8f9;font-weight:600;background:rgba(8,145,178,.18);
+  border:1px solid rgba(8,145,178,.5);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#22d3ee,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#a8c3cb;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#8fabb4}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c3e7f0}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eaf4f7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0e7490}
+pre{background:var(--bg-code);color:#dcecf1;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7fa2ac}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f6fafb}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f8fbfc}
+.er td:first-child{font-weight:600;min-width:120px}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+.duo code{background:rgba(255,255,255,.7)}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#e6f7fb;color:#0e7490}
+.pill.b{background:#fef2f2;color:#dc2626}
+.pill.c{background:#fff7ed;color:#c2410c}
+
+.case{border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:20px 0;background:#fff}
+.case-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.case-head .cn{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:2px 10px;border-radius:99px;white-space:nowrap}
+.case-head h4{margin:0;font-size:16.5px}
+.case-scenario{color:var(--text-2);font-size:14px;margin-bottom:6px}
+.cb-label{font-size:12px;font-weight:700;letter-spacing:.04em;margin:14px 0 6px;text-transform:uppercase}
+.cb-label.bad{color:#dc2626}
+.cb-label.good{color:#16a34a}
+.case-diag{margin:14px 0}
+.case-takeaway{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-2);font-size:14px}
+
+/* Template cards */
+.prompt-box{background:#fff;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 18px;margin:14px 0;font-size:13.5px}
+.prompt-box .pt{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase}
+.prompt-box code{display:block;background:none;border:none;padding:0;color:var(--text);white-space:pre-wrap;line-height:1.75}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(8,33,41,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🎯</span>プロンプト & コンテキストエンジニアリング<span class="sub">基盤技術</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <span>公式仕様検証 · 2026-07</span>
+    <span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">概念</div>
+    <a href="#overview"><span class="no">00</span>全体像：プロンプトからコンテキストへ</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">技法</div>
+    <a href="#basics"><span class="no">01</span>7大基本技法（❌/✅ 対比）</a>
+    <a href="#structured"><span class="no">02</span>構造化出力 & フォーマット制御</a>
+    <a href="#multimodal"><span class="no">03</span>マルチモーダルプロンプト</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">ユースケース & モデル比較</div>
+    <a href="#models"><span class="no">04</span>主要大モデルのプロンプト特性差分</a>
+    <a href="#rag"><span class="no">05</span>RAG シナリオにおけるプロンプト設計</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">エンジニアリング</div>
+    <a href="#context"><span class="no">06</span>コンテキストエンジニアリングの核心</a>
+    <a href="#agentic"><span class="no">07</span>Agentic Context（長期タスク）</a>
+    <a href="#cost"><span class="no">08</span>Token 経済学とコスト管理</a>
+    <a href="#routing"><span class="no">09</span>モデルルーティング & 自動切替</a>
+    <a href="#security"><span class="no">10</span>Prompt インジェクション & セキュリティ防御</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実践</div>
+    <a href="#cases"><span class="no">11</span>書き換え実例集（全6ケース）</a>
+    <a href="#templates"><span class="no">12</span>本番用テンプレート集（全12式）</a>
+    <a href="#eval"><span class="no">13</span>評価・反復・バージョン管理</a>
+    <a href="#antipatterns"><span class="no">14</span>アンチパターン図鑑</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実装</div>
+    <a href="#tools"><span class="no">15</span>CC / Codex における設定階層</a>
+    <a href="#resources"><span class="no">16</span>リソース & 出典索引</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎯 AI活用を支える基盤技術 · 2026年公式ドキュメント検証</div>
+  <h1>プロンプト & コンテキストエンジニアリング<br><span class="grad">技法から思考法まで</span></h1>
+  <p class="lead">「コンテキストは最大の資産」「プロンプトは具体的に」——本ドキュメントでは散らばりがちなノウハウを体系化。7つの基本技法（❌/✅対比）、マルチモーダル＆RAG向け入力設計、3大フロンティアモデルの特性比較、インジェクション防御、Tokenコスト最適化、6つの書き換え実例、12の実践テンプレートまで網羅します。</p>
+  <div class="meta">
+    <span>7大技法対比</span><span>12本番テンプレート</span><span>6完全事例</span><span>3大モデル比較</span><span>セキュリティ・コスト・RAG</span><span>CC × Codex 実装</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1つの定義</b><span>最小限の高シグナルトークンで期待出力の生起確率を最大化する</span></div>
+  <div class="stat"><b>17の章立て</b><span>基本構文からセキュリティ・コスト・モデル横断まで</span></div>
+  <div class="stat"><b>6つの事例</b><span>元の指示 → 失敗 → 診断 → 改善後 → 成功 の完全プロセス</span></div>
+  <div class="stat"><b>事実重視</b><span>公式確認 / コミュニティ合意 / 意見分かれを明確に分類</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">概念 00</div>
+<h2>全体像：プロンプトエンジニアリングからコンテキストエンジニアリングへ</h2>
+
+<p>2023年に広く語られた「プロンプトエンジニアリング（どう問いかけるか）」は、2026年には <strong>コンテキストエンジニアリング（モデルに見せるすべての情報をどう設計・管理するか）</strong> へと進化しました。単発の質問への回答から「自律的なタスク遂行」へとAIの役割が変化したためです。</p>
+
+<table class="tbl">
+  <tr><th>項目</th><th>プロンプトエンジニアリング（単発型）</th><th>コンテキストエンジニアリング（エージェント時代）</th></tr>
+  <tr><td>最適化対象</td><td>単一の指示文の表現</td><td>コンテキストウィンドウ全体に何を・いつ投入し・いつ破棄するか</td></tr>
+  <tr><td>主要制約</td><td>指示の明確さ</td><td><strong>Attention（注意）予算の有限性</strong>：トークン過多による注意散漫</td></tr>
+  <tr><td>代表的アクション</td><td>例文の追加、フォーマットの指定</td><td>システムプロンプトの階層化、ツールセットの絞り込み、要約・圧縮</td></tr>
+  <tr><td>公式定義</td><td colspan="2"><strong>最小限の高シグナルトークンセットによって、目的の成果物が得られる確率を最大化する</strong>（Anthropic Context Engineering 論文より）</td></tr>
+</table>
+
+<div class="callout note"><b class="t">マインドセットとエンジニアリングの役割分担</b><a href="ai-leverage-guide.ja.html">AI 活用効率マップ & マインドセット</a> が「AIで何ができるか・どう向き合うか（原則）」を扱うのに対し、本ページは「具体的にどう記述し・どう情報を渡すか（実装）」を解説する実践マニュアルです。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="basics">
+<div class="sec-tag">技法 01</div>
+<h2>7大基本技法（❌/✅ 対比）</h2>
+
+<h3 data-reveal>1. 明確性と具体性 (Be Clear & Direct)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 曖昧な指示</b>「コードをリファクタリングして綺麗にして」</div>
+  <div class="good"><b>✅ 具体的指示</b>「`calculateTotal` 関数内の多重ネストされた if 文を早期リターン（ガード節）に書き換え、計算ロジックを純粋関数として抽出してください」</div>
+</div>
+
+<h3 data-reveal>2. Few-shot（具体例の提示）</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 抽象的なルール指示のみ</b>「ユーザーのフィードバックを感情分析してポジティブ/ネガティブに分類して」</div>
+  <div class="good"><b>✅ 2〜3件の入出力例を併記</b>「入力: '動作は軽快だがUIが分かりにくい' → 出力: `{"sentiment": "mixed", "aspects": {"performance": "+", "ui": "-"}}` のように形式を例示」</div>
+</div>
+
+<h3 data-reveal>3. 思考プロセスの明示 (Chain of Thought / CoT)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 即座に答えを求める</b>「このアルゴリズムの計算量を求めて」</div>
+  <div class="good"><b>✅ 思考ステップを指定</b>「まず各ループの実行回数を数式化し、次に最悪ケースを特定した上で、最終的なビッグオー記法を導出してください」</div>
+</div>
+
+<h3 data-reveal>4. 構造化タグによるコンテキスト分離 (XML/Markdown Tags)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 指示と参考文書の混在</b>「次の記事を要約して。記事内容：...」</div>
+  <div class="good"><b>✅ タグで領域を明確化</b>「`&lt;document&gt;...&lt;/document&gt;` 内の資料に基づき、`&lt;instructions&gt;...&lt;/instructions&gt;` に従って要約してください」</div>
+</div>
+
+<h3 data-reveal>5. 役割とトーンの定義 (Role & Persona)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 一般論としての回答</b>「このセキュリティ設計を評価して」</div>
+  <div class="good"><b>✅ 専門家の視点を付与</b>「あなたは金融系システムのシニアセキュリティアーキテクトです。OAuth 2.0 PKCE フローのトークン漏洩リスクに焦点を当ててレビューしてください」</div>
+</div>
+
+<h3 data-reveal>6. ネガティブ制約（禁止事項の明確化）</h3>
+<div class="duo">
+  <div class="bad"><b>❌ ポジティブ指示のみ</b>「React コンポーネントを書いて」</div>
+  <div class="good"><b>✅ 禁止事項を併記</b>「外部ライブラリは新規追加せず、CSS-in-JS は使用せず、必ず CSS Modules を用いてください」</div>
+</div>
+
+<h3 data-reveal>7. 出力フォーマットの厳格指定</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 自然言語のまま出力</b>「変更点の一覧を出して」</div>
+  <div class="good"><b>✅ スキーマやマークダウン表を指定</b>「`ファイルパス | 変更種別 | 変更理由` の3列 Markdown テーブル形式で出力してください」</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="structured">
+<div class="sec-tag">技法 02</div>
+<h2>構造化出力 & フォーマット制御</h2>
+<p>プログラムによる自動処理を行う場合、JSON Mode や Structured Outputs（Pydantic スキーマ等）を活用し、パースエラーの発生率を物理的にゼロに近づけます。</p>
+<pre><code><span class="c"># Pydantic スキーマによる確実な構造化出力</span>
+class CodeAuditResult(BaseModel):
+    has_vulnerability: bool
+    severity: Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    cve_id: str | None = None
+    remediation_steps: list[str]</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="multimodal">
+<div class="sec-tag">技法 03</div>
+<h2>マルチモーダルプロンプトの極意</h2>
+<ul>
+<li><strong>UI スクリーンショット：</strong> 解像度を適切に保ちつつ、注目すべき領域を赤枠やアノテーションで強調。</li>
+<li><strong>設計書・PDF：</strong> ページ数が多い場合は、該当章を特定して抽出投入し、Attention 散漫を防ぐ。</li>
+<li><strong>OCR テキストとの併用：</strong> 画像だけでなく、抽出可能なテキストデータを併せて渡すことで認識精度が飛躍的に向上。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="models">
+<div class="sec-tag">ユースケース & モデル比較 04</div>
+<h2>主要大モデルのプロンプト特性差分</h2>
+<table class="tbl">
+<tr><th>モデル</th><th>プロンプト特性</th><th>最適な指示スタイル</th></tr>
+<tr><td><strong>Claude (Anthropic)</strong></td><td>XML タグ（<code>&lt;context&gt;</code> 等）の認識に極めて優れ、指示への忠実度が高い。</td><td>長文ドキュメントをタグで構造化し、詳細な制約を与える。</td></tr>
+<tr><td><strong>OpenAI (GPT-4o / o3)</strong></td><td>System プロンプトへの感度が高く、JSON Mode や Tool Calling の統合が堅牢。</td><td>システムロールで前提を固定し、関数スキーマを厳格定義。</td></tr>
+<tr><td><strong>Gemini (Google)</strong></td><td>超長大コンテキスト（2M）の横断推論と Context Caching が得意。</td><td>大量のドキュメントを一括投入し、キャッシュを効かせて質問。</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="rag">
+<div class="sec-tag">ユースケース & モデル比較 05</div>
+<h2>RAG シナリオにおけるプロンプト設計</h2>
+<p>RAG（検索拡張生成）では、検索されたコンテキストをモデルが「事実」として優先するようプロンプトで制御します：</p>
+<pre><code>&lt;system&gt;
+以下の &lt;sources&gt; に記載されている情報のみに基づいて回答してください。
+資料内に回答が存在しない場合は、一般的な推測を行わず「提供された資料には記載がありません」と明答してください。
+すべての主張には [1] のような出典番号を付与してください。
+&lt;/system&gt;</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="context">
+<div class="sec-tag">エンジニアリング 06</div>
+<h2>コンテキストエンジニアリングの核心</h2>
+<p>「コンテキストウィンドウが大きいからといって、何でも詰め込んでよいわけではない」——これが現代の鉄則です。<strong>コンテキスト内の情報量が増えるほど、トークンあたりの Attention 強度は低下</strong> します。</p>
+<ul>
+<li><strong>高シグナル・低ノイズ：</strong> 不要な依存関係ファイルやビルド成果物は除外して投入。</li>
+<li><strong>位置バイアス（Lost in the Middle）：</strong> 重要な指示やルールは、コンテキストの最前部または最後尾に配置。</li>
+<li><strong>Context Caching の活用：</strong> 静的な仕様書やリポジトリ定義はキャッシュし、コストとレイテンシを削減。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="agentic">
+<div class="sec-tag">エンジニアリング 07</div>
+<h2>自律型エージェント（Agentic）のコンテキスト管理</h2>
+<p>長期にわたるタスクをエージェントに任せる場合、コンテキストの肥大化と迷走を防ぐための設計が必要です：</p>
+<ul>
+<li><strong>サブエージェント分割：</strong> 調査（Research）、設計（Plan）、実装（Coder）で独立したコンテキストを持たせる。</li>
+<li><strong>中間成果物の永続化：</strong> 思考過程をディスク上の Markdown（<code>implementation_plan.md</code> 等）に書き出し、記憶を外部化。</li>
+<li><strong>コンテキストの定期リフレッシュ：</strong> 単一セッションで何十回もやり直さず、キリの良いところで新しい対話を開始。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="cost">
+<div class="sec-tag">エンジニアリング 08</div>
+<h2>Token 経済学とコスト管理</h2>
+<div class="duo">
+  <div class="good"><b>💡 コスト最適化のベストプラクティス</b>
+  ・静的な共通プロンプトを先頭に固定して Prompt Caching を最大化。<br>
+  ・日常のルーティングや軽微な整形には軽量モデル（Flash / Mini）を割り当て。<br>
+  ・過度な会話ログを適宜要約・クリア。</div>
+  <div class="bad"><b>💸 コストが跳ね上がるアンチパターン</b>
+  ・毎回プロンプトの先頭に動的なタイムスタンプを入れ、キャッシュを無効化。<br>
+  ・全タスクに最高額の推論モデルを画一的に使用。</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="routing">
+<div class="sec-tag">エンジニアリング 09</div>
+<h2>モデルルーティングと自動切り替え</h2>
+<p>タスクの複雑度に応じて、軽量モデル（判定・分類）から最強推論モデル（アーキテクチャ設計・難解バグ）へ動的に処理を振り分けるアーキテクチャを構築します。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="security">
+<div class="sec-tag">エンジニアリング 10</div>
+<h2>Prompt インジェクション & セキュリティ防御</h2>
+<ul>
+<li><strong>間接的インジェクション対策:</strong> 外部 Web ページやユーザー入力テキストを処理する際、プロンプト指示とデータ領域を明確に分離。</li>
+<li><strong>実行権限のガードレール:</strong> コマンド実行やファイル削除を行う前に、インターセプターミドルウェアで危険なパターンを検知・遮断。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">実践 11</div>
+<h2>書き換え実例集（全6ケース）</h2>
+<div class="case">
+  <div class="case-head"><span class="cn">Case 01</span><h4>複雑なレガシーコードのリファクタリング</h4></div>
+  <p class="case-scenario">500行のスパゲッティコードを関数分割したいケース。</p>
+  <div class="cb-label bad">❌ 改善前のプロンプト</div>
+  <code>このファイルを綺麗にリファクタリングして。</code>
+  <div class="cb-label good">✅ 改善後のプロンプト</div>
+  <code>以下のファイルをリファクタリングしてください。
+1. 単一責任の原則に従い、ビジネスロジックと外部API通信を別モジュールに分離。
+2. 既存のすべての公開関数シグネチャと戻り値の型は維持。
+3. まずリファクタリング計画を箇条書きで提示し、私の承認後にコードを出力してください。</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="templates">
+<div class="sec-tag">実践 12</div>
+<h2>本番用テンプレート集（全12式）</h2>
+<div class="prompt-box">
+  <div class="pt">テンプレート · コードレビュー</div>
+  <code>あなたはシニアテックリードです。以下のプルリクエスト差分をレビューしてください。
+重点項目：
+- セキュリティ脆弱性（SQLi, XSS, 権限チェック漏れ）
+- パフォーマンス（N+1問題、メモリリーク）
+- 型安全性と例外処理
+出力形式：重大度（CRITICAL / WARN / INFO）ごとの箇条書き</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="eval">
+<div class="sec-tag">実践 13</div>
+<h2>評価・反復・バージョン管理</h2>
+<p>プロンプトは「プログラムコード」と同様に Git でバージョン管理し、回帰テスト用の評価データセット（Eval Suite）を作成して精度を検証します。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="antipatterns">
+<div class="sec-tag">実践 14</div>
+<h2>アンチパターン図鑑</h2>
+<ul>
+<li><strong>万能プロンプト病:</strong> 1つの巨大プロンプトにあらゆる要件を詰め込み、モデルの注意を飽和させる。</li>
+<li><strong>感情的懇願:</strong> 「お願いだから間違えないで」と懇願し、型スキーマや具体的制約を与えない。</li>
+<li><strong>コンテキスト汚染:</strong> 過去のエラーログや迷走した会話履歴をクリアせずに引きずり続ける。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="tools">
+<div class="sec-tag">実装 15</div>
+<h2>Claude Code / Codex における設定階層</h2>
+<table class="tbl">
+<tr><th>ツール</th><th>グローバル設定</th><th>プロジェクト設定</th><th>実行時コンテキスト</th></tr>
+<tr><td><strong>Claude Code</strong></td><td><code>~/.claude/config.json</code></td><td><code>CLAUDE.md</code> / <code>.claude/skills/</code></td><td>ターミナル引数 / <code>/mcp</code></td></tr>
+<tr><td><strong>Antigravity / Codex</strong></td><td><code>~/.antigravity/config</code></td><td><code>AGENTS.md</code> / <code>implementation_plan.md</code></td><td>Workspace 状態 / サンドボックス</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">実装 16</div>
+<h2>リソース & 出典索引</h2>
+<ul>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">Anthropic 公式 Prompt Engineering ガイド</a></li>
+<li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">OpenAI 公式 Prompt Engineering ガイド</a></li>
+<li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank">Google AI 公式 プロンプティング戦略</a></li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p>プロンプト & コンテキストエンジニアリング · 技法から思考法まで · 2026年7月改訂</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

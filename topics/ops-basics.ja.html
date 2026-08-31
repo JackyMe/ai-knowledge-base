@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="個人開発者のためのインフラ・運用基盤：5段階ロードマップ ＋ サーバー×ネットワーク×デプロイ 3大モジュール ＋ 5大障害30秒処方箋。SaaS依存から脱却し、ゼロからのセルフホスティングまでを完全マスター。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="個人開発者のためのインフラ・運用基盤 · サーバー × ネットワーク × デプロイ · 2026.08">
+<meta property="og:description" content="5段階ロードマップ ＋ 3モジュール24セクション（ネットワーク詳細13セクション）＋ 5大障害30秒処方箋。SaaS依存から自前運用まで完全網羅。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ops-basics.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>個人開発者のためのインフラ・運用基盤 · サーバー × ネットワーク × デプロイ · 2026.08</title>
+<style>
+:root{
+  --accent:#0891b2;        /* Cyan */
+  --accent-2:#06b6d4;
+  --accent-soft:#ecfeff;
+  --ink:#0c1e22; --bg:#ffffff; --bg-side:#f5f9fa;
+  --bg-code:#0f1d22;
+  --text:#0f2126; --text-2:#475a60; --text-3:#7c8d92;
+  --border:#dbe6e9; --border-2:#cad7da;
+  --tip-bg:#ecfdf5; --warn-bg:#fff8ec; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#e6f3f6;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e9f5f8;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(8,145,178,.50),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(6,182,212,.32),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#67e8f9;font-weight:600;background:rgba(8,145,178,.18);
+  border:1px solid rgba(8,145,178,.5);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#67e8f9,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#bcd4d9;max-width:680px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#8aa9af}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#a5d8e8}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eef5f7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0e7490}
+pre{background:var(--bg-code);color:#d4e6ea;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8d92}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f5f9fa}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f5f9fa}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#ecfeff;color:#0e7490}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eefbf3;color:#15803d}
+.pill.d{background:#eef4fe;color:#1d4ed8}
+.pill.e{background:#f3eefe;color:#7c3aed}
+.pill.f{background:#fdeef7;color:#be185d}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(12,30,34,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">OP</span>個人開発者のためのインフラ運用基盤<span class="sub">ゼロから自前運用へ</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    
+      <span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">はじめに</div>
+    <a href="#intro"><span class="no">00</span>なぜ学ぶ必要があるのか</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">ロードマップ</div>
+    <a href="#roadmap"><span class="no">R</span>5段階ロードマップ</a>
+    <a href="#stage1"><span class="no">R1</span>現状の棚卸し</a>
+    <a href="#stage2"><span class="no">R2</span>Linuxの基礎</a>
+    <a href="#stage3"><span class="no">R3</span>ネットワーク基幹</a>
+    <a href="#stage4"><span class="no">R4</span>デプロイパイプライン</a>
+    <a href="#stage5"><span class="no">R5</span>障害調査</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">モジュール 1 · Linux</div>
+    <a href="#m1-1"><span class="no">1.1</span>サーバーとは何か</a>
+    <a href="#m1-2"><span class="no">1.2</span>3つの抽象概念</a>
+    <a href="#m1-3"><span class="no">1.3</span>SSH は単なるログインではない</a>
+    <a href="#m1-4"><span class="no">1.4</span>パッケージマネージャ速引</a>
+    <a href="#m1-5"><span class="no">1.5</span>権限とユーザー</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">モジュール 2a · 概念基礎</div>
+    <a href="#m2-1"><span class="no">2.1</span>HTTP→TCP→IP</a>
+    <a href="#m2-2"><span class="no">2.2</span>DNS</a>
+    <a href="#m2-3"><span class="no">2.3</span>HTTPS/TLS</a>
+    <a href="#m2-4"><span class="no">2.4</span>リバースプロキシ</a>
+    <a href="#m2-5"><span class="no">2.5</span>ファイアウォール</a>
+    <a href="#m2-6"><span class="no">2.6</span>アタックサーフェス</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">モジュール 2b · 運用実務</div>
+    <a href="#m2-7"><span class="no">2.7</span>ポート番号</a>
+    <a href="#m2-8"><span class="no">2.8</span>ローカルサービス</a>
+    <a href="#m2-9"><span class="no">2.9</span>VPN とプロキシ</a>
+    <a href="#m2-10"><span class="no">2.10</span>パブリックIP/NAT</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">モジュール 2c · ツールと進化</div>
+    <a href="#m2-11"><span class="no">2.11</span>調査・デバッグコマンド</a>
+    <a href="#m2-12"><span class="no">2.12</span>H2/H3</a>
+    <a href="#m2-13"><span class="no">2.13</span>IPv6</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">モジュール 3 · デプロイ</div>
+    <a href="#m3-1"><span class="no">3.1</span>7ステップ デプロイフロー</a>
+    <a href="#m3-2"><span class="no">3.2</span>systemd プロセスデーモン化</a>
+    <a href="#m3-3"><span class="no">3.3</span>Nginx 設定テンプレート</a>
+    <a href="#m3-4"><span class="no">3.4</span>Docker 最小セット</a>
+    <a href="#m3-5"><span class="no">3.5</span>GitHub Actions</a>
+    <a href="#m3-6"><span class="no">3.6</span>シークレットと .env</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">付録</div>
+    <a href="#appA"><span class="no">A</span>5大障害 30秒処方箋</a>
+    <a href="#appB"><span class="no">B</span>おすすめリファレンス</a>
+    <a href="#appC"><span class="no">C</span>重要用語集</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🛠️ ゼロから学ぶセルフホスティング · 5段階ロードマップ ＋ 3モジュール24セクション · 2026年8月検証</div>
+  <h1>個人開発者のためのインフラ運用基盤<br><span class="grad">サーバー × ネットワーク × デプロイ</span></h1>
+  <p class="lead">Vercel や Netlify でのワンクリックデプロイに慣れ親しんだ開発者のための「ステップアップガイド」。VPS の契約から Git Push 自動デプロイまで、現場で本当に役立つ 30% のインフラ知識を凝縮。OSI 7階層の暗記や Kubernetes の複雑さに惑わされず、個人開発で遭遇する落とし穴を確実に突破します。</p>
+  <div class="meta">
+    <span>全24セクション</span><span>5段階ロードマップ</span><span>30以上の公式一次情報</span><span>事実に基づく明確な解説</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5段階</b><span>ゼロから中規模アプリの単独運用まで</span></div>
+  <div class="stat"><b>3大モジュール</b><span>Linux × ネットワーク × デプロイの柱</span></div>
+  <div class="stat"><b>5大障害</b><span>現場で即役立つ30秒自己復旧処方箋</span></div>
+  <div class="stat"><b>必須30%</b><span>個人開発者が直面する落とし穴の80%をカバー</span></div>
+</div>
+
+<section id="intro">
+<div class="sec-tag">はじめに 00</div>
+<h2>なぜ学ぶ必要があるのか</h2>
+<p>こんな経験はありませんか？ Vercel にデプロイした個人開発アプリが突然 DDoS を受けて高額請求に怯えたり、Cloudflare Pages の帯域制限やリージョン制限に悩まされたり、深夜に Supabase の接続数上限に達して立ち往生したり……。</p>
+<p>SaaS プラットフォームは極めて便利ですが、<strong>プラットフォームの制約や料金の壁に直面した瞬間</strong>、その恩恵は足かせに変わります。そこから一歩踏み出そうとしたとき、SSH、systemd、リバースプロキシ、DNS レコード、TLS ハンドシェイクといったインフラ用語の山に圧倒されてしまう開発者は少なくありません。</p>
+<div class="callout note"><b class="t">このドキュメントが提供するものと提供しないもの</b><strong>提供するもの：</strong> 5段階ロードマップ ＋ サーバー・ネットワーク・デプロイの <strong>必要最小限のコア知識</strong> ＋ 5大障害の30秒処方箋。読了後に中規模プロジェクトのサーバーを自力で管理・運用できるようになります。<br><strong>提供しないもの：</strong> Kubernetes クラスタの大規模運用、GPU 分散推論クラスタ、99.999% の極限チューニングなどは対象外です。</div>
+<h3 data-reveal>対象読者</h3>
+<ul>
+<li>Next.js / Node / Python / Go 等でフルスタックアプリを構築した経験があり、普段は Vercel / Netlify / Cloudflare / Supabase / Railway に頼っている方。</li>
+<li>ドメインを購入したことはあるが、DNS 解決や TLS 証明書の背後で何が起きているか正確に把握していない方。</li>
+<li>本番障害が起きたときに自力でログを追えず、他人に助けを求めるしかなかった経験がある方。</li>
+<li>SRE や専門インフラエンジニアを目指すわけではないが、自前でサーバーを安定運用できるスキルを身につけたい方。</li>
+</ul>
+<h3 data-reveal>根拠の3段階分類</h3>
+<table class="tbl">
+<tr><th>表記</th><th>意味</th><th>具体例</th></tr>
+<tr><td><span class="pill a">✅ 公式仕様</span></td><td>公式ドキュメントで厳密に確認済み</td><td>「systemd は Linux のシステムおよびサービスマネージャである」— <a href="https://systemd.io/" target="_blank">systemd.io</a></td></tr>
+<tr><td><span class="pill c">⚡ 実践検証</span></td><td>コミュニティで強固なコンセンサスがあり動作確認済み</td><td>「certbot --nginx のコマンド3行でHTTPS化」など</td></tr>
+<tr><td><span class="pill b">⚠️ 要確認</span></td><td>意見が分かれるものや時期依存の情報</td><td>各国のドメイン申請・ICP登録などの規制情報</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="roadmap">
+<div class="sec-tag">ロードマップ R</div>
+<h2>5段階ロードマップ</h2>
+<p>学習プロセスを5つの段階に分割しています。各段階には <strong>検証可能な具体的成果物</strong> が設定されており、着実にステップアップできます。</p>
+<table class="tbl">
+<tr><th>段階</th><th>ゴール</th><th>実践成果物</th><th>完了判定基準</th><th>目安時間</th></tr>
+<tr><td><strong>R1 現状の棚卸し</strong></td><td>自身の現在地と依存度を把握</td><td>「自作プロジェクトデプロイ一覧表」</td><td>各アプリのSaaS利用状況・コスト・制限を可視化</td><td>1時間</td></tr>
+<tr><td><strong>R2 Linuxの基礎</strong></td><td>VPS に SSH 接続し top で負荷を確認</td><td>Nginx を導入した稼働中の VPS</td><td><code>systemctl status nginx</code> が active 表示</td><td>半日</td></tr>
+<tr><td><strong>R3 ネットワーク基幹</strong></td><td>ドメイン → DNS → SSL → リバースプロキシが動作</td><td>独自ドメイン + HTTPS 環境</td><td>ブラウザで安全な鍵マークを確認</td><td>半日</td></tr>
+<tr><td><strong>R4 デプロイパイプライン</strong></td><td>git push による自動デプロイ</td><td>Node アプリ + GitHub Actions</td><td>コード変更 push から30秒で本番反映</td><td>1日</td></tr>
+<tr><td><strong>R5 障害調査</strong></td><td>5大障害からの自力復旧</td><td>付録Aの障害パターン再現テスト</td><td>故意に発生させた障害を自力で修復</td><td>1日</td></tr>
+</table>
+<p>合計の学習目安は <strong>3〜4週末</strong> です。途中で詰まった場合は、付録Aの処方箋を参照するか各モジュールの解説に戻ってください。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage1">
+<div class="sec-tag">ロードマップ R1</div>
+<h2>R1 · 現状の棚卸し</h2>
+<p>いきなり VPS を契約する前に、現在開発・運用しているプロジェクトの構成を書き出します。これにより、SaaS の継続が適しているか、自前運用に切り替えるべきかが明確になります。</p>
+<h3 data-reveal>実践：プロジェクトデプロイ一覧の作成</h3>
+<p>稼働中のアプリごとに以下の4項目を整理します：</p>
+<ol>
+<li><strong>実行環境</strong>: Vercel / Netlify / Cloudflare Pages / Supabase / VPS / その他</li>
+<li><strong>月額コスト</strong>: Free Tier / Pro / 推定月額費用</li>
+<li><strong>現在のボトルネック</strong>: レスポンス遅延 / タイムアウト / 予期せぬ従量課金 / リージョン制限など</li>
+<li><strong>自前運用の価値</strong>: 静的フロントエンド中心なら SaaS 維持が有利。長時間バックグラウンド処理、WebSocket 常時接続、独自ランタイムが必要なら自前運用の費用対効果が高い。</li>
+</ol>
+<div class="callout tip"><b class="t">判断の目安</b>プロジェクトの80%が <strong>静的サイト ＋ 外部SaaS DB</strong> であれば、無理に移行する必要はありません。<strong>常時起動タスク、大量の画像処理、ローカルLLM連携、リージョン制限の回避</strong> が必要なサービスから自前運用を導入するのが賢明です。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage2">
+<div class="sec-tag">ロードマップ R2</div>
+<h2>R2 · Linuxの基礎</h2>
+<p>1コア 1GB メモリ程度の安価な VPS（月額 $3〜$5 程度）を契約し、Ubuntu 24.04 LTS をセットアップします。SSH 鍵認証でログインし、Nginx を起動してブラウザから接続確認を行います。</p>
+<h3 data-reveal>実践ステップ</h3>
+<ol class="steps">
+<li><strong>VPS の選定</strong>: DigitalOcean, Vultr, AWS, Linode, さくらのVPS などからユーザーに近いリージョンを選択。OS は最も情報量の多い <strong>Ubuntu 24.04 LTS</strong> を推奨。</li>
+<li><strong>ローカルで SSH 鍵を生成</strong>: <code>ssh-keygen -t ed25519 -C "your@email"</code> を実行し、<code>~/.ssh/id_ed25519.pub</code> の内容を VPS 管理画面の SSH 鍵登録欄に貼り付け。</li>
+<li><strong>VPS への接続</strong>: ターミナルから <code>ssh root@YOUR_VPS_IP</code> で接続。初回接続時のフィンガープリント確認には "yes" と入力。</li>
+<li><strong>Nginx のインストール</strong>: <code>apt update && apt install -y nginx</code> を実行後、<code>systemctl status nginx</code> で <code>active (running)</code> を確認。</li>
+<li><strong>ブラウザ確認</strong>: <code>http://YOUR_VPS_IP</code> にアクセスし、Nginx の Welcome 画面が表示されれば R2 は完了です。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage3">
+<div class="sec-tag">ロードマップ R3</div>
+<h2>R3 · ネットワーク基幹</h2>
+<p>IP アドレス直接アクセスから、独自ドメイン ＋ HTTPS（SSL証明書）による安全な接続へと昇格させます。DNS、Certbot、Nginx のリバースプロキシ連携を一気に形にします。</p>
+<h3 data-reveal>実践ステップ</h3>
+<ol class="steps">
+<li><strong>ドメインの取得</strong>: Cloudflare Registrar、Namecheap、お名前.com 等でドメインを取得。</li>
+<li><strong>DNS レコードの設定</strong>: 管理画面で A レコードを作成し、ドメインを VPS のパブリック IP に紐付け。<code>dig yourdomain.dev</code> で反映を確認。</li>
+<li><strong>SSL 証明書の発行</strong>: <code>apt install -y certbot python3-certbot-nginx</code> を実行後、<code>certbot --nginx -d yourdomain.dev</code> で無料の Let's Encrypt 証明書を自動取得・設定。</li>
+<li><strong>リバースプロキシの設定</strong>: Nginx 経由でポート 443（HTTPS）の通信をローカルの Node/Python アプリ（例: ポート 3000）へ転送。</li>
+<li><strong>ブラウザ接続</strong>: <code>https://yourdomain.dev</code> で鍵マーク付きで自作アプリが表示されれば R3 完了です。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage4">
+<div class="sec-tag">ロードマップ R4</div>
+<h2>R4 · デプロイパイプライン</h2>
+<p>手動でのファイル転送や SSH 直接ログインでの更新から卒業し、<code>git push</code> をトリガーとする自動デプロイ環境を構築します。</p>
+<h3 data-reveal>実践ステップ</h3>
+<ol class="steps">
+<li><strong>systemd サービス定義</strong>: <code>/etc/systemd/system/myapp.service</code> を作成し、SSH 切断後もアプリがバックグラウンドで永続稼働しクラッシュ時に自動再起動するよう設定。</li>
+<li><strong>GitHub Actions ワークフローの作成</strong>: <code>.github/workflows/deploy.yml</code> を設定し、<code>main</code> ブランチへの push を契機に VPS へ自動 SSH 接続・コード取得・再起動を実行。</li>
+<li><strong>シークレットの安全な管理</strong>: SSH 秘密鍵を GitHub の Repository Secrets に登録。環境変数はサーバー上の <code>.env</code> ファイルに集約。</li>
+<li><strong>本番テスト</strong>: README などを1行変更して push し、GitHub Actions がグリーンになり30秒で本番に反映されることを確認。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="stage5">
+<div class="sec-tag">ロードマップ R5</div>
+<h2>R5 · 障害調査とトラブルシューティング</h2>
+<p>本番運用における最大の武器は、「障害を起こさないこと」ではなく「障害が起きた際に30秒以内に適切な切り分けができること」です。</p>
+<h3 data-reveal>実践：代表的な5大障害の再現と復旧</h3>
+<ol class="steps">
+<li><strong>502 Bad Gateway</strong>: <code>systemctl stop myapp</code> でアプリを停止させ、Nginx のエラー挙動を確認した後に再起動で復旧。</li>
+<li><strong>SSH 接続不能</strong>: ポート設定の誤りやファイアウォール遮断のパターンを把握し、コンソール経由での復旧手順を確認。</li>
+<li><strong>ディスク容量枯渇</strong>: <code>df -h</code> で空き容量を確認し、肥大化したログファイルや Docker イメージのクリーンアップを実践。</li>
+<li><strong>OOM（メモリ不足）</strong>: メモリリーク発生時の OOM Killer のログを <code>dmesg -T</code> で確認し、スワップ設定やプロセス制限を適用。</li>
+<li><strong>SSL 証明書の更新エラー</strong>: <code>certbot renew --dry-run</code> で自動更新のシミュレーションを実行。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Module 1 · Linux and Server Foundation ========== -->
+
+<section id="m1-1">
+<div class="sec-tag">モジュール 1 · Linux</div>
+<h2>1.1 サーバーとは何か</h2>
+<p>「サーバー」という言葉に身構える必要はありません。<strong>サーバーの本質は、24時間365日電源が入ったままネットワークに繋がっているコンピュータ</strong> に過ぎません。手元のPCとハードウェア構造はほぼ同じであり、ディスプレイやキーボードを持たず、データセンターのラックに収められ、SSH 経由でリモート操作する点が異なるだけです。</p>
+<h3 data-reveal>手元のPCとクラウドサーバーの違い</h3>
+<table class="tbl">
+<tr><th>項目</th><th>手元の PC / ラップトップ</th><th>クラウドサーバー (VPS)</th></tr>
+<tr><td>OS</td><td>macOS / Windows</td><td>Ubuntu / Debian 等の Linux が主流</td></tr>
+<tr><td>操作形態</td><td>GUI（画面・マウス・キーボード）</td><td>SSH（コマンドラインのみ）</td></tr>
+<tr><td>稼働時間</td><td>作業時のみ起動</td><td>24時間常時稼働</td></tr>
+<tr><td>パブリック IP</td><td>通常は家庭内プライベート IP</td><td>固有のグローバル IP を保持</td></tr>
+<tr><td>重視される特性</td><td>操作の快適さ・デザイン</td><td>高可用性・安定性・リソース効率</td></tr>
+</table>
+<div class="callout note"><b class="t">なぜサーバーOSは Linux なのか</b>Nginx、Node.js、Python、PostgreSQL、Docker、systemd など、現代のWebインフラを支える主要ソフトウェアは Linux ファーストで最適化されています。バックエンドやインフラを学ぶことは、実質的に Linux の基本を習得することと同義です。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-2">
+<div class="sec-tag">モジュール 1 · Linux</div>
+<h2>1.2 3つの抽象概念：ファイルシステム、プロセス、ポート</h2>
+<p>Linux サーバーを「アパート」に例えてみましょう。各部屋の住人が <strong>プロセス</strong>、部屋番号が <strong>ポート</strong>、契約や鍵が <strong>権限</strong> に相当します。日々のサーバー運用の8割は、どのプロセスが動いているか、どのポートを使用しているか、どの権限で動いているかの確認です。</p>
+<h3 data-reveal>ファイルシステム：すべてはファイルである</h3>
+<p>Linux の根幹哲学は「Everything is a File（すべてはファイルである）」です。ストレージだけでなく、ハードウェアデバイス、ネットワークソケット、プロセスの情報まで、すべて <code>/</code>（ルートディレクトリ）以下の階層に配置されたファイルとして扱われます。</p>
+<pre><code>ls /                  <span class="c"># ルートディレクトリの確認</span>
+ls /etc/nginx/         <span class="c"># Nginx の設定ファイル群</span>
+ls /var/log/           <span class="c"># システムおよび各サービスのログ</span>
+cat /proc/cpuinfo      <span class="c"># CPU 情報（メモリ上の仮想ファイル）</span></code></pre>
+<h3 data-reveal>プロセス：実行中のプログラム</h3>
+<p><code>node server.js</code> を実行すると、固有の PID（プロセスID）を持つプロセスが生成されます。運用で頻出するコマンド：</p>
+<pre><code>ps aux | grep node     <span class="c"># Node プロセスの稼働状況を確認</span>
+top                    <span class="c"># リアルタイムの CPU / メモリ消費量を確認（q で終了）</span>
+htop                   <span class="c"># より見やすいリソースモニター（apt install htop）</span>
+kill -9 1234           <span class="c"># PID 1234 のプロセスを強制終了</span>
+systemctl status myapp <span class="c"># systemd 管理下のサービス状態を確認</span></code></pre>
+<h3 data-reveal>ポート：通信の部屋番号 (0〜65535)</h3>
+<p>1台のサーバー上で複数のネットワークサービスを同時に稼働させるため、通信ごとに「ポート番号」で識別します。</p>
+<table class="tbl">
+<tr><th>ポート番号</th><th>主な用途</th></tr>
+<tr><td>22</td><td>SSH（リモート接続）</td></tr>
+<tr><td>80</td><td>HTTP（暗号化なしWeb通信）</td></tr>
+<tr><td>443</td><td>HTTPS（SSL/TLS暗号化Web通信）</td></tr>
+<tr><td>3000 / 8080</td><td>アプリのローカル開発用ポート（Node/Next.js 等）</td></tr>
+<tr><td>3306 / 5432</td><td>MySQL / PostgreSQL</td></tr>
+<tr><td>6379</td><td>Redis</td></tr>
+</table>
+<pre><code>ss -tlnp               <span class="c"># リッスン中のポート一覧を確認</span>
+lsof -i :3000          <span class="c"># ポート 3000 を使用しているプロセスを特定</span></code></pre>
+<div class="callout warn"><b class="t">ポート衝突（Address already in use）</b>初学者が最も頻繁に遭遇するエラーです。<code>lsof -i :対象ポート</code> で占有しているプロセスを特定し、不要なものを終了させるか設定ポートを変更します。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-3">
+<div class="sec-tag">モジュール 1 · Linux</div>
+<h2>1.3 SSH は単なるログインではない</h2>
+<p>SSH（Secure Shell）は暗号化された安全な通信路を提供するプロトコルです。端末操作だけでなく、ポートフォワーディング、ファイル転送（SFTP/rsync）、Git 連携の基盤として機能します。</p>
+<h3 data-reveal>パスワード認証の廃止と公開鍵認証の徹底</h3>
+<p>パスワード認証はブルートフォース攻撃（総当たり攻撃）のリスクに常に晒されます。公開鍵暗号（Ed25519）を用いた鍵認証に切り替えることで、秘密鍵を持たない外部からの不正アクセスを物理的に遮断できます。</p>
+<pre><code><span class="c"># /etc/ssh/sshd_config の推奨セキュリティ設定</span>
+PasswordAuthentication no
+PermitRootLogin prohibit-password
+PubkeyAuthentication yes</code></pre>
+<h3 data-reveal><code>~/.ssh/config</code> による接続設定の簡素化</h3>
+<p>ローカル PC の <code>~/.ssh/config</code> に設定を記述しておくことで、<code>ssh myserver</code> の一撃で接続できるようになります：</p>
+<pre><code>Host myserver
+    HostName 203.0.113.195
+    User ubuntu
+    IdentityFile ~/.ssh/id_ed25519
+    Port 22</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-4">
+<div class="sec-tag">モジュール 1 · Linux</div>
+<h2>1.4 パッケージマネージャー速引</h2>
+<p>Linux ではソフトウェアのインストールや更新をパッケージマネージャー（Ubuntu/Debian では <code>apt</code>）を通じて一元管理します。</p>
+<pre><code>apt update             <span class="c"># パッケージリストの最新化</span>
+apt upgrade -y         <span class="c"># インストール済みパッケージの一括更新</span>
+apt install -y nginx   <span class="c"># ソフトウェアの新規インストール</span>
+apt remove --purge -y nginx <span class="c"># 設定ファイルを含めた完全削除</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m1-5">
+<div class="sec-tag">モジュール 1 · Linux</div>
+<h2>1.5 権限とユーザー管理</h2>
+<p>最高権限を持つ <code>root</code> での常時作業は、誤操作によるシステム破壊リスクを伴います。日常作業用の一般ユーザーを作成し、必要なときのみ <code>sudo</code> で昇格する運用が鉄則です。</p>
+<pre><code>adduser deployer                 <span class="c"># 新規ユーザー作成</span>
+usermod -aG sudo deployer        <span class="c"># sudo 権限を付与</span>
+chmod 600 ~/.ssh/authorized_keys <span class="c"># 鍵ファイルの権限を所有者のみに制限</span>
+chown -R deployer:deployer /var/www <span class="c"># ディレクトリ所有者を変更</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Module 2 · Network Foundation & Practices ========== -->
+
+<section id="m2-1">
+<div class="sec-tag">モジュール 2a · 概念基礎</div>
+<h2>2.1 HTTP → TCP → IP 階層構造</h2>
+<p>Web の通信はカプセル化されたレイヤー構造で成り立っています：</p>
+<ul>
+<li><strong>アプリケーション層 (HTTP/HTTPS):</strong> クライアントとサーバーがやり取りする要求（<code>GET /api/users</code>）と応答。</li>
+<li><strong>トランスポート層 (TCP):</strong> パケットの順序保証、再送制御、コネクション確立（3-Way Handshake）。</li>
+<li><strong>ネットワーク層 (IP):</strong> 送信元と宛先の IP アドレスに基づいたパケットのルーティング。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-2">
+<div class="sec-tag">モジュール 2a · 概念基礎</div>
+<h2>2.2 DNS（ドメインネームシステム）</h2>
+<p>人間が理解しやすいドメイン名（例: <code>example.com</code>）をコンピュータが通信に使用する IP アドレス（例: <code>203.0.113.195</code>）に変換する分散型名前解決システムです。</p>
+<table class="tbl">
+<tr><th>レコード種別</th><th>用途</th><th>設定例</th></tr>
+<tr><td><strong>A</strong></td><td>ドメインを IPv4 アドレスに紐付け</td><td><code>@ -> 203.0.113.195</code></td></tr>
+<tr><td><strong>AAAA</strong></td><td>ドメインを IPv6 アドレスに紐付け</td><td><code>@ -> 2001:db8::1</code></td></tr>
+<tr><td><strong>CNAME</strong></td><td>別のドメインへのエイリアス（別名）</td><td><code>www -> example.com</code></td></tr>
+<tr><td><strong>TXT</strong></td><td>ドメイン所有権確認や SPF / DKIM メール認証</td><td><code>v=spf1 include:...</code></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-3">
+<div class="sec-tag">モジュール 2a · 概念基礎</div>
+<h2>2.3 HTTPS / TLS 暗号化と証明書管理</h2>
+<p>HTTPS は HTTP 通信を TLS（Transport Layer Security）で暗号化し、盗聴や改ざん、なりすましを防ぐ仕組みです。現代のWeb標準において、HTTPS化は必須要件です。</p>
+<div class="callout tip"><b class="t">Let's Encrypt と Certbot</b>非営利の認証局 Let's Encrypt により、無料で正規の SSL/TLS 証明書を取得できます。Certbot を利用すれば、証明書の発行から Nginx 設定の自動書き換え、90日ごとの自動更新 Cron まで全自動で完結します。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-4">
+<div class="sec-tag">モジュール 2a · 概念基礎</div>
+<h2>2.4 リバースプロキシ（Reverse Proxy）の役割</h2>
+<p>クライアントからのリクエストを最前線で受け付け、背後にある適切なアプリケーションサーバー（Node.js, Python, Go 等）へ中継するサーバーです（代表例: Nginx, Caddy）。</p>
+<ul>
+<li><strong>SSL 終端（SSL Termination）:</strong> 重い暗号化・復号処理をプロキシ側で一括処理。</li>
+<li><strong>ルーティングと負荷分散:</strong> <code>/api</code> はバックエンドへ、静的ファイルはディスクから直接配信。</li>
+<li><strong>セキュリティ防壁:</strong> バックエンドの実際の稼働ポートをインターネットに直接公開しない。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-5">
+<div class="sec-tag">モジュール 2a · 概念基礎</div>
+<h2>2.5 ファイアウォールとアクセス制御</h2>
+<p>不要なポートへの外部アクセスを遮断し、必要な通信（22, 80, 443）のみを許可します。Ubuntu では <code>ufw</code>（Uncomplicated Firewall）を使用するのが最も直感的です。</p>
+<pre><code>ufw default deny incoming  <span class="c"># 受信通信をデフォルト遮断</span>
+ufw default allow outgoing  <span class="c"># 送信通信を許可</span>
+ufw allow 22/tcp            <span class="c"># SSH を許可（忘れると締め出されます）</span>
+ufw allow 80/tcp            <span class="c"># HTTP を許可</span>
+ufw allow 443/tcp           <span class="c"># HTTPS を許可</span>
+ufw enable                  <span class="c"># ファイアウォール有効化</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-6">
+<div class="sec-tag">モジュール 2a · 概念基礎</div>
+<h2>2.6 アタックサーフェス（攻撃面）の最小化</h2>
+<p>サーバーを公開した瞬間から、ボットによる自動スキャンが始まります。攻撃対象となる隙（アタックサーフェス）を最小化するための基本方針：</p>
+<div class="duo">
+<div class="bad"><b>❌ 危険な運用</b>データベース（MySQL 3306, Redis 6379）のポートを <code>0.0.0.0</code> で世界中に公開し、パスワード認証のみに依存する。</div>
+<div class="good"><b>✅ 安全な設計</b>DB は <code>127.0.0.1</code>（ローカルループバック）にのみバインドし、外部からは SSH トンネルやプライベートネットワーク経由でのみアクセスする。</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-7">
+<div class="sec-tag">モジュール 2b · 運用実務</div>
+<h2>2.7 ポート設計とポート衝突の解消</h2>
+<p>複数のコンテナやサービスを運用する際は、ポート設計規約を定めておきます：</p>
+<pre><code># 内部ポートの例
+Web フロントエンド: 3000
+API バックエンド:   8000
+管理者ダッシュボード: 8080
+Redis キャッシュ:   6379 (ローカル限定)
+PostgreSQL:         5432 (ローカル限定)</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-8">
+<div class="sec-tag">モジュール 2b · 運用実務</div>
+<h2>2.8 <code>127.0.0.1</code> vs <code>0.0.0.0</code> バインドの違い</h2>
+<p>アプリケーション起動時のバインドアドレスの選択は、セキュリティ上極めて重要です：</p>
+<ul>
+<li><code>127.0.0.1</code> (localhost): サーバー内部の同一マシンからのみアクセス可能。外部からの直接通信は完全に遮断される。</li>
+<li><code>0.0.0.0</code>: サーバーが持つすべてのネットワークインターフェース（パブリックIP含む）からの接続を受け付ける。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-9">
+<div class="sec-tag">モジュール 2b · 運用実務</div>
+<h2>2.9 VPN とプロキシの使い分け</h2>
+<p>管理画面やステージング環境へのアクセス制御には、<strong>Tailscale</strong> や <strong>WireGuard</strong> を活用したメッシュ VPN の構築が推奨されます。公開ポートを増やすことなく、開発メンバー間でのセキュアな通信が実現します。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-10">
+<div class="sec-tag">モジュール 2b · 運用実務</div>
+<h2>2.10 パブリック IP、NAT、トンネリング技術</h2>
+<p>固定パブリック IP を持たない自宅サーバーやオフィス内マシンを公開する場合、<strong>Cloudflare Tunnel（cloudflared）</strong> や <strong>frp</strong> を利用することで、ポート開放不要で安全に外部へサービスを公開できます。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-11">
+<div class="sec-tag">モジュール 2c · ツールと進化</div>
+<h2>2.11 ネットワーク調査・デバッグ必須コマンド</h2>
+<pre><code>curl -Iv https://yourdomain.dev     <span class="c"># HTTP ヘッダーと TLS 証明書の詳細確認</span>
+dig yourdomain.dev +short           <span class="c"># DNS 解決結果の高速確認</span>
+ss -tlnp                            <span class="c"># 開いているポートとプロセスを一覧表示</span>
+mtr yourdomain.dev                  <span class="c"># ネットワーク経路上のパケットロスと遅延を可視化</span>
+traceroute yourdomain.dev           <span class="c"># 通信経路（ホップ）の追跡</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-12">
+<div class="sec-tag">モジュール 2c · ツールと進化</div>
+<h2>2.12 HTTP/2 と HTTP/3 (QUIC)</h2>
+<p>HTTP/2 によるストリーム多重化、HTTP/3（UDPベースの QUIC プロトコル）によるハンドシェイク遅延短縮とパケットロス耐性は、Nginx や Cloudflare を通じて容易に導入可能です。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2-13">
+<div class="sec-tag">モジュール 2c · ツールと進化</div>
+<h2>2.13 IPv6 の現状とベストプラクティス</h2>
+<p>IPv4 アドレス枯渇に伴い、クラウドプロバイダでは IPv4 の追加料金化が進んでいます。AAAA レコードを設定し、デュアルスタック（IPv4 + IPv6）構成にしておくことが標準となりつつあります。</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Module 3 · Deployment Practices ========== -->
+
+<section id="m3-1">
+<div class="sec-tag">モジュール 3 · デプロイ</div>
+<h2>3.1 本番デプロイ 7ステップ パイプライン</h2>
+<ol class="steps">
+<li><strong>コードチェックアウト:</strong> サーバー上で <code>git pull</code> または CI/CD 上でビルド。</li>
+<li><strong>依存関係のインストール:</strong> <code>npm ci</code> や <code>pip install -r requirements.txt</code>。</li>
+<li><strong>アセットのビルド:</strong> <code>npm run build</code> による最適化。</li>
+<li><strong>DB マイグレーション:</strong> <code>prisma migrate deploy</code> 等によるスキーマ反映。</li>
+<li><strong>健全性チェック（Healthcheck）:</strong> 内部ポートで <code>/api/health</code> が 200 を返すか検証。</li>
+<li><strong>プロセスのリロード:</strong> <code>systemctl reload myapp</code> またはゼロダウンタイム切り替え。</li>
+<li><strong>アラート通知:</strong> デプロイ成功/失敗を Slack や Discord に通知。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-2">
+<div class="sec-tag">モジュール 3 · デプロイ</div>
+<h2>3.2 systemd によるプロセスのデーモン化と自動再起動</h2>
+<p>ターミナルを閉じてもプロセスを稼働させ続け、サーバー再起動時やクラッシュ時に自動復旧させるため、systemd ユニットファイルを作成します。</p>
+<pre><code><span class="c"># /etc/systemd/system/myapp.service</span>
+[Unit]
+Description=My Fullstack Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=deployer
+WorkingDirectory=/var/www/myapp
+EnvironmentFile=/var/www/myapp/.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<pre><code>systemctl daemon-reload
+systemctl enable --now myapp   <span class="c"># 自動起動有効化 & 即時起動</span>
+systemctl status myapp         <span class="c"># 状態確認</span>
+journalctl -u myapp -f         <span class="c"># アプリのリアルタイムログ出力</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-3">
+<div class="sec-tag">モジュール 3 · デプロイ</div>
+<h2>3.3 Nginx リバースプロキシ本番テンプレート</h2>
+<pre><code><span class="c"># /etc/nginx/sites-available/yourdomain.conf</span>
+server {
+    listen 80;
+    server_name yourdomain.dev;
+    return 301 https://$host$request_uri; <span class="c"># HTTPS へ強制リダイレクト</span>
+}
+
+server {
+    listen 443 ssl http2;
+    server_name yourdomain.dev;
+
+    ssl_certificate /etc/letsencrypt/live/yourdomain.dev/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.dev/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-4">
+<div class="sec-tag">モジュール 3 · デプロイ</div>
+<h2>3.4 Docker 最小セット</h2>
+<p>環境差分による「自分のPCでは動いたのにサーバーで動かない」問題を排除するため、Docker コンテナによるパッケージングを活用します。</p>
+<pre><code><span class="c"># docker-compose.yml</span>
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    depends_on:
+      - db
+  db:
+    image: postgres:16-alpine
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+
+volumes:
+  pgdata:</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-5">
+<div class="sec-tag">モジュール 3 · デプロイ</div>
+<h2>3.5 GitHub Actions による自動デプロイ</h2>
+<pre><code><span class="c"># .github/workflows/deploy.yml</span>
+name: Production Deploy
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: deployer
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/myapp
+            git pull origin main
+            npm ci
+            npm run build
+            sudo systemctl restart myapp</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="m3-6">
+<div class="sec-tag">モジュール 3 · デプロイ</div>
+<h2>3.6 シークレットと環境変数（.env）の安全管理</h2>
+<ul>
+<li><strong><code>.env</code> を絶対に Git にコミットしない:</strong> <code>.gitignore</code> に <code>.env*</code> を必ず追加。</li>
+<li><strong>テンプレートの共有:</strong> ダミー値を記述した <code>.env.example</code> のみをリポジトリで管理。</li>
+<li><strong>パーミッション制限:</strong> サーバー上の <code>.env</code> は <code>chmod 600 .env</code> で所有者以外からの読み取りを禁止。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ========== Appendix ========== -->
+
+<section id="appA">
+<div class="sec-tag">付録 A</div>
+<h2>5大障害 30秒クイック処方箋</h2>
+<table class="tbl">
+<tr><th>障害現象</th><th>考えられる根本原因</th><th>30秒対処手順</th></tr>
+<tr>
+  <td><strong>502 Bad Gateway</strong></td>
+  <td>バックエンドアプリ（Node/Python）がクラッシュまたは未起動</td>
+  <td><code>systemctl status myapp</code> で状態確認 → <code>journalctl -u myapp -n 50 --no-pager</code> でエラーログを確認して再起動。</td>
+</tr>
+<tr>
+  <td><strong>SSH 接続不能</strong></td>
+  <td>IP変更、ポート誤設定、UFW による誤遮断</td>
+  <td>VPSプロバイダの Web 管理コンソール（VNC）からログインし、<code>ufw status</code> と <code>sshd_config</code> を確認。</td>
+</tr>
+<tr>
+  <td><strong>No space left on device</strong></td>
+  <td>Docker イメージの肥大化、またはログの蓄積</td>
+  <td><code>df -h</code> で確認 → <code>docker system prune -af</code> および <code>journalctl --vacuum-size=200M</code> でディスク解放。</td>
+</tr>
+<tr>
+  <td><strong>Out of Memory (OOM)</strong></td>
+  <td>メモリ枯渇により OS がプロセスを強制停止</td>
+  <td><code>dmesg -T | grep -i oom</code> で確認 → スワップファイル（Swap）を追加し、アプリのメモリ上限を設定。</td>
+</tr>
+<tr>
+  <td><strong>SSL 証明書失効警告</strong></td>
+  <td>Certbot の自動更新 Cron 失敗</td>
+  <td><code>certbot renew --dry-run</code> でエラー原因を確認 → <code>certbot renew --force-renewal</code> で強制更新。</td>
+</tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="appB">
+<div class="sec-tag">付録 B</div>
+<h2>おすすめリファレンス & 公式情報</h2>
+<ul>
+<li><a href="https://systemd.io/" target="_blank">systemd 公式ドキュメント</a> · Linux サービス管理</li>
+<li><a href="https://nginx.org/en/docs/" target="_blank">Nginx 公式ドキュメント</a> · リバースプロキシ・Webサーバー</li>
+<li><a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> · 無料 SSL/TLS 証明書</li>
+<li><a href="https://eff-certbot.readthedocs.io/" target="_blank">Certbot ドキュメント</a> · 証明書自動管理</li>
+<li><a href="https://docs.docker.com/" target="_blank">Docker 公式ドキュメント</a> · コンテナ運用基盤</li>
+<li><a href="https://tailscale.com/" target="_blank">Tailscale</a> · Zero-config メッシュ VPN</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="appC">
+<div class="sec-tag">付録 C</div>
+<h2>重要用語集 (Glossary)</h2>
+<table class="tbl">
+<tr><th>用語</th><th>定義と役割</th></tr>
+<tr><td><strong>VPS</strong></td><td>仮想専用サーバー（Virtual Private Server）。物理サーバー上で仮想化された独立したOS環境。</td></tr>
+<tr><td><strong>Reverse Proxy</strong></td><td>クライアントからのリクエストを背後の複数バックエンドへ転送・仲介するプロキシ。</td></tr>
+<tr><td><strong>Daemon</strong></td><td>バックグラウンドで常時稼働し、要求を待ち受けるシステム常駐プロセス。</td></tr>
+<tr><td><strong>TLS Handshake</strong></td><td>クライアントとサーバー間で暗号化通信を開始する際の鍵交換および身元証明のやり取り。</td></tr>
+<tr><td><strong>CIDR</strong></td><td>IP アドレスの範囲を表す記法（例: <code>192.168.1.0/24</code>）。</td></tr>
+</table>
+</section>
+
+<div class="footer">
+  <p>個人開発者のためのインフラ運用基盤 · サーバー × ネットワーク × デプロイ · 2026年8月検証</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">▲</button>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

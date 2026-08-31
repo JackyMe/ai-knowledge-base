@@ -179,13 +179,12 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">🎯</span>Prompt & Context Engineering<span class="sub">Foundation</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.en.html">◂ Topic Center</a>
     <span>Official Doc Verification · 2026-07</span>
       <span>Verified 2026-08-17</span>
@@ -265,7 +264,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>Official Definition</td><td colspan="2"><strong>Find the minimal set of high-signal tokens to maximize the probability of desired outcomes</strong> (Anthropic Context Engineering Article)</td></tr>
 </table>
 
-<div class="callout note"><b class="t">The Division of Labor Between This Page and the Mindset Page</b><a href="ai-leverage-guide.html">The Mindset Page</a> answers "what AI can do, how it should be used" (scenarios and principles); this page answers "exactly how to say it, how to feed it" (techniques and engineering). One of the seven principles on the mindset page is "context is the primary resource"—this page is the detailed manual for that statement.</div>
+<div class="callout note"><b class="t">The Division of Labor Between This Page and the Mindset Page</b><a href="ai-leverage-guide.en.html">The Mindset Page</a> answers "what AI can do, how it should be used" (scenarios and principles); this page answers "exactly how to say it, how to feed it" (techniques and engineering). One of the seven principles on the mindset page is "context is the primary resource"—this page is the detailed manual for that statement.</div>
 
 <h3 data-reveal>Three-Level Evidence Annotation, Distinguishing "Official Sayings" from "Community Guesses"</h3>
 <p>This page involves multiple vendors and rapidly evolving fields. Volatile or controversial conclusions are marked in three levels of credibility for your own judgment (fundamental, multi-party consistent conclusions are not annotated line by line to prevent tag flooding):</p>
@@ -627,7 +626,7 @@ If the question cannot be answered based on these materials, you must reply: "Th
   <tr><td>Rule Routing</td><td>Must execute 100% → Hooks/Permissions (mandatory); scenario-specific knowledge → Skills (on-demand); only "the few facts needed every time" deserve permanent residency</td></tr>
   <tr><td>Correct Altitude</td><td>Write using the altitude principles from Chapter 06: heuristics + red lines, no if-elses and no slogans</td></tr>
 </table>
-<p>Two ready-to-copy finished templates: <a href="ai-capability-expansion.html#engine">The CLAUDE.md template for Capability Expansion Guide</a> · <a href="codex-guide.html#agents-md">The lean AGENTS.md template for Codex Guide</a>.</p>
+<p>Two ready-to-copy finished templates: <a href="ai-capability-expansion.en.html#engine">The CLAUDE.md template for Capability Expansion Guide</a> · <a href="codex-guide.en.html#agents-md">The lean AGENTS.md template for Codex Guide</a>.</p>
 
 <h3 data-reveal>② Tools and Examples Are Also Context</h3>
 <ul>
@@ -651,7 +650,7 @@ If the question cannot be answered based on these materials, you must reply: "Th
   <tr><td><strong>Sub-agent Architecture</strong></td><td>Delegate exploration to clones with independent contexts; main window only receives conclusion summaries</td><td>CC subagents; Codex cloud tasks</td></tr>
 </table>
 <div class="callout note"><b class="t">A Rule of Thumb</b>Official recommended order: <strong>Do the simplest viable thing first</strong>—if the window is sufficient, prune it well; if truly insufficient, prioritize compaction; if cross-session memory is needed, use notes; if exploration volume is massive, only then employ subagents. Don't build architecture for architecture's sake.</div>
-<p class="src">Sources: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Same as Chapter 06 (Original discussion on compaction/notes/subagents)</a> · <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank">Anthropic Best Practices for Tool Descriptions / tool_choice</a> · <a href="https://developers.openai.com/api/docs/guides/function-calling" target="_blank">OpenAI Function calling (tool_choice)</a> · <a href="claude-code-guide.html#context">CC Guide · Advanced Context Management (Tool layer practical operation)</a></p>
+<p class="src">Sources: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Same as Chapter 06 (Original discussion on compaction/notes/subagents)</a> · <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank">Anthropic Best Practices for Tool Descriptions / tool_choice</a> · <a href="https://developers.openai.com/api/docs/guides/function-calling" target="_blank">OpenAI Function calling (tool_choice)</a> · <a href="claude-code-guide.en.html#context">CC Guide · Advanced Context Management (Tool layer practical operation)</a></p>
 </section>
 
 <div class="divider"></div>
@@ -717,7 +716,7 @@ If the question cannot be answered based on these materials, you must reply: "Th
   <tr><td>OpenAI</td><td>For the consumer ChatGPT, officials confirm a router exists, quoting "a real-time router that quickly decides which to use based on conversation type, complexity, tool needs, and your explicit intent"; but the GPT-5.6 release in 2026-07 changed the API model selection to three fixed capacity tiers (Sol/Terra/Luna), and the <code>gpt-5.6</code> alias <strong>statically</strong> points to Sol, without dynamic routing—developers must choose the tier themselves. <strong>The consumer side and API side are not the same</strong>; you cannot broadly say "OpenAI has auto-routing."</td></tr>
   <tr><td>AWS Bedrock</td><td>The official <strong>Intelligent Prompt Routing</strong> (GA in 2025-04) claims "up to 30% cost reduction without impacting accuracy" (official numbers, unverified by third parties), but <strong>only supports pairing two models within the same family</strong> (e.g., Claude Haiku ↔ Haiku 3.5 ↔ Sonnet 3.5), not cross-vendor arbitrary routing, and the supported list hasn't updated for new models post late-2025.</td></tr>
   <tr><td>Google Vertex AI</td><td>The official <strong>Model Optimizer</strong> auto-selects Gemini Pro/Flash based on user cost/quality preferences, but <strong>docs explicitly mark it Pre-GA</strong>, still lacking official support commitments as of 2026-07.</td></tr>
-  <tr><td>Anthropic</td><td><strong>Found no official "cross-model difficulty-aware routing" feature.</strong> The closest is Claude Code's <code>opusplan</code> (see <a href="claude-code-guide.html#hidden-config">CC Guide</a>): Planning mode strictly uses Opus, execution mode strictly switches back to Sonnet—this is a <strong>hardcoded two-stage rule</strong>, not a dynamic "judge task difficulty then pick a model" classification. More direct evidence: On the official Claude Code GitHub repo, an issue submitted in 2026-04 titled "Feature: Auto-select model and effort level based on task complexity" <strong>remains open</strong>—indicating this is exactly what officials haven't built yet.</td></tr>
+  <tr><td>Anthropic</td><td><strong>Found no official "cross-model difficulty-aware routing" feature.</strong> The closest is Claude Code's <code>opusplan</code> (see <a href="claude-code-guide.en.html#hidden-config">CC Guide</a>): Planning mode strictly uses Opus, execution mode strictly switches back to Sonnet—this is a <strong>hardcoded two-stage rule</strong>, not a dynamic "judge task difficulty then pick a model" classification. More direct evidence: On the official Claude Code GitHub repo, an issue submitted in 2026-04 titled "Feature: Auto-select model and effort level based on task complexity" <strong>remains open</strong>—indicating this is exactly what officials haven't built yet.</td></tr>
 </table>
 
 <h3 data-reveal>II. Open Source Projects: Active vs. Stagnant, Pick the Right Reference</h3>
@@ -992,7 +991,7 @@ Before starting, create PROGRESS.md, clearly stating:
 Update PROGRESS.md after completing each batch before continuing; if long/multi-turn conversations occur,
 re-read PROGRESS.md before the next step to ensure constraints haven't drifted.</code></div>
 
-<p class="src">Templates link with other topics in this repo: For detailed coding scenarios see <a href="ai-capability-expansion.html#engine">Capability Expansion Guide Prompt Library</a>, for design scenarios see <a href="pencil-claude-code-best-practices.html#prompts">Pencil Practice Examples</a>, for scenario selection see <a href="ai-leverage-guide.html#matrix">Leverage Guide ROI Matrix</a>.</p>
+<p class="src">Templates link with other topics in this repo: For detailed coding scenarios see <a href="ai-capability-expansion.en.html#engine">Capability Expansion Guide Prompt Library</a>, for design scenarios see <a href="pencil-claude-code-best-practices.en.html#prompts">Pencil Practice Examples</a>, for scenario selection see <a href="ai-leverage-guide.en.html#matrix">Leverage Guide ROI Matrix</a>.</p>
 </section>
 
 <div class="divider"></div>
@@ -1022,7 +1021,7 @@ re-read PROGRESS.md before the next step to ensure constraints haven't drifted.<
 </table>
 <div class="callout note"><b class="t">Individual vs Team Use</b>For one person, the failure set + version control duo is enough; for shared prompts/system prompts used by multiple people, consider introducing a dedicated evaluation recording method (like saving every A/B test result into the repo). Specific tool selection depends on team size; the methodology is more important than the tool itself.</div>
 
-<p class="src">Methodology based on: Personal simplification of official evals philosophy; Stop-loss disciplines from <a href="ai-leverage-guide.html#principles">Leverage Guide 7 Principles</a>.</p>
+<p class="src">Methodology based on: Personal simplification of official evals philosophy; Stop-loss disciplines from <a href="ai-leverage-guide.en.html#principles">Leverage Guide 7 Principles</a>.</p>
 </section>
 
 <div class="divider"></div>
@@ -1068,7 +1067,7 @@ re-read PROGRESS.md before the next step to ensure constraints haven't drifted.<
   <tr><td>External content risk control</td><td>Tool approvals / Permission grading</td><td>Agent approvals (human review of web pages)</td><td>Chapter 10 Security Defenses</td></tr>
 </table>
 
-<div class="callout note"><b class="t">One-Sentence Summary</b>The endgame of prompting is layering: <strong>What should be guaranteed by mechanisms shouldn't rely on phrasing, what should be loaded on demand shouldn't be resident, what needs a new session shouldn't be forced into an old one</strong>. For full details on tool usage, see <a href="claude-code-guide.html#extensions">CC Guide · Choosing the Six Extensions</a> and <a href="codex-guide.html#skills-mcp">Codex Guide · Skills/MCP</a>.</div>
+<div class="callout note"><b class="t">One-Sentence Summary</b>The endgame of prompting is layering: <strong>What should be guaranteed by mechanisms shouldn't rely on phrasing, what should be loaded on demand shouldn't be resident, what needs a new session shouldn't be forced into an old one</strong>. For full details on tool usage, see <a href="claude-code-guide.en.html#extensions">CC Guide · Choosing the Six Extensions</a> and <a href="codex-guide.en.html#skills-mcp">Codex Guide · Skills/MCP</a>.</div>
 </section>
 
 <div class="divider"></div>
@@ -1089,7 +1088,7 @@ re-read PROGRESS.md before the next step to ensure constraints haven't drifted.<
   <tr><td><a href="https://arxiv.org/html/2601.07206v1" target="_blank">LLMRouterBench</a> / <a href="https://arxiv.org/html/2603.04445v2" target="_blank">Model Routing Survey (2026-03)</a></td><td>Core evidence for Chapter 09 Model Routing.</td></tr>
   <tr><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></td><td>Official stance on the G-C-C-D task skeleton and agent tasking.</td></tr>
   <tr><td><a href="https://www.promptingguide.ai/" target="_blank">Prompt Engineering Guide (DAIR.AI)</a></td><td>The community's most comprehensive technique encyclopedia, including paper indexes; use it to look up obscure techniques.</td></tr>
-  <tr><td>Repo Linkages</td><td><a href="ai-leverage-guide.html">Leverage Guide</a> (Scenarios and Principles) · <a href="claude-code-guide.html">CC Guide</a> / <a href="codex-guide.html">Codex Guide</a> (Tool Implementation) · <a href="ai-capability-expansion.html#mapping">Capability Expansion Guide · Analogical Questioning</a> (Domain Specialization Example)</td></tr>
+  <tr><td>Repo Linkages</td><td><a href="ai-leverage-guide.en.html">Leverage Guide</a> (Scenarios and Principles) · <a href="claude-code-guide.en.html">CC Guide</a> / <a href="codex-guide.en.html">Codex Guide</a> (Tool Implementation) · <a href="ai-capability-expansion.en.html#mapping">Capability Expansion Guide · Analogical Questioning</a> (Domain Specialization Example)</td></tr>
 </table>
 </section>
 

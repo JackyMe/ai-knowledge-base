@@ -172,13 +172,12 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">⚡</span>Android Stability Guide<span class="sub">Crash · ANR · AI</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.en.html">◂ Topic Center</a>
     <span>Compiled on 2026-07-15</span>
       <span>Verified 2026-08-17</span>
@@ -880,7 +879,7 @@ git bisect reset</code></pre><p>When there is no stable reproduction, bisect fea
 <h2>AI Integration: Evidence Quality Determines Triage Ceiling</h2>
 
 <p><strong>AI Triage Quality ≈ Evidence Completeness × Issue Constraints × Verification Feedback.</strong> Models excel at finding correlations across stacks, source code, diffs, and distributions, but they cannot see mappings, runtime states, and failed samples you didn't provide. Standardize the input first before talking about prompt engineering tricks.</p>
-<div class="callout note"><b class="t">Companion Reading</b>For the general version of the methodology in this chapter (context as primary resource, verification loop, seven mindsets), see <a href="ai-leverage-guide.html">AI Leverage Panorama and Mindset</a>; for usage of the Claude Code tool itself, see <a href="claude-code-guide.html">Usage Guide</a>.</div>
+<div class="callout note"><b class="t">Companion Reading</b>For the general version of the methodology in this chapter (context as primary resource, verification loop, seven mindsets), see <a href="ai-leverage-guide.en.html">AI Leverage Panorama and Mindset</a>; for usage of the Claude Code tool itself, see <a href="claude-code-guide.en.html">Usage Guide</a>.</div>
 
 <h3 data-reveal>Crash Context Bundle: Unified Input Contract for Humans and AI</h3>
 <table class="tbl">
@@ -1167,7 +1166,7 @@ Return these headings exactly:
   <tr><td>Native / Memory</td><td><a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">Native crash</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">Memory debugging</a></td></tr>
   <tr><td>System Forensics</td><td><a href="https://developer.android.com/studio/debug/bug-report" target="_blank">Bugreport</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></td></tr>
   <tr><td>Play / Firebase</td><td><a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Play Technical Quality</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Crashlytics</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Official MCP</a></td></tr>
-  <tr><td>AI Engineering</td><td><a href="claude-code-guide.html">Claude Code Guide in this Repo</a> · <a href="codex-guide.html">Codex Guide in this Repo</a> · <a href="https://agentskills.io/specification" target="_blank">Agent Skills Specification</a></td></tr>
+  <tr><td>AI Engineering</td><td><a href="claude-code-guide.en.html">Claude Code Guide in this Repo</a> · <a href="codex-guide.en.html">Codex Guide in this Repo</a> · <a href="https://agentskills.io/specification" target="_blank">Agent Skills Specification</a></td></tr>
 </table>
 <div class="callout tip"><b class="t">Ultimate Capability Standard</b>Novices can complete their first valid ticket in 30 minutes using 00–02; Intermediates can reconstruct ANR/Native/device scenes using 03–07; Seniors can handle non-reproducible issues and safely integrate AI using 08–10; Owners use 11 to turn every incident into systemic capabilities that prevent it from happening again.</div>
 <p class="src">Sources: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Google Play Technical Quality</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Firebase Crashlytics</a></p>

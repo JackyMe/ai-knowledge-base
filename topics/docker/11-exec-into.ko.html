@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11. 내부 진입: 실행 중인 컨테이너 접속 - Docker 35단계 완벽 마스터</title>
+<style>
+:root {
+  --accent: #0284c7;
+  --accent-light: #0ea5e9;
+  --accent-soft: #f0f9ff;
+  --accent-border: #bae6fd;
+  --ink: #0f172a;
+  --bg: #ffffff;
+  --bg-side: #f8fafc;
+  --bg-code: #0f172a;
+  --text: #1e293b;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --border-2: #cbd5e1;
+  --tip-bg: #f0fdf4;
+  --tip-border: #bbf7d0;
+  --warn-bg: #fffbeb;
+  --warn-border: #fde68a;
+  --note-bg: #f0f9ff;
+  --note-border: #bae6fd;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, "JetBrains Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.8; font-size: 15.5px; -webkit-font-smoothing: antialiased; }
+
+/* 상단 읽기 진행률 바 */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, #0ea5e9, #0284c7, #38bdf8);
+  z-index: 1000; transition: width 0.1s ease;
+}
+
+/* 상단바 */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.menu-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
+  align-items: center; justify-content: center; font-size: 18px; color: var(--text-2);
+}
+.menu-toggle:hover { background: var(--bg-side); color: var(--ink); }
+
+.logo {
+  font-weight: 800; font-size: 16px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff;
+}
+.logo-badge {
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 2px 8px; border-radius: 99px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 13.5px; }
+.topbar-right a {
+  color: var(--text-2); text-decoration: none; font-weight: 500;
+  display: flex; align-items: center; gap: 4px; transition: color 0.15s;
+}
+.topbar-right a:hover { color: var(--accent); }
+
+/* 사이드바 */
+.sidebar {
+  position: fixed; top: 60px; left: 0; bottom: 0; width: 310px;
+  overflow-y: auto; background: var(--bg-side);
+  border-right: 1px solid var(--border); padding: 18px 14px 60px;
+  z-index: 90; transition: transform 0.25s ease;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+/* 사이드바 검색창 */
+.side-search-box { margin-bottom: 16px; position: relative; }
+.side-search-input {
+  width: 100%; padding: 8px 32px 8px 12px; border: 1px solid var(--border-2);
+  border-radius: 8px; font-size: 13px; font-family: var(--font);
+  background: #fff; color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.side-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15); }
+.side-search-icon {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-3); pointer-events: none;
+}
+
+/* 단계별 그룹 */
+.nav-group { margin-bottom: 18px; }
+.nav-group-title {
+  font-size: 11.5px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px;
+  margin-bottom: 2px;
+}
+
+.nav-item {
+  display: flex; align-items: flex-start; padding: 8px 10px;
+  border-radius: 8px; color: var(--text-2); text-decoration: none;
+  font-size: 13.5px; margin-bottom: 1px; transition: all 0.15s; line-height: 1.45;
+}
+.nav-item:hover { background: var(--border); color: var(--ink); }
+.nav-item.on {
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; border-left: 3px solid var(--accent);
+}
+.nav-item .n {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  margin-right: 8px; flex: none; margin-top: 1px;
+}
+.nav-item.on .n { color: var(--accent); font-weight: 700; }
+
+/* 모바일 백드롭 */
+.sidebar-backdrop {
+  position: fixed; inset: 60px 0 0 0; background: rgba(15, 23, 42, 0.45);
+  z-index: 85; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
+
+/* 메인 콘텐츠 */
+.main-wrap {
+  margin-left: 310px; padding: 40px 48px 120px;
+  max-width: 960px; min-height: 100vh;
+}
+
+/* 챕터 뱃지 */
+.chapter-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 4px 10px; border-radius: 99px; margin-bottom: 16px;
+}
+
+h1 { font-size: 28px; font-weight: 800; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.5px; line-height: 1.35; }
+h2 { font-size: 20px; font-weight: 700; color: var(--ink); margin: 40px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 28px 0 14px; }
+p { margin-bottom: 16px; color: var(--text); }
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+ul, ol { margin: 0 0 20px 22px; }
+li { margin-bottom: 8px; color: var(--text); }
+strong { color: var(--ink); font-weight: 700; }
+
+/* 코드 블록 */
+code {
+  font-family: var(--mono); font-size: 85%; background: #f1f5f9;
+  color: #e11d48; padding: 2px 6px; border-radius: 4px;
+}
+pre {
+  position: relative; background: var(--bg-code); color: #e2e8f0;
+  padding: 20px; border-radius: var(--radius); overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; margin: 24px 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+
+/* 코드 하이라이트 */
+.bash-cmd { color: #38bdf8; font-weight: 600; }
+.bash-arg { color: #c084fc; }
+.bash-comment { color: #64748b; font-style: italic; }
+.bash-str { color: #a3e635; }
+
+/* 코드 복사 버튼 */
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1; font-size: 11px; font-family: var(--font);
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  opacity: 0; transition: all 0.15s ease;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.copy-btn.copied { background: #16a34a; border-color: #22c55e; color: #fff; }
+
+/* 알림 카드 */
+.alert {
+  padding: 18px 20px; border-radius: var(--radius); margin: 24px 0;
+  font-size: 14.5px; display: flex; gap: 14px; border: 1px solid var(--border);
+}
+.alert.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+.alert.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.alert.note { background: var(--note-bg); border-color: var(--note-border); }
+.alert .ic { font-size: 22px; flex: none; }
+.alert .tt { font-weight: 750; color: var(--ink); display: block; margin-bottom: 6px; font-size: 15.5px; }
+
+/* 단계 패널 */
+.step-panel {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin: 28px 0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+.step-header {
+  background: var(--bg-side); padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-weight: 700; color: var(--ink); font-size: 15px; display: flex; align-items: center; gap: 8px;
+}
+.step-body { padding: 20px; }
+
+/* 트러블슈팅 구조대 */
+.trouble-box {
+  background: #fff5f5; border: 1px dashed #fca5a5; border-radius: var(--radius);
+  padding: 22px; margin: 32px 0;
+}
+.trouble-title {
+  color: #dc2626; font-weight: 800; font-size: 16.5px;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.trouble-item { margin-bottom: 14px; }
+.trouble-item:last-child { margin-bottom: 0; }
+.trouble-item .q { font-weight: 700; color: var(--ink); margin-bottom: 4px; font-size: 14.5px; }
+.trouble-item .a { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+
+/* Mermaid 차트 컨테이너 */
+.mermaid-box {
+  display: flex; justify-content: center; margin: 28px 0;
+  background: #f8fafc; border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); overflow-x: auto;
+}
+
+/* 하단 이전/다음 페이지 내비게이션 */
+.page-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border);
+}
+.page-nav-link {
+  display: flex; flex-direction: column; padding: 14px 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; transition: all 0.15s ease; flex: 1; max-width: 48%;
+  background: #fff;
+}
+.page-nav-link:hover {
+  border-color: var(--accent); background: var(--accent-soft);
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+.page-nav-link .dir { font-size: 11.5px; color: var(--text-3); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
+.page-nav-link .title { font-size: 14.5px; font-weight: 700; color: var(--accent); }
+.page-nav-link.next { text-align: right; margin-left: auto; }
+
+/* 키보드 단축키 안내 */
+.keyboard-hints {
+  margin-top: 30px; text-align: center; font-size: 12px; color: var(--text-3);
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.kbd {
+  background: #f1f5f9; border: 1px solid var(--border-2); border-radius: 4px;
+  padding: 1px 6px; font-family: var(--mono); font-size: 11px; color: var(--text-2);
+}
+
+/* 맨 위로 가기 버튼 */
+.back-to-top {
+  position: fixed; bottom: 30px; right: 30px; width: 42px; height: 42px;
+  background: #fff; border: 1px solid var(--border-2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-2); cursor: pointer; opacity: 0;
+  pointer-events: none; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  z-index: 80;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* 반응형 미디어 쿼리 */
+@media (max-width: 960px) {
+  .menu-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); width: 290px; }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }
+  .main-wrap { margin-left: 0; padding: 30px 20px 100px; }
+  .logo-badge { display: none; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+  .page-nav-link.next { text-align: left; }
+}
+</style>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+</script>
+<script src="../../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle" aria-label="목차 토글">☰</button>
+    <a href="01-intro.ko.html" class="logo">
+      <div class="logo-icon">🐳</div>
+      <span>Docker 35단계 완벽 마스터</span>
+      <span class="logo-badge">그림으로 보는 실전편</span>
+    </a>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../../index.ko.html"><span>←</span> 지식 베이스로 돌아가기</a>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="side-search-box">
+    <input type="text" class="side-search-input" id="sideSearch" placeholder="🔍 35개 챕터 빠른 검색..." autocomplete="off">
+    <span class="side-search-icon">⌘K</span>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💡 1단계: 개념 파악하기</div>
+    <a class="nav-item" href="01-intro.ko.html"><span class="n">01.</span><span>프롤로그: 개발자의 세기적 난제</span></a>
+    <a class="nav-item" href="02-what-is-docker.ko.html"><span class="n">02.</span><span>"이사" 비유로 완벽 이해하는 Docker</span></a>
+    <a class="nav-item" href="03-vm-vs-container.ko.html"><span class="n">03.</span><span>차원 축소 타격: VM vs 컨테이너</span></a>
+    <a class="nav-item" href="04-core-components.ko.html"><span class="n">04.</span><span>그림으로 이해하는 3대 핵심 아키텍처</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛠️ 2단계: 환경 구축</div>
+    <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 함정 탈출 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 환경 구축 가이드</span></a>
+    <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정: 느린 다운로드 속도 탈출</span></a>
+    <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 명령어 뒤에 숨겨진 비밀</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🚀 3단계: 컨테이너 운용</div>
+    <a class="nav-item" href="09-run-detached.ko.html"><span class="n">09.</span><span>백그라운드에서 Nginx 웹사이트 실행하기</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.ko.html"><span class="n">10.</span><span>생명주기 마스터하기 (상태 머신)</span></a>
+    <a class="nav-item on" href="11-exec-into.ko.html"><span class="n">11.</span><span>내부 진입: 실행 중인 컨테이너 접속</span></a>
+    <a class="nav-item" href="12-logs-detective.ko.html"><span class="n">12.</span><span>탐정의 시선: 로그 추적 및 분석</span></a>
+    <a class="nav-item" href="13-resource-limits.ko.html"><span class="n">13.</span><span>리소스 제한: OOM 서버 다운 방지</span></a>
+    <a class="nav-item" href="14-healthcheck.ko.html"><span class="n">14.</span><span>헬스체크: 컨테이너 자가 진단</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">📦 4단계: 이미지 커스텀</div>
+    <a class="nav-item" href="15-why-dockerfile.ko.html"><span class="n">15.</span><span>수동 환경 설정과 작별하기</span></a>
+    <a class="nav-item" href="16-dockerfile-syntax.ko.html"><span class="n">16.</span><span>Dockerfile 핵심 문법 완전 정복</span></a>
+    <a class="nav-item" href="17-dockerignore.ko.html"><span class="n">17.</span><span>.dockerignore 함정 탈출 가이드</span></a>
+    <a class="nav-item" href="18-build-practice.ko.html"><span class="n">18.</span><span>실전 웹 프로젝트 패키징</span></a>
+    <a class="nav-item" href="19-layer-caching.ko.html"><span class="n">19.</span><span>그림으로 이해하는 레이어 캐싱 마법</span></a>
+    <a class="nav-item" href="20-frontend-deploy.ko.html"><span class="n">20.</span><span>Vue/React 앱 스마트 배포</span></a>
+    <a class="nav-item" href="21-multi-stage.ko.html"><span class="n">21.</span><span>궁극의 경량화: 멀티 스테이지 빌드</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💾 5단계: 데이터 영속화</div>
+    <a class="nav-item" href="22-ephemeral-data.ko.html"><span class="n">22.</span><span>일회성 컨테이너와 사라지는 데이터</span></a>
+    <a class="nav-item" href="23-volumes.ko.html"><span class="n">23.</span><span>궁극의 데이터 보호: 볼륨 (Volumes)</span></a>
+    <a class="nav-item" href="24-bind-mounts.ko.html"><span class="n">24.</span><span>개발 필수 기술: 바인드 마운트</span></a>
+    <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이전: 데이터 백업 및 복원</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🌐 6단계: 네트워크 & 오케스트레이션</div>
+    <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐색: Bridge와 Host</span></a>
+    <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 지정 탈출</span></a>
+    <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요할까?</span></a>
+    <a class="nav-item" href="29-yaml-syntax.ko.html"><span class="n">29.</span><span>YAML 문법 속성 코스</span></a>
+    <a class="nav-item" href="30-compose-up-part1.ko.html"><span class="n">30.</span><span>최종 실전 (상): Web + 캐시 구성</span></a>
+    <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>최종 실전 (하): 마이크로서비스 네트워크</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛡️ 7단계: 보안 & 프로덕션 운영</div>
+    <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>보안 방벽: .env로 비밀번호 보호하기</span></a>
+    <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 공간 대청소</span></a>
+    <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 철칙: Root 계정 사용 금지</span></a>
+    <a class="nav-item" href="35-cicd-concept.ko.html"><span class="n">35.</span><span>에필로그: CI/CD 자동화 파이프라인</span></a>
+  </div>
+</aside>
+
+<main class="main-wrap">
+  <div class="chapter-badge">🚀 3단계: 컨테이너 운용 · 제 11 / 35 강</div>
+  <h1>11. 내부 진입: 실행 중인 컨테이너 접속</h1>
+
+  <div class="step-panel">
+    <div class="step-header">🔍 문제 발생 상황: 찾을 수 없는 설정 파일</div>
+    <div class="step-body">
+      <p>웹 애플리케이션을 새로 배포하고 브라우저를 열었더니 500 내부 서버 에러가 발생했습니다. 로그를 살펴보니 <code>FileNotFoundError: [Errno 2] No such file or directory: '/data/config.json'</code>라는 에러가 찍혀 있습니다.</p>
+      <p>"내 로컬 환경에서는 파일 경로가 정확했고 완벽하게 돌아갔는데 왜 서버 컨테이너에서는 파일을 찾을 수 없지?"</p>
+      <p>이때 가장 빠르고 확실한 원인 규명 방법은 <strong>실행 중인 컨테이너 내부로 직접 들어가서</strong> 해당 경로의 파일과 디렉터리 상태를 눈으로 확인하는 것입니다. 방 안에 누수가 생기면 직접 문을 열고 들어가 배관을 점검하는 것과 같습니다.</p>
+    </div>
+  </div>
+
+  <h2>1. 컨테이너의 출입문: <code>docker exec</code> 명령어</h2>
+  <p>실행 중인 컨테이너 내부로 진입하는 표준 명령어는 <code>docker exec</code> (execute의 약자)입니다.</p>
+<pre><code><span class="bash-cmd">docker exec</span> <span class="bash-arg">-it</span> my-web-app <span class="bash-str">sh</span></code></pre>
+  <p>이 명령어의 핵심 플래그인 <code>-it</code>의 역할을 분해해 보겠습니다.</p>
+  <ul>
+    <li><code>-i</code> (interactive): 컨테이너의 표준 입력(STDIN) 스트림을 계속 열어둡니다. 이 플래그가 없으면 터미널에서 키보드를 쳐도 컨테이너로 입력이 전달되지 않습니다.</li>
+    <li><code>-t</code> (tty): 가상 터미널(pseudo-TTY)을 할당합니다. 일반 터미널처럼 컬러 프롬프트와 포맷팅된 셸 화면을 보여줍니다.</li>
+  </ul>
+  <p>대화형 작업을 할 때는 항상 두 옵션을 합쳐 <code>-it</code>로 사용합니다.</p>
+
+  <div class="alert note">
+    <span class="ic">💡</span>
+    <div>
+      <span class="tt">어떤 셸(Shell)을 지정해야 할까요? (bash vs sh)</span>
+      <p>명령어 끝에 <code>bash</code> 대신 <code>sh</code>를 지정하는 경우가 많습니다.<br>
+      최근 널리 사용되는 경량 베이스 이미지(Alpine Linux 등)는 이미지 크기를 극소화하기 위해 무거운 <code>bash</code>를 제거하고 표준 경량 <code>sh</code>(또는 <code>/bin/ash</code>)만 탑재합니다.<br>
+      <strong>실무 팁:</strong> 먼저 <code>bash</code>로 시도해보고, 만약 <code>executable file not found in $PATH</code> 에러가 발생하면 즉시 <code>sh</code>로 전환하세요.</p>
+    </div>
+  </div>
+
+  <h2>2. 컨테이너 내부에서 수행할 수 있는 작업들</h2>
+  <p>성공적으로 진입하면 프롬프트가 <code>/app #</code> 또는 <code>root@컨테이너ID:/#</code> 형태로 변경됩니다. 이는 호스트 OS와 격리된 컨테이너 가상 파일시스템 세계로 들어왔음을 뜻합니다.</p>
+
+  <div class="mermaid-box">
+<pre><code class="language-mermaid">graph TD
+    subgraph 호스트 OS 머신 (Host)
+        H_FS[호스트 파일시스템
+/Users, /var, /etc]
+    end
+    
+    subgraph 컨테이너 내부 샌드박스 (Container)
+        C_FS[컨테이너 격리 파일시스템
+/app, /data, /etc]
+    end
+    
+    H_FS -.-|네임스페이스로 완전 격리| C_FS
+</code></pre>
+  </div>
+
+  <p>여기서 일반 Linux 시스템과 똑같이 다음과 같은 디버깅 명령어를 실행할 수 있습니다.</p>
+<pre><code><span class="bash-comment"># 현재 접속한 사용자 계정 확인 (보통 root 또는 appuser)</span>
+<span class="bash-cmd">whoami</span>
+
+<span class="bash-comment"># 현재 작업 디렉터리 및 파일 목록 확인</span>
+<span class="bash-cmd">pwd</span> && <span class="bash-cmd">ls</span> -la
+
+<span class="bash-comment"># 에러를 유발한 설정 파일 내용 직접 열람</span>
+<span class="bash-cmd">cat</span> /data/config.json
+
+<span class="bash-comment"># 컨테이너 내부에서 실행 중인 프로세스 목록 확인</span>
+<span class="bash-cmd">ps</span> aux
+
+<span class="bash-comment"># 주입된 환경변수 목록 확인 (환경변수 오타 디버깅에 필수)</span>
+<span class="bash-cmd">env</span></code></pre>
+
+  <h3>필요한 진단 도구 즉석 설치하기</h3>
+  <p>네트워크 핑 테스트를 위한 <code>curl</code>이나 <code>ping</code> 명령어가 컨테이너에 없다면, 셸 안에서 패키지 매니저로 즉시 설치할 수 있습니다.</p>
+<pre><code><span class="bash-comment"># Debian / Ubuntu 기반 컨테이너</span>
+<span class="bash-cmd">apt-get</span> update && <span class="bash-cmd">apt-get</span> install -y curl
+
+<span class="bash-comment"># Alpine Linux 기반 컨테이너</span>
+<span class="bash-cmd">apk</span> add --no-cache curl</code></pre>
+
+  <h2>3. 일회성 실행 (One-Shot 모드)</h2>
+  <p>대화형 셸에 계속 머무를 필요 없이 특정 명령의 출력만 확인하고 싶다면 <code>-it</code> 없이 단일 명령만 전달할 수 있습니다.</p>
+<pre><code><span class="bash-comment"># 호스트 터미널에서 컨테이너 내부 Nginx 설정 파일 바로 출력</span>
+<span class="bash-cmd">docker exec</span> nginx-server <span class="bash-cmd">cat</span> /etc/nginx/nginx.conf
+
+<span class="bash-comment"># 컨테이너 재시작 없이 Nginx 설정 리로드만 즉시 수행</span>
+<span class="bash-cmd">docker exec</span> nginx-server <span class="bash-cmd">nginx</span> -s reload</code></pre>
+  <p>이 방식은 CI/CD 배포 스크립트나 모니터링 자동화 스크립트 작성 시 매우 유용합니다.</p>
+
+  <h2>4. 파일 전송 마법: <code>docker cp</code></h2>
+  <p>컨테이너 내부 파일을 호스트로 꺼내오거나, 호스트에서 수정한 설정 파일을 컨테이너 내부로 밀어 넣을 때 사용합니다.</p>
+
+<pre><code><span class="bash-comment"># 1. 호스트의 파일을 컨테이너 내부로 복사</span>
+<span class="bash-comment"># docker cp [로컬경로] [컨테이너명]:[컨테이너내부경로]</span>
+<span class="bash-cmd">docker cp</span> ./fixed-config.json my-web-app:/data/config.json
+
+<span class="bash-comment"># 2. 컨테이너 내부의 로그/덤프 파일을 호스트로 복사</span>
+<span class="bash-comment"># docker cp [컨테이너명]:[컨테이너내부경로] [로컬경로]</span>
+<span class="bash-cmd">docker cp</span> my-web-app:/app/crash.dump ./local-folder/</code></pre>
+
+  <h2>5. 컨테이너 셸 빠져나오기</h2>
+  <p>작업을 마치고 호스트 터미널로 돌아오려면 <code>exit</code>를 입력하거나 단축키 <code>Ctrl + D</code>를 누릅니다.<br>
+  <strong>참고:</strong> 셸을 빠져나와도 여러분이 진입했던 보조 프로세스만 종료될 뿐, 컨테이너의 메인 서비스는 백그라운드에서 정상적으로 계속 실행됩니다.</p>
+
+  <div class="trouble-box">
+    <div class="trouble-title">🚑 트러블슈팅 구조대</div>
+    
+    <div class="trouble-item">
+      <div class="q">Q1: "OCI runtime exec failed: ... executable file not found in $PATH: unknown" 에러 발생</div>
+      <div class="a">A: 지정한 셸 프로그램(bash 등)이 컨테이너 내부에 설치되어 있지 않습니다. <code>bash</code> 대신 <code>sh</code>로 변경하여 다시 실행해 보세요. 만약 scratch 베이스처럼 셸이 아예 없는 초소형 이미지라면 exec로 진입할 수 없으며 로그 조회를 통해 디버깅해야 합니다.</div>
+    </div>
+
+    <div class="trouble-item">
+      <div class="q">Q2: "Error response from daemon: Container xxx is not running" 에러 발생</div>
+      <div class="a">A: <code>docker exec</code>는 반드시 실행 중(Up)인 컨테이너에만 접근할 수 있습니다. 이미 종료(Exited)된 컨테이너라면 <code>docker logs</code>를 통해 왜 컨테이너가 시작하자마자 종료되었는지 원인을 분석해야 합니다.</div>
+    </div>
+  </div>
+
+  <div class="alert tip">
+    <span class="ic">🚀</span>
+    <div>
+      <span class="tt">실무 철칙: 일회용 컨테이너 (Disposable Container) 원칙</span>
+      <code>docker exec</code>나 <code>docker cp</code>로 컨테이너 내부 파일을 직접 수정하는 것은 임급 처방일 뿐, 영구적인 해결책이 아닙니다(안티패턴).<br>
+      컨테이너가 재시작되거나 새로 배포되면 내부 변경사항은 모두 유실됩니다. 정확한 워크플로는 <strong>"exec로 원인을 파악 -> 로컬 코드나 Dockerfile 수정 -> 새 이미지 빌드 및 재배포"</strong>의 순서를 따르는 것입니다.
+    </div>
+  </div>
+  
+  <div class="page-nav">
+    <a href="10-lifecycle-cmds.ko.html" class="page-nav-link prev"><span class="dir">← 이전 레슨</span><span class="title">10. 컨테이너 생명주기 제어 (상태 머신)</span></a>
+    <a href="12-logs-detective.ko.html" class="page-nav-link next"><span class="dir">다음 레슨 →</span><span class="title">12. 탐정의 시선: 로그 추적 및 분석</span></a>
+  </div>
+
+  <div class="keyboard-hints">
+    <span>💡 단축키: <span class="kbd">←</span> 이전 레슨</span>
+    <span><span class="kbd">→</span> 다음 레슨</span>
+    <span><span class="kbd">/</span> 검색창 포커스</span>
+  </div>
+</main>
+
+<button class="back-to-top" id="backToTop" title="맨 위로">↑</button>
+
+<script>
+// 1. 독서 진행률 바
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+  
+  // 맨 위로 가기 버튼 노출 제어
+  const btt = document.getElementById('backToTop');
+  if (winScroll > 300) {
+    btt.classList.add('show');
+  } else {
+    btt.classList.remove('show');
+  }
+});
+
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// 2. 모바일 사이드바 토글
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function toggleSidebar() {
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('active');
+}
+
+menuToggle.addEventListener('click', toggleSidebar);
+backdrop.addEventListener('click', toggleSidebar);
+
+// 3. 코드 복사 기능
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.innerText = '복사';
+  btn.addEventListener('click', () => {
+    const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = '복사 완료 ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = '복사';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// 4. 사이드바 실시간 검색 필터
+const searchInput = document.getElementById('sideSearch');
+searchInput.addEventListener('input', (e) => {
+  const val = e.target.value.toLowerCase().trim();
+  const navItems = document.querySelectorAll('.sidebar .nav-item');
+  const groups = document.querySelectorAll('.sidebar .nav-group');
+  
+  navItems.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    if (!val || text.includes(val)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  // 그룹 내 모든 항목이 숨겨지면 그룹 제목도 숨김 처리
+  groups.forEach(group => {
+    const visibleChildren = group.querySelectorAll('.nav-item:not([style*="display: none"])');
+    if (visibleChildren.length === 0 && val) {
+      group.style.display = 'none';
+    } else {
+      group.style.display = 'block';
+    }
+  });
+});
+
+// 5. 키보드 단축키 내비게이션
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  
+  if (e.key === 'ArrowLeft') {
+    const prevLink = document.querySelector('.page-nav-link.prev');
+    if (prevLink) prevLink.click();
+  } else if (e.key === 'ArrowRight') {
+    const nextLink = document.querySelector('.page-nav-link.next');
+    if (nextLink) nextLink.click();
+  } else if (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+</script>
+
+</body>
+</html>

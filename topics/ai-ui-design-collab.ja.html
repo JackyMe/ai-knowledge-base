@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI コーディングエージェント（Claude Code / Codex）と UI デザインツール（pencil.dev / Figma / 次世代 AI デザイン）の協調コラボレーション全景：ツールマップ、Android エンドツーエンドパイプライン、デザイン トークンエンジニアリング、実機/仮想スクリーンショット回帰テスト、およびアンチパターン。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI コーディングエージェント × UI デザインツール · 最高効率コラボレーション全景（Android を例に）">
+<meta property="og:description" content="pencil.dev + Figma + Claude Code / Codex + Material 3 · ツール分担、MCP 統合、デザインとコードの双方向同期、Compose と Paparazzi / Roborazzi 回帰テスト。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-ui-design-collab.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI コーディングエージェント × UI デザインツール · 最高効率コラボレーション全景（Android を例に） · 2026.08</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#ec4899; --accent-soft:#f5edff;
+  --ink:#0b1220; --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0b1220;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef6fe;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3)}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;background:
+  radial-gradient(1000px 400px at 80% -20%,rgba(124,58,237,.35),transparent 60%),
+  radial-gradient(800px 400px at 10% 120%,rgba(236,72,153,.35),transparent 60%),
+  var(--ink);
+  color:#eaf1fb;padding:56px 52px 48px;position:relative;overflow:hidden}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.14);
+  border:1px solid rgba(124,58,237,.35);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#c4b5fd,#f9a8d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c8d2e6;max-width:680px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#94a3c0}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c3e3fb}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0369a1}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafcff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+/* ツールカードグリッド */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:20px 0}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;background:#fff;transition:.2s}
+.card:hover{border-color:var(--accent);box-shadow:0 6px 22px rgba(124,58,237,.10)}
+.card .name{font-weight:700;font-size:15.5px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card .name .icon{font-size:18px}
+.card .role{font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.card p{font-size:13.5px;color:var(--text-2);margin:0}
+.card .links{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.card .links a{font-size:12px;color:var(--text-3);text-decoration:none;border:1px solid var(--border);padding:2px 8px;border-radius:6px}
+.card .links a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* パイプライン */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0 26px}
+.pipe-step{border:1px solid var(--border);border-radius:10px;padding:14px 12px;background:#fff;position:relative;text-align:center}
+.pipe-step .ps-num{font-family:var(--mono);font-size:11px;color:var(--text-3);font-weight:700}
+.pipe-step .ps-icon{font-size:22px;margin:4px 0 6px}
+.pipe-step .ps-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.pipe-step .ps-tool{font-size:11.5px;color:var(--text-3)}
+.pipe-step::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-weight:700}
+.pipe-step:last-child::after{display:none}
+@media (max-width:880px){.pipeline{grid-template-columns:repeat(2,1fr)}.pipe-step::after{display:none}}
+
+/* Paparazzi スクリーンショットグリッド */
+.screenshot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0 24px}
+.screenshot-grid figure{margin:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.2s}
+.screenshot-grid figure:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(124,58,237,.08)}
+.screenshot-grid img{width:100%;height:auto;display:block;background:#fafbfc}
+.screenshot-grid figcaption{font-size:13px;color:var(--text-2);padding:12px 14px;background:#fafcff;border-top:1px solid var(--border);line-height:1.6}
+.screenshot-grid figcaption strong{color:var(--accent)}
+@media (max-width:720px){.screenshot-grid{grid-template-columns:1fr}}
+
+/* 比較対照表 */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+/* プロンプトサンプルボックス */
+.prompt-box{border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 18px;margin:14px 0;background:#fafcff;font-size:14px}
+.prompt-box .pt{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.prompt-box code{background:none;border:none;padding:0;color:var(--text);font-size:13.5px;white-space:pre-wrap;display:block}
+
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;letter-spacing:.04em}
+.pill.c{background:#e0f2fe;color:#0284c7}
+.pill.a{background:#f3e8ff;color:#7c3aed}
+.pill.b{background:#fef3c7;color:#d97706}
+.pill.d{background:#dcfce7;color:#16a34a}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">A×U</span>AI エージェント × UI デザイン<span class="sub">最高効率の協調</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div><a href="../index.ja.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ トピック一覧</a>&nbsp;&nbsp;2026-08-05 時点&nbsp;&nbsp;<span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">導入</div>
+    <a href="#intro"><span class="no">00</span>全景とデザイン・コードの溝</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">ツールマップ</div>
+    <a href="#map"><span class="no">01</span>デザインツールの位置づけ</a>
+    <a href="#consume"><span class="no">02</span>AI エージェントがデザインを「見る」仕組み</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Android エンドツーエンド</div>
+    <a href="#pipeline"><span class="no">03</span>5ステップ・パイプライン</a>
+    <a href="#tokens"><span class="no">04</span>Figma → Material 3 トークン</a>
+    <a href="#compose"><span class="no">05</span>Compose コード生成と書き戻し</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">品質とリグレッション</div>
+    <a href="#verify"><span class="no">06</span>実機・仮想スクリーンショット回帰テスト</a>
+    <a href="#sync"><span class="no">07</span>双方向同期とデザインシステム保守</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実践事例</div>
+    <a href="#cases"><span class="no">08</span>実践事例（EC商品詳細画面）</a>
+    <a href="#antipatterns"><span class="no">09</span>アンチパターンと落とし穴</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">付録</div>
+    <a href="#prompts"><span class="no">A</span>プロンプトテンプレート集</a>
+    <a href="#ios-web"><span class="no">X</span>iOS / Web へのクロスプラットフォーム展開</a>
+    <a href="#resources"><span class="no">R</span>リソースと情報源</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎨 AI コーディングエージェント × UI デザインツール · 検証日: 2026-08-17</div>
+  <h1>デザイン稿を「一等市民」として扱う<br><span class="grad">Claude Code / Codex へのインプット</span></h1>
+  <p class="lead">デザイナーが描き、エンジニアが実装し、AIがコードを修正する——2026年、これら3つのワークフローは MCP、視覚コンテキスト、デザイン トークンという3つの経路によって真に合流しました。本ページでは、pencil.dev、Figma、Material Theme Builder、Jetpack Compose、Paparazzi / Roborazzi を統合し、<strong>最も効率的な「デザイン ↔ コード」パイプライン</strong>を構築します。Android エンジニアの視点を中心としつつ、Web / iOS への展開も網羅しています。</p>
+  <div class="meta">
+    <span>明確なツール分担</span><span>MCP 統合の徹底解説</span><span>Material 3 完全ブリッジ</span><span>実機 / 仮想の二重回帰検証</span><span>実践プロンプトテンプレート</span><span>3大プラットフォーム比較速覧</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>3 つの入口</b><span>Figma · pen.dev · v0/Stitch（目的に応じて選択、Galileo は Stitch に統合）</span></div>
+  <div class="stat"><b>2 つの経路</b><span>MCP 構造読み取り（損失ゼロ） + スクリーンショット視覚読み取り（フォールバック）</span></div>
+  <div class="stat"><b>5 つのステップ</b><span>Android E2E：トークン → ワイヤー → 生成 → キャプチャ → 回帰テスト</span></div>
+  <div class="stat"><b>3 つの基盤</b><span>Android / iOS（SwiftUI）/ Web（Tailwind v4 + shadcn）速覧</span></div>
+</div>
+
+<div class="callout warn"><b class="t">既存の pen.dev 特集との重複はありません</b>当サイトにはすでに<a href="pencil-claude-code-best-practices.ja.html">『pen.dev × Claude Code ベストプラクティス』</a>（pencil + Claude Code の組み合わせに特化した解説）があります。本ページはより広い視野を持ち、pencil を「デザインツールの1つ」と位置づけて Figma、Stitch、Galileo、v0 と比較し、<strong>AI コーディングエージェントがデザインを取り込む統一パターン</strong>に焦点を当て、Android Jetpack Compose / Material 3 への実装を主軸としています。<strong>両方の併読をおすすめします</strong>。</div>
+
+<section id="intro">
+<div class="sec-tag">導入 00</div>
+<h2>全景：なぜ2026年にこの取り組みが「必須」となったのか</h2>
+
+<h3 data-reveal>デザイン・コードの溝：ツールの問題ではなく構造の問題</h3>
+<p>2024年以前、デザイナーは Figma でピクセル単位の仕様を注記し、開発者はそれを見ながらコードを一から書き直していました。汎用 AI コーディングツール（初期の Copilot など）は「Web 全体で学習したパターン」に基づいて「それっぽい」コンポーネントを生成するだけで、<strong>あなたの</strong>デザインシステムを認識することはできませんでした。出力されたコードは「デザイン稿の遠い親戚」のようなもので、配色が微妙にズレていたり、余白が数ピクセル異なっていたり、ホバー状態の仕様が抜けていたりと、修正する手間のほうがゼロから書くよりも大きくかかっていました。</p>
+<p>2026年、3つの技術が同時に成熟し、この溝は無視できるレベルまで縮まりました：</p>
+<ol>
+  <li><strong>MCP（Model Context Protocol）がデファクトスタンダードに</strong>——pen.dev、Figma、Google Stitch が公式に MCP サーバーを提供。Claude Code や Codex に設定するだけで、デザインの正確な構造、トークン、ノード関係を「直接読み取る」ことが可能になり、画像からの推測が不要になりました。</li>
+  <li><strong>デザインツールが「ビジュアル + コード」のデュアル出力をネイティブサポート</strong>——pen.dev の <code>.pen</code> ファイルは JSON 形式で Git による diff が可能。Figma の Dev Mode + Variables は構造化データを公開。Stitch / Galileo はコンポーネントコードを直接生成します。</li>
+  <li><strong>実機・仮想スクリーンショット回帰テストのコストがゼロに</strong>——Paparazzi / Roborazzi が JVM 上で Compose のレンダリングを実行。AI が UI を修正した後、30秒以内に全デバイスのスクリーンショットを取得でき、フィードバックループが極めて短縮され CI への組み込みが容易になりました。</li>
+</ol>
+
+<div class="callout note"><b class="t">本ページで習得できること</b>読み終えた後に実践できること：① 任意のデザインツール（pencil / Figma / Stitch）に MCP を設定し、Claude Code から直接読み取らせる；② Figma Variables → Material 3 Color Scheme → Compose Theme を一貫して連携させる；③ AI が UI を修正した際、Paparazzi / Roborazzi で自動 diff 回帰テストを実行する；④ どのタスクを AI に任せ、どのタスクを手動で書くべきかを的確に判断する。</div>
+
+<h3 data-reveal>前提として合意しておくべき3つの原則</h3>
+<ul>
+  <li><strong>デザイン稿は「一等市民（ファーストクラス）」の入力である</strong>——PR、Issue、CLAUDE.md と同格です。単なる参考画像ではなく、信頼できる唯一の情報源（Source of Truth）です。</li>
+  <li><strong>デザイン トークンはビジュアルに優先する</strong>——AI が色を変更する場合、特定の 16 進数カラーコードではなく <code>colorScheme.primary</code> を修正します。余白を変更する場合、<code>16.dp</code> ではなく <code>Spacing.md</code> を修正します。</li>
+  <li><strong>回帰テストには低コストなフィードバックループが必須</strong>——AI が30秒で作成した PR を人間がすべて目視で確認するのは不可能です。スクリーンショットの自動 diff 比較と主要プロパティのアサーションに頼り、異常時のみ人間にエスカレーションする仕組みが必要です。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="map">
+<div class="sec-tag">マップ 01</div>
+<h2>デザインツールマップ：5つの役割と適切な選定</h2>
+<p>2026年現在、市場には「AI 支援 UI デザイン」ツールが数多く溢れています。これらを「パイプラインの中でどの役割を果たすか」で分類すると、選定基準が明確になります：</p>
+
+<div class="cards">
+  <div class="card">
+    <div class="name"><span class="icon">📐</span>Figma</div>
+    <div class="role">デザイン稿の真のソース · チームコラボレーション</div>
+    <p>現在も多くのチームにおけるデザイン協調の中心です。Variables（デザイン トークン）、Components、Code Connect によりデザインデータが「構造化」され、MCP 出力の強固な基盤となっています。</p>
+    <div class="links"><a href="https://www.figma.com/" target="_blank">公式サイト</a><a href="https://help.figma.com/hc/en-us/sections/14506167395095-AI" target="_blank">AI 機能</a><a href="https://github.com/figma/mcp-server-guide" target="_blank">MCP ガイド</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">🎨</span>pen.dev (Pencil)</div>
+    <div class="role">IDE 内のデザインキャンバス · コーディング親和性</div>
+    <p>VS Code / Cursor / Antigravity 内にベクターキャンバスを直接組み込みます。<code>.pen</code> ファイルは JSON 形式で Git による diff が可能、ネイティブ MCP サーバーを備え、Claude Code / Codex で UI を修正する最短経路となります。当サイトに<a href="pencil-claude-code-best-practices.ja.html">特集記事</a>があります。</p>
+    <div class="links"><a href="https://pencil.dev/" target="_blank">公式サイト</a><a href="https://docs.pencil.dev/" target="_blank">公式ドキュメント</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">🪄</span>Google Stitch</div>
+    <div class="role">AI ワイヤーフレーム生成 · 0→1 の高速プロトタイピング</div>
+    <p>Google Labs プロジェクト。<strong>2025年 Google I/O で発表され、2026年8月時点でも順次ウェイトリストを案内中</strong>。テキストやスクリーンショットを入力すると、Material 3 に準拠した Web / Android / iOS の高精度なデザインを生成し、Figma ファイルや実行可能コードとしてのエクスポートに対応。「まだデザイン稿がなく、複数の方向性を探りたい」初期フェーズに最適です。</p>
+    <div class="links"><a href="https://stitch.withgoogle.com/" target="_blank">公式サイト</a><a href="https://docs.stitch.withgoogle.com/" target="_blank">ドキュメント</a></div>
+  </div>
+
+  <div class="card">
+    <div class="name"><span class="icon">⚡</span>v0 by Vercel</div>
+    <div class="role">テキスト / Figma → React + Tailwind + shadcn コード</div>
+    <p>Vercel 提供。<strong>2026年7月より Figma ファイルの直接読み込み、Claude Opus 5 モデル、v0 MCP サーバー</strong>（<code>listMessages</code> / <code>resolveTask</code> などのツール）に対応し、一般提供（GA）。無料枠でも利用可能です。React / Next.js / Vite プロジェクトで即座に動作する UI を出力します。</p>
+    <div class="links"><a href="https://v0.app/" target="_blank">公式サイト（※ドメインは v0.app、v0.dev ではありません）</a><a href="https://v0.app/docs/introduction" target="_blank">ドキュメント</a></div>
+  </div>
+</div>
+
+<div class="callout warn"><b class="t">旧ツールの統合・整理について</b>Galileo AI は2026年に単独運営を終了し（<code>usegalileo.ai</code> は Stitch に 308 リダイレクト、LinkedIn にも「acquired by Google」と記載）、Stitch の機能に統合されました。Uizard と Visily は独立しているものの「スクリーンショット → ワイヤーフレーム」に特化しており、本トピックの「デザイン ↔ コード」連携の主線とは直接関連しないため、旧来のカードは Stitch と v0 の2枚に整理し、Galileo は個別掲載していません。<strong>検証日: 2026-08-05</strong>。</div>
+
+<h3 data-reveal>選定デシジョンツリー</h3>
+<p>「どれが最新か」ではなく、現在の開発起点に合わせて選択してください：</p>
+<div class="pipeline">
+  <div class="pipe-step"><div class="ps-num">START</div><div class="ps-icon">❓</div><div class="ps-name">既存のデザイン稿があるか？</div><div class="ps-tool">→ 次のステップへ</div></div>
+  <div class="pipe-step"><div class="ps-num">Y1</div><div class="ps-icon">📐</div><div class="ps-name">Figma チームコラボレーション</div><div class="ps-tool">Figma MCP</div></div>
+  <div class="pipe-step"><div class="ps-num">Y2</div><div class="ps-icon">🎨</div><div class="ps-name">個人/小規模チーム + IDE 内完結</div><div class="ps-tool">pen.dev MCP</div></div>
+  <div class="pipe-step"><div class="ps-num">N1</div><div class="ps-icon">🪄</div><div class="ps-name">5 つの方向性を比較検討したい</div><div class="ps-tool">Stitch ワイヤーフレーム</div></div>
+  <div class="pipe-step"><div class="ps-num">N2</div><div class="ps-icon">🤖</div><div class="ps-name">直接動くコードを生成したい</div><div class="ps-tool">v0 (React/Tailwind)</div></div>
+</div>
+
+<div class="callout note"><b class="t">2026.8 ツール選定クイックメモ</b><strong>Stitch</strong>（Waitlist, Google Labs）= 複数方向の高速検討；<strong>v0</strong>（GA, Vercel）= React コードの直接生成；<strong>Galileo AI</strong> は Stitch に統合されたため単独での選定は不要。<a href="https://stitch.withgoogle.com/" target="_blank">Stitch</a> / <a href="https://v0.app/" target="_blank">v0.app</a>。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="consume">
+<div class="sec-tag">マップ 02</div>
+<h2>AI エージェントがデザインを「見る」仕組み：3つの経路</h2>
+<p>AI コーディングエージェント（Claude Code、Codex 等）がデザイン入力を受け取る方法は、本質的に3つの経路しかありません。それぞれの違いを理解して使い分ける必要があります：</p>
+
+<table class="tbl">
+  <tr><th>経路</th><th>代表例</th><th>取得できる情報</th><th>精度</th><th>コスト / 代償</th></tr>
+  <tr>
+    <td><span class="pill a">MCP 構造化</span></td>
+    <td>Figma MCP、pen.dev MCP、Stitch MCP</td>
+    <td>ノードツリー、トークンのキーバリュー、コンポーネントインスタンス、変数定義、アクセシビリティ属性</td>
+    <td><strong>損失ゼロ</strong>——レンダリング画像ではなく構造化データを取得</td>
+    <td>MCP サーバーの起動が必要；ツールごとに提供機能が異なる</td>
+  </tr>
+  <tr>
+    <td><span class="pill c">視覚（ビジュアル）</span></td>
+    <td>スクリーンショット / 写真 / 画面録画；Claude / GPT のマルチモーダル</td>
+    <td>見た目の印象、大まかな要素配置</td>
+    <td>中——色味は正確に把握できるが、具体的な数値（正確な余白、フォントサイズ）は推測になる</td>
+    <td>高速・依存関係なしで常時利用可能；トークンは直接取得できない</td>
+  </tr>
+  <tr>
+    <td><span class="pill d">エクスポート成果物</span></td>
+    <td>Figma Dev Mode「Copy as Compose」、pen.dev「Export React」、Stitch「Export to Code」</td>
+    <td>デザインツール自体が生成したコードスニペット</td>
+    <td>高（ただしツールの固有制約あり）</td>
+    <td>単発のコピー＆ペーストであり、双方向同期ができない</td>
+  </tr>
+</table>
+
+<div class="callout note"><b class="t">MCP は 2026 年の「分岐点」</b>MCP を使用すると、Claude Code はコード生成時に「Figma 側で <code>brand/primary/500</code> と定義されているため、プライマリカラーには <code>colorScheme.primary</code> を使用する」と判断できます。一方、MCP を使わない場合、スクリーンショットを見て「ここは青色を使う」としか言えません。前者は<strong>デザインシステム協調</strong>であり、後者は<strong>ピクセル模倣</strong>です。以降の解説はすべて MCP 経路を前提とします。</div>
+
+<h3 data-reveal>3つの経路の具体的な接続手順</h3>
+
+<h4>① Figma MCP（公式 · 最も安定）</h4>
+<pre><code># 公式プラグインのインストール（推奨・最速）
+claude plugin install figma@claude-plugins-official
+
+# または手動で MCP サーバーを追加
+claude mcp add --transport http figma https://mcp.figma.com/mcp
+
+# 接続の確認
+claude mcp list
+# figma / connected と表示されれば完了</code></pre>
+<p>Figma ファイル内で任意の Frame を選択し、Claude Code で「Figma MCP を使ってこの Frame の構造と変数を読み取り、対応する Compose 実装を生成してください」と指示すると、ツールが自動で呼び出されます。主要なツール：</p>
+<table class="tbl">
+  <tr><th>ツール名</th><th>機能説明</th></tr>
+  <tr><td><code>get_design_context</code></td><td>構造化された React + Tailwind 表現を返す（Web に最適。Android は後続で変換）</td></tr>
+  <tr><td><code>get_variable_defs</code></td><td>Variables（カラーパレット、フォントサイズ、余白）および Light/Dark モードを抽出</td></tr>
+  <tr><td><code>get_metadata</code></td><td>高レベルなノードマップ：どの Frame、どのコンポーネントか、階層関係を取得</td></tr>
+  <tr><td><code>get_screenshot</code></td><td>ビジュアル参照（ピクセル単位）</td></tr>
+</table>
+<p>Codex の場合は <code>config.toml</code> の <code>[mcp_servers.figma]</code> セクションに <code>url = "https://mcp.figma.com/mcp"</code> を追加することで同様に利用できます。</p>
+
+<h4>② pen.dev MCP（ネイティブ、ローカル、クラウド不要）</h4>
+<p>VS Code 拡張機能 <code>highagency.pencildev</code> をインストールすると、pen.dev 付属の MCP サーバーが<strong>ローカルマシン上で実行</strong>されます。デザインデータがローカル外に出ないため、セキュリティやプライバシーに厳しい要件に適しています。Claude Code / Codex で <code>/mcp</code> から <code>pencil</code> を認識させた後は、ノードの読み取り、直接修正、変数の取得、スクリーンショットなど、より細やかなツールセットが利用可能です。詳細は <a href="pencil-claude-code-best-practices.ja.html">pen.dev × Claude Code 特集</a>を参照してください。</p>
+
+<h4>③ 視覚経路（常時使えるフォールバック）</h4>
+<p>MCP が利用できない場合の最も素朴かつ汎用的なアプローチです。デザインのスクリーンショット（または PDF）を Claude Code に直接渡し、「スクリーンショットに基づいて Compose を生成し、色値には Material 3 ColorScheme のセマンティック名を使用すること」と指示します。<strong>ピクセル情報は得られますが、トークン情報は得られません</strong>。そのため、Figma Variables のエクスポートを補完するか、生成されたコードの配色がブランドカラーと微妙に乖離するリスクを受け入れる必要があります。</p>
+
+<div class="callout warn"><b class="t">Codex における MCP の現状</b>Codex 0.146.0 以降で MCP（Claude Code と同等のプロトコル）がネイティブサポートされ、<code>config.toml</code> の <code>[mcp_servers]</code> で設定可能です。UX の違いとして、Codex は「タスク完遂型」であり「Figma Frame を読み取った後、直接 Android プロジェクトを修正せよ」と明確に指示する必要があります。一方、Claude Code は「対話・探索型」であり、「なぜこの色に secondary ではなく primary を使うのか」を対話しながら進めることができます。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="pipeline">
+<div class="sec-tag">エンドツーエンド 03</div>
+<h2>Android エンドツーエンド：5ステップ・パイプライン</h2>
+<p>上記のツールを組み合わせることで、<strong>最も高効率な</strong>ワークフローが完成します。各ステップには再現可能な入出力があり、属人的な「勘」に依存しません：</p>
+
+<div class="pipeline">
+  <div class="pipe-step"><div class="ps-num">STEP 1</div><div class="ps-icon">🎨</div><div class="ps-name">デザイン トークン</div><div class="ps-tool">Figma Variables</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 2</div><div class="ps-icon">🖼</div><div class="ps-name">コンポーネント/画面</div><div class="ps-tool">Figma Frame</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 3</div><div class="ps-icon">🤖</div><div class="ps-name">読み取り + 計画</div><div class="ps-tool">Claude Code / Codex</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 4</div><div class="ps-icon">⚙️</div><div class="ps-name">コード生成</div><div class="ps-tool">Compose + 単体テスト</div></div>
+  <div class="pipe-step"><div class="ps-num">STEP 5</div><div class="ps-icon">📸</div><div class="ps-name">視覚回帰テスト</div><div class="ps-tool">Paparazzi / Roborazzi</div></div>
+</div>
+
+<p class="src">なぜ3ステップではなく5ステップなのか？ステップを削ると、トークン同期が欠落する（デザインが変更されてもコードに反映されない）か、回帰テストが欠落する（AI が行った UI 変更を誰も検証しない）ことになります。これら5つのステップは並行して進めることはできますが、省略することはできません。</p>
+
+<h3 data-reveal>STEP 1 · デザイン トークン：Figma Variables が真のソース</h3>
+<p>デザイン トークンとは、色、フォントサイズ、余白、角丸などの値を<strong>セマンティックに命名</strong>したものです。Figma 内では以下のように定義されます：</p>
+<pre><code>brand/primary/500      → #476810
+brand/primary/600      → #3a5609
+brand/secondary/500    → #586a4f
+surface/background     → #fefbff
+surface/onBackground   → #1b1c18
+text/display/large     → 57sp / 64lh
+text/title/medium      → 16sp / 24lh
+spacing/xs             → 4dp
+spacing/md             → 16dp
+radius/lg              → 16dp</code></pre>
+<p>このステップは Figma 側で <strong>Material Theme Builder</strong>（material.io/material-theme-builder）または公式の Material 3 Design Kit を用いて行います。Claude Code はこの段階では直接何もしませんが、後続で活用される<strong>構造化コンテキスト</strong>として機能します。</p>
+
+<h3 data-reveal>STEP 2 · コンポーネント / 画面：Figma Frame が契約</h3>
+<p>実装対象の各画面は Figma 内で1つの Frame として定義し、命名規則を一貫させます（開発側が識別キーとして利用）：</p>
+<pre><code>📁 Figma: App / 1.0
+  📄 Page: ProductDetail
+    🟦 Frame: ProductDetailScreen / 360×800 (mobile)
+    🟦 Frame: ProductDetailScreen / Dark</code></pre>
+<p><strong>Auto Layout</strong>（Figma の Flexbox 相当）と 100% 拘束を使用することで、Claude Code が <code>get_metadata</code> を読み取った際に、絶対座標ではなく構造化されたレイアウト情報を取得できるようになります。</p>
+
+<h3 data-reveal>STEP 3 · 読み取り + 計画：Claude Code / Codex の起動</h3>
+<p>既存の Android プロジェクトルート（<code>app/</code> ソースが存在する場所）で Claude Code を起動し、明確な指示を与えます：<strong>AI に「適当に考えて」進めさせるのではなく、何を読み取り、どこへ書き込み、何をテストするかを厳格に指定します</strong>。</p>
+<div class="prompt-box">
+<div class="pt">PROMPT 03-A · 起動プロンプト</div>
+<code>figma MCP を使用して、Figma Frame `ProductDetailScreen` (node-id 1:23) を読み取ってください。
+- まず get_variable_defs を呼び出し、すべての Variables を app/src/main/java/.../theme/Color.kt および Type.kt に反映（セマンティック名は Material 3 に準拠）
+- 次に get_design_context と get_metadata を呼び出し、Frame の構造を把握
+- その後、以下の計画を策定：1) 作成する Composable；2) 作成する Preview；3) 作成する Paparazzi テスト；4) リポジトリにコミットする Preview スクリーンショット
+- 計画は ExitPlanMode で提示し、私の承認を得てから実装に進むこと。直接コード変更を開始しないでください</code>
+</div>
+
+<div class="callout tip"><b class="t">なぜ「コードを書く前に計画する」のか</b>Claude Code の Plan モード（<code>Shift+Tab</code> で切替）は、コードベースを事前に探索し、レビュー可能な実施手順を生成してから実行します。UI の変更は手戻りが発生しやすい領域です——最初の一歩を誤ると、後続のスクリーンショットテストがすべて赤（失敗）になります。<strong>2分かけて計画をレビューすることは、20分の手戻りを防ぐことにつながります</strong>。Codex の <code>--plan</code> モードでも同様です。</div>
+
+<h3 data-reveal>STEP 4 · コード生成：Compose + テスト + スクリーンショットの3点セット</h3>
+<p>AI は実際に以下の3種類の成果物を出力します。どれか1つでも欠けてはなりません：</p>
+<ol>
+  <li><strong>Composable 関数</strong>——ビジネスコンポーネント。<strong>ハードコードを排除しトークンを使用する</strong>ことが重要（<code>Color(0xFF476810)</code> ではなく <code>MaterialTheme.colorScheme.primary</code>）。</li>
+  <li><strong>@Preview アノテーション</strong>——Android Studio の Design プレビューパネルで即座に確認可能にし、Roborazzi がこのアノテーションをスキャンして自動的にスクリーンショットテストを生成。</li>
+  <li><strong>Paparazzi / Roborazzi テスト</strong>——ベースラインのスナップショットを保存し、以降の AI による UI 変更時に同じベースラインで diff 比較。</li>
+</ol>
+
+<div class="prompt-box">
+<div class="pt">PROMPT 03-B · 実装プロンプト</div>
+<code>計画に沿って実装を進めてください。制約事項：
+1. Composable は Material 3 API を使用し、すべての色・フォント・余白は MaterialTheme.colorScheme / typography / shapes 経由で取得すること
+2. カラーコードのハードコードは禁止。余白は Spacing.xs/sm/md/lg 定数を使用すること
+3. 各画面コンポーネントに @Preview(name = "Light") および @Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES) を付与すること
+4. src/test/.../ProductDetailSnapshotTest.kt を追加し、Paparazzi で 2 つの Preview を実行。まず recordPaparazzi でベースラインを記録すること
+5. 完了後、./gradlew verifyPaparazziDebug を実行して結果を報告してください</code>
+</div>
+
+<h3 data-reveal>STEP 5 · 視覚回帰テスト：Paparazzi / Roborazzi の選択</h3>
+<p>このステップはパイプライン全体の<strong>品質ゲート</strong>です。詳細は <a href="#verify">実機・仮想スクリーンショット回帰テスト</a> の章で解説します。要点は一つ：<strong>AI が UI を修正する前にベースラインを用意し、修正後に自動 diff 比較を行い、異常時のみ人間に通知する</strong>ことです。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="tokens">
+<div class="sec-tag">エンドツーエンド 04</div>
+<h2>Figma → Material 3 トークン：標準的な連携ブリッジ</h2>
+<p>Material 3 の ColorScheme / Typography / Shapes は Compose における<strong>第一級のデザイン トークン</strong>です。Figma Variables はデザインツール側における<strong>第一級のデザイン トークン</strong>です。両者を厳密に 1 対 1 で対応させなければ、「デザインが修正されたのにコードに反映されない」問題が必然的に発生します。</p>
+
+<h3 data-reveal>公式の標準プラクティス：Material Theme Builder</h3>
+<ol class="steps">
+  <li><a href="https://material.io/material-theme-builder" target="_blank">m3.material.io/theme-builder</a> でベースカラーとセカンダリカラーを選択。ツールが自動的に M3 カラーパレット（各ロールに対して13階調のトーン）を展開。</li>
+  <li>「Jetpack Compose」形式でエクスポートし、<code>Color.kt</code>（5つのキーカラーと派生ロール）および <code>Theme.kt</code>（<code>lightColorScheme(...)</code> / <code>darkColorScheme(...)</code>）を取得。</li>
+  <li>これら2つのファイルを <code>app/src/main/java/.../ui/theme/</code> に配置。</li>
+  <li><code>MainActivity</code> 内で <code>AppTheme</code>（または独自定義のテーマ）で <code>setContent { ... }</code> をラップ。</li>
+  <li>同一の「ベースカラー + セカンダリカラー」を Figma の Material 3 Design Kit にも設定（プラグインの同期機能を利用）し、Variables を自動一致させる。</li>
+</ol>
+
+<h3 data-reveal>Figma Variables ↔ Compose ColorScheme 完全マッピング</h3>
+<p>Material 3 ColorScheme のすべてのロールは、Figma Material 3 Design Kit の Variables と<strong>完全に同じ命名</strong>を持っています（<code>primary / onPrimary / primaryContainer / onPrimaryContainer / secondary / onSecondary / ...</code>）。Claude Code が Figma MCP の <code>get_variable_defs</code> で読み取った内容をそのまま <code>lightColorScheme(primary = Color(0xFF...), ...)</code> にマッピングできます。以下は漏れを防ぐための完全なロール一覧です：</p>
+<pre><code>// M3 ColorScheme 完全 32 ロール（Light / Dark 各セット）
+lightColorScheme(
+  primary, onPrimary, primaryContainer, onPrimaryContainer,
+  secondary, onSecondary, secondaryContainer, onSecondaryContainer,
+  tertiary, onTertiary, tertiaryContainer, onTertiaryContainer,
+  error, onError, errorContainer, onErrorContainer,
+  background, onBackground,
+  surface, onSurface, surfaceVariant, onSurfaceVariant,
+  outline, outlineVariant,
+  inverseSurface, inverseOnSurface, inversePrimary,
+  surfaceTint, scrim,
+)</code></pre>
+
+<h3 data-reveal>Typography と Shapes の連携</h3>
+<p>M3 Typography は 15 個の TextStyle（<code>displayLarge/Medium/Small</code>、<code>headlineLarge/...</code>、<code>titleLarge/...</code>、<code>bodyLarge/...</code>、<code>labelLarge/...</code>）で構成され、Shapes は 5 個の <code>RoundedCornerShape</code>（<code>extraSmall/small/medium/large/extraLarge</code>）で構成されます。</p>
+<p>Figma 側では<strong>公式の Figma Material 3 Design Kit コンポーネントを使用し続ける</strong>ことが重要です。Text Styles と Shape の命名が M3 と一致しているため、Claude Code が <code>get_metadata</code> を読み取った際に直接マッピングできます。</p>
+
+<div class="callout tip"><b class="t">ダイナミックカラー（Material You）とブランドカラーのバランス</b>Android 12+ 端末ではシステム壁紙からのカラー抽出（<code>dynamicLightColorScheme(LocalContext.current)</code>）が利用可能ですが、ブランドカラーを上書きさせるかどうかは<strong>プロダクト判断</strong>です。一般的なアプローチ：① 強固なブランドの場合 → ダイナミックカラーを無効化し、常にブランド ColorScheme を使用；② 一般コンシューマー向けの場合 → ダイナミックカラーを有効化し、1〜2色のブランド強調色のみを <code>ExtendedColors</code> として個別定義。Claude Code / Codex に指示する際は、CLAUDE.md / AGENTS.md にこの方針を明記してください。</div>
+
+<h3 data-reveal>ダイナミックカラー vs ブランドカラー：決定マトリクス</h3>
+<table class="tbl">
+  <tr><th>プロダクト種別</th><th>ダイナミックカラー</th><th>ブランドカラー</th><th>推奨アプローチ</th></tr>
+  <tr><td>金融 / 業務ツール系（強固なブランド識別）</td><td>OFF</td><td>常にブランド色を使用</td><td><code>val colors = if (darkTheme) DarkColors else LightColors</code> とし dynamicXxx は使わない</td></tr>
+  <tr><td>コンシューマー / コンテンツ系（ユーザー主導）</td><td>ON</td><td>ボタンやロゴのアクセントのみ</td><td>dynamicXxx をベースとし、ブランド色は <code>ExtendedColors.brand</code> として個別取得</td></tr>
+  <tr><td>エンタープライズ / ホワイトラベル</td><td>OFF</td><td>ランタイム時に切替可能</td><td>ColorScheme を固定せず、バックエンドまたは BuildConfig からロード</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="compose">
+<div class="sec-tag">エンドツーエンド 05</div>
+<h2>Compose コード生成と書き戻し：AI が UI を修正する際の鉄則</h2>
+<p>このステップは成果物を生み出すコアフェーズであり、「一見動きそうだが実際には動かない」コードが最も発生しやすい段階です。以下は、30件以上の実際の PR から抽出された実践的な規律です：</p>
+
+<h3 data-reveal>規律 1：トークン優先、ハードコードの絶対禁止</h3>
+<div class="duo">
+  <div class="bad"><b>❌ ハードコード（AI が犯しやすい典型例）</b>
+<pre><code>Text("Save",
+  color = Color(0xFF476810),
+  fontSize = 16.sp,
+  modifier = Modifier.padding(16.dp)
+)</code></pre>
+  </div>
+  <div class="good"><b>✅ トークン準拠（必須規律）</b>
+<pre><code>Text("Save",
+  style = MaterialTheme.typography.titleMedium,
+  color = MaterialTheme.colorScheme.primary,
+  modifier = Modifier.padding(Spacing.md)
+)</code></pre>
+  </div>
+</div>
+
+<h3 data-reveal>規律 2：状態変更はすべて State hoisting（状態の巻き上げ）を行う</h3>
+<p>AI はコンポーネント内部で直接 <code>remember { mutableStateOf(...) }</code> を抱え込むコードを生成しがちです。これではプレビューは動いても、実際の業務コードでは状態制御が破綻します。原則：<strong>ステートレスな Composable を最優先</strong>とし、状態は呼び出し元から引数で渡し、イベントはコールバックで通知します。</p>
+<div class="prompt-box">
+<div class="pt">PROMPT 05-A · Compose の状態修正プロンプト</div>
+<code>src/.../ProductDetailScreen.kt を確認し、内部の remember { mutableStateOf } をすべて hoisted 引数に変更してください。Preview 側で remember をラップするように修正し、完了後に ./gradlew :app:compileDebugKotlin で検証してください。</code>
+</div>
+
+<h3 data-reveal>規律 3：すべての Composable に最低1つの @Preview を用意する</h3>
+<p>これは Paparazzi / Roborazzi が回帰テストを実行するための前提条件であり、デザイン・開発協調において最も低コストなフィードバック手段です。AI がコードを生成した直後に、実機にインストールすることなく Android Studio の Design パネルで確認できます。</p>
+<pre><code>@Preview(name = "Light", showBackground = true)
+@Composable
+private fun ProductDetailScreenLightPreview() {
+  AppTheme(darkTheme = false) {
+    ProductDetailScreen(state = fakeState(), onIntent = {})
+  }
+}
+
+@Preview(name = "Dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun ProductDetailScreenDarkPreview() {
+  AppTheme(darkTheme = true) {
+    ProductDetailScreen(state = fakeState(), onIntent = {})
+  }
+}</code></pre>
+
+<h3 data-reveal>規律 4：コードからデザインシステムへの書き戻し</h3>
+<p>デザイナーが Figma を修正し、Claude Code が Compose を修正するのが順方向です。では逆方向はどうでしょうか？Compose を修正して実装が完了した後に「ボタンの角丸が Figma と一致していない」と判明した場合、どちらがどちらを更新すべきでしょうか？</p>
+<p><strong>ルール：先にマージされた側が同期の責任を持つ</strong>。Figma が真のソースなら Figma を変更し、コードが先行したなら Figma Variables を更新します。両方を手動で変更し、どちらが正しいか分からなくなる状態を絶対に避けます。</p>
+<p>具体的な書き戻しフロー（Figma が真のソースの場合）：</p>
+<ol class="steps">
+  <li>デザイナーが Figma で Variables を修正（例：<code>brand/primary/500</code> を <code>#476810</code> から <code>#507810</code> へ変更）。</li>
+  <li>デザイナーは<strong>Compose コードを直接修正せず</strong>、Slack やコメントで「primary を変更したので PR を確認してください」と通知。</li>
+  <li>Claude Code が Figma MCP の <code>get_variable_defs</code> を読み取り → <code>Color.kt</code> と比較 → パッチを生成 → PR を作成。</li>
+  <li>PR の CI で Paparazzi 回帰テストを実行 → 差分が問題なければマージ。予期せぬ diff があればデザイナーに確認。</li>
+</ol>
+
+<div class="callout warn"><b class="t">双方向同期の潜む落とし穴</b>デザイン トークンの同期は通常の業務コードと異なり、単一画面だけでなく<strong>プロダクト全体のビジュアル</strong>に影響を及ぼします。わずか1箇所のカラーコードの誤変更が、Paparazzi で一度に200枚の画像差分を引き起こす可能性があります。推奨：トークンの変更は独立した PR ブランチで扱い、社内テストビルドで十分に検証してから本番へマージしてください。これは AI エージェントの問題ではなく、ワークフロー設計の問題です。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="verify">
+<div class="sec-tag">品質 06</div>
+<h2>実機・仮想スクリーンショット回帰テスト：AI UI 修正の安全弁</h2>
+<p>AI が UI 修正の PR を30秒で作成できる時代において、目視によるレビューは破綻します。<strong>自動化された視覚回帰テスト</strong>によって、AI の修正後にマシンが全画面のスクリーンショットを diff 比較し、異常時のみ人間にエスカレーションする体制が必須です。</p>
+
+<h3 data-reveal>なぜ AI 時代において「実機テスト」が二番手となるのか</h3>
+<p>Instrumented test で Pixel 6 実機を動かすと1台あたり90秒、10台で15分かかり、AI の修正スピードに追いつきません。<strong>JVM 上でのスクリーンショットテスト</strong>（Paparazzi / Roborazzi）であれば数秒で全デバイスのスナップショットを取得でき、これが新時代の標準解となります。</p>
+
+<h3 data-reveal>Paparazzi（JVM レンダリング、エミュレータ不要）</h3>
+<p>Cash App 製。JVM 上で LayoutLib を用いて Android View と Jetpack Compose をレンダリングし、PNG 画像を出力してベースラインと diff 比較します。<strong>メリット：エミュレータに依存せず、CI 上で Robolectric よりも高速に動作</strong>。</p>
+<table class="tbl">
+  <tr><th>設定項目</th><th>主な用途</th></tr>
+  <tr><td><code>PIXEL_5</code> / <code>PIXEL_6</code> / <code>NEXUS_5</code></td><td>デバイス解像度 + DPI、dp→px 変換に影響</td></tr>
+  <tr><td><code>theme = "android:Theme.Material.Light.NoActionBar"</code></td><td>従来の View で使用。Compose は独自の <code>AppTheme</code> を使用</td></tr>
+  <tr><td><code>nightMode = NIGHT_MODE_NIGHT</code></td><td>Light / Dark 両方のスナップショットを一括取得</td></tr>
+</table>
+<p>主要な Gradle タスク：</p>
+<pre><code>./gradlew :app:recordPaparazziDebug   # 初回ベースラインの記録 → src/test/snapshots/
+./gradlew :app:verifyPaparazziDebug   # 修正後の検証。差分があれば失敗
+./gradlew :app:testDebug              # すべての単体テスト（Paparazzi 含む）を実行</code></pre>
+<p><strong>注意</strong>：Paparazzi は Robolectric と併用できません（どちらも Android Framework をモックするため、一方を選択する必要があります）。</p>
+
+<h4>Paparazzi 実機キャプチャサンプル（ローカル環境 2026-08-05 実測）</h4>
+<p>以下の6枚の画像は、同一のデモプロジェクト（JDK 21 + AGP 8.13.2 + Kotlin 2.2.21 + Paparazzi 2.0.0-alpha05 ※JDK 17/25 では動作不可）で実行した9つの Composable から代表的なシナリオを抽出したものです。いずれも「AI が UI を変更した後の回帰検証」の実例となっています。</p>
+
+<div class="screenshot-grid">
+  <figure>
+    <img src="../assets/img/collab/01-button-card.png" alt="Paparazzi スクリーンショット: Button + Card の組み合わせ" loading="lazy">
+    <figcaption><strong>01 · Button + Card</strong><br>最も基本的な Material 3 コンポーネントの組み合わせ。Compose レンダリングの正確性を検証</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/02-theme-light.png" alt="Paparazzi スクリーンショット: ライトテーマ" loading="lazy">
+    <figcaption><strong>02 · ライトテーマ</strong><br><code>MaterialTheme(colorScheme = lightColorScheme(...))</code> のレンダリング結果</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/03-theme-dark.png" alt="Paparazzi スクリーンショット: ダークテーマ" loading="lazy">
+    <figcaption><strong>03 · ダークテーマ</strong><br>同一 Composable で <code>darkColorScheme</code> のみを切り替え——回帰テストで両テーマを一括検証</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/05-dynamic-color.png" alt="Paparazzi スクリーンショット: ダイナミックカラー" loading="lazy">
+    <figcaption><strong>04 · Material You ダイナミックカラー</strong><br><code>dynamicLightColorScheme(LocalContext.current)</code> による壁紙カラーの抽出</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/07-list-item-chip.png" alt="Paparazzi スクリーンショット: リスト + Chip" loading="lazy">
+    <figcaption><strong>05 · リストアイテム + Chip</strong><br>アバター + タイトル + サブタイトル + Chip タグを備えた実践的ビジネスコンポーネント</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/collab/09-form-error.png" alt="Paparazzi スクリーンショット: フォームエラー状態" loading="lazy">
+    <figcaption><strong>06 · フォームエラー状態</strong><br>同一 Composable の異なる状態——赤枠やエラーメッセージの表示を回帰テストで高精度に検知</figcaption>
+  </figure>
+</div>
+
+<div class="callout note"><b class="t">予期せぬ発見：スクリーンショット回帰テストが捉えた実際のバグ</b>サンプルの実行時、<strong>Demo01 の <code>Column</code> に明示的な背景色が設定されていない場合、デバイスのデフォルトの暗い背景が露出する</strong>という不具合が発見されました。コードの目視だけでは見落としがちですが、Paparazzi を実行すれば一目瞭然です——これこそが「AI が UI を修正した後にスクリーンショット回帰テストを実行すべき」最大の価値であり、テキストの説明だけでは得られない検知力です。完全なプロジェクトコードは <code>drafts/paparazzi-demo/</code> にあり、4つの失敗したバージョン構成のトラブルシューティング記録も含まれています。</div>
+
+<h3 data-reveal>Roborazzi（Robolectric ベース、Hilt 連携対応）</h3>
+<p>takahirom 製。Robolectric を基盤として JVM 上で Compose をレンダリングし、<code>@Preview</code> からのテスト自動生成や、Hilt などの DI フレームワークとの共存に対応しています。<strong>メリット：依存性注入を含む実践的なコンポーネントをテスト可能</strong>。</p>
+<p>主な機能：</p>
+<ul>
+  <li><code>captureRoboImage()</code> による指定ノードのスクリーンショット取得</li>
+  <li><code>generateComposePreviewRobolectricTests</code> Gradle タスク：すべての <code>@Preview</code> アノテーションをスキャンして自動でテストを生成</li>
+  <li>（実験的機能）<code>roborazzi-ai-gemini</code> / <code>roborazzi-ai-openai</code>：AI によるスクリーンショット差分のセマンティック判定（「意図的な変更」か「予期せぬリグレッション」かを自動判別）</li>
+</ul>
+<p>主要な Gradle タスク：</p>
+<pre><code>./gradlew :app:recordRoborazziDebug           # ベースラインの記録
+./gradlew :app:verifyRoborazziDebug           # diff 検証モード
+./gradlew :app:verifyAndRecordRoborazziDebug  # 検証と同時にベースライン更新（ローカル向け）
+./gradlew :app:compareRoborazziDebug          # 3枚の比較画像を重ねて確認</code></pre>
+
+<p>特筆すべき点として、<strong>Claude Code / Codex で利用可能な専用 skill</strong> が提供されています：</p>
+<pre><code>npx skills add takahirom/roborazzi</code></pre>
+<p>これをインストールしておくと、AI エージェントが「スクリーンショットテストの追加」「ベースラインの更新」「Roborazzi のエラー修正」などのタスクに直面した際、適切な手順を自動的に読み込んで対処してくれます。</p>
+
+<h3 data-reveal>2つのツールの選定基準</h3>
+<table class="tbl">
+  <tr><th>利用シナリオ</th><th>推奨ツール</th><th>選定理由</th></tr>
+  <tr><td>純粋な UI コンポーネント（Hilt や複雑な依存なし）</td><td><strong>Paparazzi</strong></td><td>より高速で軽量、CI との親和性が高い</td></tr>
+  <tr><td>Hilt / 業務状態注入 / ViewModel のモックを含む</td><td><strong>Roborazzi</strong></td><td>Robolectric 上で動作し、既存のテストスタックと共存可能</td></tr>
+  <tr><td>Compose と従来の View が混在している</td><td><strong>Paparazzi</strong></td><td>両方をサポートしており、エコシステムが成熟している</td></tr>
+  <tr><td>スクリーンショット差分が意図したものかを AI で判定したい</td><td><strong>Roborazzi + roborazzi-ai-gemini</strong></td><td>実験的だが実運用可能</td></tr>
+</table>
+
+<h3 data-reveal>AI による UI 修正の完全なフィードバックループ</h3>
+<pre><code>デザイン変更 ──→ Figma MCP が差分検知 ──→ Claude Code が Compose を生成
+                                              │
+                                              ▼
+                                  ./gradlew :app:verifyPaparazziDebug
+                                              │
+                                ┌─────────────┴─────────────┐
+                                ▼                           ▼
+                            すべて成功                  diff 差分で失敗
+                                │                           │
+                                ▼                           ▼
+                          PR 作成、自動で               AI が自動修正
+                          スクリーンショット添付        または人間がレビュー</code></pre>
+<p><strong>重要：このループはローカルで30秒以内に完了する必要があります</strong>。Paparazzi / Roborazzi は Mac 上で1モジュールあたり5〜15秒で実行可能です。この短縮されたフィードバックループこそが、AI UI 修正ワークフローを実用的に維持するための生命線です。遅くなると、結局「人間の目視」に逆戻りしてしまいます。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="sync">
+<div class="sec-tag">品質 07</div>
+<h2>双方向同期：デザインシステムを真に「生きたもの」にする</h2>
+<p>「デザインシステム」は単なる Figma の1ページではなく、<strong>継続的に進化する生きたエコシステム</strong>です。AI コーディングエージェントが果たす役割は、<strong>デザイン ↔ コード間の同期コストをゼロにすること</strong>です。</p>
+
+<h3 data-reveal>3つの同期パターン</h3>
+
+<h4>① Figma → Code（順方向、最も標準的）</h4>
+<p>デザイナーが Figma を修正し、Claude Code が Compose を修正するパターンです。これまでの章で説明した内容がこれに該当します。<strong>重要な制約</strong>：デザイナーが Variables を更新した後は、Claude Code にキャッシュではなく <code>get_variable_defs</code> を再実行させてからコードを生成させる必要があります。</p>
+
+<h4>② Code → Figma（書き戻し、デザイナー主導のシナリオ）</h4>
+<p>エンジニアが ColorScheme を変更し、Figma 側を追従させたい場合の手段：</p>
+<ul>
+  <li><strong>Claude Code で Figma REST API リクエストを生成</strong>——Figma 公式 API は Variables の更新をサポートしており、AI にリクエストボディを構築させてプッシュします（中程度の導入難易度）。</li>
+  <li><strong>CSS スタイルの Token JSON をエクスポート</strong>（Style Dictionary / Theo）し、デザイナーが Figma プラグイン（Tokens Studio 等）で手動インポートします（導入難易度は低いが完全自動ではない）。</li>
+</ul>
+
+<h4>③ Figma ↔ Code 双方向（高度、中間層が必要）</h4>
+<p><a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a> や <a href="https://github.com/salesforce/theo" target="_blank">Theo</a> を<strong>トークンの唯一の信頼源（Single Source of Truth: JSON 1つ）</strong>として配置し、Figma 側は Tokens Studio プラグインで同期、Compose 側は Gradle プラグインで ColorScheme を生成します。1箇所変更すれば両側が自動で追従します。<strong>これが2026年におけるデザインシステムエンジニアリングの「理想形」</strong>ですが、インフラ構築に1週間程度の工数を確保できるチーム向けです。</p>
+
+<h3 data-reveal>現時点での空白領域：Figma ↔ pen.dev に公式の双方向同期は存在しない</h3>
+<p>2026-08-05 時点で一次ドキュメントを確認した結果：<strong>Figma Variables と pen.dev Variables の間には公式の「双方向同期」リンクは存在しません</strong>。pen.dev 公式プラグインから Figma へ変数をプッシュする仕組みも、Figma 側から <code>.pen</code> ファイル形式をネイティブに読み込むブリッジも提供されていません。両ツールとも変数を機械可読な JSON（Figma REST API、<code>.pen</code> ファイル）として公開していますが、1対1の公式インターフェースはありません。</p>
+
+<p>もしデザインシステムが Figma と pen.dev の両方で運用されている場合、現在最も実用的な解決策は<strong>「4ホップ・ブリッジ」</strong>（DTCG JSON をハブとする構成）です：</p>
+<pre><code>Figma ←(Tokens Studio)→ DTCG JSON ←(Style Dictionary v4)→ .pen ファイル / Compose / iOS / Web
+
+# 例 A: Figma Variables → ローカル JSON の取得
+curl -sS -H "X-Figma-Token: $FIGMA_TOKEN" \
+  "https://api.figma.com/v1/files/$FILE_KEY/variables/local" \
+  | jq '.meta.variables, .meta.variableCollections' \
+  &gt; figma-variables.json
+
+# 例 B: Figma Variables の色変更（POST、Tier 3 + Enterprise + file_variables:write スコープが必要）
+POST https://api.figma.com/v1/files/{file_key}/variables
+{
+  "variableModeValues": [
+    { "variableId": "VariableID:1:3", "modeId": "1:0",
+      "value": { "r": 1, "g": 0, "b": 0, "a": 1 } }
+  ]
+}
+
+# 例 C: Style Dictionary v4 による Compose 向けコンパイル
+const sd = new StyleDictionary({
+  source: ['design/tokens/tokens.json'],
+  platforms: { compose: { transformGroup: 'compose',
+    buildPath: 'app/src/main/java/.../theme/',
+    files: [{ destination: 'Color.kt', format: 'compose/object',
+      options: { className: 'AppColorScheme' } }] }
+});
+await sd.buildAllPlatforms();</code></pre>
+
+<p><strong>中間ブリッジの選択肢</strong>：</p>
+<table class="tbl">
+  <tr><th>ブリッジ</th><th>特徴 / 機能</th><th>制約事項</th></tr>
+  <tr><td><strong>Tokens Studio</strong>（旧 Figma Tokens）</td><td>Figma Variables ↔ DTCG JSON、30万人利用、9+ sync provider（GitHub/GitLab/JSONBin）</td><td>UI は Figma 側、個別ライセンスが必要</td></tr>
+  <tr><td><strong>Style Dictionary v4</strong>（Amazon 製）</td><td>DTCG JSON → Compose Kotlin / iOS Swift / Android XML / CSS / SCSS / Flutter Dart、マルチプラットフォーム対応</td><td>コンパイルのみ、Figma ↔ JSON の同期は担当しない</td></tr>
+  <tr><td><strong>自作スクリプト</strong>（Figma REST API + pen.dev CLI）</td><td>完全な制御が可能、定期実行/トリガー実行に対応</td><td>グルーコードの実装と CI 構築が必要</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">補足事項</b>Figma Variables POST API を使用するには、<strong>Tier 3 + Enterprise フルシート + <code>file_variables:write</code> スコープ</strong>が必要です（個人プランのアカウントでは書き込み不可）。また各 Collection は ≤ 40 modes、≤ 5000 variables、POST リクエストボディ ≤ 4 MB の制限があり、変更はアトミックトランザクションとしてコミットされます。<strong>検証日: 2026-08-05</strong>。</div>
+
+<p>詳細な調査レポート（実行可能な4つのコード例、トラブルシューティング、情報源索引）は <a href="https://github.com/JackyMe/ai-knowledge-base/blob/main/drafts/ai-ui-collab-figma-pen-vars.md" target="_blank">drafts/ai-ui-collab-figma-pen-vars.md</a> を参照してください。</p>
+
+<h3 data-reveal>デザインシステム保守のための6つの規律</h3>
+<ol>
+  <li><strong>トークン名はそのままドキュメントになる</strong>——<code>gray-100</code> よりも <code>surface/container/high</code> を推奨。AI はセマンティック名を見ることで用途を理解できますが、カラーコードだけでは単なる「グレー」としか認識できません。</li>
+  <li><strong><code>Color.White</code> などのシステムカラーを直接使用しない</strong>——すべての色は ColorScheme 経由で取得します。「どうしても白にしたい」場合でも <code>colorScheme.surface</code> を使用することで、ダークモード時に自動で反転されます。</li>
+  <li><strong>余白は <code>Spacing.xs/sm/md/lg/xl</code> 定数を使用する</strong>——4 / 8 / 16 / 24 / 32 dp などを基準とし、Composable 内で直接 <code>13.dp</code> などを記述しないこと。</li>
+  <li><strong>角丸は <code>Shapes.small/medium/large</code> を使用する</strong>——同様に <code>RoundedCornerShape(7.dp)</code> などのアドホックな記述を避けます。</li>
+  <li><strong>Typography は <code>MaterialTheme.typography.*</code> を使用する</strong>——<code>fontSize = 17.sp</code> などの直接指定を行わないこと。</li>
+  <li><strong>アイコンには Material Symbols または Lucide を使用する</strong>——SVG をあちこちに直接配置せず、Figma 側と R.drawable 側で同一のシンボル体系を使用し、プラットフォーム間で統一します。</li>
+</ol>
+
+<div class="prompt-box">
+<div class="pt">PROMPT 07-A · デザイン規律の監査</div>
+<code>src/main/java/.../ui 以下のすべての .kt ファイルをスキャンし、以下をリストアップしてください：
+1. Color(0xFF...) を直接指定している箇所（MaterialTheme.colorScheme.* への修正候補）
+2. Spacing 定数を参照せず .dp 数値を直接記述している箇所（Spacing.* への修正候補）
+3. fontSize = N.sp を直接指定している箇所（MaterialTheme.typography.* への修正候補）
+結果を3つの表に出力してください。確認の上、順次修正します。</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">実践 08</div>
+<h2>実践事例：Figma から Google Play 公開まで、EC 商品詳細画面の開発</h2>
+<p>上記の手順をエンドツーエンドの実例として統合します。シナリオ：EC アプリに「商品詳細画面」を新規追加。Figma にデザインがあり、Android Studio で実装。5つのバリエーション（Light/Dark × 2状態 × 日英）、1週間での Play Store 公開を目指すケースです。</p>
+
+<h3 data-reveal>Day 1 · 準備フェーズ（2時間）</h3>
+<ol class="steps">
+  <li>Figma に公式 <strong>Material 3 Design Kit</strong> を導入し、ブランドカラーを適用して Variables を生成。</li>
+  <li>Variables の定義（JSON）をエクスポートし、<code>design/tokens/figma-variables.json</code> に配置して Git 管理下に置く。</li>
+  <li>Android プロジェクトで <code>./gradlew :app:dependencies | grep material3</code> を実行し、依存関係を確認。</li>
+  <li>Claude Code プラグイン <code>figma@claude-plugins-official</code> を導入し、<code>claude mcp list</code> で figma connected を確認。</li>
+</ol>
+
+<h3 data-reveal>Day 2-3 · パイプライン開通（2日間）</h3>
+<ol class="steps">
+  <li>Claude Code が Figma Variables を読み取り、<code>Color.kt</code> / <code>Type.kt</code> / <code>Shape.kt</code> を生成。</li>
+  <li>Figma Frame <code>ProductDetailScreen</code> を読み取り、Composable + @Preview + Paparazzi テストを生成。</li>
+  <li><code>./gradlew :app:recordPaparazziDebug</code> で初回ベースラインを記録（Light/Dark × 日英 = 計4枚）。</li>
+  <li>PR #1「デザインシステム導入 + 商品詳細画面初版」を作成。</li>
+</ol>
+
+<h3 data-reveal>Day 4 · ビジネスロジック連携（1日間）</h3>
+<ol class="steps">
+  <li>Composable を hoisted state（<code>ProductDetailScreen(state, onIntent)</code>）にリファクタリング。</li>
+  <li>ViewModel + Hilt 注入を追加し、Repository からデータを取得。</li>
+  <li>fake state を用いた Roborazzi テストを作成し、loading / loaded / error の3状態をシミュレート。</li>
+  <li><code>./gradlew :app:verifyPaparazziDebug</code> がすべて成功することを確認（ビジュアル変更なし）。</li>
+  <li>PR #2「業務ロジック結合」を作成。</li>
+</ol>
+
+<h3 data-reveal>Day 5 · デザイナーの変更と同期（0.5日間）</h3>
+<ol class="steps">
+  <li>デザイナーから「プライマリカラーを少し明るくしたい」と要望があり、Figma Variables の <code>brand/primary/500</code> が変更される。</li>
+  <li>Claude Code が自動検知：最新の <code>get_variable_defs</code> を読み取り → <code>Color.kt</code> と比較 → パッチを生成。</li>
+  <li>Paparazzi を実行 → 4枚のベースラインで差分が検出される → 目視確認して承認。</li>
+  <li><code>./gradlew :app:recordPaparazziDebug</code> でベースラインを更新。</li>
+  <li>PR #3「ブランドカラー調整（Paparazzi diff 画像添付）」を作成。</li>
+</ol>
+
+<h3 data-reveal>Day 6-7 · 国際化 + リリース（1.5日間）</h3>
+<ol class="steps">
+  <li><code>values-ja/strings.xml</code>、<code>values-en/strings.xml</code> を追加。</li>
+  <li>新言語のベースラインを記録（日英各2セット、計8枚の Paparazzi テスト）。</li>
+  <li>Play Console の Pre-launch report を実行し、実端末・実ネットワークで最終確認。</li>
+  <li>審査提出。</li>
+</ol>
+
+<div class="callout note"><b class="t">この1週間における「AI の貢献度」</b>① トークンの自動コード化（手作業1時間 → 3秒）；② Composable 雛形作成（手作業8時間 → レビュー1時間）；③ 回帰ベースラインの保守（各ステップ5秒、累計30分未満）；④ デザイナー修正の同期（通常1時間のPR作成 → 5分）；⑤ 日英8枚のスクリーンショット検証（従来は手作業でほぼ未実施）。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="antipatterns">
+<div class="sec-tag">トラブル回避 09</div>
+<h2>アンチパターンとトラブル回避チェックリスト</h2>
+<p>以下はコミュニティおよび実際の開発プロジェクトで頻出する失敗パターンと、その対策です：</p>
+
+<h3 data-reveal>デザイン側のアンチパターン</h3>
+<div class="duo">
+  <div class="bad"><b>❌ デザイナーが画像のみを渡し、トークンを提供しない</b>
+  <p>AI にスクリーンショットから色値を「推測」させるため、ブランドカラーとのズレが永久に解消されません。</p></div>
+  <div class="good"><b>✅ Variables JSON またはアクセス可能な Figma ファイルを提供する</b>
+  <p>Material Theme Builder を活用して一括定義し、Claude Code で自動照合します。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ デザイン稿で絶対配置を使用している</b>
+  <p>全要素が <code>x=137, y=204, w=320</code> のようになっており、テキスト変更でレイアウトが崩壊します。</p></div>
+  <div class="good"><b>✅ Auto Layout + 100% 拘束を徹底する</b>
+  <p>AI が Flexbox 構造を正確に読み取り、Compose の <code>Row/Column/Box</code> に適切に変換できます。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ 1つの Frame 内に5画面分を詰め込む</b>
+  <p>AI が Composable の境界線を正しく判別できなくなります。</p></div>
+  <div class="good"><b>✅ 1 Frame = 1 Composable を徹底する</b>
+  <p>Figma Frame 名と Compose 関数名を1対1で対応させることで、AI の推論精度が最大化されます。</p></div>
+</div>
+
+<h3 data-reveal>コーディング側のアンチパターン</h3>
+<div class="duo">
+  <div class="bad"><b>❌ AI が本番コードを直接書き換える</b>
+  <p>計画も回帰テストもなく、5箇所のバグのうち2箇所しか検知できません。</p></div>
+  <div class="good"><b>✅ Plan モード + PR レビュー + スクリーンショット回帰の3点セット</b>
+  <p>Claude Code で <code>Shift+Tab</code> を押して Plan モードに入り、ExitPlanMode で承認後、PR マージ前に Paparazzi を実行します。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ UI を変更したのにテストを追加しない</b>
+  <p>「AI が修正したから大丈夫だろう」という過信は、高確率でリグレッションを招きます。</p></div>
+  <div class="good"><b>✅ Composable を修正したら、必ず Paparazzi テストを追加する</b>
+  <p>わずか30秒のコストで、将来の無数のリグレッションを未然に防ぎます。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ AI に一度に10画面を修正させる</b>
+  <p>プロンプト1行で10画面の変更を指示すると、1画面しか動かず9画面でエラーが発生します。</p></div>
+  <div class="good"><b>✅ 1画面ずつ確実に動作確認しながら進める</b>
+  <p>AI のコンテキスト制限とデバッグの容易さを考慮し、スモールステップで進めるほうが結果的に10倍安全です。</p></div>
+</div>
+
+<h3 data-reveal>プロセス側のアンチパターン</h3>
+<div class="duo">
+  <div class="bad"><b>❌ Figma とコードの両方を手動修正し、記録を残さない</b>
+  <p>デザイン、フロントエンド、AI の三者が勝手に変更し、最終的にどれが正解か分からなくなります。</p></div>
+  <div class="good"><b>✅ 単一の信頼源を取り決め、変更時は PR コメントを残す</b>
+  <p>Figma が源なら Figma のみを修正し、変更履歴を完全に追跡可能にします。</p></div>
+</div>
+
+<div class="duo">
+  <div class="bad"><b>❌ Paparazzi のベースラインを一度も更新しない</b>
+  <p>3ヶ月後にはベースラインが真っ赤（エラーだらけ）になり、誰もリセットできなくなります。</p></div>
+  <div class="good"><b>✅ デザイン変更 PR には必ず「ベースライン更新の根拠」を含める</b>
+  <p>スクリーンショットの diff 自体を PR レビューの対象とし、正当な理由を持って更新します。</p></div>
+</div>
+
+<h3 data-reveal>AI による UI 修正が真に効率化されているかを判断する 4 つの指標</h3>
+<p>「30秒で PR が出た」という見た目に惑わされず、実質的な効果を測定するための指標です：</p>
+<ol>
+  <li><strong>PR マージ率</strong>——AI が作成した PR のうち、一発でレビューを通過した割合。50% 未満の場合、AI が手戻りを生み出しています。</li>
+  <li><strong>Paparazzi 誤検知率</strong>——AI の修正によるスクリーンショット差分のうち「実際に視覚的な問題があった」割合。30% を超える場合はプロンプトの調整が必要です。</li>
+  <li><strong>デザイナーの変更からコード反映までの所要時間</strong>——目標は 2 時間未満。1 日を超える場合はプロセスが分断されています。</li>
+  <li><strong>デザイン トークン遵守率</strong>——コード内で色や余白がハードコードされている割合。目標は 5% 未満。15% を超える場合はトークンリファクタリングを計画すべきです。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="prompts">
+<div class="sec-tag">付録 A</div>
+<h2>プロンプトテンプレート集（コピーしてそのまま利用可能）</h2>
+<p>以下のプロンプトはすべて「何を読み取るか / どこへ書くか / 何をテストするか」の3部構成で記述されており、Claude Code および Codex でそのまま利用可能です。</p>
+
+<h3 data-reveal>A1 · 開始：Figma からデザイン読み取り + トークン反映</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A1</div>
+<code>figma MCP を使用して、Figma ファイル &lt;FILE_KEY&gt; の ProductDetailScreen を読み取ってください：
+1. get_variable_defs ですべての Variables を取得し、app/src/main/java/.../ui/theme/Color.kt および Type.kt に書き込む
+2. 変数名は Material 3 ColorScheme ロールに準拠させる（primary → primary, surface-variant → surfaceVariant）
+3. 完了後、./gradlew :app:compileDebugKotlin で検証する
+4. Color.kt の diff を提示してください</code>
+</div>
+
+<h3 data-reveal>A2 · Composable + Preview + テストの生成</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A2</div>
+<code>Figma Frame の構造に基づいて以下を生成してください：
+- app/src/main/java/.../feature/product/ProductDetailScreen.kt
+- @Preview(name="Light"), @Preview(name="Dark"), @Preview(name="EN")
+- 色・フォント・余白はすべて MaterialTheme 経由とし、ハードコードは禁止
+- src/test/.../ProductDetailSnapshotTest.kt を追加し、まず recordPaparazzi でベースラインを記録
+- ./gradlew :app:verifyPaparazziDebug を実行し、成功を確認してから結果を報告してください</code>
+</div>
+
+<h3 data-reveal>A3 · デザイナーがトークンを変更した後の自動同期</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A3</div>
+<code>デザイナーが Figma で Variables を更新しました。リンク：&lt;FIGMA_URL&gt;
+1. figma MCP を使用して get_variable_defs を再取得（キャッシュを使用しないこと）
+2. 現在の Color.kt / Type.kt と比較し、最小限のパッチを生成
+3. ./gradlew :app:verifyPaparazziDebug を実行し、差分があれば一覧で提示
+4. "design: sync tokens from Figma (2026-08-05)" というタイトルで PR を作成してください</code>
+</div>
+
+<h3 data-reveal>A4 · 同一デザインシステム内での新規画面追加</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A4</div>
+<code>Figma Frame &lt;FRAME_ID&gt; を読み取り、&lt;FeatureName&gt;Screen.kt を作成してください：
+- MaterialTheme.colorScheme / typography / shapes の使用を徹底すること
+- @Preview Light/Dark を必ず含めること
+- Paparazzi テストを作成し、まず recordPaparazzi でベースラインを記録すること
+- 禁止事項：カラーのハードコード、dp/sp の直接数値指定、Color.White などの直接使用
+- 完了後、:app:lintDebug を実行し、続けて :app:verifyPaparazziDebug を実行してください</code>
+</div>
+
+<h3 data-reveal>A5 · スクリーンショット回帰テスト失敗 → AI による自動修正</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A5</div>
+<code>:app:verifyPaparazziDebug を実行したところ、以下のテストが失敗しました：
+&lt;テスト出力を貼り付け&gt;
+手順：
+1. app/build/paparazzi/failures/ にある失敗 diff 画像を確認する
+2. 意図的な変更かリグレッションかを判断する
+3. 意図的な変更の場合：recordPaparazzi を再実行してベースラインを更新する
+4. リグレッションの場合：git diff を確認して原因箇所を特定し、修正または revert を行う
+5. 修正後、verify を再実行してすべて成功するまで繰り返してください</code>
+</div>
+
+<h3 data-reveal>A6 · 逆方向の書き戻し：Figma → トークン JSON</h3>
+<div class="prompt-box">
+<div class="pt">PROMPT A6</div>
+<code>app/src/main/java/.../ui/theme/Color.kt からすべての ColorScheme ロールを読み取り、
+design/tokens/color-tokens.json を以下の形式で生成してください：
+{ "primary": "#476810", "onPrimary": "#FFFFFF", ... }
+同時に design/tokens/typography.json および spacing.json を生成し、
+Style Dictionary 互換のフォーマットとして出力してください。</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="ios-web">
+<div class="sec-tag">付録 X</div>
+<h2>クロスプラットフォーム展開：iOS × Web（Android のパイプラインを移植）</h2>
+<p><strong>対象読者</strong>：本ドキュメントをお読みの方で、<strong>Android ではなく SwiftUI または React/Tailwind を主戦場とされている方</strong>。本付録では以下の2点に絞って解説します：① 本文の5ステップ・パイプラインを SwiftUI / React でどう再現するか；② それぞれにおける対応概念（Compose の <code>MaterialTheme</code> は iOS / Web で何に該当するか）。<strong>検証日: 2026-08-05</strong>。リンク集は X4 を参照してください。</p>
+
+<h3 data-reveal>X1. iOS 展開（SwiftUI）</h3>
+<p>Apple の公式用語に「Design Token」という言葉はありませんが、同等の概念を構築する3つのメカニズムが存在します：</p>
+
+<h4>① セマンティックカラー + Asset Catalog</h4>
+<p>HIG（Human Interface Guidelines）では「<strong>16進数のハードコードを避け、セマンティックカラーを優先すること</strong>」が強く推奨されています。セマンティックカラーは Dark Mode、Increase Contrast、Reduce Transparency に自動追従します。</p>
+<pre><code>// ❌ AI が犯しやすい実装（ハードコード）
+Text("Save").foregroundColor(Color(red: 0.28, green: 0.41, blue: 0.06))
+
+// ✅ 正しい実装: セマンティックカラー / 独自 Color Set の利用
+Text("Save").foregroundStyle(.primary)
+Button("Save") {}.tint(Color("BrandPrimary"))   // Asset Catalog 内の Color Set</code></pre>
+
+<h4>② カスタム Theme コンテナ（iOS 18+ <code>@Entry</code> マクロ）</h4>
+<p>Compose の <code>MaterialTheme.colorScheme</code> に対応するのが、iOS 18 で導入された <code>@Entry</code> マクロです。<code>@Environment</code> 経由でブランドトークン一式にアクセスできます：</p>
+<pre><code>@Entry struct BrandTheme {                           // 1) トークンコンテナの定義
+  let primary: Color; let onPrimary: Color; let surface: Color
+  let radius: CGFloat; let spacing: (xs: CGFloat, sm: CGFloat, md: CGFloat, lg: CGFloat)
+}
+extension EnvironmentValues { var brandTheme: BrandTheme { .default } }
+
+@main struct MyApp: App {                            // 2) ルートでの注入（Compose の Theme ラッパーに相当）
+  var body: some Scene {
+    WindowGroup { RootView().environment(\.brandTheme, .light) }
+  }
+}
+
+struct PrimaryButton: View {                         // 3) 子 View での取得
+  @Environment(\.brandTheme) private var theme
+  var body: some View {
+    Text("Tap").foregroundStyle(theme.onPrimary)
+      .padding(.horizontal, theme.spacing.md)
+      .background(theme.primary, in: .rect(cornerRadius: theme.radius))
+  }
+}</code></pre>
+
+<h4>③ Figma Variables → Swift <code>Color</code> のブリッジ</h4>
+<p><strong>Figma 公式の Dev Mode には「Copy as SwiftUI」は提供されていません</strong>（Compose / React / HTML / CSS は存在）。自前でブリッジを構築する必要があります：</p>
+<pre><code># 1) Figma Variables をローカル JSON として取得（標準 REST API）
+curl -sS -H "X-Figma-Token: $FIGMA_TOKEN" \
+  "https://api.figma.com/v1/files/$FILE_KEY/variables/local" \
+  | jq '.meta.variables' &gt; figma-vars.json
+
+# 2) Style Dictionary v4 で Swift 向けにコンパイル（ios-swift 形式をサポート）
+const sd = new StyleDictionary({
+  source: ['figma-vars.json'], platforms: {
+    ios: { transformGroup: 'ios-swift',
+      buildPath: 'Sources/Theme/',
+      files: [{ destination: 'BrandTheme.swift', format: 'ios-swift/class',
+        options: { className: 'BrandTheme' } }] }
+  }
+});
+await sd.buildAllPlatforms();</code></pre>
+<div class="callout tip"><b class="t">手軽な代替案</b>まず動作を確認したい場合は、Tokens Studio for Figma プラグインを用いることで、Figma 上で Tokens ↔ DTCG JSON ↔ Style Dictionary を直接連携させることが可能です。詳細は <a href="https://docs.tokens.studio/" target="_blank">docs.tokens.studio</a> を参照してください。</div>
+
+<h4>④ iOS 側「5ステップ・パイプライン」の対照表</h4>
+<table class="tbl">
+  <tr><th>ステップ</th><th>Android（本文）</th><th>iOS での対応</th></tr>
+  <tr><td>1. トークン反映</td><td>Material Theme Builder → Color.kt</td><td>Tokens Studio + Style Dictionary → BrandTheme.swift</td></tr>
+  <tr><td>2. 画面契約</td><td>Figma Frame</td><td>同一 Figma Frame（<code>Copy as SwiftUI</code> がないため要翻訳）</td></tr>
+  <tr><td>3. AI 読み取り</td><td>Figma MCP <code>get_design_context</code> + 翻訳</td><td>同一 Figma MCP（React→SwiftUI への変換は AI の責務）</td></tr>
+  <tr><td>4. コード生成</td><td>Compose + @Preview + スナップショットテスト</td><td>SwiftUI + #Preview + SnapshotTesting</td></tr>
+  <tr><td>5. 視覚回帰</td><td>Paparazzi / Roborazzi（JVM、数秒）</td><td><strong>SnapshotTesting（シミュレータ必須、低速）——現時点でデバイス不要な代替は不在</strong></td></tr>
+</table>
+
+<h4>⑤ AI コーディングエージェントの SwiftUI における実力と境界</h4>
+<p>率直に言えば、AI による SwiftUI 生成にはいくつかの<strong>明確な弱点</strong>が存在します（2026.8 時点）：</p>
+<ul>
+  <li><strong>ジェスチャー連携</strong>——<code>DragGesture</code> + <code>simultaneousGesture</code> + 状態遷移マシンでエラーが出やすく、境界条件が抜ける傾向があります。</li>
+  <li><strong>Combine</strong>——<code>Publisher</code> チェーン / debounce / switchToLatest など、動くコードは書けても過度に複雑化しがちです。</li>
+  <li><strong>SwiftData マイグレーション</strong>——バージョン間のスキーマ移行は人間による精査が不可欠です。</li>
+  <li><strong>状態の巻き上げ / 複雑な画面遷移</strong>——navigationDestination / NavigationStack のパス制御は、初版で破綻しやすい傾向があります。</li>
+</ul>
+<p><strong>対策</strong>：これらは AI に初版を書かせた後、<strong>Preview + SnapshotTesting を実行し、diff を人間が厳格にレビュー</strong>します。AI の「完了しました」という自己申告を鵜呑みにしないことが肝要です。</p>
+
+<h4>⑥ そのまま使える Claude Code プロンプト（iOS 向け）</h4>
+<pre><code>この Figma Frame を読み取ってください: https://www.figma.com/file/{KEY}?node-id={NODE_ID}
+Figma MCP の get_design_context / get_variable_defs で構造とデザイン トークンを取得してください。
+
+出力要件:
+1) SwiftUI View (Sources/Views/ 配下、ファイル名 = Figma Frame 名)
+2) @Entry で注入された BrandTheme からプライマリカラー / 余白 / 角丸を取得し、ハードコードは禁止
+3) #Preview に Light / Dark の 2 つの BrandTheme を用意
+4) SnapshotTesting テストを追加 (Tests/__Snapshots__/)
+5) SwiftData を使用する場合、スキーマのマイグレーション対応を 2 バージョン分記述
+
+禁止事項: .foregroundColor(.red) の直接指定 / 16進数のハードコード / View 内での Combine 直接オーケストレーション</code></pre>
+
+<h3 data-reveal>X2. Web 展開（Tailwind v4 × shadcn）</h3>
+<p>Web 側における「デザイン トークン一等市民化」の流れ：<strong>Tailwind v3 の config.js → Tailwind v4 の <code>@theme</code> CSS 変数 → shadcn のセマンティック CSS 変数</strong>。v4 の最大の意義は、<code>tailwind.config.js</code> を介さず CSS 変数を直接ユーティリティクラス化できる点にあります。</p>
+
+<h4>① Tailwind v4 <code>@theme</code> ディレクティブ</h4>
+<pre><code>/* app.css */
+@import "tailwindcss";
+
+@theme {
+  /* カラー定義（OKLCH 色空間を使うとより高精度） */
+  --color-brand-50:  oklch(0.97 0.02 120);
+  --color-brand-500: oklch(0.55 0.18 145);
+  --color-brand-900: oklch(0.25 0.05 145);
+
+  /* フォント / 余白 / 角丸 */
+  --font-display: "Inter", "Hiragino Sans", sans-serif;
+  --spacing-app: 0.25rem;
+  --radius-card: 0.75rem;
+}</code></pre>
+<p>重要な変化：v4 の <code>@theme</code> は<strong>自動的にユーティリティクラスを生成</strong>します（<code>bg-brand-500</code>、<code>font-display</code>、<code>rounded-card</code> が即時利用可能）。3つの高度なディレクティブ：</p>
+<table class="tbl">
+  <tr><th>ディレクティブ</th><th>機能説明</th><th>Compose との対応</th></tr>
+  <tr><td><code>@theme inline { ... }</code></td><td>トークンを直接ユーティリティに展開（CSS 変数を生成しない）</td><td><code>colorScheme.primary</code> の直接展開モードに相当</td></tr>
+  <tr><td><code>@theme static { ... }</code></td><td><strong>上書き不可</strong>の完全な固定値</td><td>ランタイム変更不可な MaterialTheme に相当</td></tr>
+  <tr><td><code>--*: initial</code></td><td>Tailwind デフォルトの余白や角丸を全リセットし独自定義</td><td>独自のベースラインへの完全初期化</td></tr>
+</table>
+
+<h4>② shadcn の「コード＝デザイン」の哲学</h4>
+<p>shadcn は npm パッケージとして配布されるのではなく、<strong>コンポーネントのソースコード自体</strong>をプロジェクト（<code>components/ui/</code>）に直接コピーする方式をとっています。そのため「トークンの変更」は <code>bg-primary</code> などの CSS 変数を書き換えるだけで完結します。<strong>Figma Variables と綺麗に 1 対 1 対応します</strong>：</p>
+<table class="tbl">
+  <tr><th>shadcn CSS 変数</th><th>対応する Figma Variable</th><th>主な用途</th></tr>
+  <tr><td><code>--background</code> / <code>--foreground</code></td><td>surface / onSurface</td><td>コンテナ背景色 + テキスト色</td></tr>
+  <tr><td><code>--primary</code> / <code>--primary-foreground</code></td><td>primary / onPrimary</td><td>主要ボタン、リンク</td></tr>
+  <tr><td><code>--secondary</code> / <code>--muted</code> / <code>--accent</code></td><td>secondaryContainer / surfaceVariant / tertiary</td><td>副次コンテナ / 弱調 / 強調</td></tr>
+  <tr><td><code>--destructive</code></td><td>error</td><td>削除や危険な操作</td></tr>
+  <tr><td><code>--border</code> / <code>--input</code> / <code>--ring</code></td><td>outline / outlineVariant / focus</td><td>境界線 / 入力枠 / フォーカスリング</td></tr>
+  <tr><td><code>--radius</code></td><td>shape.cornerMedium</td><td>グローバルの基本角丸</td></tr>
+</table>
+<p><strong>注意点</strong>：shadcn はデフォルトでニュートラルなグレー基調になっているため、<strong>ブランドカラーは <code>--primary</code> を上書きするだけで適用されます</strong>。コンポーネントソース内の色を直接書き換えてしまうと、後から <code>shadcn add</code> でコンポーネントを追加した際にデフォルトに戻ってしまうため避けてください。</p>
+
+<h4>③ Claude Code × Next.js / Vite パイプライン</h4>
+<pre><code># プロジェクトルートで Claude Code を起動
+claude
+
+# Figma から shadcn コンポーネントへの変換を一括指示:
+claude&gt; Figma MCP を使って Frame:{URL} を読み取り、等価な
+       shadcn コンポーネント (Button / Card / Dialog) を生成してください。
+       色のハードコードは禁止し、すべて :root 配下の --primary / --background 変数を使用すること。
+       同時に: 1) component.test.tsx (testing-library) の作成
+              2) visual.spec.ts (Playwright スクリーンショット) の作成 を行ってください。</code></pre>
+<p><strong>MCP の現状</strong>：shadcn 公式の MCP は提供されていませんが、<strong>CLI と Registry 自体が極めて AI フレンドリーな構造</strong>を持っています（各コンポーネントが独立して import 可能なコードベース）。</p>
+
+<h4>④ Web 側の視覚回帰テストツールの比較</h4>
+<table class="tbl">
+  <tr><th>ツール名</th><th>ベース技術</th><th>強み</th><th>コスト / 代償</th></tr>
+  <tr><td><strong>Playwright screenshot</strong></td><td>Headless Browser</td><td>完全無料、柔軟性が高く E2E テストと共用可能</td><td>ベースライン管理やレポート生成の自前構築が必要</td></tr>
+  <tr><td><strong>Chromatic</strong> (Storybook チーム)</td><td>Storybook + クラウド</td><td>PR コメントに diff 画像が直接添付され、UI レビューが一元化</td><td>有料サービス、Storybook の構築が必要</td></tr>
+  <tr><td><strong>VRT</strong> (Visual Regression Tracker)</td><td>独立サーバー</td><td>クロスプロジェクト対応、セルフホスト可能</td><td>サーバー運用コスト</td></tr>
+</table>
+
+<h3 data-reveal>X3. 3大プラットフォーム比較速覧表</h3>
+<table class="tbl">
+  <tr><th>比較軸</th><th>Android（本文）</th><th>iOS（SwiftUI）</th><th>Web（Tailwind v4 + shadcn）</th></tr>
+  <tr><td><strong>トークンの一等市民化</strong></td><td><code>MaterialTheme.colorScheme</code></td><td><code>@Entry</code> マクロ + <code>BrandTheme</code>（iOS 18+）</td><td>CSS 変数 + <code>@theme</code>（Tailwind v4）</td></tr>
+  <tr><td><strong>公式ブリッジ（デザイン→コード）</strong></td><td>Material Theme Builder から Compose 出力</td><td>Tokens Studio + Style Dictionary で Swift 生成</td><td>shadcn CLI + CSS 変数 / Style Dictionary</td></tr>
+  <tr><td><strong>Figma MCP 連携</strong></td><td>ネイティブ対応、5ステップ確立済み</td><td>ネイティブ対応、React→SwiftUI 変換は AI が担当</td><td>ネイティブ対応、<code>get_design_context</code> が React+Tailwind を直接出力</td></tr>
+  <tr><td><strong>AI のコード生成品質</strong></td><td>極めて高い（Compose の構造化度が高い）</td><td>高（単一 View）/ 弱（ジェスチャー、Combine、マイグレーション）</td><td><strong>最高</strong>（React + Tailwind は AI の最大学習領域）</td></tr>
+  <tr><td><strong>実機・仮想スクリーンショット回帰</strong></td><td>Paparazzi / Roborazzi（JVM、数秒）</td><td>SnapshotTesting（シミュレータ必須、低速）</td><td>Playwright / Chromatic / VRT</td></tr>
+  <tr><td><strong>ブランドカラー定義</strong></td><td>Material Theme Builder</td><td>Asset Catalog Color Set（Light/Dark/High Contrast）</td><td><code>:root</code> + <code>.dark</code> の二重 CSS 変数</td></tr>
+  <tr><td><strong>ダイナミックカラー vs ブランド色</strong></td><td><code>dynamicLightColorScheme()</code></td><td>Asset Catalog セマンティック色 + 個別ブランド色</td><td>shadcn デフォルトは中立、<code>--primary</code> でブランド色上書き</td></tr>
+  <tr><td><strong>レスポンシブレイアウト トークン</strong></td><td><code>Modifier.fillMaxWidth()</code></td><td><code>.containerRelativeFrame()</code>（iOS 17+）</td><td>Tailwind ブレークポイント + <code>@container</code></td></tr>
+  <tr><td><strong>AI への最短同期経路</strong></td><td>Figma MCP + Material Theme Builder</td><td>Figma MCP + Tokens Studio</td><td>Figma MCP + shadcn CLI</td></tr>
+  <tr><td><strong>AI が苦手とする領域</strong></td><td>State hoisting / Preview の依存関係順序</td><td>ジェスチャー連携 / Combine / マイグレーション</td><td>v3→v4 の config 移行 / Radix の内部構造</td></tr>
+</table>
+
+<h3 data-reveal>X4. 情報源一覧（検証日: 2026-08-05）</h3>
+<ol>
+  <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations" target="_blank">Apple HIG / Foundations（総合ガイド）</a>——Color / Typography / Materials / Dark Mode / Accessibility</li>
+  <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations/color" target="_blank">Apple HIG / Foundations / Color</a>——セマンティックカラー、SF Symbols、Dynamic Type、Asset Catalog 統合</li>
+  <li><a href="https://developer.apple.com/documentation/swiftui/view/containerrelativeframe(_:alignment:)" target="_blank">SwiftUI <code>containerRelativeFrame(_:alignment:)</code></a>——iOS 17+ レスポンシブレイアウト公式 API</li>
+  <li><a href="https://developer.apple.com/documentation/swiftui/entry" target="_blank">SwiftUI <code>@Entry</code> マクロ</a>——iOS 18+ におけるカスタム <code>EnvironmentValues</code> 宣言</li>
+  <li><a href="https://tailwindcss.com/docs/theme" target="_blank">Tailwind CSS v4 / Theme ドキュメント</a>——<code>@theme</code> 構文、名前空間、<code>@theme inline</code> / <code>@theme static</code> / <code>--*: initial</code></li>
+  <li><a href="https://ui.shadcn.com/docs" target="_blank">shadcn/ui ドキュメント（総合）</a>——「コード＝デザイン」の設計思想 + CLI + Registry</li>
+  <li><a href="https://ui.shadcn.com/docs/theming" target="_blank">shadcn/ui Theming</a>——セマンティック CSS 変数の命名規則、<code>components.json</code>、<code>--radius</code> 定義</li>
+  <li><a href="https://ui.shadcn.com/docs/cli" target="_blank">shadcn CLI インストール</a>——<code>pnpm dlx shadcn@latest init -t &lt;framework&gt;</code></li>
+  <li><a href="https://styledictionary.com/" target="_blank">Style Dictionary 公式サイト</a>——マルチプラットフォーム対応のトークンコンパイラ、DTCG 仕様準拠</li>
+  <li><a href="https://docs.tokens.studio/" target="_blank">Tokens Studio for Figma ドキュメント</a>——Figma 側トークン管理と Style Dictionary 連携</li>
+  <li><a href="https://code.claude.com/docs/en/mcp" target="_blank">Claude Code / MCP ドキュメント</a>——stdio / http / sse トランスポート仕様</li>
+</ol>
+
+<div class="callout warn"><b class="t">公式情報源が見当たらなかった項目（誠実な開示）</b>
+<ol style="padding-left:18px">
+  <li><strong>iOS における「エミュレータ不要な SwiftUI スクリーンショット回帰テスト」</strong>——Android の Paparazzi / Roborazzi は JVM レンダリングで秒単位で実行できますが、iOS は現時点で SnapshotTesting + シミュレータ起動が必要であり、Apple 公式の代替は存在しません。</li>
+  <li><strong>Figma 公式の「Copy as SwiftUI」</strong>——Dev Mode には Compose / React / HTML / CSS がありますが、<strong>SwiftUI は含まれておらず</strong>、コミュニティプラグインに依存しています。</li>
+  <li><strong>shadcn 公式の MCP サーバー</strong>——shadcn 公式 MCP は存在しませんが、CLI と Registry 自体が AI との親和性を十分に備えています。</li>
+</ol>
+一次ドキュメント等で最新情報をご存知の方は、ぜひ PR にて情報をお寄せください。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">付録 R</div>
+<h2>リソースと情報源インデックス</h2>
+
+<h3 data-reveal>公式ドキュメント（一次情報源）</h3>
+<ul>
+  <li><a href="https://docs.pencil.dev/" target="_blank">pen.dev 公式ドキュメント</a>——当ナレッジベース内の <a href="pencil-docs-zh.ja.html">『pen.dev 公式ドキュメント日本語版』</a> に収録</li>
+  <li><a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">pen.dev AI Integration</a>——MCP 統合、Claude Code / Codex ワークフロー</li>
+  <li><a href="https://github.com/figma/mcp-server-guide" target="_blank">Figma MCP Server ガイド</a>——インストール、ツールセット、Code Connect</li>
+  <li><a href="https://help.figma.com/hc/en-us/sections/14506167395095-AI" target="_blank">Figma AI 機能センター</a></li>
+  <li><a href="https://developer.android.com/develop/ui/compose/designsystems/material3" target="_blank">Material 3 in Jetpack Compose</a>——公式 ColorScheme / Typography / Shapes</li>
+  <li><a href="https://m3.material.io/theme-builder" target="_blank">Material Theme Builder</a>——Figma Variables → Compose 公式ブリッジ</li>
+  <li><a href="https://stitch.withgoogle.com/" target="_blank">Google Stitch</a></li>
+</ul>
+
+<h3 data-reveal>ツールリポジトリ</h3>
+<ul>
+  <li><a href="https://github.com/cashapp/paparazzi" target="_blank">Paparazzi</a>——JVM スクリーンショットテスト</li>
+  <li><a href="https://github.com/takahirom/roborazzi" target="_blank">Roborazzi</a>——Robolectric スクリーンショットテスト + AI skill（<code>npx skills add takahirom/roborazzi</code>）</li>
+  <li><a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a>——デザイン トークンの単一情報源管理</li>
+  <li><a href="https://github.com/salesforce/theo" target="_blank">Theo</a>——Salesforce 製トークンツール</li>
+</ul>
+
+<h3 data-reveal>当ナレッジベース内の関連トピック（併読推奨）</h3>
+<ul>
+  <li><a href="pencil-claude-code-best-practices.ja.html">pen.dev × Claude Code ベストプラクティス</a>——ツール組み合わせの徹底実践マニュアル</li>
+  <li><a href="pencil-docs-zh.ja.html">pen.dev 公式ドキュメント</a>——全ページ解説</li>
+  <li><a href="claude-code-guide.ja.html">Claude Code 活用ガイド</a>——コマンド、Skill、MCP の基本</li>
+  <li><a href="codex-guide.ja.html">Codex 活用ガイド</a>——OpenAI コーディングエージェント徹底比較</li>
+  <li><a href="android-crash-anr.ja.html">Android Crash & ANR 原因究明と根本対策</a>——AI による UI 修正時の安定性担保</li>
+  <li><a href="prompt-context-engineering.ja.html">プロンプト＆コンテキストエンジニアリング</a>——プロンプト設計の根本原則</li>
+</ul>
+
+<div class="callout warn"><b class="t">鮮度に関する免責事項</b>本ページは 2026-08-05 時点の公開情報に基づいて作成されています。Figma / pen.dev / Compose Material 3 / Paparazzi / Roborazzi は急速に進化しているため、最新の挙動は公式ドキュメントをご確認ください。<strong>最終検証日から1ヶ月以上経過している場合</strong>は、トークン同期と Paparazzi ベースラインの再検証を推奨します。</div>
+</section>
+
+<div class="footer">
+  <div>本ページの内容は AI ナレッジベースの基本原則に準拠しています：すべての結論に出典を明記し、議論の分かれる点は相違点を明記し、確認できなかった情報は「未確認」と正直に記述しています。デザインツールと AI コーディングエージェントの本格的な協調は、MCP、Compose における Material 3 の成熟、Paparazzi の安定化が揃った2026年になって初めて実用レベルに達した分野です。</div>
+  <div style="margin-top:8px">最終検証: <strong>2026-08-05</strong> · 対象ツールバージョン: Claude Code v2.1.222 · Codex 0.146.0 · pen.dev docs 2026-07-27 · Paparazzi 2.0.0-alpha05 · Roborazzi 最新 stable</div>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

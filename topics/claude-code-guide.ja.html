@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="5つの黄金法則、100+コマンド早見表、6大拡張の選定基準、8大シナリオ実践マニュアル、権限セキュリティと即戦力テンプレート集。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code 実践活用ガイド · シナリオ × コマンド × 拡張機能 × メンタルモデル · 2026.07">
+<meta property="og:description" content="5つの黄金法則、100+コマンド早見表、6大拡張の選定基準、8大シナリオ実践マニュアル、権限セキュリティと即戦力テンプレート集。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/claude-code-guide.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Claude Code 実践活用ガイド · シナリオ × コマンド × 拡張機能 × メンタルモデル · 2026.07</title>
+<style>
+:root{
+  --accent:#d9634a; --accent-2:#f59e0b; --accent-soft:#fdeee9;
+  --ink:#171310; --bg:#ffffff; --bg-side:#fbfaf9; --bg-code:#1c1917;
+  --text:#25211e; --text-2:#5d564f; --text-3:#948b82;
+  --border:#ece7e2; --border-2:#ddd6cf;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#fdf1ec;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f3efeb;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f5efe9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(217,99,74,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(245,158,11,.30),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fbbf9d;font-weight:600;background:rgba(217,99,74,.16);
+  border:1px solid rgba(217,99,74,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fb923c,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cfc4ba;max-width:640px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a99e93}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#f6d4c6}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f5f1ed;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#b4442c}
+pre{background:var(--bg-code);color:#e9e2da;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8d8478}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fbf9f7}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fcfaf8}
+
+/* 高頻度コアコマンドウォール */
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:var(--dur-hover,.3s) var(--ease-breathe,ease)}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(23,19,16,.06)}
+.hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
+.hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
+.hotcmd.must{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.hotcmd.must .hc-cmd{color:var(--accent)}
+.hotcmd.must::after{content:"★ 必修";position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--accent);padding:2px 9px;border-radius:99px;letter-spacing:.02em}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+/* シナリオカード */
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#fbf9f7;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+/* 対比ボックス */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+/* 決定マトリクスバッジ */
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fdeee9;color:#c2492f}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eefbf3;color:#15803d}
+.pill.d{background:#eef4fe;color:#1d4ed8}
+.pill.e{background:#f3eefe;color:#7c3aed}
+.pill.f{background:#fdeef7;color:#be185d}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(23,19,16,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">CC</span>Claude Code 実践ガイド<span class="sub">完全攻略版</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <span>検証済み: 2026-08-25</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">メンタルモデル</div>
+    <a href="#mental-model"><span class="no">00</span>すべてはコンテキストを中心に回る</a>
+    <a href="#golden-rules"><span class="no">01</span>5つの黄金法則</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">最新動向</div>
+    <a href="#whats-new"><span class="no">新</span>直近の重要アップデート</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">早見表</div>
+    <a href="#setup"><span class="no">02</span>インストールと初期設定</a>
+    <a href="#commands"><span class="no">03</span>コマンド早見表</a>
+    <a href="#shortcuts"><span class="no">04</span>ショートカット＆入力テクニック</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">拡張エコシステム</div>
+    <a href="#extensions"><span class="no">05</span>6大拡張機能の選び方</a>
+    <a href="#skills-hooks"><span class="no">06</span>Skills・Hooks・MCP・サブエージェント</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実戦演習</div>
+    <a href="#playbook"><span class="no">07</span>8大シナリオ実践マニュアル</a>
+    <a href="#context"><span class="no">08</span>コンテキスト管理の極意</a>
+    <a href="#permissions"><span class="no">09</span>権限とセキュリティ</a>
+    <a href="#config-auth"><span class="no">10</span>設定とアカウント体系の完全解説</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">ノウハウ集積</div>
+    <a href="#ecosystem"><span class="no">11</span>エコシステム厳選: メソドロジー＆連携レシピ</a>
+    <a href="#pitfalls"><span class="no">12</span>アンチパターン＆落とし穴回避リスト</a>
+    <a href="#templates"><span class="no">13</span>即戦力テンプレート集</a>
+    <a href="#hidden-config"><span class="no">14</span>隠し機能＆イースターエッグ設定</a>
+    <a href="#resources"><span class="no">15</span>リソースインデックス</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">⛏️ 公式ドキュメント × コミュニティの叡智 · 全シナリオ凝縮 · 2026-08-25 検証済み</div>
+  <h1>Claude Code<br><span class="grad">実践活用ガイド · 完全攻略版</span></h1>
+  <p class="lead">メンタルモデルから必須コマンド、拡張機能の選定基準から8大実戦シナリオまで。公式 Best Practices とコマンドリファレンスをベースに、コミュニティの高度な知見を融合。何度も見返せる1枚の実践マニュアルに凝縮しました——無駄を省き、実用的なノウハウだけをお届けします。</p>
+  <div class="meta">
+    <span>100+ コマンド/引数を収録</span><span>8大シナリオ Playbook</span><span>5つの即戦力テンプレート</span><span>公式ドキュメント全ページ照合</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1 つの核心</b><span>コンテキストウィンドウは唯一無二の希少リソース。すべての実践手法はここから導かれる</span></div>
+  <div class="stat"><b>6 層の拡張</b><span>CLAUDE.md · Skills · Hooks · サブエージェント · MCP · プラグイン</span></div>
+  <div class="stat"><b>2 回の法則</b><span>同一の問題で2回指示・修正しても直らない → /clear でやり直す</span></div>
+  <div class="stat"><b>0 盲信</b><span>検証手段のない出力は、いかなる場合も「完了」と見なさない</span></div>
+</div>
+
+<section id="mental-model">
+<div class="sec-tag">メンタルモデル 00</div>
+<h2>すべてはコンテキストを中心に回る</h2>
+
+<p>Claude Code は単なるチャットボットではなく、<strong>エージェント型コーディング環境（Agentic Coding Environment）</strong>です。ファイルを読み、コマンドを実行し、コードを書き換え、自律的に課題を解決していきます。ユーザーの役割は進捗を観察し、軌道修正を行い、あるいは作業を完全に任せることです。公式 Best Practices の冒頭では、ほぼすべての実践手法の根底にある決定的な制約が明かされています——</p>
+
+<div class="callout note"><b class="t">コアとなる制約</b>コンテキストウィンドウには、会話全体（送受信した全メッセージ、読み込んだすべてのファイル、実行した各コマンドの出力）が格納されます。<strong>これは急速に満杯になり、それに伴ってモデルのパフォーマンスは低下します</strong>——コンテキストが満杯になると、Claude は初期の指示を「忘れ」始め、ミスが急増します。コンテキストこそが、あなたが最も厳密に管理すべきリソースです。</div>
+
+<p>この一つの原則から、本ガイドの大部分のプラクティスが導き出されます：</p>
+<ul>
+  <li>なぜ<strong>サブエージェント</strong>で調査するのか → 探索で消費されるのはサブエージェント側のコンテキストであり、あなたのメイン会話ではないから。</li>
+  <li>なぜ <strong>CLAUDE.md を短く保つ</strong>のか → 毎セッション読み込まれるため、長すぎると重要なルールがノイズに埋もれるから。</li>
+  <li>なぜ <strong>CLAUDE.md への知識詰め込みより Skills が優れている</strong>のか → スキルは必要なときだけオンデマンドで読み込まれ、使わなければコンテキストを消費しないから。</li>
+  <li>なぜ <strong>/clear、/compact、/btw</strong> が必要なのか → すべてコンテキストの空き容量を確保するためのツールだから。</li>
+  <li>なぜ「2回修正してダメならリセット」なのか → 失敗した試行錯誤の履歴がコンテキストに残ると、モデルが同じ落とし穴に引きずり込まれるから。</li>
+</ul>
+
+<h3 data-reveal>5つの形態、共通の単一エンジン</h3>
+<p>Claude Code はターミナルの中だけに留まりません。肝心なのは、<strong>すべての形態が同一のエンジンを共有しており、CLAUDE.md、設定、MCP は一度設定すればどこでも機能する</strong>という点です。</p>
+<table class="tbl">
+  <tr><th>形態</th><th>エントリーポイント</th><th>最適な用途</th></tr>
+  <tr><td><strong>ターミナル CLI</strong></td><td><code>claude</code></td><td>最も機能が充実。本ガイドの標準視点</td></tr>
+  <tr><td>IDE 拡張機能</td><td>VS Code / Cursor / JetBrains プラグイン</td><td>エディタ内でインラインに diff を確認</td></tr>
+  <tr><td>デスクトップ App</td><td><code>/desktop</code> ワンクリック連携</td><td>複数セッションを視覚的に並行管理</td></tr>
+  <tr><td>Web / モバイル</td><td>claude.ai/code、iOS App; <code>--cloud</code> で送信、<code>/teleport</code> でローカルへ引き戻し</td><td>クラウドでの長時間タスク、移動中の進捗モニタリング</td></tr>
+  <tr><td>GitHub</td><td><code>/install-github-app</code> 後に PR 内で @claude</td><td>コードレビューと自動修正</td></tr>
+</table>
+
+<h3 data-reveal>現在のバージョンとモデル（2026-08-05 時点）</h3>
+<table class="tbl">
+  <tr><th>モデルエイリアス</th><th>説明</th><th>用途</th></tr>
+  <tr><td><code>sonnet</code></td><td>Sonnet 5、現在のデフォルトモデル、ネイティブ 1M コンテキスト</td><td>日常開発の主力。速度と能力のバランスに優れる</td></tr>
+  <tr><td><code>opus</code></td><td><strong>Opus 5</strong>（2026-07-24 よりデフォルト Opus）、1M コンテキスト。<code>/effort</code> 段階（low → ultracode）対応</td><td>複雑なアーキテクチャ設計、難問の攻略</td></tr>
+  <tr><td><code>haiku</code></td><td>Haiku 4.5、最高速かつ最も低コスト</td><td>大量の定型タスク、ファンアウト（fan-out）スクリプト</td></tr>
+  <tr><td><code>fable</code></td><td>Fable 5、拡張思考（Extended Thinking）常時有効</td><td>深層推論シナリオ</td></tr>
+</table>
+<p><code>/fast</code> 高速モードは現在 Opus 5 および Opus 4.8 に適用されます（Opus 4.7 は 2026-07-24 に高速モードから除外されました）。</p>
+<p class="src">ツールの進化は極めて迅速です。バージョンに関する最新情報は <code>/release-notes</code> および<a href="https://code.claude.com/docs" target="_blank">公式ドキュメント</a>をご参照ください。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="golden-rules">
+<div class="sec-tag">メンタルモデル 01</div>
+<h2>5つの黄金法則</h2>
+<p>公式 Best Practices の膨大なテキストは、以下の5つの法則に凝縮できます。ディスプレイの横に貼っておく価値のある原則です。</p>
+
+<h3 data-reveal>法則1: Claude に自分で実行できる検証手段を与える</h3>
+<p>Claude は「作業が一見完了したように見える」段階で手を止めます。実行可能なチェック手段がなければ、あなた自身が検証ループに入らざるを得ず、すべてのエラーを人間が見つけ出さなければなりません。合否（pass/fail）を出力できるシグナル（テストスイート、ビルド終了コード、linter、比較スクリーンショットなど）を与えれば、サイクルは自律的に完結します：作業 → チェック実行 → 結果の確認 → 合格までイテレーション。</p>
+<div class="duo">
+  <div class="bad"><b>❌ 弱い指示</b>「メールアドレスを検証する関数を実装して」 / 「ビルドが落ちたので直して」</div>
+  <div class="good"><b>✅ 強い指示</b>「validateEmail を作成し、テストケース（user@example.com→true、invalid→false、user@.com→false）を用意して実装後にテストを実行して」 / 「ビルドエラーは以下の通り [エラーを貼付]。エラーを握りつぶさずに根本原因を修正し、ビルドが通ることを検証して」</div>
+</div>
+<p>検証の4段階（無人運用の強度順）：同一プロンプト内で「チェックを実行して改善」を指示 → <code>/goal</code> で評価器にターンごとに条件を再確認させる → <strong>Stop hook</strong> でチェックをハードゲート化（不合格ならターン終了を拒否） → <strong>検証用サブエージェント</strong>にクリーンなコンテキストでセカンドオピニオンを出させる。さらに重要なのは、Claude に口頭での成功宣言ではなく**客観的な証拠**（テスト出力、コマンド戻り値、スクリーンショット）の提示を義務付けることです。</p>
+
+<h3 data-reveal>法則2: まず探索、次に計画、最後にコードを書く</h3>
+<p>いきなりコードを書き始めると、誤った問題を解いてしまう危険が高まります。推奨される4ステップ：<strong>Explore</strong>（計画モードでファイルを読み、質問し、コードは変更しない）→ <strong>Plan</strong>（実装計画を作成。<kbd>Ctrl+G</kbd> でエディタから直接編集可能）→ <strong>Implement</strong>（計画モードを抜けて実装し、計画と照らし合わせて自己検証）→ <strong>Commit</strong>（明確なコミットメッセージを作成して PR を作成）。</p>
+<div class="callout tip"><b class="t">計画を教条主義にしない</b>範囲が明確な小さな変更（タイポ修正、ログ追加、リネームなど）は直接実行させます。公式の判断基準：<strong>diff の形が1行で説明できるなら、計画はスキップする</strong>。計画が真価を発揮するのは、設計が不確定な場合、複数ファイルにまたがる場合、未知のコードベースを触る場合です。</div>
+
+<h3 data-reveal>法則3: プロンプトは具体的に、コンテキストは十分に</h3>
+<p>Claude は意図を推論できますが、心を読むことはできません。対象ファイルを名指しし、制約を明記し、既存の設計パターンを提示します：</p>
+<table class="tbl">
+  <tr><th>戦略</th><th>弱いプロンプト</th><th>強いプロンプト</th></tr>
+  <tr><td>範囲の限定</td><td>「foo.py にテストを追加して」</td><td>「foo.py のテストを作成し、ログアウト済みユーザーの境界条件を網羅して。モック（mock）は使わないこと」</td></tr>
+  <tr><td>情報源の指定</td><td>「この API どうしてこんなに変なの？」</td><td>「ExecutionFactory の git 履歴を確認し、この API が現在の設計に至った経緯を要約して」</td></tr>
+  <tr><td>既存パターンの引用</td><td>「カレンダーコンポーネントを追加して」</td><td>「トップページの既存ウィジェットの実装パターン（HotDogWidget.php を参考）に倣ってカレンダーコンポーネントを実装して……リポジトリ外の新たな依存関係は追加しないこと」</td></tr>
+  <tr><td>症状の正確な記述</td><td>「ログインのバグを直して」</td><td>「セッションタイムアウト後にログインが失敗するという報告がある。src/auth/ の認証フロー、特にトークンリフレッシュを確認して。まず失敗を再現するテストを書いてから修正して」</td></tr>
+</table>
+<p>コンテキスト供給の5つの手法：<code>@ファイル</code> 参照（Claude が先に読み込んでから回答）、**画像の貼り付け**（<kbd>Ctrl+V</kbd>）、**URL** の指定（<code>/permissions</code> で頻用ドメインを許可）、**パイプライン入力**（<code>cat error.log | claude</code>）、あるいは Claude 自身に取得させる（コマンド実行 / MCP / ファイル読み込み）。</p>
+
+<h3 data-reveal>法則4: 小刻みに軌道修正し、こまめにコンテキストをクリアする</h3>
+<ul>
+  <li><kbd>Esc</kbd> でいつでも中断可能。コンテキストは保持され、すぐに方向修正できます。</li>
+  <li><kbd>Esc Esc</kbd> / <code>/rewind</code> でロールバックメニューを開く：会話の復元、コードの復元、またはその両方の復元。</li>
+  <li>「Undo that」と指示すれば、直前の変更を自ら取り消させることができます。</li>
+  <li>無関係なタスクの間では必ず <code>/clear</code> を実行します。<strong>同一の問題で2回修正しても直らない場合は深追いしないこと</strong>——/clear して教訓を反映した洗練されたプロンプトで再スタートする方が、失敗履歴で汚染された長時間のセッションを続けるより遥かに高い成果を生みます。</li>
+</ul>
+
+<h3 data-reveal>法則5: まず Claude にインタビューさせる（大規模機能では必須）</h3>
+<p>大きな機能を作るときは焦って指示を出さず、まず Claude に AskUserQuestion ツールを使ってあなたにインタビューさせます：</p>
+<pre><code>私は[簡潔な説明]を作成したいです。AskUserQuestion ツールを使って、
+技術的な実装、UI/UX、エッジケース、懸念事項やトレードオフについて詳細にインタビューしてください。
+自明な質問は避け、私が見落としている可能性のある難所を深掘りしてください。
+質問が完了したら、完全な仕様書を SPEC.md に書き出してください。</code></pre>
+<p>仕様が確定したら、**新しいセッションを開いて実行**します。クリーンなコンテキストで実装に集中し、SPEC.md はいつでも参照できるアンカーとなります。優れた仕様書の3要素：関連ファイルとインターフェースの明記、やらないこと（Non-goals）の明確化、E2E検証ステップで締めくくること。</p>
+<p class="src">本節の参照元：<a href="https://code.claude.com/docs/en/best-practices" target="_blank">公式 Best practices</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="whats-new">
+<div class="sec-tag">最新動向</div>
+<h2>直近の重要アップデート</h2>
+
+<div class="callout note"><b class="t">検証ステータス</b>最終検証日：<strong>2026-08-25</strong> · Claude Code <strong>最新版</strong>（2026-08 リリース）と照合 · データソース：<a href="https://code.claude.com/docs/en/changelog" target="_blank">公式 changelog</a>。本節では**作業習慣に影響を与える変更点**のみを抜粋しています。完全な履歴は<a href="toolchain-changelog.ja.html">ツールチェーン変更履歴</a>をご覧ください。</div>
+
+<h3 data-reveal>🔴 破壊的変更：過去の習慣を見直す必要があるもの</h3>
+<table class="tbl">
+  <tr><th>時期</th><th>変更内容</th><th>必要な対応</th></tr>
+  <tr><td>08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> コマンドが<strong>削除</strong></td><td>スクリプトやメモ、SOP 内の <code>/ultraplan</code> を削除。<code>/plan</code> + リモートレビュー、または <code>/workflows</code> による進捗管理へ移行</td></tr>
+  <tr><td>08-04<br><span class="src">v2.1.222</span></td><td>Remote Control 自動有効化：<strong>リポジトリローカルの <code>.claude/settings.json</code> では有効化不可</strong>（無効化は可能）</td><td>チーム全体でデフォルト有効化したい場合は、<strong>ユーザーレベル</strong>の <code>/config</code> で設定。リポジトリ単位での強制を禁じサプライチェーンリスクを抑制</td></tr>
+  <tr><td>08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> の挙動変更：<strong>fork されたセッションは独立した git worktree を自動生成</strong></td><td>従来の「メインの checkout 上で作業を続ける」ワークフローには <code>/subtask</code> を使用。<code>/fork</code> は「複製 + 独立 worktree」となり並行実験向けに</td></tr>
+  <tr><td>07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code>、<code>/code-review</code> が<strong>自動トリガーされなくなった</strong></td><td>以前は適切なタイミングで自律実行されていましたが、明示的に <code>/verify</code> や <code>/code-review</code> を入力する運用に変更</td></tr>
+  <tr><td>07-18<br><span class="src">v2.1.214</span></td><td>単一セグメント <code>dir/**</code> 権限ルールの厳格化</td><td><code>Edit(src/**)</code> は以前ディレクトリツリー内の**任意の位置**の <code>src</code> にマッチしていましたが、現在は <code>&lt;cwd&gt;/src</code> のみにマッチ。任意の深さにマッチさせるには <code>**/dir/**</code> と記述。hook の <code>if:</code> 条件も同様</td></tr>
+  <tr><td>07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code> のセマンティクス変更</td><td>従来の「サブエージェント派生」は <code>/subtask</code> に改名。<code>/fork</code> はセッションを新しいバックグラウンドセッションに**複製**する動作に変更</td></tr>
+  <tr><td>07-03<br><span class="src">v2.1.200</span></td><td>デフォルト権限モード名が <strong>Manual</strong> に変更；<code>AskUserQuestion</code> ダイアログのタイムアウト自動続行を廃止</td><td><code>--permission-mode manual</code>、<code>"defaultMode": "manual"</code>。タイムアウト後の自動続行を復元したい場合は <code>/config</code> で明示的に有効化</td></tr>
+  <tr><td>06-22<br><span class="src">v2.1.186</span></td><td><code>!</code> bash コマンドが**Claude の応答をトリガーする**ように変更</td><td>以前は <code>!cmd</code> の出力をコンテキストに注入するだけでした。旧動作を維持する場合は <code>"respondToBashCommands": false</code> を設定</td></tr>
+</table>
+
+<h3 data-reveal>🔄 挙動の変化：同じ操作でも結果が変わるもの</h3>
+<ul>
+  <li><strong>サブエージェントがデフォルトでバックグラウンド実行</strong>（07-01, v2.1.198）—— 最も体感差がある変更。サブエージェントを起動した後、Claude は結果を待たずに自身の作業を続行します。同期待ちしたい場合は明示的に指示が必要です。</li>
+  <li><strong>サブエージェントのネスト生成に対応、デフォルト深度 3</strong>（07-24, 以前は 1）—— サブエージェント自身がさらにサブエージェントを起動可能に。制限したい場合は <code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1</code> を設定。</li>
+  <li><strong>セッションごとのクォータ上限</strong>（07-17）—— WebSearch 200回、サブエージェント生成 200個。<code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code> / <code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> で調整可能。長時間の無人タスク時は注意。</li>
+  <li><strong>MCP 呼び出しが2分超過で自動バックグラウンド移行</strong>（07-17）—— 処理の重いツールがターン全体をブロックしなくなりました。閾値は <code>CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS</code> で変更可能。</li>
+  <li><strong>自動モード（Auto mode）が Bedrock / Vertex / Foundry でデフォルト利用可能に</strong>（07-11）—— <code>CLAUDE_CODE_ENABLE_AUTO_MODE</code> フラグは不要に。不要な場合は <code>disableAutoMode</code> で無効化。同時に指示のない <code>git reset --hard</code>、<code>git clean -fd</code>、terraform/pulumi destroy は自動的に遮断されます。</li>
+  <li><strong><code>/code-review</code> がバックグラウンドサブエージェント実行に変更</strong>（07-22）—— レビュー処理で画面が埋め尽くされず、会話ログがクリーンに保たれます。</li>
+  <li><strong>バックグラウンドセッションの新たなデフォルト終了処理</strong>（08-04, v2.1.221）—— 自動 commit + push で成果を保護し、必要に応じて draft PR を作成。CLAUDE.md の git 指示に従い、最後に「成果物の所在」を報告します。</li>
+  <li><strong><code>/usage</code> で MCP 使用量が全ターンに過大計上されなくなった</strong>（08-04, v2.1.222）—— MCP ツールのコストは「実際にその結果を消費したリクエスト」のみに按分され、コスト分析が正確に。</li>
+  <li><strong>Bash ツール権限検証のバイパス修正</strong>（08-11, v2.1.226）—— zsh の <code>[[ ]]</code> 正規表現内に隠されたコマンドも適切に権限確認をトリガーするように修正。</li>
+  <li><strong><code>claude agents</code> にワークスペース信頼確認ダイアログを追加</strong>（08-08, v2.1.225）—— 未信頼ディレクトリで実行する際の2段階確認（<code>claude</code> 本体と同様の挙動）。</li>
+</ul>
+
+<h3 data-reveal>🆕 新機能：即座に試す価値のあるもの</h3>
+<table class="tbl">
+  <tr><th>時期</th><th>新機能</th><th>使い方・メリット</th></tr>
+  <tr><td>08-17</td><td><strong><code>/design</code> Skill（プレビュー版）</strong></td><td>ターミナルからアイデアや画像をもとに編集可能なデザインアートボード（Artboards）を直接生成し、デザインとコードをシームレスに結合</td></tr>
+  <tr><td>08-下旬</td><td><strong>Concise 出力スタイル</strong></td><td><code>"outputStyle": "Concise"</code> を設定することで前置きや冗長な説明を極限まで排除し、コードと結果を最優先で出力</td></tr>
+  <tr><td>08-下旬</td><td><strong>自動継続（Auto-Continue）</strong></td><td>クォータ上限で一時停止した際、利用枠がリセットされると自動的に中断前のタスクを再開</td></tr>
+  <tr><td>08-下旬</td><td><strong>GitLab 統合</strong></td><td><code>glab</code> 権限設定済みのリポジトリで、ステータスバーに Merge Request バッジを直接表示</td></tr>
+  <tr><td>08-14</td><td><strong>Auto Mode デフォルト有効化</strong>（v2.1.228）</td><td>Pro, Max, Team プランの新規セッションで自動モード（Auto mode）が標準に。リスク評価器が頻繁な手動承認を代替</td></tr>
+  <tr><td>08-08</td><td><strong>ゲートウェイの厳格な予算上限</strong>（v2.1.225）</td><td>単一セッションごとのハードコスト上限（Budgeting）を設定可能。予期せぬ請求の急増を防止</td></tr>
+  <tr><td>08-07</td><td>セッション間 <code>SendMessage</code>（v2.1.224）</td><td>複数の Claude Code セッションがマシンを越えて相互通信。<code>ListAgents</code> で対話可能なセッションを検出（macOS/Linux）</td></tr>
+  <tr><td>08-07</td><td><code>claude self-hosted-runner</code>（v2.1.224）</td><td>自社マシンやコンテナを Team/Enterprise の web/mobile/desktop セッションの実行ホストとして登録</td></tr>
+  <tr><td>08-07</td><td><code>archive</code> プラグインソース + SHA-256 pin（v2.1.224）</td><td>HTTPS 経由の zip ファイルから SHA-256 検証付きで安全にプラグインをインストール</td></tr>
+  <tr><td>08-06</td><td><code>/review</code> が <code>/code-review</code> のエイリアスに変更（v2.1.223）</td><td>スクリプト内の <code>/review &lt;PR#&gt;</code> を <code>/code-review &lt;PR#&gt;</code> に更新推奨</td></tr>
+  <tr><td>08-06</td><td><strong>1M コンテキストで auto-compaction がデフォルト有効</strong>（v2.1.223）</td><td>ネイティブ 1M モデルも auto-compaction により 200K 相当に最適化。旧挙動に戻す場合は <code>CLAUDE_CODE_DISABLE_1M_CONTEXT=1</code></td></tr>
+  <tr><td>08-11</td><td><strong>Focus view</strong>（VS Code）</td><td><kbd>Ctrl+Alt+F</kbd> またはコマンドパレットから起動。ツールの詳細出力を折りたたみ、要約と実行インジケーターのみをスマートに表示</td></tr>
+  <tr><td>08-11</td><td>サンドボックス認証情報の <code>mode: "mask"</code>（Linux/WSL）</td><td>サンドボックス内で認証情報を読む際、ダミーの番兵トークンを渡し外部送信時にプロキシが本物へ置換（macOS は <code>deny</code> にフォールバック）</td></tr>
+  <tr><td>08-11</td><td><code>claude-api</code> skill に <code>prompt-audit</code> 追加</td><td>自身のプロンプトやツール定義が「旧モデル向けの実装」になっていないかを監査し、新モデルへの移行を支援</td></tr>
+  <tr><td>08-11</td><td><code>claude plugin validate</code> 命名警告</td><td>Claude Desktop の管理同期で拒否されるプラグイン命名規則を事前に警告</td></tr>
+  <tr><td>08-08</td><td>ゲートウェイ使用量警告の強化</td><td>上限到達時に利用枠、リセット時刻、管理者メッセージを表示</td></tr>
+  <tr><td>07-24</td><td><strong>Opus 5</strong> がデフォルト Opus に昇格</td><td>1M コンテキスト。<code>/fast</code> 高速モードは Opus 5 と 4.8 に対応（4.7 は除外）</td></tr>
+  <tr><td>06-30</td><td><strong>Sonnet 5</strong> がデフォルトモデルに設定</td><td>ネイティブ 1M コンテキスト標準搭載</td></tr>
+  <tr><td>07-17</td><td><code>/subtask</code></td><td>サブエージェントを派生させて並行タスクを実行（旧 <code>/fork</code> の機能）</td></tr>
+  <tr><td>07-01</td><td><code>/dataviz</code></td><td>チャート・ダッシュボード設計支援機能。実行可能なカラーパレット検証ツールを内蔵</td></tr>
+  <tr><td>06-24</td><td><code>/rewind</code></td><td><code>/clear</code> 実行前の状態にセッションを復元可能に</td></tr>
+  <tr><td>06-17</td><td><code>/config key=value</code></td><td>対話プロンプトから直接設定を変更（例：<code>/config thinking=false</code>）</td></tr>
+  <tr><td>06-22</td><td><code>claude mcp login/logout &lt;name&gt;</code></td><td>MCP サーバーの非対話認証。SSH 環境向けに <code>--no-browser</code> をサポート</td></tr>
+  <tr><td>07-14</td><td>スクリーンリーダーモード</td><td><code>claude --ax-screen-reader</code> または設定で <code>"axScreenReader": true</code></td></tr>
+  <tr><td>06-23</td><td>3つの新しいサンドボックス設定</td><td><code>sandbox.credentials</code>（機密ファイル/環境変数の読み取り遮断）、<code>sandbox.filesystem.disabled</code>（ファイル分離をスキップしネットワークのみ制御）、<code>sandbox.network.strictAllowlist</code>（ホワイトリスト外ホストを即時拒否）</td></tr>
+  <tr><td>07-24</td><td><code>DirectoryAdded</code> hook</td><td>セッション中に <code>/add-dir</code> で作業ディレクトリが追加された際にトリガー</td></tr>
+  <tr><td>07-01</td><td>Claude in Chrome 正式リリース（GA）</td><td>プレビュー版から一般提供へ移行</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">アップデートの頻度に関する注意</b>Claude Code はおよそ 1〜2 日ごとに新バージョンがリリースされます。本節は 2026-06 から 2026-07 の重要変更を網羅していますが、<strong>検証日から1ヶ月以上経過している場合は、必ず <code>/release-notes</code> および<a href="https://code.claude.com/docs/en/changelog" target="_blank">公式 changelog</a> で最新情報をご確認ください</strong>。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="setup">
+<div class="sec-tag">早見表 02</div>
+<h2>インストールと初期設定</h2>
+<div class="callout warn"><b class="t">🚑 インストールできない / ログインエラー / PC 移行でお困りの場合</b>認証の競合、共有 PC での運用、SSH/CI 環境設定、完全初期化などのトラブルシューティングは、専用トピック：<a href="env-auth-clinic.ja.html">環境構築＆ログイン トラブルシューティング</a>にて症状別に30秒で解決手順を確認できます。</div>
+
+<h3 data-reveal>インストールとログイン</h3>
+<pre><code><span class="c"># インストール（npm）</span>
+npm install -g @anthropic-ai/claude-code
+
+<span class="c"># 起動とログイン（ブラウザ OAuth）</span>
+claude
+claude auth status        <span class="c"># ログイン状態の確認（JSON; --text で読みやすい形式）</span>
+
+<span class="c"># アップデートと診断</span>
+claude update             <span class="c"># 最新バージョンへアップデート</span>
+claude doctor             <span class="c"># インストールと設定の自己診断（読み取り専用）</span></code></pre>
+
+<h3 data-reveal>新規リポジトリに入る際の標準5ステップ</h3>
+<ol class="steps">
+  <li><code>/init</code> —— コードベース（ビルドシステム、テストフレームワーク、コーディング規約）を分析して CLAUDE.md 初稿を作成。以降 <code>/memory</code> で継続的にブラッシュアップ</li>
+  <li><code>/permissions</code> —— allow/ask/deny ルールを設定し、<code>npm run lint</code> や <code>git diff</code> などの安全なコマンドをホワイトリストに追加（または <code>/fewer-permission-prompts</code> で履歴から自動生成）</li>
+  <li><code>/mcp</code> —— プロジェクトに必要な外部ツール（データベース、Figma、Notion、Sentry など）を接続</li>
+  <li><code>gh</code> CLI の導入 —— Claude はこれを使って Issue 作成、PR オープン、レビューコメントの読み込みを自動化。未導入だと API の直接呼び出しになりレート制限にかかりやすくなります</li>
+  <li><code>/statusline</code> —— コンテキスト消費量をステータスバーに常時表示（大原則：残りのコンテキスト量を常に意識する）</li>
+</ol>
+<div class="callout tip"><b class="t">CLAUDE.md の取捨選択基準（公式推奨）</b>各行について自問してください：「この行を削ったら、Claude はミスをするか？」ミスをしないなら削除します。<strong>書くべきこと</strong>：推測できないビルドコマンド、デフォルトと異なるコード規約、テストの実行方法、ブランチ/PR の命名規則、プロジェクト固有の設計判断、環境特有のハマりどころ。<strong>書くべきでないこと</strong>：コードを読めばわかること、言語の一般的な常識、詳細な API ドキュメント（リンクを貼る）、頻繁に変わる情報、「良いコードを書くこと」といった精神論。ファイルが長すぎると重要なルールがノイズに埋もれます。<code>@path/to/file</code> 構文で外部ファイルをインポート可能。配置階層：<code>~/.claude/CLAUDE.md</code>（グローバル）→ プロジェクトルート（チーム共通、git 管理）→ <code>CLAUDE.local.md</code>（個人用、.gitignore 対象）→ サブディレクトリ（オンデマンド読み込み）。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="commands">
+<div class="sec-tag">早見表 03</div>
+<h2>コマンド早見表</h2>
+<p>利用シナリオ別に分類し、頻出・高価値なコマンドを厳選しました。セッション内で <code>/</code> を入力すると利用可能な全コマンドを一覧表示できます。<span class="pill c">Skill</span> マークが付いているものはプロンプト駆動のバンドルスキルで、同名のカスタムスキルで上書き可能です。</p>
+
+<h3 data-reveal>⚡ 必須コアコマンド8選（まずはこの8個から）</h3>
+<p>以下のテーブルには100以上のコマンドを網羅していますが、日常業務の90%はこの8個でカバーできます。<b>★ 必修</b> マークの3つは無意識に使えるレベルまで習熟することをお勧めします。</p>
+<div class="hotcmds">
+  <div class="hotcmd must"><span class="hc-cmd">claude -p "タスク"</span><span class="hc-desc">非対話モードで実行し結果を返して即終了——スクリプト/CI/自動化パイプラインの基盤</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">/clear</span><span class="hc-desc">コンテキストを初期化して新規会話を開始——コンテキストのノイズは精度低下の最大の原因</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">/plan [タスク]</span><span class="hc-desc">複雑なタスクは手を動かす前に計画を作成。思考を整理してから実装に移ることで手戻りを防止</span></div>
+  <div class="hotcmd"><span class="hc-cmd">claude -c · claude -r 名前</span><span class="hc-desc">直近のセッションを再開 / 名前や ID を指定して過去セッションを復元</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/compact [指示]</span><span class="hc-desc">コンテキストが逼迫した際に要約圧縮。保持したい情報を指示として付与可能</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/model</span><span class="hc-desc">モデルと推論強度（effort）の切り替え。コストパフォーマンスと速度のメインスイッチ</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/code-review</span><span class="hc-desc">コミット前のセカンドオピニオン。ロジックのバグを検出し、--fix で直接修正可能</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/usage</span><span class="hc-desc">セッションの消費トークン・費用とプランの残り枠を一目で確認</span></div>
+</div>
+
+<h3 data-reveal>ターミナルコマンド（セッション外）</h3>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・用途</th></tr>
+  <tr><td><code>claude</code> / <code>claude "タスク"</code></td><td>対話セッションを起動 / 初期プロンプト付きで起動</td></tr>
+  <tr><td><code>claude -p "タスク"</code></td><td>非対話モードで実行して終了。自動化の基盤（シナリオ⑥参照）</td></tr>
+  <tr><td><code>claude -c</code> / <code>claude -r 名前</code></td><td>直近のセッションを再開 / 名前や ID で指定セッションを復元</td></tr>
+  <tr><td><code>claude --worktree</code>(<code>-w</code>)</td><td>独立した git worktree 上で起動。並行開発時の衝突を防止</td></tr>
+  <tr><td><code>claude --bg</code></td><td>バックグラウンドエージェントとして起動し、即座にターミナルを解放</td></tr>
+  <tr><td><code>claude agents</code> / <code>attach</code> / <code>logs</code> / <code>stop</code> / <code>respawn</code></td><td>バックグラウンドセッション管理：一覧 / アタッチ / ログ確認 / 停止 / コンテキスト付き再起動</td></tr>
+  <tr><td><code>claude mcp add ...</code></td><td>MCP サーバーの追加；<code>claude mcp login 名前</code> で個別に OAuth 認証</td></tr>
+  <tr><td><code>claude plugin</code></td><td>プラグイン管理（インストール/有効化/無効化）</td></tr>
+  <tr><td><code>claude setup-token</code></td><td>CI や自動化スクリプト用の長期 OAuth トークンを生成</td></tr>
+  <tr><td><code>claude project purge</code></td><td>特定プロジェクトのローカル状態（トランスクリプト、履歴、ログ）を全消去</td></tr>
+</table>
+
+<h3 data-reveal>高価値な起動オプション</h3>
+<table class="tbl">
+  <tr><th>オプション</th><th>機能・用途</th></tr>
+  <tr><td><code>--model</code> / <code>--effort</code></td><td>モデル指定（sonnet/opus/haiku/fable）/ 推論強度指定（low→ultracode）</td></tr>
+  <tr><td><code>--permission-mode</code></td><td>起動時の権限モード：manual（旧 default）/ acceptEdits / plan / auto / dontAsk / bypassPermissions</td></tr>
+  <tr><td><code>--allowedTools</code> / <code>--disallowedTools</code></td><td>自動承認するツールのホワイトリスト / 使用禁止ブラックリスト（指定ツールはコンテキストから完全除外）</td></tr>
+  <tr><td><code>--output-format json|stream-json</code></td><td>-p モードでの構造化出力；<code>--json-schema</code> で Schema 準拠の検証が可能</td></tr>
+  <tr><td><code>--max-turns</code> / <code>--max-budget-usd</code></td><td>-p モードでの最大ターン数 / 予算上限。無人実行時の必須ガードレール</td></tr>
+  <tr><td><code>--append-system-prompt</code></td><td>デフォルトシステムプロンプトの末尾にカスタム指示を追加（-file でファイル指定可能）</td></tr>
+  <tr><td><code>--mcp-config</code> / <code>--strict-mcp-config</code></td><td>指定 JSON から MCP を読み込み / その JSON に記載の MCP のみに限定</td></tr>
+  <tr><td><code>--add-dir</code></td><td>追加でアクセス許可するディレクトリ（配下の .claude/skills も読み込まれます）</td></tr>
+  <tr><td><code>--fork-session</code></td><td>セッション復元時に新しいセッション ID を割り当て、元の履歴を汚染しない</td></tr>
+  <tr><td><code>--safe-mode</code> / <code>--bare</code></td><td>トラブルシューティング用：全カスタム設定を無効化して起動 / 自動検出をスキップしスクリプト呼び出しを高速・安定化</td></tr>
+  <tr><td><code>--from-pr 番号</code></td><td>指定した PR に関連付けられたセッションを復元</td></tr>
+  <tr><td><code>--cloud</code> / <code>--teleport</code></td><td>タスクを claude.ai クラウドへ送信 / クラウドのセッションをローカルターミナルへ引き戻す</td></tr>
+</table>
+
+<h3 data-reveal>セッション内コマンド · カテゴリ別</h3>
+<h4>① セッションとコンテキスト</h4>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・用途</th></tr>
+  <tr><td><code>/clear [名前]</code></td><td>コンテキストをクリアして新規対話を開始（過去の会話は /resume に保持）；エイリアス：/new, /reset</td></tr>
+  <tr><td><code>/compact [指示]</code></td><td>コンテキストを要約圧縮。<code>/compact API変更履歴とテストコマンドは保持して</code> のように残す情報を指定可能</td></tr>
+  <tr><td><code>/context</code></td><td>コンテキストの占有状況をカラーグリッドで可視化し、最適化のアドバイスを表示</td></tr>
+  <tr><td><code>/rewind</code></td><td>ロールバックメニュー：会話/コード/両方の復元、特定メッセージ以降の要約；エイリアス：/undo, /checkpoint</td></tr>
+  <tr><td><code>/btw 質問</code></td><td>サイドクエスチョン：現在のコンテキストに基づき即答、<strong>会話履歴には残らない</strong>；f キーで新セッションに分岐可能</td></tr>
+  <tr><td><code>/rename</code> / <code>/resume</code> / <code>/branch</code></td><td>セッション名変更 / 過去セッション復元（バックグラウンド含む）/ 会話の分岐</td></tr>
+  <tr><td><code>/export</code> / <code>/recap</code> / <code>/focus</code></td><td>対話テキストのエクスポート / 1行要約の生成 / フォーカスビュー（極小表示）</td></tr>
+</table>
+<h4>② モデルとコスト管理</h4>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・用途</th></tr>
+  <tr><td><code>/model</code> / <code>/effort</code> / <code>/fast</code></td><td>モデル切り替え（デフォルト保存）/ 推論強度の調整 / 高速モードのオン・オフ</td></tr>
+  <tr><td><code>/usage</code>(/cost /stats)</td><td>本セッションの消費、プラン利用枠、スキル/サブエージェント/プラグイン別の内訳表示</td></tr>
+  <tr><td><code>/advisor [モデル]</code></td><td>要所でセカンドモデルにアドバイザーとして助言を求めさせる</td></tr>
+</table>
+<h4>③ 設定と拡張機能</h4>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・用途</th></tr>
+  <tr><td><code>/init</code> / <code>/memory</code></td><td>CLAUDE.md の自動生成 / メモリファイルおよび自動メモリの編集</td></tr>
+  <tr><td><code>/permissions</code> / <code>/hooks</code> / <code>/mcp</code> / <code>/plugin</code></td><td>4大拡張エントリー：権限ルール / フック / MCP サーバー / プラグインマーケットプレイス</td></tr>
+  <tr><td><code>/skills</code> / <code>/reload-skills</code></td><td>スキル一覧（トークン数順ソート、表示切替）/ スキルディレクトリの再スキャン</td></tr>
+  <tr><td><code>/config</code> / <code>/statusline</code> / <code>/theme</code> / <code>/terminal-setup</code></td><td>設定画面 / ステータスバー設定 / テーマ変更 / ターミナルキーバインド設定（Shift+Enter 等）</td></tr>
+  <tr><td><code>/doctor</code> <span class="pill c">Skill</span></td><td>環境診断。問題の検出だけでなく自動修正もサポート</td></tr>
+</table>
+<h4>④ ワークフロースキル（生産性の要）</h4>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・用途</th></tr>
+  <tr><td><code>/plan [タスク]</code></td><td>計画モード（Plan mode）へ直接移行。タスク概要を指定可能</td></tr>
+  <tr><td><code>/goal 条件</code></td><td>ターン単位の検証条件を設定。達成されるまで評価器が毎ターン自動検証</td></tr>
+  <tr><td><code>/code-review [強度] [--fix]</code> <span class="pill c">Skill</span></td><td>現在の diff をレビューしバグを検出；--fix で自動修正、--comment で PR コメント投稿、ultra でクラウド深層レビュー</td></tr>
+  <tr><td><code>/simplify</code> <span class="pill c">Skill</span></td><td>4つの並行エージェントによるコード整理：既存共通処理の再利用、簡素化、冗長性の排除（バグ探索は行わない）</td></tr>
+  <tr><td><code>/security-review</code></td><td>コミット前の変更に対してセキュリティ監査を実施（インジェクション、権限昇格など）</td></tr>
+  <tr><td><code>/code-review [PR番号]</code>（v2.1.223 より <code>/review</code> はこのエイリアス）</td><td>GitHub PR の高速読み取り専用レビュー</td></tr>
+  <tr><td><code>/batch 指示</code> <span class="pill c">Skill</span></td><td>大規模並行リファクタリング：5〜30の独立ユニットに自動分解し、各ユニットをバックグラウンドサブエージェント + 独立 worktree で並行実装・PR 作成</td></tr>
+  <tr><td><code>/loop [間隔] [プロンプト]</code> <span class="pill c">Skill</span></td><td>同一プロンプトを繰り返し実行。「納得がいくまで段階的に洗練させる」タスクに最適</td></tr>
+  <tr><td><code>/run</code> / <code>/verify</code> / <code>/run-skill-generator</code> <span class="pill c">Skill</span></td><td>実際のアプリを起動して変更を確認 / 単なるテストではなく「実際に動くか」を基準に検証 / ビルド・起動レシピを記録して再利用</td></tr>
+  <tr><td><code>/debug</code> <span class="pill c">Skill</span></td><td>デバッグログを有効化し、ログをもとに Claude Code 自体の問題をトラブルシューティング</td></tr>
+  <tr><td><code>/deep-research 質問</code></td><td>Web 検索を多方面に展開し、情報源をクロスチェックして出典付きレポートを出力</td></tr>
+  <tr><td><code>/fewer-permission-prompts</code> <span class="pill c">Skill</span></td><td>コマンド実行履歴を分析し、安全な読み取り専用コマンドのホワイトリストを自動生成してプロジェクト設定に保存</td></tr>
+  <tr><td><code>/insights</code> / <code>/team-onboarding</code></td><td>自身の利用傾向とボトルネックの分析 / 30日間の使用履歴からチーム向けオンボーディングガイドを生成</td></tr>
+</table>
+<h4>⑤ 並行処理とクラウド連携</h4>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・用途</th></tr>
+  <tr><td><code>/background</code>(/bg)</td><td>現在のセッションをバックグラウンドに回してターミナルを解放；<code>claude agents</code> で監視</td></tr>
+  <tr><td><code>/subtask 指示</code> <span class="pill a">2026-07 改名</span></td><td>サブエージェントを派生：会話全体を引き継いで個別タスクを実行し、結果を報告させて自身は作業を継続。<strong>旧 <code>/fork</code> の機能</strong>（2026-07-17 に <code>/subtask</code> へ改名）</td></tr>
+  <tr><td><code>/fork</code></td><td><strong>仕様変更</strong>：2.1.212 よりサブエージェント派生から**現在のセッションを新しいバックグラウンドセッションに複製**する動作へ変更；2.1.221 より複製先セッションは**独立した git worktree** を自動作成。既存の作業ツリーで進めるなら <code>/subtask</code>、複製して別ブランチで実験するなら <code>/fork</code></td></tr>
+  <tr><td><code>/tasks</code></td><td>バックグラウンドで実行中のすべてのプロセス（Shell、サブエージェント）の一覧と管理</td></tr>
+  <tr><td><code>/autofix-pr</code></td><td>クラウドセッションが PR を常時監視：CI が落ちたりレビュー指摘が入ると自動で修正コミットをプッシュ</td></tr>
+  <tr><td><code>/schedule 説明</code></td><td>定期実行タスク（クラウド実行）を対話形式で作成・設定</td></tr>
+  <tr><td><code>/workflows</code></td><td>動的なワークフローの進捗確認：一時停止 / 再開 / 保存</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="shortcuts">
+<div class="sec-tag">早見表 04</div>
+<h2>ショートカット＆入力テクニック</h2>
+
+<h3 data-reveal>必須ショートカット（費用対効果順）</h3>
+<table class="tbl">
+  <tr><th>ショートカット</th><th>機能</th><th>習得すべき理由</th></tr>
+  <tr><td><kbd>Esc</kbd></td><td>現在のターンを中断</td><td>軌道修正の第一歩。完了済みの作業は保持される</td></tr>
+  <tr><td><kbd>Esc Esc</kbd></td><td>ロールバックメニュー（入力欄が空のとき）</td><td>会話やコードを個別に巻き戻せる、果敢な試行錯誤のための安全網</td></tr>
+  <tr><td><kbd>Shift+Tab</kbd></td><td>権限モードの切り替え</td><td>manual（旧 default）→ acceptEdits → plan →（auto）をワンタッチで循環</td></tr>
+  <tr><td><kbd>Ctrl+B</kbd></td><td>実行中のコマンドをバックグラウンドへ</td><td>dev server や長時間のテストで会話をブロックさせない（tmux 環境では2回押し）</td></tr>
+  <tr><td><kbd>Ctrl+O</kbd></td><td>トランスクリプト（詳細ログ）表示</td><td>ツール呼び出しの詳細を展開し、裏で何が行われたかを精査</td></tr>
+  <tr><td><kbd>Ctrl+R</kbd></td><td>過去のプロンプト履歴を逆インクリメンタル検索</td><td><kbd>Ctrl+S</kbd> で検索範囲を切り替え：本セッション / プロジェクト / 全体</td></tr>
+  <tr><td><kbd>Ctrl+G</kbd></td><td>外部エディタでプロンプトを入力</td><td>長いプロンプトの作成や、計画書の直接修正に最適</td></tr>
+  <tr><td><kbd>Ctrl+T</kbd></td><td>タスク一覧の表示 / 非表示</td><td>マルチステップのタスクの進捗を一目で把握</td></tr>
+  <tr><td><kbd>Ctrl+V</kbd></td><td>クリップボードの画像を貼り付け</td><td>UI のスクリーンショットを直接プロンプトへ投入可能</td></tr>
+  <tr><td><kbd>Option/Alt+P</kbd> / <kbd>+T</kbd></td><td>モデル切り替え / 拡張思考の切り替え</td><td>入力内容を消すことなく思考エンジンを変更</td></tr>
+</table>
+
+<h3 data-reveal>3つのプレフィックス、3つのモード</h3>
+<table class="tbl">
+  <tr><th>プレフィックス</th><th>モード</th><th>説明</th></tr>
+  <tr><td><code>/</code></td><td>コマンド / スキル</td><td>連結実行可能：<code>/skill-a /skill-b タスク内容</code> で複数スキルを同時に読み込み（最大6個）</td></tr>
+  <tr><td><code>!</code></td><td>Shell パススルー</td><td>コマンドを直接実行し、結果がコンテキストに入り Claude が自動応答（例：<code>! npm test</code> で実行後に失敗原因を即座に解説）；履歴とパス補完に対応</td></tr>
+  <tr><td><code>@</code></td><td>ファイル参照</td><td>ファイルパスの自動補完。Claude は回答する前にそのファイルを読み込みます</td></tr>
+</table>
+<div class="callout tip"><b class="t">複数行入力のコツ</b><kbd>\</kbd>+<kbd>Enter</kbd> はあらゆるターミナルで利用可能です。iTerm2/WezTerm/Ghostty/Kitty/Warp/Windows Terminal では <kbd>Shift+Enter</kbd> が標準動作します。VS Code/Cursor 等では <code>/terminal-setup</code> を実行してキーバインドを設定してください。macOS で Alt 系ショートカットを使う場合は、ターミナル設定で Option キーを Meta として動作するように設定してください。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="extensions">
+<div class="sec-tag">拡張エコシステム 05</div>
+<h2>6大拡張機能の選び方</h2>
+<p>Claude Code には6層の拡張ポイントが存在します。層の選択ミスは初心者が最も陥りやすい罠です——Hook に書くべきルールを CLAUDE.md に書いて守られるよう祈ったり、たまにしか使わない専門知識を毎セッションに詰め込んでコンテキストを圧迫したりしてしまいます。以下の選定表で一発で判断できます：</p>
+
+<table class="tbl">
+  <tr><th>あなたの要件</th><th>使うべき層</th><th>決定的な理由</th></tr>
+  <tr><td>全セッションで常に知っておくべき簡潔な事実（ビルドコマンド、コード規約）</td><td><span class="pill a">CLAUDE.md</span></td><td>全セッションで自動読み込みされるため、常に短く保つ必要がある</td></tr>
+  <tr><td>特定の場面でのみ必要な専門知識 / 繰り返し実行する定型ワークフロー</td><td><span class="pill b">Skills</span></td><td>オンデマンド読み込み。使わなければコンテキストを消費しない。<code>/名前</code> で手動呼び出しも可能</td></tr>
+  <tr><td>**100% 確実に実行・強制**させたいルール（必須の lint、機密ファイルへの書き込み禁止）</td><td><span class="pill c">Hooks</span></td><td>決定論的な実行。プロンプトは「お願い」だが、Hook は「絶対の保証」</td></tr>
+  <tr><td>大量のファイルを読み込む事前調査 / 先入観のない客観的なコードレビュー</td><td><span class="pill d">サブエージェント</span></td><td>独立したコンテキストウィンドウ。探索でメインの会話を汚染しない</td></tr>
+  <tr><td>外部システムとの連携（データベース、Figma、Slack、監視ツール）</td><td><span class="pill e">MCP</span></td><td>標準プロトコルによるツール連携。一度設定すればどこからでも利用可能</td></tr>
+  <tr><td>上記すべてをパッケージ化してチームに配布</td><td><span class="pill f">プラグイン</span></td><td>skills + hooks + subagents + MCP をワンコマンドで導入。<code>/plugin</code> でマーケットプレイスを閲覧</td></tr>
+</table>
+
+<div class="callout note"><b class="t">コミュニティ共通の覚え方</b>**強制**したいなら Hooks または権限ルール、**知識**なら Skills、**隔離**したいならサブエージェント、**常駐**させたいなら厳選して CLAUDE.md、**外部接続**なら MCP、**配布**したいならプラグインにする。</div>
+<p class="src">参考：<a href="https://code.claude.com/docs/en/features-overview" target="_blank">公式 Extend Claude Code</a> · <a href="https://smartscope.blog/en/generative-ai/claude/claude-code-best-practices-advanced-2026/" target="_blank">SmartScope 2026 Surface Map</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="skills-hooks">
+<div class="sec-tag">拡張エコシステム 06</div>
+<h2>Skills / Hooks / MCP / サブエージェント: 4大機能の深層解剖</h2>
+
+<h3 data-reveal>Skills: オンデマンド読み込みのエキスパート知識パック</h3>
+<p>1つのスキル ＝ 1つのディレクトリ ＋ 1つの <code>SKILL.md</code>（テンプレート、サンプル、スクリプトを同梱可能）。Claude がシナリオに応じて自動で読み込むか、ユーザーが <code>/スキル名</code> で明示的に呼び出します。スキルを作成すべきシグナル：<strong>同じ説明・チェックリスト・手順を何度も貼り付けているとき</strong>、または CLAUDE.md のある項目が「簡潔な事実」から「複雑な手順」に肥大化してきたときです。</p>
+<pre><code>.claude/skills/my-skill/
+├── SKILL.md        <span class="c"># 必須: frontmatter + 指示本文</span>
+├── examples/       <span class="c"># 任意: 期待される出力例</span>
+└── scripts/        <span class="c"># 任意: 実行可能スクリプト</span></code></pre>
+<table class="tbl">
+  <tr><th>配置場所</th><th>適用スコープ</th></tr>
+  <tr><td><code>~/.claude/skills/</code></td><td>ユーザー個人、すべてのプロジェクトで有効</td></tr>
+  <tr><td><code>.claude/skills/</code>（プロジェクトルート）</td><td>当該プロジェクト（git 管理すればチーム全体で共有）；monorepo のサブディレクトリも自動検出</td></tr>
+  <tr><td>プラグイン内の <code>skills/</code></td><td>プラグイン有効化スコープ、名前空間は <code>プラグイン名:スキル名</code></td></tr>
+</table>
+<p>3つの高度なテクニック：</p>
+<ul>
+  <li><strong>動的コンテキスト注入</strong>：本文中に <code>!`git diff HEAD`</code> と書くと、スキル読み込み前にコマンドを実行し、出力を指示にインライン展開——スキルが「現在の現場状況」を把握できます。</li>
+  <li><strong>frontmatter による制御</strong>：<code>disable-model-invocation: true</code> を指定すると危険な処理（デプロイなど）をモデルの自動判断から除外し手動専用にできます。<code>description</code> をルーティングルールとして明確に記述することで自動発動の精度が向上します。</li>
+  <li><strong>スキルのホットリロード</strong>：ディスク上のファイルを編集すると即座に反映されます。同名スキルの優先順位は「企業 &gt; 個人 &gt; プロジェクト &gt; バンドルスキル」（プロジェクト内に同名 <code>code-review</code> を置くことで公式版を上書き可能）。</li>
+</ul>
+<div class="callout tip"><b class="t">優れたスキルを書くためのコミュニティの定石</b>description はルーターのように「いつこのスキルを使うべきか」を具体的に書く；決定論的な作業はモデルに任せず同梱スクリプトに処理させる；SKILL.md 本文はスリムに保ち、詳細はオンデマンド読み込みの別ファイルへ逃がす；1つのスキルには1つの責任のみを持たせる；抽象的なルールではなく具体的な良い例・悪い例を示す。</div>
+
+<h3 data-reveal>Hooks: 決定論的なガードレール</h3>
+<p>CLAUDE.md や Skills の指示はあくまで**推奨・提案**です。絶対に守らせるべきルールは Hook に委ねます。Hook はライフサイクルイベントでスクリプトを実行し、終了コード（exit code）2 を返すことで Claude のアクションを完全にブロックできます。代表的なイベント：</p>
+<table class="tbl">
+  <tr><th>イベント</th><th>発火タイミング</th><th>典型的な用途</th></tr>
+  <tr><td><code>PreToolUse</code></td><td>ツール実行直前（ブロック可能）</td><td>.env や秘密鍵への書き込み禁止、危険なコマンドの遮断</td></tr>
+  <tr><td><code>PostToolUse</code></td><td>ツール実行が成功した直後</td><td>ファイル編集後に自動で prettier / eslint を実行</td></tr>
+  <tr><td><code>Stop</code></td><td>Claude がターンを終了しようとした時</td><td>テストを実行し、失敗していればターン終了を拒絶（8回連続失敗でパス）</td></tr>
+  <tr><td><code>UserPromptSubmit</code></td><td>ユーザーがプロンプトを送信し処理が始まる前</td><td>環境情報の自動注入、NGワードチェック</td></tr>
+  <tr><td><code>SessionStart</code> / <code>SessionEnd</code></td><td>セッションの開始 / 終了時</td><td>開発環境の初期化 / クリーンアップやレポート送信</td></tr>
+  <tr><td><code>PostToolUseFailure</code> / <code>PreCompact</code> / <code>SubagentStop</code> / <code>FileChanged</code>…</td><td>より詳細な個別イベント</td><td>失敗通知、圧縮前の状態保存、ファイル変更の監視など（30+ のイベントは公式リファレンス参照）</td></tr>
+</table>
+<pre><code><span class="c">// .claude/settings.json —— 編集後に自動フォーマットを実行する例</span>
+{
+  "hooks": {
+    "PostToolUse": [
+      { "matcher": "Write|Edit",
+        "hooks": [ { "type": "command", "command": "npx prettier --write \"$FILE\"" } ] }
+    ]
+  }
+}</code></pre>
+<div class="callout tip"><b class="t">スマートな作成法</b>Hook の実装自体も Claude に依頼できます：「ファイル編集後に毎回 eslint を実行する hook を書いて」、「migrations ディレクトリへの書き込みを阻止する hook を書いて」。設定内容は <code>/hooks</code> で確認できます。</div>
+<div class="callout warn"><b class="t">Hook よりも安全な機密保護手法</b>機密ファイルの読み取り防止には Hook よりも権限ルールが推奨されます：<code>deny</code> ルール（例：<code>Read(./.env)</code>, <code>Read(./secrets/**)</code>）を設定すると、ファイルが Claude から完全に「見えなく」なります。権限の評価順序：<strong>deny → ask → allow</strong>。</div>
+
+<h3 data-reveal>サブエージェント（Subagents）: 独立したコンテキストを持つ分身</h3>
+<p><code>.claude/agents/*.md</code> に定義し、独自のコンテキストウィンドウ、ツールセット、システムプロンプトを持ちます。主な2大用途：</p>
+<ul>
+  <li><strong>調査のコンテキスト隔離</strong>：「サブエージェントを使って認証システムがトークンリフレッシュをどう処理しているか調査して」——サブエージェントが数十のファイルを読み込み、メインの会話には結論の要約だけが返ってきます。</li>
+  <li><strong>先入観のない客観的レビュー</strong>：直前の実装の思考のバイアスを受けないクリーンなコンテキストで diff を精査します。公式が推奨するレビュー用指示：「指定された作業内容と計画を対照し、問題点のみを報告せよ。スタイルの好みの指摘は不要」。</li>
+</ul>
+<pre><code><span class="c"># .claude/agents/security-reviewer.md</span>
+---
+name: security-reviewer
+description: コードのセキュリティレビュー。コード変更後に自律的に使用。
+tools: Read, Grep, Glob, Bash
+model: opus
+---
+あなたはシニアセキュリティエンジニアです。以下を重点的に監査してください：
+インジェクション脆弱性（SQL/XSS/コマンドインジェクション）、認証・認可の欠陥、
+コード内の秘密鍵・クレデンシャル、安全でないデータ処理。
+具体的な行番号の引用とともに修正案を提示してください。</code></pre>
+<div class="callout note"><b class="t">/btw とサブエージェントの対比</b>/btw は会話全体を把握していますがツールは使えません（「既知の事実」を素早く確認）；サブエージェントはすべてのツールを使えますが空のコンテキストから出発します（「未知の事柄」を新規調査）。使い分けることでコンテキストを大幅に節約できます。</div>
+<div class="callout warn"><b class="t">レビュー用エージェントの陥りやすい罠</b>「問題点を探せ」と指示されたレビュアーは、コードに問題がなくても何かしらの粗を探し出そうとしがちです。すべての指摘を盲従して直すと過剰設計（Over-engineering）に陥ります。レビュアーには「正確性や要求仕様に関わる重大な欠陥のみを報告し、その他は任意の提案として扱う」という前提を与えてください。</div>
+
+<h3 data-reveal>MCP: 外部世界との接続</h3>
+<p>MCP（Model Context Protocol）により、Claude Code をデータベース、Figma、Slack、Sentry などの外部システムと直接接続できます。<strong>MCP の設定は settings.json には書かない</strong>という点にご注意ください（初心者が最も迷いやすいポイントです）。</p>
+<h4>追加と管理</h4>
+<pre><code><span class="c"># ローカルの stdio サーバーを追加</span>
+claude mcp add my-tool -- npx -y some-mcp-server
+
+<span class="c"># リモートの HTTP サーバーを追加</span>
+claude mcp add --transport http api-tool https://example.com/mcp
+
+<span class="c"># OAuth 認証が必要なサーバーで個別にログイン</span>
+claude mcp login api-tool
+
+<span class="c"># セッション内: /mcp で状態確認、認証、サーバーの有効化/無効化</span></code></pre>
+<h4>3つのスコープ（--scope）</h4>
+<table class="tbl">
+  <tr><th>スコープ</th><th>保存先</th><th>適用範囲</th></tr>
+  <tr><td><code>local</code>（デフォルト）</td><td><code>~/.claude.json</code> 内の該当プロジェクトエントリ</td><td>あなた個人、当該プロジェクトのみ</td></tr>
+  <tr><td><code>project</code></td><td>リポジトリルートの <code>.mcp.json</code>（git 管理）</td><td>チーム共通——プロジェクト必須ツールを記載</td></tr>
+  <tr><td><code>user</code></td><td><code>~/.claude.json</code></td><td>あなた個人の全プロジェクト共通（ブラウザやメモツール等）</td></tr>
+</table>
+<h4>運用の3原則</h4>
+<ul>
+  <li><strong>ツール定義もコンテキストを消費する</strong>：MCP サーバーを追加するたび、各ツールのスキーマがコンテキストウィンドウを圧迫します——<code>/context</code> で消費量を確認し、使わないサーバーは <code>/mcp</code> で無効化しましょう。</li>
+  <li><strong>MCP の戻り値は信頼できない入力として扱う</strong>：外部ツールから返されるテキストにはプロンプトインジェクションが含まれている可能性があるため、信頼できるサーバーのみを接続します。</li>
+  <li><strong>手作業で JSON を書かずコマンドを使う</strong>：<code>claude mcp add</code> を使用することで正確なフォーマットで書き込まれます。手動編集による JSON 破損は「MCP が認識されない」原因のトップです。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="playbook">
+<div class="sec-tag">実戦演習 07</div>
+<h2>8大シナリオ実践マニュアル</h2>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🧭</span><b>シナリオ① 初見のコードベースへのキャッチアップ</b><span class="pt">ONBOARDING</span></div>
+    <div class="pb">
+      <p>経験豊富な同僚に質問するように自然に尋ねます。「ログ出力はどう書くのが標準？」、「新しい API エンドポイントを追加する手順は？」、「foo.rs の 134 行目にある <code>async move</code> は何のため？」、「ここで bar() ではなく foo() を呼んでいる理由は？」。歴史的経緯を知りたいときは git を指定します：「このモジュールのコミット履歴を遡って、現在の構造になった理由を要約して」。</p>
+      <p><strong>ベストプラクティス</strong>：広範囲の調査にはサブエージェントを活用し（「サブエージェントで決済モジュール全体のコールグラフを調査して」）、メインコンテキストには結論のみを取り込みます。判明した規約は <code>/init</code> で CLAUDE.md に集約しましょう。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🏗️</span><b>シナリオ② 新機能の開発</b><span class="pt">FEATURE</span></div>
+    <div class="pb">
+      <p>標準フロー：<strong>インタビューで SPEC 作成（法則5）→ 新規セッション開始 → /plan で探索と計画立案 → <kbd>Ctrl+G</kbd> で計画を編集・承認 → 計画モードを抜けて実装 → 自己検証 → コミット＆ PR 作成</strong>。</p>
+      <p><strong>要点</strong>：実装指示には必ず検証を含めます（「計画にある OAuth フローを実装し、callback handler のテストを作成して実行・修正して」）；<code>/goal 全テスト合格</code> で合否条件をセッションレベルに設定；完了後は <code>/code-review</code> ＋「サブエージェントで SPEC.md と照合して不足をチェック」の二重チェックを実施。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🐛</span><b>シナリオ③ デバッグとバグ修正</b><span class="pt">DEBUG</span></div>
+    <div class="pb">
+      <p>黄金テンプレート：<strong>症状 ＋ 推定箇所 ＋ 「修正完了」の定義</strong>——「セッションタイムアウト後にログインが失敗する。src/auth/ のトークンリフレッシュを確認して。まず問題を再現する失敗テストを書き、それを修正してテストがパスすることを検証して」。</p>
+      <p><strong>効率化テクニック</strong>：エラーログをパイプで直接投入 <code>cat error.log | claude -p "根本原因を分析して"</code>；テスト実行には <code>! npm test</code>（Shell パススルーで結果が自動的にコンテキストに入り解説される）；「エラーの握りつぶしではなく根本原因の解消」を明記；修正完了の証拠としてテスト結果の出力を提示させる。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🔍</span><b>シナリオ④ コードレビュー</b><span class="pt">REVIEW</span></div>
+    <div class="pb">
+      <p>目的に応じて使い分け：<code>/code-review</code>（ローカル diff のバグ検出、--fix で即修正；v2.1.223 より <code>/review</code> はこの別名）、<code>/simplify</code>（コード整理・共通化・冗長性排除専用）、<code>/security-review</code>（セキュリティ特化）、<code>/code-review 123</code>（GitHub PR の高速確認）。ディープな精査には <code>/code-review ultra</code> でクラウドマルチエージェントを実行。</p>
+      <p><strong>デュアルセッション手法</strong>：セッション A でコードを書き、セッション B（独立したクリーンコンテキスト）でレビュー——「@src/middleware/rateLimiter.ts をレビューし、エッジケース、競合状態、既存ミドルウェアとの一貫性を確認して」。B の指摘を A に戻して修正。テスト作成も同様に別セッションで行うと効果的です。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🚚</span><b>シナリオ⑤ 大規模リファクタリング / マイグレーション</b><span class="pt">MIGRATION</span></div>
+    <div class="pb">
+      <p><strong>対話型</strong>：<code>/batch src/ を Solid から React に移行して</code> の一言で、5〜30の独立タスクに自動分割され、それぞれがバックグラウンドサブエージェント ＋ 独立 worktree で並行実装・テスト・PR 作成まで完結します。</p>
+      <p><strong>スクリプト型（ファンアウト）</strong>：まず移行対象ファイルの一覧を出力させ → 2〜3ファイルでテストしてプロンプトを調整 → 全件ループ処理：</p>
+      <pre><code>for file in $(cat files.txt); do
+  claude -p "$file を React から Vue に移行し、OK または FAIL を返して" \
+    --allowedTools "Edit,Bash(git commit *)"
+done</code></pre>
+      <p>ポイント：<code>--allowedTools</code> で権限を絞り、機械判定可能な出力形式（OK/FAIL）を取り決め、小規模検証から全体適用へ進めること。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🤖</span><b>シナリオ⑥ 自動化と CI 連携</b><span class="pt">AUTOMATION</span></div>
+    <div class="pb">
+      <p><code>claude -p</code> を使えば、あらゆるシェルパイプラインに Claude を組み込めます：</p>
+      <pre><code>claude -p "すべての API エンドポイントを一覧化して" --output-format json
+claude -p "このログファイルを分析して" --output-format stream-json --verbose
+claude --permission-mode auto -p "すべての lint エラーを修正して"</code></pre>
+      <p>完全自動化の4重ガードレール：<code>--max-turns</code> / <code>--max-budget-usd</code> で暴走防止、<code>--allowedTools</code> で権限制限、<code>--json-schema</code> で出力構造を固定、CI 環境では <code>claude setup-token</code> で長期クレデンシャルを発行。GitHub 連携：<code>/install-github-app</code> で設定し、<code>/autofix-pr</code> で CI エラーやレビュー指摘をクラウド上で自動修正。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🧵</span><b>シナリオ⑦ 並行作業とバックグラウンド処理</b><span class="pt">PARALLEL</span></div>
+    <div class="pb">
+      <p>複数のタスクを同時進行させる4つのレベル：<strong>worktree 並行</strong>（<code>claude -w</code> で各タスクに独立したチェックアウトを用意し干渉を防止）→ <strong>バックグラウンド化</strong>（<code>/bg</code> で裏へ回す、<code>/subtask</code> で分身に別作業を委譲、<kbd>Ctrl+B</kbd> で重いコマンドを裏で実行）→ <strong>エージェント艦隊</strong>（<code>claude agents</code> 統合管理：attach / logs / respawn）→ <strong>Agent Teams</strong>（リーダーが指示を出し、メッセージとタスクを共有して自律協調するマルチセッション連携）。</p>
+      <p>セッションを作業ブランチのように運用：<code>/rename oauth-migration</code> でワークフローに名前を付け、翌日 <code>claude -r oauth-migration</code> でシームレスに再開。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">📄</span><b>シナリオ⑧ Git / PR / ドキュメントの日常業務</b><span class="pt">DAILY</span></div>
+    <div class="pb">
+      <p><code>gh</code> CLI を設定しておけば、日常作業は指示一つで完了します：「今回の変更をコミットして、理由を明確に書いて」、「PR を作成して、説明欄にテスト手順を含めて」、「#482 のレビュー指摘を確認して順次対応して」、「今週のコミットから changelog を生成して」。PR のステータスはフッターに表示されます（緑＝承認済み、赤＝要修正）。</p>
+      <p>初めて使う CLI ツールも即座に学習可能：「<code>foo --help</code> を読んで使い方を把握し、A、B、C の処理を実行して」。</p>
+    </div>
+  </div>
+</div>
+<p class="src">シナリオの参照元：<a href="https://code.claude.com/docs/en/best-practices" target="_blank">公式 Best practices</a> · <a href="https://code.claude.com/docs/en/common-workflows" target="_blank">公式 Common workflows</a> · <a href="https://code.claude.com/docs/en/commands" target="_blank">公式 Commands リファレンス</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="context">
+<div class="sec-tag">実戦演習 08</div>
+<h2>コンテキスト管理の極意</h2>
+
+<h3 data-reveal>1M コンテキスト時代において、この管理手法はまだ有効か？</h3>
+<p>本ガイド冒頭の「コンテキストの逼迫」は 200K 時代に書かれたものですが、Sonnet 5 や Opus 5 はすでにネイティブ <strong>1M</strong> コンテキストを備えています。一見矛盾するように思えますが、結論は変わりません。管理が必要な「理由」が変化しただけです。</p>
+<div class="callout note"><b class="t">結論：依然として必須。理由は「容量不足」から「コスト増と詳細の喪失」へ</b>以前の問題は物理的な制限でした：200K ウィンドウはファイル読み込みやコマンド出力ですぐに埋まり、圧縮なしでは作業が続けられませんでした。1M ウィンドウはその物理制限を5倍に広げましたが、別の2つの本質的課題は解消されていません：<strong>①メッセージを送るたびに過去の全履歴が再送信される</strong>——公式 costs ドキュメントの記述「Claude Code sends your full conversation with every message」の通り、ウィンドウが大きく履歴が溜まるほど、たった1行の質問でも全履歴分の料金が発生し、コストが会話長に比例して跳ね上がります；<strong>②圧縮によって詳細が欠落する</strong>——初期に会話内で指示した詳細な制約事項は、CLAUDE.md に記載されていない限り圧縮時に失われる可能性が高いです（公式ドキュメント「instructions from early in the conversation can get lost」）。1M は「突然停止しないための安全マージン」であり、「放置してよいライセンス」ではありません。</div>
+<p>緩和されたのは1点のみです：<strong>その日のうちに終わる短いタスクであれば、大きなファイルを読んでも神経質に手動 <code>/compact</code> を行う必要はなくなりました</strong>——自動圧縮の閾値に達することなく完了できるケースが増えたためです。しかし、複数日にわたるセッション、常時稼働させる自動化エージェント、API コストを重視する場面では、後述するコンテキスト管理手法が引き続き決定的に重要となります。なお、1M は Sonnet 5 / Opus 5 / Fable 5 等でのみネイティブ有効ですので、モデルの実際のコンテキスト長は <code>/context</code> で確認してください。<strong>v2.1.223 の挙動変化</strong>：ネイティブ 1M モデルもデフォルトで auto-compaction により 200K 相当に制限されます（旧動作に戻すには <code>CLAUDE_CODE_DISABLE_1M_CONTEXT</code> を設定）。</p>
+
+<h3 data-reveal>診断：手を動かす前に現状を把握する</h3>
+<p><code>/context</code> を実行するとカラーグリッドで使用状況が表示されます（どのツールが消費しているか、メモリファイルが肥大化していないか、残り容量はどれくらいか）。<code>/statusline</code> での常時表示と合わせて現状を把握しましょう。</p>
+
+<h3 data-reveal>空き容量を確保する4つのアプローチ（軽度から重度順）</h3>
+<table class="tbl">
+  <tr><th>手段</th><th>アクション</th><th>適用シーン</th><th>実行の目安（定量的トリガー）</th></tr>
+  <tr><td>サイド質問</td><td><code>/btw 質問内容</code></td><td>ちょっとした確認をしたいが、回答を会話履歴に残す必要がないとき</td><td>いつでも実行可能。コンテキストを消費せず、<code>/context</code> の使用量にも影響しません</td></tr>
+  <tr><td>指定要約圧縮</td><td><code>/compact API変更とテストコマンドを保持</code></td><td>会話を続けたいが履歴が重いとき——要約の方針を人間が指示</td><td>自動圧縮が走る前に手動で主導権を握る：<code>/context</code> の使用率が閾値に近づいたとき（Sonnet 5 の標準では約 <strong>96.7%</strong>≈967K/1M トークン；1M 未適用のモデルでは <strong>200K</strong> 到達時；いずれも <code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code> で前倒し可能）</td></tr>
+  <tr><td>部分要約</td><td><kbd>Esc Esc</kbd> で特定メッセージを選択 → Summarize from here / up to here</td><td>前半または後半のみを圧縮し、重要な区間の詳細を完全に維持したいとき</td><td>定量的数値ではなく、「この区間以降はまだ詳細が必要 / この区間はもう不要」という人間の判断に基づく</td></tr>
+  <tr><td>完全初期化</td><td><code>/clear</code></td><td>無関係な新規タスクへ移行するとき、または同一問題で2回修正しても直らないとき</td><td>容量に関係なく、タスクの関連性で判断。新しい作業に移る際は残量に関わらず即実行</td></tr>
+</table>
+<div class="callout tip"><b class="t">圧縮処理を思い通りに制御する</b>CLAUDE.md に圧縮方針を記載しておくと、自動圧縮時にもそれが尊重されます。例：「会話を圧縮する際は、変更されたファイル一覧とテスト実行コマンドを常に保持すること」。</div>
+
+<h3 data-reveal>自動圧縮（Auto-compaction）：いつ動き、何を捨てるのか</h3>
+<p><code>DISABLE_AUTO_COMPACT</code> は <code>settings.json</code> の <code>autoCompactEnabled</code>（デフォルト <code>true</code>）を上書きする環境変数です。これを無効化すると Claude は自動要約を行わず、コンテキストが満杯になるとエラーで停止します。<code>/context</code> を見ながら手動で <code>/compact</code> したいエキスパート専用の設定です。</p>
+<p><strong>発動閾値</strong>（公式 <code>env-vars</code> / <code>model-config</code> ドキュメントに基づく）：</p>
+<table class="tbl">
+  <tr><th>モデル / シナリオ</th><th>発動タイミング</th></tr>
+  <tr><td>Sonnet 5（ネイティブ 1M）</td><td>デフォルトで約 <strong>96.7%</strong>（約 <strong>967K / 1M</strong> トークン）。閾値自体は <code>CLAUDE_CODE_AUTO_COMPACT_WINDOW</code> で制御</td></tr>
+  <tr><td>1M 未適用の標準モデル（Sonnet 4.6 / Opus 4.6 等）</td><td><strong>200K</strong> 境界への到達時</td></tr>
+  <tr><td>その他のローカルセッション（ローカル Opus 4.8 等）</td><td>モデル固有の上限に近づいた時点（固定パーセンテージは非公開）</td></tr>
+</table>
+<p><code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code>（値：1〜100）によりパーセンテージを下げて早めに圧縮を発動させることができます（引き上げることは不可）。現状の正確な使用状況は <code>/context</code> で確認してください。</p>
+<p><strong>圧縮時に実行される2段階の処理</strong>：公式ドキュメントによると、まず「古いツールの出力を削除し、それでも不足している場合に会話全体を要約する（clears older tool outputs first, then summarizes the conversation if needed）」という2段構えになっています。第1段階では読み込み済みの巨大ファイル内容や過去のコマンド出力など「一度見れば十分な生データ」のみを削除し、対話履歴には手を付けません。第1段階で十分な空きが作れなかった場合のみ第2段階へ進み、会話履歴全体を構造化要約に圧縮します。「Conversation compacted」の通知が出ずに消費量がガクッと減った場合は第1段階のみが実行された状態です。</p>
+<p><strong>第2段階の要約後に保持されるもの・失われるもの</strong>：</p>
+<table class="tbl">
+  <tr><th>要素</th><th>圧縮後の状態</th></tr>
+  <tr><td>システムプロンプト・出力スタイル</td><td>影響なし（元々会話履歴の外に存在するため）</td></tr>
+  <tr><td>プロジェクトルートの CLAUDE.md およびパス無制限のルール</td><td>ディスクから再読み込みされる</td></tr>
+  <tr><td>自動メモリ（<code>MEMORY.md</code>）</td><td>ディスクから再読み込みされる</td></tr>
+  <tr><td><code>paths:</code> プレフィックス付きのルール</td><td>失われる（該当ファイルが再び読み込まれるまで再読み込みされない）</td></tr>
+  <tr><td>サブディレクトリ内の入れ子 CLAUDE.md</td><td>失われる（そのディレクトリ配下のファイルが再び読まれるまで再読み込みされない）</td></tr>
+  <tr><td>過去に呼び出された Skill 本文</td><td>再注入されるが、各 Skill 上限 5000 トークン、全体上限 25000 トークンを超えると古い順に破棄される</td></tr>
+  <tr><td>Hooks</td><td>影響なし（Hook はコードでありコンテキストを消費しないため）</td></tr>
+</table>
+<div class="callout warn"><b class="t">「圧縮後に頭が悪くなった」と感じる理由</b>公式ドキュメント記載：「Your requests and key code snippets are preserved; detailed instructions from early in the conversation may be lost.」——要約によって「要求の大枠」と主要コードは残りますが、初期に口頭で伝えた細かなエッジケースの指示は失われます（CLAUDE.md に書かれていない限り）。これを防ぐには、重要な制約事項は会話の途中で伝えるだけでなく CLAUDE.md に昇格させるか、圧縮前に <code>/compact 重点指示</code> で残すべき情報を指定してください。</div>
+<p>単一のファイルやツール出力が巨大すぎて「要約してもすぐにコンテキストが満杯になる」場合、Claude Code は数回リトライした後に自動圧縮を停止しエラーを返します（thrashing エラー）。この場合は再圧縮を試みるのではなく、サブエージェントや Hook を使って巨大な出力をあらかじめトリミングしてください。</p>
+
+<h3 data-reveal>ファイルを外部記憶として活用する</h3>
+<p>後述の Ralph ループでは「会話履歴ではなくファイルシステムをメモリとして使う」という思想が登場します。会話履歴は自動圧縮で要約され、<code>/clear</code> で消去され、別セッションには引き継がれません。しかし、ディスク上のファイルは永続します。状態をファイルに明記することは、コンテキストウィンドウの外に圧縮の影響を受けない「信頼できる唯一の情報源（Single Source of Truth）」を持つことを意味します。</p>
+<p>代表的な3つのファイル活用法：</p>
+<ul>
+  <li><strong>SPEC.md</strong>：法則5「まずインタビューさせる」で作成する仕様書。仕様が確定したら**新規セッションを開いて実装を開始**します。実装担当のエージェントはクリーンなコンテキストで作業でき、SPEC.md をいつでも参照できます。</li>
+  <li><strong>NOTES.md / PROGRESS.md</strong>：長時間タスクや Ralph ループを実行する際、各ターンの開始時に読み、終了時に更新します——「検証済みの実装方針」「試してダメだったアプローチ」「次にやるべきこと」をチェックリスト形式で記録。セッションを跨いでも過去の失敗を繰り返さずに済みます。</li>
+  <li><strong>圧縮ポリシー自体のファイル化</strong>：CLAUDE.md に「圧縮時は変更ファイル一覧とテストコマンドを常に保持せよ」と書いておけば、このルール自体がディスク上に存在し、どんな圧縮を経ても確実に守られます。</li>
+</ul>
+<p class="src">本節の根拠：<a href="https://code.claude.com/docs/en/context-window" target="_blank">公式 Explore the context window</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works" target="_blank">公式 How Claude Code works</a> · <a href="https://code.claude.com/docs/en/model-config" target="_blank">公式 Model configuration</a> · <a href="https://code.claude.com/docs/en/env-vars" target="_blank">公式 Environment variables</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">公式 Settings</a> · <a href="https://code.claude.com/docs/en/costs" target="_blank">公式 Manage costs</a></p>
+
+<h3 data-reveal>チェックポイント：果敢な試行錯誤を支える安全網</h3>
+<p>プロンプトを送信するたびに自動でチェックポイントが作成され、ファイル変更のスナップショットが取得されます。<kbd>Esc Esc</kbd> / <code>/rewind</code> を使えば、会話のみの巻き戻し、コードのみの巻き戻し、あるいは両方の巻き戻しが可能です。チェックポイントはセッションとともに永続化されるため、ターミナルを閉じて翌日再開しても巻き戻せます。<strong>注意点</strong>：Claude の編集ツールによる変更のみを追跡し、Bash コマンドや外部プロセスによる変更は含まれません。git commit の代わりではない点に留意してください。</p>
+
+<h3 data-reveal>セッションを資産として管理する</h3>
+<p>対話履歴はローカルに保存されます：<code>claude -c</code> で直近を再開、<code>claude -r 名前</code> でピンポイント復元、<code>/rename</code> でブランチ名のような名前（例：<code>oauth-migration</code>）を付与、<code>/branch</code> で現在の地点から別アプローチを分岐実験、<code>--fork-session</code> で元セッションを汚さずに新セッションを開始。ワークフローごとに名前付きセッションを作り、git ブランチのようにコンテキストを管理しましょう。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="permissions">
+<div class="sec-tag">実戦演習 09</div>
+<h2>権限とセキュリティ</h2>
+
+<h3 data-reveal>6つの権限モード</h3>
+<table class="tbl">
+  <tr><th>モード</th><th>挙動</th><th>適用シーン</th></tr>
+  <tr><td><code>manual</code> <span class="pill a">旧 default</span></td><td>機密・破壊的操作のたびに確認ダイアログを表示</td><td>デフォルト設定。初見のリポジトリや不慣れなタスク。2026-07-03 より CLI / VS Code / JetBrains で表示名が <strong>Manual</strong> に統一（<code>--permission-mode manual</code>, <code>"defaultMode": "manual"</code>）</td></tr>
+  <tr><td><code>acceptEdits</code></td><td>ファイル編集は自動承認、コマンド実行は確認</td><td>中程度のリファクタリング</td></tr>
+  <tr><td><code>plan</code></td><td>読み取り専用：調査や計画は可能だがファイル変更は不可</td><td>探索、設計、コードレビュー</td></tr>
+  <tr><td><code>auto</code></td><td>分類器モデルがユーザーの代わりに判断し、不審な操作（権限昇格、未知のインフラ操作、悪意あるコンテンツに誘導された挙動）のみをブロック</td><td>方針が固まっており、毎回 Enter を押したくないとき</td></tr>
+  <tr><td><code>dontAsk</code></td><td>確認を求めず、未許可の操作はスキップ</td><td>特定の CI/自動化パイプライン</td></tr>
+  <tr><td><code>bypassPermissions</code></td><td>すべての操作を無条件で許可（ガードなし）</td><td>⚠️ ネットワークから完全隔離された安全な環境限定</td></tr>
+</table>
+<p><kbd>Shift+Tab</kbd> でモードを順次切り替え可能。起動時は <code>--permission-mode</code> で指定します。</p>
+
+<h3 data-reveal>3層の評価順序：deny → ask → allow</h3>
+<pre><code><span class="c">// .claude/settings.json —— 実践的な初期設定の例</span>
+{
+  "permissions": {
+    "allow": [
+      "Read", "Glob", "Grep",
+      "Bash(npm run lint:*)", "Bash(npm run test:*)",
+      "Bash(git status)", "Bash(git diff:*)"
+    ],
+    "ask":  [ "Bash(git push:*)" ],
+    "deny": [
+      "Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"
+    ]
+  }
+}</code></pre>
+<ul>
+  <li><strong>deny が最優先で評価される</strong>：機密ファイルは deny に指定することで Claude から完全に不可視化されます（Hook でブロックするより安全）。</li>
+  <li>承認疲れ（Approval fatigue）はセキュリティの最大の敵です：10回目の「許可」をクリックする頃には人間は内容を見ていません。解決策はホワイトリストの適切な設定（<code>/fewer-permission-prompts</code> で自動生成可能）と <code>/sandbox</code> による OS レベルの隔離です。</li>
+  <li><code>--dangerously-skip-permissions</code> は**ネットワークがなく、機密データも存在しないコンテナ環境**（CI での lint 修正など）でのみ使用すべきです。企業環境では <code>disableBypassPermissionsMode</code> で組織全体で無効化できます。</li>
+</ul>
+
+<h3 data-reveal>構文早見表：各記述がマッチする対象</h3>
+<p>設定例にある <code>Bash(npm run lint:*)</code>、<code>Read(./.env.*)</code>、<code>Read(./secrets/**)</code> の記法について、正確なマッチングルールを理解しておきましょう：</p>
+<table class="tbl">
+  <tr><th>記述形式</th><th>マッチする対象（正しい理解）</th><th>誤った思い込み（注意点）</th></tr>
+  <tr><td><code>Read</code> / <code>Edit</code> / <code>Bash</code><br>括弧なしのツール単体</td><td>対象が何であれ、そのツールの**すべての**実行にマッチ</td><td>「ルールを書いていないのと同じ」と思わないこと——ツール単体指定は全許可 / 全確認 / 全拒否のルールとなります</td></tr>
+  <tr><td><code>Read(./.env)</code></td><td>**カレント作業ディレクトリ**（cwd、<code>claude</code> を起動した場所）からの相対パスで、この1ファイルに厳密一致</td><td>プロジェクトルートからの相対パスと思わないこと——スラッシュで始まる <code>/path</code> が設定ファイルの階層基準です（下記7行目参照）</td></tr>
+  <tr><td><code>Bash(npm run lint:*)</code><br><code>Bash(git diff:*)</code></td><td><code>:*</code> は「末尾にスペース + <code>*</code>」の省略記法で、**前方一致**：コマンドが <code>npm run lint </code> で始まれば許可</td><td>コロンがフィールドセレクタであると思わないこと——<code>Bash(command:rm *)</code> のような構文は無効と判定され警告が出ます</td></tr>
+  <tr><td><code>Edit(src/**)</code><br>（<strong>allow</strong> ルールの場合）</td><td>単一セグメント記述。<code>&lt;cwd&gt;/src</code> の1箇所のみにマッチ</td><td><code>packages/foo/src</code> にもマッチすると思わないこと——2026-07-18 よりこの挙動に厳格化されました（以前はツリー全体の <code>src</code> にマッチ）</td></tr>
+  <tr><td><code>Read(./secrets/**)</code><br>（<strong>deny / ask</strong> ルールの場合）</td><td>単一セグメント記述だが、deny / ask ルールではカレントディレクトリ配下の**任意の深さ**の <code>secrets</code> にマッチ（<code>packages/foo/secrets</code> もブロック可能）</td><td>allow と deny で単一セグメントの挙動が異なる点に注意——設定例の deny が安全なのはこのためです。allow で同じ書き方をすると直前の厳格化の影響を受けます</td></tr>
+  <tr><td><code>Edit(**/src/**)</code></td><td>明示的な任意深度記述。allow / deny / ask のいずれでもツリー内のあらゆる <code>src</code> にマッチ</td><td>単一セグメントで悩むより、「どこにあっても対象」としたいなら常にこの形式で書くのが確実です</td></tr>
+  <tr><td><code>Edit(/src/**)</code><br>先頭にスラッシュ1つ</td><td>**設定ファイルが存在する階層**（プロジェクト設定ならプロジェクトルート <code>&lt;project root&gt;/src</code>）を基準とする相対パス</td><td><code>./path</code> と混同しないこと——worktree 環境では「プロジェクトルート」はその worktree 自体のルートを指します</td></tr>
+  <tr><td><code>Read(//Users/alice/secrets/**)</code><br>先頭にスラッシュ2つ</td><td>ファイルシステムルートからの**絶対パス**。cwd やプロジェクトルートに依存しない</td><td>チーム共有のプロジェクト設定に個人のユーザー名パスをハードコードしないこと——個人用 <code>settings.local.json</code> に書くべきです</td></tr>
+</table>
+<div class="callout warn"><b class="t">allow ルールでパスを書く際の注意点</b><code>deny</code> の <code>Read(./secrets/**)</code> は 2026-07-18 の厳格化後も任意深度の <code>secrets</code> をブロックできますが、<strong>同じ書き方を allow ルールで行った場合</strong>（例：<code>Edit(src/**)</code>）、<code>&lt;cwd&gt;/src</code> のみが許可され、ネストした同名ディレクトリは許可されません。深い階層まで許可したい場合は必ず <code>Edit(**/src/**)</code> と明示してください。</div>
+<p class="src">構文の参照元：<a href="https://code.claude.com/docs/en/permissions" target="_blank">公式 Permissions ドキュメント</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="config-auth">
+<div class="sec-tag">実戦演習 10</div>
+<h2>設定とアカウント体系の完全解説</h2>
+<p>「設定はどこに書くのか、ログイン方式はどう切り替えるのか、別マシンへの移行はどうやるのか」——散在する情報を1つのマップに整理しました。</p>
+<div class="callout note"><b class="t">ログインエラーや環境トラブルに直面した場合</b>詳細なトラブルシューティングは専用トピック：<a href="env-auth-clinic.ja.html">環境構築＆ログイン トラブルシューティング</a>（5層診断、ワンクリック診断スクリプト、共有PC・マシン移行手順、3段階の完全初期化）をご参照ください。</div>
+
+<h3 data-reveal>一、設定ファイルの全体像</h3>
+<p>Claude Code の全設定ファイル一覧（Windows の <code>~/.claude</code> は <code>%USERPROFILE%\.claude</code> に対応）：</p>
+<table class="tbl">
+  <tr><th>設定レイヤー</th><th>配置パス</th><th>役割 / 主な対象</th></tr>
+  <tr><td>企業管理設定</td><td>システムレベル <code>managed-settings.json</code> / macOS 構成プロファイル / Windows レジストリ / サーバー配布</td><td>情シスによる強制ポリシー。個人で上書き不可</td></tr>
+  <tr><td><strong>ユーザー設定</strong></td><td><code>~/.claude/settings.json</code></td><td>グローバル設定：権限ルール、hooks、env、デフォルトモデル</td></tr>
+  <tr><td><strong>プロジェクト設定</strong></td><td><code>.claude/settings.json</code></td><td>git 管理、チーム共通ルール</td></tr>
+  <tr><td>プロジェクトローカル設定</td><td><code>.claude/settings.local.json</code></td><td>あなた個人のみ適用、自動で gitignore 対象（個人的な実験用）</td></tr>
+  <tr><td>MCP サーバー設定</td><td>グローバル <code>~/.claude.json</code>；プロジェクト <code>.mcp.json</code></td><td>注意：MCP は settings.json には書きません！</td></tr>
+  <tr><td>メモリファイル</td><td><code>~/.claude/CLAUDE.md</code> → プロジェクト <code>CLAUDE.md</code> → <code>CLAUDE.local.md</code>（個人用）</td><td>コーディング規約や前提知識</td></tr>
+  <tr><td>Skills / Agents / Plugins</td><td><code>~/.claude/skills|agents|plugins</code>（グローバル）および <code>.claude/skills|agents</code>（プロジェクト）</td><td>ディレクトリにファイルを置くだけで有効化</td></tr>
+</table>
+<div class="callout tip"><b class="t">~/.claude ディレクトリの場所を変更する</b><code>CLAUDE_CONFIG_DIR</code> 環境変数を設定すると、すべての <code>~/.claude</code> のパスが指定先へリダイレクトされます——設定をクラウド同期フォルダや dotfiles で一元管理する正式な方法です。</div>
+
+<h3 data-reveal>二、~/.claude ディレクトリの内容物</h3>
+<table class="tbl">
+  <tr><th>パス</th><th>内容</th><th>バックアップ推奨度</th></tr>
+  <tr><td><code>settings.json</code> / <code>CLAUDE.md</code> / <code>skills/</code> / <code>agents/</code></td><td>自身で作成したカスタム設定——中核資産</td><td>✅ dotfiles リポジトリでの管理を推奨</td></tr>
+  <tr><td><code>plugins/</code></td><td>導入済みプラグイン、マーケットプレイスのクローン、プラグインデータ</td><td>バックアップ不要（新環境で再インストール可能）</td></tr>
+  <tr><td><code>projects/</code></td><td>各プロジェクトの**セッションログ（平文 JSONL）**</td><td>❌ 機密情報を含むため同期・共有は厳禁</td></tr>
+  <tr><td><code>history.jsonl</code></td><td>入力したプロンプト履歴（↑ キー履歴）</td><td>❌ 同上</td></tr>
+  <tr><td><code>stats-cache.json</code> / <code>backups/</code> / <code>shell-snapshots/</code></td><td>使用量統計 / 移行前バックアップ / Bash 環境スナップショット</td><td>自動管理のため対応不要</td></tr>
+</table>
+<div class="callout warn"><b class="t">平文保存に関する警告（公式）</b>会話トランスクリプトや履歴は**暗号化されず**、OS のファイルパーミッションのみで保護されます。API キー等を出力したコマンドの履歴も <code>projects/&lt;プロジェクト&gt;/&lt;セッション&gt;.jsonl</code> に平文で残ります。デフォルトで30日後に自動消去されます（<code>cleanupPeriodDays</code> で調整可能）；<code>claude project purge</code> で特定プロジェクトの履歴を一括削除できます。</div>
+
+<h3 data-reveal>三、優先順位と「設定が反映されない」ときのチェックリスト</h3>
+<p>設定キーが重複した場合の優先順位：<strong>企業管理設定 &gt; コマンドライン引数 &gt; .claude/settings.local.json &gt; .claude/settings.json &gt; ~/.claude/settings.json</strong>。「変更したのに反映されない」場合の典型的な3大原因：</p>
+<ul>
+  <li><strong>編集したレイヤーが上書きされている</strong>：プロジェクト設定がユーザー設定を上書きしている → <code>/config</code> で現在有効な値を確認、または <code>--setting-sources user</code> で指定レイヤーのみを読み込み確認；</li>
+  <li><strong>セッションの再起動が必要な項目である</strong>：多くの設定はホットリロードされますが、<code>model</code> や <code>outputStyle</code> などはセッション開始時に読み込まれます——変更後はセッションを再起動（一時的なモデル変更は <code>/model</code> を使用）；</li>
+  <li><strong>JSON の構文エラー</strong>：<code>claude doctor</code>（ターミナル診断）または <code>/doctor</code>（セッション内）でスキーマエラーを確認；settings.json の先頭に <code>"$schema": "https://json.schemastore.org/claude-code-settings.json"</code> を指定するとエディタで自動検証されます。カスタム設定が原因で不具合が疑われる場合は <code>claude --safe-mode</code> で素の状態で起動して切り分けます。</li>
+</ul>
+
+<h3 data-reveal>四、ログイン方式と切り替え手順</h3>
+<table class="tbl">
+  <tr><th>方式</th><th>設定方法</th><th>課金体系 / 適用対象</th></tr>
+  <tr><td><strong>サブスクリプション OAuth（推奨）</strong></td><td><code>claude</code> または <code>/login</code> → ブラウザで claude.ai アカウントへログイン</td><td>Pro/Max プランの利用枠；日常開発の標準</td></tr>
+  <tr><td>Console OAuth</td><td>同上、ログイン時に Console（API 従量課金）アカウントを選択</td><td>API 従量課金のチーム運用</td></tr>
+  <tr><td>API Key 環境変数</td><td><code>export ANTHROPIC_API_KEY=sk-ant-…</code></td><td>スクリプト/CI；⚠️ OAuth より優先されるため競合の原因になりやすい</td></tr>
+  <tr><td>長期 OAuth トークン</td><td><code>claude setup-token</code> で生成（要サブスク）、CI の環境変数へ設定</td><td>CI 環境でサブスクリプション枠を利用する正式な手順</td></tr>
+  <tr><td>ゲートウェイ / リバースプロキシ</td><td><code>ANTHROPIC_BASE_URL</code> + <code>ANTHROPIC_AUTH_TOKEN</code>（Bearer）</td><td>企業内 LLM ゲートウェイ、プロキシサービス</td></tr>
+  <tr><td>動的キー取得スクリプト</td><td>settings.json 内で <code>apiKeyHelper</code> にキーを出力するスクリプトを指定</td><td>キーの自動ローテーション / シークレット管理ツール連携</td></tr>
+  <tr><td>クラウドプロバイダー直結</td><td><code>CLAUDE_CODE_USE_BEDROCK=1</code> + <code>/setup-bedrock</code> ウィザード；Vertex も同様に <code>/setup-vertex</code></td><td>AWS/GCP の請求・コンプライアンス要件（Anthropic 認証を経由しない）</td></tr>
+</table>
+<h4>アカウントや方式を切り替える正しい手順</h4>
+<ol class="steps">
+  <li><strong>アカウントの変更</strong>：<code>/login</code> を実行してブラウザで新しいアカウントを選択（または <code>claude auth logout</code> 後に再ログイン）；<code>claude auth status</code> で現在の認証状態を確認。</li>
+  <li><strong>OAuth から API Key への切り替え</strong>：<code>ANTHROPIC_API_KEY</code> を設定すると最優先されます——逆にサブスクリプションに戻す場合は、必ず <code>unset ANTHROPIC_API_KEY</code> を実行してください（shell 設定ファイル内の export 残りに注意）。</li>
+  <li><strong>企業の制限ポリシー</strong>：管理設定の <code>forceLoginMethod</code> により claudeai / console / gateway が強制されている場合、環境変数のクレデンシャルは起動時に拒否されます（「会社の PC で API Key が使えない」主な原因）。</li>
+</ol>
+<div class="callout note"><b class="t">認証エラーの診断手順</b>「Invalid API key」、「Please run /login」、CLI は動くのに IDE プラグインで未ログインと言われる——9割は<strong>複数クレデンシャルの競合</strong>です（環境変数 ＋ OAuth ＋ カスタムゲートウェイのバッティング）。切り分け手順：<code>env | grep -i anthropic</code> で不要な変数をクリア → <code>claude auth status</code> を確認 → 再度クリーンにログイン。</div>
+
+<h3 data-reveal>五、PC 移行・複数マシンでの運用</h3>
+<table class="tbl">
+  <tr><th>項目</th><th>移行・同期方法</th></tr>
+  <tr><td>グローバル設定（settings.json, CLAUDE.md, skills/, agents/）</td><td>dotfiles リポジトリやクラウド同期フォルダで管理；または <code>CLAUDE_CONFIG_DIR</code> を同期先に指定</td></tr>
+  <tr><td>プロジェクト設定（.claude/, .mcp.json, CLAUDE.md）</td><td>git リポジトリに含まれているため clone するだけで完了</td></tr>
+  <tr><td>認証情報・トークン</td><td><strong>コピーしないこと</strong>——新環境で <code>claude</code> を実行して再ログイン（30秒）；CI やブラウザのない環境では <code>setup-token</code> の長期トークンを使用</td></tr>
+  <tr><td>セッション履歴</td><td>ローカル資産のためマシン間では引き継がれません；セッションを引き継ぎたい場合は <code>--teleport</code> やクラウドセッションを活用</td></tr>
+</table>
+<pre><code><span class="c"># 新マシンでの初期構築（Node.js 導入後）</span>
+npm install -g @anthropic-ai/claude-code
+claude          <span class="c"># ブラウザでログイン</span>
+git clone 自分のdotfiles && ln -s …/claude ~/.claude   <span class="c"># または CLAUDE_CONFIG_DIR を設定</span></code></pre>
+
+<h3 data-reveal>六、主要な環境変数早見表</h3>
+<table class="tbl">
+  <tr><th>変数名</th><th>機能・影響</th></tr>
+  <tr><td><code>ANTHROPIC_API_KEY</code></td><td>API Key による認証（OAuth より優先——競合の原因になるため注意）</td></tr>
+  <tr><td><code>ANTHROPIC_AUTH_TOKEN</code> + <code>ANTHROPIC_BASE_URL</code></td><td>カスタムゲートウェイ / プロキシの Bearer トークンとエンドポイント</td></tr>
+  <tr><td><code>CLAUDE_CODE_USE_BEDROCK</code> / <code>CLAUDE_CODE_USE_VERTEX</code></td><td>AWS Bedrock / GCP Vertex 経由へのルーティング切り替え</td></tr>
+  <tr><td><code>CLAUDE_CONFIG_DIR</code></td><td><code>~/.claude</code> ディレクトリの配置先を変更</td></tr>
+  <tr><td><code>DISABLE_AUTOUPDATER=1</code></td><td>自動更新を無効化（<code>claude install バージョン</code> と併せてバージョン固定に利用）</td></tr>
+  <tr><td><code>CLAUDE_CODE_SKIP_PROMPT_HISTORY</code></td><td>トランスクリプトや履歴を一切ディスクに書き込まない（機密環境向け）</td></tr>
+</table>
+<p class="src">その他の環境変数は <a href="https://code.claude.com/docs/en/env-vars" target="_blank">公式 env-vars 一覧</a> をご参照ください。環境変数は settings.json の <code>env</code> ブロックに記述してスコープごとに配布することも可能です。</p>
+
+<h3 data-reveal>七、クォータとコスト管理（サブスクリプションユーザー向け）</h3>
+<p>サブスクリプションの利用枠は2段階で管理されます：<strong>ローリングウィンドウ枠</strong>（約5時間ごとにリセットされるスロット）＋ <strong>週次上限枠</strong>（高頻度利用時に適用）。最新のクォータ状況は <code>/usage</code> パネルで確認してください。</p>
+<table class="tbl">
+  <tr><th>目的</th><th>対策・ベストプラクティス</th></tr>
+  <tr><td>残量の確認</td><td><code>/usage</code>：プランの利用枠、ウィンドウのリセット時刻、スキル/サブエージェント/プラグイン別の消費内訳；API 従量課金ユーザーは <code>/cost</code></td></tr>
+  <tr><td>枠の節約 · モデル選定</td><td>タスクに応じたモデル選択：難問にのみ上位モデルを使い、定型タスクは <code>/model</code> で軽量モデルへ切り替え；Auto モードに任せることで手動で上位モデルを使い続けるより大幅に節約可能</td></tr>
+  <tr><td>枠の節約 · コンテキスト管理</td><td>コンテキストが大きいほど1ターンあたりの消費が激増：無関係なタスクでは <code>/clear</code>、長くなった会話は <code>/compact</code>、広範囲の調査はサブエージェントに任せる（メイン会話のコンテキストを汚さない）、MCP は必要なものだけを有効化</td></tr>
+  <tr><td>枠の節約 · 無駄なターンの削減</td><td>Plan Mode で事前に計画を精査してから実行を承認；2回修正してダメなら <code>/clear</code> して最初からやり直す（泥沼の修正ループが最も枠を消費します）</td></tr>
+  <tr><td>上限に達した場合の対応</td><td>4つの選択肢：ウィンドウのリセットを待つ / <code>/model</code> で下位モデルに切り替えて続行 / 一時的に API 従量課金へ切り替え（<code>ANTHROPIC_API_KEY</code> 設定 + /config 設定、従量課金が発生）/ プランのアップグレード。<strong>「usage limit reached」はバグではないため、再インストールや再ログインをしても解消しません</strong>——詳細は<a href="env-auth-clinic.ja.html#claude-er">トラブルシューティング · 課金とクォータ</a>を参照</td></tr>
+</table>
+
+<h3 data-reveal>八、高頻度トラブルシューティング救急表</h3>
+<table class="tbl">
+  <tr><th>症状</th><th>原因 / 解決手順</th></tr>
+  <tr><td>Invalid API key / 繰り返し /login を求められる</td><td>クレデンシャルの競合：<code>ANTHROPIC_*</code> 環境変数をクリア → 再ログイン</td></tr>
+  <tr><td>settings.json を編集したのに反映されない</td><td>上位レイヤーで上書きされている（<code>/config</code> で有効値を確認）；またはセッション再起動が必要な項目</td></tr>
+  <tr><td>MCP の設定ファイルが見つからない</td><td>MCP は settings.json には書きません：グローバルは <code>~/.claude.json</code>、プロジェクトは <code>.mcp.json</code>。<code>claude mcp add</code> を使用する</td></tr>
+  <tr><td>会社の PC で特定の設定が変更できない</td><td>企業管理設定によりロックされています。<code>/status</code> で設定元を確認し情シスへ問い合わせ</td></tr>
+  <tr><td>起動直後にクラッシュする / 挙動がおかしい</td><td><code>claude --safe-mode</code> でカスタム設定を無効化して切り分け；<code>claude doctor</code> で環境診断</td></tr>
+  <tr><td>履歴からの機密漏洩が心配</td><td>トランスクリプトは <code>~/.claude/projects/</code> に平文保存されます：<code>cleanupPeriodDays</code> を短く設定、<code>claude project purge</code> で削除、機密プロジェクトでは <code>--no-session-persistence</code> を付与</td></tr>
+  <tr><td>2台のマシン間で設定に差異が生じる</td><td>カスタム設定ファイルを dotfiles で一元管理し、マシン側にはシンボリックリンクのみを配置</td></tr>
+  <tr><td>CI 環境でどうログインすればいいか</td><td>クレデンシャルファイルをコピーせず、<code>claude setup-token</code> で長期トークンを発行して CI Secret に設定</td></tr>
+  <tr><td>バージョンを固定したい / 自動更新を止めたい</td><td><code>claude install 2.1.x</code> でバージョンを指定；settings.json の env に <code>DISABLE_AUTOUPDATER=1</code> を指定</td></tr>
+  <tr><td>完全初期化したい</td><td><code>~/.claude</code> をバックアップ後に削除 ＋ <code>claude project purge</code> でプロジェクト状態を削除し、再ログイン</td></tr>
+</table>
+<p class="src">本節の根拠：<a href="https://code.claude.com/docs/en/settings" target="_blank">公式 Settings</a> · <a href="https://code.claude.com/docs/en/claude-directory" target="_blank">公式 ~/.claude ディレクトリ詳細</a> · <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">公式 CLI Reference</a>（2026-07 版）</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="ecosystem">
+<div class="sec-tag">ノウハウ集積 11</div>
+<h2>エコシステム厳選: メソドロジー、ツール、連携レシピ</h2>
+<p>コミュニティで長期間にわたり検証され、高い評価を得ている確実なプラクティスを厳選しました：3大メソドロジー、MCP 推奨構成、実戦連携レシピ。</p>
+
+<h3 data-reveal>習得すべき3大メソドロジー</h3>
+<table class="tbl">
+  <tr><th>メソドロジー</th><th>中核思想</th><th>実践アプローチ</th></tr>
+  <tr><td><strong>Spec 駆動開発（Spec-driven Dev）</strong></td><td>曖昧なアイデアをまず構造化された仕様に落とし込み、タスクごとに**クリーンな新規コンテキスト**で実装を進める</td><td>「ユーザー認証の追加」をまず research → requirements → design → tasks の4つのドキュメントに展開し、1タスクずつ順次実装。本ガイドの法則5（インタビューによる SPEC 作成）はその軽量版です。プラグイン実装としては <a href="https://github.com/tzachbon/smart-ralph" target="_blank">smart-ralph</a> が代表例</td></tr>
+  <tr><td><strong>Ralph ループ（Ralph Loop）</strong></td><td>自動ループ内でエージェントに同一のプロンプトファイルを繰り返し読み込ませてコードを修正させ、**会話履歴ではなくファイルシステムをメモリとして機能させる**手法（Geoffrey Huntley が2025年に提唱）</td><td>公式の <code>/loop</code> はこの思想を内蔵した機能です。核心は法則1と同じ——<strong>ループを書くのは容易だが、ループ内の検証器（バリデータ）こそが本質</strong>：明確な pass/fail シグナルのないループは空回りに終わります。1周で大きく変更せず、小さな改善を複利で積み上げます</td></tr>
+  <tr><td><strong>複利エンジニアリング（Compound Engineering）</strong></td><td>知識をセッションを跨いで複利的に蓄積する：タスク完了時に得られた知見を再利用可能なコンテキストとしてファイルに還元する</td><td>Every.to の <a href="https://github.com/EveryInc/compound-engineering-plugin" target="_blank">compound-engineering プラグイン</a>：/ce-brainstorm → /ce-plan → /ce-work → /ce-review → <strong>/ce-compound</strong>（知見をファイルへ書き戻す）——「同じ落とし穴に1ヶ月後に再びハマらない」仕組み。プラグインを使わなくても、難解なバグを解決した後に原因と対策を CLAUDE.md やスキルに追記させることで実践可能です</td></tr>
+</table>
+
+<h3 data-reveal>MCP 推奨構成（コミュニティ検証済み）</h3>
+<table class="tbl">
+  <tr><th>ツール名</th><th>導入すべき理由</th></tr>
+  <tr><td><strong>GitHub MCP</strong></td><td>各種ベンチマークで最も高い評価：Issue/PR/CI のフルパイプライン直結（軽量代替案：コンテキスト消費ゼロの <code>gh</code> CLI を直接利用）</td></tr>
+  <tr><td><strong>Context7</strong></td><td>ライブラリの最新 API シグネチャをリアルタイム取得。「うろ覚えによる古い API の記述」を激減させる。ツール定義がコンパクトでコンテキスト負荷が低い</td></tr>
+  <tr><td><strong>Playwright（マイクロソフト公式）</strong></td><td>本物のブラウザを駆動して UI の変更を自己検証。スクリーンショットではなくアクセシビリティツリーを解析するためコンテキスト占有が小さい——フロントエンド必須</td></tr>
+  <tr><td><strong>Pencil</strong></td><td>デザインキャンバスとコードを直結。本ナレッジベースの <a href="pencil-claude-code-best-practices.ja.html">Pencil × Claude Code 実践ガイド</a> を参照</td></tr>
+  <tr><td>要件に応じて：Sentry / Postgres / Figma / Notion…</td><td>実際のワークフローで日常的に使うシステムのみを厳選して導入する</td></tr>
+</table>
+<div class="callout warn"><b class="t">導入を避けるべき「定番」MCP</b>著名だが実はお勧めしない2つのツール：<strong>Filesystem MCP</strong>——Claude Code の標準ファイルツールと権限体系の方が遥かに優れています；<strong>Sequential Thinking</strong>——最新モデルは推論能力を内蔵しており、ツールとして重ねるとコンテキストを浪費するだけです。MCP は追加するほどコンテキストを消費するため、定期的に <code>/context</code> で確認し不要なものは <code>/mcp</code> で無効化してください。</div>
+
+<h3 data-reveal>Skills とプラグインの厳選</h3>
+<ul>
+  <li><strong>公式バンドルスキルを徹底活用する</strong>：/code-review、/batch、/run + /verify、/simplify——多くのユーザーはその真価の3割も使いこなせていません。</li>
+  <li><strong>skill-creator</strong>：スキルを使って新しいスキルを作成し、自身の定型ワークフローを半自動でパッケージ化。</li>
+  <li><strong>外部リソースの探索</strong>：<a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">awesome-claude-code</a>（コミュニティ最大のリスト）、<a href="https://www.developersdigest.tech/blog/best-claude-code-skills-2026" target="_blank">Developers Digest 厳選カタログ</a>、<a href="https://www.firecrawl.dev/blog/best-claude-code-skills" target="_blank">Firecrawl レビュー</a>；<code>/plugin</code> で公式マーケットプレイスを直接検索。</li>
+</ul>
+
+<h3 data-reveal>実戦連携レシピ</h3>
+<table class="tbl">
+  <tr><th>シナリオ</th><th>構成レシピ</th><th>効果</th></tr>
+  <tr><td>UI 開発の完全自動検証</td><td>Pencil MCP（デザイン）+ 実装 + Playwright MCP / <code>/verify</code>（実ブラウザ検証）</td><td>デザイン → コード実装 → 視覚的自己検証までを人間によるスクショ確認なしで完結</td></tr>
+  <tr><td>未知のフレームワークでの開発</td><td>Context7（最新シグネチャ取得）+ <code>/goal テスト全合格</code></td><td>古い知識による API 誤用を防止し、最新仕様通りに実装</td></tr>
+  <tr><td>PR 完全自動運用フロー</td><td><code>gh</code> CLI + <code>/install-github-app</code> + <code>/autofix-pr</code></td><td>CI 失敗やレビュー指摘に対してクラウドセッションが自動で修正コミットをプッシュ</td></tr>
+  <tr><td>デュアルエージェント相互検証</td><td>Claude Code × Codex の相互 MCP 連携（詳細は <a href="codex-guide.ja.html#skills-mcp">Codex 実践ガイド</a>）</td><td>異なるモデルアーキテクチャの視点を交差させ、死角を浮き彫りにする</td></tr>
+  <tr><td>大規模マイグレーション</td><td>SPEC ドキュメント + <code>/batch</code>（または Ralph ループ）+ Stop hook でテスト実行</td><td>タスク分解・並行実行・自動検証のワンストップ運用</td></tr>
+</table>
+
+<h3 data-reveal>体系的に学べるおすすめリソース</h3>
+<p>本ガイドは「実践的なクイックリファレンス」として構成されています。基礎から手取り足取り学びたい方には、stormzhang 氏によるオープンソース教材 <a href="https://coding.stormzhang.ai/" target="_blank">AI 開発完全ガイド</a>（Claude Code 53編 ＋ Codex 39編、初心者対応）をお勧めします。環境構築の詳細や各エディタ連携など基礎を体系的に学ぶにはそちらを、現場での実戦引きには本ガイドをご活用ください。</p>
+<p class="src">本節の参照元：<a href="https://nimbalyst.com/blog/best-claude-code-mcp-servers/" target="_blank">Nimbalyst MCP レビュー</a> · <a href="https://www.totalum.app/blog/best-mcp-servers-2026" target="_blank">Totalum 2026 ランキング</a> · <a href="https://awesomeclaude.ai/ralph-wiggum" target="_blank">Ralph Wiggum テクニックガイド</a> · <a href="https://blog.logrocket.com/ralph-claude-code/" target="_blank">LogRocket: Ralph 実践検証</a> · <a href="https://jingles.dev/articles/claude-spec-plan-loop" target="_blank">Spec 駆動3段階フレームワーク</a> · <a href="https://www.developersdigest.tech/blog/loop-engineering-definitive-guide" target="_blank">Loop Engineering 完全ガイド</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="pitfalls">
+<div class="sec-tag">ノウハウ集積 12</div>
+<h2>アンチパターン＆落とし穴回避リスト</h2>
+<p>公式ドキュメントで警告されている典型的なアンチパターンと、コミュニティで頻出する失敗例のまとめです。環境構築やログイン関連のトラブルは<a href="env-auth-clinic.ja.html">トラブルシューティング</a>をご確認ください。</p>
+<table class="tbl">
+  <tr><th>アンチパターン</th><th>現れる症状</th><th>正しい解決策</th></tr>
+  <tr><td><strong>ごちゃ混ぜセッション</strong></td><td>タスク A の途中でタスク B を始め、再び A に戻る。コンテキストが無関係な情報で溢れる</td><td>無関係なタスクに移る際は例外なく <code>/clear</code> を実行する</td></tr>
+  <tr><td><strong>無限修正ループ</strong></td><td>エラー → 修正指示 → 別のエラー → 再修正……失敗した試行の履歴がモデルを同じ罠に誘い込む</td><td>2回指示して直らなければ即座に /clear。教訓を反映した新たなプロンプトで再スタートする</td></tr>
+  <tr><td><strong>CLAUDE.md の過積載</strong></td><td>大量のルールを書き連ねた結果、Claude が最も重要なルールを無視する</td><td>徹底的に削る。強制したいルールは Hook へ、特定場面の知識は Skill へ分離する</td></tr>
+  <tr><td><strong>盲信による検証スキップ</strong></td><td>一見完璧に見えるコードが出力されたが、エッジケースでバグだらけになる</td><td>検証手段のない成果物は「未完了」と見なす。自己申告ではなく実行結果の証拠を求める</td></tr>
+  <tr><td><strong>無制限な探索指示</strong></td><td>「X について調査して」とだけ指示した結果、数百ファイルを読み込んでコンテキストを圧迫</td><td>調査範囲を明確に限定するか、サブエージェントに任せて要約のみを受け取る</td></tr>
+  <tr><td><strong>Hook の仕事を祈りに頼る</strong></td><td>「毎回 lint を実行すること」と CLAUDE.md に書いたが、時々実行を忘れる</td><td>確実に実行すべき処理は Hook に任せる。プロンプトはあくまで提案に過ぎない</td></tr>
+  <tr><td><strong>並行セッションのファイル衝突</strong></td><td>2つのセッションが同じファイルを同時に編集し、変更を上書きし合ってしまう</td><td>並行作業を行う際はセッションごとに独立した git worktree（<code>claude -w</code>）を使用する</td></tr>
+  <tr><td><strong>チェックポイントを git と誤認</strong></td><td>/rewind で元に戻せると思い込んでいたら、Bash コマンドで編集されたファイルが復元できない</td><td>チェックポイントは Claude の編集ツールのみを追跡する。要所では通常通り git commit を行う</td></tr>
+  <tr><td><strong>レビューエージェントの過剰指摘</strong></td><td>レビュアーの指摘にすべて従った結果、コードが過剰に防衛的で複雑怪奇になる</td><td>「正確性と要求仕様に関わる重大な欠陥のみ報告せよ」とレビュアーに制約を課す</td></tr>
+  <tr><td><strong>ガードレールなしの -p 実行</strong></td><td>無人実行スクリプトが無限ループに陥り、予算を大幅に超過する</td><td><code>--max-turns</code> ＋ <code>--max-budget-usd</code> ＋ <code>--allowedTools</code> の3重防御を必ず設定する</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="templates">
+<div class="sec-tag">ノウハウ集積 13</div>
+<h2>即戦力テンプレート集</h2>
+
+<h3 data-reveal>① CLAUDE.md スリムテンプレート</h3>
+<pre><code># ビルドとテスト
+- ビルド: pnpm build   テスト: pnpm test -- --run（単体テストを優先、全量実行は避ける）
+- コード修正後は必ず pnpm typecheck を実行すること
+
+# コードスタイル
+- ES modules（import/export）を使用、CommonJS は禁止
+- 名前付きインポートを優先: import { foo } from 'bar'
+
+# リポジトリ規約
+- ブランチ名: feat/xxx、fix/xxx；コミットメッセージは命令形で記述
+- マイグレーションファイル（migrations/）は追記のみ、既存ファイルの変更は禁止
+
+# 環境の注意点
+- ローカル統合テストの実行前には必ず docker compose up -d db を起動すること
+
+# 圧縮ポリシー
+- 会話圧縮時は、変更されたファイル一覧とテスト実行コマンドを常に保持すること</code></pre>
+
+<h3 data-reveal>② Skill テンプレート（動的コンテキスト注入 ＋ 手動トリガー）</h3>
+<pre><code><span class="c"># .claude/skills/release-notes/SKILL.md</span>
+---
+name: release-notes
+description: リリースノート（Changelog）を生成。ユーザーから changelog や release notes の作成を求められた際に使用。
+---
+
+## 直近のタグ以降のコミット一覧
+!`git log $(git describe --tags --abbrev=0)..HEAD --oneline`
+
+## 指示
+上記のコミット履歴をもとにリリースノートを作成してください：
+新機能 / バグ修正 / 破壊的変更 に分類し、
+内部の実装詳細ではなくエンドユーザー目線の言葉で記述してください。
+
+<span class="c"># 危険な処理をモデルの自動判断から除外する場合は frontmatter に以下を追加：</span>
+<span class="c"># disable-model-invocation: true</span></code></pre>
+
+<h3 data-reveal>③ Hook テンプレート（機密ファイルへの書き込みを阻止）</h3>
+<pre><code><span class="c">#!/bin/bash  # .claude/scripts/block-sensitive.sh</span>
+set -euo pipefail
+INPUT="$(cat)"
+FILE="$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')"
+if echo "$FILE" | grep -qE '\.(env|pem|key)$'; then
+  echo "機密ファイルへの書き込みは禁止されています: $FILE" >&2
+  exit 2   <span class="c"># 終了コード 2 ＝ ツールの実行を拒絶</span>
+fi
+exit 0
+
+<span class="c">// settings.json への登録例：</span>
+{ "hooks": { "PreToolUse": [
+  { "matcher": "Write|Edit",
+    "hooks": [{ "type": "command", "command": ".claude/scripts/block-sensitive.sh" }] }
+] } }</code></pre>
+
+<h3 data-reveal>④ サブエージェントテンプレート（仕様準拠チェッカー）</h3>
+<pre><code><span class="c"># .claude/agents/spec-checker.md</span>
+---
+name: spec-checker
+description: SPEC.md に対する実装の網羅性をチェック。実装完了後に使用。
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+SPEC.md と現在の git diff を対照してレビューしてください：
+各要件が正しく実装されているか、
+記載されたエッジケースに対するテストが存在するか、
+タスク範囲外の不要な変更が含まれていないか。
+正確性に影響を与える欠陥のみを報告し、スタイルの好みに関する指摘は除外してください。</code></pre>
+
+<h3 data-reveal>⑤ 完全自動化スクリプトの骨格</h3>
+<pre><code><span class="c"># バッチ処理を安全に実行するためのスクリプト例</span>
+claude -p "タスク内容を記述。完了時は OK、失敗時は FAIL と出力して" \
+  --allowedTools "Read,Edit,Bash(npm run test:*)" \
+  --max-turns 30 \
+  --max-budget-usd 2 \
+  --output-format json \
+  --no-session-persistence</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="hidden-config">
+<div class="sec-tag">ノウハウ集積 14</div>
+<h2>隠し機能＆イースターエッグ設定</h2>
+<p>本章の内容は通常のドキュメント調査とは異なり、ローカルにインストールされた <code>claude.exe</code> バイナリに対して <code>--help</code> の全探索および文字列抽出（strings 解析）を行い、公式ドキュメントと突き合わせて検証したものです。確実性に応じて3種類のバッジを付与しています：</p>
+<p><span class="pill c">公式確認済み</span> ドキュメントに記載はあるがあまり知られていない機能 &nbsp; <span class="pill a">バイナリ検証済み</span> バイナリ内に実在しコードロジックから挙動が推測できるがドキュメント未記載 &nbsp; <span class="pill b">存在確認・挙動未検証</span> 変数は存在するが安定動作の保証がないもの</p>
+<div class="callout warn"><b class="t">バージョンに関する注意事項</b>本節の検証は <strong>Claude Code v2.1.222（2026-08-04）</strong> 環境で実施されました。内部実装はバージョン更新に伴い改名・廃止される可能性があります。最終的な挙動はお手元の環境の <code>claude --help</code> および <code>/release-notes</code> をご確認ください。</div>
+
+<h3 data-reveal>一、公式記載だが知られていない有用な引数 <span class="pill c">公式確認済み</span></h3>
+<table class="tbl">
+  <tr><th>引数</th><th>機能・効果</th></tr>
+  <tr><td><code>--effort ultracode</code></td><td>xhigh を超える第6段階の推論強度。<code>--help</code> には掲載されていませんが公式ドキュメントに記載あり（v2.1.203+ 対応）</td></tr>
+  <tr><td><code>claude auto-mode critique</code></td><td>自身が作成した auto-mode のカスタムルールに脆弱性や抜け穴がないかを AI に逆監査させる</td></tr>
+  <tr><td><code>claude agents --json</code></td><td>全セッション一覧（対話＋バックグラウンド）を JSON で出力。<code>--cwd</code> フィルタと組み合わせて自作監視ダッシュボードに利用可能</td></tr>
+  <tr><td><code>claude plugin eval</code></td><td>プラグインに対して評価用テストスイートを実行してスコアリング。「プラグインなし」のベースラインとの比較も自動実施</td></tr>
+  <tr><td><code>--exclude-dynamic-system-prompt-sections</code></td><td>カレントディレクトリや git 状態などマシン依存の情報を初回のユーザーメッセージへ移動し、ユーザー間でのプロンプトキャッシュ（Prompt Cache）ヒット率を向上</td></tr>
+  <tr><td><code>--fallback-model a,b,c</code></td><td><code>-p</code> モードでメインモデルが利用不能になった際、指定順序でフォールバック。各ターンごとにメインモデルの復帰を再試行</td></tr>
+</table>
+
+<h3 data-reveal>二、<code>/model</code> エイリアス一覧と opusplan の秘密</h3>
+<p>ソースコード内のモデルエイリアス配列：<code>sonnet / opus / haiku / fable / best / opusplan / sonnet[1m] / opus[1m] / fable[1m]</code>。<code>best</code> はプラン内で最も強力なモデルを自動選択し、<code>[1m]</code> サフィックスは 1M ロングコンテキスト版を指定します。</p>
+<div class="callout note"><b class="t">🥚 opusplan は最も実戦的な隠し機能 <span class="pill a">バイナリ検証済み</span></b>これを選択すると、Plan 段階では**自動的に Opus に昇格して深い思考で設計を行い**、計画モードを抜けて実装に入ると通常のモデル（Sonnet など）に戻ってコーディングします——設計には最高峰モデルを、実装にはコスパの良いモデルを自動で使い分ける仕組みです。公式 CLI ドキュメントには記載がありませんが、セッション内で <code>/model opusplan</code> と入力するだけで有効化できます。</div>
+
+<h3 data-reveal>三、隠しサブコマンド <span class="pill c">公式確認済み</span></h3>
+<table class="tbl">
+  <tr><th>コマンド</th><th>機能・効果</th></tr>
+  <tr><td><code>claude auto-mode defaults</code></td><td>auto モードの分類器が内蔵している全ルール（許可 / ソフト拒否 / ハード拒否）を出力。「AI が何を基準に自動承認しているか」を確認可能</td></tr>
+  <tr><td><code>claude mcp login &lt;名前&gt;</code></td><td>HTTP / SSE / claude.ai コネクタ形式の MCP サーバーに対して個別に OAuth 認証を実行（トークンの手動コピペ不要）</td></tr>
+  <tr><td><code>claude gateway</code></td><td>企業向けの認証・テレメトリ中継ゲートウェイ。社内プロキシ運用のためのコマンド</td></tr>
+  <tr><td><code>claude ultrareview [PR番号]</code></td><td>クラウド上のマルチエージェントで現在ブランチや指定 PR を徹底監査。<code>--json</code> で生の bugs.json を取得可能</td></tr>
+</table>
+
+<h3 data-reveal>四、環境変数の検証結果</h3>
+<p><span class="pill c">公式確認済み</span> —— <a href="https://code.claude.com/docs/en/settings" target="_blank">公式 Settings ドキュメント</a> に記載されている安全な設定：</p>
+<table class="tbl">
+  <tr><th>変数名</th><th>機能・効果</th></tr>
+  <tr><td><code>CLAUDE_CODE_DISABLE_AGENT_VIEW</code></td><td>バックグラウンドエージェント管理パネルを非表示にする</td></tr>
+  <tr><td><code>CLAUDE_CODE_DISABLE_REMOTE_CONTROL</code></td><td>Remote Control（遠隔操作）機能を無効化する</td></tr>
+  <tr><td><code>CLAUDE_CODE_ENABLE_AWAY_SUMMARY</code></td><td>ターミナルに戻ってきた際、「離席中に何が起きたか」の要約を表示する</td></tr>
+  <tr><td><code>CLAUDE_CODE_USE_POWERSHELL_TOOL</code></td><td>Windows 以外の OS でも PowerShell ツールを利用可能にする</td></tr>
+  <tr><td><code>DISABLE_AUTO_COMPACT</code> / <code>DISABLE_AUTOUPDATER</code></td><td>コンテキストの自動圧縮を無効化 / 自動更新を無効化（バージョン固定用）</td></tr>
+  <tr><td><code>MAX_THINKING_TOKENS=0</code></td><td>拡張思考（Extended Thinking）を完全にオフにする</td></tr>
+  <tr><td><code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> / <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code></td><td>1セッションあたりのサブエージェント生成数 / WebSearch 実行数の上限設定（長時間の自動化タスクで活用）</td></tr>
+</table>
+<p><span class="pill a">バイナリ検証済み</span> —— バイナリ内に実在し、命名とロジックから安全に試用できるもの：</p>
+<table class="tbl">
+  <tr><th>変数名</th><th>推測される機能</th></tr>
+  <tr><td><code>CLAUDE_CODE_SUBAGENT_MODEL</code> / <code>CLAUDE_CODE_BG_CLASSIFIER_MODEL</code> / <code>CLAUDE_CODE_AUTO_MODE_MODEL</code></td><td>サブエージェント / バックグラウンド分類器 / auto-mode に個別の安価なモデルを割り当て、コストを最適化</td></tr>
+  <tr><td><code>CLAUDE_CODE_PLAN_V2_AGENT_COUNT</code></td><td>Plan モードで並行探索を行うエージェント数を制御（マルチエージェント並行の調整ノブ）</td></tr>
+  <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code> / <code>CLAUDE_CODE_MAX_TURNS</code></td><td>ツールの並行実行数 / 最大ターン数のハードリミット（CI 暴走防止）</td></tr>
+  <tr><td><code>CLAUDE_CODE_HTTP_PROXY</code> / <code>CLAUDE_CODE_HTTPS_PROXY</code> / <code>CLAUDE_CODE_PROXY_URL</code></td><td>社内プロキシ環境専用設定。<a href="env-auth-clinic.ja.html">トラブルシューティング</a> のプロキシ関連エラー対処に利用</td></tr>
+  <tr><td><code>CLAUDE_CODE_OVERRIDE_DATE</code></td><td>アシスタントに現在日付を誤認させる。日付依存処理のテスト用（通常は使用しない）</td></tr>
+</table>
+
+<h3 data-reveal>五、暗号名フラグについて <span class="pill b">存在確認・挙動未検証</span></h3>
+<p>バイナリ内には <code>CLAUDE_CODE_BASALT_COVE</code>、<code>MARL_CORMORANT</code>、<code>GAULT_KESTREL</code>、<code>NANKEEN_KESTREL</code>、<code>LANTERN_PRISM</code>、<code>PEWTER_OWL</code>、<code>THISTLE_GREBE</code>、<code>WALNUT_SPIRE</code> といった無作為な単語による環境変数が確認されています。これらは開発元がリモートの段階的リリース（フィーチャーフラグ）を制御するための内部フラグであり、意図的に内容が分からない命名になっています。</p>
+<div class="callout warn"><b class="t">存在の確認 ＝ 利用の推奨ではありません</b>これらの変数の具体的な挙動には公式の保証がなく、次期バージョンで予告なく変更・削除されます。また、<code>CLAUDE_CODE_COORDINATOR_MODE</code> もバックグラウンドエージェントの連携機構として実在しますが、**プログラムが自動管理する内部状態**であり、ユーザーが手動で設定するものではありません。</div>
+<p class="src">本節の調査手法：インストール済みの <code>@anthropic-ai/claude-code</code> パッケージ（bin/claude.exe）に対して <code>strings</code> コマンドで文字列を抽出し、<a href="https://code.claude.com/docs/en/cli-reference" target="_blank">公式 CLI Reference</a> および <a href="https://code.claude.com/docs/en/settings" target="_blank">公式 Settings</a> と照合して分類。未検証のネット上の噂は排除しています。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">ノウハウ集積 15</div>
+<h2>リソースインデックス</h2>
+
+<h3 data-reveal>公式リソース（一次情報源）</h3>
+<table class="tbl">
+  <tr><th>リソース名</th><th>概要</th></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Best practices</a></td><td>本ガイドのメンタルモデルの基礎となった必読ドキュメント</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/commands" target="_blank">Commands</a> / <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">CLI reference</a> / <a href="https://code.claude.com/docs/en/interactive-mode" target="_blank">Interactive mode</a></td><td>コマンド、引数、キーバインドの完全かつ権威あるリファレンス</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/skills" target="_blank">Skills</a> / <a href="https://code.claude.com/docs/en/hooks" target="_blank">Hooks</a> / <a href="https://code.claude.com/docs/en/sub-agents" target="_blank">Subagents</a> / <a href="https://code.claude.com/docs/en/mcp" target="_blank">MCP</a> / <a href="https://code.claude.com/docs/en/plugins" target="_blank">Plugins</a></td><td>6大拡張機能それぞれの公式ドキュメント</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/common-workflows" target="_blank">Common workflows</a> / <a href="https://code.claude.com/docs/en/agent-teams" target="_blank">Agent teams</a> / <a href="https://code.claude.com/docs/en/headless" target="_blank">Headless</a></td><td>シナリオ別レシピ、マルチエージェント協調、非対話モード</td></tr>
+  <tr><td><code>/powerup</code> · <code>/release-notes</code> · <a href="https://code.claude.com/docs/llms.txt" target="_blank">llms.txt</a></td><td>アプリ内インタラクティブチュートリアル、更新履歴、AI 向けドキュメント全文インデックス</td></tr>
+</table>
+
+<h3 data-reveal>コミュニティの知見（本ガイドの参考資料）</h3>
+<table class="tbl">
+  <tr><th>テーマ</th><th>情報源</th></tr>
+  <tr><td>高度なプラクティスと階層選定</td><td><a href="https://smartscope.blog/en/generative-ai/claude/claude-code-best-practices-advanced-2026/" target="_blank">SmartScope: Advanced Best Practices 2026</a></td></tr>
+  <tr><td>25大機能の実践レビュー</td><td><a href="https://www.marktechpost.com/2026/06/14/claude-code-guide-2026-25-features-with-examples-demo/" target="_blank">MarkTechPost: Claude Code Guide 2026</a></td></tr>
+  <tr><td>Hooks / MCP / Skills 完全攻略</td><td><a href="https://blakecrosley.com/guides/claude-code" target="_blank">Blake Crosley: The Complete Guide</a></td></tr>
+  <tr><td>Skills エコシステムと選定基準</td><td><a href="https://www.totalum.app/blog/claude-code-skills-totalum" target="_blank">Totalum: Skills vs Hooks vs Subagents vs MCP</a> · <a href="https://www.firecrawl.dev/blog/best-claude-code-skills" target="_blank">Firecrawl: Best Skills</a> · <a href="https://www.developersdigest.tech/blog/best-claude-code-skills-2026" target="_blank">Developers Digest 厳選カタログ</a></td></tr>
+  <tr><td>エンジニアリングワークフロー</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Best Practices That Ship Code</a> · <a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">GitHub: claude-code-best-practice</a></td></tr>
+  <tr><td>本ナレッジベースの関連トピック</td><td><a href="codex-guide.ja.html">Codex 実践活用ガイド</a>（デュアルエージェント協調）· <a href="pencil-claude-code-best-practices.ja.html">Pencil × Claude Code ベストプラクティス</a>（デザインとコードの連携）· <a href="env-auth-clinic.ja.html">環境構築＆ログイン トラブルシューティング</a>（環境問題の即時解決）· <a href="ai-leverage-guide.ja.html">AIレバレッジ＆マインドセット全景</a>（開発方法論の本質）· <a href="prompt-context-engineering.ja.html">プロンプト＆コンテキストエンジニアリング</a>（指示と文脈の体系的レッスン）· <a href="ai-capability-expansion.ja.html">AI能力拡張ガイド</a>（CC を活用したフルスタック・個人開発実践）</td></tr>
+</table>
+
+<div class="callout note"><b class="t">本ガイドの総括</b>Claude Code を使いこなせるかどうかは、暗記しているコマンドの数ではなく、次の3点にかかっています：<strong>コンテキストが常にクリーンであるか、検証ループが自律完結しているか、システムのガードレールを正しく機能させているか</strong>（Hook で強制、Skill で知識付与、サブエージェントでコンテキスト隔離）。コマンドの詳細は時間とともに変わりますが、この3原則は普遍です。</div>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>免責事項</strong>：本ガイドは Claude Code 公式ドキュメント（code.claude.com/docs、2026-07 バージョン）およびコミュニティの公開情報をベースに独自に要約・整理したものであり、Anthropic 公式の出版物ではありません。コマンドやパラメータはバージョンアップに伴い変更される可能性があるため、常に <code>/help</code>、<code>/release-notes</code> および公式ドキュメントを正としてご確認ください。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

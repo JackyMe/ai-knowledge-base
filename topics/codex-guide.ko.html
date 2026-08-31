@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OpenAI 코딩 에이전트 실전 활용 가이드: 20+ 서브명령어 및 40+ 슬래시 명령어 빠른 참조, 3×3 샌드박스 & 승인 매트릭스, 4가지 목표 지향 학습 경로, 선정 프리즘, 장시간 작업 4단계 규율, 메모리 완료 루프, 브라우저 E2E 검증, Issue-to-PR 자동화, Skills/MCP, Claude Code 협업 전략.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codex 실전 가이드 · CLI × IDE × Cloud 완전 활용 매뉴얼">
+<meta property="og:description" content="OpenAI 코딩 에이전트 전경: 선정 프리즘, 3×3 샌드박스 승인 매트릭스, 장시간 작업 4단계 규율, 메모리 정착 루프, 브라우저 E2E 검증, GitHub 자동화 및 듀얼 에이전트 협업.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/codex-guide.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Codex 실전 가이드 · CLI × IDE × Cloud 완전 활용 매뉴얼</title>
+<style>
+:root{
+  --accent:#0d9373; --accent-2:#34d399; --accent-soft:#e7f7f1;
+  --ink:#0c1512; --bg:#ffffff; --bg-side:#f9fbfa; --bg-code:#0e1614;
+  --text:#202723; --text-2:#57635c; --text-3:#8b978f;
+  --border:#e6ece8; --border-2:#d5ded8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#ebf7f2;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.side-filter{position:relative;margin-bottom:14px;padding:0 4px}
+.side-filter input{width:100%;padding:6px 28px 6px 10px;border:1px solid var(--border-2);border-radius:8px;
+  font-size:12.5px;background:#fff;color:var(--text);outline:none;font-family:inherit}
+.side-filter input:focus{border-color:var(--accent)}
+.side-filter .fk{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;
+  color:var(--text-3);background:var(--border);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eef4f0;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e9f5ef;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(16,163,127,.40),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(52,211,153,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#6ee7b7;font-weight:600;background:rgba(16,163,127,.16);
+  border:1px solid rgba(16,163,127,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#34d399,#a7f3d0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#b6c9c0;max-width:760px;line-height:1.75}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#93a89e}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3);line-height:1.5;display:block;margin-top:4px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c4e8da}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eef4f0;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0b7a5f}
+pre{background:var(--bg-code);color:#dde9e2;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7f948a}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f8fbf9}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f9fcfa}
+
+/* 고빈도 핵심 명령어 카드 */
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:var(--dur-hover,.3s) var(--ease-breathe,ease)}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(12,21,18,.06)}
+.hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
+.hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
+.hotcmd.must{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.hotcmd.must .hc-cmd{color:var(--accent)}
+.hotcmd.must::after{content:"★ 필수";position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--accent);padding:2px 9px;border-radius:99px;letter-spacing:.02em}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 16px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#f8fbf9;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#e7f7f1;color:#0b7a5f}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+.pill.d{background:#f3e8ff;color:#7e22ce}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(12,21,18,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">CX</span>Codex 활용 가이드<span class="sub">핵심 실전판</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증일: 2026-08-25</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 필터링…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">이해와 선정</div>
+    <a href="#overview"><span class="no">00</span>전체 개요 & 선정 프리즘</a>
+    <a href="#learning-paths"><span class="no">01</span>4가지 학습 경로</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">설치와 환경</div>
+    <a href="#setup"><span class="no">02</span>설치 및 플랫폼 튜닝</a>
+    <a href="#whats-new"><span class="no">동향</span>최근 주요 업데이트</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">빠른 참조와 보안</div>
+    <a href="#commands"><span class="no">03</span>명령어 빠른 참조</a>
+    <a href="#sandbox"><span class="no">04</span>샌드박스 & 승인 3×3</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">핵심 규율과 장시간 작업</div>
+    <a href="#methodology"><span class="no">05</span>핵심 방법론 & 안티패턴</a>
+    <a href="#long-tasks"><span class="no">06</span>장시간 작업 4단계 규율</a>
+    <a href="#memory-system"><span class="no">07</span>마무리 & 메모리 루프</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">확장과 엔지니어링</div>
+    <a href="#skills-mcp"><span class="no">08</span>Skill / MCP / 브라우저</a>
+    <a href="#config-auth"><span class="no">09</span>설정 및 계정 체계</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">실전과 심화</div>
+    <a href="#playbook"><span class="no">10</span>실전 GitHub 파이프라인</a>
+    <a href="#hidden-config"><span class="no">11</span>내부 분석과 듀얼 에이전트</a>
+    <a href="#resources"><span class="no">12</span>리소스 색인</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🟢 OpenAI 코딩 에이전트 · 공식 문서 정합 · 2026-08-25 검증</div>
+  <h1>Codex<br><span class="grad">실전 가이드 · 완전판</span></h1>
+  <p class="lead">OpenAI의 에이전틱(Agentic) 지능형 코딩 도구 체계: 터미널 첫 실행부터 기업용 코드베이스의 완성도 높은 배포까지. 공식 권위 문서와 실전자들의 경험을 융합하여 <strong>선정 의사결정, 3×3 샌드박스 승인, 장시간 작업 4단계 규율, 메모리 완료 루프, 브라우저 E2E 검증, GitHub 자동화 파이프라인</strong> 및 <strong>Claude Code 듀얼 에이전트 협업</strong>을 다룹니다.</p>
+  <div class="meta">
+    <span>4가지 학습 경로</span><span>선정 프리즘</span><span>20+ 서브명령어 / 40+ 슬래시 명령어</span><span>장시간 작업 4단계 규율</span><span>E2E 브라우저 검증</span><span>듀얼 에이전트 협업</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5가지 형태</b><span>CLI / 비대화형 exec / IDE / Cloud / Desktop + GitHub 리뷰</span></div>
+  <div class="stat"><b>3×3 샌드박스</b><span>read-only → workspace-write → danger 3단계 승인 정책 결합</span></div>
+  <div class="stat"><b>4단계 규율</b><span>기획 Plan → 실행 Exec → 검토 Review → 마무리 Closeout</span></div>
+  <div class="stat"><b>개방형 표준</b><span>AGENTS.md + Agent Skills 표준으로 Claude Code와 100% 호환</span></div>
+</div>
+
+<!-- ================= SECTION 00 ================= -->
+<section id="overview">
+<div class="sec-tag">이해 00</div>
+<h2>Codex 전체 개요 및 선정 프리즘</h2>
+
+<p>Codex는 OpenAI가 선보인 에이전틱 코딩 도구 생태계입니다: 단순히 "코드를 잘 짜는 챗봇"이 아니라 <strong>프로젝트 전반의 이해, 도구 호출, OS 수준 샌드박스 격리, 코드 패치 검증 및 크로스 플랫폼 실행 역량</strong>을 두루 갖춘 자율 개발 보조 시스템입니다.</p>
+
+<h3 data-reveal>1. 5가지 활용 형태, 단일 계정 공유</h3>
+<table class="tbl">
+  <tr><th>형태</th><th>진입 명령어</th><th>가장 적합한 시나리오</th><th>핵심 메커니즘</th></tr>
+  <tr><td><strong>대화형 CLI (TUI)</strong></td><td>터미널에서 <code>codex</code></td><td>일상 주력 개발, 아키텍처 탐색, 빠른 리팩토링</td><td>몰입형 터미널 UI, 전체 단축키 지원, 실시간 diff 검토</td></tr>
+  <tr><td><strong>비대화형 모드 (exec)</strong></td><td><code>codex exec</code> / <code>codex e</code></td><td>CI/CD 자동화 파이프라인, 셸 스크립트, 대량 파일 일괄 처리</td><td>stdout 또는 JSONL 스트리밍 출력, <code>--json</code> 파싱 지원</td></tr>
+  <tr><td><strong>IDE 확장 프로그램</strong></td><td>VS Code / Cursor / JetBrains</td><td>현재 편집 중인 파일 컨텍스트 내 미세 조정, 인라인 코드 수정</td><td>열린 파일 및 선택 영역 컨텍스트 재사용, CLI 로그인 상태 공유</td></tr>
+  <tr><td><strong>Codex Cloud</strong></td><td><code>codex cloud</code> / 웹 콘솔</td><td>장시간 백그라운드 위임, 비동기 격리 빌드, best-of-N 다중 시도</td><td>독립 클라우드 샌드박스 실행, 1~4회 병렬 시도, 로컬 <code>codex apply</code> 반영</td></tr>
+  <tr><td><strong>데스크톱 App / GitHub</strong></td><td><code>codex app</code>; PR 댓글 <code>@codex review</code></td><td>독립 워크벤치, 시각적 태스크 관리, 코드 리뷰 파이프라인</td><td>내장 브라우저 및 커넥터 통합, GitHub PR 인라인 자동 리뷰</td></tr>
+</table>
+
+<h3 data-reveal>2. 선정 프리즘 ①: ChatGPT Chat vs ChatGPT Work vs Codex</h3>
+<p>"이미 ChatGPT를 쓰고 있는데, 언제 Codex로 전환해야 하는가?" — <strong>산출물 형태와 실행 권한</strong>을 기준으로 구분합니다:</p>
+<table class="tbl">
+  <tr><th>차원</th><th>ChatGPT 대화 (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
+  <tr><td><strong>핵심 산출물</strong></td><td>텍스트 답변, 코드 스니펫, 개념 설명</td><td>문서, 스프레드시트 등 공유 문서/지식베이스</td><td><strong>실제 파일 트리 수정, Git Diff, 즉시 실행 가능한 코드</strong></td></tr>
+  <tr><td><strong>실행 및 검증</strong></td><td>클라우드 샌드박스에서 단순 Python 실행에 국한</td><td>오피스 소프트웨어 데이터 연동</td><td><strong>로컬/컨테이너 풀 터미널, 테스트 실행, 빌드 컴파일, E2E 검증</strong></td></tr>
+  <tr><td><strong>컨텍스트 관리</strong></td><td>단일 대화 히스토리 의존, 길어지면 망각 발생</td><td>프로젝트 작업 공간 파일 색인</td><td><strong>코드 리포지토리 전체 색인, AGENTS.md, 세션 분기 및 영구 메모리</strong></td></tr>
+  <tr><td><strong>적용 단계</strong></td><td>요구사항 브레인스토밍, 의사코드 설계, 오류 원인 초벌 분석</td><td>PRD 기획서 작성, 요구사항 정의서 정리</td><td><strong>기능 구현, 버그 근본 해결, 테스트 작성부터 PR 제출까지 전 과정</strong></td></tr>
+</table>
+
+<h3 data-reveal>3. 선정 프리즘 ②: App vs CLI vs IDE vs Cloud 조합 전략</h3>
+<div class="duo">
+  <div class="good">
+    <b>✅ 권장 황금 조합 (고효율 모범 사례)</b>
+    <ul>
+      <li><strong>요구사항 및 설계 기획</strong>: 데스크톱 App 또는 CLI에서 <code>/plan</code>을 실행하여 아키텍처와 영향 범위 파악;</li>
+      <li><strong>핵심 코드 구현</strong>: IDE 확장 또는 CLI 대화형 모드에서 실시간 diff를 확인하며 개발;</li>
+      <li><strong>장시간 소요 대형 리팩토링/마이그레이션</strong>: <code>codex cloud exec --attempts 3</code>에 위임하고 로컬에서는 다른 작업 진행;</li>
+      <li><strong>PR 제출 전 방어선</strong>: <code>@codex review</code>를 트리거하여 자동화 이중 검토 수행.</li>
+    </ul>
+  </div>
+  <div class="bad">
+    <b>❌ 전형적인 안티패턴 (비효율 및 사고 유발)</b>
+    <ul>
+      <li>일반 웹 챗에서 긴 코드를 생성시킨 뒤 사람이 일일이 복사/붙여넣기 반복;</li>
+      <li>로컬 CLI에서 30분 걸리는 마이그레이션을 켜두고 터미널을 블로킹한 채 대기;</li>
+      <li>Git 작업 트리가 지저분한 상태에서 IDE에 대규모 자동 치환을 무단 허용;</li>
+      <li>실제 브라우저 렌더링 검증이 필요한 프런트엔드 작업을 무두 환경에서 추측으로 처리.</li>
+    </ul>
+  </div>
+</div>
+<p class="src">출처: <a href="https://developers.openai.com/codex" target="_blank">OpenAI Codex 공식 문서</a> · <a href="https://codexguide.io/paths" target="_blank">CodexGuide 학습 경로</a></p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 01 ================= -->
+<section id="learning-paths">
+<div class="sec-tag">이해 01</div>
+<h2>4가지 목표 지향 학습 경로</h2>
+<p>모든 문서를 처음부터 끝까지 외울 필요가 없습니다. 자신의 배경과 목표에 맞는 트랙을 선택하세요:</p>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🌱</span><b>트랙 01: 제로 기초 입문 (안정감과 기본 루프 형성)</b><span class="pt">TRACK 01</span></div>
+    <div class="pb">
+      <p><strong>대상:</strong> Codex를 처음 접하거나 안전한 롤백이 보장된 태스크를 아직 완료해보지 못한 사용자.</p>
+      <ol class="steps">
+        <li><strong>환경 준비</strong>: 설치 완료 후 <code>codex login</code>으로 ChatGPT 계정 인증;</li>
+        <li><strong>안전 기준선 확립</strong>: 독립된 Git 테스트 브랜치에 위치하고 <code>git status</code>로 깨끗한 상태 확인;</li>
+        <li><strong>읽기 전용 탐색</strong>: <code>codex --sandbox read-only</code>를 실행하여 파일 수정 없이 프로젝트 구조와 README 분석 요청;</li>
+        <li><strong>첫 번째 롤백 가능 태스크 완수</strong>: 15분 내 검증 가능한 작은 작업(타입 에러 1줄 수정, 주석 보강 등)을 수행하고 <code>/diff</code>로 검토 후 로컬 테스트 통과 확인 뒤 커밋.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">⚡</span><b>트랙 02: 프로 개발자 실전 (고품질 인도와 TDD 완결)</b><span class="pt">TRACK 02</span></div>
+    <div class="pb">
+      <p><strong>대상:</strong> Git과 최소 1개 이상의 백엔드/프런트엔드 언어에 능숙하며 극대화된 개발 생산성을 추구하는 엔지니어.</p>
+      <ol class="steps">
+        <li><strong>프로젝트 메모리 초기화</strong>: 저장소 루트에서 <code>/init</code>을 실행하여 빌드 및 테스트 명령이 담긴 간결한 <code>AGENTS.md</code> 생성;</li>
+        <li><strong>TDD 실패 테스트 우선</strong>: 버그 발견 시 Codex에게 문제를 재현하는 자동화 테스트 작성을 먼저 요구한 뒤 Green이 될 때까지 수정;</li>
+        <li><strong>장시간 작업 4단계 규율</strong>: 토의(Plan) → 실행(Exec) → 검토(Review) → 정리(Closeout) 4단계로 복잡 모듈 추진;</li>
+        <li><strong>Issue-to-PR 자동화</strong>: 클라우드 파이프라인 연동 및 <code>@codex review</code> 자동 코드 리뷰 구축.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🛠️</span><b>트랙 03: 역량 확장과 자동화 (나만의 AI 툴체인 구축)</b><span class="pt">TRACK 03</span></div>
+    <div class="pb">
+      <p><strong>대상:</strong> 팀의 반복 업무를 자동화 능력으로 자산화하려는 리드 개발자 및 DevOps 엔지니어.</p>
+      <ol class="steps">
+        <li><strong>Skill 개발 표준화</strong>: <code>SKILL.md</code>, <code>scripts/</code>, <code>references/</code> 구조를 따르는 커스텀 스킬 패키지 작성;</li>
+        <li><strong>MCP 양방향 연동</strong>: DB, Sentry, Figma MCP 서버를 연결하고 <code>codex mcp-server</code>로 외부에 노출;</li>
+        <li><strong>E2E 브라우저 검증</strong>: 내장 브라우저 및 CDP 프로토콜을 활용하여 배포 전 시각적 UI 및 워크플로우 스크린샷 검증;</li>
+        <li><strong>CI/CD 연동 스크립팅</strong>: <code>codex exec --json</code>을 활용하여 정기 작업 및 자동화 테스트 파이프라인 연계.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">📑</span><b>트랙 04: 비개발자 / 기획자 / 운영자 워크플로우</b><span class="pt">TRACK 04</span></div>
+    <div class="pb">
+      <p><strong>대상:</strong> 문서 사이트, 지식베이스, 멀티미디어 에셋, 데이터 보고서를 관리하는 기획자 및 운영자.</p>
+      <ol class="steps">
+        <li><strong>안전 제어 운영</strong>: 데스크톱 App 또는 샌드박스 제한 모드에서 항상 백업본이나 Git 브랜치를 두고 작업;</li>
+        <li><strong>대량 멀티미디어 변환</strong>: 검증된 Skill을 사용하여 이미지 압축, 포맷 변환, 자막 싱크 일괄 처리;</li>
+        <li><strong>구조화된 지식 축적</strong>: 조사 내용 및 업무 사실을 구조화된 데이터베이스 포맷으로 추출;</li>
+        <li><strong>검증 및 발행</strong>: diff 리포트와 렌더링 결과를 꼼꼼히 대조하여 환각 확산 방지.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 02 ================= -->
+<section id="setup">
+<div class="sec-tag">설치 02</div>
+<h2>설치 및 플랫폼 튜닝</h2>
+
+<div class="callout warn"><b class="t">🚑 환경 및 로그인 문제 발생 시</b>포트 콜백 오류, 프록시 차단, 헤드리스 환경 인증, 다중 계정 충돌이 발생하면 전용 가이드를 확인하세요: <a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a>.</div>
+
+<h3 data-reveal>1. 전 플랫폼 설치 명령어</h3>
+<pre><code><span class="c"># 방법 1: npm 전역 설치 (크로스 플랫폼 공통, Node >= 18 권장)</span>
+npm install -g @openai/codex
+
+<span class="c"># 방법 2: Homebrew (macOS)</span>
+brew install codex
+
+<span class="c"># 실행 및 자동 업데이트</span>
+codex
+codex update</code></pre>
+
+<h3 data-reveal>2. Windows 및 WSL2 심층 최적화 가이드</h3>
+<table class="tbl">
+  <tr><th>핵심 이슈</th><th>치명적 함정 / 증상</th><th>공식 해결책 및 튜닝 팁</th></tr>
+  <tr><td><strong>크로스 파일시스템 I/O 병목</strong></td><td>Windows 드라이브 경로(예: <code>/mnt/c/Users/...</code>)에서 실행 시 파일 입출력이 극도로 느려지고 빌드가 멈춤</td><td><strong>반드시 WSL 네이티브 Linux 파일시스템(예: <code>~/projects/...</code>) 내에서 리포지토리를 클론하고 실행</strong>할 것! (5~10배 속도 향상)</td></tr>
+  <tr><td><strong>터미널 인코딩 & 줄바꿈</strong></td><td>CMD/PowerShell에서 한글 깨짐 및 Git CRLF 충돌</td><td><strong>Windows Terminal</strong> 사용 권장, <code>chcp 65001</code> (UTF-8) 설정, Git <code>core.autocrlf = input</code> 적용</td></tr>
+  <tr><td><strong>npm 글로벌 권한 충돌</strong></td><td>WSL 환경에서 <code>npm install -g</code> 실행 시 <code>EACCES</code> 권한 오류</td><td>사용자 레벨 npm prefix 구성: <code>mkdir ~/.npm-global && npm config set prefix '~/.npm-global'</code> 후 <code>PATH</code> 등록</td></tr>
+  <tr><td><strong>단축키 가로채기</strong></td><td><kbd>Ctrl+W</kbd> 탭 닫기 충돌 또는 복사/붙여넣기 꼬임</td><td>Windows Terminal 프로필 설정에서 <kbd>Ctrl+W</kbd> 단축키 바인딩 해제</td></tr>
+</table>
+
+<h3 data-reveal>3. 신규 프로젝트 착수 시 4단계 표준 절차</h3>
+<ol class="steps">
+  <li><code>/init</code> —— 저장소를 자동 분석하여 정제된 <code>AGENTS.md</code>(빌드, 테스트, 아키텍처 규칙) 생성;</li>
+  <li><code>/model</code> —— 주력 모델 및 추론 강도 지정(기본값 <strong>GPT-5.6 Sol</strong> 또는 Terra / Luna); <code>/status</code>로 세션 설정 확인;</li>
+  <li><strong>샌드박스 및 승인 모드 확인</strong> —— 기본 권장값 <code>workspace-write</code> + <code>on-request</code> 적용;</li>
+  <li><code>/mcp</code> 및 <code>/skills</code> —— 프로젝트에 필요한 외부 도구 및 도메인 스킬팩 로드 확인.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION WHATS-NEW ================= -->
+<section id="whats-new">
+<div class="sec-tag">동향</div>
+<h2>최근 주요 동향 및 브레이킹 체인지</h2>
+
+<div class="callout note"><b class="t">본 페이지 검증 기준일</b>최종 검증 <strong>2026-08-25</strong> · 출처: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 공식 changelog</a>. 전체 이력은 <a href="toolchain-changelog.ko.html">툴체인 변경 이력</a>을 참고하세요.</div>
+
+<h3 data-reveal>🆕 0.148.0 최신 기능 (2026-08-18)</h3>
+<ul>
+  <li><strong>Markdown 내보내기</strong>: <code>/export</code> 명령어가 추가되어 전체 TUI 대화 기록을 깔끔한 Markdown 파일로 내보낼 수 있습니다.</li>
+  <li><strong>헤드리스 세션 분기 (Session Forking)</strong>: <code>codex exec fork</code>를 통해 헤드리스 환경에서도 세션을 분기하고 아카이브(archive) 및 복원(restore)할 수 있습니다.</li>
+  <li><strong>비용 예측 표시</strong>: <code>/status</code>, 상태바 및 터미널 타이틀에 토큰 기반 실시간 스레드 비용 추정치가 표시됩니다.</li>
+  <li><strong>인프라 백엔드 확장</strong>: Amazon Bedrock Runtime을 내장 추론 백엔드로 지원하며, hooks가 비동기 명령 실행이나 MCP 도구 호출을 수행할 수 있게 되었습니다.</li>
+</ul>
+
+<h3 data-reveal>🚨 주요 브레이킹 체인지 및 모델 마이그레이션</h3>
+<ul>
+  <li><strong>GPT-5.4 계열 퇴역 카운트다운</strong>: OpenAI는 <strong>GPT-5.4</strong> 및 <strong>mini</strong>가 2026-08-31 전면 은퇴함을 확정했습니다. <code>config.toml</code>을 확인하여 <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>, <code>gpt-5.6-luna</code>로 전환하세요.</li>
+  <li><strong><code>codex exec --full-auto</code> 제거</strong>: 0.147.0에서 <code>--full-auto</code> 플래그가 삭제되었습니다. 스크립트에서는 <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code>로 변경하고, 완전 무인 자동 승인이 필요한 경우 <code>--approve-for-me</code>를 사용하세요.</li>
+  <li><strong>로컬 저장소 명시적 신뢰 메커니즘</strong>: 신뢰되지 않은 로컬 저장소를 열 때 보안 프롬프트가 표시되어 저장소 설정 파일을 통한 명령어 인젝션 공격을 차단합니다.</li>
+  <li><strong>명령어 출력 민감 정보 마스킹</strong>: TUI 출력 내 Bearer Token, API Key 등 민감 정보가 자동 감지되어 <code>***</code>로 가려집니다.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 03 ================= -->
+<section id="commands">
+<div class="sec-tag">빠른 참조 03</div>
+<h2>명령어 빠른 참조 매뉴얼</h2>
+
+<h3 data-reveal>⚡ 필수 핵심 명령어 (근육 기억)</h3>
+<div class="hotcmds">
+  <div class="hotcmd must"><span class="hc-cmd">codex ["작업 설명"]</span><span class="hc-desc">대화형 TUI 실행, 초기 프롬프트 및 -i 이미지 지정 가능</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">codex exec (e)</span><span class="hc-desc">비대화형 실행, 자동화 및 CI/CD 스크립트 핵심</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">/diff</span><span class="hc-desc">작업 영역 Git Diff 즉시 검토 (미추적 파일 포함)</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/plan</span><span class="hc-desc">기획 모드 진입, 수정 계획을 먼저 확인한 뒤 착수</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/new · /clear</span><span class="hc-desc">새 세션 시작 / 컨텍스트 노이즈 완전 리셋</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/compact</span><span class="hc-desc">대화 기록 압축 및 토큰 확보, 장시간 작업 유지</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/review</span><span class="hc-desc">현재 코드 변경사항에 대해 독립적 코드 리뷰 실행</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/side (/btw)</span><span class="hc-desc">임시 서브 대화 실행, 메인 컨텍스트 오염 방지</span></div>
+</div>
+
+<h3 data-reveal>1. 터미널 서브명령어</h3>
+<table class="tbl">
+  <tr><th>서브명령어</th><th>구문 예시</th><th>기능 및 활용 시나리오</th></tr>
+  <tr><td><code>codex</code></td><td><code>codex "auth 모듈 리팩토링"</code></td><td>대화형 TUI 워크벤치 실행</td></tr>
+  <tr><td><code>codex exec</code> (<code>e</code>)</td><td><code>codex exec "테스트 돌리고 lint 수정"</code></td><td>비대화형 실행, 결과 콘솔 스트리밍 출력 (<code>--json</code> 지원)</td></tr>
+  <tr><td><code>codex resume</code></td><td><code>codex resume &lt;SESSION_ID&gt;</code></td><td>ID로 과거 세션 복원; <code>--last</code>로 직전 세션 즉시 재개</td></tr>
+  <tr><td><code>codex fork</code></td><td><code>codex fork &lt;SESSION_ID&gt;</code></td><td>기존 세션을 기반으로 새 분기 스레드 생성 (원본 보존)</td></tr>
+  <tr><td><code>codex apply</code> (<code>a</code>)</td><td><code>codex apply &lt;TASK_ID&gt;</code></td><td>Codex Cloud 작업 산출물 diff를 로컬 작업 트리에 적용</td></tr>
+  <tr><td><code>codex cloud</code></td><td><code>codex cloud exec --attempts 3 "..."</code></td><td>클라우드 격리 샌드박스에 장시간 작업 분파 (best-of-N 시도)</td></tr>
+  <tr><td><code>codex mcp</code></td><td><code>codex mcp add / list / remove</code></td><td>MCP 클라이언트 연결 및 도구 권한 관리</td></tr>
+  <tr><td><code>codex mcp-server</code></td><td><code>codex mcp-server</code></td><td>Codex 자체를 타 도구에 stdio MCP 서비스로 노출</td></tr>
+  <tr><td><code>codex sandbox</code></td><td><code>codex sandbox -- &lt;cmd&gt;</code></td><td>Codex OS 샌드박스 내에서 임의의 명령어 격리 테스트 실행</td></tr>
+  <tr><td><code>codex features</code></td><td><code>codex features list / enable / disable</code></td><td>Rust 백엔드 기능 플래그 확인 및 활성화/비활성화</td></tr>
+</table>
+
+<h3 data-reveal>2. 주요 실행 옵션 플래그</h3>
+<table class="tbl">
+  <tr><th>옵션 플래그</th><th>단축형</th><th>기능 설명</th></tr>
+  <tr><td><code>--model &lt;name&gt;</code></td><td><code>-m</code></td><td>실행 모델 오버라이드 (<code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code> 등)</td></tr>
+  <tr><td><code>--sandbox &lt;mode&gt;</code></td><td><code>-s</code></td><td>샌드박스 보안 등급: <code>read-only</code> | <code>workspace-write</code> | <code>danger-full-access</code></td></tr>
+  <tr><td><code>--ask-for-approval &lt;policy&gt;</code></td><td><code>-a</code></td><td>승인 정책: <code>untrusted</code> | <code>on-request</code> | <code>never</code></td></tr>
+  <tr><td><code>--cd &lt;path&gt;</code></td><td><code>-C</code></td><td>에이전트의 작업 루트 디렉토리 지정</td></tr>
+  <tr><td><code>--add-dir &lt;path&gt;</code></td><td>-</td><td>쓰기 허용 디렉토리 화이트리스트 추가 (중복 지정 가능)</td></tr>
+  <tr><td><code>--image &lt;path&gt;</code></td><td><code>-i</code></td><td>초기 프롬프트에 참조 이미지, UI 스크린샷 주입</td></tr>
+  <tr><td><code>--search</code></td><td>-</td><td>실시간 웹 검색 기능 활성화</td></tr>
+  <tr><td><code>--oss</code></td><td>-</td><td>로컬 Ollama 오픈소스 모델에 직접 연결하여 실행</td></tr>
+  <tr><td><code>-c key=value</code></td><td>-</td><td><code>config.toml</code> 설정값을 단회성으로 오버라이드</td></tr>
+  <tr><td><code>--profile &lt;name&gt;</code></td><td><code>-p</code></td><td>지정된 설정 프로필(예: <code>ci.config.toml</code>) 로드</td></tr>
+</table>
+
+<h3 data-reveal>3. 세션 내 슬래시 명령어 요약</h3>
+<table class="tbl">
+  <tr><th>분류</th><th>명령어</th><th>기능 및 용도</th></tr>
+  <tr><td rowspan="4"><strong>세션 & 컨텍스트</strong></td><td><code>/new</code> · <code>/clear</code></td><td>새 세션 시작 및 컨텍스트 리셋 / 화면 및 컨텍스트 정리 (<kbd>Ctrl+L</kbd>은 화면만 청소)</td></tr>
+  <tr><td><code>/compact</code></td><td>대화 히스토리를 압축 요약하여 컨텍스트 토큰 확보</td></tr>
+  <tr><td><code>/side</code> (<code>/btw</code>)</td><td>임시 서브 대화를 열어 지선 질문을 탐색한 뒤 복귀 (메인 토큰 보존)</td></tr>
+  <tr><td><code>/archive</code> · <code>/delete</code></td><td>현재 세션 아카이브 보관 / 세션 완전 삭제</td></tr>
+  <tr><td rowspan="3"><strong>계획 & 실행 모드</strong></td><td><code>/plan [프롬프트]</code></td><td>계획 수립 모드로 진입하여 파일 변경 목록 사전 도출</td></tr>
+  <tr><td><code>/goal [목표]</code></td><td>영속적 태스크 목표 설정/확인, 매 단계 목표 대비 자가 검증</td></tr>
+  <tr><td><code>/model</code> · <code>/fast</code></td><td>모델 및 추론 강도 전환 / Fast 모드 토글</td></tr>
+  <tr><td rowspan="3"><strong>워크플로우 & 검토</strong></td><td><code>/diff</code></td><td>현재 작업 공간의 모든 변경사항 실시간 검토</td></tr>
+  <tr><td><code>/review</code></td><td>코드 리뷰 모드를 실행하여 견고성, 엣지 케이스, 보안 자가 검증</td></tr>
+  <tr><td><code>/mention &lt;file&gt;</code></td><td>특정 파일 컨텍스트를 정밀 마운트하여 전역 방황 방지</td></tr>
+  <tr><td rowspan="3"><strong>확장 & 설정</strong></td><td><code>/init</code></td><td>저장소 내 <code>AGENTS.md</code> 스캐폴딩 생성</td></tr>
+  <tr><td><code>/skills</code> · <code>/plugins</code> · <code>/mcp</code></td><td>마운트된 스킬, 플러그인, MCP 도구 탐색 및 실행</td></tr>
+  <tr><td><code>/import</code></td><td><strong>Claude Code 설정, 프로젝트 파일 및 히스토리 원클릭 임포트</strong></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 04 ================= -->
+<section id="sandbox">
+<div class="sec-tag">보안 04</div>
+<h2>샌드박스 & 승인 3×3 보안 모델</h2>
+<p>Codex의 안전 방어선은 <strong>샌드박스(접근 가능 범위)</strong>와 <strong>승인 정책(확인 시점)</strong>이라는 두 개의 독립적인 축으로 구성됩니다.</p>
+
+<table class="tbl">
+  <tr><th>샌드박스 ＼ 승인 정책</th><th><code>untrusted</code><br><span class="src">화이트리스트 외 무조건 확인</span></th><th><code>on-request</code> <span class="pill a">추천 기본값</span><br><span class="src">권한 초과 시에만 확인</span></th><th><code>never</code><br><span class="src">확인 없이 즉시 실패</span></th></tr>
+  <tr>
+    <td><code>read-only</code><br><span class="src">읽기 전용 / 네트워크 차단</span></td>
+    <td><strong>초보수적 감사 모드</strong>: 모든 파일 읽기 시 승인 요구. 출처가 불분명한 코드 분석용.<br><span class="src">단점: 과도한 팝업</span></td>
+    <td><strong>코드 분석 표준 모드</strong>: 샌드박스 내에서 자유롭게 코드를 읽고 분석; 파일 수정/네트워크 시 질문.<br><span class="src">단점: 버그 수정 불가</span></td>
+    <td><strong>CI 읽기 전용 분석</strong>: 정적 분석 및 아키텍처 준수 검사용; 쓰기 시도시 에러 반환.<br><span class="src">단점: 임시 파일 쓰기 실패</span></td>
+  </tr>
+  <tr>
+    <td><code>workspace-write</code><br><span class="pill a">추천 기본값</span><br><span class="src">워크스페이스 쓰기 가능, 네트워크 기본 차단</span></td>
+    <td><strong>민감 개발 통제 모드</strong>: 코드 수정은 가능하나 명령어 실행 시 엄격 확인. 핵심 모듈 리팩토링용.</td>
+    <td><strong>일상 주력 개발 모드 ✅</strong>: 공식 표준 조합. 작업 공간 내 자유로운 읽기/쓰기/테스트; 외부 접근 시에만 사용자 확인.</td>
+    <td><strong>CI 무인 자동 쓰기</strong>: CI 파이프라인에서 코드 포맷팅, 테스트, 패치 자동화; 권한 초과 시 중단.</td>
+  </tr>
+  <tr>
+    <td><code>danger-full-access</code><br><span class="src">샌드박스 격리 없음</span></td>
+    <td><strong>비효율 조합</strong>: 권한은 열려있으나 매 단계 질문하여 사용성 저하.</td>
+    <td><strong>컨테이너 내 개발</strong>: 일회용 Docker 컨테이너 내에서 시스템 종속성을 다룰 때 사용.</td>
+    <td><strong>= <code>--yolo</code> ⚠️</strong>: 무제한 권한 무인 실행. 민감 정보가 없는 일회용 컨테이너에서만 사용!</td>
+  </tr>
+</table>
+
+<div class="callout tip"><b class="t">선택 기준</b>일상적인 대화형 개발에서는 <code>workspace-write</code> + <code>on-request</code>를 기본값으로 사용하세요.</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 05 ================= -->
+<section id="methodology">
+<div class="sec-tag">규율 05</div>
+<h2>핵심 방법론 & 초보자 함정 탈출</h2>
+
+<h3 data-reveal>1. 작업 정의 4요소 원칙 (Goal-Context-Constraints-Done)</h3>
+<ul>
+  <li><strong>Goal (목표)</strong>: 달성할 구체적 결과를 명확히 정의 ("이 모듈 좀 봐줘" 지양);</li>
+  <li><strong>Context (컨텍스트)</strong>: 연관된 핵심 파일 및 관련 Issue/API 문서 지정 (<code>/mention</code> 활용);</li>
+  <li><strong>Constraints (제약조건)</strong>: 수정 금지 파일, 추가 라이브러리 도입 금지, 하위 호환성 요구 선언;</li>
+  <li><strong>Done-when (완료 기준)</strong>: 정량적 검증 기준 명시 (특정 단위 테스트 전체 통과, 특정 JSON 반환 등).</li>
+</ul>
+
+<h3 data-reveal>2. 초보자가 흔히 저지르는 8대 실수와 해결책</h3>
+<table class="tbl">
+  <tr><th>실수 번호</th><th>대표적 잘못된 행동</th><th>발생하는 문제</th><th>올바른 표준 해결책</th></tr>
+  <tr><td><strong>실수 01</strong></td><td>계획 요청 없이 무작정 수정 지시</td><td>무관한 파일을 대규모 수정하여 기존 구조 파괴</td><td>복잡 작업은 <code>/plan</code>으로 영향 범위 사전 검토</td></tr>
+  <tr><td><strong>실수 02</strong></td><td>커밋되지 않은 지저분한 브랜치에서 실행</td><td>AI 수정분과 내 작업분이 뒤섞여 롤백 불가</td><td>착수 전 <code>git stash</code> 또는 새 <code>feat/xxx</code> 브랜치 생성</td></tr>
+  <tr><td><strong>실수 03</strong></td><td><kbd>Ctrl+L</kbd>을 새 대화로 오인</td><td>화면만 지워지고 컨텍스트가 남아 환각 발생</td><td>완전 리셋은 반드시 <code>/new</code> 또는 <code>/clear</code> 사용</td></tr>
+  <tr><td><strong>실수 04</strong></td><td>한 세션에서 서로 다른 작업을 연속 수행</td><td>토큰 낭비, 모델 집중도 저하, 실행력 급락</td><td>하나의 세션은 하나의 작업에 집중, 완료 시 <code>/new</code></td></tr>
+  <tr><td><strong>실수 05</strong></td><td>네트워크 제한을 무시하고 패키지 설치 요구</td><td><code>workspace-write</code>의 네트워크 차단으로 타임아웃</td><td>외부 네트워크 작업 시 권한 승인 또는 <code>--search</code> 추가</td></tr>
+  <tr><td><strong>실수 06</strong></td><td>"완료되었습니다"라는 말만 믿고 diff 미확인</td><td>예상치 못한 논리 누락이나 구문 결함 방치</td><td>커밋 전 반드시 <code>/diff</code>로 변경 줄을 직접 검토</td></tr>
+  <tr><td><strong>실수 07</strong></td><td>버그 수정 시 감으로 코드를 고치게 함</td><td>try-catch로 에러만 숨기고 근본 원인 방치</td><td><strong>TDD 준수</strong>: 실패하는 재현 테스트 작성 후 패스 유도</td></tr>
+  <tr><td><strong>실수 08</strong></td><td>편의를 위해 메인 머신에서 <code>--yolo</code> 사용</td><td>시스템 파일 오삭제 및 API Key 유출 위험</td><td>개인 로컬 머신에서 <code>--yolo</code> 절대 금지</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 06 ================= -->
+<section id="long-tasks">
+<div class="sec-tag">협업 06</div>
+<h2>장시간 작업 4단계 규율 & 멀티 세션 엔지니어링</h2>
+
+<p>30분 이상 소요되는 대형 리팩토링이나 복잡한 모듈 개발 시, 단일 세션으로 끝까지 진행하면 주의력 분산과 환각이 발생합니다. Codex의 전문 워크플로우는 <strong>4단계 규율과 세션 분류</strong>입니다.</p>
+
+<h3 data-reveal>1. 장시간 작업 4단계 규율 (Four-Stage Discipline)</h3>
+<ol class="steps">
+  <li><strong>토의 및 기획 단계 (Discuss / Plan)</strong>: <code>read-only</code> 샌드박스에서 <code>/plan</code>을 실행하여 코드베이스를 분석하고 구체적 수정 계획, 파일 목록, 리스크 평가 도출. (코드 수정 안 함)</li>
+  <li><strong>격리 실행 단계 (Execute)</strong>: 새 세션을 열고 승인된 Plan을 마운트하여 <code>workspace-write</code> 권한으로 모듈을 단계별 구현하며 최소 단위 검증 실행.</li>
+  <li><strong>독립 검토 단계 (Review)</strong>: 새로운 세션을 열거나 <code>/review</code>를 호출하여 제3자 시각에서 견고성, 경계 조건, 보안성 검토 수행.</li>
+  <li><strong>마무리 및 인수인계 단계 (Closeout & Handover)</strong>: 테스트 통과 증빙과 스크린샷을 추출하고 <code>DECISIONS.md</code>와 <code>AGENTS.md</code>를 업데이트한 뒤 PR 생성.</li>
+</ol>
+
+<h3 data-reveal>2. 멀티 세션 및 협업 툴킷</h3>
+<ul>
+  <li><strong>임시 서브 대화 <code>/side</code> (<code>/btw</code>)</strong>: 궁금한 점(예: "이 라이브러리 버전이 왜 2.1로 고정되어 있지?")이 생겼을 때 서브 대화로 탐색하고 결론만 가지고 복귀하여 <strong>메인 세션의 토큰 오염을 방지</strong>합니다.</li>
+  <li><strong>세션 분기 <code>codex fork</code></strong>: 동일한 문제에 대해 A안(리팩토링)과 B안(핫픽스)을 모두 시도해보고 싶을 때 세션을 분기하여 병렬 검증합니다.</li>
+  <li><strong>원격 제어 (Remote Control)</strong>: 가벼운 노트북에서 <code>--remote ws://...</code>를 통해 고사양 워크스테이션이나 클라우드 인스턴스의 Codex app-server에 연결하여 연산 파워를 활용합니다.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 07 ================= -->
+<section id="memory-system">
+<div class="sec-tag">메모리 07</div>
+<h2>작업 마무리 & 프로젝트 메모리 루프</h2>
+
+<h3 data-reveal>1. 작업 완료 시의 3단계 마무리 루틴</h3>
+<ol class="steps">
+  <li><strong>객관적 검증 증빙 수집</strong>: 테스트 스위트 실행 로그를 확보하고, UI 작업의 경우 실제 렌더링 스크린샷 캡처;</li>
+  <li><strong>결정 사항 기록 (Decision Log)</strong>: 프로젝트 내 <code>DECISIONS.md</code>에 기술 선정 이유, 회피한 함정, 알려진 제약사항 기록;</li>
+  <li><strong><code>AGENTS.md</code> 증분 업데이트</strong>: 이번 작업으로 새로 알게 된 실행 방식이나 환경 요구사항이 있다면 <code>AGENTS.md</code>에 추가.</li>
+</ol>
+
+<h3 data-reveal>2. AGENTS.md 표준 템플릿 (크로스 툴 공용)</h3>
+<pre><code><span class="c"># AGENTS.md · 핵심 간결 템플릿 (Codex / Cursor / Claude Code 공통 호환)</span>
+## 빌드 및 테스트
+- 의존성 설치: pnpm install --frozen-lockfile
+- 빌드: pnpm build   테스트: pnpm test -- --run
+- PR 전 필수 검증: pnpm typecheck && pnpm lint
+
+## 아키텍처 및 핵심 규약
+- 라우팅은 src/router/index.ts에 선언하며 지연 로딩(Lazy loading) 적용;
+- 상태 관리는 Zustand를 엄격 사용하며 컴포넌트에서 전역 Store 직접 변조 금지;
+- DB 변경은 migrations/ 디렉토리에 새 버전 파일을 추가하며 기존 스크립트 수정 금지.
+
+## 환경 및 외부 종속성
+- 로컬 디버깅 전 선행 실행: docker compose up -d redis postgres</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 08 ================= -->
+<section id="skills-mcp">
+<div class="sec-tag">확장 08</div>
+<h2>Skills, MCP 및 브라우저 엔지니어링</h2>
+
+<h3 data-reveal>1. Codex Skill 개발 엔지니어링 표준</h3>
+<pre><code>my-custom-skill/
+├── SKILL.md            <span class="c"># 필수: YAML frontmatter (name, description) 및 수행 가이드</span>
+├── scripts/            <span class="c"># 선택: 실행 가능한 Python/Node/Shell 보조 스크립트</span>
+├── references/         <span class="c"># 선택: 업무 참조 문서, API 규격서, 아키텍처 가이드</span>
+└── assets/             <span class="c"># 선택: 이미지, 템플릿 파일</span></code></pre>
+<div class="callout tip"><b class="t">Skill 작성 황금률</b><code>description</code> 필드는 모델의 라우팅 핵심입니다. "어떤 상황에서 어떤 키워드를 만났을 때 호출할지"를 명확히 작성하여 조건이 일치할 때만 <code>SKILL.md</code>를 로드하게 함으로써 컨텍스트를 절약하세요.</div>
+
+<h3 data-reveal>2. 브라우저 조작 및 E2E 시각적 검증</h3>
+<table class="tbl">
+  <tr><th>브라우저 연동 형태</th><th>구현 원리</th><th>로그인 세션 (Cookie) 관리</th><th>적합한 시나리오</th></tr>
+  <tr><td><strong>내장 브라우저 (In-App)</strong></td><td>내장 헤드리스/경량 렌더러</td><td>독립된 격리 세션</td><td>정적 페이지 레이아웃, SSR 결과물 외관 회귀 검증</td></tr>
+  <tr><td><strong>외부 브라우저 (CDP 브리지)</strong></td><td>Chrome DevTools Protocol 연결</td><td><strong>개발자의 실제 로컬 로그인 상태 재사용</strong></td><td>로그인이 필요한 어드민 페이지, 결제/폼 제출 플로우 E2E 검증</td></tr>
+  <tr><td><strong>Computer Use 데스크톱</strong></td><td>OS 화면 캡처 및 키보드/마우스 제어</td><td>현재 데스크톱 환경 완전 상속</td><td>크로스 데스크톱 앱 연동, 웹 인터페이스가 없는 복잡 GUI 검증</td></tr>
+</table>
+
+<h3 data-reveal>3. MCP 프로토콜 양방향 활용</h3>
+<ul>
+  <li><strong>Codex가 외부 도구 사용</strong>: <code>codex mcp add &lt;name&gt; -- &lt;cmd&gt;</code>로 PostgreSQL, Sentry, Figma, Pencil MCP 연결;</li>
+  <li><strong>Codex를 타 에이전트에 제공</strong>: <code>codex mcp-server</code>를 실행하여 Claude Code 등 다른 에이전트가 복잡한 코딩 태스크를 Codex에 위임하게 구성.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 09 ================= -->
+<section id="config-auth">
+<div class="sec-tag">설정 09</div>
+<h2>설정 및 계정 체계 완벽 해설</h2>
+
+<h3 data-reveal>1. CODEX_HOME 디렉토리 구조</h3>
+<table class="tbl">
+  <tr><th>파일 / 경로</th><th>역할 및 내용</th><th>보안 및 버전 관리 방침</th></tr>
+  <tr><td><code>~/.codex/config.toml</code></td><td>전역 핵심 설정 (기본 모델, 샌드박스, 승인 정책, MCP 서버)</td><td>✅ 개인 Dotfiles에 백업 권장</td></tr>
+  <tr><td><code>.codex/config.toml</code></td><td>프로젝트 레벨 설정 (전역 설정을 덮어씀)</td><td>✅ 코드 리포지토리에 커밋하여 팀과 공유</td></tr>
+  <tr><td><code>~/.codex/auth.json</code></td><td><strong>사용자 인증 토큰 캐시 (평문 토큰)</strong></td><td>❌ <strong>Git 커밋 및 외부에 절대 유출 금지</strong></td></tr>
+  <tr><td><code>~/.codex/sessions/</code></td><td>로컬 과거 세션 기록 (<code>resume</code> 및 <code>fork</code>에 사용)</td><td>로컬 자산, 타 머신으로 이동하지 않음</td></tr>
+</table>
+
+<h3 data-reveal>2. 설정 적용 우선순위</h3>
+<p>높은 순서대로: <strong>기업 관리 Requirements</strong> ➔ <strong>단회성 플래그 <code>-c key=value</code></strong> ➔ <strong>프로필 <code>--profile &lt;name&gt;</code></strong> ➔ <strong>프로젝트 <code>.codex/config.toml</code></strong> ➔ <strong>사용자 전역 <code>~/.codex/config.toml</code></strong> ➔ <strong>내장 기본값</strong>.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 10 ================= -->
+<section id="playbook">
+<div class="sec-tag">실전 10</div>
+<h2>실전 시나리오 핸드북 & 파이프라인</h2>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🚀</span><b>파이프라인 ①: GitHub Issue에서 PR까지 전자동 완결</b><span class="pt">PIPELINE · ISSUE TO PR</span></div>
+    <div class="pb">
+      <p><strong>표준 파이프라인 절차:</strong></p>
+      <ol class="steps">
+        <li><strong>Issue 구조화 분석</strong>: Issue에서 Goal, Scope, Acceptance, Constraints 추출;</li>
+        <li><strong>클라우드 샌드박스 위임</strong>: <code>codex cloud exec "Issue #108에 따라 인증 타임아웃 수정, 단위 테스트 우선 작성 후 코드 수정"</code>;</li>
+        <li><strong>로컬 적용 및 검증</strong>: <code>codex apply &lt;TASK_ID&gt;</code> 실행 후 <code>/diff</code> 및 로컬 테스트 스위트 확인;</li>
+        <li><strong>PR 생성 및 검토 요청</strong>: 브랜치 푸시 후 PR을 열고 댓글에 <code>@codex review</code>를 남겨 교차 검증 수행.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🎬</span><b>파이프라인 ②: 비디오 및 멀티미디어 처리 자동화</b><span class="pt">PIPELINE · MULTIMEDIA</span></div>
+    <div class="pb">
+      <p><strong>Remotion / FFmpeg / 자막 생성 Skill</strong>을 결합하여 멀티미디어 에셋 처리:</p>
+      <pre><code><span class="c"># 비디오 워크플로우 스킬을 호출하여 일괄 인코딩</span>
+&gt; video-workflow 스킬을 사용하여 raw_videos/ 내 모든 4K 영상을 1080p WebP/H.264로 압축하고,
+  1.2M 비트레이트 제한을 적용하며, 각 영상의 앞 3초를 추출해 thumbs/ 디렉토리에 GIF 미리보기를 생성해줘</code></pre>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🐛</span><b>시나리오 ③: TDD 기반 고난도 경쟁 상태(Race Condition) 버그 해결</b><span class="pt">PLAYBOOK · TDD DEBUG</span></div>
+    <div class="pb">
+      <pre><code>&gt; 장애 현상: 고동시성 재시도 요청 상황에서 src/auth/token.ts의 토큰 갱신 락에 레이스 컨디션이 발생하여 401 오류가 뚫림.
+  요구사항:
+  1. 먼저 tests/auth/race.test.ts에 경쟁 상태 실패를 안정적으로 재현하는 동시성 테스트 작성;
+  2. token.ts의 뮤텍스 락 메커니즘 수정;
+  3. 테스트가 완전히 Green이 될 때까지 실행하고 테스트 실행 결과 증빙 출력.</code></pre>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🔀</span><b>시나리오 ④: Codex × Claude Code 듀얼 에이전트 협업</b><span class="pt">PLAYBOOK · DUAL AGENT</span></div>
+    <div class="pb">
+      <p>각 모델의 장점을 결합한 시너지 워크플로우:</p>
+      <ul>
+        <li><strong>원활한 마이그레이션</strong>: Codex 세션 내에서 <code>/import</code>를 입력하여 Claude Code의 설정, 히스토리, 프로젝트 규칙을 원클릭 동기화;</li>
+        <li><strong>교차 모델 코드 리뷰</strong>: Claude Code로 아키텍처를 구현한 브랜치를 생성한 후, Codex에서 <code>/review</code>를 실행하여 엄격한 결함 검토 (서로 다른 모델의 인지 사각지대를 상호 보완하여 숨은 버그 95% 이상 적발);</li>
+        <li><strong>상호 MCP 노드 연결</strong>: Claude Code에서 stdio로 <code>codex mcp-server</code>에 연결하여 Codex의 클라우드 및 샌드박스 역량 디스패치.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 11 ================= -->
+<section id="hidden-config">
+<div class="sec-tag">심화 11</div>
+<h2>내부 분석과 숨겨진 고급 기능</h2>
+
+<h3 data-reveal>1. <code>codex features</code> 주요 플래그 분석</h3>
+<table class="tbl">
+  <tr><th>내부 기능 플래그</th><th>기본 상태</th><th>기능 설명 및 활용 시나리오</th></tr>
+  <tr><td><code>guardian_approval</code></td><td><span class="pill a">stable (기본 활성)</span></td><td>보안 가디언 승인 계층, 인젝션 및 파괴적 명령 자동 식별 차단</td></tr>
+  <tr><td><code>browser_use_full_cdp_access</code></td><td><span class="pill a">stable (기본 활성)</span></td><td>Chrome DevTools Protocol의 전체 상호작용 권한 개방</td></tr>
+  <tr><td><code>multi_agent_v2</code></td><td><span class="pill b">under development</span></td><td>차세대 다중 에이전트 병렬 협업 스케줄러 (수동 enable 가능)</td></tr>
+  <tr><td><code>concurrent_reasoning_summaries</code></td><td><span class="pill b">under development</span></td><td>동시 추론 요약 생성으로 심층 사고 모델의 장문 처리 가속화</td></tr>
+  <tr><td><code>token_budget</code></td><td><span class="pill b">under development</span></td><td>스레드 및 턴 단위 토큰 예산 서킷 브레이커, 과도한 토큰 소모 방지</td></tr>
+</table>
+
+<h3 data-reveal>2. 유용한 디버그 명령어</h3>
+<ul>
+  <li><code>codex debug prompt-input</code> —— 모델에 전달되는 원시 Prompt JSON을 출력하여 Codex가 바라보는 실제 컨텍스트 확인;</li>
+  <li><code>codex debug models</code> —— 공식 모델 저장소의 원시 메타데이터 확인 및 최신 모델 코드 확인;</li>
+  <li><code>codex sandbox -- &lt;cmd&gt;</code> —— 대화 세션 없이 Codex OS 샌드박스에서 직접 명령어를 실행하여 권한 문제 진단.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 12 ================= -->
+<section id="resources">
+<div class="sec-tag">색인 12</div>
+<h2>리소스 색인 및 추천 자료</h2>
+
+<table class="tbl">
+  <tr><th>자료명</th><th>접속 링크</th><th>성격 및 활용 가치</th></tr>
+  <tr><td><strong>공식 문서 포털</strong></td><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>공식 1차 출처: CLI, IDE, Cloud 및 설정 전체 레퍼런스</td></tr>
+  <tr><td><strong>CodexGuide 실전 가이드</strong></td><td><a href="https://codexguide.io/paths" target="_blank">codexguide.io/paths</a></td><td>다양한 시나리오별 실전 사례 및 학습 경로</td></tr>
+  <tr><td><strong>AGENTS.md 규격</strong></td><td><a href="https://agents.md" target="_blank">agents.md 개방형 표준</a></td><td>도구 간 호환되는 프로젝트 메모리 표준 사양</td></tr>
+  <tr><td><strong>본 지식 베이스 연계 주제</strong></td><td><a href="claude-code-guide.ko.html">Claude Code 활용 가이드</a> · <a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a> · <a href="prompt-context-engineering.ko.html">프롬프트 & 컨텍스트 엔지니어링</a></td><td>AI 에이전트 기반 소프트웨어 엔지니어링 내공 다지기</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>안내</strong>: 본 가이드는 OpenAI Codex 공식 문서(developers.openai.com/codex)와 커뮤니티의 실전 경험을 바탕으로 정리되었습니다. 명령어와 파라미터는 버전에 따라 빠르게 업데이트되므로 <code>codex --help</code> 및 공식 Changelog를 함께 확인하시기 바랍니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

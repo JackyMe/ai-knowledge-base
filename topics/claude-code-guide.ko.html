@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Code 실전 활용 가이드: 100+ 명령어 및 단축키 빠른 참조, 8대 핵심 개발 시나리오 Playbook, 6계층 확장 체계(CLAUDE.md / Skills / Hooks / Subagents / MCP / Plugins), 컨텍스트 관리의 극의, 권한 보안 및 계정 설정 완벽 해설.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code 실전 가이드 · 완전 공략 매뉴얼">
+<meta property="og:description" content="멘탈 모델부터 필수 명령어, 6대 확장 기능의 선정 기준, 8대 실전 시나리오까지: 공식 Best Practices와 커뮤니티의 실전 지혜를 융합한 핵심 엔지니어링 매뉴얼.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/claude-code-guide.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Claude Code 실전 가이드 · 완전 공략 매뉴얼</title>
+<style>
+:root{
+  --accent:#d97706; --accent-2:#f59e0b; --accent-soft:#fef3c7;
+  --ink:#1c1308; --bg:#ffffff; --bg-side:#fefdfb; --bg-code:#1c1308;
+  --text:#291e0a; --text-2:#6b5327; --text-3:#a3834c;
+  --border:#f5ebd8; --border-2:#e8d7b8;
+  --tip-bg:#f0fdf4; --warn-bg:#fffbeb; --note-bg:#fef3c7;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.side-filter{position:relative;margin-bottom:14px;padding:0 4px}
+.side-filter input{width:100%;padding:6px 28px 6px 10px;border:1px solid var(--border-2);border-radius:8px;
+  font-size:12.5px;background:#fff;color:var(--text);outline:none;font-family:inherit}
+.side-filter input:focus{border-color:var(--accent)}
+.side-filter .fk{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;
+  color:var(--text-3);background:var(--border);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#fdf6ea;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#fef3c7;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(217,119,6,.40),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(245,158,11,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fde68a;font-weight:600;background:rgba(217,119,6,.16);
+  border:1px solid rgba(217,119,6,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fbbf24,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#fde047;max-width:760px;line-height:1.75}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#fef08a}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3);line-height:1.5;display:block;margin-top:4px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#fde68a}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbf7d0}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#fef3c7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#b45309}
+pre{background:var(--bg-code);color:#fef3c7;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#a3834c}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fefcf8}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fdfaf3}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:var(--dur-hover,.3s) var(--ease-breathe,ease)}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(28,19,8,.06)}
+.hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
+.hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
+.hotcmd.must{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.hotcmd.must .hc-cmd{color:var(--accent)}
+.hotcmd.must::after{content:"★ 필수";position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--accent);padding:2px 9px;border-radius:99px;letter-spacing:.02em}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 16px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#fefcf8;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbf7d0}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fef3c7;color:#b45309}
+.pill.b{background:#fefce8;color:#a16207}
+.pill.c{background:#f0fdf4;color:#15803d}
+.pill.d{background:#eff6ff;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(28,19,8,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">CC</span>Claude Code 활용 가이드<span class="sub">핵심 실전판</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증일: 2026-08-25</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 필터링…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">멘탈 모델</div>
+    <a href="#mental-model"><span class="no">00</span>모든 것은 컨텍스트 중심이다</a>
+    <a href="#golden-rules"><span class="no">01</span>5대 황금 법칙</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">최신 동향</div>
+    <a href="#whats-new"><span class="no">동향</span>최근 주요 업데이트</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">빠른 참조</div>
+    <a href="#setup"><span class="no">02</span>설치 및 초기 설정</a>
+    <a href="#commands"><span class="no">03</span>명령어 빠른 참조</a>
+    <a href="#shortcuts"><span class="no">04</span>단축키 & 입력 테크닉</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">확장 생태계</div>
+    <a href="#extensions"><span class="no">05</span>6대 확장 기능의 선정 기준</a>
+    <a href="#skills-hooks"><span class="no">06</span>Skills · Hooks · MCP · 서브에이전트</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">실전 연습</div>
+    <a href="#playbook"><span class="no">07</span>8대 실전 시나리오 Playbook</a>
+    <a href="#context"><span class="no">08</span>컨텍스트 관리의 극의</a>
+    <a href="#permissions"><span class="no">09</span>권한과 보안 통제</a>
+    <a href="#config-auth"><span class="no">10</span>설정 및 계정 체계 해설</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">노하우 축적</div>
+    <a href="#ecosystem"><span class="no">11</span>생태계 엄선: 연동 레시피</a>
+    <a href="#pitfalls"><span class="no">12</span>안티패턴 & 함정 회피 목록</a>
+    <a href="#templates"><span class="no">13</span>즉시 전력 템플릿 모음</a>
+    <a href="#hidden-config"><span class="no">14</span>숨겨진 디버그 설정</a>
+    <a href="#resources"><span class="no">15</span>리소스 색인</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">⛏️ 공식 문서 × 커뮤니티 실전 지혜 · 전 시나리오 농축 · 2026-08-25 검증</div>
+  <h1>Claude Code<br><span class="grad">실전 가이드 · 완전 공략판</span></h1>
+  <p class="lead">멘탈 모델부터 필수 명령어, 6대 확장 기능의 선정 기준, 8대 실전 시나리오까지. 공식 Best Practices와 명령어 레퍼런스를 바탕으로 현장 실무자들의 경험을 집대성했습니다. 언제든 다시 꺼내볼 수 있는 한 장의 실전 매뉴얼로 정리했습니다.</p>
+  <div class="meta">
+    <span>100+ 명령어/인자 수록</span><span>8대 시나리오 Playbook</span><span>5가지 즉시 전력 템플릿</span><span>공식 문서 전수 대조</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1개의 핵심</b><span>컨텍스트 윈도우는 유일무이한 희소 자원. 모든 실전 기법은 여기서 도출됨</span></div>
+  <div class="stat"><b>6계층 확장</b><span>CLAUDE.md · Skills · Hooks · 서브에이전트 · MCP · 플러그인</span></div>
+  <div class="stat"><b>2회 룰</b><span>동일 문제로 2번 지시/수정해도 안 풀리면 → 즉시 /clear 후 재시작</span></div>
+  <div class="stat"><b>0 맹신</b><span>검증 수단이 없는 출력은 어떤 경우에도 '완료'로 간주하지 않음</span></div>
+</div>
+
+<!-- ================= SECTION 00 ================= -->
+<section id="mental-model">
+<div class="sec-tag">멘탈 모델 00</div>
+<h2>모든 것은 컨텍스트를 중심으로 회전한다</h2>
+
+<p>Claude Code는 단순한 챗봇이 아니라 <strong>에이전틱 코딩 환경(Agentic Coding Environment)</strong>입니다. 파일을 읽고, 명령을 실행하며, 코드를 수정하고 자율적으로 문제를 해결합니다. 사용자의 역할은 진행 상황을 관찰하고 방향을 조율하거나 작업을 위임하는 것입니다.</p>
+
+<div class="callout note"><b class="t">핵심 제약 조건</b>컨텍스트 윈도우에는 대화 전체(주고받은 메시지, 읽은 파일 내용, 실행한 명령어의 stdout 출력)가 담깁니다. <strong>컨텍스트가 가득 차면 모델의 주의력이 분산되고 초기의 지시를 망각하기 시작합니다.</strong> 컨텍스트야말로 당신이 가장 엄격하게 관리해야 할 자원입니다.</div>
+
+<p>이 하나의 원칙에서 대부분의 엔지니어링 실무가 도출됩니다:</p>
+<ul>
+  <li><strong>서브에이전트</strong>로 탐색하는 이유 → 방대한 탐색으로 소모되는 것은 서브에이전트의 컨텍스트이며, 내 메인 대화가 오염되지 않기 때문.</li>
+  <li><strong>CLAUDE.md를 짧게 유지</strong>하는 이유 → 매 세션마다 로드되므로 길어지면 핵심 규칙이 노이즈에 묻히기 때문.</li>
+  <li><strong>지식을 CLAUDE.md에 욱여넣는 것보다 Skills가 우수한 이유</strong> → 스킬은 필요한 순간에만 온디맨드로 로드되어 평소에는 컨텍스트를 전혀 차지하지 않기 때문.</li>
+  <li><strong>/clear, /compact, /btw</strong>가 필요한 이유 → 모두 컨텍스트 여유 공간을 확보하기 위한 핵심 도구이기 때문.</li>
+  <li><strong>"2회 수정 실패 시 리셋"</strong>인 이유 → 실패한 삽질 기록이 컨텍스트에 남아 모델이 같은 함정에 계속 빠지기 때문.</li>
+</ul>
+
+<h3 data-reveal>5가지 활용 형태, 단일 엔진 공유</h3>
+<table class="tbl">
+  <tr><th>형태</th><th>진입점</th><th>가장 적합한 용도</th></tr>
+  <tr><td><strong>터미널 CLI</strong></td><td><code>claude</code></td><td>가장 풍부한 기능 지원. 본 가이드의 기본 기준</td></tr>
+  <tr><td>IDE 확장 프로그램</td><td>VS Code / Cursor / JetBrains</td><td>에디터 내에서 인라인으로 변경 사항 검토</td></tr>
+  <tr><td>데스크톱 App</td><td><code>/desktop</code> 연동</td><td>여러 세션을 시각적으로 병렬 관리</td></tr>
+  <tr><td>Web / 모바일</td><td>claude.ai/code, iOS App; <code>--cloud</code> 및 <code>/teleport</code></td><td>클라우드 장시간 작업, 이동 중 모니터링</td></tr>
+  <tr><td>GitHub PR</td><td><code>/install-github-app</code> 후 PR 내 <code>@claude</code></td><td>자동 코드 리뷰 및 풀리퀘스트 수정</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 01 ================= -->
+<section id="golden-rules">
+<div class="sec-tag">멘탈 모델 01</div>
+<h2>5대 황금 법칙</h2>
+
+<h3 data-reveal>법칙 1: Claude에게 직접 실행할 수 있는 검증 수단을 제공하라</h3>
+<p>Claude는 "작업이 겉보기에 끝난 것처럼 보이는" 순간 멈춥니다. 실행 가능한 체크 수단이 없으면 사용자가 모든 오류를 일일이 찾아내야 합니다. 성공/실패(pass/fail)를 판정할 수 있는 시그널(테스트 스위트, 빌드 종료 코드, 린터, 스크린샷 등)을 주면 자율 폐루프가 완성됩니다: 작업 → 검증 실행 → 결과 확인 → 통과할 때까지 자가 개선.</p>
+<div class="duo">
+  <div class="bad"><b>❌ 모호한 지시</b>"이메일 검증 함수 만들어줘" / "빌드 깨졌는데 고쳐줘"</div>
+  <div class="good"><b>✅ 강력한 지시</b>"validateEmail을 만들고 테스트 케이스(정상 이메일, 빈 문자열, 잘못된 형식)를 작성하여 구현 후 테스트를 실행해줘" / "빌드 에러 전문 첨부 [로그]. 근본 원인을 수정하고 빌드가 통과함을 증명해줘"</div>
+</div>
+
+<h3 data-reveal>법칙 2: 먼저 탐색하고, 계획을 세운 뒤, 마지막에 코딩하라</h3>
+<p>복잡한 작업의 4단계: <strong>Explore</strong>(계획 모드에서 파일을 읽고 질문하며 코드는 건드리지 않음) → <strong>Plan</strong>(수정 계획 수립, <kbd>Ctrl+G</kbd>로 직접 편집 가능) → <strong>Implement</strong>(계획 모드를 나와 구현 착수) → <strong>Commit</strong>(커밋 메시지 작성 후 PR 생성).</p>
+
+<h3 data-reveal>법칙 3: 프롬프트는 구체적으로, 컨텍스트는 풍부하게</h3>
+<table class="tbl">
+  <tr><th>전략</th><th>약한 프롬프트</th><th>강력한 프롬프트</th></tr>
+  <tr><td>범위 한정</td><td>"foo.py에 테스트 추가해줘"</td><td>"foo.py에 로그아웃 상태의 엣지 케이스를 다루는 단위 테스트를 작성해줘. mock은 사용하지 말 것"</td></tr>
+  <tr><td>기존 패턴 인용</td><td>"새 캘린더 컴포넌트 추가해줘"</td><td>"홈 화면의 기존 위젯(HotDogWidget.tsx) 구현 패턴을 준수하여 캘린더 컴포넌트를 만들어줘. 외부 라이브러리 추가 금지"</td></tr>
+  <tr><td>원인 추적 지시</td><td>"로그인 에러 고쳐줘"</td><td>"세션 만료 후 로그인 실패 버그 발생. src/auth/ 토큰 갱신 로직을 확인하고 실패를 재현하는 테스트를 먼저 작성한 뒤 수정해줘"</td></tr>
+</table>
+
+<h3 data-reveal>법칙 4: 잘게 방향을 틀고, 자주 컨텍스트를 비워라</h3>
+<ul>
+  <li><kbd>Esc</kbd>로 언제든 중단 가능. 컨텍스트가 유지된 상태에서 방향을 즉시 바로잡을 수 있습니다.</li>
+  <li><kbd>Esc Esc</kbd> 또는 <code>/rewind</code>로 롤백 메뉴를 열어 코드와 대화를 되돌릴 수 있습니다.</li>
+  <li>무관한 작업을 시작하기 전에는 반드시 <code>/clear</code>를 실행합니다. <strong>동일한 문제로 2번 시도해서 실패했다면 더 이상 붙잡고 있지 말고 /clear 후 프롬프트를 정제하여 재시작</strong>하세요.</li>
+</ul>
+
+<h3 data-reveal>법칙 5: 대규모 기능 착수 전 Claude에게 먼저 인터뷰를 시켜라</h3>
+<pre><code>나는 [기능 요약]을 개발하려 함. AskUserQuestion 도구를 사용하여 나에게 인터뷰를 진행해줘.
+기술적 구현, UI/UX, 엣지 케이스, 성능 및 보안 트레이드오프에 대해 질문할 것.
+사소한 질문은 피하고 내가 놓쳤을 법한 난제를 파고들어줘.
+질문이 끝나면 완전한 명세서를 SPEC.md로 작성해줘.</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION WHATS-NEW ================= -->
+<section id="whats-new">
+<div class="sec-tag">최신 동향</div>
+<h2>최근 주요 업데이트 및 브레이킹 체인지</h2>
+
+<div class="callout note"><b class="t">검증 기준일</b>최종 검증 <strong>2026-08-25</strong> · 출처: <a href="https://code.claude.com/docs" target="_blank">Claude Code 공식 문서</a> 및 <code>/release-notes</code>.</div>
+
+<h3 data-reveal>🆕 0.148.0 최신 기능 (2026-08-18)</h3>
+<ul>
+  <li><strong>Markdown 대화 내보내기</strong>: <code>/export</code> 명령어로 전체 대화 기록을 깔끔한 Markdown으로 저장;</li>
+  <li><strong>헤드리스 세션 분기 (Session Forking)</strong>: <code>claude exec fork</code>로 백그라운드 환경에서 세션 복제 및 아카이브;</li>
+  <li><strong>실시간 비용 예측</strong>: <code>/status</code> 및 터미널 타이틀에 스레드 단위 누적 토큰 비용 표시;</li>
+  <li><strong>Amazon Bedrock Runtime 내장 지원</strong>: 기업용 AWS 인프라 환경에서 직접 추론 지원.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 03 ================= -->
+<section id="commands">
+<div class="sec-tag">빠른 참조 03</div>
+<h2>명령어 빠른 참조 매뉴얼</h2>
+
+<h3 data-reveal>⚡ 고빈도 핵심 명령어 (근육 기억)</h3>
+<div class="hotcmds">
+  <div class="hotcmd must"><span class="hc-cmd">claude ["작업 프롬프트"]</span><span class="hc-desc">대화형 터미널 CLI 실행</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">claude exec / -p</span><span class="hc-desc">비대화형 실행, CI/CD 및 일괄 스크립트 핵심</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">/diff</span><span class="hc-desc">현재 작업 영역 Git Diff 즉시 검토</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/plan</span><span class="hc-desc">기획 모드 진입, 수정 계획을 먼저 확인</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/clear · /new</span><span class="hc-desc">컨텍스트 완전 리셋 및 새 세션 시작</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/compact</span><span class="hc-desc">히스토리 압축 요약 및 토큰 확보</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/review</span><span class="hc-desc">독립적 관점에서 코드 리뷰 실행</span></div>
+  <div class="hotcmd"><span class="hc-cmd">/btw (/side)</span><span class="hc-desc">임시 서브 대화로 지선 문제 탐색</span></div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 05 ================= -->
+<section id="extensions">
+<div class="sec-tag">확장 05</div>
+<h2>6대 확장 기능의 선정 기준</h2>
+
+<table class="tbl">
+  <tr><th>확장 유형</th><th>적용 시점</th><th>컨텍스트 소모</th><th>주요 용도</th></tr>
+  <tr><td><strong>CLAUDE.md</strong></td><td>모든 세션 시작 시 항상 로드</td><td>상시 소모 (짧게 유지 필수)</td><td>빌드 명령, 테스트 명령, 핵심 금지 규칙</td></tr>
+  <tr><td><strong>Skills</strong></td><td>조건 일치 시 온디맨드 로드</td><td><strong>호출 시에만 소모 (0% 평상시)</strong></td><td>도메인별 전문 작업 절차, 복잡한 배포 SOP</td></tr>
+  <tr><td><strong>Hooks</strong></td><td>이벤트 발생 시 자동 실행</td><td>없음 (셸 스크립트 실행)</td><td>커밋 전 린터 강제, 위험 명령 차단</td></tr>
+  <tr><td><strong>Subagents</strong></td><td>대규모 탐색 위임 시</td><td>독립된 격리 컨텍스트</td><td>대규모 코드베이스 탐색, 병렬 조사</td></tr>
+  <tr><td><strong>MCP</strong></td><td>외부 서비스 도구 연동</td><td>도구 스키마만 로드</td><td>DB 조회, Sentry 이슈 확인, Figma 파싱</td></tr>
+  <tr><td><strong>Plugins</strong></td><td>패키지화된 종합 번들</td><td>설정에 따라 상이</td><td>팀 표준 툴체인 일괄 배포</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 07 ================= -->
+<section id="playbook">
+<div class="sec-tag">실전 07</div>
+<h2>8대 시나리오 실전 Playbook</h2>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🌱</span><b>시나리오 ①: 신규 미지의 저장소 온보딩</b><span class="pt">PLAYBOOK · ONBOARDING</span></div>
+    <div class="pb">
+      <p><code>read-only</code> 모드로 진입하여 <code>/init</code>을 실행하고 프로젝트 아키텍처를 탐색합니다. 서브에이전트를 띄워 데이터 흐름을 다이어그램으로 그리게 합니다.</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🐛</span><b>시나리오 ②: TDD 기반 버그 격파</b><span class="pt">PLAYBOOK · TDD DEBUG</span></div>
+    <div class="pb">
+      <p>먼저 실패를 재현하는 단위 테스트를 작성하게 하고, 테스트가 통과할 때까지 내부 로직을 수정하게 한 뒤 <code>/diff</code>로 검토합니다.</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🏗️</span><b>시나리오 ③: 대규모 다중 파일 리팩토링</b><span class="pt">PLAYBOOK · REFACTORING</span></div>
+    <div class="pb">
+      <p><code>/plan</code> 모드에서 파일 변경 목록을 승인한 뒤 모듈별로 쪼개어 단계별 구현 및 테스트를 통과시킵니다.</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🚀</span><b>시나리오 ④: Issue에서 PR까지 자동 완결</b><span class="pt">PLAYBOOK · ISSUE TO PR</span></div>
+    <div class="pb">
+      <p>Issue 번호를 지정하여 구현 브랜치를 따고, 로컬 테스트를 완벽히 통과시킨 뒤 커밋 및 PR을 생성합니다.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 08 ================= -->
+<section id="context">
+<div class="sec-tag">컨텍스트 08</div>
+<h2>컨텍스트 관리의 극의</h2>
+
+<h3 data-reveal>컨텍스트 창 최적화 4대 수칙</h3>
+<ol class="steps">
+  <li><strong>2회 실패 시 즉시 <code>/clear</code></strong>: 모델이 실패한 기록에 갇히지 않도록 깨끗한 상태에서 명확해진 프롬프트로 재시작;</li>
+  <li><strong>탐색성 질문은 <code>/btw</code> 또는 서브에이전트 활용</strong>: 본선 대화의 토큰 낭비를 차단;</li>
+  <li><strong>긴 세션은 <code>/compact</code>로 요약 압축</strong>: 중요 결론만 남기고 불필요한 중간 stdout 출력을 정리;</li>
+  <li><strong><code>@파일</code> 정밀 지정</strong>: 전체 폴더를 무작정 읽히지 말고 필요한 파일만 명시.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 15 ================= -->
+<section id="resources">
+<div class="sec-tag">리소스 15</div>
+<h2>리소스 색인 및 공식 링크</h2>
+
+<table class="tbl">
+  <tr><th>리소스</th><th>링크</th><th>설명</th></tr>
+  <tr><td><strong>공식 문서 포털</strong></td><td><a href="https://code.claude.com/docs" target="_blank">code.claude.com/docs</a></td><td>공식 1차 출처: CLI, Best practices, 설정 레퍼런스</td></tr>
+  <tr><td><strong>본 지식 베이스 연계</strong></td><td><a href="codex-guide.ko.html">Codex 활용 가이드</a> · <a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a> · <a href="ai-leverage-guide.ko.html">AI 생산성 전경</a></td><td>AI 코딩 에이전트 실무 내공 강화</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>안내</strong>: 본 가이드는 Anthropic Claude Code 공식 문서 및 커뮤니티의 검증된 실무 경험을 집대성한 자료입니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

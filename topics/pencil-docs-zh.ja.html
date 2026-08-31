@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="docs.pencil.dev 全16ページを網羅：公式動画・図解付き、各セクションに原文リンクを掲載した pen.dev 完全日本語ガイド。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pen.dev ドキュメント日本語ガイド · 公式仕様準拠">
+<meta property="og:description" content="docs.pencil.dev 全16ページを網羅：公式動画・図解付き、各セクションに原文リンクを掲載した pen.dev 完全日本語ガイド。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/pencil-docs-zh.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>pen.dev ドキュメント日本語ガイド · 公式仕様準拠</title>
+<style>
+:root{
+  --accent:#5b5bf6; --accent-2:#8b5cf6; --accent-soft:#eef0ff;
+  --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0f172a;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef4ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.75;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:.2px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);margin-left:2px;padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-3)}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:block;padding:6.5px 12px;border-radius:8px;color:var(--text-2);text-decoration:none;
+  font-size:13.8px;transition:.15s}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:880px;margin:0 auto;padding:0 44px 120px}
+
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--border)}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);font-weight:600;
+  background:var(--accent-soft);padding:5px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-size:40px;line-height:1.25;letter-spacing:-.5px;font-weight:800}
+.hero h1 .grad{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16.5px;color:var(--text-2);max-width:640px}
+.hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--text-3)}
+.hero .meta span{background:#f4f6fa;border:1px solid var(--border);padding:4px 12px;border-radius:99px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:34px 0 8px}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 20px 18px;text-decoration:none;
+  color:var(--text);transition:var(--dur-hover,.3s) var(--ease-breathe,ease);background:#fff}
+.card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(91,91,246,.10);transform:translateY(-2px)}
+.card .ic{font-size:20px;margin-bottom:10px}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:13px;color:var(--text-3);line-height:1.55;display:block}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:28px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19.5px;font-weight:700;margin:34px 0 12px;scroll-margin-top:84px}
+h4{font-size:16px;font-weight:700;margin:24px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.origin{font-size:12.5px;color:var(--text-3);margin:-14px 0 20px}
+.origin a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c9dcff}
+.callout.note b.t{color:#2563eb}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4338ca}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafbff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+details{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 18px;font-weight:600;font-size:14px;background:#fafbfd;list-style:none}
+details summary::before{content:"▸ ";color:var(--accent)}
+details[open] summary::before{content:"▾ "}
+details .inner{padding:16px 18px 6px;border-top:1px solid var(--border)}
+
+.dot{display:inline-block;width:10px;height:10px;border-radius:99px;margin-right:6px}
+.dot.blue{background:#3b82f6}.dot.magenta{background:#d946ef}.dot.violet{background:#8b5cf6}
+
+/* 画像と動画 */
+figure{margin:20px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 2px 10px rgba(15,23,42,.04)}
+figure img{display:block;width:100%;height:auto}
+figure.tall img{max-height:460px;object-fit:cover;object-position:top}
+figure figcaption{padding:10px 16px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--border);background:#fafbfd}
+figure figcaption a{color:var(--text-3)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:18px 0}
+.img-grid figure{margin:0}
+.video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  margin:18px 0 6px;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cap{font-size:12.5px;color:var(--text-3);margin:6px 2px 20px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero h1{font-size:30px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">✎</span>pen.dev ドキュメント<span class="sub">日本語ガイド</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <a href="https://docs.pencil.dev/" target="_blank">公式英語原典 ↗</a>
+    <span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">概要</div>
+    <a href="#home">ドキュメントTop</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">クイックスタート</div>
+    <a href="#installation">インストール</a>
+    <a href="#authentication">認証とアクティベート</a>
+    <a href="#ai-integration">AI 統合</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">コアコンセプト</div>
+    <a href="#pen-files">.pen ファイル</a>
+    <a href="#design-as-code">Design as Code（設計即コード）</a>
+    <a href="#interface">pen.dev インターフェース</a>
+    <a href="#variables">変数 (Variables)</a>
+    <a href="#components">コンポーネント</a>
+    <a href="#slots">スロット (Slots)</a>
+    <a href="#code-on-canvas">キャンバス上のコード</a>
+    <a href="#design-libraries">デザインライブラリ</a>
+    <a href="#import-export">インポート & エクスポート</a>
+    <a href="#shortcuts">ショートカット一覧</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">デザイン & コード</div>
+    <a href="#design-to-code">デザイン ↔ コード同期</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">トラブルシューティング</div>
+    <a href="#troubleshooting">トラブルシューティング</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">開発者向け仕様</div>
+    <a href="#pen-format">.pen ファイルフォーマット</a>
+    <a href="#pencil-cli">pen.dev CLI & MCP</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="home">
+  <div class="badge">⚡ 公式ドキュメント準拠 · 全16ページ完全網羅</div>
+  <h1>pen.dev ドキュメント<br><span class="grad">完全日本語ガイド</span></h1>
+  <p class="lead">pen.dev はエディタ（VS Code / Cursor）に直接組み込まれた強力なベクターデザインツールです。キャンバスでデザインし、即座にコードへ変換。公式 docs.pencil.dev の最新仕様（pen.dev へのリブランド、新 CLI / MCP ツール体系対応）を反映した完全解説です。</p>
+  <div class="meta">
+    <span>原典: docs.pencil.dev</span><span>CLI / MCP ツール更新反映</span><span>検証日: 2026-08-17</span>
+  </div>
+</div>
+
+<div class="sec-tag">概要</div>
+<h2>pen.dev とは何か？</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/" target="_blank">pen.dev Documentation (Home)</a></p>
+
+<p>pen.dev は <strong>開発環境（IDE）の内部に直接統合された</strong> ベクターデザインツールです。別アプリやブラウザタブを切り替える必要なく、コードと同一のワークスペース内でデザインを直接編集できます。</p>
+<p><strong>なぜ pen.dev を選ぶのか？</strong> デザインとコードを同一リポジトリに集約することで両者の乖離を解消します。キャンバス上でコンポーネントを設計し、Design Tokens をコードと同期させ、AI エージェントと連携してUI実装を爆速化します。</p>
+
+<div class="video"><iframe src="https://www.youtube.com/embed/mduKhXvmsyA" title="pen.dev 公式紹介動画" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ 公式紹介動画（ドキュメント Top より）</p>
+
+<div class="cards">
+  <a class="card" href="#installation"><div class="ic">🚀</div><b>クイックスタート</b><span>インストール、認証、AI連携の第一歩</span></a>
+  <a class="card" href="#pen-files"><div class="ic">🧩</div><b>コアコンセプト</b><span>.pen ファイル、変数、コンポーネント、スロット</span></a>
+  <a class="card" href="#design-to-code"><div class="ic">🔄</div><b>デザイン & コード</b><span>デザインとコードベースの双方向同期</span></a>
+  <a class="card" href="#troubleshooting"><div class="ic">🛠️</div><b>トラブルシューティング</b><span>よくある問題と解決策のクイックリファレンス</span></a>
+  <a class="card" href="#pen-format"><div class="ic">📦</div><b>開発者仕様</b><span>.pen フォーマットスキーマと CLI ツール</span></a>
+</div>
+
+<div class="divider"></div>
+
+<!-- Installation -->
+<section id="installation">
+<div class="sec-tag">クイックスタート</div>
+<h2>インストール</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/getting-started/installation" target="_blank">Installation</a></p>
+
+<p>VS Code / Cursor の拡張機能パネルから導入します：</p>
+<ol class="steps">
+  <li>エディタの拡張機能パネルで <code>pen.dev</code>（発行元: <code>highagency.pencildev</code>）を検索してインストール。</li>
+  <li>ステータスバー左下の <strong>Pencil アイコン</strong> をクリックしてキャンバスを起動。</li>
+  <li>初回起動時にメールアドレスを入力してアクティベーションを完了。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- Authentication -->
+<section id="authentication">
+<div class="sec-tag">クイックスタート</div>
+<h2>認証とアクティベート</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/getting-started/authentication" target="_blank">Authentication</a></p>
+
+<p>入力したメールアドレス宛に届く 6 桁の確認コードを入力するだけでログインが完了します。セッション情報はローカルに安全に保存されます。</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- AI Integration -->
+<section id="ai-integration">
+<div class="sec-tag">クイックスタート</div>
+<h2>AI 統合 (MCP)</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">AI Integration</a></p>
+
+<p>pen.dev は Model Context Protocol (MCP) を通じて各種 AI ツール（Claude Code, Cursor, Codex, OpenCode 等）とシームレスに接続されます。</p>
+<pre><code><span class="c"># Claude Code で MCP 接続を確認</span>
+/mcp</code></pre>
+<p>AI はキャンバスの要素座標や Design Tokens を直接読み取り、デザインをコードへ変換したり、自然言語から新しい画面をキャンバス上に描画したりできます。</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- Core Concepts -->
+<section id="pen-files">
+<div class="sec-tag">コアコンセプト</div>
+<h2>.pen ファイル</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/pen-files" target="_blank">.pen Files</a></p>
+
+<p><code>.pen</code> は pen.dev のネイティブファイル形式です。<strong>中身はクリーンな JSON</strong> であり、Git でのバージョン管理、コミット差分の確認、ブランチマージに対応しています。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-as-code">
+<div class="sec-tag">コアコンセプト</div>
+<h2>Design as Code（設計即コード）</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/design-as-code" target="_blank">Design as Code</a></p>
+
+<ul>
+  <li><strong>単一リポジトリ管理:</strong> <code>design.pen</code> をソースコードと同じ Git リポジトリで管理。</li>
+  <li><strong>ブランチと PR:</strong> 新機能ブランチで UI デザインと実装コードを同時に変更し、1つの PR でレビュー。</li>
+  <li><strong>ロールバックの同期:</strong> <code>git revert</code> を行えば、コードとデザインが同時に過去の正常な状態へ巻き戻ります。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="interface">
+<div class="sec-tag">コアコンセプト</div>
+<h2>pen.dev インターフェース</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/interface" target="_blank">The Interface</a></p>
+
+<ul>
+  <li><strong>左側パネル (Layers / Libraries):</strong> レイヤー階層、フレーム一覧、インポートされたデザインライブラリ。</li>
+  <li><strong>中央キャンバス (Infinite Canvas):</strong> ベクター編集を行う無限キャンバス領域。</li>
+  <li><strong>右側パネル (Inspector):</strong> 選択中ノードのプロパティ（位置、サイズ、塗り、線、角丸、エフェクト、変数バインド）。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="variables">
+<div class="sec-tag">コアコンセプト</div>
+<h2>変数 (Variables / Design Tokens)</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/variables" target="_blank">Variables</a></p>
+
+<p>カラー、数値（余白や角丸）、文字列を Design Tokens として定義し、各要素に <code>$color.primary</code> のように紐付けます。トークンの値を1箇所変更するだけで、キャンバス全体および CSS コードに即座に反映されます。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="components">
+<div class="sec-tag">コアコンセプト</div>
+<h2>コンポーネント (Components)</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/components" target="_blank">Components</a></p>
+
+<p>再利用可能な UI 要素を定義します。マスターコンポーネントを変更すると、すべてのインスタンス（参照ノード）に変更が伝播します。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="slots">
+<div class="sec-tag">コアコンセプト</div>
+<h2>スロット (Slots)</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/slots" target="_blank">Slots</a></p>
+
+<p>コンポーネント内の特定領域を動的に差し替え可能にするプレースホルダーです。モーダルダイアログの本文領域や、カードコンポーネントのメディア領域などに活用します。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="code-on-canvas">
+<div class="sec-tag">コアコンセプト</div>
+<h2>キャンバス上のコード (Code on Canvas / Script Nodes)</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">Code on Canvas</a></p>
+
+<p>JavaScript / TypeScript スクリプトを用いて、データドリブンなグラフや複雑な幾何学パターンをキャンバス上にプログラムから直接描画できます。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-libraries">
+<div class="sec-tag">コアコンセプト</div>
+<h2>デザインライブラリ (Design Libraries)</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/core-concepts/design-libraries" target="_blank">Design Libraries</a></p>
+
+<p><code>.lib.pen</code> 形式で保存された共通のデザインシステムを複数プロジェクト間で共有・インポートできます。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="shortcuts">
+<div class="sec-tag">コアコンセプト</div>
+<h2>主要ショートカット一覧</h2>
+<table class="tbl">
+  <tr><th>操作</th><th>Mac</th><th>Windows / Linux</th></tr>
+  <tr><td>選択ツール (Select)</td><td><kbd>V</kbd></td><td><kbd>V</kbd></td></tr>
+  <tr><td>フレーム作成 (Frame)</td><td><kbd>F</kbd></td><td><kbd>F</kbd></td></tr>
+  <tr><td>矩形作成 (Rectangle)</td><td><kbd>R</kbd></td><td><kbd>R</kbd></td></tr>
+  <tr><td>テキスト作成 (Text)</td><td><kbd>T</kbd></td><td><kbd>T</kbd></td></tr>
+  <tr><td>AI アシスタント呼び出し</td><td><kbd>Cmd + K</kbd></td><td><kbd>Ctrl + K</kbd></td></tr>
+  <tr><td>キャンバス保存</td><td><kbd>Cmd + S</kbd></td><td><kbd>Ctrl + S</kbd></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- Design & Code -->
+<section id="design-to-code">
+<div class="sec-tag">デザイン & コード</div>
+<h2>デザイン ↔ コード同期</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/design-and-code/design-to-code" target="_blank">Design to Code</a></p>
+
+<p>キャンバスのノード構造から Tailwind CSS, React, Vue, HTML/CSS コンポーネントを即座に出力。逆に、既存のソースコードを読み込んでキャンバス上にビジュアルとして復元することも可能です。</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- Troubleshooting -->
+<section id="troubleshooting">
+<div class="sec-tag">トラブルシューティング</div>
+<h2>トラブルシューティング</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/troubleshooting" target="_blank">Troubleshooting</a></p>
+
+<ul>
+  <li><strong>MCP が接続されない:</strong> <code>claude</code> の CLI ログイン状態を確認し、エディタを再起動。</li>
+  <li><strong>キャンバスが表示されない:</strong> VS Code の GPU アクセラレーション設定を確認。</li>
+  <li><strong>変更が消えた:</strong> 現行バージョンでは自動保存がないため、必ず <kbd>Cmd/Ctrl + S</kbd> で明示的に保存してください。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- Developers -->
+<section id="pen-format">
+<div class="sec-tag">開発者仕様</div>
+<h2>.pen ファイルフォーマット仕様</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/for-developers/pen-format" target="_blank">The .pen Format</a></p>
+
+<pre><code>{
+  "version": 1,
+  "variables": {
+    "color": {
+      "primary": "#5b5bf6",
+      "background": "#ffffff"
+    }
+  },
+  "nodes": [
+    {
+      "id": "root-frame",
+      "type": "frame",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 800,
+      "children": [...]
+    }
+  ]
+}</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="pencil-cli">
+<div class="sec-tag">開発者仕様</div>
+<h2>pen.dev CLI & MCP ツール体系</h2>
+<p class="origin">原典: <a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">pen.dev CLI</a></p>
+
+<p>CLI（<code>@pen.dev/cli</code>）を利用したヘッドレス実行と、AI エージェントが呼び出す MCP ツール群：</p>
+<table class="tbl">
+  <tr><th>MCP ツール名</th><th>機能概要</th></tr>
+  <tr><td><code>execute</code></td><td>ノードの追加・更新・削除・移動・置換、変数の読み書き（<code>GetVariables</code> / <code>SetVariables</code>）</td></tr>
+  <tr><td><code>get_app_state</code></td><td>ドキュメント全体の構造・メタデータを取得</td></tr>
+  <tr><td><code>get_screenshot</code></td><td>指定ノードを PNG 画像としてレンダリング取得</td></tr>
+  <tr><td><code>export_nodes</code></td><td>ノードを PNG / JPEG / WebP / PDF 等でエクスポート</td></tr>
+  <tr><td><code>get_guidelines</code></td><td>デザインガイドラインとスタイル規約を取得</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>注記</strong>: 本ページは docs.pencil.dev 公式ドキュメントの最新仕様に基づいて作成された日本語リファレンスです。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

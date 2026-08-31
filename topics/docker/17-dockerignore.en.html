@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>17. .dockerignore Pitfall Avoidance Guide - Docker 35-Stage Mastery Column</title>
+<style>
+:root {
+  --accent: #0284c7;
+  --accent-light: #0ea5e9;
+  --accent-soft: #f0f9ff;
+  --accent-border: #bae6fd;
+  --ink: #0f172a;
+  --bg: #ffffff;
+  --bg-side: #f8fafc;
+  --bg-code: #0f172a;
+  --text: #1e293b;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --border-2: #cbd5e1;
+  --tip-bg: #f0fdf4;
+  --tip-border: #bbf7d0;
+  --warn-bg: #fffbeb;
+  --warn-border: #fde68a;
+  --note-bg: #f0f9ff;
+  --note-border: #bae6fd;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, "JetBrains Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.8; font-size: 15.5px; -webkit-font-smoothing: antialiased; }
+
+/* Top reading progress bar */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, #0ea5e9, #0284c7, #38bdf8);
+  z-index: 1000; transition: width 0.1s ease;
+}
+
+/* Topbar */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.menu-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
+  align-items: center; justify-content: center; font-size: 18px; color: var(--text-2);
+}
+.menu-toggle:hover { background: var(--bg-side); color: var(--ink); }
+
+.logo {
+  font-weight: 800; font-size: 16px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff;
+}
+.logo-badge {
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 2px 8px; border-radius: 99px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 13.5px; }
+.topbar-right a {
+  color: var(--text-2); text-decoration: none; font-weight: 500;
+  display: flex; align-items: center; gap: 4px; transition: color 0.15s;
+}
+.topbar-right a:hover { color: var(--accent); }
+
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 60px; left: 0; bottom: 0; width: 310px;
+  overflow-y: auto; background: var(--bg-side);
+  border-right: 1px solid var(--border); padding: 18px 14px 60px;
+  z-index: 90; transition: transform 0.25s ease;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+/* Sidebar search */
+.side-search-box { margin-bottom: 16px; position: relative; }
+.side-search-input {
+  width: 100%; padding: 8px 32px 8px 12px; border: 1px solid var(--border-2);
+  border-radius: 8px; font-size: 13px; font-family: var(--font);
+  background: #fff; color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.side-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15); }
+.side-search-icon {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-3); pointer-events: none;
+}
+
+/* Phase navigation groups */
+.nav-group { margin-bottom: 18px; }
+.nav-group-title {
+  font-size: 11.5px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px;
+  margin-bottom: 2px;
+}
+
+.nav-item {
+  display: flex; align-items: flex-start; padding: 8px 10px;
+  border-radius: 8px; color: var(--text-2); text-decoration: none;
+  font-size: 13.5px; margin-bottom: 1px; transition: all 0.15s; line-height: 1.45;
+}
+.nav-item:hover { background: var(--border); color: var(--ink); }
+.nav-item.on {
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; border-left: 3px solid var(--accent);
+}
+.nav-item .n {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  margin-right: 8px; flex: none; margin-top: 1px;
+}
+.nav-item.on .n { color: var(--accent); font-weight: 700; }
+
+/* Backdrop (mobile) */
+.sidebar-backdrop {
+  position: fixed; inset: 60px 0 0 0; background: rgba(15, 23, 42, 0.45);
+  z-index: 85; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
+
+/* Main content wrapper */
+.main-wrap {
+  margin-left: 310px; padding: 40px 48px 120px;
+  max-width: 960px; min-height: 100vh;
+}
+
+/* Chapter badge */
+.chapter-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 4px 10px; border-radius: 99px; margin-bottom: 16px;
+}
+
+h1 { font-size: 28px; font-weight: 800; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.5px; line-height: 1.35; }
+h2 { font-size: 20px; font-weight: 700; color: var(--ink); margin: 40px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 28px 0 14px; }
+p { margin-bottom: 16px; color: var(--text); }
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+ul, ol { margin: 0 0 20px 22px; }
+li { margin-bottom: 8px; color: var(--text); }
+strong { color: var(--ink); font-weight: 700; }
+
+/* Code blocks */
+code {
+  font-family: var(--mono); font-size: 85%; background: #f1f5f9;
+  color: #e11d48; padding: 2px 6px; border-radius: 4px;
+}
+pre {
+  position: relative; background: var(--bg-code); color: #e2e8f0;
+  padding: 20px; border-radius: var(--radius); overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; margin: 24px 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+
+/* Syntax highlighting */
+.bash-cmd { color: #38bdf8; font-weight: 600; }
+.bash-arg { color: #c084fc; }
+.bash-comment { color: #64748b; font-style: italic; }
+.bash-str { color: #a3e635; }
+
+/* Copy button */
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1; font-size: 11px; font-family: var(--font);
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  opacity: 0; transition: all 0.15s ease;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.copy-btn.copied { background: #16a34a; border-color: #22c55e; color: #fff; }
+
+/* Alerts */
+.alert {
+  padding: 18px 20px; border-radius: var(--radius); margin: 24px 0;
+  font-size: 14.5px; display: flex; gap: 14px; border: 1px solid var(--border);
+}
+.alert.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+.alert.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.alert.note { background: var(--note-bg); border-color: var(--note-border); }
+.alert .ic { font-size: 22px; flex: none; }
+.alert .tt { font-weight: 750; color: var(--ink); display: block; margin-bottom: 6px; font-size: 15.5px; }
+
+/* Step panels */
+.step-panel {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin: 28px 0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+.step-header {
+  background: var(--bg-side); padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-weight: 700; color: var(--ink); font-size: 15px; display: flex; align-items: center; gap: 8px;
+}
+.step-body { padding: 20px; }
+
+/* Trouble rescue box */
+.trouble-box {
+  background: #fff5f5; border: 1px dashed #fca5a5; border-radius: var(--radius);
+  padding: 22px; margin: 32px 0;
+}
+.trouble-title {
+  color: #dc2626; font-weight: 800; font-size: 16.5px;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.trouble-item { margin-bottom: 14px; }
+.trouble-item:last-child { margin-bottom: 0; }
+.trouble-item .q { font-weight: 700; color: var(--ink); margin-bottom: 4px; font-size: 14.5px; }
+.trouble-item .a { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+
+/* Mermaid chart container */
+.mermaid-box {
+  display: flex; justify-content: center; margin: 28px 0;
+  background: #f8fafc; border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); overflow-x: auto;
+}
+
+/* Page navigation */
+.page-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border);
+}
+.page-nav-link {
+  display: flex; flex-direction: column; padding: 14px 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; transition: all 0.15s ease; flex: 1; max-width: 48%;
+  background: #fff;
+}
+.page-nav-link:hover {
+  border-color: var(--accent); background: var(--accent-soft);
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+.page-nav-link .dir { font-size: 11.5px; color: var(--text-3); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
+.page-nav-link .title { font-size: 14.5px; font-weight: 700; color: var(--accent); }
+.page-nav-link.next { text-align: right; margin-left: auto; }
+
+/* Keyboard hints */
+.keyboard-hints {
+  margin-top: 30px; text-align: center; font-size: 12px; color: var(--text-3);
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.kbd {
+  background: #f1f5f9; border: 1px solid var(--border-2); border-radius: 4px;
+  padding: 1px 6px; font-family: var(--mono); font-size: 11px; color: var(--text-2);
+}
+
+/* Back to top */
+.back-to-top {
+  position: fixed; bottom: 30px; right: 30px; width: 42px; height: 42px;
+  background: #fff; border: 1px solid var(--border-2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-2); cursor: pointer; opacity: 0;
+  pointer-events: none; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  z-index: 80;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .menu-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); width: 290px; }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }
+  .main-wrap { margin-left: 0; padding: 30px 20px 100px; }
+  .logo-badge { display: none; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+  .page-nav-link.next { text-align: left; }
+}
+</style>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+</script>
+<script src="../../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">☰</button>
+    <a href="01-intro.en.html" class="logo">
+      <div class="logo-icon">🐳</div>
+      <span>Docker 35-Stage Mastery Column</span>
+      <span class="logo-badge">Illustrated Deep Dive</span>
+    </a>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../../index.en.html"><span>←</span> Back to Knowledge Base</a>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="side-search-box">
+    <input type="text" class="side-search-input" id="sideSearch" placeholder="🔍 Quick filter 35 chapters..." autocomplete="off">
+    <span class="side-search-icon">⌘K</span>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💡 Phase 1: Concept Icebreaking</div>
+    <a class="nav-item" href="01-intro.en.html"><span class="n">01.</span><span>Prologue: The Classic Dilemma</span></a>
+    <a class="nav-item" href="02-what-is-docker.en.html"><span class="n">02.</span><span>Demystifying Docker with Moving</span></a>
+    <a class="nav-item" href="03-vm-vs-container.en.html"><span class="n">03.</span><span>Dimensional Strike: VM vs Containers</span></a>
+    <a class="nav-item" href="04-core-components.en.html"><span class="n">04.</span><span>Illustrated Three Musketeers</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
+    <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passkey</span></a>
+    <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Mirror Acceleration: Faster Pulls</span></a>
+    <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secret of the First Line of Magic</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
+    <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Run an Nginx Site in Detached</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life & Death (State Machine)</span></a>
+    <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Breaking In: Stepping Inside Container</span></a>
+    <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: How to Inspect Logs</span></a>
+    <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Shackles: Prevent OOM Crashes</span></a>
+    <a class="nav-item" href="14-healthcheck.en.html"><span class="n">14.</span><span>Health Checks: Container Self-Diagnosis</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">📦 Phase 4: Image Customization</div>
+    <a class="nav-item" href="15-why-dockerfile.en.html"><span class="n">15.</span><span>Farewell to Manual Setup</span></a>
+    <a class="nav-item" href="16-dockerfile-syntax.en.html"><span class="n">16.</span><span>Dockerfile Syntax Comprehensive Guide</span></a>
+    <a class="nav-item on" href="17-dockerignore.en.html"><span class="n">17.</span><span>.dockerignore Pitfall Avoidance</span></a>
+    <a class="nav-item" href="18-build-practice.en.html"><span class="n">18.</span><span>Hands-on Packaging Web Project</span></a>
+    <a class="nav-item" href="19-layer-caching.en.html"><span class="n">19.</span><span>Illustrated: Layer Caching Magic</span></a>
+    <a class="nav-item" href="20-frontend-deploy.en.html"><span class="n">20.</span><span>Gracefully Deploying Vue/React</span></a>
+    <a class="nav-item" href="21-multi-stage.en.html"><span class="n">21.</span><span>Ultimate Diet: Multi-Stage Builds</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+    <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Named Volumes</span></a>
+    <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
+    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup & Restore</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Quest: Bridge vs Host</span></a>
+    <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Goodbye IPs</span></a>
+    <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
+    <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
+    <a class="nav-item" href="30-compose-up-part1.en.html"><span class="n">30.</span><span>The Ultimate Battle 1: Web + Cache</span></a>
+    <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>The Ultimate Battle 2: Microservices</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
+    <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>System Cleanup: Freeing Space</span></a>
+    <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Graduation Red Line: Never Root</span></a>
+    <a class="nav-item" href="35-cicd-concept.en.html"><span class="n">35.</span><span>Epilogue: Automated CI/CD Pipelines</span></a>
+  </div>
+</aside>
+
+<main class="main-wrap">
+  <div class="chapter-badge">🐳 Phase: Image Customization · Lesson 17 / 35</div>
+  <h1>17. .dockerignore Pitfall Avoidance Guide</h1>
+<p>Here is a cautionary horror story: On his very first day at the company, Xiao Ming confidently ran <code>docker build -t myapp .</code> and stepped away to grab a cup of water. Returning to his desk, the terminal was still scrolling furiously with the status line: <code>Sending build context to Docker daemon  12.5GB</code>. Xiao Ming was completely flabbergasted: "My project source code is only 5MB, how on earth did it upload 12 gigabytes?"</p>
+<p>Upon investigation, it turned out his project directory contained an untracked <code>temp/</code> folder full of video media and a 10GB bloated <code>node_modules</code> folder—all streamed into the Docker build engine! This is the brutal cost of building without a <code>.dockerignore</code> file.</p>
+
+<h2>1. What is Build Context?</h2>
+<p>When you execute <code>docker build -t xxx .</code>, the trailing dot <code>.</code> designates the build context directory. Because Docker follows a Client/Server architecture (the CLI you type in is the client, and the daemon running in the background is the server), the client archives this entire directory and streams it to the Docker engine before building begins.</p>
+<p>If you do not filter it, Docker sends your <code>.git</code> repository history, local test logs, and massive dependency caches, leading to:</p>
+<ol>
+  <li><strong>Sluggish Builds:</strong> Streaming gigabytes across processes takes substantial time.</li>
+  <li><strong>Bloated Images:</strong> Resulting images balloon in size unnecessarily.</li>
+  <li><strong>Critical Security Risks:</strong> Unintentionally copying <code>.env</code> credentials or private SSH keys into public image registries completely exposes sensitive secrets.</li>
+</ol>
+
+<h2>2. The Savior Arrives: .dockerignore</h2>
+<p>It functions identically to Git's <code>.gitignore</code>. Simply create a <code>.dockerignore</code> file in the same directory as your Dockerfile and list patterns to exclude.</p>
+
+<div class="step-panel">
+  <div class="step-header">📝 Production .dockerignore Templates for Major Runtimes</div>
+  <div class="step-body">
+    <h3>🟢 Node.js / Frontend Projects</h3>
+<pre>node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+.env
+.git/
+.vscode/
+</pre>
+    
+    <h3>🐍 Python Projects</h3>
+<pre>__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.pytest_cache/
+.env
+.git/
+</pre>
+
+    <h3>☕ Java Projects</h3>
+<pre>target/
+*.class
+.mvn/
+.idea/
+*.log
+.git/
+</pre>
+  </div>
+</div>
+
+<h2>3. Syntax Breakdown: Wildcards and Inversion</h2>
+<p>The <code>.dockerignore</code> file supports standard pattern matching rules:</p>
+<ul>
+  <li><code>*.log</code>: Excludes all files ending in <code>.log</code>.</li>
+  <li><code>temp?</code>: Matches <code>temp1</code> or <code>tempa</code> (the question mark matches exactly one character).</li>
+  <li><code>**/*.md</code>: Excludes markdown files across all directory levels.</li>
+  <li><code>!README.md</code>: <strong>The exclamation mark inverts the rule (whitelist)</strong>. Even if preceding lines exclude all <code>*.md</code> files, this ensures <code>README.md</code> is explicitly retained.</li>
+  <li><code># This is a comment</code>: Lines beginning with a hash are treated as comments.</li>
+</ul>
+
+<h2>4. Witnessing the Magic: Before & After</h2>
+<div class="alert note">
+  <span class="ic">📊</span>
+  <div>
+    <span class="tt">Before .dockerignore:</span>
+    <pre>
+$ docker build -t bad-app .
+Sending build context to Docker daemon  850.5MB
+Step 1/5 : FROM node:18
+...
+(Build time: 45 seconds)</pre>
+    
+    <span class="tt">After .dockerignore:</span>
+    <pre>
+$ docker build -t good-app .
+Sending build context to Docker daemon  2.15MB
+Step 1/5 : FROM node:18
+...
+(Build time: 2 seconds)</pre>
+  </div>
+</div>
+
+<div class="alert tip">
+  <span class="ic">💡</span>
+  <div>
+    <span class="tt">Pro Tips: Force Rebuild Without Cache</span>
+    <p>Occasionally, you modify application files, but Docker assumes nothing changed and reuses cached layers. In addition to checking <code>.dockerignore</code>, you can append <code>--no-cache</code> to force a clean build:<br>
+    <code>docker build --no-cache -t myapp .</code></p>
+  </div>
+</div>
+
+<div class="trouble-box">
+  <div class="trouble-title">🚨 Pitfall Rescue Room</div>
+  <div class="trouble-item">
+    <div class="q">Q1: Why do I get "COPY failed: file not found"?</div>
+    <div class="a">A: 99% of the time, the required file was accidentally excluded by your <code>.dockerignore</code>! For example, your Dockerfile specifies <code>COPY config/setting.json .</code>, but your ignore file lists <code>config/</code>. Because the file never reached the build context payload, Docker cannot locate it.</div>
+  </div>
+  <div class="trouble-item">
+    <div class="q">Q2: Why was my database password in .env leaked?</div>
+    <div class="a">A: During <code>COPY . .</code>, the <code>.env</code> file was copied into the image and subsequently pushed to Docker Hub. Anyone pulling the image can inspect filesystem layers and extract credentials. <strong>Always add sensitive local configuration files to .dockerignore!</strong> Runtime secrets should be passed via environment variables (<code>-e</code>) or secret management systems.</div>
+  </div>
+</div>
+  
+<div class="page-nav">
+  <a href="16-dockerfile-syntax.en.html" class="page-nav-link prev"><span class="dir">← Previous Lesson</span><span class="title">16. Dockerfile Syntax Comprehensive Guide</span></a>
+  <a href="18-build-practice.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">18. Hands-on Packaging Web Project</span></a>
+</div>
+
+<div class="keyboard-hints">
+  <span>💡 Shortcuts: Press <span class="kbd">←</span> Prev</span>
+  <span>Press <span class="kbd">→</span> Next</span>
+  <span>Press <span class="kbd">/</span> Focus Search</span>
+</div>
+</main>
+
+<button class="back-to-top" id="backToTop" title="Back to Top">↑</button>
+
+<script>
+// 1. Reading progress bar
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+  
+  // Back to top button visibility
+  const btt = document.getElementById('backToTop');
+  if (winScroll > 300) {
+    btt.classList.add('show');
+  } else {
+    btt.classList.remove('show');
+  }
+});
+
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// 2. Mobile sidebar toggle
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function toggleSidebar() {
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('active');
+}
+
+menuToggle.addEventListener('click', toggleSidebar);
+backdrop.addEventListener('click', toggleSidebar);
+
+// 3. Code copy functionality
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.innerText = 'Copy';
+  btn.addEventListener('click', () => {
+    const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// 4. Sidebar instant filtering search
+const searchInput = document.getElementById('sideSearch');
+searchInput.addEventListener('input', (e) => {
+  const val = e.target.value.toLowerCase().trim();
+  const navItems = document.querySelectorAll('.sidebar .nav-item');
+  const groups = document.querySelectorAll('.sidebar .nav-group');
+  
+  navItems.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    if (!val || text.includes(val)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  // If all items in a group are hidden, hide group header
+  groups.forEach(group => {
+    const visibleChildren = group.querySelectorAll('.nav-item:not([style*="display: none"])');
+    if (visibleChildren.length === 0 && val) {
+      group.style.display = 'none';
+    } else {
+      group.style.display = 'block';
+    }
+  });
+});
+
+// 5. Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  
+  if (e.key === 'ArrowLeft') {
+    const prevLink = document.querySelector('.page-nav-link.prev');
+    if (prevLink) prevLink.click();
+  } else if (e.key === 'ArrowRight') {
+    const nextLink = document.querySelector('.page-nav-link.next');
+    if (nextLink) nextLink.click();
+  } else if (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="스택 트레이스 첫 줄을 읽는 것부터 프로덕션 난치성 결함 근본 해결, AI 에이전트를 통한 크래시 트리아지까지——Android Crash/ANR/Native 크래시 원인 분석, 20+ 빈출 도감, traces.txt 분석, adb 툴체인, Play Console/Firebase 연동, 커스텀 crash-triage AI 스킬 완벽 가이드.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 안정성 가이드 · Crash & ANR 조사·근본 해결 × AI 실전">
+<meta property="og:description" content="스택 트레이스 첫 줄을 읽는 것부터 프로덕션 난치성 결함 근본 해결, AI 에이전트를 통한 크래시 트리아지까지——Android Crash/ANR/Native 크래시 원인 분석, 20+ 빈출 도감, traces.txt 분석, adb 툴체인, Play Console/Firebase 연동, 커스텀 crash-triage AI 스킬 완벽 가이드.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/android-crash-anr.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Android 안정성 가이드 · Crash & ANR 조사·근본 해결 × AI 실전</title>
+<style>
+:root{
+  --accent:#65a30d; --accent-2:#84cc16; --accent-soft:#f7fee7;
+  --ink:#141a0d; --bg:#ffffff; --bg-side:#fcfdfa; --bg-code:#11170b;
+  --text:#222919; --text-2:#5c684e; --text-3:#8f9c7f;
+  --border:#edf2e4; --border-2:#dce5ce;
+  --tip-bg:#f0fdf4; --warn-bg:#fffbeb; --note-bg:#f7fee7;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.side-filter{position:relative;margin-bottom:14px;padding:0 4px}
+.side-filter input{width:100%;padding:6px 28px 6px 10px;border:1px solid var(--border-2);border-radius:8px;
+  font-size:12.5px;background:#fff;color:var(--text);outline:none;font-family:inherit}
+.side-filter input:focus{border-color:var(--accent)}
+.side-filter .fk{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;
+  color:var(--text-3);background:var(--border);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f1f7e6;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f4faea;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(101,163,13,.38),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(132,204,22,.20),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#bef264;font-weight:600;background:rgba(101,163,13,.16);
+  border:1px solid rgba(101,163,13,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:35px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a3e635,#d9f99d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c6d9ab;max-width:760px;line-height:1.75}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9eb580}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3);line-height:1.5;display:block;margin-top:4px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#d9f0a8}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbf7d0}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f3fae8;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4d7c0f}
+pre{background:var(--bg-code);color:#e2edd0;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7d9663}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f9fbf6}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f8fbf5}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 16px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbf7d0}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f7fee7;color:#4d7c0f}
+.pill.b{background:#fefce8;color:#a16207}
+.pill.c{background:#eff6ff;color:#1d4ed8}
+.pill.d{background:#faf5ff;color:#7e22ce}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(20,26,13,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:27px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">⚡</span>Android 안정성 가이드<span class="sub">Crash · ANR · AI</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증일: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 필터링…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">입문 · 전체 지도 그리기</div>
+    <a href="#overview"><span class="no">00</span>전체 개요와 방법론</a>
+    <a href="#read-crash"><span class="no">01</span>제1강: 크래시 로그 올바르게 읽기</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">실전 · 유형별 격파</div>
+    <a href="#crash-catalog"><span class="no">02</span>빈출 Crash 도감과 근본 해결</a>
+    <a href="#anr"><span class="no">03</span>ANR 심층 해부</a>
+    <a href="#native"><span class="no">04</span>Native Crash 분석</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">도구함</div>
+    <a href="#toolbox"><span class="no">05</span>분석 툴체인과 명령어 빠른 참조</a>
+    <a href="#consoles"><span class="no">06</span>Play Console과 Firebase</a>
+    <a href="#device-data"><span class="no">07</span>실기기 데이터 추출</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">심화 · 난치성 결함과 AI</div>
+    <a href="#detective"><span class="no">08</span>난치성 버그 추적 기법</a>
+    <a href="#ai-method"><span class="no">09</span>AI 연동: 방법론과 프롬프트</a>
+    <a href="#ai-workflow"><span class="no">10</span>AI 워크플로우 & 오리지널 Skill</a>
+    <a href="#governance"><span class="no">11</span>품질 거버넌스 체계와 리소스</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🤖 Android 안정성 엔지니어링 · 입문부터 마스터까지 · 공식 문서 검증: 2026-08-17</div>
+  <h1>Crash & ANR 분석·근본 해결<br><span class="grad">× AI 생산성 실전</span></h1>
+  <p class="lead">스택 트레이스의 첫 줄을 읽는 것부터 프로덕션 난치성 결함의 근본 치료, 나아가 AI 에이전트에게 크래시 티켓 트리아지(Triage)를 위임하기까지의 완벽한 성장 로드맵. 크래시 도감, ANR 해부, Native C/C++ 크래시, 툴체인 빠른 참조, Play Console / Firebase 콘솔 활용법, 실기기 데이터 추출, 그리고 본 지식 베이스 오리지널 crash-triage AI 스킬까지 전면 정리했습니다.</p>
+  <div class="meta">
+    <span>전 12장 단계별 구성</span><span>20+ 빈출 크래시 도감</span><span>전 툴체인 명령어 빠른 참조</span><span>즉시 활용 가능한 오리지널 AI Skill</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1.09%</b><span>Google Play 크래시율 레드라인: 초과 시 스토어 전체 노출 제한 (공식 기준)</span></div>
+  <div class="stat"><b>0.47%</b><span>Google Play ANR율 레드라인 (단일 기기 모델 기준은 8%)</span></div>
+  <div class="stat"><b>5 초</b><span>입력 이벤트 무응답 시 ANR 발생 — 메인 스레드의 생사 기준선</span></div>
+  <div class="stat"><b>5 단계</b><span>현상 보존 → 특정 → 원인 규명 → 근본 해결 → 재발 방지 (핵심 골격)</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">입문 00</div>
+<h2>전체 개요와 방법론</h2>
+
+<h3 data-reveal>안정성 문제의 분류 지도</h3>
+<p>Android의 '비정상 종료/멈춤' 현상은 크게 4가지로 분류되며, 각 유형별 증거, 도구, 대처법이 완전히 다릅니다:</p>
+<table class="tbl">
+  <tr><th>유형</th><th>현상</th><th>본질</th><th>핵심 증거</th><th>상세 섹션</th></tr>
+  <tr><td><span class="pill c">Java/Kotlin Crash</span></td><td>앱이 즉시 강제 종료됨</td><td>미처리 예외가 콜스택을 거슬러 올라가 메인 스레드 최상단에 도달</td><td>logcat 내 <code>FATAL EXCEPTION</code> 스택 트레이스</td><td><a href="#crash-catalog">02장</a></td></tr>
+  <tr><td><span class="pill c">Native Crash</span></td><td>앱이 즉시 강제 종료됨</td><td>C/C++ 레이어의 비정상 시그널 (SIGSEGV, SIGABRT 등)</td><td>tombstone 파일, <code>*** ***</code> 섹션 로그</td><td><a href="#native">04장</a></td></tr>
+  <tr><td><span class="pill b">ANR</span></td><td>화면이 멈추고 시스템 '응답 없음' 팝업 발생</td><td>메인 스레드가 블로킹되어 제한 시간 내에 중요 이벤트를 처리하지 못함</td><td><code>/data/anr/</code> 디렉토리의 traces.txt, Vitals ANR 리포트</td><td><a href="#anr">03장</a></td></tr>
+  <tr><td><span class="pill d">시스템 프로세스 강제 종료</span></td><td>사용 중 홈 화면으로 튕기거나 백그라운드에서 조용히 사라짐</td><td>Low Memory Killer(LMK)에 의한 OOM kill, 백그라운드 제한, 사용자 강제 중지</td><td><code>ApplicationExitInfo</code>의 프로세스 종료 이유 코드</td><td><a href="#detective">08장</a></td></tr>
+</table>
+<div class="callout note"><b class="t">초보자가 가장 많이 하는 오판</b>'크래시 로그가 없는 강제 종료'의 대부분은 일반 Crash가 아닙니다. Native 크래시(tombstone 확인)이거나 시스템 프로세스 kill(ExitInfo 확인)입니다. 먼저 정확히 분류한 뒤 조사에 들어가야 합니다. 지도가 틀리면 모든 노력이 허사가 됩니다.</div>
+
+<h3 data-reveal>왜 해결해야 하는가: 플랫폼의 엄격한 레드라인</h3>
+<p>Google Play의 Android Vitals에서는 '불량 동작 기준치(Bad behavior threshold)'를 규정하고 있습니다. <strong>사용자 감지 비정상 종료율 ≥ 1.09%</strong> 또는 <strong>사용자 감지 ANR 비율 ≥ 0.47%</strong>(전체 기기 기준)에 도달하면 앱은 <strong>스토어 전체에서 검색 노출도가 강등</strong>됩니다. 특정 단일 기기 모델에서 ≥ 8%에 달할 경우 해당 기기에서의 노출 제한과 함께 스토어 등록정보에 경고가 표시될 수 있습니다. 안정성은 단순한 기술적 완결성을 넘어 비즈니스 유입과 직결되는 핵심 지표입니다.</p>
+
+<h3 data-reveal>전 과정을 관통하는 5단계 해결 방법론</h3>
+<ol class="steps">
+  <li><strong>현상 보존</strong> —— 가장 신뢰할 수 있는 원시 증거 확보: 완전한 스택 트레이스 / trace / 로그, 기기 정보, OS 버전, 앱 버전, 재현 절차. 불명확한 구두 보고만으로 작업을 시작하지 말 것.</li>
+  <li><strong>특정</strong> —— 스택 트레이스에서 '제1현장' 식별: 내 비즈니스 코드가 어느 프레임에 있는가? 난독화된 경우 먼저 mapping.txt로 복원(retrace)할 것.</li>
+  <li><strong>원인 규명</strong> —— "왜 이 코드 라인에 도달했는가"에 답하기: null은 어디서 유입되었는가? 락은 누가 쥐고 있는가? 메모리는 누가 차지했는가? 추측이 아닌 도구로 증거를 확보할 것.</li>
+  <li><strong>근본 해결</strong> —— 안이하게 try-catch로 예외를 덮어버리지 말고 상태와 불변식을 바로잡을 것. 수정 후에는 재현 테스트나 카나리 지표로 수정 사실을 증명할 것.</li>
+  <li><strong>재발 방지</strong> —— 동류 문제에 대한 방어선 구축: lint 규칙, StrictMode, CI 체크, 모니터링 알림. 하나의 버그를 잡았으면 동종 결함 전체를 박멸할 것.</li>
+</ol>
+<div class="callout tip"><b class="t">추천 성장 경로</b>입문자: 00→01→02 (NPE 수준의 일상 크래시 자력 해결); 중급자: 03→07 (ANR 및 프로덕션 티켓 격파); 고급자: 08장 이후 (재현 불가 난치성 버그 규명 및 AI 워크플로우 내재화).</div>
+
+<h3 data-reveal>당직 엔지니어: 발생 첫 30분 행동 체크리스트</h3>
+<table class="tbl">
+  <tr><th>시간</th><th>필수 완료 작업</th><th>산출물 / 의사결정</th></tr>
+  <tr><td>0~5분</td><td>버전, 발생 시각, 영향 유저 수, 시작 즉시 크래시 여부/핵심 결제 플로우 중단 여부 확인. 관련 카나리 배포 일시 중지</td><td>심각도 등급, 대응 TF/담당자 지정. 긴급 기준 도달 시 즉시 롤백 또는 Feature flag OFF</td></tr>
+  <tr><td>5~10분</td><td>4대 분류 지도에 따라 트리아지: Java/Kotlin, Native, ANR, 시스템 프로세스 kill</td><td>단일 핵심 증거 선택: stack / tombstone / trace / ExitInfo</td></tr>
+  <tr><td>10~20분</td><td>3건 이상의 이벤트 샘플을 추출하여 mapping/Build ID 대조. 버전, OS, 기기, 국가, 커스텀 키 공통점 분석</td><td>'확정된 사실'과 '미확인 항목' 목록 작성. 단일 샘플을 전체 원인으로 속단 금지</td></tr>
+  <tr><td>20~30분</td><td>반증 가능한 가설을 최대 3개 수립하고 각 가설에 검증 명령, 담당자, 기한 설정</td><td>카나리 지속/중지/롤백 결정. 팀에 미검증된 수정 약속 대신 1차 팩트 리포트 공유</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="read-crash">
+<div class="sec-tag">입문 01</div>
+<h2>제1강: 크래시 로그 올바르게 읽기</h2>
+
+<h3 data-reveal>스택 트레이스 해부: 4가지 정보로 즉시 특정</h3>
+<pre><code>FATAL EXCEPTION: main                                    <span class="c">← ① 어느 스레드에서 터졌는가 (main = 메인 스레드)</span>
+Process: com.example.app, PID: 12345
+java.lang.NullPointerException:                          <span class="c">← ② 예외 유형: 02장 도감에서 대조할 키워드</span>
+    Attempt to invoke virtual method 'int java.lang.String.length()'
+    on a null object reference                           <span class="c">← ③ 상세 메시지: 어떤 객체의 어떤 작업인가</span>
+  at com.example.app.OrderDetail.bind(OrderDetail.kt:87) <span class="c">← ④ 제1현장: 내 패키지명의 최상단 프레임</span>
+  at com.example.app.OrderAdapter.onBindViewHolder(OrderAdapter.kt:42)
+  at androidx.recyclerview.widget.RecyclerView...        <span class="c">← 프레임워크 프레임: 보통 통과했을 뿐</span>
+Caused by: ...                                           <span class="c">← Caused by가 있다면 근본 원인은 가장 맨 밑에 있음!</span></code></pre>
+<ul>
+  <li><strong>스택 읽는 순서</strong>: 예외 타입과 메시지 확인 → 위에서 아래로 스캔하여 <strong>내 패키지에 속한 첫 번째 코드 라인</strong> 찾기 → <code>Caused by</code> 체인이 있다면 맨 밑바닥이 근본 원인;</li>
+  <li><strong>난독화된 스택 복원</strong>: 프로덕션 스택이 <code>a.b.c(Unknown Source)</code>인 경우, R8 mapping.txt를 사용하여 복원: <code>retrace mapping.txt stacktrace.txt</code>;</li>
+  <li><strong>현장 캡처 3대 원칙</strong>: <code>adb logcat -b crash</code>로 크래시 버퍼만 필터링; <code>adb logcat --pid $(adb shell pidof -s 패키지명)</code>로 내 프로세스만 추적; 놓쳤다면 <code>adb bugreport</code>로 사후 덤프 추출.</li>
+</ul>
+
+<h3 data-reveal>재현 환경 구축: 조사의 절반을 좌우하는 공정</h3>
+<pre><code><span class="c"># 3대 스트레스 테스트 및 프로세스 재생성 시뮬레이션 명령어</span>
+adb shell settings put global always_finish_activities 1   <span class="c"># 액티비티를 유지하지 않음: 프로세스 재생성 크래시 유발</span>
+adb shell monkey -p com.example.app --throttle 300 -v 5000 <span class="c"># monkey 랜덤 이벤트 스트림 스트레스 테스트</span>
+<span class="c"># 개발자 옵션 → 화면 회전 / 다크 모드 / 언어 전환으로 구성 변경(Configuration Change) 결함 유발</span></code></pre>
+<div class="callout warn"><b class="t">초보자를 위한 가드레일</b>"전역 try-catch로 예외를 덮어버리는 것"으로 크래시를 '해결'해서는 안 됩니다. 이는 크래시를 감지하기 훨씬 어려운 데이터 불일치나 상태 이상 버그로 변질시킬 뿐입니다.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="crash-catalog">
+<div class="sec-tag">실전 02</div>
+<h2>빈출 Crash 도감과 근본 해결</h2>
+
+<table class="tbl">
+  <tr><th>예외 / 대표 시그널</th><th>발생 원인과 조사 방법</th><th>근본 해결과 재발 방지</th></tr>
+  <tr><td><strong>NullPointerException</strong><br><code>... on a null object reference</code></td><td>Java null 체크 누락. Kotlin에서는 Java platform type(<code>String!</code>), 역직렬화 필드 누락, <code>lateinit</code> 미초기화가 주원인.</td><td>Java/네트워크/DB 경계에서 즉시 명시적 nullable 또는 도메인 모델로 변환. <code>?.</code> 남발로 필수 데이터를 암묵적으로 뭉개지 말 것.</td></tr>
+  <tr><td><strong>IndexOutOfBoundsException</strong><br><code>Index: 5, Size: 5</code></td><td>인덱스와 컬렉션이 동일 스냅샷이 아님. 비동기 페이징, DiffUtil, 병행 수정 후 과거 position 참조.</td><td>RecyclerView 클릭 시 <code>bindingAdapterPosition</code>을 재조회하고 <code>NO_POSITION</code> 체크. 불변 리스트 제출.</td></tr>
+  <tr><td><strong>ClassCastException</strong><br><code>X cannot be cast to Y</code></td><td>Bundle/Intent, JSON, 복수 타입 리스트에서 타입 불일치.</td><td>Type-safe Navigation args, sealed interface, 명시적 직렬화 스키마 사용.</td></tr>
+  <tr><td><strong>IllegalStateException</strong><br><code>Fragment not attached</code><br><code>after onSaveInstanceState</code></td><td>Fragment가 detach된 후 Context 접근. 상태 저장 후 트랜잭션 커밋.</td><td>적절한 라이프사이클 내에서만 UI 접근. <code>commitAllowingStateLoss</code>는 상태 유실이 무해한 경우에만 제한적 사용.</td></tr>
+  <tr><td><strong>WindowManager.BadTokenException</strong><br><code>Unable to add window</code></td><td>Activity가 finishing/destroyed 상태일 때 Dialog 표시.</td><td>UI 이벤트는 현재 화면에서 소비. 근본 해결은 비동기 작업의 라이프사이클 연동 취소.</td></tr>
+  <tr><td><strong>ConcurrentModificationException</strong></td><td>컬렉션을 순회하는 도중 동일/타 스레드에서 수정.</td><td>단일 스레드 귀속, 불변 스냅샷, 동행 컬렉션(ConcurrentHashMap) 활용.</td></tr>
+  <tr><td><strong>ClassNotFoundException / NoSuchMethodError</strong></td><td>R8에 의한 리플렉션 대상 삭제, Dynamic Feature 미설치, 라이브러리 바이너리 충돌.</td><td>Proguard/R8 keep 규칙 정확히 명시. 릴리스 빌드 스모크 테스트 필수.</td></tr>
+  <tr><td><strong>SecurityException</strong></td><td>런타임 권한 누락, Android 12+ exported 미설정, 백그라운드 서비스 시작 제한.</td><td>Target SDK 권한 상태 머신 구축, Activity Result API 사용.</td></tr>
+  <tr><td><strong>TransactionTooLargeException</strong></td><td>Binder 공유 버퍼 초과 (1MB 제한). 대형 Bundle, Intent, SavedState.</td><td>ID만 전달하고 대형 객체는 DB/Repository에 영속화.</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>Java heap space</code></td><td>Bitmap 누수, 정적 캐시 비대화, Context 메모리 누수.</td><td>LeakCanary로 참조 체인 절단, 이미지 적정 해상도 다운샘플링, LRU 캐시 상한 설정.</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>pthread_create failed</code></td><td>Java 힙 고갈이 아니라 프로세스 스레드 수 상한 초과.</td><td>상한이 있는 공용 스레드 풀 사용, 무제한 <code>Thread { ... }</code> 생성 금지.</td></tr>
+  <tr><td><strong>EMFILE / too many open files</strong></td><td>파일 디스크립터(fd) 고갈. Cursor, 소켓, 파일 미해제.</td><td>모든 Cursor와 스트림을 <code>use { ... }</code>로 안전하게 닫기.</td></tr>
+  <tr><td><strong>ForegroundServiceStartNotAllowedException</strong><br><code>android.app</code>, API 31+</td><td>앱이 백그라운드 상태일 때 포그라운드 서비스를 시작하려 시도함.</td><td>백그라운드 작업은 <code>WorkManager</code>에 위임, 앱이 포그라운드에 있을 때만 서비스 시작.</td></tr>
+  <tr><td><strong>MissingForegroundServiceTypeException</strong><br><code>android.app</code>, API 34+</td><td><code>startForeground()</code> 호출 시 manifest에 <code>foregroundServiceType</code> 미선언.</td><td>manifest의 <code>&lt;service&gt;</code>에 명시적 타입(location, dataSync 등) 선언 및 런타임 권한 획득.</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="anr">
+<div class="sec-tag">실전 03</div>
+<h2>ANR 심층 해부: 메인 스레드 블로킹의 8대 원인</h2>
+
+<h3 data-reveal>타임아웃 유형과 기준선</h3>
+<table class="tbl">
+  <tr><th>유형</th><th>AOSP 기본 타임아웃</th><th>첫 번째 점검 사항</th></tr>
+  <tr><td>Input dispatching</td><td><strong>5 초</strong></td><td>main 스레드가 연산 중인지, 락/Binder를 대기하고 있는지</td></tr>
+  <tr><td>Broadcast</td><td>포그라운드 10초 / 백그라운드 60초 (Android 14+ CPU 부하시 <strong>20/120초</strong>)</td><td><code>onReceive</code>에서 무거운 I/O 실행 여부, <code>goAsync()</code> 미종료 여부</td></tr>
+  <tr><td>Execute service</td><td>포그라운드 서비스 20초 / 백그라운드 200초</td><td><code>onCreate/onStartCommand</code> 내 블로킹 I/O 여부</td></tr>
+  <tr><td>ContentProvider</td><td>클라이언트 요청 타임아웃</td><td>원격 쿼리 지연, Binder 스레드 풀 고갈 여부</td></tr>
+</table>
+
+<h3 data-reveal>8대 빈출 근본 원인</h3>
+<ul>
+  <li><strong>메인 스레드 I/O</strong>: 파일, SQLite, DNS, 네트워크, 대형 JSON 역직렬화;</li>
+  <li><strong>SharedPreferences commit()</strong>: <code>commit()</code>은 동기 디스크 쓰기. <code>apply()</code>도 Activity 전환 시 QueuedWork에서 대기하여 ANR 유발 가능 → <strong>DataStore 전환 권장</strong>;</li>
+  <li><strong>락 경합 / 데드락</strong>: main 스레드가 백그라운드 스레드가 쥐고 있는 락을 기다리고, 그 스레드가 다시 main을 기다림;</li>
+  <li><strong>동기 Binder 블로킹</strong>: <code>BinderProxy.transactNative</code>에서 멈춤. system_server나 타 프로세스 병목;</li>
+  <li><strong>브로드캐스트/서비스 내 무거운 작업</strong>: <code>onReceive</code>에서 긴 작업 수행;</li>
+  <li><strong>레이아웃 폭풍</strong>: 과도한 중첩, 잦은 requestLayout, Jetpack Compose의 무한 Recomposition;</li>
+  <li><strong>GC 스래싱 (GC Thrashing)</strong>: 짧은 시간 대량 메모리 할당으로 메인 스레드가 빈번히 Stop-The-World 정지;</li>
+  <li><strong>CPU 기아 (CPU Starvation)</strong>: 백그라운드 스레드들이 CPU 100%를 점유하여 main 스레드가 스케줄링되지 못함.</li>
+</ul>
+
+<h3 data-reveal>traces.txt 분석 3단계</h3>
+<ol class="steps">
+  <li><code>"main" prio=5 tid=1 ...</code>을 찾아 <strong>state=BLOCKED, WAITING, NATIVE, RUNNABLE</strong> 확인;</li>
+  <li><code>waiting to lock &lt;0x1234567&gt; held by thread 12</code>가 보이면 thread 12번의 스택을 찾아 락을 쥐고 있는 원인 파악;</li>
+  <li>CPU 사용량에서 <code>TOTAL: 98% (80% user + 18% kernel)</code>이면 CPU 경합, <code>TOTAL: 5%</code>이면 I/O나 락 대기 블로킹으로 판정.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="native">
+<div class="sec-tag">실전 04</div>
+<h2>Native C/C++ Crash 추적</h2>
+
+<h3 data-reveal>핵심 시그널 도감</h3>
+<table class="tbl">
+  <tr><th>시그널</th><th>의미</th><th>대표 원인</th></tr>
+  <tr><td><code>SIGSEGV (11)</code></td><td>Segmentation Fault</td><td>NULL 포인터 역참조 (SEGV_MAPERR), 와일드 포인터, 메모리 해제 후 사용 (Use-After-Free)</td></tr>
+  <tr><td><code>SIGABRT (6)</code></td><td>Abort</td><td><code>assert()</code> 실패, C++ 미처리 예외 (std::terminate), JNI CheckJNI 실패</td></tr>
+  <tr><td><code>SIGBUS (7)</code></td><td>Bus Error</td><td>정렬되지 않은 메모리 접근 (Alignment fault), mmap 파일 잘림</td></tr>
+  <tr><td><code>SIGFPE (8)</code></td><td>Floating Point Exception</td><td>정수 0 나누기 (Divide by zero)</td></tr>
+</table>
+
+<h3 data-reveal>심볼 복원 (Symbolication) 툴체인</h3>
+<pre><code><span class="c"># 방법 1: ndk-stack을 이용한 실시간 logcat 심볼 복원</span>
+adb logcat | $ANDROID_NDK_HOME/ndk-stack -sym /path/to/obj/local/arm64-v8a
+
+<span class="c"># 방법 2: tombstone 파일에서 주소 단독 역추적 (llvm-addr2line)</span>
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-addr2line -C -f -e libnative.so 0x000000000004a2c0</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="toolbox">
+<div class="sec-tag">도구 05</div>
+<h2>분석 툴체인과 명령어 빠른 참조</h2>
+
+<table class="tbl">
+  <tr><th>도구 / 명령어</th><th>주요 용도</th><th>핵심 구문 예시</th></tr>
+  <tr><td><code>adb logcat</code></td><td>로그 수집 및 크래시 추적</td><td><code>adb logcat -b crash -v time</code></td></tr>
+  <tr><td><code>adb bugreport</code></td><td>전체 시스템 상태 진단 덤프</td><td><code>adb bugreport bugreport.zip</code></td></tr>
+  <tr><td><code>dumpsys activity</code></td><td>액티비티 스택 및 프로세스 상태</td><td><code>adb shell dumpsys activity top</code></td></tr>
+  <tr><td><code>dumpsys meminfo</code></td><td>프로세스별 상세 메모리 풋프린트</td><td><code>adb shell dumpsys meminfo com.example.app</code></td></tr>
+  <tr><td><code>Perfetto / Systrace</code></td><td>시스템 레벨 스레드 스케줄링 트레이스</td><td><code>record_android_trace -o trace.perfetto -t 10s sched am wm</code></td></tr>
+  <tr><td><code>LeakCanary</code></td><td>Java/Kotlin 메모리 누수 자동 감지</td><td>디버그 빌드 의존성 추가로 Activity/Fragment 누수 자동 리포트</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="consoles">
+<div class="sec-tag">콘솔 06</div>
+<h2>Play Console과 Firebase Crashlytics 연동</h2>
+
+<h3 data-reveal>Play Console Vitals vs Firebase Crashlytics</h3>
+<table class="tbl">
+  <tr><th>비교 항목</th><th>Google Play Console (Android Vitals)</th><th>Firebase Crashlytics</th></tr>
+  <tr><td><strong>데이터 수집 범위</strong></td><td>Google Play 서비스를 사용하는 전체 설치 기기 (사용자 동의 기반)</td><td>앱에 Crashlytics SDK가 탑재된 활성 세션</td></tr>
+  <tr><td><strong>지표 기준</strong></td><td><strong>사용자 감지 비정상 종료율 (1.09%) / ANR율 (0.47%)</strong></td><td>Crash-free users / Crash-free sessions</td></tr>
+  <tr><td><strong>실시간성</strong></td><td>T+1일 지연 집계</td><td>실시간 스트리밍 (수초~수분 내 집계)</td></tr>
+  <tr><td><strong>디버깅 메타데이터</strong></td><td>스택 트레이스 및 기기 OS 요약</td><td><strong>Custom Keys, Log, User ID, Breadcrumbs 상세 지원</strong></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="device-data">
+<div class="sec-tag">추출 07</div>
+<h2>실기기 데이터 추출 가이드</h2>
+
+<pre><code><span class="c"># ANR traces 파일 추출</span>
+adb pull /data/anr/traces.txt ./anr_traces.txt
+<span class="c"># Android 11+ 최신 tombstone 추출</span>
+adb pull /data/tombstones/ ./tombstones/
+
+<span class="c"># 힙 덤프 수집 및 변환</span>
+adb shell am dumpheap com.example.app /data/local/tmp/heap.hprof
+adb pull /data/local/tmp/heap.hprof ./heap.hprof
+hprof-conv heap.hprof heap_converted.hprof   <span class="c"># Android Studio 또는 MAT에서 분석 가능하도록 변환</span></code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="detective">
+<div class="sec-tag">심화 08</div>
+<h2>난치성·간헐적 결함 추적 기법</h2>
+
+<h3 data-reveal>간헐적 버그(Heisenbug) 공략 4대 무기</h3>
+<ol class="steps">
+  <li><strong>ApplicationExitInfo 활용 (Android 11+)</strong>: 앱 시작 시 <code>activityManager.getHistoricalProcessExitReasons()</code>를 호출하여 직전 프로세스가 REASON_CRASH_NATIVE, REASON_LOW_MEMORY, REASON_ANR 중 무엇으로 죽었는지 서버에 로깅;</li>
+  <li><strong>Custom Breadcrumbs 궤적 기록</strong>: 화면 이동, 네트워크 요청 시작/완료, DB 쓰기 직전 단계들을 Crashlytics 링버퍼에 기록하여 크래시 직전 10초간의 행동 경로 역추적;</li>
+  <li><strong>StrictMode 강화</strong>: 개발/QA 빌드에서 메인 스레드 디스크/네트워크 접근 및 Activity 누수 발생 시 즉시 감지;</li>
+  <li><strong>Monkey 스트레스 테스트 자동화</strong>: CI 파이프라인에서 매일 밤 10만 회 무작위 터치 주입.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-method">
+<div class="sec-tag">AI 09</div>
+<h2>AI 연동: 분석 기법 및 프롬프트 설계</h2>
+
+<p>AI에게 무작정 "이 에러 고쳐줘"라고 묻는 것은 환각을 부릅니다. **크래시 컨텍스트 번들(Crash Context Bundle)**을 구조화하여 전달해야 합니다.</p>
+
+<pre><code>【Android 크래시 트리아지 요청】
+1. 스택 트레이스 전문 (mapping 복원 완료):
+[스택 트레이스 붙여넣기]
+
+2. 메타데이터:
+- App Version: 3.4.1 (Build 3410)
+- OS Version: Android 14 (API 34)
+- Device: Galaxy S24 (SM-S921N)
+- 발생 시점: 백그라운드 전환 후 5분 뒤 복귀 시
+
+3. 관련 소스 코드 (제1현장 주변 ±20줄):
+[관련 코드 스니펫]
+
+요구사항:
+1. 가장 유력한 근본 원인 가설 3가지를 확률순으로 제시;
+2. 각 가설을 증명하거나 반증하기 위한 최소 재현 실험 / 로그 확인 방법 제시;
+3. try-catch로 예외를 숨기지 않는 근본적인 상태 수정 코드 제시;
+4. 동류 결함을 방지하기 위한 Lint 또는 아키텍처 규칙 제안.</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-workflow">
+<div class="sec-tag">AI 10</div>
+<h2>AI 워크플로우 & 오리지널 crash-triage Skill</h2>
+
+<p>Claude Code 또는 Codex에 마운트하여 사용할 수 있는 전용 <code>crash-triage</code> 스킬 표준 정의:</p>
+
+<pre><code><span class="c"># .claude/skills/crash-triage/SKILL.md (또는 .codex/skills/)</span>
+---
+name: crash-triage
+description: Android Crash 및 ANR 로그를 분석하여 근본 원인을 진단하고 수정안을 제시하는 전용 스킬
+---
+
+당신은 Android 시스템 안정성 수석 엔지니어입니다.
+사용자가 크래시 로그나 ANR trace를 제공하면 다음 표준 SOP에 따라 분석하십시오:
+1. Crash 분류 (Java/Kotlin, Native, ANR, LMK) 판정
+2. R8 난독화 복원 여부 확인 및 제1현장 프레임 식별
+3. 안이한 try-catch 래핑 금지 — 데이터 불변식 및 라이프사이클 수정안 제시
+4. 회귀 테스트 코드 작성 및 재발 방지 체크리스트 출력</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="governance">
+<div class="sec-tag">거버넌스 11</div>
+<h2>품질 거버넌스 체계와 리소스</h2>
+
+<h3 data-reveal>안정성 수호 3대 방어선</h3>
+<ol class="steps">
+  <li><strong>개발 단계 (Shift-Left)</strong>: StrictMode 전면 활성화, LeakCanary 연동, Kotlin Non-null 엄격화;</li>
+  <li><strong>CI 파이프라인</strong>: R8 릴리스 빌드 스모크 테스트, Room 마이그레이션 테스트, Monkey 자동화;</li>
+  <li><strong>배포 및 런타임</strong>: 1% → 5% → 20% 단계적 카나리 배포, Vitals 지표 실시간 알림, 자동 롤백 기준 수립.</li>
+</ol>
+
+<h3 data-reveal>추천 리소스</h3>
+<table class="tbl">
+  <tr><th>리소스</th><th>링크</th><th>설명</th></tr>
+  <tr><td><strong>Android Vitals 공식 문서</strong></td><td><a href="https://developer.android.com/topic/performance/vitals" target="_blank">developer.android.com/topic/performance/vitals</a></td><td>스토어 기준치 및 코어 메트릭 공식 가이드</td></tr>
+  <tr><td><strong>Perfetto 공식 포털</strong></td><td><a href="https://perfetto.dev/" target="_blank">perfetto.dev</a></td><td>차세대 시스템 레벨 성능 및 트레이스 분석 도구</td></tr>
+  <tr><td><strong>본 지식 베이스 연계 주제</strong></td><td><a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a> · <a href="claude-code-guide.ko.html">Claude Code 가이드</a> · <a href="codex-guide.ko.html">Codex 가이드</a></td><td>AI 기반 디버깅 및 에이전트 협업 체계</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>안내</strong>: 본 가이드는 Android AOSP 공식 문서 및 Google Play 정책(2026-08 기준)을 바탕으로 작성되었습니다. 타깃 SDK 및 제조사 OS 커스텀에 따라 일부 세부 동작이 상이할 수 있습니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

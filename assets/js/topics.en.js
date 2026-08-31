@@ -61,52 +61,52 @@ const PATHS = [
     icon: "🌱", color: "#0d9373", title: "Getting Started",
     desc: "From understanding what AI can do to installing tools and running your first task",
     steps: [
-      { label: "What AI Can Do · Overview & Mindset", href: "topics/ai-leverage-guide.html", note: "Build awareness: scenarios, boundaries, and 7 core mindsets" },
-      { label: "Prompts & Context Engineering", href: "topics/prompt-context-engineering.html", note: "Speak effectively for output: 7 techniques + 12 templates + 6 cases" },
+      { label: "What AI Can Do · Overview & Mindset", href: "topics/ai-leverage-guide.en.html", note: "Build awareness: scenarios, boundaries, and 7 core mindsets" },
+      { label: "Prompts & Context Engineering", href: "topics/prompt-context-engineering.en.html", note: "Speak effectively for output: 7 techniques + 12 templates + 6 cases" },
       { label: "stormzhang System Tutorial (External)", href: "https://coding.stormzhang.ai/", note: "92 beginner tutorials, install your first tool", ext: true },
-      { label: "Claude Code Guide · Setup & Config", href: "topics/claude-code-guide.html#setup", note: "Commands, permissions, and templates to get started" },
-      { label: "Environment First-Aid Manual (Bookmark)", href: "topics/env-auth-clinic.html", note: "30-second self-rescue when login fails" }
+      { label: "Claude Code Guide · Setup & Config", href: "topics/claude-code-guide.en.html#setup", note: "Commands, permissions, and templates to get started" },
+      { label: "Environment First-Aid Manual (Bookmark)", href: "topics/env-auth-clinic.en.html", note: "30-second self-rescue when login fails" }
     ]
   },
   {
     icon: "⚙️", color: "#d9634a", title: "Tool Mastery",
     desc: "Use Claude Code and Codex at a professional level with dual-agent collaboration",
     steps: [
-      { label: "Claude Code Guide · Practical Edition", href: "topics/claude-code-guide.html", note: "5 golden rules → 8 major scenarios" },
-      { label: "Codex Guide · CLI × IDE × Cloud", href: "topics/codex-guide.html", note: "Sandbox approvals, cloud tasks, dual-agent collaboration" },
-      { label: "pen.dev × Claude Code Practice", href: "topics/pencil-claude-code-best-practices.html", note: "Complete pipeline from design to code" },
-      { label: "AI × UI Design Collaboration (New)", href: "topics/ai-ui-design-collab.html", note: "Figma + pen.dev + Material 3 + Visual Regression, Android end-to-end" },
-      { label: "Context Engineering & Anti-Patterns (Core)", href: "topics/prompt-context-engineering.html#context", note: "Attention budget, long-task strategies, safety & cost, identifying bad practices" }
+      { label: "Claude Code Guide · Practical Edition", href: "topics/claude-code-guide.en.html", note: "5 golden rules → 8 major scenarios" },
+      { label: "Codex Guide · CLI × IDE × Cloud", href: "topics/codex-guide.en.html", note: "Sandbox approvals, cloud tasks, dual-agent collaboration" },
+      { label: "pen.dev × Claude Code Practice", href: "topics/pencil-claude-code-best-practices.en.html", note: "Complete pipeline from design to code" },
+      { label: "AI × UI Design Collaboration (New)", href: "topics/ai-ui-design-collab.en.html", note: "Figma + pen.dev + Material 3 + Visual Regression, Android end-to-end" },
+      { label: "Context Engineering & Anti-Patterns (Core)", href: "topics/prompt-context-engineering.en.html#context", note: "Attention budget, long-task strategies, safety & cost, identifying bad practices" }
     ]
   },
   {
     icon: "🛠️", color: "#a16207", title: "Ops Foundation",
     desc: "Graduate from SaaS hosting, independently manage servers/deployment/networking for small-medium projects",
     steps: [
-      { label: "Servers / Deployment / Networking 101", href: "topics/ops-basics.html", note: "5-stage roadmap + 3 modules on Linux/Networking/Deploy (24 lessons) + 5 troubleshooting tables" },
-      { label: "R2 Start: Set up a VPS", href: "topics/ops-basics.html#stage2", note: "1C1G Ubuntu + SSH + Nginx" },
-      { label: "R3 Networking: Domain + DNS + HTTPS", href: "topics/ops-basics.html#stage3", note: "yourdomain.dev + Green Lock + Reverse Proxy" },
-      { label: "R4 Deployment: git push auto deploy", href: "topics/ops-basics.html#stage4", note: "systemd + GitHub Actions" },
-      { label: "R5 Containers: Docker from Scratch", href: "topics/docker/01-intro.html", note: "Say goodbye to environment issues, multi-page hands-on practice" },
-      { label: "Appendix A: 30-sec Troubleshooting", href: "topics/ops-basics.html#appA", note: "Bookmark: 502/SSH/Disk Full/OOM/SSL Expired" }
+      { label: "Servers / Deployment / Networking 101", href: "topics/ops-basics.en.html", note: "5-stage roadmap + 3 modules on Linux/Networking/Deploy (24 lessons) + 5 troubleshooting tables" },
+      { label: "R2 Start: Set up a VPS", href: "topics/ops-basics.en.html#stage2", note: "1C1G Ubuntu + SSH + Nginx" },
+      { label: "R3 Networking: Domain + DNS + HTTPS", href: "topics/ops-basics.en.html#stage3", note: "yourdomain.dev + Green Lock + Reverse Proxy" },
+      { label: "R4 Deployment: git push auto deploy", href: "topics/ops-basics.en.html#stage4", note: "systemd + GitHub Actions" },
+      { label: "R5 Containers: Docker from Scratch", href: "topics/docker/01-intro.en.html", note: "Say goodbye to environment issues, multi-page hands-on practice" },
+      { label: "Appendix A: 30-sec Troubleshooting", href: "topics/ops-basics.en.html#appA", note: "Bookmark: 502/SSH/Disk Full/OOM/SSL Expired" }
     ]
   },
   {
     icon: "🌐", color: "#1a73e8", title: "Full-Stack Ecosystem & Advanced",
     desc: "Master Google AI (Gemini/Antigravity), xAI (Grok/Grok Build), and cross-domain capability expansion",
     steps: [
-      { label: "Google AI Ecosystem Deep Dive", href: "topics/google-ai-ecosystem.html", note: "Gemini 2.5/3.0 + NotebookLM + Antigravity" },
-      { label: "xAI & Grok Ecosystem Master Guide", href: "topics/grok-ecosystem-guide.html", note: "Colossus Supercluster + Grok Build + Real-Time X" },
-      { label: "Antigravity Complete Guide", href: "topics/antigravity-usage.html", note: "CLI / IDE / SDK / Subagents / MCP Practice" },
-      { label: "AI Capability Expansion Guide", href: "topics/ai-capability-expansion.html", note: "5-step expansion engine + cross-domain mapping + solopreneur" },
-      { label: "Android Crash & ANR Fixes", href: "topics/android-crash-anr.html", note: "Crash/ANR catalog + original AI triage skill" }
+      { label: "Google AI Ecosystem Deep Dive", href: "topics/google-ai-ecosystem.en.html", note: "Gemini 2.5/3.0 + NotebookLM + Antigravity" },
+      { label: "xAI & Grok Ecosystem Master Guide", href: "topics/grok-ecosystem-guide.en.html", note: "Colossus Supercluster + Grok Build + Real-Time X" },
+      { label: "Antigravity Complete Guide", href: "topics/antigravity-usage.en.html", note: "CLI / IDE / SDK / Subagents / MCP Practice" },
+      { label: "AI Capability Expansion Guide", href: "topics/ai-capability-expansion.en.html", note: "5-step expansion engine + cross-domain mapping + solopreneur" },
+      { label: "Android Crash & ANR Fixes", href: "topics/android-crash-anr.en.html", note: "Crash/ANR catalog + original AI triage skill" }
     ]
   }
 ];
 
 const TOPICS = [
   {
-    href: "topics/pencil-docs-zh.html", icon: "📘", tag: "Design & Docs", color: "#5b5bf6",
+    href: "topics/pencil-docs-zh.en.html", icon: "📘", tag: "Design & Docs", color: "#5b5bf6",
     title: "pen.dev Official Docs · Complete Guide",
     desc: "Covers all 16 pages of docs.pencil.dev, including official videos and images, with links to the original text in each section.",
     keywords: "pencil design pen files components variables shortcuts installation activation import export cli canvas",
@@ -124,7 +124,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/pencil-claude-code-best-practices.html", icon: "⚡", tag: "Design & Docs", color: "#0ea5e9",
+    href: "topics/pencil-claude-code-best-practices.en.html", icon: "⚡", tag: "Design & Docs", color: "#0ea5e9",
     title: "pen.dev × Claude Code Best Practices",
     desc: "Aggregates 9+ sources: 4 core workflows, prompt templates, design system engineering, CI/CD, pitfalls, and real cases (with 16 screenshots).",
     keywords: "pencil claude workflow prompt design system pitfalls cases best practices",
@@ -138,7 +138,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/ai-ui-design-collab.html", icon: "🎨", tag: "Design & Docs", color: "#7c3aed",
+    href: "topics/ai-ui-design-collab.en.html", icon: "🎨", tag: "Design & Docs", color: "#7c3aed",
     title: "AI Coding Agents × UI Design Tools · Collaboration Panorama",
     desc: "pen.dev / Figma / Stitch / Galileo / v0 + Claude Code / Codex + Android Jetpack Compose Material 3: Tool map, 3 MCP channels, Android 5-step end-to-end pipeline, Design Token engineering, Paparazzi / Roborazzi visual regression, bi-directional sync, anti-patterns, and prompt library.",
     keywords: "figma pencil.dev stitch galileo v0 claude code codex mcp design token variables compose material3 theme android visual regression paparazzi roborazzi screenshots collaboration design system",
@@ -160,7 +160,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/claude-code-guide.html", icon: "⛏️", tag: "User Guide", color: "#d9634a",
+    href: "topics/claude-code-guide.en.html", icon: "⛏️", tag: "User Guide", color: "#d9634a",
     title: "Claude Code User Guide · Practical Edition",
     desc: "5 Golden Rules, 100+ command cheat sheet, 6 extension selections, 8 major scenario playbooks, permissions, security, and out-of-the-box template library.",
     keywords: "claude code commands shortcuts skills hooks mcp subagents context permissions config templates prompts claude.md slash commands",
@@ -179,7 +179,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/codex-guide.html", icon: "🟢", tag: "User Guide", color: "#0d9373",
+    href: "topics/codex-guide.en.html", icon: "🟢", tag: "User Guide", color: "#0d9373",
     title: "Codex User Guide · CLI × IDE × Cloud Comprehensive Handbook",
     desc: "OpenAI Coding Agent Panorama: 20+ subcommands and 40+ slash commands cheat sheet, sandbox & approval 3×3 matrix, 4 goal-oriented learning paths, selection prisms, 4-stage long task discipline, memory closeout loop, browser E2E acceptance, Issue-to-PR workflow, Skills/MCP, and dual-agent collaboration with Claude Code.",
     keywords: "codex openai sandbox approvals agents.md cloud commands collaboration gpt selection prisms learning paths four stages memory system e2e browser acceptance github issue pr tdd wsl performance tuning",
@@ -196,7 +196,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/env-auth-clinic.html", icon: "🚑", tag: "Troubleshooting", color: "#e11d48",
+    href: "topics/env-auth-clinic.en.html", icon: "🚑", tag: "Troubleshooting", color: "#e11d48",
     title: "AI CLI Env & Login First-Aid · Claude Code × Codex",
     desc: "Fix login errors, config conflicts, and machine-switching issues in one page: 30-second symptom triage, 5-layer diagnostic methodology + one-click health check script, dual-tool 5-category first-aid tables, 3 scenarios (shared PC, new PC, headless/CI), and 3-level universal reset solutions.",
     keywords: "login error environment variables switch computer multi-account shared subscription invalid api key 401 403 429 529 rate limit quota usage limit auth credentials reset fix troubleshoot diagnose keychain proxy ssh container ci token vs code windows node version case study credit balance wsl econnreset timeout",
@@ -213,7 +213,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/android-crash-anr.html", icon: "⚡", tag: "Troubleshooting", color: "#65a30d",
+    href: "topics/android-crash-anr.en.html", icon: "⚡", tag: "Troubleshooting", color: "#65a30d",
     title: "Android Crash & ANR Fixes × AI Efficiency",
     desc: "From beginner to expert: Crash catalog, ANR anatomy, Native crash triage, full toolchain, GP/Firebase console, tricky issue detective techniques, and AI triage workflow with original crash-triage skill.",
     keywords: "android anr crash stability firebase play console native stack trace logs triage",
@@ -228,7 +228,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/ai-leverage-guide.html", icon: "🧭", tag: "Efficiency Mindset", color: "#7c3aed",
+    href: "topics/ai-leverage-guide.en.html", icon: "🧭", tag: "Efficiency Mindset", color: "#7c3aed",
     title: "What AI Can Actually Do For You · Efficiency & Mindset",
     desc: "Aggregated web research: Capability boundary table, 8 major scenario ROI matrix, 5 paradigms (coding, writing, research, data automation, life), 3 tool selections, 7 sourced core mindsets, replicable case studies, and a learning roadmap for everyday people.",
     keywords: "what can ai do efficiency scenarios writing documentation weekly report research learning data analysis automation life mindset prompt pitfalls beginner learn ai choose tools comparison gemini chatgpt claude codex deep research vibe coding",
@@ -244,7 +244,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/prompt-context-engineering.html", icon: "🎯", tag: "Efficiency Mindset", color: "#0891b2",
+    href: "topics/prompt-context-engineering.en.html", icon: "🎯", tag: "Efficiency Mindset", color: "#0891b2",
     title: "Prompt & Context Engineering · From Technique to Mindset",
     desc: "Foundational discipline: 7 basic techniques (each with ❌/✅ contrast), multimodal & RAG feed strategies, 3-model prompt nuances, dynamic model routing state of the art, prompt injection & security defense, token economics & caching cost optimization, 6 full rewrite cases, 12 verbatim templates, iteration & versioning, anti-patterns, and layer assignment in CC/Codex.",
     keywords: "prompt context engineering few-shot cot chain of thought xml role prefill json structured outputs system prompt claude.md agents.md compression subagents templates hallucination eval anti-patterns attention multimodal vision rag citations gpt gemini model differences token economics caching cost injection security owasp cases versioning a/b testing model routing litellm routellm cascade",
@@ -262,7 +262,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/ai-capability-expansion.html", icon: "🧗", tag: "Efficiency Mindset", color: "#ea580c",
+    href: "topics/ai-capability-expansion.en.html", icon: "🧗", tag: "Efficiency Mindset", color: "#ea580c",
     title: "AI Capability Expansion Guide",
     desc: "Not about a specific tech stack, but a universal methodology to expand your technical boundaries using AI: Gap diagnosis → AI speed learning → Scaffold startup → Validation loop → Deepen & precipitate. Includes cross-domain mapping techniques and two end-to-end cases (Full-stack cross-platform / Tech indie dev).",
     keywords: "full-stack transition expansion boundary mobile android ios web backend server indie developer solopreneur one-person company learning method methodology cross-domain mapping",
@@ -275,7 +275,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/toolchain-changelog.html", icon: "📅", tag: "User Guide", color: "#b45309",
+    href: "topics/toolchain-changelog.en.html", icon: "📅", tag: "User Guide", color: "#b45309",
     title: "Toolchain Changelog · What Changed",
     desc: "Version updates for Claude Code and Codex, only including changes that affect usage habits: breaking changes indexed separately (check here first if issues occur after upgrading), behavior changes and new features categorized, monthly archives, with official sources and local check commands.",
     keywords: "update changes version changelog release notes upgrade breaking change new features deprecated migration opus 5 sonnet 5 gpt-5.6 subtask fork permission mode manual latest timing",
@@ -288,7 +288,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/ops-basics.html", icon: "🛠️", tag: "Ops Foundation", color: "#a16207",
+    href: "topics/ops-basics.en.html", icon: "🛠️", tag: "Ops Foundation", color: "#a16207",
     title: "Servers · Ops · Deployment · Network · Indie Dev 101",
     desc: "For indie devs who only used Vercel / Netlify / Cloudflare Pages to cross the DevOps wall: 5-stage roadmap + 3 modules (Linux/Network/Deploy) of 24 lessons (Network module is 13-lesson detailed edition: VPN/Ports/Localhost/NAT/HTTP3/IPv6), plus 5 troubleshooting 30-sec tables. After this, you can independently manage a medium project's server.",
     keywords: "server operations deployment network linux vps ssh systemd nginx reverse proxy https tls ssl certbot let's encrypt dns firewall ufw security group github actions ci cd process hosting ports package manager apt dnf apk permissions sudo chmod chown docker container keys env environment variables troubleshooting 502 504 ssh connection failed disk full oom ssl expired pitfalls indie developer full-stack basics 101 foundation",
@@ -318,7 +318,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/google-ai-ecosystem.html", icon: "🌐", tag: "Full-Stack Ecosystem", color: "#1a73e8",
+    href: "topics/google-ai-ecosystem.en.html", icon: "🌐", tag: "Full-Stack Ecosystem", color: "#1a73e8",
     title: "Google AI Ecosystem Deep Dive · Models to Agentic IDE",
     desc: "Latest comprehensive guide: Google Antigravity (CLI/2.0/IDE/SDK/Customizations/Sandbox) deep deconstruction + NotebookLM knowledge research + AI Studio 2M context + 5-step super pipeline best practices.",
     keywords: "google antigravity agy notebooklm ai studio gemini canvas sketch agents agentic cli ide sdk slash commands subagent planning mode sandbox python sdk source grounding 2m context podcast generation pipeline",
@@ -341,7 +341,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/antigravity-usage.html", icon: "🛸", tag: "Full-Stack Ecosystem", color: "#8b5cf6",
+    href: "topics/antigravity-usage.en.html", icon: "🛸", tag: "Full-Stack Ecosystem", color: "#8b5cf6",
     title: "Antigravity Complete Guide · CLI × IDE × SDK",
     desc: "Google Agentic programming infrastructure handbook: CLI subcommands, Agentic IDE interaction, .agents customizations, Subagents orchestration, MCP tool extensions, and sandbox defense in practice.",
     keywords: "antigravity agy ide cli sdk google gemini subagents mcp custom skill rule plugin sandbox bypass reactive wakeup",
@@ -360,7 +360,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/grok-ecosystem-guide.html", icon: "𝕏", tag: "Full-Stack Ecosystem", color: "#d97706",
+    href: "topics/grok-ecosystem-guide.en.html", icon: "𝕏", tag: "Full-Stack Ecosystem", color: "#d97706",
     title: "xAI & Grok Ecosystem Master Guide · Supercluster to Agentic Engineering",
     desc: "The most hardcore practical guide: Memphis Colossus 200k supercluster + Grok 3/4 reasoning matrix + Grok Build cloud sandbox IDE + Python/TS SDK structured outputs + Real-Time X Grounding + 10 industrial-grade Prompt templates.",
     keywords: "xai grok grok3 grok4 grokbuild build colossus x search grounding think deepsearch reasoning function calling prompt caching agent swarm memphis",
@@ -391,7 +391,7 @@ const TOPICS = [
     ]
   },
   {
-    href: "topics/docker/01-intro.html", icon: "🐳", tag: "Ops Foundation", color: "#0284c7",
+    href: "topics/docker/01-intro.en.html", icon: "🐳", tag: "Ops Foundation", color: "#0284c7",
     title: "Docker Zero-to-Hero Interactive Guide",
     desc: "From concept ice-breaking, the Three Musketeers, Dockerfile magic, data persistence to Compose microservices. Expanded to a 35-lesson in-depth illustrated column, holding your hand to eliminate errors.",
     keywords: "docker container image registry dockerfile compose deployment microservices environment basics zero-basis tutorial volume wsl2 network cgroups healthcheck multi-stage",

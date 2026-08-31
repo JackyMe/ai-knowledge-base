@@ -7,11 +7,12 @@
 <title>Page Not Found · AI Knowledge Base</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 <style>
-  :root{--ink:#0b1220;--text:#1f2430;--text-2:#5a6272;--text-3:#8b93a5;--border:#e7eaf0;--brand:#5b5bf6}
+  :root{--ink:#0b1220;--text:#1f2430;--text-2:#5a6272;--text-3:#8b93a5;--border:#e7eaf0;--border-2:#cbd5e1;--brand:#5b5bf6;--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Helvetica,Arial,sans-serif;}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  body{font-family:var(--font);
     color:var(--text);background:#f6f8fb;display:flex;align-items:center;justify-content:center;
-    min-height:100vh;padding:32px}
+    min-height:100vh;padding:32px;position:relative}
+  .lang-bar{position:absolute;top:24px;right:24px;}
   .card{max-width:560px;width:100%;border-radius:20px;overflow:hidden;color:#eaf1fb;
     background:radial-gradient(900px 380px at 85% -30%,rgba(14,165,233,.4),transparent 60%),
       radial-gradient(800px 380px at 0% 130%,rgba(91,91,246,.45),transparent 60%),var(--ink);
@@ -28,17 +29,25 @@
   a.ghost{background:rgba(255,255,255,.08);color:#eaf1fb;border:1px solid rgba(255,255,255,.16)}
   a.ghost:hover{background:rgba(255,255,255,.14)}
 </style>
-  <script src="./assets/js/i18n.js"></script>
+<script src="./assets/js/i18n.js"></script>
 </head>
 <body>
+<div class="lang-bar">
+  <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+</div>
 <div class="card">
   <div class="num">404</div>
-  <h1>This page could not be found</h1>
+  <h1>Page Not Found</h1>
   <p>The link may be broken or the topic path was changed. Try searching from the homepage, it's usually faster than guessing links.</p>
   <div class="actions">
-    <a class="btn primary" href="https://aidoc-zq.netlify.app/">Back to Home</a>
-    <a class="btn ghost" href="https://aidoc-zq.netlify.app/topics/claude-code-guide.html">Claude Code Guide</a>
-    <a class="btn ghost" href="https://aidoc-zq.netlify.app/topics/codex-guide.html">Codex Guide</a>
+    <a class="btn primary" href="index.en.html">Back to Home</a>
+    <a class="btn ghost" href="topics/claude-code-guide.en.html">Claude Code Guide</a>
+    <a class="btn ghost" href="topics/codex-guide.en.html">Codex Guide</a>
   </div>
 </div>
 </body>

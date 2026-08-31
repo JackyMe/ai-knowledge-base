@@ -198,13 +198,12 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">A×U</span>AI Coding Agents × UI Design<span class="sub">Maximum Efficiency</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label><a href="../index.en.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ Topic Center</a>&nbsp;&nbsp;As of 2026-08-05    <span>Verified 2026-08-17</span>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div><a href="../index.en.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ Topic Center</a>&nbsp;&nbsp;As of 2026-08-05    <span>Verified 2026-08-17</span>
   
 
 <div class="progress" id="prog"></div>
@@ -263,7 +262,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="stat"><b>3 Platforms</b><span>Android / iOS(SwiftUI)/ Web(Tailwind v4 + shadcn) quick ref</span></div>
 </div>
 
-<div class="callout warn"><b class="t">This page does not duplicate the existing pen.dev topic</b>We already have <a href="pencil-claude-code-best-practices.html">"pen.dev × Claude Code Best Practices"</a> diving deep into the pencil + Claude Code combo; this page has a broader vision: treating pencil as "one of the design tools", comparing Figma, Stitch, Galileo, v0, focusing on the <strong>unified pattern of AI coding agents consuming design</strong>, and landing on Android Jetpack Compose / Material 3. <strong>It is recommended to read both pages together</strong>.</div>
+<div class="callout warn"><b class="t">This page does not duplicate the existing pen.dev topic</b>We already have <a href="pencil-claude-code-best-practices.en.html">"pen.dev × Claude Code Best Practices"</a> diving deep into the pencil + Claude Code combo; this page has a broader vision: treating pencil as "one of the design tools", comparing Figma, Stitch, Galileo, v0, focusing on the <strong>unified pattern of AI coding agents consuming design</strong>, and landing on Android Jetpack Compose / Material 3. <strong>It is recommended to read both pages together</strong>.</div>
 
 <section id="intro">
 <div class="sec-tag">Introduction 00</div>
@@ -306,7 +305,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="card">
     <div class="name"><span class="icon">🎨</span>pen.dev (Pencil)</div>
     <div class="role">Design Canvas in IDE · Code Friendly</div>
-    <p>Vector canvas built directly into VS Code / Cursor / Antigravity, <code>.pen</code> files are JSON-based, Git-diffable, with a native MCP server, offering the shortest path for Claude Code / Codex to modify UI. We already have a <a href="pencil-claude-code-best-practices.html">dedicated topic</a>.</p>
+    <p>Vector canvas built directly into VS Code / Cursor / Antigravity, <code>.pen</code> files are JSON-based, Git-diffable, with a native MCP server, offering the shortest path for Claude Code / Codex to modify UI. We already have a <a href="pencil-claude-code-best-practices.en.html">dedicated topic</a>.</p>
     <div class="links"><a href="https://pencil.dev/" target="_blank">Website</a><a href="https://docs.pencil.dev/" target="_blank">Official Docs</a></div>
   </div>
 
@@ -377,7 +376,7 @@ claude mcp list
 <p>Codex can achieve the same using the <code>[mcp_servers.figma]</code> block in <code>config.toml</code> with <code>url = "https://mcp.figma.com/mcp"</code>.</p>
 
 <h4>② pen.dev MCP (Native, Local, Zero Cloud)</h4>
-<p>After installing the VS Code extension <code>highagency.pencildev</code>, pen.dev's built-in MCP service <strong>runs locally</strong>—design data doesn't leave the machine, suitable for privacy-sensitive scenarios. Once Claude Code / Codex sees <code>pencil</code> via <code>/mcp</code>, the toolset is more granular: read nodes, execute modifications, read variables, screenshots. See the <a href="pencil-claude-code-best-practices.html">pen.dev × Claude Code Topic</a> for details.</p>
+<p>After installing the VS Code extension <code>highagency.pencildev</code>, pen.dev's built-in MCP service <strong>runs locally</strong>—design data doesn't leave the machine, suitable for privacy-sensitive scenarios. Once Claude Code / Codex sees <code>pencil</code> via <code>/mcp</code>, the toolset is more granular: read nodes, execute modifications, read variables, screenshots. See the <a href="pencil-claude-code-best-practices.en.html">pen.dev × Claude Code Topic</a> for details.</p>
 
 <h4>③ Visual Channel (Fallback Anytime)</h4>
 <p>Without MCP, the most rudimentary yet universal approach is to directly feed design screenshots (or PDFs) to Claude Code, paired with prompts specifying "Generate Compose from the screenshot, use semantic naming from Material 3 ColorScheme for colors". <strong>Pixels can be grabbed, but Tokens cannot</strong>—so this step requires either supplementing with a Figma Variables export or accepting the risk that "the generated code colors won't match the brand colors".</p>
@@ -1134,7 +1133,7 @@ If any reader finds these in primary documentation, PRs are welcome.
 
 <h3 data-reveal>Official Documentation (Primary Sources)</h3>
 <ul>
-  <li><a href="https://docs.pencil.dev/" target="_blank">pen.dev Official Documentation</a> — Included in this repository as <a href="pencil-docs-zh.html">"pen.dev Documentation Chinese Version"</a></li>
+  <li><a href="https://docs.pencil.dev/" target="_blank">pen.dev Official Documentation</a> — Included in this repository as <a href="pencil-docs-zh.en.html">"pen.dev Documentation Chinese Version"</a></li>
   <li><a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">pen.dev AI Integration</a> — MCP integration, Claude Code / Codex workflows</li>
   <li><a href="https://github.com/figma/mcp-server-guide" target="_blank">Figma MCP Server Guide</a> — Installation, toolkits, Code Connect</li>
   <li><a href="https://help.figma.com/hc/en-us/sections/14506167395095-AI" target="_blank">Figma AI Capability Center</a></li>
@@ -1153,12 +1152,12 @@ If any reader finds these in primary documentation, PRs are welcome.
 
 <h3 data-reveal>Related Topics in this Repository (Cross-Reading)</h3>
 <ul>
-  <li><a href="pencil-claude-code-best-practices.html">pen.dev × Claude Code Best Practices</a> — Deep dive practical manual for this combination</li>
-  <li><a href="pencil-docs-zh.html">pen.dev Official Documentation Chinese Version</a> — Page-by-page translation</li>
-  <li><a href="claude-code-guide.html">Claude Code Usage Guide</a> — Commands, Skills, MCP general basics</li>
-  <li><a href="codex-guide.html">Codex Usage Guide</a> — OpenAI coding agent comparison</li>
-  <li><a href="android-crash-anr.html">Android Crash & ANR Root Cause Analysis</a> — Using AI to modify UI without affecting stability</li>
-  <li><a href="prompt-context-engineering.html">Prompt and Context Engineering</a> — The underlying methodology of all prompts on this page</li>
+  <li><a href="pencil-claude-code-best-practices.en.html">pen.dev × Claude Code Best Practices</a> — Deep dive practical manual for this combination</li>
+  <li><a href="pencil-docs-zh.en.html">pen.dev Official Documentation Chinese Version</a> — Page-by-page translation</li>
+  <li><a href="claude-code-guide.en.html">Claude Code Usage Guide</a> — Commands, Skills, MCP general basics</li>
+  <li><a href="codex-guide.en.html">Codex Usage Guide</a> — OpenAI coding agent comparison</li>
+  <li><a href="android-crash-anr.en.html">Android Crash & ANR Root Cause Analysis</a> — Using AI to modify UI without affecting stability</li>
+  <li><a href="prompt-context-engineering.en.html">Prompt and Context Engineering</a> — The underlying methodology of all prompts on this page</li>
 </ul>
 
 <div class="callout warn"><b class="t">Timeliness Statement</b>This page is compiled based on public materials as of 2026-08-05. Figma / pen.dev / Compose Material 3 / Paparazzi / Roborazzi are all iterating rapidly — refer to official documentation as the standard. <strong>If you see the verification date on this page is more than 1 month ago</strong>, please re-run token sync verification + check if Paparazzi baselines still match. Design tools and AI coding agents are sprinting; this is the destiny of this type of page.</div>

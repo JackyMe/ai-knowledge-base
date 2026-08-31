@@ -168,16 +168,15 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">📅</span>工具版本追踪<span class="sub">变化日志</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.html">◂ 主题中心</a>
     
-      <span>核对至 2026-08-25</span>
+      <span>核对至 2026-08-31</span>
    
 
 <div class="progress" id="prog"></div>
@@ -208,7 +207,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-08-25</div>
+  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-08-31</div>
   <h1>工具版本追踪<br><span class="grad">变了什么 · 要不要改习惯</span></h1>
   <p class="lead">AI 编程工具迭代太快,官方 changelog 又长又琐碎。这一页只做一件事:把 Claude Code 与 Codex 的版本变化<strong>筛成"跟你有关的"</strong>,标清楚哪些会让你的老习惯失效,哪些值得马上试。</p>
   <div class="meta">
@@ -295,6 +294,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <table class="tbl">
   <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>08-28</td><td>v2.1.251</td><td>🆕</td><td><strong>生命周期 Hooks 与远程流式输出</strong>:新增 <code>PreModelSwitch</code> 和 <code>PostModelSwitch</code>，支持远程客户端对子代理工具调用的流式输出，加强 <code>/usage</code> 的配额追踪显示。</td></tr>
+  <tr><td>08-24</td><td>v2.1.243</td><td>🆕</td><td><strong>瘦身与无密钥登录</strong>:通过 zstd 压缩将体积缩减至 ~75MB。新增 Anthropic Console 账号系统直接登录。支持 <code>modelPicker</code> 配置以及 Loops 开销追踪。</td></tr>
   <tr><td>08-17</td><td></td><td>🆕</td><td><strong><code>/design</code> Skill (预览版)</strong>:允许在终端将想法或截图直接生成可编辑的设计画板 (Artboards)。</td></tr>
   <tr><td>08-下旬</td><td></td><td>🆕</td><td><strong>Concise 输出风格</strong>:配置 <code>"outputStyle": "Concise"</code> 启用极简输出，剥离冗余的思考过程和客套话。</td></tr>
   <tr><td>08-下旬</td><td></td><td>🔄</td><td><strong>自动继续 (Auto-Continue)</strong>:会话因用量耗尽阻塞时，现在可在额度刷新后自动恢复执行。</td></tr>
@@ -317,14 +318,16 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>08-04</td><td>v2.1.221</td><td>🔧</td><td>修了一批生产环境很痛的 bug:<code>/usage</code> 对 MCP 用量错算、<code>SendMessage</code> 长摘要字符上限拒收、print mode 下 MCP 工具调用被当成字面文本、<code>EndConversation</code> 误用、Bedrock + Windows + 异常 <code>HOME</code> 变量认证失败等</td></tr>
 </table>
 
-<h3 data-reveal>Codex: 0.148.0 基础设施升级与安全更新</h3>
+<h3 data-reveal>Codex: 0.150.0 跨工具联动与基础设施升级</h3>
 <table class="tbl">
   <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>08-31</td><td></td><td>🔴</td><td><strong>GPT-5.4 与 5.4 mini 正式退役</strong>:请在此日期前迁移至 gpt-5.6-terra 或 gpt-5.6-luna</td></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Markdown 导出与无头会话分叉</strong>:新增 <code>/export</code> 命令导出 TUI 对话，以及 <code>codex exec fork</code> 支持无头分叉及归档。</td></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>成本预估与 Bedrock Runtime</strong>:支持基于 Token 的成本显示，引入 Bedrock Runtime 作为内置推理端点，支持 hooks 异步调用与 MCP 扩展。</td></tr>
-  <tr><td>08-11</td><td></td><td>🆕</td><td><strong>Linux 桌面版预览</strong>:ChatGPT 桌面版(含 Codex 协同)向 Linux (Ubuntu, Debian, Fedora) 开放</td></tr>
-  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>安全模型的自动代码评审策略收紧:对高风险模型启用更严的确认默认值，并在终端界面解释权限变化</td></tr>
+  <tr><td>08-31</td><td></td><td>🔴</td><td><strong>GPT-5.4 及其 mini 正式全面退役</strong>:请确保已迁移至 gpt-5.6-terra 或 gpt-5.6-luna。</td></tr>
+  <tr><td>08-26</td><td>0.150.0</td><td>🆕</td><td><strong>界面与策略</strong>:行内可视化新增 iOS 风格，废弃模糊的 "untrusted" 权限策略，全面收紧高危命令放行逻辑。</td></tr>
+  <tr><td>08-20</td><td>0.149.0</td><td>🆕</td><td><strong>Agents Dashboard 与 `/import`</strong>:加入任务管理大盘；支持从 Claude Code 和 Cursor 导入上下文与配置。</td></tr>
+  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Markdown 导出与无头 Fork</strong>:新增 <code>/export</code> 导出对话，<code>codex exec fork</code> 支持无头存档/恢复。</td></tr>
+  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>成本预估与 Bedrock</strong>:支持 Token 级别花费预估，引入 Bedrock Runtime 作为内建提供方。</td></tr>
+  <tr><td>08-11</td><td></td><td>🆕</td><td><strong>Linux 桌面版预览</strong>:集成了 Codex 的 ChatGPT 桌面应用现支持 Ubuntu、Debian、Fedora。</td></tr>
+  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>安全模型自动审查策略收紧:针对高危模型启用更严格的默认确认，并在终端 UI 解释权限变更</td></tr>
 </table>
 
 <h3 data-reveal>Codex: 0.146.0 是一次"特性密度很高"的稳定版</h3>

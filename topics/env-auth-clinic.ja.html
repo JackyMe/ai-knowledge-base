@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ログインエラー、設定競合、PC移行トラブルを1ページで解決：30秒で原因を特定する症状別早見表、5層診断メソッド＋ワンクリック診断スクリプト、2大ツール5分類応急処置表、PC共用／乗り換え／ヘッドレス3大シナリオ、3段階の万能リセット手順。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI CLI 環境＆ログイン緊急トラブル救急マニュアル · Claude Code × Codex · 2026.07">
+<meta property="og:description" content="ログインエラー、設定競合、PC移行トラブルを1ページで解決：30秒で原因を特定する症状別早見表、5層診断メソッド＋ワンクリック診断スクリプト、2大ツール5分類応急処置表、PC共用／乗り換え／ヘッドレス3大シナリオ、3段階の万能リセット手順。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/env-auth-clinic.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI CLI 環境＆ログイン緊急トラブル救急マニュアル · Claude Code × Codex · 2026.07</title>
+<style>
+:root{
+  --accent:#e11d48; --accent-2:#fb7185; --accent-soft:#fdeef2;
+  --ink:#180a10; --bg:#ffffff; --bg-side:#fdf9fa; --bg-code:#1b0f14;
+  --text:#27201f; --text-2:#645a5c; --text-3:#998e91;
+  --border:#f0e6e8; --border-2:#e3d5d8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#fdf2f5;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f8eef1;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f7ebef;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(225,29,72,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(251,113,133,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fda4af;font-weight:600;background:rgba(225,29,72,.16);
+  border:1px solid rgba(225,29,72,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fb7185,#fecdd3);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbb2ba;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a98f97}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#f6d3dc}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f8eef1;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#be123c}
+pre{background:var(--bg-code);color:#efdfe3;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#a08289}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fbf6f7}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fcf8f9}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fdeef2;color:#be123c}
+.pill.b{background:#e7f7f1;color:#0b7a5f}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+/* 5層診断カード */
+.layers{display:flex;flex-direction:column;gap:0;margin:20px 0 24px}
+.layer{display:flex;gap:16px;border:1px solid var(--border);background:#fff;padding:16px 20px;position:relative}
+.layer:first-child{border-radius:12px 12px 0 0}
+.layer:last-child{border-radius:0 0 12px 12px}
+.layer+.layer{border-top:none}
+.layer .ln{flex:none;width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);
+  font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+.layer b{display:block;font-size:14.5px;margin-bottom:2px}
+.layer p{font-size:13px;color:var(--text-2);margin:0}
+.layer code{font-size:12px}
+
+/* 症状別表の第1列強調 */
+.er td:first-child{font-weight:600;min-width:150px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(24,10,16,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🚑</span>環境＆ログイン救急マニュアル<span class="sub">Claude Code × Codex</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <span>公式ドキュメント照合 · 2026-07-18</span>
+    <span>2026-08-17まで検証済み</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="セクションを検索…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">方法論</div>
+    <a href="#overview"><span class="no">00</span>症状別早見表＋トラブルマップ</a>
+    <a href="#diagnose"><span class="no">01</span>5層診断法＋診断スクリプト</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Claude Code</div>
+    <a href="#claude-cred"><span class="no">02</span>認証メカニズムと優先順位</a>
+    <a href="#claude-config"><span class="no">03</span>settings.json 完全解説</a>
+    <a href="#claude-er"><span class="no">04</span>症状別応急処置表</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">Codex</div>
+    <a href="#codex-cred"><span class="no">05</span>認証メカニズムと保存形式</a>
+    <a href="#codex-config"><span class="no">06</span>config.toml 完全解説</a>
+    <a href="#codex-er"><span class="no">07</span>症状別応急処置表</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">シナリオ別実践</div>
+    <a href="#shared"><span class="no">08</span>共用PC／他人の設定引き継ぎ</a>
+    <a href="#machines"><span class="no">09</span>PC移行／マルチマシン同期</a>
+    <a href="#headless"><span class="no">10</span>SSH／コンテナ／CI（ヘッドレス）</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実戦ケーススタディ</div>
+    <a href="#cases"><span class="no">11</span>ケーススタディ：症状から根本原因へ</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">万能復旧手順</div>
+    <a href="#reset"><span class="no">12</span>万能復旧：3段階リセット</a>
+    <a href="#map"><span class="no">13</span>2大ツール比較対照表＆リソース</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🚑 ログインエラー · 設定の競合 · PC移行の失敗 —— この1ページで完全解決</div>
+  <h1>環境＆ログイン<br><span class="grad">緊急トラブル救急マニュアル</span></h1>
+  <p class="lead">「有料プランに加入しているのに、なぜかAPI課金される」「別のPCに移行したら動かなくなった」「他人が使っていたPCでログインしたら設定がめちゃくちゃになった」——これらは原因不明の怪奇現象ではなく、すべて5つのレイヤーのどこかに特定できます。本マニュアルでは、体系的な診断手法、2大ツールの症状別応急処置表、3大シナリオ別の処方箋、そして段階的な万能リセット手順を提供します。</p>
+  <div class="meta">
+    <span>5層診断法</span><span>ワンクリック診断スクリプト</span><span>3段階リセット手順</span><span>Claude Code × Codex 比較対照</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5 層</b><span>バイナリ → 環境変数 → 認証情報 → 設定 → ネットワーク。あらゆる症状はこのいずれかの層に帰着</span></div>
+  <div class="stat"><b>1 スクリプト</b><span>読み取り専用診断。30秒でマシンの全環境ステータスを可視化</span></div>
+  <div class="stat"><b>3 段階リセット</b><span>ソフトリセット → 認証リセット → 完全初期化。巻き込み被害を出さずに段階的復旧</span></div>
+  <div class="stat"><b>3 シナリオ</b><span>共用PC ／ PC移行 ／ ヘッドレス環境。ユースケース別の即効手順</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">方法論 00</div>
+<h2>症状別早見表 ＋ トラブルマップ</h2>
+
+<div class="callout tip"><b class="t">⚡ 3行で解決（まずこれを試す。問題の70%はここで解決）</b>
+① <code>env | grep -iE 'anthropic|openai'</code> でハイジャックしている環境変数を特定し、個別に <code>unset</code> する；<br>
+② クリーンに再ログイン：<code>/logout</code> の後に改めて <code>/login</code>（Codex の場合：<code>codex logout && codex login</code>）；<br>
+③ 認証情報の確認：<code>/status</code> / <code>codex login status</code> で、想定通りのアカウントおよびログイン方式になっているか確認する。これで直らない場合は、以下の早見表へ進む。</div>
+
+<h3 data-reveal>症状別早見表：30秒で問題を特定</h3>
+<table class="tbl er">
+  <tr><th>発生している問題</th><th>直行リンク</th></tr>
+  <tr><td>ログインできない ／ 繰り返しログインを求められる ／ Invalid API key</td><td><a href="#claude-er">Claude Code 応急処置表</a> · <a href="#codex-er">Codex 応急処置表</a></td></tr>
+  <tr><td>有料会員なのに API 従量課金される ／ 組織が無効化されていると表示される</td><td><a href="#claude-cred">認証優先順位</a>（根本原因の理解）→ <a href="#claude-er">応急処置表 · 課金と利用枠</a></td></tr>
+  <tr><td>usage limit / 429 / 529 と表示される</td><td>応急処置表 · 課金と利用枠（<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>）——環境問題ではありません。むやみに再インストールしないこと</td></tr>
+  <tr><td>他人が使っていたPCを引き継いだら設定がめちゃくちゃになった</td><td><a href="#shared">シナリオ A · 共用PC</a></td></tr>
+  <tr><td>新しいPCに買い替えたので、環境をそのまま移行したい</td><td><a href="#machines">シナリオ B · PC移行 / マルチマシン同期</a></td></tr>
+  <tr><td>SSH / コンテナ / CI でブラウザがない環境でログインしたい</td><td><a href="#headless">シナリオ C · ヘッドレス環境</a></td></tr>
+  <tr><td>設定を変更したのに反映されない ／ 社用PCの設定がロックされている</td><td>応急処置表 · 設定関連（<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>）</td></tr>
+  <tr><td>社内プロキシ / イントラネット：TLS エラー、ダウンロード失敗</td><td>応急処置表 · ネットワークとプロキシ（<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>）</td></tr>
+  <tr><td>コマンドが見つからない ／ バージョンがおかしい ／ 更新しても変わらない</td><td>応急処置表 · インストールとバージョン（<a href="#claude-er">CC</a> / <a href="#codex-er">Codex</a>）</td></tr>
+  <tr><td>どこが壊れているか分からないので、システム全体を点検したい</td><td><a href="#diagnose">01 · 5層診断法 ＋ 診断スクリプト</a></td></tr>
+  <tr><td>実際の完全なトラブルシューティングの流れを見たい</td><td><a href="#cases">11 · 実戦ケーススタディ</a>——4つの実例から症状と根本原因を追跡</td></tr>
+  <tr><td>すべて試したがダメだった。安全にすべてリセットしたい</td><td><a href="#reset">12 · 万能復旧：3段階リセット</a></td></tr>
+</table>
+
+<h3 data-reveal>トラブルマップ：すべての環境問題は4つの根本原因に集約される</h3>
+<p>Claude Code と Codex の「環境問題」は多種多様に見えますが、分解すると<strong>4つの根本原因</strong>しかありません。原因を正確に把握すれば、以降の全セクションで迷わず特定・修復できます。</p>
+
+<table class="tbl">
+  <tr><th>根本原因</th><th>典型的な症状</th><th>なぜ発生するのか</th></tr>
+  <tr><td><strong>① 複数のインストール経路の競合</strong></td><td>バージョンが勝手に新旧入れ替わる、更新しても反映されない、コマンドの挙動がおかしい</td><td>ネイティブインストーラー、npm グローバル、Homebrew/WinGet、IDE 拡張機能の内蔵バイナリ——4つの経路が同時に存在し、PATH の優先順位によって実行バイナリが決まるため</td></tr>
+  <tr><td><strong>② 認証情報の複数ソースによる競合</strong></td><td>「ログインしているのに Invalid API key になる」、有料会員なのに API 課金される、organization disabled</td><td>環境変数に設定された API キーは、ブラウザでログインしたサブスクリプション認証情報よりも<strong>優先順位が高い</strong>ため——他人が残した <code>export ANTHROPIC_API_KEY</code> 1行でセッション全体がハイジャックされます</td></tr>
+  <tr><td><strong>③ 設定の階層的オーバーライド</strong></td><td>「変更しても反映されない」、社用PCで一部の設定が変更できない</td><td>Enterprise管理ポリシー &gt; コマンドライン引数 &gt; プロジェクトローカル &gt; プロジェクト共有 &gt; ユーザー設定——編集した設定が上位レイヤーによって上書きされているため</td></tr>
+  <tr><td><strong>④ ネットワークおよびシステム環境</strong></td><td>ログインが停止する、TLS エラー、OAuth コールバック失敗、ダウンロード 403</td><td>企業のプロキシ / プライベートCA / ファイアウォールがコールバックポートを遮断；システム時計のズレによってトークン検証が失敗する場合もあります</td></tr>
+</table>
+
+<div class="callout note"><b class="t">重要マインドセット</b>環境問題が発生した際、<strong>いきなり再インストールしてはいけません</strong>。まず次章の5層診断法でどのレイヤーの問題かを特定してください——「難解な不具合」の90%は②（認証情報の競合）であり、環境変数を1つクリアするだけで解決します。再インストールすると逆に①（複数インストールの競合）を引き起こす原因になります。</div>
+
+<h3 data-reveal>2大ツール共通のメンタルモデル</h3>
+<p>朗報：2つのツールの環境アーキテクチャは高度に同型です。一度メンタルモデルを理解すれば、両方にそのまま適用できます。</p>
+<table class="tbl">
+  <tr><th></th><th><span class="pill a">Claude Code</span></th><th><span class="pill b">Codex</span></th></tr>
+  <tr><td>ホームディレクトリ</td><td><code>~/.claude</code>（<code>CLAUDE_CONFIG_DIR</code> で変更可能）</td><td><code>~/.codex</code>（<code>CODEX_HOME</code> で変更可能）</td></tr>
+  <tr><td>サブスクリプションログイン</td><td><code>/login</code> → ブラウザ OAuth（claude.ai アカウント）</td><td><code>codex login</code> → ブラウザ OAuth（ChatGPT アカウント、コールバック <code>localhost:1455</code>）</td></tr>
+  <tr><td>認証情報の保存先</td><td>macOS キーチェーン；Linux/Windows は <code>.credentials.json</code></td><td><code>auth.json</code>（平文）またはシステムキーチェーン（設定可能）</td></tr>
+  <tr><td>診断コマンド</td><td><code>claude doctor</code> / セッション内 <code>/status</code> <code>/doctor</code></td><td>セッション内 <code>/status</code> <code>/debug-config</code>；ログインログ <code>codex-login.log</code></td></tr>
+</table>
+<p class="src">完全な比較対照表は<a href="#map">第13章</a>を参照してください。本ページのすべての結論は公式ドキュメント 2026-07 版と照合済みです。出典は各節の脚注に記載しています。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="diagnose">
+<div class="sec-tag">方法論 01</div>
+<h2>5層診断法 ＋ ワンクリック診断スクリプト</h2>
+
+<p>体系的な診断アプローチにおける唯一の規律：<strong>下位レイヤーから上位レイヤーへ順に確認し、1つの層を確認し終えてから次の層へ進むこと</strong>。各レイヤーには明確な確認コマンドと「正常時の状態」が定義されています。</p>
+
+<div class="layers">
+  <div class="layer"><span class="ln">L1</span><div><b>バイナリ層 —— 実際に実行されているのはどのプログラムか？</b>
+    <p><code>which -a claude</code> / <code>which -a codex</code> で PATH 内の同名コマンドをすべて一覧表示；<code>claude --version</code> でバージョンを確認。正常：パスが1行のみ。異常：複数行存在 → 複数インストールの競合。まず不要なものを削除する。</p></div></div>
+  <div class="layer"><span class="ln">L2</span><div><b>環境変数層 —— 動作をハイジャックしている変数はないか？</b>
+    <p><code>env | grep -iE 'anthropic|claude|codex|openai|proxy'</code> を実行。正常：完全に空白（純粋なサブスクリプションユーザー）。異常：意図しない <code>ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_BASE_URL</code> / <code>*_PROXY</code> が存在する場合は出所を確認する。</p></div></div>
+  <div class="layer"><span class="ln">L3</span><div><b>認証情報（クレデンシャル）層 —— 現在どのユーザーのどの認証情報が使われているか？</b>
+    <p>Claude Code セッション内で <code>/status</code> を実行し Login method を確認（API key 行がある場合は環境変数が優先適用中）；Codex は <code>codex login status</code> を使用。アカウントのメールアドレスや組織が自分のものであるか確認する。</p></div></div>
+  <div class="layer"><span class="ln">L4</span><div><b>設定層 —— どの階層の設定が実際に適用されているか？</b>
+    <p>Claude Code：<code>claude doctor</code> で診断、<code>/config</code> で適用値のソースを確認；Codex：<code>/debug-config</code> で設定の階層レイヤーを出力。変更が反映されない＝上位層でオーバーライドされているか、セッションの再起動が必要。</p></div></div>
+  <div class="layer"><span class="ln">L5</span><div><b>ネットワーク層 —— リクエストは正常に送受信できているか？</b>
+    <p><code>curl -sI https://downloads.claude.ai/claude-code-releases/latest</code> で接続性をテスト；社内ネットワークではプロキシ変数とプライベートCAを確認；OAuth が停止する場合はコールバックポート（Codex は 1455）を確認する。</p></div></div>
+</div>
+
+<div class="callout tip"><b class="t">なぜこの順序なのか</b>下位レイヤーが上位レイヤーを決定するためです。プログラム自体が間違っている場合（L1）、認証情報を見ても意味がありません。環境変数（L2）は認証情報の選択（L3）を歪めます。認証情報が正しいことを確認して初めて設定（L4）が意味を持ちます。これら4層がすべて正常でも通信できない場合に初めてネットワーク（L5）を疑います。逆順で調査すると無駄な労力を費やすことになります。</div>
+
+<h3 data-reveal>エラーメッセージから直接レイヤーを特定するキーワード早見表</h3>
+<p>エラーが発生した際、まずキーワードを確認することで、高い確率で該当レイヤーを直接判断できます（L1 から順番に調べるよりも高速です）：</p>
+<table class="tbl er">
+  <tr><th>エラーメッセージに含まれるキーワード</th><th>該当する可能性が高いレイヤー</th><th>最初の初動対応</th></tr>
+  <tr><td><code>command not found</code> / <code>not recognized</code> / バージョン番号が不自然</td><td>L1 バイナリ層</td><td><code>which -a claude</code>（または codex）で複数インストールや PATH 不足を確認</td></tr>
+  <tr><td><code>Invalid API key</code> / <code>organization … disabled</code> / 有料会員なのに課金される</td><td>L2 環境変数層</td><td><code>env | grep -iE 'anthropic|openai'</code> で出所不明の変数をすべてクリア</td></tr>
+  <tr><td><code>401</code> / <code>Login expired</code> / 繰り返しログインを要求される / OAuth エラー</td><td>L3 認証情報層</td><td><code>/status</code> または <code>codex login status</code> で現在のIDを確認し、クリーンに再ログイン</td></tr>
+  <tr><td>設定変更が反映されない / 挙動がおかしい / 社用PCで設定が変更できない</td><td>L4 設定層</td><td><code>claude doctor</code>·<code>/config</code> または <code>/debug-config</code> で適用値とソースを確認</td></tr>
+  <tr><td><code>ENOTFOUND</code> / <code>ETIMEDOUT</code> / <code>ECONNRESET</code> / TLS·certificate / ダウンロード 403</td><td>L5 ネットワーク層</td><td><code>curl -sI</code> で対象ドメインを直接テスト；<code>*_PROXY</code> 変数や社内CAを確認</td></tr>
+  <tr><td><code>usage limit</code> / <code>429</code> / <code>529 Overloaded</code></td><td>ローカル環境外（サーバー側）</td><td>利用枠やサーバー側の問題です：課金・利用枠の応急処置表を確認（<strong>環境は触らない</strong>）</td></tr>
+</table>
+
+<h3 data-reveal>ワンクリック診断スクリプト（読み取り専用・コピーしてすぐ使える）</h3>
+<p>5つのレイヤーのチェックを1つのスクリプトにまとめました。<strong>読み取り専用で変更は一切行わない</strong>ため、どのようなマシンでも安心して実行できます。見知らぬPCを操作する前にまず実行し、30秒で全状態を把握しましょう：</p>
+<pre><code><span class="c">#!/bin/bash
+# ai-env-check.sh —— Claude Code / Codex 環境ワンクリック診断（読み取り専用）
+# 使い方: bash ai-env-check.sh   (macOS / Linux / WSL)</span>
+echo "═══ L1 バイナリ層 ═══"
+for c in claude codex; do
+  echo "--- $c ---"
+  if command -v "$c" &gt;/dev/null 2>&1; then
+    which -a "$c"; "$c" --version 2&gt;/dev/null | head -1
+  else echo "(未インストールまたは PATH にありません)"; fi
+done
+[ -d ~/.claude/local ] && echo "⚠️  レガシー npm インストールを検出: ~/.claude/local (削除を推奨)"
+npm -g ls @anthropic-ai/claude-code 2&gt;/dev/null | grep -q claude-code && echo "⚠️  npm グローバルインストールを検出 (ネイティブインストールと競合する可能性があります)"
+
+echo; echo "═══ L2 環境変数層 ═══"
+env | grep -iE 'anthropic|claude|codex|openai|https?_proxy|no_proxy|node_extra_ca'   || echo "(クリーン: 関連する環境変数はありません)"
+echo "--- shell 設定ファイル内の残存定義 (他人が残した export を重点確認) ---"
+grep -nE 'ANTHROPIC|CLAUDE_|CODEX|OPENAI' ~/.zshrc ~/.zprofile ~/.bashrc ~/.bash_profile ~/.profile 2&gt;/dev/null   || echo "(クリーン: rc ファイルに関連設定はありません)"
+
+echo; echo "═══ L3 認証情報層 ═══"
+codex login status 2&gt;/dev/null || echo "codex: 未ログインまたは未インストール"
+[ -f ~/.codex/auth.json ] && echo "codex: auth.json が存在します (平文クレデンシャル)"
+echo "claude: セッションに入り /status を実行して Login method とアカウント所属を確認してください"
+
+echo; echo "═══ L4 設定層 (ファイル一覧) ═══"
+ls -la ~/.claude/settings.json ~/.claude.json ~/.codex/config.toml 2&gt;/dev/null
+ls -la .claude/settings.json .claude/settings.local.json .mcp.json 2&gt;/dev/null   || echo "(カレントディレクトリにプロジェクト設定はありません)"
+
+echo; echo "═══ L5 ネットワーク層 ═══"
+curl -sI --max-time 8 https://downloads.claude.ai/claude-code-releases/latest | head -1
+curl -sI --max-time 8 https://auth.openai.com | head -1
+echo "診断完了 ✅  各層を照合してください: 複数インストール? 不審な変数? アカウント所属? 設定ソース? ネットワーク導通?"</code></pre>
+
+<div class="callout warn"><b class="t">Windows ユーザー向け</b>PowerShell での対応コマンド：<code>where.exe claude</code> でバイナリを確認；<code>Get-ChildItem Env: | Where-Object Name -match 'ANTHROPIC|CODEX|OPENAI'</code> で環境変数を確認；「システムのプロパティ → 環境変数」内のユーザー環境変数や <code>$PROFILE</code> ファイルも忘れずに確認してください（GUI で設定された変数は rc ファイルには含まれません）。</div>
+<p class="src">診断項目の根拠：<a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">公式 Troubleshoot installation and login</a> · <a href="https://code.claude.com/docs/en/authentication" target="_blank">公式 Authentication</a>（2026-07 版）</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="claude-cred">
+<div class="sec-tag">Claude Code 02</div>
+<h2>Claude Code · 認証メカニズムと優先順位</h2>
+
+<p>Claude Code のログイン問題の8割は、見落とされがちな1つの事実に起因します：<strong>7種類もの認証情報ソースを同時にサポートしており、厳格な優先順位が存在すること</strong>です。サブスクリプションを使用しているつもりでも、存在すら知らなかった環境変数によって動作している場合があります。</p>
+
+<h3 data-reveal>認証優先順位（公式完全順序・高から低へ）</h3>
+<ol class="steps">
+  <li><strong>クラウドプロバイダーチャネル</strong>：<code>CLAUDE_CODE_USE_BEDROCK</code> / <code>CLAUDE_CODE_USE_VERTEX</code> / <code>CLAUDE_CODE_USE_FOUNDRY</code> が設定されている場合、AWS/GCP/Azure の認証情報を使用（注：ログイン済みエンタープライズ Gateway セッションはこれよりさらに上位）</li>
+  <li><strong><code>ANTHROPIC_AUTH_TOKEN</code></strong>：Bearer ヘッダーとして送信——LLM ゲートウェイ / リレープロキシ構成で使用</li>
+  <li><strong><code>ANTHROPIC_API_KEY</code></strong>：X-Api-Key ヘッダーとして送信。対話モードの初回に「このキーを使用するか」の確認ダイアログが表示されますが、<strong>非対話モード（<code>-p</code>）では存在すれば確認なしで直接使用されます</strong></li>
+  <li><strong><code>apiKeyHelper</code> スクリプト</strong>：settings.json で設定された動的キー取得スクリプト（デフォルト5分ごと、または 401 受信時に自動更新）</li>
+  <li><strong><code>CLAUDE_CODE_OAUTH_TOKEN</code></strong>：<code>claude setup-token</code> で生成された1年有効なトークン（CI 環境用）</li>
+  <li><strong>サブスクリプション OAuth</strong>：<code>/login</code> によるブラウザログイン認証情報——<strong>最下位に位置</strong>。そのため、環境変数が1つでも存在するとサブスクリプションが「ハイジャック」されます</li>
+</ol>
+
+<div class="callout warn"><b class="t">有料会員必読：なぜ二重請求されるのか？</b>Pro/Max 会員であるにもかかわらず、マシン上に <code>ANTHROPIC_API_KEY</code> が残っている場合（以前の個人実験、前任者の設定、チュートリアルのコピペなど）、サブスクリプションより優先して適用されるため、すべての対話が<strong>API従量課金</strong>されるか、そのキーの所属組織が無効化されていて <code>This organization has been disabled</code> エラーが発生します。解決策：<code>unset ANTHROPIC_API_KEY</code> ＋ shell 設定ファイルから export 行を削除 ＋ <code>/status</code> で Login method がサブスクリプションに戻っていることを確認。</div>
+
+<h3 data-reveal>認証情報の保存先（公式仕様）</h3>
+<table class="tbl">
+  <tr><th>プラットフォーム</th><th>保存場所</th><th>説明</th></tr>
+  <tr><td>macOS</td><td>システム<strong>キーチェーン（Keychain）</strong>（暗号化）</td><td>キーチェーンがロックされているかパスワードが同期していないと保存に失敗します（応急処置表参照）</td></tr>
+  <tr><td>Linux</td><td><code>~/.claude/.credentials.json</code>（パーミッション 0600）</td><td><code>CLAUDE_CONFIG_DIR</code> が設定されている場合はその配下</td></tr>
+  <tr><td>Windows</td><td><code>%USERPROFILE%\.claude\.credentials.json</code></td><td>ユーザーディレクトリのアクセス制御を継承</td></tr>
+</table>
+<p>認証情報は <code>/login</code> / <code>/logout</code> によって完全に管理されます。<strong>手動で編集したりマシン間でコピーしたりしないでください</strong>。ログイン有効期限が残り5日を切ると、起動時に <code>Your login expires in N days</code> と表示され、<code>/login</code> を実行することで更新されます（v2.1.203+）。期限切れ後はリクエストごとに <code>Login expired · Please run /login</code> が返されます。</p>
+
+<h3 data-reveal>必須の3大ステータスコマンド</h3>
+<table class="tbl">
+  <tr><th>コマンド</th><th>出力される情報</th></tr>
+  <tr><td><code>/status</code>（セッション内）</td><td><strong>現在有効な認証情報</strong>：Login method 行にサブスクリプションアカウントが表示されます。API key 行が表示される場合は環境変数が優先適用されています。期限切れ時は Expired と表示されます</td></tr>
+  <tr><td><code>claude doctor</code>（ターミナル）</td><td>総合診断：インストール方式、バージョン、設定 schema エラー、macOS キーチェーンアクセス</td></tr>
+  <tr><td><code>claude --safe-mode</code></td><td>初期状態（クリーン構成）で起動——カスタム設定が原因で不具合が起きているか切り分ける対照実験に使用</td></tr>
+</table>
+<p class="src">出典：<a href="https://code.claude.com/docs/en/authentication" target="_blank">公式 Authentication（Authentication precedence 含む）</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">公式 Settings</a>（2026-07 版）。設定の階層と settings ファイルの詳細解説は <a href="claude-code-guide.ja.html#config-auth">Claude Code ガイド · 設定とアカウント完全解説</a> を参照してください。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="claude-config">
+<div class="sec-tag">Claude Code 03</div>
+<h2>Claude Code · settings.json 完全解説：最小構成から全設定ディクショナリまで</h2>
+<p>前章では「誰の認証情報が有効になるか（優先順位）」を解説しました。本章では、<strong>これらを永続化する設定ファイル</strong>——<code>settings.json</code> の全キー、最小構成、完全な記述例、そしてサードパーティやアカウントの組み合わせ方法を解説します。</p>
+
+<h3 data-reveal>一、ファイル配置とオーバーライド優先度</h3>
+<table class="tbl">
+  <tr><th>階層</th><th>配置場所</th><th>影響範囲</th><th>チーム共有</th></tr>
+  <tr><td>Enterprise管理</td><td>サーバー配布 / <code>managed-settings.json</code></td><td>組織またはマシン上の全ユーザー</td><td>可（IT管理配布）</td></tr>
+  <tr><td>コマンドライン引数</td><td>起動時の <code>--xxx</code> フラグ</td><td>現在のセッションのみ（一時的）</td><td>不可</td></tr>
+  <tr><td>プロジェクトローカル</td><td><code>.claude/settings.local.json</code></td><td>自分のみ、該当リポジトリのみ</td><td>不可（自動 gitignore）</td></tr>
+  <tr><td>プロジェクト共有</td><td><code>.claude/settings.json</code></td><td>該当リポジトリの全共同作業者</td><td>可（git 管理）</td></tr>
+  <tr><td>ユーザー設定（最下位）</td><td><code>~/.claude/settings.json</code></td><td>自分、全プロジェクト共通</td><td>不可</td></tr>
+</table>
+<p>優先順位は上記テーブルの上から下の順です——Enterprise管理が常に最優先され、CLI引数、プロジェクトローカル、プロジェクト共有、ユーザー設定の順で適用されます。設定が反映されない原因の9割は上位層でのオーバーライドです。<code>/status</code> の「Setting sources」行で実際に読み込まれたソースを確認できます。<code>claude doctor</code> で無効なフィールドも検出されます。</p>
+
+<h3 data-reveal>二、最小実行可能構成</h3>
+<p>Claude Code は <code>settings.json</code> が存在しなくても正常に動作します——ファイルがなくてもデフォルト値でログイン可能です。チーム用のスターターテンプレートとして明示的に宣言する場合、以下のみで十分です：</p>
+<pre><code>{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+}</code></pre>
+<p>schema 宣言は動作には影響しませんが、VS Code や Cursor で編集する際の自動補完と検証を有効にします。実用的かつ極めてシンプルなスターター構成例：</p>
+<pre><code>{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": ["Bash(npm run lint)", "Bash(npm run test *)"],
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
+  }
+}</code></pre>
+
+<h3 data-reveal>三、重要設定項目（用途別20選）</h3>
+<p>90以上ある設定キーのうち、日常的に変更する主要項目は以下の通りです：</p>
+<table class="tbl">
+  <tr><th>用途</th><th>キー</th><th>役割</th></tr>
+  <tr><td rowspan="3">認証とネットワーク</td><td><code>apiKeyHelper</code></td><td>静的 API Key の代わりに動的キー取得スクリプトのパスを指定（本章第五節参照）</td></tr>
+  <tr><td><code>forceLoginMethod</code></td><td>ログイン方式を制限：<code>claudeai</code> / <code>console</code> / <code>gateway</code>（v2.1.212+）</td></tr>
+  <tr><td><code>proxyUrl</code> / <code>noProxy</code></td><td>HTTP/HTTPS プロキシURL；<code>noProxy</code> で社内ドメインを除外</td></tr>
+  <tr><td rowspan="4">モデルと推論</td><td><code>model</code></td><td>デフォルトモデル；変更後はセッション再起動が必要。一時切り替えは <code>/model</code></td></tr>
+  <tr><td><code>availableModels</code></td><td>選択可能なモデル範囲を制限（チームガバナンス用）</td></tr>
+  <tr><td><code>fallbackModel</code></td><td>主モデル過負荷時の自動フォールバック順（最大3つ）</td></tr>
+  <tr><td><code>effortLevel</code></td><td>推論の深さ（Thinking Effort）をセッション間で永続化（<code>low</code>→<code>xhigh</code>）</td></tr>
+  <tr><td rowspan="3">権限とセキュリティ</td><td><code>permissions</code></td><td><code>allow</code>/<code>deny</code>/<code>ask</code> の3段階ルール ＋ <code>defaultMode</code> 初期権限モード</td></tr>
+  <tr><td><code>sandbox</code></td><td>機密ファイル／環境変数のサンドボックス隔離設定</td></tr>
+  <tr><td><code>readOnlyMode</code></td><td><code>true</code> でファイル編集を完全禁止（コードレビュー専用）</td></tr>
+  <tr><td rowspan="3">ストレージとプライバシー</td><td><code>cleanupPeriodDays</code></td><td>セッション履歴の自動クリーンアップ期間（デフォルト30日）</td></tr>
+  <tr><td><code>sessionPersistenceEnabled</code></td><td><code>false</code> でセッション履歴をディスクに一切保存しない（機密プロジェクト用）</td></tr>
+  <tr><td><code>autoMemoryEnabled</code></td><td>セッションを跨ぐ自動記憶機能の有効／無効</td></tr>
+  <tr><td rowspan="2">拡張とチーム</td><td><code>enabledMcpjsonServers</code> / <code>disabledMcpjsonServers</code></td><td><code>.mcp.json</code> 内の指定サーバーを承認／拒否</td></tr>
+  <tr><td><code>hooks</code></td><td>ライフサイクルフックの総合エントリーポイント</td></tr>
+  <tr><td>環境変数注入</td><td><code>env</code></td><td>環境変数を固定注入し、全セッションおよび子プロセスに適用（第五節参照）</td></tr>
+</table>
+
+<h3 data-reveal>四、全設定ディクショナリ（カテゴリ別速覧・公式2026-07版準拠）</h3>
+<div class="callout note"><b class="t">本ディクショナリの使い方</b>90以上のキーを8つのカテゴリに分類しています。<code>(Enterprise)</code> 表記のキーは managed レイヤーでのみ有効であり、個人設定に記述しても無視されます（IT管理者専用）。サイドバーの <code>/</code> 検索ボックスからキー名を検索できます。</div>
+
+<h4>認証、ネットワークおよびデプロイ</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>apiKeyHelper</code></td><td>API Key を動的に生成するカスタムコマンド。出力は <code>X-Api-Key</code> / <code>Authorization</code> ヘッダーとして使用</td></tr>
+  <tr><td><code>forceLoginMethod</code></td><td>ログイン方式を固定：<code>claudeai</code> / <code>console</code> / <code>gateway</code>（v2.1.212+）</td></tr>
+  <tr><td><code>forceLoginOrgUUID</code> <code>(Enterprise)</code></td><td>指定された組織 UUID へのログインを強制。不一致時はログイン不可</td></tr>
+  <tr><td><code>proxyUrl</code> / <code>noProxy</code></td><td>HTTP/HTTPS プロキシ URL ／ プロキシ除外ドメイン（<code>*</code> ワイルドカード対応）</td></tr>
+  <tr><td><code>awsAuthRefresh</code> / <code>awsCredentialExport</code></td><td><code>.aws</code> ディレクトリを更新するカスタムスクリプト ／ AWS 一時クレデンシャル JSON を出力</td></tr>
+  <tr><td><code>ibmWatsonxAuthUrl</code> / <code>ibmWatsonxProjectId</code> / <code>ibmWatsonxRegion</code></td><td>IBM Watsonx チャネル専用の3大設定</td></tr>
+  <tr><td><code>serverUrl</code> <code>(Enterprise)</code></td><td>セルフホストデプロイ時のサーバーURL</td></tr>
+  <tr><td><code>allowAllClaudeAiMcps</code> <code>(Enterprise)</code> / <code>disableClaudeAiConnectors</code></td><td>claude.ai コネクタ系 MCP を許可 ／ 全無効化</td></tr>
+</table>
+
+<h4>モデルと推論設定</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>model</code></td><td>デフォルトモデル（エイリアスまたは完全なモデル ID）</td></tr>
+  <tr><td><code>availableModels</code> / <code>enforceAvailableModels</code> <code>(Enterprise)</code></td><td>選択可能モデルの制限 ／ 制限を Default モデルにも強制適用（v2.1.175+）</td></tr>
+  <tr><td><code>fallbackModel</code></td><td>過負荷時の自動フォールバック順（最大3件、ファイル間でマージ不可）</td></tr>
+  <tr><td><code>advisorModel</code></td><td>アドバイザーツール（<code>/advisor</code>）が使用するモデル</td></tr>
+  <tr><td><code>agent</code></td><td>メインスレッドを指定したサブエージェントとして実行</td></tr>
+  <tr><td><code>effortLevel</code></td><td>推論の深さ（Thinking Effort）の永続設定</td></tr>
+  <tr><td><code>alwaysThinkingEnabled</code></td><td>拡張思考をデフォルトで有効化（<code>env</code> で <code>MAX_THINKING_TOKENS=0</code> を設定して無効化可能）</td></tr>
+  <tr><td><code>fastMode</code> / <code>fastModePerSessionOptIn</code></td><td>Fast モードをデフォルト有効化 ／ セッションごとの手動オプトインを要求</td></tr>
+</table>
+
+<h4>権限とセキュリティ</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>permissions.allow/deny/ask</code></td><td>3段階の権限ルール。<code>deny</code> が最優先で評価されます</td></tr>
+  <tr><td><code>permissions.defaultMode</code></td><td>初期権限モード：<code>default</code> / <code>acceptEdits</code> / <code>plan</code> / <code>auto</code> / <code>bypassPermissions</code> 等</td></tr>
+  <tr><td><code>permissions.disableBypassPermissionsMode</code> <code>(Enterprise)</code></td><td>組織全体で「全権限スキップ」モードを無効化</td></tr>
+  <tr><td><code>permissions.additionalDirectories</code></td><td>権限スコープに含める追加ディレクトリ</td></tr>
+  <tr><td><code>sandbox</code></td><td>サンドボックス設定：<code>credentials.files</code> / <code>envVars</code> 等の機密項目を隔離</td></tr>
+  <tr><td><code>readOnlyMode</code></td><td>すべてのファイル編集を禁止</td></tr>
+  <tr><td><code>disableAutoMode</code></td><td><code>"disable"</code> で auto 権限モードのアクティブ化を阻止</td></tr>
+  <tr><td><code>autoMode</code></td><td>カスタム分類ルール：<code>environment</code> / <code>allow</code> / <code>soft_deny</code> / <code>hard_deny</code>（<code>"$defaults"</code> で内蔵ルールを継承）</td></tr>
+  <tr><td><code>autoMode.classifyAllShell</code></td><td>通常の Bash コマンドもすべて分類器を通す（v2.1.193+）</td></tr>
+  <tr><td><code>globalShellAllowRules</code> / <code>globalShellDenyRules</code> <code>(Enterprise)</code></td><td>全プロジェクトに適用される Shell 許可／拒否リスト</td></tr>
+  <tr><td><code>allowManagedPermissionRulesOnly</code> <code>(Enterprise)</code></td><td>ユーザー／プロジェクト層での独自権限ルール定義を禁止し、管理層のみを適用</td></tr>
+  <tr><td><code>workspaceTrustEnabled</code></td><td>明示的なワークスペース信頼を要求してプロジェクト設定を読み込む</td></tr>
+  <tr><td><code>disableSideloadFlags</code> <code>(Enterprise)</code></td><td><code>--plugin-dir/--plugin-url/--agents/--mcp-config</code> 等の一時的注入フラグを無効化</td></tr>
+</table>
+
+<h4>ストレージとプライバシー</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>cleanupPeriodDays</code></td><td>セッション履歴の自動クリーンアップ期間（デフォルト30日、最小1日）</td></tr>
+  <tr><td><code>sessionPersistenceEnabled</code></td><td>セッション履歴をディスクに保存するかどうか</td></tr>
+  <tr><td><code>autoMemoryEnabled</code> / <code>autoMemoryDirectory</code> / <code>maxMemorySize</code></td><td>自動記憶の有効化 ／ 保存先ディレクトリ ／ 最大容量（バイト）</td></tr>
+  <tr><td><code>fileCheckpointingEnabled</code></td><td><code>/rewind</code> が依存する編集前スナップショット（デフォルト有効）</td></tr>
+  <tr><td><code>queryHistorySize</code></td><td>保持するプロンプト履歴件数（デフォルト100件）</td></tr>
+  <tr><td><code>maxFileSize</code></td><td>処理可能な最大ファイルサイズ（バイト）</td></tr>
+  <tr><td><code>handoffEnabled</code></td><td>セッションを他ユーザーへ引き継ぐハンドオフの許可</td></tr>
+</table>
+
+<h4>拡張機能、MCP およびプラグイン</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>hooks</code></td><td>ライフサイクルフック設定の総合エントリー</td></tr>
+  <tr><td><code>disableAllHooks</code> / <code>allowManagedHooksOnly</code> <code>(Enterprise)</code></td><td>全フックを無効化 ／ 管理層のフックのみ読み込み許可</td></tr>
+  <tr><td><code>allowedHttpHookUrls</code></td><td>HTTP フックがアクセス可能な URL パターンのホワイトリスト</td></tr>
+  <tr><td><code>enabledMcpjsonServers</code> / <code>disabledMcpjsonServers</code></td><td><code>.mcp.json</code> 内の指定サーバーを許可 ／ 拒否</td></tr>
+  <tr><td><code>enableAllProjectMcpServers</code></td><td>プロジェクトの <code>.mcp.json</code> 内のサーバーをすべて自動承認</td></tr>
+  <tr><td><code>allowedMcpServers</code> / <code>deniedMcpServers</code> <code>(Enterprise)</code></td><td>MCP サーバーの許可 ／ 拒否リスト（拒否が優先）</td></tr>
+  <tr><td><code>allowManagedMcpServersOnly</code> <code>(Enterprise)</code> / <code>managedMcpOverridesAllowed</code></td><td>管理層の MCP のみ許可 ／ ユーザーによる管理層 MCP の上書き可否</td></tr>
+  <tr><td><code>pluginDirs</code> / <code>pluginMarketplaces</code></td><td>追加プラグインディレクトリ ／ カスタムプラグインマーケットプレイス</td></tr>
+  <tr><td><code>pluginAutoUpdateEnabled</code> / <code>pluginCheckInterval</code></td><td>プラグイン自動更新の有効化 ／ チェック間隔（分、デフォルト1440）</td></tr>
+  <tr><td><code>blockedMarketplaces</code> / <code>strictKnownMarketplaces</code> <code>(Enterprise)</code></td><td>マーケットプレイス拒否リスト ／ 既知のマーケットプレイスのみ許可</td></tr>
+  <tr><td><code>forcePluginSignatureVerification</code> <code>(Enterprise)</code></td><td>プラグイン署名検証を必須化</td></tr>
+  <tr><td><code>allowedChannelPlugins</code> / <code>channelsEnabled</code> <code>(Enterprise)</code></td><td>メッセージ送信を許可する Channel プラグイン一覧 ／ マスターフラグ</td></tr>
+  <tr><td><code>disableBundledSkills</code> / <code>disableWorkflows</code></td><td>バンドルされた組み込み Skill の無効化 ／ 動的ワークフローの無効化</td></tr>
+  <tr><td><code>disableSkillShellExecution</code></td><td>Skill 内でのインライン Shell コマンド実行を禁止</td></tr>
+  <tr><td><code>languageServerEnabled</code> / <code>lspConcurrency</code></td><td>Language Server（LSP）の有効化 ／ 最大並行リクエスト数</td></tr>
+</table>
+
+<h4>UI とユーザー体験</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>editorMode</code></td><td>キーバインドモード：<code>normal</code> / <code>vim</code></td></tr>
+  <tr><td><code>tui</code></td><td>ターミナル描画モード：<code>classic</code> / <code>fullscreen</code></td></tr>
+  <tr><td><code>outputStyle</code></td><td>出力スタイル：<code>monochrome</code> / <code>code-focused</code> / <code>conversation</code>（<code>/clear</code> 後に再構築）</td></tr>
+  <tr><td><code>notificationLevel</code></td><td>通知レベル：<code>silent</code> / <code>normal</code> / <code>verbose</code></td></tr>
+  <tr><td><code>keybindings</code></td><td>カスタムキーバインド定義</td></tr>
+  <tr><td><code>axScreenReader</code></td><td>スクリーンリーダー対応出力（プレーンテキスト、罫線アニメーション無効）</td></tr>
+  <tr><td><code>defaultShell</code></td><td><code>!</code> コマンドで使用するデフォルト Shell（Windows デフォルトは <code>powershell</code>）</td></tr>
+  <tr><td><code>fileSuggestion</code></td><td><code>@</code> ファイル補完用のカスタムスクリプト</td></tr>
+  <tr><td><code>footerLinksRegexes</code></td><td>出力が正規表現に一致した際にフッターへクリック可能バッジを表示（Jira チケット番号等）</td></tr>
+  <tr><td><code>spinnerTipsEnabled</code> / <code>autoScrollEnabled</code> / <code>keepConsoleOnError</code></td><td>ローディング中の Tips 表示 ／ 出力の自動スクロール追従 ／ 致命的エラー時にコンソールを保持</td></tr>
+  <tr><td><code>companyAnnouncements</code></td><td>起動時にランダム表示される社内アナウンス文言（チーム共有用）</td></tr>
+  <tr><td><code>agentPushNotifEnabled</code></td><td>Remote Control 接続時にスマートフォンへの通知を許可（v2.1.119+）</td></tr>
+</table>
+
+<h4>ガバナンスと帰属管理</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>attribution</code></td><td>Commit / PR 内のカスタム署名文言（空文字で非表示）</td></tr>
+  <tr><td><code>gitAttributionName</code> / <code>gitAttributionEmail</code> / <code>gitAttributionUrl</code></td><td>Claude Code の代理コミット時に使用する名前／メール／リンク</td></tr>
+  <tr><td><code>claudeMd</code> <code>(Enterprise)</code> / <code>claudeMdExcludes</code></td><td>組織レベルで強制注入する記憶内容 ／ 除外する CLAUDE.md の glob パターン</td></tr>
+  <tr><td><code>requiredMinimumVersion</code> / <code>requiredMaximumVersion</code> <code>(Enterprise)</code></td><td>必須バージョン範囲。検証失敗時はフェイルオープン（ブロックしない）</td></tr>
+  <tr><td><code>hideDeprecatedSettings</code></td><td><code>/config</code> 画面で非推奨のキーを非表示にする</td></tr>
+  <tr><td><code>disableRemoteControl</code> / <code>disableDeepLinkRegistration</code></td><td>リモートコントロールの無効化 ／ <code>claude-cli://</code> プロトコル登録の禁止</td></tr>
+  <tr><td><code>browserExternalPageTools</code> / <code>disableBrowserExternalNavigation</code> <code>(Enterprise)</code></td><td>Browser パネルによる外部ページのツール呼び出し ／ 外部ナビゲーションを制限</td></tr>
+</table>
+
+<h4>その他：環境変数注入とランタイム詳細</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>env</code></td><td>環境変数を固定注入し、全セッションおよび子プロセスに適用（<code>""</code> で空値にオーバーライド可能）</td></tr>
+  <tr><td><code>autoCompactEnabled</code></td><td>コンテキストが上限に近づいた際の自動要約圧縮（デフォルト有効）</td></tr>
+  <tr><td><code>recallContextWindowSize</code></td><td>記憶を呼び出す際にコンテキストへ含める最大ターン数</td></tr>
+  <tr><td><code>nonInteractiveTtl</code></td><td><code>-p</code> 非対話セッションの最大生存秒数</td></tr>
+  <tr><td><code>feedbackSurveyRate</code></td><td>品質アンケートのポップアップ確率（0–1、0 で完全無効化；環境変数 <code>CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY</code> と同等）</td></tr>
+  <tr><td><code>awaySummaryEnabled</code></td><td>数分間離席して戻った際に1行の要約を表示する</td></tr>
+  <tr><td><code>disableArtifact</code> / <code>enableArtifact</code></td><td>Artifact ツールの無効化 ／ 有効化</td></tr>
+  <tr><td><code>verbose</code></td><td>詳細ログを出力する</td></tr>
+  <tr><td><code>askUserQuestionTimeout</code></td><td><code>AskUserQuestion</code> がアイドル状態で自動継続するまでの秒数（デフォルト無制限）</td></tr>
+  <tr><td><code>autoUpdatesChannel</code></td><td>更新チャネル：<code>stable</code> / <code>latest</code></td></tr>
+</table>
+
+<h3 data-reveal>五、サードパーティ／アカウントの組み合わせパターン</h3>
+<p>02章で解説した優先順位を、手動で毎回 <code>export</code> するのではなく、<strong>設定ファイルとして永続化・チーム共有</strong>するための具体例です：</p>
+<table class="tbl">
+  <tr><th>シナリオ</th><th>記述方法</th></tr>
+  <tr><td>純粋なサブスクリプション（デフォルト・設定不要）</td><td>何も記述する必要はありません。<code>/login</code> を1回実行するだけで、settings.json に認証キーを一切書かずに利用できます</td></tr>
+  <tr><td>企業向け LLM ゲートウェイ ／ リレープロキシ</td><td><code>env</code> ブロックに記述して永続化（手動 export 不要）：<br><pre><code>{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "あなたのトークン",
+    "ANTHROPIC_BASE_URL": "https://gateway.company.internal"
+  }
+}</code></pre></td></tr>
+  <tr><td>キーローテーション ／ 秘密鍵管理システムからの動的取得</td><td>静的な <code>env.ANTHROPIC_API_KEY</code> より安全な <code>apiKeyHelper</code> を指定。キーを出力するスクリプトを指定し、デフォルト5分または 401 受信時に自動更新</td></tr>
+  <tr><td>クラウドプロバイダー直接接続（Anthropic 認証を経由しない）</td><td><code>env</code> 内で <code>CLAUDE_CODE_USE_BEDROCK</code> / <code>CLAUDE_CODE_USE_VERTEX</code> / <code>CLAUDE_CODE_USE_FOUNDRY</code> を <code>"1"</code> に設定し、各クラウドの認証チェーンを利用。高度なシナリオでは <code>awsAuthRefresh</code> / <code>awsCredentialExport</code> を設定</td></tr>
+  <tr><td>チームで利用可能なモデルを制限</td><td>ユーザー層に <code>availableModels: ["sonnet","haiku"]</code> を記述；バイパスを防止する場合は管理層に <code>enforceAvailableModels: true</code> を設定</td></tr>
+  <tr><td>CI 環境での長期認証</td><td><code>claude setup-token</code> で生成したトークンを CI Secret に保存し、実行環境で <code>CLAUDE_CODE_OAUTH_TOKEN</code> を設定（git に含まれてしまうため settings.json には書かないこと。<a href="#headless">第10章</a>参照）</td></tr>
+  <tr><td>ログイン方式と組織の強制</td><td>管理層に <code>forceLoginMethod</code> ＋ <code>forceLoginOrgUUID</code> を設定。個人による変更を防止し、起動時に環境変数の認証情報を自動インターセプト</td></tr>
+</table>
+
+<h3 data-reveal>六、settings.json 特有の競合トラブル</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td><code>env</code> ブロックに <code>ANTHROPIC_API_KEY</code> を書き、shell でも同じ変数を <code>export</code> していると挙動がおかしくなる</td><td>両方で同一キーを定義すると予測不能な挙動を引き起こします——<strong>必ず一箇所でのみ設定してください</strong>。チーム共有は <code>env</code> ブロック、個人実験は shell を推奨します</td></tr>
+  <tr><td><code>apiKeyHelper</code> を設定したが、<code>env</code> に静的な <code>ANTHROPIC_API_KEY</code> も残っており反映されない</td><td><a href="#claude-cred">02章</a>の優先順位により、静的 <code>ANTHROPIC_API_KEY</code> が <code>apiKeyHelper</code> より優先されます——動的取得を使用する場合は <code>env</code> から静的キーを削除してください</td></tr>
+  <tr><td>プロジェクトに <code>availableModels</code> を記述したが、制限が効いていない</td><td><code>enforceAvailableModels: true</code> がない場合、<code>/model</code> での選択肢のみが制限され、Default モデル自体は制限されません——強制ガバナンスには両方のキーを管理層に記述する必要があります</td></tr>
+  <tr><td><code>permissions.deny</code> にルールを追加したが、チームの他メンバーに反映されない</td><td><code>.claude/settings.local.json</code>（個人用・git 除外）に記述されています：チーム共有ルールは <code>.claude/settings.json</code> に記述してください</td></tr>
+  <tr><td><code>model</code> キーを変更したが、現在のセッションでモデルが変わらない</td><td><code>model</code> はセッション<strong>起動時のみ</strong>読み込まれます——新しいセッションを開始するか、一時切り替えには <code>/model</code> を使用してください</td></tr>
+</table>
+<p class="src">本節の定義と仕様の出典：<a href="https://code.claude.com/docs/en/settings" target="_blank">公式 Settings</a> · <a href="https://www.schemastore.org/claude-code-settings.json" target="_blank">公式 JSON Schema</a>（2026-07 版実測照合済み）。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="claude-er">
+<div class="sec-tag">Claude Code 04</div>
+<h2>Claude Code · 症状別応急処置表</h2>
+
+<p><strong>5大カテゴリ</strong>で症状を直接検索：ログイン＆認証 ／ 課金と利用枠 ／ インストールとバージョン ／ 設定 ／ ネットワークとプロキシ。すべて公式 2026-07 トラブルシューティングドキュメントと照合済みです。</p>
+<div class="callout tip"><b class="t">⚡ 1分間クイック復旧（詳細表を見る前にまずこの3手を実行）</b><code>env | grep -i anthropic</code> でハイジャック変数を削除 → <code>/logout</code> 後に再ログイン → <code>claude doctor</code> で診断。</div>
+
+<h3 data-reveal>一、ログイン＆認証関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>Invalid API key / 繰り返し /login を要求される</td><td>認証情報競合の典型：<code>env | grep -i anthropic</code> で変数を特定 → <code>unset ANTHROPIC_API_KEY</code> → rc ファイルの export を削除 → <code>/logout</code> 後に再 <code>/login</code> → <code>/status</code> で確認</td></tr>
+  <tr><td>ログイン後に 403 Forbidden エラー</td><td>3点確認：① claude.ai/settings でサブスクリプションが有効か確認；② Console ユーザーの場合、Claude Code または Developer ロールが付与されているか確認；③ 社内プロキシの干渉（ネットワーク項目参照）</td></tr>
+  <tr><td>OAuth ログイン時に間違ったアカウント／組織を選択した</td><td>ブラウザにキャッシュされた claude.ai セッションが別のアカウント（個人 vs Console）に接続：<code>/logout</code> で再ログインし、ブラウザの承認画面で正しいアカウントを選択；<code>/status</code> で組織とメールアドレスを確認</td></tr>
+  <tr><td>IDE 拡張機能で未ログインと表示されるが、ターミナル CLI は正常</td><td>VS Code / JetBrains 拡張機能は独立したランタイムを持ちます：拡張機能パネル内で個別にログインを実行；IDE をデスクトップアイコンから起動した場合、ターミナルの環境変数が継承されていない可能性があります</td></tr>
+  <tr><td>OAuth error: Invalid code</td><td>ログインコードの有効期限切れ、またはコピー時の欠損：速やかに再試行；ブラウザが自動で開かない場合は <kbd>c</kbd> を押して完全な URL をコピーし手動で開く</td></tr>
+  <tr><td>SSH/WSL2/コンテナ内でログイン時、ブラウザが開かない／コールバック失敗</td><td>仕様通りの動作です：ターミナルに表示された URL を<strong>ローカルのブラウザ</strong>にコピーしてログインし、返されたコードをターミナルに貼り付け。貼り付けが効かない場合は <code>claude auth login</code>（stdin から読み込み）を使用；WSL2 では <code>BROWSER="/mnt/c/…/chrome.exe"</code> を設定可能</td></tr>
+  <tr><td>macOS でログイン成功するが保存されない ／ 頻繁に再ログインを求められる</td><td>キーチェーンがロックされているかパスワードが不一致：<code>security unlock-keychain ~/Library/Keychains/login.keychain-db</code>；解決しない場合は「キーチェーンアクセス」で login キーチェーンのパスワードを再設定；<code>claude doctor</code> で検出可能</td></tr>
+  <tr><td>トークンが頻繁に期限切れになる</td><td>まずシステム時計を同期（トークン検証はタイムスタンプに依存）；スリープ復帰時に複数セッションが一斉に再ログインを要求するのは v2.1.211 以前の既知のバグです——バージョンを更新してください</td></tr>
+  <tr><td>社用PCで API キーが使えない ／ 指定組織にしかログインできない</td><td>企業ポリシー <code>forceLoginMethod</code> / <code>forceLoginOrgUUID</code> が有効です。環境変数の認証情報は起動時にブロックされます——故障ではなくポリシーのため、IT管理者に相談してください</td></tr>
+</table>
+
+<h3 data-reveal>二、課金と利用枠関連（「有料会員なのに」トラブル）</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>Pro/Max 会員なのに API 従量課金される ／ 残高不足と表示される</td><td>残存する <code>ANTHROPIC_API_KEY</code> がサブスクリプションより優先され、すべての対話が API 請求に回っています：変数をクリア（根本原因は<a href="#claude-cred">認証優先順位</a>参照）→ <code>/status</code> で Login method がサブスクリプションに戻ったことを確認</td></tr>
+  <tr><td><code>This organization has been disabled</code>（有料プラン有効中なのに表示される）</td><td>上記と同様：残存キーが<strong>無効化された組織</strong>（前職や過去プロジェクトなど）に属しています。変数をクリア；Windows ではユーザー環境変数パネルと <code>$PROFILE</code> も確認</td></tr>
+  <tr><td><code>usage limit reached</code> / 利用制限に達した</td><td><strong>ログイン問題ではありません</strong>：サブスクリプションの利用枠は時間枠で管理されています。リセットを待つか、<code>/model</code> で一時的に軽量モデルに切り替えてください（再インストール・再ログインは無意味です）。詳細は <a href="claude-code-guide.ja.html#config-auth">CC ガイド · コストと利用枠管理</a> 参照</td></tr>
+  <tr><td>API Error 429 (rate_limit)</td><td>API 課金チャネルのレートリミット：並行数を下げるか時間を置いて再試行；サブスクリプションユーザーに表示される場合、API キーにハイジャックされていないか確認（本表1行目）</td></tr>
+  <tr><td>API Error 529 Overloaded / 大規模な 500 エラー</td><td>Anthropic 公式サーバーの過負荷であり、ローカル環境とは無関係です：status.anthropic.com を確認して復旧を待つ（再インストール等の無駄な作業を行わないこと）</td></tr>
+  <tr><td>サブスクリプションとは別に一時的に API キーで課金したい</td><td><code>ANTHROPIC_API_KEY</code> を設定すると対話モード初回に確認が表示されます；その後は <code>/config</code> の「Use custom API key」トグルで随時切り替え可能（変数が存在する場合のみ表示）</td></tr>
+  <tr><td><code>Credit balance is too low</code></td><td>Console/API キーチャネルを使用していて残高が不足しています：platform.claude.com でチャージするか、本来サブスクリプションを使うべき場合は API キー変数をクリア（本表1行目）</td></tr>
+</table>
+
+<h3 data-reveal>三、インストールとバージョン関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>command not found: claude</td><td>インストール先が PATH にありません：ネイティブインストーラーは <code>~/.local/bin/claude</code> に配置されるため、<code>export PATH="$HOME/.local/bin:$PATH"</code> を rc ファイルに追加。注意：<strong>VS Code 拡張機能を入れただけでは CLI の claude は使えません</strong>（拡張機能独自の内蔵バイナリのため）</td></tr>
+  <tr><td>バージョンがおかしい ／ 更新しても変わらない</td><td>複数のインストールが競合しています：<code>which -a claude</code> ですべて確認し、ネイティブ版1つのみ残す——<code>npm uninstall -g @anthropic-ai/claude-code</code>、<code>rm -rf ~/.claude/local</code>、<code>brew uninstall --cask claude-code</code> 等でクリーンアップ</td></tr>
+  <tr><td>インストールスクリプトが HTML / 403 / App unavailable in region を返す</td><td>ネットワークルーティングまたは地域制限：利用可能地域であることを確認；<code>brew install --cask claude-code</code> (macOS) / <code>winget install Anthropic.ClaudeCode</code> (Win) を試すか時間を置く</td></tr>
+  <tr><td>Linux サーバーでのインストール時に Killed (exit 137)</td><td>メモリ不足（インストール時に約 512MB の空きが必要）：2GB の swap を追加して再実行</td></tr>
+  <tr><td>Windows で <code>claude</code> を実行すると Desktop アプリが起動してしまう</td><td>旧バージョンの Claude Desktop が WindowsApps に登録した Claude.exe が PATH を先取り：Desktop アプリを最新版にアップデートすることで解消</td></tr>
+  <tr><td>バージョンを固定したい ／ 自動更新を停止したい</td><td><code>claude install 2.1.x</code> でバージョン固定；settings の env ブロックまたは環境変数に <code>DISABLE_AUTOUPDATER=1</code> を設定——バージョン起因の不具合はまず「複数マシン間のバージョン不一致」を疑う</td></tr>
+  <tr><td>WSL 内で <code>exec: node: not found</code> / npm プラットフォーム検出エラー</td><td>WSL が Windows 側の node/npm を参照しています：<code>which node</code> が <code>/mnt/c/</code> で始まっている場合は要注意——Linux 側で nvm を使って Node をインストールするか、公式ネイティブインストールスクリプトを使用して npm 依存を排除</td></tr>
+  <tr><td>更新失敗 ／ npm パッケージインストール時に EACCES 権限エラー</td><td><code>sudo npm</code> で無理やり実行してはいけません（パーミッション問題を悪化させます）。ユーザーディレクトリにインストールされ権限昇格を一切必要としない公式ネイティブインストーラー（<code>curl -fsSL https://claude.ai/install.sh | bash</code>）へ切り替えてください</td></tr>
+</table>
+
+<h3 data-reveal>四、設定関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>settings.json を編集したのに反映されない</td><td>階層のオーバーライド（Enterprise &gt; CLI &gt; プロジェクトローカル &gt; プロジェクト &gt; ユーザー）、またはセッション再起動が必要なキー：<code>/config</code> で適用値のソースを確認；<code>--setting-sources user</code> で干渉層を排除</td></tr>
+  <tr><td>起動直後にクラッシュする ／ 挙動が極めて不安定</td><td><code>claude --safe-mode</code> で初期状態起動して対照比較；<code>claude doctor</code> で schema エラーを確認；カスタム設定を半分ずつ無効化して二分探索で原因特定</td></tr>
+  <tr><td>IDE 内でクラウドプロバイダーの認証情報が認識されないが、ターミナルは正常</td><td>IDE プロセスが shell 環境を継承していません：IDE 自身の設定内で環境変数を設定するか、export 済みのターミナルから IDE を起動する</td></tr>
+</table>
+
+<h3 data-reveal>五、ネットワークとプロキシ関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>TLS / unable to get local issuer certificate / SELF_SIGNED_CERT</td><td>企業のプロキシが TLS インターセプトを実施：インストール時は <code>curl --cacert 社内CA.pem …</code>；実行時は <code>export NODE_EXTRA_CA_CERTS=/path/社内CA.pem</code>；証明書ファイルは IT 部門から入手</td></tr>
+  <tr><td>ダウンロード／更新が失敗し、ネットワーク不通が疑われる</td><td><code>curl -sI https://downloads.claude.ai/claude-code-releases/latest</code> で直接テスト：HTTP 200＝導通正常（再試行）；タイムアウト／名前解決失敗＝ファイアウォールまたは地域ブロック。回線変更または IT 部門へ申請</td></tr>
+  <tr><td>社内プロキシの正しい設定手順</td><td><code>export HTTPS_PROXY=http://proxy:port</code>（インストール・実行時ともに認識）；プライベート CA には <code>NODE_EXTRA_CA_CERTS</code> を併用；プロキシ情報は IT 部門またはブラウザ設定から確認</td></tr>
+  <tr><td>ログインやリクエストが遅い、突発的にタイムアウトする（ローカル環境は正常）</td><td>まず<a href="#diagnose">診断スクリプト</a>の L5 で接続性を確認；VPN / プロキシ切り替え後に残存する <code>*_PROXY</code> 変数が原因のことが多いため、<code>env | grep -i proxy</code> でクリーンアップ</td></tr>
+  <tr><td><code>Connection error</code> / <code>ECONNRESET</code> による突発的な切断</td><td>経路上のネットワーク機器による切断：VPN のグローバル／スプリットトンネルモードを切り替え；社内網では <code>HTTPS_PROXY</code> ＋ <code>NODE_EXTRA_CA_CERTS</code> をセットで設定；継続して発生する場合は <code>curl -v</code> でハンドシェイクログを取得し IT 部門へ連携</td></tr>
+</table>
+<p class="src">出典：<a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">公式 Troubleshoot installation and login</a>（2026-07 版・全エラー対照表含む）· <a href="https://support.claude.com/en/articles/14552646-troubleshoot-claude-code-installation-and-authentication" target="_blank">ヘルプセンター トラブルシューティング記事</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="codex-cred">
+<div class="sec-tag">Codex 05</div>
+<h2>Codex · 認証メカニズムと保存形式</h2>
+
+<div class="callout note"><b class="t">2026年 ドキュメント移行リマインダー</b>Codex 公式ドキュメントは <code>developers.openai.com/codex</code> から <code>learn.chatgpt.com/docs</code> へ移行しました（旧リンクは 308 リダイレクトでアクセス可能）。情報を検索する際は新旧ドメインおよび最新バージョンにご注意ください。</div>
+
+<h3 data-reveal>3つのログイン方式</h3>
+<table class="tbl">
+  <tr><th>方式</th><th>使用方法</th><th>重要ポイント</th></tr>
+  <tr><td><strong>ChatGPT OAuth（デフォルト）</strong></td><td><code>codex login</code> → ブラウザ、コールバック <code>localhost:1455</code></td><td>サブスクリプション利用枠；Fast mode 等の機能はこの方式でのみ利用可能；ChatGPT ワークスペースの権限およびデータポリシーが適用</td></tr>
+  <tr><td><strong>API Key</strong></td><td>プラットフォーム管理画面で取得したキーを <code>codex login</code> に渡す</td><td>従量課金；一部のクラウド依存機能が制限；公式推奨は CI 環境での利用</td></tr>
+  <tr><td><strong>デバイスコード認証</strong></td><td><code>codex login --device-auth</code></td><td>ブラウザのないヘッドレス環境での第一選択；<strong>ワークスペース管理者が事前に有効化している必要あり</strong>（無効の場合はログイン不可）</td></tr>
+</table>
+
+<h3 data-reveal>認証情報の保存と自動更新</h3>
+<ul>
+  <li><strong>保存先の選択</strong>：config.toml 内の <code>cli_auth_credentials_store = "file" | "keyring" | "auto"</code>。file＝平文 <code>~/.codex/auth.json</code>；keyring＝システムキーチェーン；auto＝キーチェーンを優先。</li>
+  <li><strong>自動更新</strong>：トークンが期限切れ（約8日間未使用で stale）になった場合、Codex の実行中に自動的に更新され、<strong>auth.json に書き戻されます</strong>——CI の永続化はこの仕組みの上に成り立っています（<a href="#headless">第10章</a>参照）。</li>
+  <li><strong>CLI と IDE 拡張機能で同一の認証情報を共有</strong>：一方を logout すると、もう一方もログアウトされます——「IDE で突然再ログインを求められた」原因の多くはターミナル側でのログアウトです。</li>
+  <li><strong>マルチアカウント</strong>：公式のファーストクラスサポートは現時点で未提供（上流 issue #4432 にて議論中）；<code>CODEX_HOME</code> によるディレクトリ分離で実現可能（手順は<a href="#shared">第08章</a>参照）。コミュニティ製管理ツール codex-multi-auth も利用可能。</li>
+  <li><strong>企業ポリシー管理</strong>：<code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> によりログイン方式やワークスペースを固定可能。不一致時は強制ログアウトされます——社用PCで「ログイン方式が変更できない」のはポリシーによる正常な制限です。</li>
+</ul>
+
+<h3 data-reveal>認証情報ソースの優先順位：オーバーライド関係</h3>
+<div class="callout note"><b class="t">この順序は公式ドキュメントには完全公開されていません</b>learn.chatgpt.com/docs では3つのログイン方式と <code>model_providers.&lt;id&gt;.env_key</code> が個別に紹介されているのみで、Claude Code のような完全な優先順位表はありません。以下の順序は Codex オープンソースリポジトリ（<code>openai/codex</code>）のソースコード本体から検証したものです。</div>
+
+<p>Claude Code の単一リニアリストとは異なり、Codex の認証解決は2段階で行われます：<strong>まずどの model provider が使われているかを確認し</strong>、次にその provider におけるキー取得方法を解決します。</p>
+
+<ol class="steps">
+  <li><strong>カスタム <code>model_provider</code> の優先短絡</strong>：トップレベルの <code>model_provider</code> がカスタム <code>[model_providers.&lt;id&gt;]</code> を指しており、そのテーブルに <code>env_key</code> / <code>experimental_bearer_token</code> / <code>auth.command</code> のいずれかが設定されている場合——この認証情報が<strong>その provider のリクエストに直接使用され、以降の ChatGPT/API key の判定は完全にスキップされます</strong>（ログイン状態やサブスクリプション有効性は無関係；ソース：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/model-provider/src/auth.rs#L267-L279" target="_blank"><code>model-provider/src/auth.rs · bearer_auth_for_provider()</code></a>）。</li>
+  <li><strong>内蔵 <code>openai</code> provider（デフォルト：通常 ChatGPT / API key でログインして利用する場合）</strong>では、以下の順序で解決されます（ソース：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L1217-L1291" target="_blank"><code>login/src/auth/manager.rs · load_auth()</code></a>）：</li>
+</ol>
+
+<table class="tbl">
+  <tr><th>順位</th><th>ソース</th><th>説明</th></tr>
+  <tr><td>1</td><td><code>CODEX_API_KEY</code> 環境変数</td><td><strong><code>codex exec</code>（非対話実行）でのみ有効</strong>。対話型 <code>codex</code> TUI ではこの変数は一切チェックされません——ソースコード上のフラグ <code>enable_codex_api_key_env</code> は exec モードで <code>true</code>、TUI で <code>false</code> となっています</td></tr>
+  <tr><td>2</td><td>ホストアプリによって注入された一時 ChatGPT セッション</td><td>IDE 拡張機能等のホストプログラムがブリッジするメモリ内クレデンシャル。内部メカニズムであり、一般的なユーザーが意識することは稀です</td></tr>
+  <tr><td>3</td><td><code>CODEX_ACCESS_TOKEN</code> 環境変数</td><td>エンタープライズ access token / Agent Identity。CI での対話なしログインに多用（<a href="#headless">第10章</a>参照）</td></tr>
+  <tr><td>4</td><td>永続化された <code>auth.json</code>（またはキーチェーン）</td><td><code>codex login</code> (ChatGPT OAuth) / <code>codex login --with-api-key</code> / <code>--with-access-token</code> / <code>--device-auth</code> によって保存された認証情報。日常ユースの99%がここに該当</td></tr>
+</table>
+
+<div class="callout warn"><b class="t">よくある誤解：<code>OPENAI_API_KEY</code> は Claude のようにセッションをハイジャックしない</b>多くの人が <code>ANTHROPIC_API_KEY</code> の挙動からの類推で、<code>OPENAI_API_KEY</code> 環境変数を設定すると ChatGPT ログインが上書きされると考えがちですが、<strong>ソースコード上にそのようなロジックは存在しません</strong>。<code>OPENAI_API_KEY</code> が読み込まれるのは唯一：対話型 <code>codex login</code> で「API key の入力」ステップに進んだ際に、<strong>テキストボックスに初期値として自動補完される</strong>用途のみです（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/tui/src/onboarding/auth.rs#L776-L795" target="_blank">ソースコード</a>）。リクエスト送信時に暗黙的に読み込まれることはなく、上記の優先順位表にも登場しません。内蔵プロバイダーのリクエストをハイジャックできるのは、表内の①③④および <code>[model_providers.&lt;id&gt;].env_key</code> に指定された変数のみです。</div>
+
+<p><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code> は「優先順位」としてのソースではなく、<strong>起動時のゲートキーパー（制約検証）</strong>です：Codex は現在有効な認証情報をロードした後にポリシーを照合し、モードやワークスペースが一致しない場合は<strong>即座にログアウト</strong>して理由を出力します。例えばポリシーが API key を要求しているのに ChatGPT ログインになっている場合は <code>API key login is required, but ChatGPT is currently being used. Logging out.</code> と出力され、ワークスペース不一致時は <code>Login is restricted to workspace(s) &lt;許可ワークスペース&gt;, but current credentials belong to &lt;実際ワークスペース&gt;. Logging out.</code> と出力されます（ソース：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L1083-L1150" target="_blank"><code>manager.rs · enforce_login_restrictions()</code></a>）。</p>
+
+<h3 data-reveal><code>codex login status</code> の出力フォーマット</h3>
+<p>ソースコード（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/cli/src/login.rs#L424-L473" target="_blank"><code>cli/src/login.rs · run_login_status()</code></a>）から照合した実際の出力例です：</p>
+<pre><code><span class="c"># ChatGPT サブスクリプションでログイン中</span>
+$ codex login status
+Logged in using ChatGPT
+$ echo $?
+0
+
+<span class="c"># API key 課金でログイン中（キーはマスク表示：先頭8文字 ＋ *** ＋ 末尾5文字）</span>
+$ codex login status
+Logged in using an API key - sk-proj-a***7f3k9
+
+<span class="c"># 未ログイン ／ forced_login_method によりログアウトされた状態</span>
+$ codex login status
+Not logged in
+$ echo $?
+1</code></pre>
+<p>Enterprise access token / Personal access token / Bedrock の場合はそれぞれ <code>Logged in using access token</code>、<code>Logged in using personal access token</code>、<code>Logged in using Amazon Bedrock API key</code> と出力されます——これら6種類の定型文のみが存在します。</p>
+
+<h3 data-reveal>auth.json の構造と失効判定</h3>
+<p>オープンソースリポジトリの構造体定義（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/storage.rs#L37-L61" target="_blank"><code>login/src/auth/storage.rs · AuthDotJson</code></a>）に基づくフィールド構造です（機密値はダミーに置換）：</p>
+<pre><code><span class="c">// ChatGPT OAuth ログイン時の auth.json（簡略化・マスク済み）</span>
+{
+  "auth_mode": "chatgpt",
+  "OPENAI_API_KEY": null,
+  "tokens": {
+    "id_token": "&lt;JWT: email / chatgpt_plan_type / chatgpt_account_id 等を含む&gt;",
+    "access_token": "&lt;JWT: 各リクエストで送信&gt;",
+    "refresh_token": "&lt;更新用: 長期有効&gt;",
+    "account_id": "..."
+  },
+  "last_refresh": "2026-08-17T08:00:00Z"
+}
+
+<span class="c">// API key ログイン時の auth.json: tokens / last_refresh は null</span>
+{ "auth_mode": "apikey", "OPENAI_API_KEY": "sk-…", "tokens": null, "last_refresh": null }</code></pre>
+<p><strong>stale（期限切れ）の判定方法</strong>：トークン自動更新が行われるのは ChatGPT ログイン（<code>tokens</code> が非 null）のみです。判定は <code>last_refresh</code> フィールドに基づき、ソースコード上の閾値定数 <code>TOKEN_REFRESH_INTERVAL = 8</code>（日、<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs#L182" target="_blank">ソースコード</a>）と一致します。確認コマンド：<code>python3 -c "import json,datetime;d=json.load(open('~/.codex/auth.json'));print(d.get('last_refresh'))"</code>。前回の更新から8日以上経過している場合、次回実行時に自動更新されます。API key ログインではこのフィールドは常に <code>null</code> です。</p>
+
+<div class="callout warn"><b class="t">auth.json ＝ あなたのアカウントそのもの</b>平文のトークンであるため、パスワードと同等に扱ってください：commit しない、チャットに貼らない、スクリーンショットに含めない。別マシンへの移行はデバイスコード認証を推奨します。コピーする場合は安全な経路のみを使用し、用済み後は削除してください。</div>
+<p class="src">出典：<a href="https://learn.chatgpt.com/docs/auth" target="_blank">公式 Authentication</a> · <a href="https://learn.chatgpt.com/docs/config-file/config-reference" target="_blank">公式 Config Reference</a>（2026-07 版）。認証優先順位、<code>login status</code> 出力、auth.json 内部構造は <a href="https://github.com/openai/codex" target="_blank">openai/codex</a> ソースコード（commit <code>f6160ca</code>）より検証：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/manager.rs" target="_blank">auth/manager.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/auth/storage.rs" target="_blank">auth/storage.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/cli/src/login.rs" target="_blank">cli/login.rs</a>。config.toml の階層と Profile の詳細は <a href="codex-guide.ja.html#config-auth">Codex ガイド · 設定とアカウント完全解説</a> を参照してください。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="codex-config">
+<div class="sec-tag">Codex 06</div>
+<h2>Codex · config.toml 完全解説：最小構成から全設定ディクショナリまで</h2>
+<p>Claude Code と対をなす構成です：前章で認証情報の保存と更新を解説したのに続き、本章ではこれらを<strong>設定ファイルとして永続化</strong>する <code>config.toml</code> のセクション構造、最小構成、完全ディクショナリ、サードパーティ連携手法を解説します。</p>
+
+<h3 data-reveal>一、ファイル配置とオーバーライド優先度</h3>
+<table class="tbl">
+  <tr><th>階層</th><th>配置場所</th><th>説明</th></tr>
+  <tr><td>CLI 単一オーバーライド</td><td><code>-c key=value</code></td><td>最優先。TOML/JSON としてパースされ、ファイルは変更しない</td></tr>
+  <tr><td>プロジェクト層</td><td>リポジトリルート <code>.codex/config.toml</code></td><td>カレントディレクトリに最も近いプロジェクトファイルが優先；<strong>セキュリティ上、<code>model_providers</code>/<code>notify</code>/<code>otel</code> 等のキーはプロジェクト層では無視され</strong>、ユーザー層への記述が必須</td></tr>
+  <tr><td>Profile 層</td><td><code>$CODEX_HOME/&lt;名前&gt;.config.toml</code></td><td><code>-p/--profile 名前</code> で明示的に有効化し、ユーザー層の上にオーバーレイ</td></tr>
+  <tr><td>ユーザー層</td><td><code>~/.codex/config.toml</code></td><td>個人のデフォルト設定。大半のキーをここに記述</td></tr>
+  <tr><td>システム層</td><td><code>/etc/codex/config.toml</code> (Unix)</td><td>Enterprise 管理ポリシーのフォールバック</td></tr>
+  <tr><td>組み込みデフォルト値</td><td>——</td><td>上記がすべて未設定の場合の基本挙動</td></tr>
+</table>
+<p>設定が反映されない場合は、まず <code>/debug-config</code> で階層の適用結果を確認してください——<a href="#codex-er">07章の応急処置表</a>で最も頻発するトラブルであり、原因のほぼ全てが「記述するレイヤーの間違い」です。</p>
+
+<h3 data-reveal>二、最小実行可能構成</h3>
+<p>Codex は <strong><code>config.toml</code> が存在しなくても動作します</strong>——<code>codex login</code> 後は組み込みのデフォルト値（デフォルトモデル、<code>workspace-write</code> サンドボックス、<code>on-request</code> 承認）でそのまま動作します。チームスターターテンプレートとして明示する場合、以下の3行が一般的です：</p>
+<pre><code><span class="c">#:schema https://developers.openai.com/codex/config-schema.json</span>
+model = "gpt-5.6"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"</code></pre>
+
+<h3 data-reveal>三、重要設定項目（用途別20選）</h3>
+<table class="tbl">
+  <tr><th>用途</th><th>キー</th><th>役割</th></tr>
+  <tr><td rowspan="4">認証とログイン</td><td><code>cli_auth_credentials_store</code></td><td>認証情報の保存先：<code>file</code> (平文 auth.json) / <code>keyring</code> (システムキーチェーン) / <code>auto</code></td></tr>
+  <tr><td><code>forced_login_method</code></td><td>ログイン方式を固定：<code>chatgpt</code> / <code>api</code></td></tr>
+  <tr><td><code>forced_chatgpt_workspace_id</code></td><td>指定した ChatGPT ワークスペースへのログインのみに制限</td></tr>
+  <tr><td><code>openai_base_url</code> / <code>chatgpt_base_url</code></td><td>内蔵 OpenAI provider のリクエスト先URL ／ ログインフローのエンドポイントをオーバーライド</td></tr>
+  <tr><td rowspan="3">セキュリティ3点セット</td><td><code>approval_policy</code></td><td>承認レベル：<code>untrusted</code> / <code>on-request</code> / <code>never</code></td></tr>
+  <tr><td><code>sandbox_mode</code></td><td>サンドボックスモード：<code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code></td></tr>
+  <tr><td><code>sandbox_workspace_write.network_access</code></td><td><code>workspace-write</code> モード下でのアウトバウンド通信の許可（デフォルト制限）</td></tr>
+  <tr><td rowspan="3">モデルと推論</td><td><code>model</code> / <code>model_provider</code></td><td>使用モデル名 ／ 対応する provider ID（デフォルトは内蔵 openai）</td></tr>
+  <tr><td><code>model_reasoning_effort</code></td><td>推論の深さ（Reasoning Effort）：<code>minimal</code>→<code>xhigh</code></td></tr>
+  <tr><td><code>model_context_window</code></td><td>コンテキストウィンドウのトークン数を手動宣言（カスタムモデル接続時に多用）</td></tr>
+  <tr><td rowspan="3">UI と実行体験</td><td><code>personality</code></td><td>コミュニケーションスタイル：<code>none</code> / <code>friendly</code> / <code>pragmatic</code></td></tr>
+  <tr><td><code>notify</code></td><td>タスク完了時等にトリガーされる通知コマンド</td></tr>
+  <tr><td><code>web_search</code></td><td>Web検索モード：<code>disabled</code> / <code>cached</code> (デフォルト) / <code>indexed</code> / <code>live</code></td></tr>
+  <tr><td>MCP 認証</td><td><code>mcp_oauth_credentials_store</code></td><td>MCP サーバーの OAuth 認証情報の保存方式（<code>cli_auth_credentials_store</code> と同様）</td></tr>
+</table>
+
+<h3 data-reveal>四、全設定ディクショナリ（TOML セクション別速覧・公式2026-07版準拠）</h3>
+<div class="callout note"><b class="t">本ディクショナリの使い方</b>Codex の設定は TOML の <code>[section]</code> ごとに自然に区分されており、Claude Code のフラットな JSON よりも直感的に特定できます。<code>features.*</code>（100以上の機能フラグ）の完全リストと stable/experimental 状態は <a href="codex-guide.ja.html#hidden-config">Codex ガイド · 隠し機能とイースターエッグ設定</a> を参照するか、<code>codex features list</code> を直接実行してください。</div>
+
+<h4>トップレベルコアキー · 認証とネットワーク</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>cli_auth_credentials_store</code></td><td>CLI 認証情報の保存先（<code>file</code> / <code>keyring</code> / <code>auto</code>）</td></tr>
+  <tr><td><code>mcp_oauth_credentials_store</code></td><td>MCP OAuth 認証情報の保存先（<code>file</code> / <code>keyring</code> / <code>auto</code>）</td></tr>
+  <tr><td><code>mcp_oauth_callback_port</code> / <code>mcp_oauth_callback_url</code></td><td>MCP OAuth コールバックポートの固定 ／ カスタムコールバックURLプレフィックス</td></tr>
+  <tr><td><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code></td><td>ログイン方式の固定 ／ ワークスペースの固定（不一致時は自動ログアウト）</td></tr>
+  <tr><td><code>openai_base_url</code> / <code>chatgpt_base_url</code></td><td>内蔵 OpenAI provider のリクエスト先オーバーライド ／ ログインフローURLオーバーライド</td></tr>
+  <tr><td><code>check_for_update_on_startup</code></td><td>起動時のアップデート確認（デフォルト有効）</td></tr>
+  <tr><td><code>allow_login_shell</code></td><td>Shell ツールにログインシェルセマンティクスの使用を許可（デフォルト有効）</td></tr>
+</table>
+
+<h4>トップレベルコアキー · モデルと実行制御</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>model</code> / <code>model_provider</code></td><td>モデル名 ／ 対応する provider ID</td></tr>
+  <tr><td><code>model_context_window</code> / <code>model_auto_compact_token_limit</code></td><td>コンテキストウィンドウサイズ ／ 自動圧縮をトリガーするトークン閾値</td></tr>
+  <tr><td><code>model_reasoning_effort</code> / <code>model_reasoning_summary</code></td><td>推論の深さ ／ 推論要約の詳しさ：<code>auto</code> / <code>concise</code> / <code>detailed</code> / <code>none</code></td></tr>
+  <tr><td><code>model_verbosity</code></td><td>GPT-5 Responses API の出力詳細度のオーバーライド</td></tr>
+  <tr><td><code>model_instructions_file</code></td><td>組み込みシステムプロンプトを置き換えるファイルのパス</td></tr>
+  <tr><td><code>model_catalog_json</code></td><td>カスタムモデルカタログ JSON のパス</td></tr>
+  <tr><td><code>approval_policy</code> / <code>approvals_reviewer</code></td><td>承認レベル ／ レビュアー指定：<code>user</code> または <code>auto_review</code></td></tr>
+  <tr><td><code>sandbox_mode</code> / <code>default_permissions</code></td><td>サンドボックスレベル ／ デフォルト権限プロファイル名（下記 <code>[permissions]</code> 参照）</td></tr>
+  <tr><td><code>web_search</code></td><td>Web検索モード（4段階から選択）</td></tr>
+  <tr><td><code>file_opener</code></td><td>ファイル参照をクリックした際のエディタ：<code>vscode</code> / <code>cursor</code> / <code>windsurf</code> / <code>none</code></td></tr>
+  <tr><td><code>personality</code></td><td>デフォルトの対話スタイル</td></tr>
+  <tr><td><code>notify</code></td><td>タスク完了／要確認時に実行する通知コマンド</td></tr>
+  <tr><td><code>hide_agent_reasoning</code></td><td>TUI および exec 出力で思考プロセスを非表示にする</td></tr>
+  <tr><td><code>developer_instructions</code></td><td>追加で注入する開発者向け指示</td></tr>
+  <tr><td><code>service_tier</code></td><td>新規ターンのサービスティア優先度</td></tr>
+  <tr><td><code>oss_provider</code></td><td><code>--oss</code> モード時のデフォルト：<code>lmstudio</code> または <code>ollama</code></td></tr>
+  <tr><td><code>project_root_markers</code></td><td>プロジェクトルートと判定するためのマーカーファイル名リスト</td></tr>
+  <tr><td><code>project_doc_fallback_filenames</code> / <code>project_doc_max_bytes</code></td><td>AGENTS.md 不在時のフォールバックファイル名 ／ 単一ドキュメントの最大読み込みバイト数</td></tr>
+  <tr><td><code>tool_output_token_limit</code></td><td>ツール出力が履歴に含まれる際のトークン上限</td></tr>
+  <tr><td><code>log_dir</code></td><td>ログ保存ディレクトリ（デフォルト <code>$CODEX_HOME/log</code>）</td></tr>
+  <tr><td><code>review_model</code></td><td><code>/review</code> で使用するモデルのオーバーライド</td></tr>
+</table>
+
+<h4>[model_providers.&lt;id&gt;] · サードパーティ／独自モデル連携セクション</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>name</code> / <code>base_url</code></td><td>表示名 ／ API エンドポイント URL</td></tr>
+  <tr><td><code>env_key</code> / <code>env_key_instructions</code></td><td>API Key を提供する環境変数名 ／ ユーザー向けキー取得案内テキスト</td></tr>
+  <tr><td><code>requires_openai_auth</code></td><td><code>true</code> で OpenAI 認証を使用（ゲートウェイ経由で OpenAI モデルを利用する場合。<code>env_key</code> は無視されます）</td></tr>
+  <tr><td><code>wire_api</code></td><td>プロトコル仕様（現在は <code>responses</code> 固定）</td></tr>
+  <tr><td><code>http_headers</code> / <code>env_http_headers</code></td><td>静的 HTTP ヘッダー ／ 環境変数から値を取得する HTTP ヘッダー</td></tr>
+  <tr><td><code>query_params</code></td><td>リクエストに追加するカスタムクエリパラメータ</td></tr>
+  <tr><td><code>auth.command</code> / <code>auth.args</code> / <code>auth.refresh_interval_ms</code></td><td>静的キーではなくコマンドで動的に Bearer トークンを生成し、指定間隔で自動更新</td></tr>
+  <tr><td><code>request_max_retries</code> / <code>stream_max_retries</code> / <code>stream_idle_timeout_ms</code></td><td>リクエスト再試行回数 ／ ストリーム再試行回数 ／ ストリームアイドルタイムアウト</td></tr>
+  <tr><td><code>amazon-bedrock.aws.profile</code> / <code>.aws.region</code></td><td>内蔵 <code>amazon-bedrock</code> provider 専用：AWS profile および region</td></tr>
+</table>
+
+<h4>[mcp_servers.&lt;id&gt;] · MCP サーバー設定</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>command</code> / <code>args</code> / <code>cwd</code> / <code>env</code></td><td>stdio 型サーバーの起動コマンド、引数、作業ディレクトリ、環境変数</td></tr>
+  <tr><td><code>url</code> / <code>http_headers</code> / <code>bearer_token_env_var</code></td><td>HTTP 型サーバーの URL ／ 静的ヘッダー ／ Bearer トークン取得環境変数</td></tr>
+  <tr><td><code>auth</code> / <code>scopes</code></td><td>認証方式：<code>oauth</code> または <code>chatgpt</code> ／ 要求する OAuth スコープ</td></tr>
+  <tr><td><code>enabled</code> / <code>required</code></td><td>有効化フラグ（設定を消さずに一時停止可能） ／ 起動時にサーバーが欠落している場合即座に失敗させるか</td></tr>
+  <tr><td><code>startup_timeout_sec</code> / <code>tool_timeout_sec</code></td><td>起動タイムアウト（デフォルト10秒） ／ 単一ツール実行タイムアウト（デフォルト60秒）</td></tr>
+  <tr><td><code>enabled_tools</code> / <code>disabled_tools</code></td><td>ツールのホワイトリスト ／ ブラックリスト（ブラックリストが後から適用）</td></tr>
+  <tr><td><code>default_tools_approval_mode</code></td><td>該当サーバーのツールのデフォルト承認モード：<code>auto</code> / <code>prompt</code> / <code>writes</code> / <code>approve</code></td></tr>
+</table>
+
+<h4>[shell_environment_policy] · Codex 内部コマンドに公開する環境変数ポリシー</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>inherit</code></td><td>基本継承ポリシー：<code>all</code>（全継承） / <code>core</code>（標準的な基本変数のみ保持・安全重視のデフォルト） / <code>none</code>（何も継承しない）</td></tr>
+  <tr><td><code>set</code></td><td>明示的に追加／上書きする環境変数テーブル（サードパーティ連携で最も多用・第五節参照）</td></tr>
+  <tr><td><code>include_only</code> / <code>exclude</code></td><td>パターンに一致する変数のみ保持 ／ パターンに一致する変数を除外</td></tr>
+  <tr><td><code>ignore_default_excludes</code></td><td>デフォルトでは KEY/SECRET/TOKEN を含む変数名が自動除外されますが、<code>true</code> でこの保護を無効化</td></tr>
+</table>
+
+<h4>[sandbox_workspace_write] · workspace-write サンドボックス詳細設定</h4>
+<table class="tbl">
+  <tr><th>キー</th><th>役割</th></tr>
+  <tr><td><code>writable_roots</code></td><td>ワークスペース以外に追加で書き込みを許可するディレクトリリスト</td></tr>
+  <tr><td><code>network_access</code></td><td>アウトバウンド通信を許可するかどうか（デフォルト制限）</td></tr>
+  <tr><td><code>exclude_slash_tmp</code> / <code>exclude_tmpdir_env_var</code></td><td><code>/tmp</code> / <code>$TMPDIR</code> を書き込み可能ルートから除外する</td></tr>
+</table>
+
+<h4>その他のセクション速覧</h4>
+<table class="tbl">
+  <tr><th>セクション</th><th>役割</th></tr>
+  <tr><td><code>[history]</code></td><td><code>persistence</code> (セッション保存可否)、<code>max_bytes</code> (履歴ファイルサイズ上限)</td></tr>
+  <tr><td><code>[projects.&lt;パス&gt;]</code></td><td><code>trust_level</code> で特定ディレクトリの信頼状態を記録（未知のリポジトリ初回侵入時に確認）</td></tr>
+  <tr><td><code>[agents]</code></td><td>マルチエージェントの最大並行数、ネストの深さ、カスタムエージェントロールの指示と設定パス</td></tr>
+  <tr><td><code>[apps]</code></td><td>アプリケーションコネクタ（Connector）のデフォルト有効状態と承認ポリシー</td></tr>
+  <tr><td><code>[permissions.&lt;名前&gt;]</code></td><td>カスタム権限プロファイル：ファイルシステム／ネットワーク／ワークスペースルートの精密制御（<code>default_permissions</code> で指定）</td></tr>
+  <tr><td><code>[memories]</code></td><td>クロスセッション記憶の生成・利用フラグ、モデルオーバーライド、保持ポリシー</td></tr>
+  <tr><td><code>[plugins]</code></td><td>プラグイン提供の MCP サーバーに対するツールホワイトリスト／承認設定オーバーライド</td></tr>
+  <tr><td><code>[tui]</code></td><td>ターミナル UI：アニメーション、通知方式、テーマ、ステータスバー項目、キーバインド</td></tr>
+  <tr><td><code>[hooks]</code></td><td>ライフサイクルフック（<code>features.hooks</code> が有効である必要あり）</td></tr>
+  <tr><td><code>[otel]</code></td><td>OpenTelemetry エクスポート設定：エンドポイント、プロトコル、TLS 証明書</td></tr>
+  <tr><td><code>[windows]</code></td><td>Windows 専用サンドボックスモード（<code>unelevated</code> / <code>elevated</code>）</td></tr>
+  <tr><td><code>[skills]</code></td><td>個別の Skill ごとの有効／無効オーバーライド</td></tr>
+  <tr><td><code>[tools]</code></td><td><code>web_search</code> 詳細設定（コンテキストサイズ、許可ドメイン）、<code>view_image</code> トグル</td></tr>
+</table>
+<div class="callout warn"><b class="t">Desktop アプリもこのファイルに書き込みます</b>Codex デスクトップアプリを併用している場合、<code>config.toml</code> に <code>[marketplaces.*]</code>、<code>[desktop]</code>、<code>tui.model_availability_nux</code> などの自動生成セクションが出力されます。これらはアプリの内部状態であり、公式 CLI ドキュメントの設定リファレンス外です。<strong>手動で編集しないでください</strong>。誤って変更すると次回起動時に上書きされるか、予期せぬ動作を引き起こす可能性があります。</div>
+
+<h3 data-reveal>五、サードパーティ／アカウントの組み合わせパターン</h3>
+<p>05章で解説した3つのログイン方式を、<strong>具体的にファイルとして永続化</strong>し、サードパーティモデルやゲートウェイと連携するための記述例です：</p>
+<table class="tbl">
+  <tr><th>シナリオ</th><th>記述方法</th></tr>
+  <tr><td>純粋な ChatGPT サブスクリプション（デフォルト・設定不要）</td><td>何も記述する必要はありません。<code>codex login</code> を1回実行するだけで完了します</td></tr>
+  <tr><td>API Key 課金</td><td>ログイン方式は <code>config.toml</code> から独立しています：<code>codex login</code> 時に stdin から渡すだけで動作し、追加設定は不要です（カスタム provider を使う場合を除く）</td></tr>
+  <tr><td>OpenAI 互換プロトコルのサードパーティゲートウェイ／リレー接続</td><td>カスタム provider を定義し、トップレベルの <code>model_provider</code> でそれを指定：<br><pre><code>[model_providers.my-gateway]
+name = "My Gateway"
+base_url = "https://gateway.example.com/v1"
+env_key = "MY_GATEWAY_API_KEY"
+
+model_provider = "my-gateway"
+model = "gpt-5.6"</code></pre>その後 <code>export MY_GATEWAY_API_KEY=…</code> するか、<code>[shell_environment_policy.set]</code> に記述</td></tr>
+  <tr><td>AWS Bedrock 接続</td><td>内蔵 provider を指定し、AWS クレデンシャルを設定：<br><pre><code>model_provider = "amazon-bedrock"
+
+[model_providers.amazon-bedrock.aws]
+profile = "your-aws-profile"
+region = "us-east-1"</code></pre></td></tr>
+  <tr><td>企業ゲートウェイ経由で OpenAI モデルを中継（公式アカウント認証を維持）</td><td><code>requires_openai_auth = true</code> を設定。<code>env_key</code> は無視され、ChatGPT/API Key 認証を維持したままリクエストのみが社内ゲートウェイ経由で転送されます</td></tr>
+  <tr><td>Codex 内部 Shell にのみ認証変数を渡す</td><td>OS 全体の環境を汚染せず、Codex が実行するコマンド（およびそれが起動する CLI サブプロセス）にのみ環境変数を渡したい場合：<br><pre><code>[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+MY_TOOL_API_KEY = "your-token"
+MY_TOOL_BASE_URL = "https://proxy.example.com"</code></pre>「Codex セッション内で別の CLI ツールを併用する」ハイブリッドワークフローで多用されます（Codex 派生の子プロセスにのみ変数が渡り、shell 設定ファイルには残りません）</td></tr>
+  <tr><td>企業のログイン方式とワークスペースの強制</td><td><code>forced_login_method = "chatgpt"</code> ＋ <code>forced_chatgpt_workspace_id = "workspace-uuid"</code> をシステム層または一括配布ユーザー層に設定。個人による変更は不可</td></tr>
+</table>
+
+<h3 data-reveal>六、config.toml 特有の競合トラブル</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>プロジェクトの <code>.codex/config.toml</code> に <code>[model_providers]</code> や <code>notify</code> を書いたが全く反映されない</td><td>セキュリティポリシーにより、これらのキーは<strong>プロジェクト層では無視されます</strong>（リポジトリ内の悪意ある設定によるキー/通知の乗っ取りを防止するため）——ユーザー層の <code>~/.codex/config.toml</code> に記述してください</td></tr>
+  <tr><td>カスタム <code>model_provider</code> に切り替えた後、<code>unauthorized</code> / 401 が発生する</td><td><code>env_key</code> で指定した環境変数が設定されていないか、変数名のスペルミスです——<code>echo $変数名</code> で値が存在することを確認し、<code>[model_providers.&lt;id&gt;]</code> の <code>env_key</code> の綴りを確認</td></tr>
+  <tr><td><code>shell_environment_policy.inherit = "none"</code> に設定後、内部コマンドが大量に失敗する</td><td><code>PATH</code> を含む基本変数まで全てクリアされたためです：<code>none</code> の場合は <code>[shell_environment_policy.set]</code> で必須変数を手動で全て再定義する必要があります。通常は <code>inherit = "core"</code> の使用を推奨します</td></tr>
+  <tr><td><code>--profile</code> でプロファイルを切り替えたが、provider が見つからないエラーになる</td><td>Profile は設定の上書きオーバーレイです。カスタム <code>model_provider</code> を参照している場合、その <code>[model_providers.&lt;id&gt;]</code> テーブルはユーザー層（または該当 profile ファイル内）でも定義されている必要があります</td></tr>
+  <tr><td><code>model_provider</code> に書いた ID と <code>[model_providers.&lt;id&gt;]</code> のセクション名が一致していない</td><td>TOML のテーブル名とトップレベルの参照は完全一致（大文字小文字含む）が必須です。不一致の場合、Codex は暗黙的にデフォルトの <code>openai</code> provider にフォールバックします</td></tr>
+</table>
+<p class="src">本節の定義と仕様の出典：<a href="https://developers.openai.com/codex/config-reference" target="_blank">公式 Configuration Reference</a> · <a href="https://developers.openai.com/codex/config-basic" target="_blank">Config Basics</a>（現在は learn.chatgpt.com/docs へ移行、308 リダイレクト対応、2026-07 版実測照合済み）。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="codex-er">
+<div class="sec-tag">Codex 07</div>
+<h2>Codex · 症状別応急処置表</h2>
+
+<p>前章と同様の5大分類：ログイン＆認証 ／ 課金と利用枠 ／ インストールとバージョン ／ 設定とセッション ／ ネットワークとプロキシ。2大ツールのトラブルシューティング体系を完全に統一しています。</p>
+<div class="callout tip"><b class="t">⚡ 1分間クイック復旧</b><code>env | grep -iE 'openai|proxy'</code> でハイジャック変数をクリア → <code>codex logout && codex login</code> でクリーンに再ログイン → <code>codex login status</code> で検証；ログイン問題の決定的な証拠は <code>codex-login.log</code> に記録されます。</div>
+
+<div class="callout note"><b class="t">本表における英文エラー原文の検証基準</b>Codex CLI 公式トラブルシューティング（learn.chatgpt.com/docs）は Claude Code ほど網羅的なエラー対照表を掲載していません。以下の英文メッセージのうち確認できたものはすべてソース（<code>openai/codex</code> オープンソースリポジトリのソースコード行、または GitHub issue 番号）を明記しています。<strong>固定の原文が確認できない項目については、無理に英語を捏造せず日本語の説明のみを記載しています</strong>。</div>
+
+<h3 data-reveal>一、ログイン＆認証関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>ブラウザログインが待機状態で止まる／コールバック失敗、または <code>Port 127.0.0.1:1455 is already in use</code></td><td>1455ポートが他プロセスまたはファイアウォール/プロキシにブロックされています。ソースコードでは旧プロセスへキャンセル要求を送りリトライしますが、失敗すると代替ポート1457にフォールバックし、両方塞がっていると上記エラーが出ます（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs#L614-L663" target="_blank">ソースコード</a>）。① <code>localhost</code>、<code>127.0.0.1</code>、<code>::1</code> がプロキシ除外（<code>NO_PROXY</code>）に含まれているか確認；② <code>codex login --device-auth</code> に切り替え；③ リモート機では <code>ssh -L 1455:localhost:1455</code> でポート転送してログイン</td></tr>
+  <tr><td>ログイン成功後、プロンプト送信時に即座に <code>unexpected status 401 Unauthorized</code></td><td>トークン失効またはプロキシによる汚染：<code>codex logout</code> → <code>~/.codex/auth.json</code> を削除 → 一時的に VPN/プロキシをオフ → <code>codex login</code> でクリーンに再ログイン</td></tr>
+  <tr><td>ヘッドレス機で device-auth 実行時に <code>device code login is not enabled for this Codex server. Use the browser login or verify the server URL.</code></td><td>ワークスペースでデバイスコード認証が無効化されています（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/device_code_auth.rs#L78-L92" target="_blank">ソースコード：HTTP 404 が返る</a>）：個人プランは ChatGPT セキュリティ設定で有効化；Enterprise プランは管理者にワークスペース権限での有効化を依頼</td></tr>
+  <tr><td>IDE 拡張機能で突然再ログインを求められる</td><td>CLI と IDE は認証キャッシュを共有しています。一方の logout がもう一方に連動します——再度ログインしてください（<strong>公式の固定エラー文言は未定義</strong>。ログアウト連動による正常な挙動です。両側で <code>codex login status</code> を実行して確認可能）</td></tr>
+  <tr><td>ログイン時に意図しないワークスペース（個人／企業）に入ってしまった</td><td>ブラウザにキャッシュされた ChatGPT セッションがデフォルトワークスペースへ誘導：<code>codex logout</code> で再ログインし、承認画面で正しい workspace を選択。Enterprise ポリシー <code>forced_chatgpt_workspace_id</code> で制限されている場合、不一致時は即座にログアウトされ <code>Login is restricted to workspace(s) &lt;許可ワークスペース&gt;, but current credentials belong to &lt;実際ワークスペース&gt;. Logging out.</code> が出力されます（<a href="#codex-cred">05章参照</a>）</td></tr>
+  <tr><td>社用PCでログイン方式を変更できない</td><td>ポリシー設定 <code>forced_login_method = "chatgpt" | "api"</code> が有効です。逆の方式を試すと <code>ChatGPT login is disabled. Use API key login instead.</code> または <code>API key login is disabled. Use ChatGPT login instead.</code> と正確に出力されます——故障ではなくポリシーのため、管理者に相談してください</td></tr>
+  <tr><td>WSL 内でブラウザ側はログイン成功と表示されるが、CLI/IDE で <code>Token exchange failed: error sending request for url (https://auth.openai.com/oauth/token)</code></td><td>Windows と WSL は独立したネットワーク名前空間を持つため、localhost が共有されずコールバックがタイムアウトします（<a href="https://github.com/openai/codex/issues/6413" target="_blank">issue #6413</a> · <a href="https://github.com/openai/codex/issues/13342" target="_blank">#13342</a>）：VS Code 設定で「Run Codex in WSL」を無効化しネイティブ Windows で実行；または <code>codex login --device-auth</code> を使用；または Windows 側でログイン後に <code>auth.json</code> を WSL の <code>~/.codex/</code> に安全にコピー</td></tr>
+</table>
+
+<h3 data-reveal>二、課金と利用枠関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>Fast mode が利用できない</td><td>ChatGPT サブスクリプション利用枠に依存します：API Key ログインでは利用不可のため、ChatGPT ログインへ切り替えてください（<strong>固定エラー文言は未定義</strong>。エラーではなく機能が無効化／グレーアウトされます）</td></tr>
+  <tr><td><code>You've hit your usage limit.</code></td><td>ChatGPT ログインのサブスクリプション利用枠上限に達しました。リセットを待つかプランをアップグレード（Pro は <code>Visit https://chatgpt.com/codex/settings/usage to purchase more credits</code>、Plus はアップグレード案内が表示されます。ソース：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L674-L718" target="_blank">error.rs</a>）；API Key ログインの場合はプラットフォーム管理画面で残高を確認——まず <code>codex login status</code> でどちらの課金チャネルか確認</td></tr>
+  <tr><td><code>Quota exceeded. Check your plan and billing details.</code></td><td>API key 課金チャネルを利用しており、利用枠が不足しています（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L135" target="_blank">ソースコード</a>）：platform.openai.com でチャージするか、<code>[model_providers]</code> からキーを削除して ChatGPT ログインに戻す</td></tr>
+  <tr><td>API 経由で <code>exceeded retry limit, last status: 429 Too Many Requests</code></td><td>レートリミットに達し、リトライが枯渇したため元のステータスコードが出力されています（<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L601-L611" target="_blank">ソースコード</a>、<a href="https://github.com/openai/codex/issues/4840" target="_blank">issue #4840</a>）：並行数を下げるか時間を置く；ChatGPT サブスクリプションユーザーに表示される場合、カスタム <code>model_provider</code> によって制限の厳しいサードパーティゲートウェイに誘導されていないか確認</td></tr>
+  <tr><td>Codex cloud へのアクセスが拒否される</td><td>メール＋パスワードアカウントでは MFA 設定が必須です；クラウド機能は ChatGPT ログインでのみサポート（<strong>公式の固定エラー文言は未定義</strong>。公式ドキュメントで MFA が前提条件である仕様を確認済み）</td></tr>
+  <tr><td>サブスクリプションと API 課金を切り替えたい</td><td><code>codex logout</code> 後に適切な方式で再ログイン：ChatGPT OAuth＝サブスクリプション枠、API Key＝従量課金。データ保持ポリシーも異なります（ワークスペース vs API 組織）</td></tr>
+</table>
+
+<h3 data-reveal>三、インストールとバージョン関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>npm インストール時に <code>npm warn EBADENGINE Unsupported engine</code></td><td>Node バージョンが古く、<code>package.json</code> の <code>engines.node</code> 宣言を満たしていません（npm 標準警告）：nvm で最新 LTS に更新してから <code>npm install -g @openai/codex</code> を実行；macOS では <code>brew install codex</code> で Node 依存を回避可能</td></tr>
+  <tr><td>command not found: codex</td><td>npm のグローバル bin ディレクトリが PATH に含まれていません：<code>npm prefix -g</code> でディレクトリを確認し、<code>その配下/bin</code> を rc ファイルの PATH に追加；brew インストールの場合は brew の PATH 設定を確認</td></tr>
+  <tr><td>バージョンの挙動がおかしい ／ 新機能が反映されない</td><td><code>codex --version</code> で公式リリースと照合；npm と brew の重複インストールは競合の原因となるため、<code>which -a codex</code> で確認し1つのみを残す</td></tr>
+  <tr><td>Windows で <code>npm install -g @openai/codex</code> 完了後、<code>codex</code> 実行時に <code>Missing optional dependency @openai/codex-win32-x64</code></td><td>特定バージョンのリリース時にプラットフォーム専用パッケージ（<code>-win32-x64</code>）が欠落または遅延していたため、不完全なインストールとなっています（<a href="https://github.com/openai/codex/issues/17432" target="_blank">issue #17432</a>）：公式の <code>winget install OpenAI.Codex</code> または PowerShell インストールスクリプトを使用；一時回避策として <code>npm install -g @openai/codex@以前の安定バージョン</code> を実行</td></tr>
+</table>
+
+<h3 data-reveal>四、設定とセッション関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>config.toml を編集したのに反映されない</td><td><code>/debug-config</code> で階層の適用状況を確認：<code>-c</code> 引数 &gt; profile &gt; プロジェクト層 &gt; ユーザー層。<code>model_providers</code>/<code>notify</code>/<code>otel</code> 等のキーはプロジェクト層ではセキュリティ上無視されるためユーザー層への記述が必須</td></tr>
+  <tr><td>PC移行後に <code>codex resume</code> を実行すると <code>no thread with id: &lt;uuid&gt;</code> と表示される</td><td>セッション履歴は旧マシンの <code>CODEX_HOME</code> に保存されており、認証情報と共には移行されません（ソース：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs#L97-L98" target="_blank">error.rs</a>）；クラウドタスクには影響しません</td></tr>
+  <tr><td>CLI / IDE 拡張 / Desktop アプリを併用中、config.toml で <code>failed to load configuration: ~/.codex/config.toml</code> および <code>unexpected key or value, expected newline, '#'</code> / <code>key with no value, expected '='</code> が発生</td><td>07章の設定セクションで警告した通り、Desktop アプリが自動生成する <code>[marketplaces.*]</code>、<code>[desktop]</code> 等のセクションと、CLI/IDE で手動編集した内容が衝突して不正な TOML が生成されたためです（実例：<a href="https://github.com/openai/codex/issues/30045" target="_blank">issue #30045</a>）。同一の <code>~/.codex/config.toml</code> を共有するため、Desktop の自動生成セクションは手動編集しないこと。発生時はバックアップを取った上で該当セクションを削除し Desktop アプリを再起動して再生成させる</td></tr>
+  <tr><td>ログイン問題の原因をログから特定したい</td><td>ログディレクトリ内の <code>codex-login.log</code> を確認——ログイン専用の診断ログであり、issue 報告時にも必須となります</td></tr>
+</table>
+
+<h3 data-reveal>五、ネットワークとプロキシ関連</h3>
+<table class="tbl er">
+  <tr><th>症状</th><th>根本原因 → 修正方法</th></tr>
+  <tr><td>企業のプロキシが TLS インターセプトを実施し、ログイン時に <code>Token exchange failed: error sending request for url (https://auth.openai.com/oauth/token)</code></td><td>ログインコールバックが使用する <code>reqwest::Client</code> はデフォルトでシステム証明書ストアのみを信頼するため、企業自署 CA ではハンドシェイクが失敗します（<a href="https://github.com/openai/codex/issues/6849" target="_blank">issue #6849</a>、ソース：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs#L786-L836" target="_blank">server.rs · exchange_code_for_tokens()</a>）：<code>export CODEX_CA_CERTIFICATE=/path/社内CA.pem</code>（未設定時は <code>SSL_CERT_FILE</code> へフォールバック）；ログイン、HTTPS、WebSocket の全通信がこの CA を経由します</td></tr>
+  <tr><td>VPN / プロキシ切り替え後に様々な通信エラーが発生する</td><td>残存する <code>*_PROXY</code> 変数の影響：<code>env | grep -i proxy</code> でクリーンアップ；OAuth コールバックのために <code>NO_PROXY</code> に localhost 一族が含まれている必要があります</td></tr>
+  <tr><td>auth.openai.com に接続できない</td><td><code>curl -sI https://auth.openai.com</code> で直接テスト；不通の場合はファイアウォールまたは地域制限のため、回線を変更するか<a href="#headless">デバイスコード／SSH ポート転送</a>を利用</td></tr>
+</table>
+<p class="src">出典：<a href="https://learn.chatgpt.com/docs/auth" target="_blank">公式 Authentication</a>（2026-07 版）。英文エラー原文は <a href="https://github.com/openai/codex" target="_blank">openai/codex オープンソースリポジトリ</a>のソースコード（commit <code>f6160ca</code>）より検証：<a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/protocol/src/error.rs" target="_blank">protocol/error.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/server.rs" target="_blank">login/server.rs</a> · <a href="https://github.com/openai/codex/blob/f6160ca5b3da580616883e9039f0e76ad359d515/codex-rs/login/src/device_code_auth.rs" target="_blank">login/device_code_auth.rs</a>、および実ユーザー issue（#3927、#4840、#6413、#6849、#13342、#17432、#30045、2026-07 照合済み）。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="shared">
+<div class="sec-tag">シナリオ別実践 08</div>
+<h2>シナリオ A · 共用PC ／ 他人の設定を引き継いだPC</h2>
+
+<p>最も頻発するトラブル現場：有料会員である自分が、他人が過去に使っていたPCに座り、作業を始めた途端にエラーが多発する現象です。<strong>根本原因はほぼ常に共通しています：前任者の認証情報や環境変数が残っており、自分のログインよりも優先されていること</strong>です。</p>
+
+<h3 data-reveal>作業前の3点チェック（設定変更に着手する前に実行）</h3>
+<ol class="steps">
+  <li><strong>環境変数と rc ファイルの残存チェック</strong>：<a href="#diagnose">第01章の診断スクリプト</a>を実行し、特に L2 出力を確認——前任者の rc ファイルに残った <code>export ANTHROPIC_API_KEY</code> / <code>ANTHROPIC_BASE_URL</code> (リレー構成) / <code>OPENAI_API_KEY</code> は時限爆弾です。</li>
+  <li><strong>認証情報の所属確認</strong>：<code>claude</code> セッションに入り <code>/status</code> でどのアカウントでログインしているか確認；<code>codex login status</code> も同様に確認。他人のアカウントであればまず <code>/logout</code> / <code>codex logout</code> を実行。</li>
+  <li><strong>グローバル設定の汚染確認</strong>：<code>~/.claude/CLAUDE.md</code>、<code>~/.claude/settings.json</code>、<code>~/.codex/config.toml</code>、<code>~/.codex/AGENTS.md</code> に他人の個人嗜好や独自指示が残っていないか確認——これらはすべての対話動作に直接影響します。</li>
+</ol>
+
+<h3 data-reveal>共用レベルに応じた対策の選択</h3>
+<table class="tbl">
+  <tr><th>シナリオ</th><th>推奨アプローチ</th><th>具体的な手順</th></tr>
+  <tr><td>一時的に1〜2回借りるだけ</td><td><strong>他人の設定には一切手を触れない</strong></td><td>現在のターミナルセッション内でのみ変数をクリア（<code>unset ANTHROPIC_API_KEY</code> 等、rc ファイルは編集しない）。使用後に <code>/logout</code> で自分のアカウントをログアウトして終了</td></tr>
+  <tr><td>1台のマシンを長期的に共用する</td><td><strong>OS ユーザーアカウントを分ける（最善・標準的）</strong></td><td>macOS/Windows で各自のユーザーを作成：ホームディレクトリが物理的に隔離され、<code>~/.claude</code>、キーチェーン、<code>~/.codex</code> が互いに不可視となり、競合や情報漏洩がゼロになります</td></tr>
+  <tr><td>同一の OS ユーザーで切り替える必要がある</td><td><strong>設定ディレクトリの完全分離 ＋ エイリアス</strong></td><td>下記の手順を参照——両ツールとも「ホームディレクトリの丸ごと移動」に対応しています</td></tr>
+</table>
+
+<h3 data-reveal>同一 OS アカウントで複数環境を共存させる（ディレクトリ分離手法）</h3>
+<pre><code><span class="c"># ~/.zshrc —— ユーザー/アカウントごとに独立した設定ディレクトリ ＋ 専用エイリアスコマンドを定義</span>
+<span class="c"># Claude Code: CLAUDE_CONFIG_DIR でホーム配置先を指定</span>
+alias claude-me='CLAUDE_CONFIG_DIR="$HOME/.claude-me" claude'
+alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
+<span class="c"># Codex: CODEX_HOME で同様に指定</span>
+alias codex-me='CODEX_HOME="$HOME/.codex-me" codex'
+alias codex-work='CODEX_HOME="$HOME/.codex-work" codex'</code></pre>
+<ul>
+  <li>各ディレクトリで初回利用時に個別にログインを行うことで、認証情報、履歴、設定が完全に分離され、<strong>以後ログアウトとログインを繰り返す必要がなくなります</strong>；</li>
+  <li>誤操作防止テクニック：アカウントごとのセッションで <code>/color</code> を使って TUI テーマカラーを変更し、「今どのアカウントで操作しているか」を一目で識別できるようにする（madewithlove 方式）；</li>
+  <li>注意：Claude Code のグローバル状態ファイル <code>~/.claude.json</code> (MCP設定等) も <code>CLAUDE_CONFIG_DIR</code> の指定配下に配置されます——デフォルト位置のファイルを直接触らないようにしてください。</li>
+</ul>
+
+<div class="callout tip"><b class="t">離席前チェックリスト（共用PC利用マナー）</b>① <code>/logout</code> および <code>codex logout</code> で自分のアカウントを確実にログアウト；② 一時的に export した環境変数を破棄；③ 自分の個人 API Key を共用マシンの rc ファイルに書き残さない；④ 機密プロジェクトのセッション履歴をクリーンアップ（<code>~/.claude/projects/</code> の履歴は平文です）。</div>
+<p class="src">参考：<a href="https://madewithlove.com/blog/running-multiple-claude-accounts-without-logging-out/" target="_blank">Running multiple Claude accounts without logging out (madewithlove)</a> · <a href="https://joshcgrossman.com/2026/02/04/claude-two-accounts-windows/" target="_blank">Two Claude accounts on one Windows PC (Josh Grossman)</a> · <a href="https://github.com/ndycode/codex-multi-auth" target="_blank">codex-multi-auth (コミュニティツール)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="machines">
+<div class="sec-tag">シナリオ別実践 09</div>
+<h2>シナリオ B · PC移行 ／ マルチマシン同期</h2>
+
+<p>基本原則はシンプルです：<strong>「設定は持ち出し、認証情報はマシンごとに新規ログインし、履歴はその場に残す」</strong>。「何を持ち出し、何を持ち出さないか」を明確に理解していれば、PCの乗り換えは10分で完了します。</p>
+
+<h3 data-reveal>何を持ち出し、何を持ち出さないか（2大ツール比較対照）</h3>
+<table class="tbl">
+  <tr><th>資産</th><th>Claude Code</th><th>Codex</th><th>移行方針</th></tr>
+  <tr><td>コア設定</td><td><code>settings.json</code>、グローバル <code>CLAUDE.md</code>、<code>skills/</code>、<code>agents/</code></td><td><code>config.toml</code>、profiles、グローバル <code>AGENTS.md</code></td><td>✅ dotfiles リポジトリで管理し、新マシンで clone</td></tr>
+  <tr><td>プロジェクト設定</td><td><code>.claude/</code>、<code>.mcp.json</code>、プロジェクト <code>CLAUDE.md</code></td><td><code>.codex/</code>、リポジトリ <code>AGENTS.md</code></td><td>✅ プロジェクトの git リポジトリに既存</td></tr>
+  <tr><td><strong>認証情報</strong></td><td>キーチェーン / <code>.credentials.json</code></td><td><code>auth.json</code> / キーチェーン</td><td>❌ <strong>コピーしない</strong>：新マシンで1回再ログイン（30秒）する方が安全かつクリーン</td></tr>
+  <tr><td>セッション履歴</td><td><code>projects/</code>、<code>history.jsonl</code>（平文！）</td><td>セッションデータディレクトリ</td><td>❌ ローカル履歴は移行不要；複数マシン間の継続は Claude の <code>--teleport</code>/クラウドセッション、Codex のクラウドタスクを利用</td></tr>
+  <tr><td>キャッシュ／プラグイン</td><td><code>plugins/</code>、<code>shell-snapshots/</code> 等</td><td>ログディレクトリ</td><td>➖ バックアップ不要。新マシンで自動再生成</td></tr>
+</table>
+
+<h3 data-reveal>新規PCセットアップの10分標準フロー</h3>
+<pre><code><span class="c"># 1. インストール（公式ネイティブチャネルを使用。npm と混在させない）</span>
+curl -fsSL https://claude.ai/install.sh | bash        <span class="c"># Claude Code</span>
+npm install -g @openai/codex                          <span class="c"># Codex (または brew install codex)</span>
+
+<span class="c"># 2. 設定の復元（dotfiles アプローチ）</span>
+git clone git@github.com:yourname/dotfiles.git ~/dotfiles
+ln -s ~/dotfiles/claude ~/.claude                     <span class="c"># または export CLAUDE_CONFIG_DIR=~/dotfiles/claude</span>
+ln -s ~/dotfiles/codex ~/.codex                       <span class="c"># または export CODEX_HOME=~/dotfiles/codex</span>
+
+<span class="c"># 3. 各ツールで1回ずつログイン（認証情報は絶対にコピーしない）</span>
+claude          <span class="c"># ブラウザ OAuth → /status でアカウントと Login method を検証</span>
+codex login     <span class="c"># ブラウザ OAuth → codex login status で検証</span>
+
+<span class="c"># 4. 診断スクリプトで仕上げ確認</span>
+claude doctor && bash ai-env-check.sh</code></pre>
+
+<div class="callout note"><b class="t">複数マシン間の「設定ドリフト」を根本解決する方法</b>公式の複数マシン間自動同期機能は現時点で未提供です（上流 issue #36693 で議論中）。現時点での最適解：<strong>すべての手書き設定</strong>を dotfiles リポジトリで管理し、各マシンにはシンボリックリンクのみを配置することです——変更したら commit、他マシンで pull すれば即時同期されます。あるいは <code>CLAUDE_CONFIG_DIR</code> / <code>CODEX_HOME</code> をクラウド同期フォルダ（iCloud/Dropbox等）に向ける手法もあります（注意：認証情報や <code>projects/</code> 履歴まで同期されないよう、.gitignore 等で確実に除外してください）。</div>
+<p class="src">参考：<a href="https://code.claude.com/docs/en/claude-directory" target="_blank">公式 ~/.claude ディレクトリ完全解説</a> · <a href="https://github.com/anthropics/claude-code/issues/36693" target="_blank">anthropics/claude-code#36693 (マルチマシン同期議論)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="headless">
+<div class="sec-tag">シナリオ別実践 10</div>
+<h2>シナリオ C · SSH ／ コンテナ ／ ヘッドレス機 ／ CI</h2>
+
+<p>ブラウザが存在しない環境では、ログインのアプローチが異なります。2つのツールの公式推奨アプローチは異なるため、混同しないようにしてください。</p>
+
+<h3 data-reveal>Claude Code：3つのアプローチ</h3>
+<ol class="steps">
+  <li><strong>SSH / WSL2 / コンテナでの対話利用</strong>：通常通り <code>claude</code> を実行し、ターミナルに表示された OAuth URL を<strong>ローカルマシンのブラウザ</strong>にコピーしてログインを完了。ブラウザに表示された code をターミナルに貼り付けます（貼り付けが動作しない環境では <code>claude auth login</code> を使用して stdin から読み込ませる）。</li>
+  <li><strong>CI / スクリプト（サブスクリプション利用枠）</strong>：ローカル環境で <code>claude setup-token</code> を実行して<strong>1年間有効な OAuth トークン</strong>を生成し、CI Secret に保存。実行環境の環境変数 <code>CLAUDE_CODE_OAUTH_TOKEN</code> に設定します。注意：<code>--bare</code> モードではこの変数は読み込まれないため、bare 環境では <code>ANTHROPIC_API_KEY</code> または <code>apiKeyHelper</code> を使用してください。</li>
+  <li><strong>CI（API 従量課金）</strong>：環境変数 <code>ANTHROPIC_API_KEY</code> を直接設定——最もシンプルですが、従量課金となります。</li>
+</ol>
+
+<h3 data-reveal>Codex：公式推奨の3大アプローチ（優先度順）</h3>
+<ol class="steps">
+  <li><strong>デバイスコード認証（第一推奨）</strong>：<code>codex login --device-auth</code> を実行し、ローカルの任意のブラウザで使い捨てワンタイムコードを入力。ワークスペース管理者が事前にデバイスコード認証権限を有効化している必要があります。</li>
+  <li><strong>auth.json のコピー（公式フォールバック）</strong>：ブラウザのあるマシンでログイン後、生成された <code>~/.codex/auth.json</code> を対象マシンへ安全にコピー（scp / docker cp）。ローカルマシンの保存先がキーチェーンの場合は、あらかじめ <code>cli_auth_credentials_store</code> を <code>file</code> に設定してログインし直す必要があります。</li>
+  <li><strong>SSH ポートフォワーディング</strong>：<code>ssh -L 1455:localhost:1455 user@remote</code> で接続した上でリモート側で <code>codex login</code> を実行し、ローカルブラウザで標準の OAuth コールバックを完了させます。</li>
+</ol>
+
+<h3 data-reveal>Codex CI での長期認証（公式 auth.json 更新サイクル）</h3>
+<p>ChatGPT サブスクリプション利用枠で CI を実行する公式推奨パターン——Codex 実行時にトークンが自動更新され auth.json に書き戻される仕組みを利用します：</p>
+<ol class="steps">
+  <li>信頼できるマシン上で <code>codex login</code> (file ストレージ) を実行し、生成された <code>auth.json</code> を CI の Secret 管理に登録；</li>
+  <li>各ジョブ実行時：auth.json を<strong>復元</strong> → Codex を実行（トークンは約8日間未使用で stale になりますが、実行中に自動更新されます） → 更新された auth.json を CI Secret に<strong>書き戻す</strong>；</li>
+  <li>禁止事項：複数の並行ジョブで同一の auth.json を共有しないこと；初期の古いファイルを毎回上書きしないこと；更新チェーンが途切れた場合は信頼できるマシンで再度ログインして再シードすること。セルフホスト runner の場合は永続ボリュームに <code>CODEX_HOME</code> を割り当てる方がシンプルです。</li>
+</ol>
+
+<div class="callout tip"><b class="t">コンテナ ／ DevContainer でのログイン永続化</b>ホームディレクトリをボリュームマウントすることで、コンテナを再構築しても再ログインが不要になります：Claude Code は <code>CLAUDE_CONFIG_DIR</code> が指すボリューム（Linux の認証情報は配下の <code>.credentials.json</code> に保存）；Codex は <code>CODEX_HOME</code> ボリュームをマウント。重要原則：認証情報はボリューム内にのみ保持し、<strong>イメージレイヤーに絶対に焼き込まないこと</strong>。</div>
+
+<h3 data-reveal>社内ネットワーク（プロキシ ／ プライベート CA）設定早見表</h3>
+<table class="tbl">
+  <tr><th>項目</th><th>Claude Code</th><th>Codex</th></tr>
+  <tr><td>HTTP プロキシ</td><td><code>HTTPS_PROXY</code> / <code>HTTP_PROXY</code></td><td>同左（加えて <code>NO_PROXY</code> に localhost を含めること）</td></tr>
+  <tr><td>プライベート CA</td><td><code>NODE_EXTRA_CA_CERTS=/path/ca.pem</code></td><td><code>CODEX_CA_CERTIFICATE=/path/ca.pem</code></td></tr>
+  <tr><td>ログイン方式の制限</td><td><code>forceLoginMethod</code> (Enterpriseポリシー)</td><td><code>forced_login_method</code> (Enterpriseポリシー)</td></tr>
+</table>
+<p class="src">出典：<a href="https://code.claude.com/docs/en/authentication" target="_blank">公式 Authentication (setup-token)</a> · <a href="https://developers.openai.com/codex/auth/ci-cd-auth" target="_blank">公式 Codex CI/CD auth</a>（2026-07 版）</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">実戦ケーススタディ 11</div>
+<h2>実戦ケーススタディ：症状から根本原因への徹底追跡</h2>
+
+<p>高頻度で発生する4つの実戦シナリオを通じて、<a href="#diagnose">5層診断法</a>の実際の適用フローを解説します。これら4つの構造を理解すれば、大半の「原因不明のトラブル」を自力で解決できるようになります——特に<strong>エラーメッセージのテキストと真の根本原因がいかに乖離しているか</strong>に注目してください。</p>
+
+<h3 data-reveal>ケース1 · 「Max 会員なのに組織が無効化されていると表示される」</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>現場の状況</strong></td><td>同僚から引き継いだ PC に Claude Code をインストールし、有料サブスクリプションアカウントでログイン成功したものの、プロンプトを入力した瞬間に <code>API Error: 400 "This organization has been disabled"</code> が発生。再インストールを2回試みたが全く改善しない。</td></tr>
+  <tr><td><strong>診断プロセス</strong></td><td>L1 正常（単一インストール、最新バージョン）；<strong>L2 で原因特定</strong>——<code>env | grep -i anthropic</code> を実行したところ <code>ANTHROPIC_API_KEY=sk-ant-…</code> が検出された。調査の結果 <code>~/.zshrc</code> 内に記述されており、前任者が残したもので、そのキーの Console 組織はすでに解約済みだった。</td></tr>
+  <tr><td><strong>修正手順</strong></td><td>変数を <code>unset</code> ＋ rc ファイルから export 行を削除 → ターミナルを再起動 → <code>/status</code> で Login method がサブスクリプションに戻ったことを確認。所要時間3分、再インストールは一切不要だった。</td></tr>
+  <tr><td><strong>得られた教訓</strong></td><td>エラーメッセージは「組織」と言い、ユーザーは「サブスクリプション」を疑い、真の原因は「環境変数」にあった——<strong>エラーメッセージは結果を述べているだけであり、根本原因そのものではありません</strong>。これが L2 の問題に対して再インストール（L1 の操作）が永久に効かない理由です。</td></tr>
+</table>
+
+<h3 data-reveal>ケース2 · 「VS Code 拡張機能だけ Invalid API key になり、ターミナルは正常に動く」</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>現場の状況</strong></td><td>ターミナルでの <code>claude</code> は完全に正常動作しているが、VS Code 拡張機能側では <code>Invalid API key · Please run /login</code> が繰り返しポップアップし、ログイン成功後も画面が真っ暗なままになる（anthropics/claude-code#12204 に記録された典型例）。</td></tr>
+  <tr><td><strong>診断プロセス</strong></td><td>L3 認証情報層で発生しているが、根本原因は L2：マシン上に<strong>3つの認証情報ソースが同時に存在</strong>していた（OAuth ログイン、手動設定された API key、shell 内の環境変数）。ターミナルが rc ファイルから読み込んだ環境と、VS Code が GUI 起動時に継承した環境が<strong>異なっており</strong>、両者が別々の認証情報をロードし、一方が有効でもう一方が無効となっていた。</td></tr>
+  <tr><td><strong>修正手順</strong></td><td>認証ソースを1つに集約：すべての <code>ANTHROPIC_*</code> 変数と手動キーをクリア → CLI と拡張機能の双方でクリーンに再ログイン → 両側の <code>/status</code> で同一のサブスクリプションアカウントが表示されることを確認。</td></tr>
+  <tr><td><strong>得られた教訓</strong></td><td>「ターミナルは正常で IDE だけ異常」という現象は、ほぼ確実に<strong>2つのプロセスから見える環境変数の不一致</strong>です。複数の認証情報が混在していると、どのプロセスがどれを掴むか予測できません——認証ソースは必ず1つに絞りましょう。</td></tr>
+</table>
+
+<h3 data-reveal>ケース3 · 「翌朝PCを開くと、すべての並行セッションが一斉に再ログインを要求してくる」</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>現場の状況</strong></td><td>前夜に3つの並行 Claude Code セッションを開いたままMacBookの蓋を閉じて就寝。翌朝スリープから復帰すると3つのセッションが同時にログイン画面を表示し、1つでログインし直すと他のセッションが切断される現象が連続した。</td></tr>
+  <tr><td><strong>診断プロセス</strong></td><td>L2/L3 はクリーンであり、直感に反して <strong>L1 バージョン層</strong> に原因があった：公式 changelog を確認したところ、v2.1.211 以前に既知のバグが存在した——スリープ復帰時に複数セッションが同一トークンで同時に更新をかけ、互いの認証を無効化し合っていた。</td></tr>
+  <tr><td><strong>修正手順</strong></td><td>v2.1.211 以上にアップデート（更新処理が単一プロセスによる協調制御に変更）、1回再ログインした後は一度も再発しなくなった。</td></tr>
+  <tr><td><strong>得られた教訓</strong></td><td><strong>全体的かつ不可解な時間帯に起きる現象は、自分の設定を疑う前にバージョンと changelog を確認すること</strong>。公式がすでに修正したバグは、ローカル環境をどれだけ調査しても原因究明できません。</td></tr>
+</table>
+
+<h3 data-reveal>ケース4 · 「Codex が CI で1週間安定動作していたのに、突然すべてのパイプラインで 401 エラーが発生」</h3>
+<table class="tbl">
+  <tr><td style="width:72px"><strong>現場の状況</strong></td><td>ChatGPT サブスクリプション利用枠で CI を運用：ローカルの <code>auth.json</code> を CI Secret に登録し、ジョブ実行ごとに復元して実行。1週間後に全パイプラインが一斉に 401 を出し始め、ローカルから再エクスポートすると数日間持ち直す、というサイクルを繰り返していた。</td></tr>
+  <tr><td><strong>診断プロセス</strong></td><td>L3 認証情報層の問題：Codex のトークンは約8日間未使用で stale になります。実行中に自動更新されて auth.json に<strong>書き戻されていた</strong>にもかかわらず、CI パイプラインが毎回 Secret にある「初期の古いファイル」で上書き復元していたため、自動更新の成果が破棄され、更新チェーンが途切れて失効していた。</td></tr>
+  <tr><td><strong>修正手順</strong></td><td>公式 CI パターンに則りクローズドループを構築：復元 → 実行 → <strong>更新された auth.json を Secret に書き戻す</strong>；並行ジョブ間で同一の認証情報を共有しないよう分離。セルフホスト runner では永続 <code>CODEX_HOME</code> を割り当てて完全自動化。</td></tr>
+  <tr><td><strong>得られた教訓</strong></td><td><strong>認証情報は静的な設定ファイルではなく、生きている（状態を持つ）ものです</strong>。「N日おきに定期的に壊れる」問題は、期限切れになるリソースの更新ライフサイクルが途切れていないかを疑ってください。</td></tr>
+</table>
+<p class="src">事例の根拠：公式 troubleshoot-install / authentication ドキュメント、anthropics/claude-code#12204、Codex CI/CD auth 公式ガイド（2026-07 照合済み）。マシンや人物の状況はわかりやすく再構成していますが、調査経路と根本原因はすべて実際の動作メカニズムに基づいています。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="reset">
+<div class="sec-tag">万能復旧 12</div>
+<h2>万能復旧：3段階リセット手順</h2>
+
+<p>調査に行き詰まった場合は、段階的にリセットを実施します。<strong>鉄則：L1 から順に段階を上げ、各段階の後に検証を行い、解決したらそこで停止すること</strong>——いきなり完全初期化を行うと原因究明の手がかりまで失われ、多くの問題は L1/L2 で解決できます。</p>
+
+<h3 data-reveal><span class="pill a">L1</span> ソフトリセット（2分）—— 70% の問題を解決</h3>
+<pre><code><span class="c"># 現在の shell で動作をハイジャックしている環境変数をクリア (現在のセッションにのみ影響・完全安全)</span>
+unset ANTHROPIC_API_KEY ANTHROPIC_AUTH_TOKEN ANTHROPIC_BASE_URL
+unset OPENAI_API_KEY
+
+<span class="c"># クリーンに再ログイン</span>
+claude   <span class="c"># セッション内: /logout → 終了 → 再度 claude → /login → /status で検証</span>
+codex logout && codex login && codex login status</code></pre>
+
+<h3 data-reveal><span class="pill a">L2</span> 認証情報＆残存設定リセット（5分）—— さらに 20% を解決</h3>
+<pre><code><span class="c"># 1. rc ファイル内の残存 export を完全に除去 (エディタで開き行単位で確認・sed の一括削除は避ける)</span>
+grep -nE 'ANTHROPIC|CLAUDE_|CODEX|OPENAI' ~/.zshrc ~/.zprofile ~/.bashrc ~/.profile
+
+<span class="c"># 2. 認証ストレージをクリアして再ログイン</span>
+<span class="c">#    Claude Code: /logout でクリア済み。macOS で不調時はキーチェーンをアンロック:</span>
+security unlock-keychain ~/Library/Keychains/login.keychain-db
+<span class="c">#    Codex: ログアウトして平文クレデンシャルファイルを削除</span>
+codex logout; rm -f ~/.codex/auth.json
+
+<span class="c"># 3. システム時計を同期 (トークン検証に必須) —— macOS:</span>
+sudo sntp -sS time.apple.com
+
+<span class="c"># 4. 再度ログイン ＋ 検証</span>
+claude   <span class="c"># /login → /status</span>
+codex login && codex login status</code></pre>
+
+<h3 data-reveal><span class="pill a">L3</span> 完全初期化（核爆弾リセット・15分）—— バックアップ → 完全削除 → 公式渠道から再インストール</h3>
+<pre><code><span class="c"># ═══ ステップ 1: コア資産のバックアップ (手書き設定は資産、それ以外は再生成可能) ═══</span>
+mkdir -p ~/ai-cli-backup
+cp -r ~/.claude/settings.json ~/.claude/CLAUDE.md ~/.claude/skills ~/.claude/agents ~/.claude/commands ~/ai-cli-backup/ 2&gt;/dev/null
+cp ~/.claude.json ~/ai-cli-backup/claude.json 2&gt;/dev/null   <span class="c"># MCP 等のグローバル状態。ステップ3で削除されるためバックアップ必須</span>
+cp -r ~/.codex/config.toml ~/.codex/AGENTS.md ~/.codex/prompts ~/ai-cli-backup/ 2&gt;/dev/null
+
+<span class="c"># ═══ ステップ 2: 重複インストールされたバイナリを全アンインストール (Claude Code) ═══</span>
+npm uninstall -g @anthropic-ai/claude-code 2&gt;/dev/null
+rm -rf ~/.claude/local                        <span class="c"># レガシー npm インストール</span>
+brew uninstall --cask claude-code 2&gt;/dev/null <span class="c"># 過去に brew で入れた場合</span>
+
+<span class="c"># ═══ ステップ 3: 状態ディレクトリの完全削除 (バックアップ済みのため安全に削除) ═══</span>
+rm -rf ~/.claude ~/.claude.json
+rm -rf ~/.codex
+
+<span class="c"># ═══ ステップ 4: 公式推奨ルートからクリーンインストール ═══</span>
+curl -fsSL https://claude.ai/install.sh | bash
+npm install -g @openai/codex
+
+<span class="c"># ═══ ステップ 5: 設定の復元 ＋ 再ログイン ＋ 総合検証 ═══</span>
+mkdir -p ~/.claude && cp ~/ai-cli-backup/settings.json ~/ai-cli-backup/CLAUDE.md ~/.claude/ 2&gt;/dev/null
+cp -r ~/ai-cli-backup/skills ~/ai-cli-backup/agents ~/ai-cli-backup/commands ~/.claude/ 2&gt;/dev/null
+cp ~/ai-cli-backup/claude.json ~/.claude.json 2&gt;/dev/null   <span class="c"># ステップ1で退避した MCP 等のグローバル状態</span>
+mkdir -p ~/.codex && cp ~/ai-cli-backup/config.toml ~/ai-cli-backup/AGENTS.md ~/.codex/ 2&gt;/dev/null
+cp -r ~/ai-cli-backup/prompts ~/.codex/ 2&gt;/dev/null
+claude doctor && claude    <span class="c"># /login → /status でサブスクリプション有効を確認</span>
+codex login && codex login status</code></pre>
+
+<div class="callout warn"><b class="t">完全初期化前の3点確認</b>① <code>~/.claude/projects/</code> 内に残したいセッション履歴がないか（削除すると復元できません）；② バックアップディレクトリにファイルが実在するか（<code>ls ~/ai-cli-backup</code> で目視確認）；③ Windows ユーザーは <code>%USERPROFILE%\.claude</code> と <code>%USERPROFILE%\.codex</code> を削除し、環境変数設定画面を確認してください。</div>
+
+<div class="callout tip"><b class="t">初期化しても解決しない場合</b>原因はローカルマシン外にあります：① 公式サービス稼働状況（status.anthropic.com / status.openai.com）；② サブスクリプション状態（claude.ai/settings / ChatGPT 設定画面）；③ 企業ポリシー（IT部門へ確認）；④ <code>claude doctor</code> の出力ログまたは <code>codex-login.log</code> を添えて issue 報告またはサポートへ問い合わせてください。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="map">
+<div class="sec-tag">万能復旧 13</div>
+<h2>2大ツール概念対照表 ＋ リソースインデックス</h2>
+
+<h3 data-reveal>1つの表で2大ツールを完全対照</h3>
+<table class="tbl">
+  <tr><th>概念</th><th><span class="pill a">Claude Code</span></th><th><span class="pill b">Codex</span></th></tr>
+  <tr><td>ホームディレクトリ ／ パス変更変数</td><td><code>~/.claude</code> / <code>CLAUDE_CONFIG_DIR</code></td><td><code>~/.codex</code> / <code>CODEX_HOME</code></td></tr>
+  <tr><td>ユーザー設定ファイル</td><td><code>settings.json</code> (JSON)</td><td><code>config.toml</code> (TOML)</td></tr>
+  <tr><td>グローバル記憶／指示ファイル</td><td><code>~/.claude/CLAUDE.md</code></td><td><code>~/.codex/AGENTS.md</code></td></tr>
+  <tr><td>認証情報の保存先</td><td>macOS キーチェーン / <code>.credentials.json</code></td><td><code>auth.json</code> / キーチェーン (<code>cli_auth_credentials_store</code>)</td></tr>
+  <tr><td>現在ステータス／認証確認</td><td><code>/status</code></td><td><code>codex login status</code>、<code>/status</code></td></tr>
+  <tr><td>設定診断コマンド</td><td><code>claude doctor</code>、<code>/doctor</code>、<code>--safe-mode</code></td><td><code>/debug-config</code>、<code>codex-login.log</code></td></tr>
+  <tr><td>環境変数ハイジャック源</td><td><code>ANTHROPIC_API_KEY</code>、<code>ANTHROPIC_AUTH_TOKEN</code></td><td><code>OPENAI_API_KEY</code> (API 課金モード時)</td></tr>
+  <tr><td>CI 長期認証トークン</td><td><code>claude setup-token</code> → <code>CLAUDE_CODE_OAUTH_TOKEN</code> (1年)</td><td>auth.json 復元→実行→更新書き戻しサイクル；または API Key</td></tr>
+  <tr><td>ブラウザなし環境でのログイン</td><td>URL をローカルで開きコード貼り付け / <code>claude auth login</code></td><td><code>--device-auth</code> / SSH ポート転送 1455</td></tr>
+  <tr><td>プライベート CA</td><td><code>NODE_EXTRA_CA_CERTS</code></td><td><code>CODEX_CA_CERTIFICATE</code></td></tr>
+  <tr><td>企業ポリシー強制</td><td><code>forceLoginMethod</code> / <code>forceLoginOrgUUID</code></td><td><code>forced_login_method</code> / <code>forced_chatgpt_workspace_id</code></td></tr>
+  <tr><td>複数アカウントの分離</td><td><code>CLAUDE_CONFIG_DIR</code> ＋ alias</td><td><code>CODEX_HOME</code> ＋ alias (公式サポート議論中)</td></tr>
+</table>
+
+<h3 data-reveal>リソースインデックス（信頼度順）</h3>
+<table class="tbl">
+  <tr><th>リソース</th><th>説明</th></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank">Claude Code · Troubleshoot installation and login</a></td><td>公式インストール＆ログイン トラブルシューティング総合ページ——「エラーメッセージ → 解決策」対照表が最も充実。まずここを確認</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/authentication" target="_blank">Claude Code · Authentication</a></td><td>公式認証メカニズム完全解説。認証優先順位の唯一の権威ある出処</td></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/settings" target="_blank">Claude Code · Settings</a> · <a href="https://code.claude.com/docs/en/claude-directory" target="_blank">~/.claude ディレクトリ完全解説</a></td><td>設定の階層レイヤーとディレクトリ構造の公式仕様</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/auth" target="_blank">Codex · Authentication</a> (→ learn.chatgpt.com)</td><td>Codex 公式認証ドキュメント：ログイン方式、認証情報保存、ヘッドレス環境</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/auth/ci-cd-auth" target="_blank">Codex · CI/CD auth</a></td><td>公式 CI 長期認証ガイド（auth.json 更新サイクル）</td></tr>
+  <tr><td><a href="https://support.claude.com/en/articles/14552646-troubleshoot-claude-code-installation-and-authentication" target="_blank">Claude ヘルプセンター · インストールと認証のトラブルシューティング</a></td><td>公式サポート視点での補足。サポートへの問い合わせ窓口を含む</td></tr>
+  <tr><td><a href="https://madewithlove.com/blog/running-multiple-claude-accounts-without-logging-out/" target="_blank">madewithlove · マルチアカウントログアウト不要運用法</a> · <a href="https://joshcgrossman.com/2026/02/04/claude-two-accounts-windows/" target="_blank">Josh Grossman · Windows デュアルアカウント</a></td><td>コミュニティ実戦知見：CLAUDE_CONFIG_DIR による環境分離の代表的記事</td></tr>
+  <tr><td><a href="https://claudelog.com/troubleshooting/" target="_blank">ClaudeLog Troubleshooting</a> · <a href="https://github.com/ndycode/codex-multi-auth" target="_blank">codex-multi-auth</a></td><td>コミュニティによるトラブルシューティング速見表および Codex マルチアカウント管理ツール</td></tr>
+  <tr><td>本ナレッジベースの関連トピック</td><td><a href="claude-code-guide.ja.html#config-auth">Claude Code 完全実践ガイド · 設定とアカウント完全解説</a> · <a href="codex-guide.ja.html#config-auth">Codex 完全実践ガイド · 設定とアカウント完全解説</a>——設定階層、MCP 配置、環境変数一覧を詳しく解説</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>免責事項・注記</strong>：本マニュアルは Claude Code 公式ドキュメント（code.claude.com/docs、v2.1.x ベース）および Codex 公式ドキュメント（2026-07 版）、コミュニティ公開情報をもとに独自に検証・整理したものであり、非公式の技術資料です。機能の更新頻度が高いため、操作時は <code>claude doctor</code> および最新の公式ドキュメントの指示を優先してください。情報検証日：2026-07-18。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

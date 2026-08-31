@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="xAI & Grok 전체 생태계 실전 가이드: Memphis Colossus 슈퍼컴퓨팅 기반, Grok 3/4 모델 패밀리, Grok Build 클라우드 샌드박스 IDE, 공식 Python/TS SDK, Function Calling, 실시간 X Grounding, DeepSearch 자율형 리서치 Agent, 실무용 프롬프트 템플릿까지 완벽 정리.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xAI & Grok 전체 생태계 실전 가이드 · 모델, Grok Build에서 Agentic 엔지니어링까지">
+<meta property="og:description" content="xAI & Grok 공식 사양과 실무 노하우를 집약: 초대형 슈퍼컴퓨터 기반, Grok Build 클라우드 개발 환경, API 실전, 멀티 에이전트 개발, 프롬프트 엔지니어링, 트러블슈팅 가이드.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/grok-ecosystem-guide.ko.html">
+<title>xAI & Grok 전체 생태계 실전 가이드 · 공식 핵심 및 실무 매뉴얼 (2026.08)</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#d97706;        /* xAI Geek Amber */
+  --accent-2:#ef4444;      /* Supercluster Red */
+  --accent-3:#3b82f6;      /* Electron Blue */
+  --accent-soft:#fef3c7;
+  --ink:#090d16; --bg:#ffffff; --bg-side:#f8fafc;
+  --bg-code:#0c1322;
+  --text:#0f172a; --text-2:#334155; --text-3:#64748b;
+  --border:#e2e8f0; --border-2:#cbd5e1;
+  --tip-bg:#ecfdf5; --warn-bg:#fffbeb; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#090d16,#d97706);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:900;font-family:var(--mono)}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:280px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.5px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:24px}
+.nav-group a:hover{background:#fef3c7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:280px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f1f5f9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(217,119,6,.55),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(239,68,68,.45),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fde68a;font-weight:600;background:rgba(217,119,6,.25);
+  border:1px solid rgba(253,230,138,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fde68a,#f87171,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbd5e1;max-width:720px}
+.hero .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#94a3b8}
+.hero .meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:4px 12px;border-radius:99px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:26px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:18.5px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#bae6fd}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#a7f3d0}
+.callout.tip b.t{color:#059669}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.tbl th,.tbl td{border:1px solid var(--border);padding:10px 14px;text-align:left}
+.tbl th{background:var(--bg-side);font-weight:700;color:var(--text-2)}
+
+pre{background:var(--bg-code);color:#f8fafc;padding:18px 20px;border-radius:10px;overflow-x:auto;
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;margin:18px 0}
+code{font-family:var(--mono);font-size:13.5px;background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px}
+pre code{background:none;color:inherit;padding:0}
+
+.tag-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;margin-right:6px}
+.tag-official{background:#e0f2fe;color:#0369a1}
+.tag-consensus{background:#dcfce7;color:#15803d}
+.tag-diverge{background:#fef3c7;color:#b45309}
+.tag-fire{background:#fee2e2;color:#b91c1c}
+
+.mermaid-box{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:20px;margin:20px 0;overflow-x:auto}
+.mermaid{display:flex;justify-content:center}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:18px 0}
+.hotcmd{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:#fff;transition:.2s}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.hotcmd .hc-cmd{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;display:block}
+.hotcmd .hc-desc{font-size:12.5px;color:var(--text-2);line-height:1.5}
+
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:20px 0}
+.feature-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;transition:.2s}
+.feature-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.feature-card .icon{font-size:24px;margin-bottom:8px}
+.feature-card h4{margin:0 0 6px;font-size:15px;color:var(--text)}
+.feature-card p{font-size:13px;color:var(--text-3);margin:0;line-height:1.55}
+
+#prog{position:fixed;top:60px;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));z-index:101;transition:width .1s ease}
+
+@media(max-width:1024px){
+  .sidebar{display:none;width:100%;top:60px;z-index:95;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar.open{display:block}
+  .main{margin-left:0}
+  .wrap{padding:0 20px 80px}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:28px}
+}
+</style>
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+<div id="prog"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo">
+    <div class="mark">𝕏</div>
+    <span>xAI & Grok 전체 생태계 실전</span>
+    <span class="sub">모델 · Grok Build · 에이전트</span>
+  </div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증 완료: 2026-08-17</span>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <input id="sideFilter" placeholder="섹션 검색…" style="width:100%;padding:8px 12px;border:1px solid var(--border-2);border-radius:8px;margin-bottom:14px;font-size:13px;" />
+  <nav id="sideNav">
+    <div class="nav-group"><div class="gt">전체 가이드</div>
+      <a href="#intro"><span class="no">00</span>머리말과 Colossus 슈퍼컴퓨팅 토폴로지</a>
+    </div>
+    <div class="nav-group"><div class="gt">제1장 · 인터페이스 및 추론 모드</div>
+      <a href="#ch1-1"><span class="no">1.1</span>Grok 매트릭스와 4대 추론 모드</a>
+      <a href="#ch1-2"><span class="no">1.2</span>Real-Time X Grounding 상세 분석</a>
+      <a href="#ch1-3"><span class="no">1.3</span>DeepSearch 자율형 리서치 및 조사 보고서</a>
+      <a href="#ch1-4"><span class="no">1.4</span>Artifacts & Live Canvas 렌더링</a>
+    </div>
+    <div class="nav-group"><div class="gt">제2장 · Grok Build 개발자 플랫폼</div>
+      <a href="#ch2-1"><span class="no">2.1</span>Grok Build 클라우드 샌드박스 아키텍처</a>
+      <a href="#ch2-2"><span class="no">2.2</span>Vibe Coding 및 풀스택 애자일 개발</a>
+      <a href="#ch2-3"><span class="no">2.3</span>xAI API 라우팅 및 쿼터 체계</a>
+      <a href="#ch2-4"><span class="no">2.4</span>Prompt Caching 및 구조화된 출력</a>
+    </div>
+    <div class="nav-group"><div class="gt">제3장 · 에이전트 및 코드 실전</div>
+      <a href="#ch3-1"><span class="no">3.1</span>Python & TypeScript SDK 퀵스타트</a>
+      <a href="#ch3-2"><span class="no">3.2</span>Function Calling 엔터프라이즈 파이프라인</a>
+      <a href="#ch3-3"><span class="no">3.3</span>X 네이티브 검색 도구 체인 통합</a>
+      <a href="#ch3-4"><span class="no">3.4</span>멀티 에이전트 Swarm 협업 토폴로지</a>
+      <a href="#ch3-5"><span class="no">3.5</span>실전: 자동 PR 감사 & 여론 분석 봇</a>
+    </div>
+    <div class="nav-group"><div class="gt">제4장 · 프롬프트와 진리 탐구</div>
+      <a href="#ch4-1"><span class="no">4.1</span>Grok 고유의 튜닝 철학과 제약 해제</a>
+      <a href="#ch4-2"><span class="no">4.2</span>생각의 사슬 (CoT) 및 반사실적 추론</a>
+      <a href="#ch4-3"><span class="no">4.3</span>실무용 프롬프트 템플릿 10선</a>
+    </div>
+    <div class="nav-group"><div class="gt">제5장 · 긴급 트러블슈팅 및 비교</div>
+      <a href="#ch5-1"><span class="no">5.1</span>API 에러 30초 긴급 조치표</a>
+      <a href="#ch5-2"><span class="no">5.2</span>환각 및 시빌 공격 방어 3중 장벽</a>
+      <a href="#ch5-3"><span class="no">5.3</span>2026 프론티어 거대 모델 비교 매트릭스</a>
+    </div>
+    <div class="nav-group"><div class="gt">제6장 · 리소스 및 학습 로드맵</div>
+      <a href="#ch6-1"><span class="no">6.1</span>공식 1차 출처 및 도구 인덱스</a>
+      <a href="#ch6-2"><span class="no">6.2</span>4단계 레벨업 학습 로드맵</a>
+    </div>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="wrap">
+    
+    <div class="hero">
+      <div class="badge">xAI & Grok 공식 생태계 전체 분석 · 2026 최신 실무 가이드</div>
+      <h1>xAI & Grok 전체 생태계 실전 가이드 <span class="grad">모델 · Grok Build · 에이전트</span></h1>
+      <p class="lead">xAI와 Grok 생태계의 모든 것을 다루는 가장 체계적인 기술 가이드입니다. 멤피스 Colossus 슈퍼컴퓨터 인프라, Grok 3/4 추론 모델 매트릭스, Grok Build 클라우드 IDE, API 실무, 실시간 X 접지, 멀티 에이전트 Swarm 아키텍처까지 총망라합니다.</p>
+      <div class="meta">
+        <span>Memphis Colossus 20만 GPU</span>
+        <span>Grok Build Cloud Studio</span>
+        <span>Real-Time X Grounding</span>
+        <span>DeepSearch Agents</span>
+        <span>10개 실무 템플릿</span>
+      </div>
+    </div>
+
+    <!-- 00 Intro -->
+    <section id="intro">
+      <h2>00 머리말: xAI 철학과 Memphis Colossus 슈퍼컴퓨팅 토폴로지</h2>
+      <p><span class="tag-badge tag-official">공식 핵심 사명</span> 2023년 일론 머스크(Elon Musk)가 설립한 <strong>xAI</strong>의 핵심 사명은 <em>"우주의 진정한 본질을 이해하는 것(Understand the True Nature of the Universe)"</em>입니다. 기술 철학 면에서 xAI는 <strong>Maximum Truth Seeking(최대한의 진리 추구)</strong> 원칙을 고수하여 과도한 이념적 검열이나 인위적 성능 저하를 배제하고, 최고의 지능 밀도와 객관적 추론 능력, 실시간 현실 인식을 갖춘 AGI 구축을 목표로 합니다.</p>
+      
+      <div class="callout tip">
+        <b class="t">💡 읽기 가이드: SPA 페이지 이동 및 인터랙션</b>
+        <p>왼쪽 탐색 메뉴 또는 하단의 이동 버튼을 통해 각 장으로 이동할 수 있습니다. 코드 원클릭 복사, Mermaid 아키텍처 다이어그램, 4개 국어 언어 전환을 완벽히 지원합니다.</p>
+      </div>
+
+      <h3 data-reveal>1. Memphis Colossus 슈퍼컴퓨팅 클러스터 인프라</h3>
+      <p>xAI의 핵심 인프라 기반은 미국 테네시주 멤피스에 구축된 세계 최대 규모의 액체 냉각 AI 컴퓨팅 클러스터 <strong>Colossus Supercomputer</strong>입니다. 단 122일 만에 구축 및 전력망 연동을 완료하여 Grok 3 및 차세대 프론티어 모델의 사전 학습과 사후 학습을 완벽히 지원하고 있습니다.</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TB
+    subgraph Colossus["Memphis Colossus 슈퍼컴퓨터 클러스터 (200k+ Blackwell/H100 GPUs)"]
+        nodeA["RoCE v2 / InfiniBand 논블로킹 패브릭"]
+        nodeB["초고밀도 직접 액체 냉각 (Direct Liquid Cooling, DLC)"]
+        nodeC["분산 병렬 스토리지 (Exabyte Lustre/NVMe-oF)"]
+        nodeD["자체 개발 장애 허용 학습 런타임 (Custom JAX/PyTorch)"]
+    end
+    
+    subgraph Foundation["기반 파운데이션 모델 매트릭스"]
+        G1["Grok-1 (314B MoE 오픈소스 베이스라인)"]
+        G2["Grok-2 & 2-Vision (멀티모달 & Aurora 이미지)"]
+        G3["Grok 3 (프론티어 추론 & 소프트웨어 엔지니어링 SOTA)"]
+        G4["Grok 4 Preview / Grok Mini (초저지연 고처리량)"]
+    end
+    
+    subgraph Engine["핵심 기능 엔진"]
+        V["Grok Vision (초고해상도 비디오 & 공간 OCR)"]
+        Voice["Grok Voice (초저지연 듀플렉스 음성)"]
+        Img["Aurora / Grok Imagine (실시간 이미지 생성)"]
+        RT["Real-Time X & Web Grounding 엔진"]
+    end
+
+    subgraph Platform["애플리케이션 및 개발 레이어"]
+        UI["grok.com & X 모바일 / 웹"]
+        IDE["Grok Build (Agentic 클라우드 샌드박스 IDE)"]
+        API["xAI Console (API / 구조화 출력 / 캐싱)"]
+        Agent["멀티 에이전트 Swarm & 자동화 워크플로"]
+    end
+
+    Colossus --> Foundation
+    Foundation --> Engine
+    Engine --> Platform
+        </div>
+      </div>
+
+      <h3 data-reveal>2. 주요 강점과 설계 철학</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h4>객관적 진리 추구</h4>
+          <p>복잡하고 논쟁적인 주제에 대해서도 과도한 답변 거부 없이 제1원리에 입각한 논리적 연역을 제공.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🌐</div>
+          <h4>Real-Time X Grounding</h4>
+          <p>X(구 Twitter)의 실시간 정보 스트림과 Community Notes에 직접 접근하여 지식 시차를 완벽 해소.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🛠️</div>
+          <h4>Grok Build Cloud Studio</h4>
+          <p>MicroVM 샌드박스, 핫 리로드 프리뷰, Vibe Coding 워크플로, 엄격한 JSON Schema API 지원.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🧠</div>
+          <h4>SOTA 추론 & 코딩</h4>
+          <p>SWE-bench, AIME, 분산 시스템 리팩터링에서 업계 최고 수준의 벤치마크 성능 발휘.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 1: Interfaces & Modes -->
+    <section id="ch1-1">
+      <div class="sec-tag">제1장 · 인터페이스 및 추론 모드</div>
+      <h2>1.1 Grok 매트릭스와 4대 추론 모드</h2>
+      <p><span class="tag-badge tag-official">제공 형태</span> Grok은 독립 포털(<code>grok.com</code>, iOS/Android 앱, 데스크톱) 및 X 플랫폼에서 사용할 수 있습니다. 작업 성격에 따라 다음 4가지 추론 모드를 선택합니다:</p>
+
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>모드명</th>
+              <th>추론 특성</th>
+              <th>최적 유스케이스</th>
+              <th>활성화 방법</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Regular Mode (일반)</strong></td>
+              <td>엄격한 논리 구성, 간결성, 사실 중심, 결정론적</td>
+              <td>프로덕션 코딩, 시스템 설계, 기술 문서 작성</td>
+              <td>기본 설정</td>
+            </tr>
+            <tr>
+              <td><strong>Fun Mode (Spicy)</strong></td>
+              <td>유머, 풍자, 직설적 표현, 상투적 어조 탈피</td>
+              <td>브레인스토밍, 코드 비판적 리뷰, 창작 작업</td>
+              <td>화면 상단의 'Fun / Spicy' 스위치 켬</td>
+            </tr>
+            <tr>
+              <td><strong>Think Mode (심층 추론)</strong></td>
+              <td>수천 단계의 명시적 CoT, 자가 수정 루프</td>
+              <td>알고리즘 증명, 수학 해석, 제로데이 취약점 감사</td>
+              <td>'Think' 버튼 클릭 또는 <code>grok-3-reasoning</code> 선택</td>
+            </tr>
+            <tr>
+              <td><strong>DeepSearch Mode</strong></td>
+              <td>자율형 멀티홉 웹 & X 탐색, 상호 교차 검증</td>
+              <td>포괄적 시장 조사, 기업 듀딜리전스, 기술 백서 작성</td>
+              <td>입력창 하단의 'DeepSearch' 배지 선택</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 data-reveal>Think Mode의 추론 루프 구조</h3>
+      <div class="mermaid-box">
+        <div class="mermaid">
+stateDiagram-v2
+    [*] --> 질문분석
+    질문분석 --> 가설생성
+    state 심층사고체인 {
+        가설생성 --> 경로A : 수학적 증명
+        가설생성 --> 경로B : 반례 테스트
+        경로A --> 제약위반감지 : 코너 케이스 실패
+        제약위반감지 --> 가지치기 : 경로A 기각
+        경로B --> 정합성검증완료 : 검증 통과
+    }
+    심층사고체인 --> 최종결론도출
+    최종결론도출 --> [*]
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.2 Real-Time X Grounding -->
+    <section id="ch1-2">
+      <div class="sec-tag">제1장 · 인터페이스 및 추론 모드</div>
+      <h2>1.2 Real-Time X Grounding 상세 분석</h2>
+      <p><span class="tag-badge tag-fire">차별화 핵심</span> 전통적인 LLM이 학습 데이터 컷오프에 묶여 있는 반면, Grok은 X(구 Twitter)의 실시간 정보 스트림에 지연 없이 직접 연결되는 독보적 강점을 갖추고 있습니다.</p>
+
+      <h3 data-reveal>주요 활용 영역</h3>
+      <ul>
+        <li><strong>초 단위 속보 취합:</strong> 지진, 로켓 발사, CVE 제로데이 공개, 최신 테크 발표 등을 트윗 급증과 동시에 즉각 요약.</li>
+        <li><strong>시장 심리 및 알파 도출:</strong> 검증된 창업자, 핵심 엔지니어, 커뮤니티 리더의 실시간 의견 분포를 정밀 트래킹.</li>
+        <li><strong>커뮤니티 노트 상호 검증:</strong> Community Notes 집단 지성을 활용하여 봇 계정이나 왜곡 정보, 프롬프트 인젝션을 자동 필터링.</li>
+      </ul>
+    </section>
+
+    <!-- 1.3 DeepSearch -->
+    <section id="ch1-3">
+      <div class="sec-tag">제1장 · 인터페이스 및 추론 모드</div>
+      <h2>1.3 DeepSearch 자율형 리서치 및 조사 보고서</h2>
+      <p><span class="tag-badge tag-consensus">자율형 리서치</span> 단순 키워드 검색이 아니라, <strong>DeepSearch</strong>는 자율형 재귀 탐색 에이전트를 가동합니다. 대형 질문을 서브 가설로 분해하고, 수십 개의 데이터 소스를 대조하여 모순을 해결한 뒤 완전한 출처가 명시된 리포트를 생성합니다.</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as 사용자
+    participant DS as DeepSearch 플래너
+    participant Web as 웹 & 학술 검색 엔진
+    participant X as 실시간 X 시그널
+    participant Syn as 합성 및 정제 엔진
+
+    User->>DS: 복합 리서치 과제 (예: "2026 전고체 배터리 양산 진척과 병목")
+    DS->>DS: 5개 탐색 축으로 분해 (재료화학 / 원가 / 특허 / OEM / 양산수율)
+    par 병렬 정보 수집
+        DS->>Web: 학술 논문, 특허 문서, 실적 발표 자료 크롤링
+        DS->>X: 배터리 과학자 및 현장 엔지니어의 실시간 토론 수집
+    end
+    Web-->>DS: 40개 이상의 소스 문서 반환
+    X-->>DS: 공장 테스트 수율에 대한 최신 코멘트 획득
+    DS->>DS: 주장된 에너지 밀도 수치 간 모순 감지
+    DS->>Web: 실험실 수치 vs 실차 양산 수율 재귀적 심층 탐색
+    Web-->>DS: 현실적인 양산 메트릭스 확인 완료
+    DS->>Syn: 구조화된 증거 그래프 전달
+    Syn-->>User: 차트와 출처가 완비된 종합 조사 보고서 납품
+        </div>
+      </div>
+    </section>
+
+    <!-- 1.4 Artifacts & Canvas -->
+    <section id="ch1-4">
+      <div class="sec-tag">제1장 · 인터페이스 및 추론 모드</div>
+      <h2>1.4 Artifacts & Live Canvas 렌더링</h2>
+      <p>복잡한 코드베이스, 인터랙티브 React 위젯, SVG 다이어그램, 아키텍처 설계를 생성할 때 Grok은 전용 <strong>Live Canvas</strong>에 독립된 <strong>Artifacts</strong>로 렌더링합니다.</p>
+      <ul>
+        <li><strong>핫 리로드 지원 React / Tailwind 프리뷰:</strong> 반응형 확인이 가능한 즉각적인 UI 미리보기.</li>
+        <li><strong>벡터 다이어그램 & Mermaid 렌더링:</strong> 시스템 설계도를 SVG/PNG로 손쉽게 내보내기.</li>
+        <li><strong>인플레이스 부분 편집:</strong> 특정 코드 블록만 선택하여 주변 코드를 손상시키지 않고 핀포인트 리팩터링.</li>
+      </ul>
+    </section>
+
+    <!-- Chapter 2: Grok Build -->
+    <section id="ch2-1">
+      <div class="sec-tag">제2장 · Grok Build 개발자 플랫폼</div>
+      <h2>2.1 Grok Build 클라우드 샌드박스 아키텍처</h2>
+      <p><span class="tag-badge tag-official">개발자 핵심 플랫폼</span> <strong>Grok Build</strong>는 xAI가 제공하는 완전 관리형 클라우드 개발 환경입니다. 단순한 채팅 코드 복사 붙여넣기를 넘어, Firecracker MicroVM 샌드박스를 활용한 진정한 Agentic IDE를 실현했습니다.</p>
+
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart LR
+    subgraph Client["클라이언트 환경"]
+        WebUI["Grok Build Web Studio"]
+        CLI["grok CLI 도구"]
+        VSCode["xAI VS Code 확장 프로그램"]
+    end
+
+    subgraph ControlPlane["Grok Agent 컨트롤 플레인"]
+        Plan["작업 플래너"]
+        Context["리포지토리 컨텍스트 그래프"]
+        Security["권한 & 샌드박스 가드"]
+    end
+
+    subgraph Sandbox["격리된 MicroVM 샌드박스"]
+        FS["가상 파일 시스템"]
+        Runtime["다중 언어 런타임 (Node/Py/Go/Rust)"]
+        Port["핫 리로드 프리뷰 포트 (:3000)"]
+        Git["자동 Git 체크포인트"]
+    end
+
+    Client --> ControlPlane
+    ControlPlane --> Sandbox
+    Sandbox -->|라이브 스트림| Client
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.2 Vibe Coding -->
+    <section id="ch2-2">
+      <div class="sec-tag">제2장 · Grok Build 개발자 플랫폼</div>
+      <h2>2.2 Vibe Coding 및 풀스택 애자일 개발</h2>
+      <p><span class="tag-badge tag-consensus">현대적 개발 방식</span> Vibe Coding은 개발자가 상위 수준의 설계 의도를 자연어로 설명하면, Grok Build가 보일러플레이트 작성, 의존성 해결, 타입 정의, UI 스타일링, 자동 자가 치유 테스트를 자율적으로 완수하는 패러다임입니다.</p>
+
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">단계 1. 요구사항 & 아키텍처 정의</span>
+          <span class="hc-desc">제품 요구사항, 데이터 흐름, 기술 스택을 한국어 자연어로 명확히 입력.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">단계 2. 워크스페이스 자동 구성</span>
+          <span class="hc-desc">Grok Build가 패키지 설치, .env 환경변수 설정, TypeScript 타입 정의 완료.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">단계 3. 인터랙티브 프로토타입</span>
+          <span class="hc-desc">백엔드 API와 프론트엔드 UI를 생성하고 실시간 미리보기 포트 오픈.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">단계 4. 자가 치유 테스트 (Self-Healing)</span>
+          <span class="hc-desc">샌드박스 내부에서 테스트를 실행하고 에러 출력을 감지해 코드 자동 수정.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">단계 5. 버전 관리 & 배포</span>
+          <span class="hc-desc">명확한 Git Diff를 확인하고 원클릭으로 엣지 환경에 즉각 배포.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.3 API Routes -->
+    <section id="ch2-3">
+      <div class="sec-tag">제2장 · Grok Build 개발자 플랫폼</div>
+      <h2>2.3 xAI API 라우팅 및 쿼터 체계 (console.x.ai)</h2>
+      
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>모델 식별자</th>
+              <th>컨텍스트 윈도우</th>
+              <th>최대 출력 토큰</th>
+              <th>주요 강점 및 유스케이스</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>grok-3</code></td>
+              <td>131,072 (128k)</td>
+              <td>8,192</td>
+              <td>복합 추론, 풀스택 코딩, 멀티 에이전트 오케스트레이션에 최적화된 플래그십</td>
+            </tr>
+            <tr>
+              <td><code>grok-3-reasoning</code></td>
+              <td>131,072 (128k)</td>
+              <td>16,384</td>
+              <td>정리 증명, 보안 취약점 감사, 복잡한 알고리즘 설계를 위한 심층 CoT 모델</td>
+            </tr>
+            <tr>
+              <td><code>grok-3-mini</code></td>
+              <td>131,072 (128k)</td>
+              <td>8,192</td>
+              <td>라우팅, 요약, 경량 에이전트 작업에 적합한 초고속·저비용 모델</td>
+            </tr>
+            <tr>
+              <td><code>grok-2-vision-1212</code></td>
+              <td>32,768 (32k)</td>
+              <td>4,096</td>
+              <td>도면 추출, UI 코드 변환, 공간 이해를 지원하는 고해상도 멀티모달 모델</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2.4 Caching & Structured Outputs -->
+    <section id="ch2-4">
+      <div class="sec-tag">제2장 · Grok Build 개발자 플랫폼</div>
+      <h2>2.4 Prompt Caching 및 구조화된 출력</h2>
+      <p>xAI API는 1,024 토큰을 초과하는 프롬프트에 <strong>Automatic KV Prompt Caching</strong>을 자동 적용합니다. 캐시된 토큰은 <strong>75%의 비용 절감</strong>과 최대 <strong>80%의 TTFT(첫 토큰 지연) 단축</strong> 효과를 제공합니다.</p>
+
+      <pre><code class="language-python">import os
+from openai import OpenAI
+from pydantic import BaseModel, Field
+
+client = OpenAI(
+    api_key=os.environ.get("XAI_API_KEY"),
+    base_url="https://api.x.ai/v1",
+)
+
+class SecurityAudit(BaseModel):
+    is_safe: bool
+    vulnerabilities: list[str] = Field(description="발견된 CVE 및 취약점 목록")
+    recommendation: str
+    refactored_code: str
+
+completion = client.beta.chat.completions.parse(
+    model="grok-3",
+    messages=[
+        {"role": "system", "content": "당신은 최고 수준의 보안 감사 엔지니어 Grok입니다."},
+        {"role": "user", "content": "다음 코드를 감사해 주세요: os.system('cat ' + filename)"}
+    ],
+    response_format=SecurityAudit,
+)
+
+print(completion.choices[0].message.parsed)</code></pre>
+    </section>
+
+    <!-- Chapter 3: SDK & Agentic -->
+    <section id="ch3-1">
+      <div class="sec-tag">제3장 · 에이전트 및 코드 실전</div>
+      <h2>3.1 Python & TypeScript SDK 퀵스타트</h2>
+      <pre><code class="language-bash"># OpenAI 호환 클라이언트 설치
+pip install openai pydantic
+
+# 환경 변수 설정
+export XAI_API_KEY="xai-xxxxxxxxxxxxxxxxxxxx"</code></pre>
+
+      <pre><code class="language-python">from openai import OpenAI
+import os
+
+client = OpenAI(
+    api_key=os.environ.get("XAI_API_KEY"),
+    base_url="https://api.x.ai/v1",
+)
+
+stream = client.chat.completions.create(
+    model="grok-3",
+    messages=[
+        {"role": "system", "content": "당신은 객관적 진리를 탐구하는 Grok입니다."},
+        {"role": "user", "content": "홀로그래픽 이중성의 물리적 직관을 쉽게 설명해 주세요."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)</code></pre>
+    </section>
+
+    <!-- 3.2 Function Calling -->
+    <section id="ch3-2">
+      <div class="sec-tag">제3장 · 에이전트 및 코드 실전</div>
+      <h2>3.2 Function Calling 엔터프라이즈 파이프라인</h2>
+      <p>Grok 3는 병렬 도구 실행과 재귀 호출 안전장치를 갖춘 강력한 도구 오케스트레이션을 지원합니다:</p>
+      
+      <div class="mermaid-box">
+        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor App as 애플리케이션
+    participant Grok as Grok-3 브레인
+    participant Tool as 샌드박스 / DB
+
+    App->>Grok: 사용자 프롬프트 + 도구 JSON 스키마
+    Grok->>Grok: 도구 호출 필요성 판단
+    Grok-->>App: tool_calls 페이로드 반환
+    App->>Tool: 로컬 함수 실행 (예: query_db)
+    Tool-->>App: 원시 실행 결과
+    App->>Grok: tool_call_id와 실행 결과 재전송
+    Grok->>Grok: 실행 결과 종합 추론
+    Grok-->>App: 최종 검증된 답변 반환
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.3 X Grounding Integration -->
+    <section id="ch3-3">
+      <div class="sec-tag">제3장 · 에이전트 및 코드 실전</div>
+      <h2>3.3 X 네이티브 검색 도구 체인 통합</h2>
+      <p>커스텀 검색 파라미터를 지정하여 X 플랫폼의 실시간 신호를 API 응답에 직접 반영할 수 있습니다:</p>
+      <pre><code class="language-python">response = client.chat.completions.create(
+    model="grok-3",
+    messages=[
+        {"role": "user", "content": "Blackwell B200 펌웨어 업데이트에 대한 엔지니어들의 최신 반응은 어떤가요?"}
+    ],
+    extra_body={
+        "search_parameters": {
+            "mode": "hybrid",
+            "freshness": "24h",
+            "max_results": 10
+        }
+    }
+)
+print(response.choices[0].message.content)</code></pre>
+    </section>
+
+    <!-- 3.4 Swarm Multi-Agent Topology -->
+    <section id="ch3-4">
+      <div class="sec-tag">제3장 · 에이전트 및 코드 실전</div>
+      <h2>3.4 멀티 에이전트 Swarm 협업 토폴로지</h2>
+      <div class="mermaid-box">
+        <div class="mermaid">
+flowchart TD
+    User([작업 요청]) --> Lead[총괄 오케스트레이터 Grok-3]
+    
+    subgraph SwarmWorkers["전문 Swarm 서브 에이전트군"]
+        W1[리서치 Agent<br/>실시간 X & 학술 문헌 수집]
+        W2[아키텍트 Agent<br/>인터페이스 & 스키마 설계]
+        W3[코더 Agent Grok-3<br/>코드 구현 & 단위 테스트]
+        W4[감사 Agent Grok-3-Reasoning<br/>적대적 리뷰 & 경계 검증]
+    end
+
+    Lead -->|서브태스크 할당| W1
+    Lead -->|서브태스크 할당| W2
+    Lead -->|서브태스크 할당| W3
+    W3 -->|코드 리뷰 요청| W4
+    W4 -->|결함 발견 시 롤백| W3
+    W4 -->|승인 완료| Lead
+    Lead --> Output([최종 산출물])
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.5 Automated PR Auditor Bot -->
+    <section id="ch3-5">
+      <div class="sec-tag">제3장 · 에이전트 및 코드 실전</div>
+      <h2>3.5 실전: 자동 PR 감사 & 여론 분석 봇</h2>
+      <pre><code class="language-python">import os, requests
+from openai import OpenAI
+
+def run_pr_audit():
+    gh_token = os.environ.get("GITHUB_TOKEN")
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    pr_num = os.environ.get("PR_NUMBER")
+    
+    diff_resp = requests.get(
+        f"https://api.github.com/repos/{repo}/pulls/{pr_num}",
+        headers={"Authorization": f"token {gh_token}", "Accept": "application/vnd.github.v3.diff"}
+    )
+    
+    client = OpenAI(api_key=os.environ.get("XAI_API_KEY"), base_url="https://api.x.ai/v1")
+    
+    res = client.chat.completions.create(
+        model="grok-3",
+        messages=[
+            {"role": "system", "content": "당신은 최고 수준의 코드 감사 전문가 Grok입니다."},
+            {"role": "user", "content": f"이 PR 변경사항의 보안, 메모리 누수, 성능을 정밀 리뷰해 주세요:\n\n{diff_resp.text[:15000]}"}
+        ]
+    )
+    
+    requests.post(
+        f"https://api.github.com/repos/{repo}/issues/{pr_num}/comments",
+        headers={"Authorization": f"token {gh_token}", "Accept": "application/vnd.github.v3+json"},
+        json={"body": f"### 🤖 Grok-3 자동 코드 리뷰 결과\n\n{res.choices[0].message.content}"}
+    )
+    print("PR 리뷰가 성공적으로 등록되었습니다.")
+
+if __name__ == "__main__":
+    run_pr_audit()</code></pre>
+    </section>
+
+    <!-- Chapter 4: Prompting & Truth Seeking -->
+    <section id="ch4-1">
+      <div class="sec-tag">제4장 · 프롬프트와 진리 탐구</div>
+      <h2>4.1 Grok 고유의 튜닝 철학과 제약 해제</h2>
+      <p>Grok은 피상적인 공손한 표현보다 <strong>제1원리(First-Principles)</strong>에 기반한 지시에 훨씬 뛰어난 성능을 발휘합니다. 명확한 제약 조건, 수학적 목표 함수, 적대적 검증 역할을 구조화하여 프롬프트를 구성하는 것이 중요합니다.</p>
+    </section>
+
+    <section id="ch4-2">
+      <div class="sec-tag">제4장 · 프롬프트와 진리 탐구</div>
+      <h2>4.2 생각의 사슬 (CoT) 및 반사실적 추론</h2>
+      <pre><code class="language-markdown">&lt;instruction&gt;
+제안된 분산 합의 메커니즘을 평가하세요. 최종 결론을 도출하기 전에 &lt;thought_process&gt; 태그 안에서 다음을 명시적으로 실행하세요:
+1. 네트워크 분할에 관한 암묵적 전제 조건을 모두 나열할 것.
+2. 구체적인 타이밍 증명을 포함한 2개의 상반된 장애 가설을 수립할 것.
+3. 반사실적 분석: 클록 드리프트가 50ms를 초과할 경우 어떤 연쇄 장애가 발생하는가?
+4. 검증된 최종 합의 경계 조건을 종합하여 출력할 것.
+&lt;/instruction&gt;</code></pre>
+    </section>
+
+    <section id="ch4-3">
+      <div class="sec-tag">제4장 · 프롬프트와 진리 탐구</div>
+      <h2>4.3 실무용 프롬프트 템플릿 10선</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>01. 실시간 속보 신호 분석</h4>
+          <p>실시간 타임라인 클러스터링, 봇 계정 제거, 핵심 이해관계자 의도 분석.</p>
+        </div>
+        <div class="feature-card">
+          <h4>02. 고동시성 리팩터링</h4>
+          <p>락프리(Lock-free) 구조 설계, CPU 캐시 최적화, 마이크로 벤치마크 생성.</p>
+        </div>
+        <div class="feature-card">
+          <h4>03. 듀딜리전스 & 재무 분석</h4>
+          <p>매출 건전성 검토, R&D 자산화 검증, 잠재적 부외부채 추적.</p>
+        </div>
+        <div class="feature-card">
+          <h4>04. 제로데이 방어 & 익스플로잇 분석</h4>
+          <p>바이너리 감사, 버퍼 오버플로우 경계 검증, 가상 패치 생성.</p>
+        </div>
+        <div class="feature-card">
+          <h4>05. 합성 엣지케이스 데이터 생성</h4>
+          <p>엄격한 스키마 제약과 PII 마스킹을 적용한 고품질 데이터 합성.</p>
+        </div>
+        <div class="feature-card">
+          <h4>06. 형식 논리 & 수학적 증명</h4>
+          <p>귀납적 증명, 반례 합성, Lean/Coq 형식화 검증.</p>
+        </div>
+        <div class="feature-card">
+          <h4>07. 레드팀 스트레스 테스트</h4>
+          <p>적대적 게임이론 시뮬레이션 및 극한의 블랙 스완 대응 시나리오.</p>
+        </div>
+        <div class="feature-card">
+          <h4>08. 기관 투자자용 주식 분석</h4>
+          <p>거시 사이클 포지셔닝, TAM 모델링, 민감도 분석.</p>
+        </div>
+        <div class="feature-card">
+          <h4>09. 테크 지식 시각화 & 전달</h4>
+          <p>직관적 비유, 복잡한 수학의 차원 축소, 독자 몰입도 설계.</p>
+        </div>
+        <div class="feature-card">
+          <h4>10. 프로덕션 에이전트 시스템 프롬프트</h4>
+          <p>결정론적 도구 스키마, 페일세이프 경계, 자가 복구 규칙.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 5: Clinic & Matrix -->
+    <section id="ch5-1">
+      <div class="sec-tag">제5장 · 긴급 트러블슈팅 및 비교</div>
+      <h2>5.1 API 에러 30초 긴급 조치표</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>상태 코드</th>
+              <th>근본 원인</th>
+              <th>30초 해결책</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>401 Unauthorized</code></td>
+              <td>API 키 무효화 또는 만료</td>
+              <td><code>console.x.ai</code>에서 키를 재생성하고 <code>Authorization: Bearer</code> 헤더 확인.</td>
+            </tr>
+            <tr>
+              <td><code>403 Forbidden</code></td>
+              <td>제한 지역 접속 또는 결제 미등록</td>
+              <td>정상 게이트웨이를 경유하고 결제 프로필(Billing) 등록 완료.</td>
+            </tr>
+            <tr>
+              <td><code>429 Rate Limit</code></td>
+              <td>TPM / RPM 한도 도달</td>
+              <td>지수 백오프 적용, Prompt Caching 활성화, 또는 API Tier 상향.</td>
+            </tr>
+            <tr>
+              <td><code>400 Schema Error</code></td>
+              <td>지원되지 않는 JSON 스키마 구문</td>
+              <td>미정의 <code>additionalProperties</code> 제거 및 모든 필드를 <code>required</code>로 지정.</td>
+            </tr>
+            <tr>
+              <td><code>500 Server Error</code></td>
+              <td>클러스터 일시적 스파이크</td>
+              <td>최대 3회 재시도 설정 및 <code>grok-3-mini</code>로 폴백 지정.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ch5-2">
+      <div class="sec-tag">제5장 · 긴급 트러블슈팅 및 비교</div>
+      <h2>5.2 환각 및 시빌 공격 방어 3중 장벽</h2>
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">제1장벽: 권위도 가중치 부여</span>
+          <span class="hc-desc">검증된 메인테이너, 공식 도메인, Community Notes 평점을 일반 포스팅보다 높게 가중치 부여.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">제2장벽: 다중 소스 교차 검증</span>
+          <span class="hc-desc">X, GitHub, 학술 논문 등 최소 2개 이상의 독립된 1차 출처에 의한 교차 확인 필수화.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">제3장벽: 인식론적 겸손성 명시</span>
+          <span class="hc-desc">미확인 속보 사안에는 명확한 신뢰 구간과 불확실성 플래그를 부착하여 답변.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ch5-3">
+      <div class="sec-tag">제5장 · 긴급 트러블슈팅 및 비교</div>
+      <h2>5.3 2026 프론티어 거대 모델 비교 매트릭스</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>비교 기준</th>
+              <th>xAI Grok 3 / 3-Reasoning</th>
+              <th>Anthropic Claude 3.7 Sonnet</th>
+              <th>OpenAI GPT-4o / o3</th>
+              <th>Google Gemini 2.5 / 3.0 Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>실시간 정보 접지</strong></td>
+              <td>⭐⭐⭐⭐⭐ (X 스트림 직접 연동)</td>
+              <td>⭐⭐⭐ (정적 / 일반 웹)</td>
+              <td>⭐⭐⭐⭐ (Bing 웹 검색)</td>
+              <td>⭐⭐⭐⭐ (Google 검색 통합)</td>
+            </tr>
+            <tr>
+              <td><strong>객관적 진리 추구</strong></td>
+              <td>⭐⭐⭐⭐⭐ (검열 배제·제1원리)</td>
+              <td>⭐⭐⭐ (Constitutional 안전 가드)</td>
+              <td>⭐⭐⭐⭐ (표준 RLHF)</td>
+              <td>⭐⭐⭐ (엄격한 정책 제어)</td>
+            </tr>
+            <tr>
+              <td><strong>SWE & 시스템 개발</strong></td>
+              <td>⭐⭐⭐⭐⭐ (SWE-bench 최상위)</td>
+              <td>⭐⭐⭐⭐⭐ (에이전트 개발 표준)</td>
+              <td>⭐⭐⭐⭐ (견고한 생태계)</td>
+              <td>⭐⭐⭐⭐ (초대형 컨텍스트)</td>
+            </tr>
+            <tr>
+              <td><strong>컨텍스트 길이</strong></td>
+              <td>128k ~ 1M 토큰</td>
+              <td>200k 토큰</td>
+              <td>128k ~ 200k 토큰</td>
+              <td>2M 토큰</td>
+            </tr>
+            <tr>
+              <td><strong>개발 스튜디오 (IDE)</strong></td>
+              <td><strong>Grok Build</strong> (MicroVM Cloud IDE)</td>
+              <td>Claude Code (CLI Agent)</td>
+              <td>Codex / Canvas</td>
+              <td>Antigravity (Agentic IDE)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chapter 6: Resources & Roadmap -->
+    <section id="ch6-1">
+      <div class="sec-tag">제6장 · 리소스 및 학습 로드맵</div>
+      <h2>6.1 공식 1차 출처 및 도구 인덱스</h2>
+      <ul>
+        <li><strong>xAI 공식 포털:</strong> <a href="https://x.ai" target="_blank">x.ai</a></li>
+        <li><strong>Grok 독립 웹 포털:</strong> <a href="https://grok.com" target="_blank">grok.com</a></li>
+        <li><strong>xAI API Console:</strong> <a href="https://console.x.ai" target="_blank">console.x.ai</a></li>
+        <li><strong>Grok Build Studio:</strong> <a href="https://build.x.ai" target="_blank">build.x.ai</a></li>
+        <li><strong>공식 개발 문서:</strong> <a href="https://docs.x.ai" target="_blank">docs.x.ai</a></li>
+        <li><strong>시스템 상태 모니터링:</strong> <a href="https://status.x.ai" target="_blank">status.x.ai</a></li>
+      </ul>
+    </section>
+
+    <section id="ch6-2">
+      <div class="sec-tag">제6장 · 리소스 및 학습 로드맵</div>
+      <h2>6.2 4단계 레벨업 학습 로드맵</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>1단계: 기초 탐색 (1~3일)</h4>
+          <p>grok.com 및 X 연동 모드를 활용하여 실시간 X 접지와 DeepSearch 조사 리포트 생성을 체득.</p>
+        </div>
+        <div class="feature-card">
+          <h4>2단계: Vibe Coding (3~7일)</h4>
+          <p>Grok Build에서 자연어와 자가 치유 테스트를 활용해 3개의 풀스택 웹 앱 구축 실습.</p>
+        </div>
+        <div class="feature-card">
+          <h4>3단계: API & 도구 호출 (1~2주)</h4>
+          <p>Python/TS SDK 파이프라인, Prompt Caching, 구조화된 출력, 커스텀 툴 구현 마스터.</p>
+        </div>
+        <div class="feature-card">
+          <h4>4단계: Swarm 구축 (지속)</h4>
+          <p>자동 PR 감사 및 시장 여론 수집을 수행하는 프로덕션 멀티 에이전트 시스템 설계 및 운영.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span>© 2026 AI 지식 베이스 · xAI & Grok 전체 생태계 실전 가이드</span>
+      <span>검증 완료: 2026-08-17</span>
+    </div>
+
+  </div>
+</main>
+
+<script src="../assets/js/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, theme: "default", securityLevel: "loose" });
+  window.renderMermaid = function() {
+    if(window.mermaid) {
+      document.querySelectorAll(".mermaid:not([data-processed='true'])").forEach(el => {
+        try {
+          mermaid.run({ nodes: [el] });
+        } catch(e) {
+          console.warn("Mermaid render error:", e);
+        }
+      });
+    }
+  };
+</script>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

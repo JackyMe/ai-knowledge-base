@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Google Antigravity (AGY) 2.0 実践詳細ガイド：CLI コマンドラインエージェント、Agentic IDE、Python SDK、MCP プロトコル、Subagents 状態機械オーケストレーション、OS レベルのサンドボックスセキュリティ防御体系を完全網羅。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Antigravity 実践活用ガイド · コア設計とアーキテクチャ (2026.08)">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/antigravity-usage.ja.html">
+<title>Antigravity 実践活用ガイド · CLI × IDE × SDK (2026.08)</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#1a73e8;        /* Google Tech Blue */
+  --accent-2:#8b5cf6;      /* Antigravity Warp Purple */
+  --accent-3:#06b6d4;      /* Cyber Cyan */
+  --accent-soft:#eef2ff;
+  --ink:#0b1120; --bg:#ffffff; --bg-side:#f8fafc;
+  --bg-code:#0f172a;
+  --text:#0f172a; --text-2:#334155; --text-3:#64748b;
+  --border:#e2e8f0; --border-2:#cbd5e1;
+  --tip-bg:#ecfdf5; --warn-bg:#fffbeb; --note-bg:#f0f9ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:900}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:280px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.5px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:24px}
+.nav-group a:hover{background:#ede9fe;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:280px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f1f5f9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(26,115,232,.55),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(139,92,246,.45),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c7d2fe;font-weight:600;background:rgba(139,92,246,.25);
+  border:1px solid rgba(199,210,254,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#93c5fd,#c084fc,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbd5e1;max-width:720px}
+.hero .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#94a3b8}
+.hero .meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:26px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:18.5px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#bae6fd}
+.callout.note b.t{color:#0284c7}
+.callout.tip{background:var(--tip-bg);border-color:#a7f3d0}
+.callout.tip b.t{color:#059669}
+.callout.warn{background:var(--warn-bg);border-color:#fde68a}
+.callout.warn b.t{color:#d97706}
+
+.tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.tbl th,.tbl td{border:1px solid var(--border);padding:10px 14px;text-align:left}
+.tbl th{background:var(--bg-side);font-weight:700;color:var(--text-2)}
+
+pre{background:var(--bg-code);color:#f8fafc;padding:18px 20px;border-radius:10px;overflow-x:auto;
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;margin:18px 0}
+code{font-family:var(--mono);font-size:13.5px;background:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px}
+pre code{background:none;color:inherit;padding:0}
+
+.tag-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;margin-right:6px}
+.tag-official{background:#e0f2fe;color:#0369a1}
+.tag-consensus{background:#dcfce7;color:#15803d}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:18px 0}
+.hotcmd{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:#fff;transition:.2s}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.hotcmd .hc-cmd{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;display:block}
+.hotcmd .hc-desc{font-size:12.5px;color:var(--text-2);line-height:1.5}
+
+#prog{position:fixed;top:60px;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3));z-index:101;transition:width .1s ease}
+
+@media(max-width:1024px){
+  .sidebar{display:none;width:100%;top:60px;z-index:95;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar.open{display:block}
+  .main{margin-left:0}
+  .wrap{padding:0 20px 80px}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:28px}
+}
+</style>
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+<div id="prog"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo">
+    <div class="mark">🛸</div>
+    <span>Antigravity 活用ガイド</span>
+    <span class="sub">CLI × IDE × SDK 実践</span>
+  </div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    
+      <span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="セクションを絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">コア基盤</div>
+    <a href="#sec1"><span class="no">01</span>基本概念とメンタルモデル</a>
+    <a href="#sec2"><span class="no">02</span>インストールと環境診断</a>
+    <a href="#sec3"><span class="no">03</span>CLI サブコマンドと IDE 操作</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">拡張エコシステム</div>
+    <a href="#sec4"><span class="no">04</span>Customizations カスタマイズ仕様</a>
+    <a href="#sec5"><span class="no">05</span>Subagents オーケストレーション</a>
+    <a href="#sec6"><span class="no">06</span>高度なツールチェーンと自動化</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">エンジニアリング統制</div>
+    <a href="#sec7"><span class="no">07</span>パフォーマンス・コスト・サンドボックス</a>
+    <a href="#sec8"><span class="no">08</span>アンチパターンと 30秒トラブルシューティング</a>
+    <a href="#sec9"><span class="no">09</span>実践ケース：リファクタリングとテスト</a>
+    <a href="#sec10"><span class="no">10</span>クイックリファレンスと Slash コマンド</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="wrap">
+    
+    <div class="hero" id="top">
+      <div class="badge">🛸 Google Antigravity 2.0 · Agentic フルスタック実践 · 検証日: 2026-08-17</div>
+      <h1>Antigravity 実践活用ガイド<br><span class="grad">コア設計 · 実装テクニック · 基盤アーキテクチャ</span></h1>
+      <p class="lead">Google Antigravity (AGY) 2.0 の包括的な実践マニュアル：agy CLI コマンドラインエージェント、Agentic IDE インタラクティブワークスペース、Python SDK 傍受機構、MCP ツールプロトコル、Subagents 状態機械オーケストレーション、OS レベルのサンドボックスセキュリティ防御体系を完全網羅。実戦的なプロダクション環境への導入に直結する知見を提供します。</p>
+      <div class="meta">
+        <span>4大インタラクション形態</span><span>2層サンドボックス防御</span><span>Subagent 隔離モード</span><span>MCP 動的プロトコル</span><span>Planning Mode 規律</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>4大形態</b><span>CLI / IDE / Python SDK / Sidecars 統一プロトコル</span></div>
+      <div class="stat"><b>2層サンドボックス</b><span>標準隔離モード（ネットワーク遮断） vs 明示的権限昇格モード</span></div>
+      <div class="stat"><b>ゼロハルシネーション防線</b><span>Planning Mode 計画承認前の破壊的変更を禁止</span></div>
+      <div class="stat"><b>Subagents</b><span>マルチエージェント並列非同期実行 + 独立 Worktree 隔離</span></div>
+    </div>
+
+    <!-- 01 基本概念とメンタルモデル -->
+    <section id="sec1">
+      <div class="sec-tag">コア基盤 01</div>
+      <h2>1️⃣ Antigravity の基本概念とメンタルモデル</h2>
+      <p><span class="tag-badge tag-official">公式仕様準拠</span> Google Antigravity（コードネーム <strong>AGY</strong>）は、Google が Agentic AI ソフトウェアエンジニアリング時代のために構築した新世代フルスタック基盤です。単なるチャット形式のコード補完にとどまらず、<strong>OS レベルのサンドボックス、マルチエージェント協調オーケストレーション、MCP (Modular Command Protocol) プロトコル、AST コードレベルの意味論的理解、コンテキストライフサイクル管理</strong>を高度に統合しています。</p>
+
+      <h3 data-reveal>主要 AI コーディング体系（Antigravity vs Claude Code vs Codex）の多角的一覧比較</h3>
+      <table class="tbl">
+        <tr><th>主要次元</th><th>Google Antigravity 2.0</th><th>Claude Code (Anthropic)</th><th>OpenAI Codex</th></tr>
+        <tr><td><strong>主軸モデル</strong></td><td>Gemini 2.5 Pro / Flash & 3.0 Ultra (2M+ コンテキスト)</td><td>Claude 3.7 Sonnet / Opus 5 (200k コンテキスト)</td><td>GPT-5.6 / o3-mini (128k-200k コンテキスト)</td></tr>
+        <tr><td><strong>サンドボックス隔離</strong></td><td>OS レベル軽量コンテナ + 厳格なシステムコール傍受 (ptrace/seccomp)</td><td>パーミッションモード (Manual / Auto-Approve)</td><td>3×3 モードマトリクス (Auto / Prompt / Strict)</td></tr>
+        <tr><td><strong>マルチエージェント編成</strong></td><td>ネイティブ Subagents（inherit / branch / share モード対応）</td><td><code>/subtask</code> および <code>/fork</code> セッション分岐</td><td>Codex Cloud 協調ディスパッチ</td></tr>
+        <tr><td><strong>拡張プロトコル</strong></td><td>ネイティブ MCP (Eager/Lazy) + <code>.agents</code> カスタム体系</td><td>MCP クライアント + CLAUDE.md</td><td>MCP プラグイン + AGENTS.md</td></tr>
+        <tr><td><strong>成果物 (Artifacts) 管理</strong></td><td>セッション ID 紐付け永続化 Artifacts（設計書、Diff、モックアップ）</td><td>ローカルファイル直接書き込み</td><td>クラウドブランチ & PR</td></tr>
+      </table>
+
+      <h3 data-reveal>Antigravity を支える 6 大コア基盤概念</h3>
+      <ul>
+        <li><strong>agy CLI</strong>：ワークスペース診断、コード検索、変更提案、サブエージェントディスパッチを統括する統一コマンドラインインターフェース。</li>
+        <li><strong>Agentic IDE</strong>：コードエディタ、Planning Mode 計画レビューパネル、リアルタイム Diff チェッカー、Artifacts ビジュアルプレビューをシームレスに統合した GUI ワークベンチ。</li>
+        <li><strong>Customizations カスタマイズ体系</strong>：<code>.agents/</code> またはユーザーグローバル <code>~/.gemini/antigravity/</code> に配置する階層型拡張センター。Skills（スキル機能）、Rules（実行ルール）、Plugins（プラグイン）、MCP サーバーで構成。</li>
+        <li><strong>Subagents エージェントネットワーク</strong>：独立した Conversation ID、コンテキスト状態機械、ワークスペースモードを備えた自律型バックグラウンドエージェント。親子エージェント間の協調通信をサポート。</li>
+        <li><strong>Artifacts 成果物メカニズム</strong>：複雑なアーキテクチャ設計、Mermaid 図、UI プロトタイプ、移行計画を標準化された Markdown として永続化し、チャットログの肥大化・埋没を防止。</li>
+        <li><strong>Reactive Wakeup（リアクティブ起床）</strong>：完全非同期タスクアーキテクチャ。親エージェントがバックグラウンドタスクやスケジュールを発行した後はポーリング待機が不要で、完了時やメッセージ受信時に自動で再起動・通知。</li>
+      </ul>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 02 インストールと環境診断 -->
+    <section id="sec2">
+      <div class="sec-tag">コア基盤 02</div>
+      <h2>2️⃣ インストール・環境設定と診断（macOS / Linux / WSL2）</h2>
+      
+      <h3 data-reveal>ワンコマンドインストールと初期化</h3>
+      <pre><code class="language-bash"># macOS (Homebrew 公式 Tap)
+brew tap agy/agy && brew install antigravity
+
+# Linux (Debian / Ubuntu / RHEL インストールスクリプト)
+curl -fsSL https://antigravity.google.com/install.sh | bash
+
+# バージョンおよび利用可能ツールチェーンの確認
+agy --version
+# 出力例: antigravity v2.0.18-rel (x86_64-apple-darwin / 2026-08-17)
+
+# 環境ヘルスチェック（doctor 診断）の実行
+agy doctor --verbose</code></pre>
+
+      <h3 data-reveal><code>agy doctor</code> 診断項目一覧表</h3>
+      <table class="tbl">
+        <tr><th>チェック項目</th><th>正常時の状態</th><th>異常時の症状と 30秒対処法</th></tr>
+        <tr><td><strong>Sandbox Layer</strong></td><td><code>cgroups v2 + seccomp filter active</code></td><td>サンドボックスが利用不可と表示される場合、OS カーネルバージョンを確認（Linux 5.10+ または macOS 14+ が必要）。WSL2 では仮想化サポートを有効化。</td></tr>
+        <tr><td><strong>MCP Daemon</strong></td><td><code>socket alive (/var/run/agy/mcp.sock)</code></td><td>MCP デーモンが未起動の場合は <code>agy mcp daemon --restart</code> を実行。</td></tr>
+        <tr><td><strong>Token & Keychain</strong></td><td><code>GCP SecretStore validated</code></td><td>ログイン認証トークンの期限切れ時は <code>agy auth login --refresh</code> を実行して OAuth2 再認証。</td></tr>
+        <tr><td><strong>Worktree Engine</strong></td><td><code>git worktree support enabled</code></td><td>Subagents のブランチ隔離用。Git 2.34+ が必要。</td></tr>
+      </table>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 03 CLI サブコマンドと IDE 操作 -->
+    <section id="sec3">
+      <div class="sec-tag">コア基盤 03</div>
+      <h2>3️⃣ CLI サブコマンド速覧と IDE 高度操作</h2>
+      
+      <table class="tbl">
+        <tr><th>サブコマンド</th><th>構文フォーマット</th><th>主要オプション</th><th>主な用途・ユースケース</th></tr>
+        <tr><td><code>agy view</code></td><td><code>agy view src/main.rs --line 1-120</code></td><td><code>--line</code>, <code>--offset</code></td><td>ファイル内容を安全に読み取り専用で表示。行番号・ハイライト対応、変更履歴を汚さない</td></tr>
+        <tr><td><code>agy edit</code></td><td><code>agy edit src/api.py --range 40-75</code></td><td><code>--range</code>, <code>--atomic</code></td><td>精確なブロック単位のアトミック置換。前後ハッシュ検証で意図しないコード上書きを防止</td></tr>
+        <tr><td><code>agy grep</code></td><td><code>agy grep "class AuthService" --type ts</code></td><td><code>--regex</code>, <code>--case</code></td><td>ripgrep ベースの超高速正規表現検索でシンボルや関数定義をマッチング</td></tr>
+        <tr><td><code>agy subagent</code></td><td><code>agy subagent invoke research --model flash</code></td><td><code>--model</code>, <code>--workspace</code></td><td>長文ドキュメント分析や調査タスクのためにバックグラウンドサブエージェントをディスパッチ</td></tr>
+        <tr><td><code>agy run</code></td><td><code>agy run "pytest tests/" --wait 5000</code></td><td><code>--wait</code>, <code>--bypass</code></td><td>標準隔離サンドボックス内でコマンドを実行。タイムアウト時は自動でバックグラウンド監視タスクに移行</td></tr>
+        <tr><td><code>agy schedule</code></td><td><code>agy schedule --cron "*/10 * * * *" --prompt "ビルド確認"</code></td><td><code>--cron</code>, <code>--condition</code></td><td>バックグラウンド定期タスクやワンショットタイマーを登録。条件付き早期キャンセルに対応</td></tr>
+      </table>
+
+      <h3 data-reveal>Antigravity Agentic IDE ショートカット一覧</h3>
+      <ul>
+        <li><kbd>Cmd+L</kbd> / <kbd>Ctrl+L</kbd> —— 右側の Agent チャットパネルにフォーカスし、現在選択中のコード行とファイルアンカーを自動でプロンプトコンテキストに注入。</li>
+        <li><kbd>Cmd+Shift+P</kbd> —— Antigravity コマンドパレットを開き、<code>/goal</code>, <code>/schedule</code>, <code>/grill-me</code> などの高度なワークフローを迅速に実行。</li>
+        <li><kbd>Ctrl+Alt+R</kbd> —— サンドボックス内で現在のアクティブファイルまたは関連テストスイートをサイレント自己検証し、実行結果を出力。</li>
+        <li><kbd>Ctrl+Alt+S</kbd> —— 現在のセッションで生成された Markdown / HTML / UI Artifacts をスプリットスクリーンでリアルタイムプレビュー。</li>
+      </ul>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 04 Customizations カスタマイズ仕様 -->
+    <section id="sec4">
+      <div class="sec-tag">拡張エコシステム 04</div>
+      <h2>4️⃣ Customizations カスタマイズ体系：Skills · Rules · MCP · Plugins</h2>
+      <p>Antigravity は 3 段階の優先順位による設定探索システムを採用しています：<strong>プロジェクトローカル <code>.agents/</code>（最優先） &gt; ユーザーグローバル <code>~/.gemini/antigravity/</code> &gt; 組み込み仕様 (Built-in)</strong>。すべてのルールはホットリロード（Hot-reload）に対応し、再起動なしで即座に反映されます。</p>
+
+      <h3 data-reveal>4.1 本番向け Skill の作成例（セキュリティ監査 Skill）</h3>
+      <p><code>.agents/skills/security-guard/SKILL.md</code> で能力ルールを定義：</p>
+      <pre><code class="language-markdown">---
+name: security-guard
+description: "本番レベルの機密情報漏洩および SQL インジェクション静的セキュリティ監査スキャナー"
+---
+# コアセキュリティ監査ガイドライン
+1. ソースコード内に API Key、JWT Secret、内部 DB パスワード等を直接ハードコードすることを固く禁止する。
+2. 外部に公開されるすべての API リクエストパラメータは、厳格なスキーマ検証とデシリアライズ制約を通過させること。
+3. すべてのデータベースクエリを検査し、パラメータ化されたプリペアドステートメントの使用を強制し、文字列直接連結による SQL 構築を排除する。
+4. 外部 HTTP リクエストには、タイムアウト制限 (Timeout) と指数バックオフによるリトライ (Exponential Backoff) の設定を必須とする。</code></pre>
+
+      <h3 data-reveal>4.2 グローバルインターセプトルール (Rules) の記述例</h3>
+      <pre><code class="language-yaml"># .agents/rules/safe-terminal.yml
+---
+severity: critical
+description: "サンドボックス防御：未承認の機密ファイル外部送信および危険なターミナルコマンドの傍受"
+enforce:
+  - tool: run_command
+    condition: "BypassSandbox == false && CommandLine matches '(rm\\s+-rf\\s+/|mkfs|dd\\s+if=)' => reject"
+  - tool: replace_file_content
+    condition: "TargetFile matches '\\.(env|pem|key)$' => require_user_approval"</code></pre>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 05 Subagents オーケストレーション -->
+    <section id="sec5">
+      <div class="sec-tag">拡張エコシステム 05</div>
+      <h2>5️⃣ Subagents 状態機械と詳細オーケストレーション</h2>
+      
+      <table class="tbl">
+        <tr><th>サブエージェント型 (TypeName)</th><th>ワークスペースモード (Workspace)</th><th>継承モデル</th><th>代表的な本番ユースケース</th></tr>
+        <tr><td><code>research</code></td><td><code>inherit</code> (読み取り専用共有)</td><td><code>flash</code> / <code>flash_lite</code></td><td>大量ログの高速検索、外部 API ドキュメント精読、読み取り専用コードベース探索</td></tr>
+        <tr><td><code>self</code></td><td><code>branch</code> (独立 Git Worktree)</td><td><code>inherit</code> (親と同等のフル能力)</td><td>リスクの高い大規模リファクタリング、破壊的アーキテクチャ実験、複数モジュールの並行変更</td></tr>
+        <tr><td><code>pipeline-worker</code></td><td><code>share</code> (共有ディレクトリ)</td><td><code>pro</code> (高度な推論深度)</td><td>パイプラインビルド、テストスイートの複数環境並行実行、多言語トランスパイル</td></tr>
+      </table>
+
+      <h3 data-reveal>Subagent ライフサイクル状態遷移図</h3>
+      <pre><code>[invoke_subagent] ───→ (running) ───┬───→ [外部入力待ち] ────→ (waiting_for_input)
+                                    │
+                                    ├───→ [依存タスク待ち] ──→ (waiting_for_dependents)
+                                    │
+                                    ├───→ [正常完了] ────────→ (done) ───→ [親を自動起床 (Reactive Wakeup)]
+                                    │
+                                    └───→ [実行時エラー傍受] → (errored) ──→ [診断ログを出力]</code></pre>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 06 高度なツールチェーンと自動化 -->
+    <section id="sec6">
+      <div class="sec-tag">拡張エコシステム 06</div>
+      <h2>6️⃣ 高度なツールチェーンと自動化スケジューリング</h2>
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">multi_replace_file_content</span>
+          <span class="hc-desc">1回のアトミック呼び出しでファイル内の複数箇所（非連続）を同時に編集し、複数回の読み書きによる行番号ズレや競合を防止。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">schedule</span>
+          <span class="hc-desc">ワンショットタイマーや標準 Cron 定期タスクを登録。<code>TimerCondition</code> により指定メッセージ到達時の早期キャンセルに対応。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">manage_task</span>
+          <span class="hc-desc">長時間稼働するバックグラウンドプロセス（Web サーバー、ファイル監視ツール等）のステータス管理、ログ確認、<code>stdin</code> インタラクティブ入力。</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">generate_image</span>
+          <span class="hc-desc">テキストプロンプトから UI 画面モックアップ、アーキテクチャ図、ビジュアルアセットを生成し、リアルタイム確認用 Artifact として自動保存。</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 07 パフォーマンス・コスト・サンドボックス -->
+    <section id="sec7">
+      <div class="sec-tag">エンジニアリング統制 07</div>
+      <h2>7️⃣ パフォーマンス・コスト最適化とサンドボックス防御体系</h2>
+      <ol>
+        <li><strong>標準サンドボックス優先（Standard Sandbox First）</strong>：すべてのターミナルコマンドはデフォルトで外部ネット接続なし・ファイルアクセス制限のある標準サンドボックス内で実行されます。パッケージのダウンロードや外部通信が不可欠な場合にのみ、明示的に <code>BypassSandbox: true</code> を宣言してユーザー承認を求めます。</li>
+        <li><strong>Planning Mode の規律徹底</strong>：複数ファイルにまたがるアーキテクチャ変更や大規模リファクタリングでは、まず <code>implementation_plan.md</code> 設計ドキュメントを生成し、ユーザー確認事項と自己検証手順を明記します。ユーザー承認を得る前のソースコード変更は厳禁です。</li>
+        <li><strong>差分ピンポイント編集（Incremental Edits）</strong>：数千行におよぶ大規模ファイルでの全量上書きを固く排し、<code>replace_file_content</code> によるピンポイント置換を徹底することで、コンテキスト Token を大幅に節約し Git 履歴の明瞭性を保ちます。</li>
+      </ol>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 08 アンチパターンと 30秒トラブルシューティング -->
+    <section id="sec8">
+      <div class="sec-tag">エンジニアリング統制 08</div>
+      <h2>8️⃣ トラブル回避チェックリストと 30秒エマージェンシールーム</h2>
+      <table class="tbl">
+        <tr><th>代表的なエラーと症状</th><th>根本原因</th><th>30秒即効トラブルシューティング</th></tr>
+        <tr><td><code>TargetContent not found</code></td><td>対象コードブロックの前後のインデント、改行コード（CRLF vs LF）、または不可視文字が既存ファイルと不一致</td><td>まず <code>view_file</code> で対象行の正確な行番号とインデントを確認し、そのままの文字列を <code>TargetContent</code> に渡す。</td></tr>
+        <tr><td><code>Subagent in waiting_for_input</code></td><td>サブエージェントがユーザー確認を求めるインタラクティブなコマンドやプロンプトに遭遇</td><td><code>manage_subagents list</code> で状態を確認し、<code>send_message</code> で承認指示を送信して再開する。</td></tr>
+        <tr><td><code>Sandbox Network Blocked</code></td><td>標準サンドボックス内で <code>curl</code>, <code>npm install</code>, <code>git pull</code> などの外部通信を実行</td><td>通信先の安全性を確認した上で、呼び出しパラメータに <code>BypassSandbox: true</code> を指定し昇格承認を要求する。</td></tr>
+        <tr><td><code>Context Token Overflow</code></td><td>同一セッション内で極めて長いログや巨大な JSON をチャットに直接出力</td><td><code>/clear</code> で過去ログをクリアするか、長大ログの解析を <code>research</code> サブエージェントに委譲する。</td></tr>
+      </table>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 09 実践ケース：リファクタリングとテスト -->
+    <section id="sec9">
+      <div class="sec-tag">エンジニアリング統制 09</div>
+      <h2>9️⃣ プロダクション実践ケース：サービスリファクタリングと並行テスト</h2>
+      <p>要件定義、サブエージェントによる調査、計画策定から、コードの段階的修正、サンドボックス自動検証までの一連のクローズドループ：</p>
+      <pre><code class="language-bash"># ステップ 1：読み取り専用 research サブエージェントをディスパッチしてコードベースの構造を分析
+agy subagent invoke research --prompt "src/auth/ モジュール内の従来の Session 処理のボトルネックを分析し、依存関係を整理"
+
+# ステップ 2：構造化された implementation_plan.md 成果物を作成し、ユーザー承認を待機
+agy write_to_file --TargetFile .gemini/antigravity/brain/implementation_plan.md \
+  --CodeContent "# OAuth2 + PKCE リファクタリング実施計画..."
+
+# ステップ 3：ユーザー承認後、アトミック編集ツールを用いてコードを段階的にリファクタリング
+agy edit src/auth/oauth2.py --range 15-60
+
+# ステップ 4：標準隔離サンドボックス内で単体テストとリグレッションテストスイートを実行
+agy run "pytest tests/test_oauth2.py -v" --wait 5000</code></pre>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 10 クイックリファレンスと Slash コマンド -->
+    <section id="sec10">
+      <div class="sec-tag">エンジニアリング統制 10</div>
+      <h2>🔟 常用クイックリファレンスと Slash コマンドハンドブック</h2>
+      <ul>
+        <li><code>/goal</code> —— 長時間実行や完全自律型の複雑タスク用。目標が完全に達成されるまでエージェントがあらゆる手段を尽くして自律遂行。</li>
+        <li><code>/schedule</code> —— 定期実行タスクやタイマーの設定インターフェースを素早く起動。</li>
+        <li><code>/browser</code> —— 組み込みヘッドレスブラウザツールを起動し、動的レンダリングページのスクレイピングや Web UI の自動回帰テストを実行。</li>
+        <li><code>/grill-me</code> —— 詳細インタビューモードを開始し、エージェントがアーキテクチャ設計やエッジケースについて能動的に深掘り質問。</li>
+        <li><code>/teamwork-preview</code> —— 複数自律エージェントチームを編成・プレビューし、大規模プロジェクトを並行分担で処理。</li>
+        <li><code>/learn</code> —— セッション中の修正教訓やワークフローパターンを抽出し、ワークスペースの恒久メモリとして永続化。</li>
+      </ul>
+    </section>
+
+    <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span>© 2026 AI ナレッジベース · Google Antigravity 2.0 実践詳細ガイド</span>
+      <span>検証日: 2026年8月17日</span>
+    </div>
+
+  </div>
+</main>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

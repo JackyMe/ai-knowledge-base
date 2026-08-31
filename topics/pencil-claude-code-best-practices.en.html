@@ -181,13 +181,12 @@ figure figcaption a{color:var(--text-3)}
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">P×C</span>pen.dev × Claude Code<span class="sub">Best Practices</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="Toggle Language">
-  <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-  <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-    <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-    <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-  </div>
-</label><a href="../index.en.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ Topic Center</a>&nbsp;&nbsp;Global Aggregation · 2026-07-14    <span>Verified 2026-08-17</span>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div><a href="../index.en.html" style="color:var(--accent);text-decoration:none;font-weight:500">◂ Topic Center</a>&nbsp;&nbsp;Global Aggregation · 2026-07-14    <span>Verified 2026-08-17</span>
   
 
 <div class="progress" id="prog"></div>
@@ -254,7 +253,7 @@ figure figcaption a{color:var(--text-3)}
   <tr><th>Role</th><th>What It Provides</th></tr>
   <tr><td><strong>pen.dev</strong></td><td>Infinite canvas, component/variable/slot system, Figma import, built-in AI chat, .pen file format, headless CLI</td></tr>
   <tr><td><strong>Claude Code</strong></td><td>Agentic coding: multi-file read/write, command execution, plan mode, Skills, and MCP extensions</td></tr>
-  <tr><td><strong>MCP</strong></td><td>Bridge protocol: allows Claude Code to access design tools like <code>execute</code>, <code>get_app_state</code>, <code>get_screenshot</code>, <code>export_nodes</code>, <code>get_guidelines</code> (As of 2026-07-27, the official documentation consolidated tools from <code>batch_design</code>/<code>batch_get</code>/<code>snapshot_layout</code>/<code>get_variables</code> to these 5, see <a href="pencil-docs-zh.html#pencil-cli">pen.dev Official Docs</a>)</td></tr>
+  <tr><td><strong>MCP</strong></td><td>Bridge protocol: allows Claude Code to access design tools like <code>execute</code>, <code>get_app_state</code>, <code>get_screenshot</code>, <code>export_nodes</code>, <code>get_guidelines</code> (As of 2026-07-27, the official documentation consolidated tools from <code>batch_design</code>/<code>batch_get</code>/<code>snapshot_layout</code>/<code>get_variables</code> to these 5, see <a href="pencil-docs-zh.en.html#pencil-cli">pen.dev Official Docs</a>)</td></tr>
 </table>
 <p class="src">Sources: <a href="https://atalupadhyay.wordpress.com/2026/02/25/pencil-dev-claude-code-workflow-from-design-to-production-code-in-minutes/" target="_blank">Pencil.dev + Claude Code Workflow</a> · <a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">Official AI Integration Docs</a> · <a href="https://www.geeky-gadgets.com/pencil-dev-claude-code/" target="_blank">Geeky Gadgets</a></p>
 </section>
@@ -267,7 +266,7 @@ figure figcaption a{color:var(--text-3)}
 <p>Synthesizing official documentation and DevelopersIO practical tutorials, here is the community-verified most reliable path (using VS Code as an example, Cursor is similar):</p>
 
 <ol class="steps">
-  <li><strong>Install Claude Code and Authenticate</strong>: The official recommended native installer is <code>curl -fsSL https://claude.ai/install.sh | bash</code> (Windows users use <code>irm https://claude.ai/install.ps1 | iex</code>); run <code>claude</code> to login via browser. If you fail to install or login, check the <a href="env-auth-clinic.html">Environment First Aid Manual</a>.</li>
+  <li><strong>Install Claude Code and Authenticate</strong>: The official recommended native installer is <code>curl -fsSL https://claude.ai/install.sh | bash</code> (Windows users use <code>irm https://claude.ai/install.ps1 | iex</code>); run <code>claude</code> to login via browser. If you fail to install or login, check the <a href="env-auth-clinic.en.html">Environment First Aid Manual</a>.</li>
   <li><strong>Install pen.dev Extension</strong>: Search for "pen.dev" in the VS Code extensions panel, look for the publisher <code>highagency.pencildev</code>.</li>
   <li><strong>Start pen.dev</strong>: Click the pen.dev pencil icon in the bottom-left corner of the status bar (restart VS Code if it doesn't appear).</li>
   <li><strong>Email Activation</strong>: Enter your email on first launch → receive verification code → enter code to login.</li>
@@ -380,7 +379,7 @@ figure figcaption a{color:var(--text-3)}
 <p>The hero statistics bar in this guide touts <code>.pen = JSON, can be Git versioned, diffed, and merged</code> as the second biggest selling point. However, "can be diffed" doesn't mean "diff is readable," and "can be merged" doesn't mean "conflicts are easy to resolve." Let's break down these three issues clearly.</p>
 
 <h4>1. What a .pen diff actually looks like</h4>
-<p>The official documentation hasn't published a complete real-world .pen export file (the format itself has a detailed schema in the <a href="pencil-docs-zh.html#pen-format" target="_blank">pen.dev Official Docs · .pen File Format</a> section). The diff below is a <strong>mockup structure manually constructed according to that schema, not a real file export</strong>, used to show the approximate readability of a "text diff"—a single button moved down + text changed + color variable switched:</p>
+<p>The official documentation hasn't published a complete real-world .pen export file (the format itself has a detailed schema in the <a href="pencil-docs-zh.en.html#pen-format" target="_blank">pen.dev Official Docs · .pen File Format</a> section). The diff below is a <strong>mockup structure manually constructed according to that schema, not a real file export</strong>, used to show the approximate readability of a "text diff"—a single button moved down + text changed + color variable switched:</p>
 <pre><code><span class="c">diff --git a/design/settings.pen b/design/settings.pen
 index 8a1f3c2..44e9b7a 100644
 --- a/design/settings.pen
@@ -413,12 +412,12 @@ index 8a1f3c2..44e9b7a 100644
 <p>Without official guidance, the following are <strong>viable workaround strategies deduced by the author of this article based on the two published rules above, not an official tutorial</strong>:</p>
 <ol class="steps">
   <li><strong>Prioritize process avoidance over technical merging</strong>: The collaboration method given in the Troubleshooting page is essentially "parallel branching + PR review", it does not say "feel free to concurrently edit the same file". Having only one person edit the same Frame/page at a time is the only path currently endorsed by the official docs.</li>
-  <li><strong>Use <code>imports</code> to split files and reduce conflict surface</strong>: The .pen format supports a document-level <code>imports</code> field (keys are aliases, values are relative paths, see <a href="pencil-docs-zh.html#pen-format" target="_blank">.pen File Format</a>). You can split a large design into multiple .pen files organized by page/component, and import them in a root file—the same idea as splitting modules in code to reduce merge conflicts, though the official docs haven't explicitly documented this as a "conflict prevention technique", this is an inferred usage in this article.</li>
+  <li><strong>Use <code>imports</code> to split files and reduce conflict surface</strong>: The .pen format supports a document-level <code>imports</code> field (keys are aliases, values are relative paths, see <a href="pencil-docs-zh.en.html#pen-format" target="_blank">.pen File Format</a>). You can split a large design into multiple .pen files organized by page/component, and import them in a root file—the same idea as splitting modules in code to reduce merge conflicts, though the official docs haven't explicitly documented this as a "conflict prevention technique", this is an inferred usage in this article.</li>
   <li><strong>If conflict markers actually appear, don't hand-edit JSON, do "choose one + redo"</strong>: Use <code>git checkout --ours</code>/<code>--theirs</code> to select one side entirely, then ask the other person to go back into the editor/MCP tool and redo their part of the changes—this way the conflict resolution process never violates the official red line of "only edit .pen using the editor or MCP tools", at the cost of redoing the work.</li>
 </ol>
 
 <h4>3. What both sides look like after running two-way variable sync</h4>
-<p>Before and after running "Create pen.dev variables from my globals.css", the relationship between CSS and the pen.dev variables panel (naming rules based on the official <a href="pencil-docs-zh.html#variables" target="_blank">Variables</a> and <a href="pencil-docs-zh.html#pen-format" target="_blank">.pen File Format</a> docs, <strong>not real screenshots</strong>—the official docs also don't provide actual execution screenshots for this command):</p>
+<p>Before and after running "Create pen.dev variables from my globals.css", the relationship between CSS and the pen.dev variables panel (naming rules based on the official <a href="pencil-docs-zh.en.html#variables" target="_blank">Variables</a> and <a href="pencil-docs-zh.en.html#pen-format" target="_blank">.pen File Format</a> docs, <strong>not real screenshots</strong>—the official docs also don't provide actual execution screenshots for this command):</p>
 <table class="tbl">
   <tr><th>globals.css (Before Sync)</th><th>pen.dev Variables Panel (After Sync)</th><th>Type</th></tr>
   <tr><td><code>--color-primary: #0ea5e9;</code></td><td><code>color.primary</code></td><td>color</td></tr>
@@ -790,7 +789,7 @@ Add inputs for the bar color, gap between bars, and an array of values.</code></
   <tr><td>Criticism on Collaboration Boundaries (Source for Case 3)</td><td><a href="https://tao-hpu.medium.com/design-files-dont-belong-in-git-pencil-dev-says-we-re-all-wrong-f81dae4b49a0" target="_blank">Tao An: Design Files Don't Belong in Git. Pencil.dev Says We're All Wrong.</a> · <a href="https://medium.com/design-bootcamp/exploring-pencil-dev-walkthrough-and-impressions-90c4587231c6" target="_blank">Xinran Ma: Exploring Pencil.dev — Walkthrough and Impressions</a> (2026-04-19)</td></tr>
   <tr><td>Chinese Community Discussions</td><td><a href="https://www.zhihu.com/question/1998357194861725413" target="_blank">Zhihu: Industry Impact of Pencil Powered by Claude Code</a> · <a href="https://agent.csdn.net/6a32449810ee7a33f27eaad9.html" target="_blank">CSDN: pencil on claude</a></td></tr>
   <tr><td>Claude Code General Best Practices</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Claude Code Workflow Best Practices</a> · <a href="https://medium.com/design-bootcamp/a-designers-guide-to-organizing-ai-skills-and-tools-in-claude-code-f87477c35b82" target="_blank">Medium: A Designer's Guide to Claude Code</a></td></tr>
-  <tr><td>Related Topics in This Knowledge Base</td><td><a href="claude-code-guide.html">Claude Code Guide · Practical Edition</a> · <a href="codex-guide.html">Codex Guide</a> · <a href="pencil-docs-zh.html">pen.dev Official Docs Chinese Edition</a> · <a href="ai-leverage-guide.html">AI Efficiency Landscape & Mindset</a> · <a href="env-auth-clinic.html">Environment & Login First Aid Manual</a></td></tr>
+  <tr><td>Related Topics in This Knowledge Base</td><td><a href="claude-code-guide.en.html">Claude Code Guide · Practical Edition</a> · <a href="codex-guide.en.html">Codex Guide</a> · <a href="pencil-docs-zh.en.html">pen.dev Official Docs Chinese Edition</a> · <a href="ai-leverage-guide.en.html">AI Efficiency Landscape & Mindset</a> · <a href="env-auth-clinic.en.html">Environment & Login First Aid Manual</a></td></tr>
 </table>
 
 <div class="callout note"><b class="t">Takeaway in One Sentence</b>The quality of AI-generated code is directly proportional to the quality of the context you feed it. The essence of pen.dev × Claude Code is a system for "handing the correct context to AI"—canvas, style guides, variables, repo structure, all are indispensable. Everything else derives from this.</div>

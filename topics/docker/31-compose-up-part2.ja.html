@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>31. 実践バトル(後編)：マイクロサービスネットワーク - Docker 35段階完全マスター</title>
+<style>
+:root {
+  --accent: #0284c7;
+  --accent-light: #0ea5e9;
+  --accent-soft: #f0f9ff;
+  --accent-border: #bae6fd;
+  --ink: #0f172a;
+  --bg: #ffffff;
+  --bg-side: #f8fafc;
+  --bg-code: #0f172a;
+  --text: #1e293b;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --border-2: #cbd5e1;
+  --tip-bg: #f0fdf4;
+  --tip-border: #bbf7d0;
+  --warn-bg: #fffbeb;
+  --warn-border: #fde68a;
+  --note-bg: #f0f9ff;
+  --note-border: #bae6fd;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, "JetBrains Mono", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.8; font-size: 15.5px; -webkit-font-smoothing: antialiased; }
+
+/* トップ進捗バー */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, #0ea5e9, #0284c7, #38bdf8);
+  z-index: 1000; transition: width 0.1s ease;
+}
+
+/* トップバー */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.menu-toggle {
+  display: none; background: none; border: 1px solid var(--border);
+  border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
+  align-items: center; justify-content: center; font-size: 18px; color: var(--text-2);
+}
+.menu-toggle:hover { background: var(--bg-side); color: var(--ink); }
+
+.logo {
+  font-weight: 800; font-size: 16px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff;
+}
+.logo-badge {
+  font-size: 11px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 2px 8px; border-radius: 99px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 13.5px; }
+.topbar-right a {
+  color: var(--text-2); text-decoration: none; font-weight: 500;
+  display: flex; align-items: center; gap: 4px; transition: color 0.15s;
+}
+.topbar-right a:hover { color: var(--accent); }
+
+/* サイドバー */
+.sidebar {
+  position: fixed; top: 60px; left: 0; bottom: 0; width: 310px;
+  overflow-y: auto; background: var(--bg-side);
+  border-right: 1px solid var(--border); padding: 18px 14px 60px;
+  z-index: 90; transition: transform 0.25s ease;
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+/* サイドバー検索ボックス */
+.side-search-box { margin-bottom: 16px; position: relative; }
+.side-search-input {
+  width: 100%; padding: 8px 32px 8px 12px; border: 1px solid var(--border-2);
+  border-radius: 8px; font-size: 13px; font-family: var(--font);
+  background: #fff; color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.side-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.15); }
+.side-search-icon {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--text-3); pointer-events: none;
+}
+
+/* フェーズグループ */
+.nav-group { margin-bottom: 18px; }
+.nav-group-title {
+  font-size: 11.5px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px;
+  margin-bottom: 2px;
+}
+
+.nav-item {
+  display: flex; align-items: flex-start; padding: 8px 10px;
+  border-radius: 8px; color: var(--text-2); text-decoration: none;
+  font-size: 13.5px; margin-bottom: 1px; transition: all 0.15s; line-height: 1.45;
+}
+.nav-item:hover { background: var(--border); color: var(--ink); }
+.nav-item.on {
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; border-left: 3px solid var(--accent);
+}
+.nav-item .n {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  margin-right: 8px; flex: none; margin-top: 1px;
+}
+.nav-item.on .n { color: var(--accent); font-weight: 700; }
+
+/* マスク層 (モバイル用) */
+.sidebar-backdrop {
+  position: fixed; inset: 60px 0 0 0; background: rgba(15, 23, 42, 0.45);
+  z-index: 85; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
+
+/* メインコンテンツエリア */
+.main-wrap {
+  margin-left: 310px; padding: 40px 48px 120px;
+  max-width: 960px; min-height: 100vh;
+}
+
+/* チャプターバッジ */
+.chapter-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  padding: 4px 10px; border-radius: 99px; margin-bottom: 16px;
+}
+
+h1 { font-size: 28px; font-weight: 800; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.5px; line-height: 1.35; }
+h2 { font-size: 20px; font-weight: 700; color: var(--ink); margin: 40px 0 18px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 28px 0 14px; }
+p { margin-bottom: 16px; color: var(--text); }
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+ul, ol { margin: 0 0 20px 22px; }
+li { margin-bottom: 8px; color: var(--text); }
+strong { color: var(--ink); font-weight: 700; }
+
+/* コードブロック */
+code {
+  font-family: var(--mono); font-size: 85%; background: #f1f5f9;
+  color: #e11d48; padding: 2px 6px; border-radius: 4px;
+}
+pre {
+  position: relative; background: var(--bg-code); color: #e2e8f0;
+  padding: 20px; border-radius: var(--radius); overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65; margin: 24px 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+
+/* コードシンタックスハイライト */
+.bash-cmd { color: #38bdf8; font-weight: 600; }
+.bash-arg { color: #c084fc; }
+.bash-comment { color: #64748b; font-style: italic; }
+.bash-str { color: #a3e635; }
+
+/* コピーボタン */
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1; font-size: 11px; font-family: var(--font);
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  opacity: 0; transition: all 0.15s ease;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.copy-btn.copied { background: #16a34a; border-color: #22c55e; color: #fff; }
+
+/* アラートボックス */
+.alert {
+  padding: 18px 20px; border-radius: var(--radius); margin: 24px 0;
+  font-size: 14.5px; display: flex; gap: 14px; border: 1px solid var(--border);
+}
+.alert.tip { background: var(--tip-bg); border-color: var(--tip-border); }
+.alert.warn { background: var(--warn-bg); border-color: var(--warn-border); }
+.alert.note { background: var(--note-bg); border-color: var(--note-border); }
+.alert .ic { font-size: 22px; flex: none; }
+.alert .tt { font-weight: 750; color: var(--ink); display: block; margin-bottom: 6px; font-size: 15.5px; }
+
+/* ステップパネル */
+.step-panel {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; margin: 28px 0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+.step-header {
+  background: var(--bg-side); padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-weight: 700; color: var(--ink); font-size: 15px; display: flex; align-items: center; gap: 8px;
+}
+.step-body { padding: 20px; }
+
+/* トラブルシューティング救急室 */
+.trouble-box {
+  background: #fff5f5; border: 1px dashed #fca5a5; border-radius: var(--radius);
+  padding: 22px; margin: 32px 0;
+}
+.trouble-title {
+  color: #dc2626; font-weight: 800; font-size: 16.5px;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.trouble-item { margin-bottom: 14px; }
+.trouble-item:last-child { margin-bottom: 0; }
+.trouble-item .q { font-weight: 700; color: var(--ink); margin-bottom: 4px; font-size: 14.5px; }
+.trouble-item .a { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+
+/* Mermaid チャートボックス */
+.mermaid-box {
+  display: flex; justify-content: center; margin: 28px 0;
+  background: #f8fafc; border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); overflow-x: auto;
+}
+
+/* ページネーション */
+.page-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border);
+}
+.page-nav-link {
+  display: flex; flex-direction: column; padding: 14px 20px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; transition: all 0.15s ease; flex: 1; max-width: 48%;
+  background: #fff;
+}
+.page-nav-link:hover {
+  border-color: var(--accent); background: var(--accent-soft);
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+.page-nav-link .dir { font-size: 11.5px; color: var(--text-3); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; }
+.page-nav-link .title { font-size: 14.5px; font-weight: 700; color: var(--accent); }
+.page-nav-link.next { text-align: right; margin-left: auto; }
+
+/* キーボードショートカットヒント */
+.keyboard-hints {
+  margin-top: 30px; text-align: center; font-size: 12px; color: var(--text-3);
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.kbd {
+  background: #f1f5f9; border: 1px solid var(--border-2); border-radius: 4px;
+  padding: 1px 6px; font-family: var(--mono); font-size: 11px; color: var(--text-2);
+}
+
+/* トップへ戻るボタン */
+.back-to-top {
+  position: fixed; bottom: 30px; right: 30px; width: 42px; height: 42px;
+  background: #fff; border: 1px solid var(--border-2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-2); cursor: pointer; opacity: 0;
+  pointer-events: none; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  z-index: 80;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* レスポンシブ対応 */
+@media (max-width: 960px) {
+  .menu-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); width: 290px; }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }
+  .main-wrap { margin-left: 0; padding: 30px 20px 100px; }
+  .logo-badge { display: none; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+  .page-nav-link.next { text-align: left; }
+}
+</style>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+</script>
+<script src="../../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle" aria-label="目次を開閉">☰</button>
+    <a href="01-intro.ja.html" class="logo">
+      <div class="logo-icon">🐳</div>
+      <span>Docker 35段階完全マスター</span>
+      <span class="logo-badge">図解実践版</span>
+    </a>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../../index.ja.html"><span>←</span> ナレッジベースへ戻る</a>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="side-search-box">
+    <input type="text" class="side-search-input" id="sideSearch" placeholder="🔍 35チャプターをクイック検索..." autocomplete="off">
+    <span class="side-search-icon">⌘K</span>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💡 第1フェーズ：概念入門</div>
+    <a class="nav-item" href="01-intro.ja.html"><span class="n">01.</span><span>プロローグ：小明の世紀の難題</span></a>
+    <a class="nav-item" href="02-what-is-docker.ja.html"><span class="n">02.</span><span>「引越し」で理解するDocker</span></a>
+    <a class="nav-item" href="03-vm-vs-container.ja.html"><span class="n">03.</span><span>次元の違い：VM vs コンテナ</span></a>
+    <a class="nav-item" href="04-core-components.ja.html"><span class="n">04.</span><span>図解：三種の神器アーキテクチャ</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
+    <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
+    <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🚀 第3フェーズ：コンテナ操作</div>
+    <a class="nav-item" href="09-run-detached.ja.html"><span class="n">09.</span><span>バックグラウンドでNginxサイトを起動</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.ja.html"><span class="n">10.</span><span>コンテナのライフサイクル完全掌握</span></a>
+    <a class="nav-item" href="11-exec-into.ja.html"><span class="n">11.</span><span>内部潜入：execでコンテナに入る</span></a>
+    <a class="nav-item" href="12-logs-detective.ja.html"><span class="n">12.</span><span>探偵の視点：ログ調査の極意</span></a>
+    <a class="nav-item" href="13-resource-limits.ja.html"><span class="n">13.</span><span>リソース制限：OOMクラッシュを防ぐ</span></a>
+    <a class="nav-item" href="14-healthcheck.ja.html"><span class="n">14.</span><span>ヘルスチェック：コンテナの自己診断</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">📦 第4フェーズ：イメージのカスタマイズ</div>
+    <a class="nav-item" href="15-why-dockerfile.ja.html"><span class="n">15.</span><span>手動環境構築からの脱却</span></a>
+    <a class="nav-item" href="16-dockerfile-syntax.ja.html"><span class="n">16.</span><span>Dockerfile基本構文の総まとめ</span></a>
+    <a class="nav-item" href="17-dockerignore.ja.html"><span class="n">17.</span><span>.dockerignore落とし穴回避ガイド</span></a>
+    <a class="nav-item" href="18-build-practice.ja.html"><span class="n">18.</span><span>実践：Webプロジェクトのイメージビルド</span></a>
+    <a class="nav-item" href="19-layer-caching.ja.html"><span class="n">19.</span><span>図解：レイヤーキャッシュの魔法</span></a>
+    <a class="nav-item" href="20-frontend-deploy.ja.html"><span class="n">20.</span><span>Vue/Reactのエレガントなデプロイ</span></a>
+    <a class="nav-item" href="21-multi-stage.ja.html"><span class="n">21.</span><span>究極の軽量化：マルチステージビルド</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">💾 第5フェーズ：データの永続化</div>
+    <a class="nav-item" href="22-ephemeral-data.ja.html"><span class="n">22.</span><span>短命なコンテナと消えるデータ</span></a>
+    <a class="nav-item" href="23-volumes.ja.html"><span class="n">23.</span><span>究極のデータ保護：ボリューム（Volumes）</span></a>
+    <a class="nav-item" href="24-bind-mounts.ja.html"><span class="n">24.</span><span>開発の神技：バインドマウント</span></a>
+    <a class="nav-item" href="25-volume-backup.ja.html"><span class="n">25.</span><span>金庫の引越し：データのバックアップとリストア</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🌐 第6フェーズ：ネットワークとオーケストレーション</div>
+    <a class="nav-item" href="26-network-types.ja.html"><span class="n">26.</span><span>ネットワーク探求：BridgeとHost</span></a>
+    <a class="nav-item" href="27-container-network.ja.html"><span class="n">27.</span><span>コンテナ間通信：IP直打ちからの脱却</span></a>
+    <a class="nav-item" href="28-why-compose.ja.html"><span class="n">28.</span><span>なぜDocker Composeが必要なのか？</span></a>
+    <a class="nav-item" href="29-yaml-syntax.ja.html"><span class="n">29.</span><span>YAML構文超速マスター</span></a>
+    <a class="nav-item" href="30-compose-up-part1.ja.html"><span class="n">30.</span><span>実践バトル(前編)：Web＋キャッシュ連携</span></a>
+    <a class="nav-item on" href="31-compose-up-part2.ja.html"><span class="n">31.</span><span>実践バトル(後編)：マイクロサービスネットワーク</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🛡️ 第7フェーズ：セキュリティと本番運用</div>
+    <a class="nav-item" href="32-env-security.ja.html"><span class="n">32.</span><span>城壁の防御：.envによる機密情報の保護</span></a>
+    <a class="nav-item" href="33-system-prune.ja.html"><span class="n">33.</span><span>ディスク大掃除：system prune</span></a>
+    <a class="nav-item" href="34-production-root.ja.html"><span class="n">34.</span><span>本番の鉄則：root実行の絶対禁止</span></a>
+    <a class="nav-item" href="35-cicd-concept.ja.html"><span class="n">35.</span><span>エピローグ：CI/CD自動化パイプライン</span></a>
+  </div>
+</aside>
+
+<main class="main-wrap">
+  <div class="chapter-badge">🐳 フェーズ：ネットワークとオーケストレーション · 第 31 / 35 レッスン</div>
+  <h1>第31レッスン：実践バトル(後編)：マイクロサービスネットワークとヘルスチェック連携</h1>
+
+<p>前回のレッスンでは Web アプリと Redis キャッシュを Compose で連携させました。しかし、本番グレードのモダン Web システムには最も重要なピースである<strong>リレーショナルデータベース（RDBMS）</strong>が欠かせません。</p>
+
+<p>今回は、PostgreSQL を追加して<strong>「Web ＋ キャッシュ ＋ データベース」</strong>の王道 3 層マイクロサービスアーキテクチャを完成させます。依存関係の制御とデータ永続化を含めた実戦テクニックをマスターしましょう！</p>
+
+<h2>1. 全体像：マイクロサービストポロジー</h2>
+
+<p>構築するアーキテクチャの構造図です：</p>
+
+<div class="mermaid-box">
+<pre><code class="language-mermaid">
+flowchart LR
+    User([ユーザー]) -->|アクセス: ポート 8080| Web["Web App<br/>(Node.js/Python)"]
+    Web -->|キャッシュ読み書き: ポート 6379| Redis[(Redis)]
+    Web -->|データ永続化: ポート 5432| DB[(PostgreSQL)]
+    DB -.マウント.- Volume["Docker Volume<br/>(データボリューム)"]
+    
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef app fill:#e1f5fe,stroke:#0288d1;
+    classDef db fill:#e8f5e9,stroke:#2e7d32;
+    class Web app;
+    class Redis,DB,Volume db;
+</code></pre>
+</div>
+
+<div class="alert tip">
+  <div class="ic">💡</div>
+  <div>
+    <span class="tt">ポイント解説</span>
+    外部ユーザーがアクセスできるのは公開された Web サービスのみです。Redis と PostgreSQL は Compose が生成する<strong>プライベート内部ネットワーク</strong>内に閉じ込められており、Web コンテナからのみ通信可能です。また、コンテナ破棄後も DB データが維持されるよう、専用の Volume をマウントしています。
+  </div>
+</div>
+
+<h2>2. 完成版：docker-compose.yml の定義</h2>
+
+<p>実務でそのまま使える完成版の Compose 定義です：</p>
+
+<pre><code><span class="bash-comment"># docker-compose.yml</span>
+<span class="bash-cmd">services:</span>
+  <span class="bash-arg">web:</span>
+    <span class="bash-cmd">build:</span> .
+    <span class="bash-cmd">ports:</span>
+      - <span class="bash-str">"8080:80"</span>
+    <span class="bash-cmd">depends_on:</span>
+      <span class="bash-arg">redis:</span>
+        <span class="bash-cmd">condition:</span> service_started
+      <span class="bash-arg">db:</span>
+        <span class="bash-cmd">condition:</span> service_healthy
+    <span class="bash-cmd">environment:</span>
+      - DB_HOST=db
+      - DB_USER=myuser
+      - DB_PASS=mypassword
+      - REDIS_HOST=redis
+
+  <span class="bash-arg">redis:</span>
+    <span class="bash-cmd">image:</span> <span class="bash-str">redis:alpine</span>
+    <span class="bash-cmd">restart:</span> always
+
+  <span class="bash-arg">db:</span>
+    <span class="bash-cmd">image:</span> <span class="bash-str">postgres:14-alpine</span>
+    <span class="bash-cmd">restart:</span> always
+    <span class="bash-cmd">environment:</span>
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=myapp_db
+    <span class="bash-cmd">volumes:</span>
+      - pgdata:/var/lib/postgresql/data
+    <span class="bash-cmd">healthcheck:</span>
+      <span class="bash-cmd">test:</span> [<span class="bash-str">"CMD-SHELL"</span>, <span class="bash-str">"pg_isready -U myuser"</span>]
+      <span class="bash-cmd">interval:</span> 5s
+      <span class="bash-cmd">timeout:</span> 5s
+      <span class="bash-cmd">retries:</span> 5
+
+<span class="bash-comment"># トップレベルのボリューム宣言</span>
+<span class="bash-cmd">volumes:</span>
+  <span class="bash-arg">pgdata:</span>
+</code></pre>
+
+<div class="step-panel">
+  <div class="step-header">🔍 最重要ポイントの徹底解剖</div>
+  <div class="step-body">
+    <ol>
+      <li><strong>トップレベルの <code>volumes</code> 宣言：</strong> <code>pgdata</code> という名前付きボリュームを定義し、<code>db</code> サービスの格納先パスにマウント。コンテナの再起動や再ビルドを行ってもデータベースファイルが失われません。</li>
+      <li><strong>サービス名による環境変数指定：</strong> <code>web</code> サービス内の <code>DB_HOST=db</code> や <code>REDIS_HOST=redis</code> では、IP ではなく定義したサービス名をそのまま指定しています。</li>
+      <li><strong><code>healthcheck</code> と <code>depends_on</code> の連携（Wait-for-it パターン）：</strong> 現場で最も多い「Web 起動時に DB 接続エラーで落ちる」問題を解決します。<code>db</code> 側に <code>pg_isready</code> によるヘルスチェックを設定し、<code>web</code> 側で <code>condition: service_healthy</code> を指定することで、「PostgreSQL が完全にクエリを受け付けられる状態になってから Web を起動する」という完璧な順序制御が実現します！</li>
+    </ol>
+  </div>
+</div>
+
+<h2>3. 起動とインスタンスのスケーリング</h2>
+
+<p>設定完了後、バックグラウンド起動を行います：</p>
+
+<pre><code><span class="bash-comment"># バックグラウンド起動</span>
+$ <span class="bash-cmd">docker compose</span> up -d
+
+<span class="bash-comment"># コンテナ群の稼働ステータスを確認</span>
+$ <span class="bash-cmd">docker compose</span> ps
+</code></pre>
+
+<p><code>docker compose ps</code> の出力結果例：</p>
+<pre><code>NAME                IMAGE                  COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+myapp-db-1          postgres:14-alpine     "docker-entrypoint.s…"   db        2 minutes ago    Up 2 minutes (healthy)    5432/tcp
+myapp-redis-1       redis:alpine           "docker-entrypoint.s…"   redis     2 minutes ago    Up 2 minutes              6379/tcp
+myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080->80/tcp
+</code></pre>
+
+<p><code>STATUS</code> カラムに <code>(healthy)</code> と明記されており、健全に稼働していることが一目で分かります。</p>
+<p>データベース内部に直接接続して確認したい場合は、<code>docker compose exec db psql -U myuser -d myapp_db</code> を実行するだけで即座に対話シェルへ入れます。</p>
+
+<h2>4. 環境ごとの差分管理：docker-compose.override.yml</h2>
+
+<p>「本番環境とローカル開発環境で設定（マウントやポート等）を変えたい場合、2つの完全な compose ファイルを用意する必要がありますか？」</p>
+
+<p>いいえ、その必要はありません。Docker Compose はデフォルトで <code>docker-compose.override.yml</code> を自動マージする仕様を持っています。</p>
+<p>例えばローカル開発時のみソースコードのバインドマウントを有効にしたい場合：</p>
+<pre><code><span class="bash-comment"># docker-compose.override.yml</span>
+<span class="bash-cmd">services:</span>
+  <span class="bash-arg">web:</span>
+    <span class="bash-cmd">volumes:</span>
+      - .:/app
+    <span class="bash-cmd">environment:</span>
+      - NODE_ENV=development
+</code></pre>
+<p><code>docker compose up</code> を実行するだけで、基本ファイルと override ファイルがスマートに合成されます。</p>
+
+<div class="alert warn">
+  <div class="ic">⚠️</div>
+  <div>
+    <span class="tt">データ消失に関する重大な警告</span>
+    通常の <code>docker compose down</code> はコンテナとネットワークのみを削除し、データボリュームは保持されます。しかし、<code>-v</code> オプションを付けた <code>docker compose down -v</code> を実行すると、<strong>名前付き Volume も丸ごと完全削除</strong>されます。本番データが瞬時に消滅するため、実行には細心の注意を払ってください！
+  </div>
+</div>
+
+<div class="trouble-box">
+  <div class="trouble-title">🚨 トラブルシューティング救急室</div>
+  <div class="trouble-item">
+    <div class="q">Q1: Web 起動時に "Connection refused" エラーが発生して停止します。</div>
+    <div class="a">A: <code>depends_on: db</code> のみの場合、PostgreSQL の初期化（データベースクラスタの生成）完了前に Web が接続を試みて失敗します。本章で紹介した <code>healthcheck</code> + <code>condition: service_healthy</code> の組み合わせを導入してください。</div>
+  </div>
+  <div class="trouble-item">
+    <div class="q">Q2: DB ボリュームで Permission denied エラーが発生します。</div>
+    <div class="a">A: PostgreSQL コンテナは内部で一般ユーザー（<code>postgres</code>）権限で動作します。Docker の名前付きボリューム（Named Volume）を使用していれば自動調整されますが、ホストの特定ディレクトリを直接バインドマウント（Bind Mount）している場合は、ホスト側ディレクトリの所有権を <code>chown</code> 等で適切に設定する必要があります。</div>
+  </div>
+</div>
+
+<p><strong>プロの知恵 (Pro-tip)：</strong> パスワードや API キーを <code>docker-compose.yml</code> に平文で直接書き込むのはセキュリティ上避けるべきです。次章では、これらを安全に隠蔽管理する <code>.env</code> ファイルの活用法を学びます！</p>
+  
+<div class="page-nav">
+  <a href="30-compose-up-part1.ja.html" class="page-nav-link prev"><span class="dir">← 前のレッスン</span><span class="title">30. 実践バトル(前編)：Web＋キャッシュ連携</span></a>
+  <a href="32-env-security.ja.html" class="page-nav-link next"><span class="dir">次のレッスン →</span><span class="title">32. 城壁の防御：.envによる機密情報の保護</span></a>
+</div>
+
+<div class="keyboard-hints">
+  <span>💡 ショートカット：<span class="kbd">←</span> 前のレッスン</span>
+  <span><span class="kbd">→</span> 次のレッスン</span>
+  <span><span class="kbd">/</span> 検索にフォーカス</span>
+</div>
+</main>
+
+<button class="back-to-top" id="backToTop" title="トップへ戻る">↑</button>
+
+<script>
+// 1. 読書進捗バー
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+  
+  // トップへ戻るボタンの表示制御
+  const btt = document.getElementById('backToTop');
+  if (winScroll > 300) {
+    btt.classList.add('show');
+  } else {
+    btt.classList.remove('show');
+  }
+});
+
+document.getElementById('backToTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// 2. モバイル用サイドバー切り替え
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function toggleSidebar() {
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('active');
+}
+
+menuToggle.addEventListener('click', toggleSidebar);
+backdrop.addEventListener('click', toggleSidebar);
+
+// 3. コードコピー機能
+document.querySelectorAll('pre').forEach(pre => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.innerText = 'コピー';
+  btn.addEventListener('click', () => {
+    const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = 'コピー完了 ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = 'コピー';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+  pre.appendChild(btn);
+});
+
+// 4. サイドバー絞り込み検索
+const searchInput = document.getElementById('sideSearch');
+searchInput.addEventListener('input', (e) => {
+  const val = e.target.value.toLowerCase().trim();
+  const navItems = document.querySelectorAll('.sidebar .nav-item');
+  const groups = document.querySelectorAll('.sidebar .nav-group');
+  
+  navItems.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    if (!val || text.includes(val)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  // グループ内の全項目が非表示ならタイトルも非表示
+  groups.forEach(group => {
+    const visibleChildren = group.querySelectorAll('.nav-item:not([style*="display: none"])');
+    if (visibleChildren.length === 0 && val) {
+      group.style.display = 'none';
+    } else {
+      group.style.display = 'block';
+    }
+  });
+});
+
+// 5. キーボードナビゲーション
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  
+  if (e.key === 'ArrowLeft') {
+    const prevLink = document.querySelector('.page-nav-link.prev');
+    if (prevLink) prevLink.click();
+  } else if (e.key === 'ArrowRight') {
+    const nextLink = document.querySelector('.page-nav-link.next');
+    if (nextLink) nextLink.click();
+  } else if (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+</script>
+
+</body>
+</html>

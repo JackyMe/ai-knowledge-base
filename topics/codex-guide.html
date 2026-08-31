@@ -180,15 +180,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <button class="menu-btn" id="menuBtn">☰</button>
   <div class="logo"><span class="mark">CX</span>Codex 使用指南<span class="sub">旗舰干货版</span></div>
   <div class="right">
-    <label class="lang-switch" style="display:inline-flex;align-items:center;cursor:pointer;margin-right:12px;position:relative;" title="切换语言 / Toggle Language">
-      <input type="checkbox" id="lang-toggle-cb" style="appearance:none;position:absolute;width:100%;height:100%;cursor:pointer;opacity:0;z-index:2;margin:0;">
-      <div style="width:52px;height:24px;background:var(--border-2);border-radius:12px;position:relative;transition:.3s;display:flex;align-items:center;justify-content:space-between;padding:0 6px;font-size:10px;font-weight:700;color:var(--text-3);font-family:var(--font);">
-        <span style="z-index:0">中</span><span style="z-index:0">EN</span>
-        <div class="knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.1);transition:transform .3s;z-index:1;"></div>
-      </div>
-    </label>
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-08-25</span>
+    <span>核对至 2026-08-31</span>
   </div>
 </header>
 
@@ -234,7 +233,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-08-25</div>
+  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-08-31</div>
   <h1>Codex<br><span class="grad">全景实战指南 · 旗舰版</span></h1>
   <p class="lead">OpenAI 的代理式编码工具体系：从第一次打开终端，到完成企业级代码交付。本指南吸纳官方权威文档与 CodexGuide.io 实战精髓，打通<strong>选型决策、3×3 沙箱审批、长任务四权分立、收尾记忆闭环、浏览器 E2E 验收、GitHub 自动化流水线</strong>与 <strong>Claude Code 双代理协同</strong>。</p>
   <div class="meta">
@@ -409,19 +408,19 @@ codex update</code></pre>
 <div class="sec-tag">动态</div>
 <h2>近期关键动态与重大变更</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-25</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-31</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
-<h3 data-reveal>🆕 0.148.0 最新能力 (2026-08-18)</h3>
+<h3 data-reveal>🆕 0.150.0 最新能力 (2026-08)</h3>
 <ul>
-  <li><strong>Markdown 导出</strong>：新增 <code>/export</code> 命令，可将完整的 TUI 对话记录导出为 Markdown 格式。</li>
-  <li><strong>无头会话分叉 (Session Forking)</strong>：引入 <code>codex exec fork</code> 进行无头环境下的会话分叉，同时支持会话存档 (archive) 与恢复 (restore)。</li>
-  <li><strong>成本预估</strong>：在 <code>/status</code>、状态栏以及终端标题中启用基于 token 的线程成本预估显示。</li>
-  <li><strong>基础架构扩展</strong>：增加对 Amazon Bedrock Runtime 作为内置推理后端的支持；允许 hooks 异步执行命令或调用 MCP 工具。</li>
+  <li><strong>交互式任务面板</strong>：0.149.0 引入了全新的 <strong>Agents Dashboard</strong>，可单界面搜索、重命名并管理多个并发任务。</li>
+  <li><strong>跨工具联动集成</strong>：新增 <code>/import</code> 指令，支持直接导入 Claude Code 或 Cursor 的历史记录与项目配置。</li>
+  <li><strong>可视化界面定制</strong>：0.150.0 为行内代码与数据可视化新增了 iOS 风格的外观选项。</li>
+  <li><strong>Markdown 导出与无头会话</strong>：0.148.0 支持了 <code>/export</code> 以及 <code>codex exec fork</code> 分支能力，并全面启用成本预估显示。</li>
 </ul>
 
 <h3 data-reveal>🚨 关键破坏性变更与模型迁移</h3>
 <ul>
-  <li><strong>GPT-5.4 系列模型退役倒计时</strong>：OpenAI 已确认 <strong>GPT-5.4</strong> 及 <strong>mini</strong> 将于 2026-08-31 全面退役，请检查 <code>config.toml</code> 迁移至 <code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code> 或 <code>gpt-5.6-luna</code>。</li>
+  <li><strong>GPT-5.4 系列模型全面退役</strong>：OpenAI 已于 <strong>2026-08-31</strong> 正式停用 GPT-5.4 及 mini。若遇到报错请立即将 <code>config.toml</code> 迁移至 <code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code> 或 <code>gpt-5.6-luna</code>。</li>
   <li><strong><code>codex exec --full-auto</code> 已移除</strong>：0.147.0 移除了 <code>--full-auto</code> 参数，脚本中请改写为 <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code>；若需无人值守自动放行，请使用新参数 <code>--approve-for-me</code>。</li>
   <li><strong>本地项目显式信任机制</strong>：打开未信任的本地仓库会触发安全提示，防止恶意代码通过仓库配置文件进行指令注入攻击。</li>
   <li><strong>命令输出敏感信息脱敏</strong>：TUI 输出中自动识别并屏蔽 Bearer Token、API Keys 等敏感凭证（替换为 <code>***</code>）。</li>

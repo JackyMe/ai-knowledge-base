@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Web全体のリサーチ統合：能力の境界マップ、8大シナリオの費用対効果マトリクス、プログラミング・執筆・調査・データ自動化・日常生活の5大パラダイム、主要3大ツールの選定基準、出典付き7大共通メンタルモデル、再現可能な実例集、一般ユーザー向け学習ロードマップ。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIは実際に何をしてくれるのか · 効率化の全景と実践メンタルモデル · 2026.07">
+<meta property="og:description" content="Web全体のリサーチ統合：能力の境界マップ、8大シナリオの費用対効果マトリクス、プログラミング・執筆・調査・データ自動化・日常生活の5大パラダイム、主要3大ツールの選定基準、出典付き7大共通メンタルモデル、再現可能な実例集、一般ユーザー向け学習ロードマップ。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-leverage-guide.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AIは実際に何をしてくれるのか · 効率化の全景と実践メンタルモデル · 2026.07</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#a78bfa; --accent-soft:#f3eefe;
+  --ink:#150f26; --bg:#ffffff; --bg-side:#fbfafd; --bg-code:#141021;
+  --text:#232030; --text-2:#5d5a6b; --text-3:#928fa0;
+  --border:#eae7f1; --border-2:#d9d4e6;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f3eefe;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Yu Gothic",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#efeaf8;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#efeaf9;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(124,58,237,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(167,139,250,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.16);
+  border:1px solid rgba(124,58,237,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a78bfa,#ddd6fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c2bdd6;max-width:640px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a29dbb}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#ddd2f5}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f1eefa;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#6d28d9}
+pre{background:var(--bg-code);color:#e4dff0;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8b87a0}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#faf9fd}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fbfafe}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#faf9fd;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f3eefe;color:#6d28d9}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(21,15,38,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">AI</span>AI 効率化の全景とメンタルモデル<span class="sub">実践版</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <span>Web全体のリサーチ · 2026-07-20</span>
+      <span>検証日: 2026-08-17</span>
+   
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">認識</div>
+    <a href="#map"><span class="no">00</span>パノラママップ：能力の境界線</a>
+    <a href="#matrix"><span class="no">01</span>シナリオ × 効果マトリクス</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">シナリオ別パラダイム</div>
+    <a href="#coding"><span class="no">02</span>プログラミング：最適パラダイム</a>
+    <a href="#writing"><span class="no">03</span>執筆とドキュメント作成</a>
+    <a href="#research"><span class="no">04</span>調査と学習</a>
+    <a href="#data-auto"><span class="no">05</span>データと自動化</a>
+    <a href="#life"><span class="no">06</span>生活とセルフマネジメント</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">ツール選定</div>
+    <a href="#tools"><span class="no">07</span>3大ツールの選び方</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">メンタルモデル</div>
+    <a href="#principles"><span class="no">08</span>7つの共通メンタルモデル</a>
+    <a href="#cases"><span class="no">09</span>現場の実例集</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">学習・実践</div>
+    <a href="#learning-path"><span class="no">10</span>一般ユーザー向け学習パス</a>
+    <a href="#resources"><span class="no">11</span>リソースインデックス</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🧭 Web全体のリサーチ統合 · 公式ドキュメント + 調査レポート + コミュニティの合意 · 検証日: 2026-08-17</div>
+  <h1>AIは実際に何をしてくれるのか<br><span class="grad">効率化の全景と実践メンタルモデル</span></h1>
+  <p class="lead">誇張や煽りなし：どのシナリオで最も効率が上がるのか、各シナリオの正しい活用法、3大コーディングエージェントの選び方、シナリオ横断の共通メンタルモデル、そしてゼロから習熟に至る実践ロードマップ。すべての重要な主張に出典を明記（「AIを使うと逆に遅くなることがある」という不都合な真実も含めて）。</p>
+  <div class="meta">
+    <span>8大シナリオ</span><span>7大メンタルモデル</span><span>7つの再現可能実例</span><span>よくある誤解リスト</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>57%</b><span>Claudeプラットフォーム上のタスクは完全自動ではなく「人間とAIの協調作業」（Anthropic Economic Index）</span></div>
+  <div class="stat"><b>42%</b><span>個人・日常生活用途の割合（2026年も急速に上昇中）——非プログラミング領域は過小評価されがち</span></div>
+  <div class="stat"><b>-19%</b><span>METR実測検証：パラダイムを誤ると、熟練開発者でも19%作業が遅くなる（本人は20%速くなったと錯覚）</span></div>
+  <div class="stat"><b>+10%</b><span>熟練者は初心者よりタスク成功率が約10%高い：使いこなす力は練習で鍛えられるもの</span></div>
+</div>
+
+<section id="map">
+<div class="sec-tag">認識 00</div>
+<h2>パノラママップ：AIが得意なこと・不得意なこと</h2>
+
+<p>効率化を語る前に、まずは能力の境界線を誠実に理解しましょう。2026年半ば時点の汎用大規模言語モデル（Claude / GPT / Gemini）は、下表の左列では「安定して実用可能」ですが、右列では依然として人間のフォローが不可欠です——タスクの配置を誤ることこそ、あらゆる失望の根本原因です。</p>
+
+<table class="tbl">
+  <tr><th>✅ 得意なこと（安心して任せられる）</th><th>⚠️ 不得意なこと（人間による確認が必須）</th></tr>
+  <tr><td>初稿の生成：記事、コード、企画書、メール——0から60点まで極めて高速</td><td>最後の20点：独自視点、テイスト、取捨選択は依然として人間の仕事</td></tr>
+  <tr><td>フォーマット変換と構造化：散らかったメモ→表、音声書き起こし→議事録、要件→コードの骨格</td><td>事実の正確性：真顔で嘘をつく（ハルシネーション）。重要な事実は必ず人間が検証する必要がある</td></tr>
+  <tr><td>要約と圧縮：長文ドキュメント、論文、会議記録からの要点抽出</td><td>最新情報の即時性：学習データのカットオフ以降の出来事は、Web検索なしでは信頼できない</td></tr>
+  <tr><td>翻訳と推敲：ネイティブレベルに近く、トーン＆マナーの制御が可能</td><td>検証のない長大なマルチステップタスク：チェックポイントのない多段階作業では、エラーが累積・拡大する</td></tr>
+  <tr><td>ブレインストーミング：一度に10個の案を出し、人間が選定する</td><td>正確な計算やカウント：暗算させるのではなく、コードを書かせて計算させるべき</td></tr>
+  <tr><td>異分野への入門解説：あらゆる学問における「根気強い専属チューター」</td><td>責任と意思決定：医療・法律・投資などのハイリスクな判断。AIはあくまで参謀に過ぎない</td></tr>
+  <tr><td>コード：スクリプト作成、バグ修正、エラー解説——コンパイラやテストという自然なセーフティネットがある</td><td>「全部やっておいて」という丸投げ：曖昧な全面委託ほど、失敗率は跳ね上がる</td></tr>
+</table>
+
+<h3 data-reveal>直感に反する3つのデータ</h3>
+<ul>
+  <li><strong>プログラミングは依然として最大の用途だが、個人生活での利用が急増中。</strong>Anthropic Economic Indexによると、「コンピュータ・数学」関連タスクはClaudeの対話全体の約35%を占めトップですが、個人生活用途の割合も35%から42%へ上昇しています（2025-11 → 2026-02）。</li>
+  <li><strong>タスクの過半数は「完全自動化」ではなく「人間との協調作業」。</strong>57%のタスクが人間とAIの反復的な対話協調であり、完全な自動委託は43%にとどまります。現在のベストプラクティスは依然として「AIが実作業を行い、人間が指揮と検収を行う」ことです。</li>
+  <li><strong>パラダイムを間違えると、AIによって作業が遅くなる。</strong>METRによる2025年のランダム化比較試験：16名のシニアオープンソース開発者が使い慣れた大規模コードベースでAIツールを使用したところ、タスク完了時間が<strong>実測で19%遅くなりました</strong>——しかし本人の体感では20%速くなったと感じていました。</li>
+</ul>
+
+<div class="callout warn"><b class="t">METR研究の正しい読み解き方</b>この研究が証明しているのは「AIが無用である」ということではなく、<strong>「自分がすでに熟知している領域」ではAIの恩恵が最も小さく、効率化の実感が実際の効率を大幅に過大評価してしまう</strong>ということです。逆に言えば——AIの恩恵が最大化するのは、不慣れな領域、反復的なルーチンワーク、ゼロからの初稿作成です。適切なシナリオ選び ＋ 正しいパラダイムの適用こそが、真の効率化をもたらします。本ページ全体を通じて、「どう選び、どう使うか」を解き明かします。</div>
+<p class="src">出典：<a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index（2026年1月/3月/6月レポート）</a> · <a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR: Measuring the Impact of Early-2025 AI on Experienced Developer Productivity</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="matrix">
+<div class="sec-tag">認識 01</div>
+<h2>シナリオ × 効果マトリクス：どこで最も効率が上がるのか</h2>
+
+<p>8大シナリオを「効率化の潜在力」順にランキング化しました。潜在力の大きさは技術の派手さではなく、3つの問いによって決まります：<strong>検証手段があるか？ 失敗した時の代償はどれくらいか？ 反復頻度は高いか？</strong> 検証が容易で、許容度が高く、反復が多いシナリオほど、今すぐAIを導入すべきです。</p>
+
+<table class="tbl">
+  <tr><th>シナリオ</th><th>効率化の潜在力</th><th>理由</th><th>今すぐできる第一歩</th></tr>
+  <tr><td><strong>プログラミング / スクリプト</strong></td><td>★★★★★</td><td>コンパイラ、テスト、エラー出力が自然な検証ループを形成。初稿から実用までの距離が最短</td><td>過去に手作業で3回以上行った小さなスクリプト（ファイルの一括リネームなど）をAIに書かせる</td></tr>
+  <tr><td><strong>執筆 / ドキュメント作成</strong></td><td>★★★★★</td><td>初稿作成コストがゼロに。構成案、推敲、複数バージョンの比較が劇的に高速化。人間は視点と事実の確認に専念</td><td>手元の素材をAIに投げ込み、まず切り口の異なる3パターンの目次案を出させる</td></tr>
+  <tr><td><strong>リサーチ / 意思決定支援</strong></td><td>★★★★☆</td><td>Deep Research機能を使えば10〜30分で引用付きレポートを作成でき、半日分の手作業に匹敵</td><td>現在迷っている購入や選定の意思決定を1つ選び、ディープリサーチを実行して元のリンクを検証する</td></tr>
+  <tr><td><strong>新領域の学習</strong></td><td>★★★★☆</td><td>無限の忍耐力を持つ専属家庭教師：あらゆる深さの質問に答え、自分のレベルに合わせて解説し、小テストで確認してくれる</td><td>学びたかったテーマを1つ選び、AIに「まず私の理解度テストを実施してから、学習計画を作成して」と指示する</td></tr>
+  <tr><td><strong>データ分析</strong></td><td>★★★★☆</td><td>自然言語でテーブルデータに問い合わせる手法が成熟。AIに分析コードを書かせることで柔軟性と検証性を両立</td><td>Excel/CSVファイルをチャットモデルにアップロードし、業務に関する問いを日本語で3つ投げてみる</td></tr>
+  <tr><td><strong>業務自動化</strong></td><td>★★★☆☆</td><td>リターンは極めて高いが、事前に手動でワークフローを確立する必要がある。検証のない自動化はトラブルの温床</td><td>毎週繰り返している手順をチェックリスト化し、まずはAIに半自動で実行させてみる</td></tr>
+  <tr><td><strong>日常生活・事務</strong></td><td>★★★☆☆</td><td>旅行計画、献立作成、ギフトの提案、契約書の要約など——低リスクかつ高頻度な日々の意思決定</td><td>次に料理をする前、冷蔵庫の食材を伝えて「3つのレシピ案 ＋ スーパーの買い出しリスト」を出させる</td></tr>
+  <tr><td><strong>思考の整理 / メンタルサポート</strong></td><td>★★★☆☆</td><td>HBR（ハーバード・ビジネス・レビュー）2025年年間用途ランキング第1位。ただし医療資格を持つカウンセラーではない点に注意</td><td>「頭の中のごちゃごちゃした考えを、意思決定すべき3つの問いに整理して」と頼むことから始める</td></tr>
+</table>
+
+<div class="callout note"><b class="t">プログラミングだけに目を奪われない</b>HBRによるWeb全体の実際の利用実態調査（2025年以降）では、利用頻度トップ3は<strong>思考の整理/メンタルサポート、生活の整理・計画、目標の再発見</strong>となっており、いずれも非技術領域です。エンジニア界隈の声が大きいため「AI＝コードを書くもの」という錯覚が生じがちですが、一般のビジネスパーソンにとっては執筆・リサーチ・学習・生活面での複利効果のほうがはるかに大きい可能性があります。</div>
+<p class="src">出典：<a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR: Top 10 Gen AI Use Cases (Marc Zao-Sanders, 2025-04)</a> · <a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="coding">
+<div class="sec-tag">シナリオ別パラダイム 02</div>
+<h2>プログラミングシーンの最適パラダイム（Claude Code / Codex）</h2>
+
+<p>両社の公式ベストプラクティスは2026年時点で高度に収束しており、「4段階ワークフロー」と「5つのコア習慣」としてまとめられます。具体的な操作方法は当ナレッジベースの <a href="claude-code-guide.ja.html">Claude Code 実践ガイド</a> および <a href="codex-guide.ja.html">Codex 実践ガイド</a> を参照してください。ここではその「パラダイム」に絞って解説します。</p>
+
+<h3 data-reveal>公式の合意：4段階ワークフロー</h3>
+<ol class="steps">
+  <li><strong>探索（Explore）</strong>——計画モード（Claude CodeのPlan mode / Codexの <code>/plan</code>）に入り、コードを直接変更せずにAIにコードベースを読み込ませ、質問に回答させる</li>
+  <li><strong>計画（Plan）</strong>——具体的な実装計画の出力を要求する：変更するファイル、変更順序、検証方法。計画をレビューするコストは、完成コードをレビューするコストの1/10で済む</li>
+  <li><strong>実装（Implement）</strong>——計画モードを抜けて実行に移り、テストを実行しながらコーディングを進める。小さなタスク（差分を一言で説明できるもの）は前2段階をスキップして直接実行してもよい</li>
+  <li><strong>コミット（Commit）</strong>——差分（diff）を精査し、完全な検証テストを実行し、明確なコミットメッセージを作成する。AIの作業成果物も人間による最終チェックが必須</li>
+</ol>
+
+<h3 data-reveal>5つのコア習慣</h3>
+<table class="tbl">
+  <tr><th>習慣</th><th>実践方法</th></tr>
+  <tr><td><strong>AIに実行可能な検証手段を与える</strong></td><td>公式の言葉：「pass/fail を判定できるチェック（テスト、ビルド、スクリプト、スクリーンショット比較など）を与えれば、自律改善ループが勝手に回り始める」。検証手段がなければ「見た目上終わっている」ことしか分からず、人間が手動デバッグ係に成り下がってしまう</td></tr>
+  <tr><td><strong>完了基準を明確に言語化する</strong></td><td>Codex公式が推奨するタスク構造：<strong>Goal（目標）＋ Context（関連ファイル/ドキュメント）＋ Constraints（制約条件）＋ Done when（完了判定基準）</strong>——この4要素が揃うと、手戻り率は劇的に低下する</td></tr>
+  <tr><td><strong>小さく反復し、逸脱は即座に軌道修正する</strong></td><td>AIが意図から外れたら即座に <kbd>Esc</kbd> で中断する。同じ問題を2回指摘しても直らない場合は、それ以上泥沼化させず <code>/clear</code> でリセットし、得られた知見を基により良い初期プロンプトを書き直す</td></tr>
+  <tr><td><strong>コンテキストを適切に管理する</strong></td><td>コンテキストウィンドウは最も貴重なリソース：無関係なタスク間では <code>/clear</code> を実行する。広範囲の検索はサブエージェントに任せ、メインの対話欄を大量のファイル内容で埋め尽くさない</td></tr>
+  <tr><td><strong>プロジェクトの記憶を資産化する</strong></td><td>繰り返し指示するルールは <code>CLAUDE.md</code> や <code>AGENTS.md</code> に記述し、簡潔に保つ——残すかどうかの基準は「この行を削除したらAIがミスを犯すかどうか」</td></tr>
+</table>
+
+<div class="duo">
+  <div class="bad"><b>✗ 曖昧な丸投げ</b>「ログインのバグを直して」<br><br>AIは推測するしかありません：どのログイン？ どんな症状？ どこまで直せば完了？</div>
+  <div class="good"><b>✓ 検証付きの依頼</b>「セッションタイムアウト後の再ログイン失敗が報告されています。src/auth/ 内のトークン更新ロジックを調べてください。まず問題を再現する失敗テストを作成し、それを修正して、最後に auth テストスイート全体が Green になることを確認してください。」</div>
+</div>
+
+<h3 data-reveal>非エンジニアでも開発に参加できる：Vibe Coding</h3>
+<p>自然言語で指示を出し、AIにコーディングからデバッグまで全工程を行わせる「Vibe coding（バイブコーディング）」（2025年2月にAndrej Karpathyが提唱、コリンズ英語辞典の2025年ワード・オブ・ザ・イヤーに選出）により、プログラミング未経験の多くのユーザーが家計簿アプリ、習慣トラッカー、資材計算ツールなどを自作できるようになりました。コミュニティ調査では、こうしたツールの作成者の過半数がプログラミング未経験者だったと報告されています。ただし境界線も明確にしておく必要があります：<strong>自分用の便利ツールは自由に作れば良いですが、課金が発生したり他人のデータを保存する商用プロダクトの場合、セキュリティと運用保守には専門家による厳格なチェックが必要です。</strong></p>
+<p class="src">出典：<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code 公式 Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex 公式 Best Practices</a> · <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier: Vibe coding examples</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="writing">
+<div class="sec-tag">シナリオ別パラダイム 03</div>
+<h2>執筆とドキュメント作成シーンのパラダイム</h2>
+
+<p>コアとなる役割分担は一言で言えます：<strong>AIが初稿と構成を担当し、人間が主張と事実を担当する。</strong>AIをゴーストライターではなく、「疲れを知らない初稿作成マシン ＋ 構成エディター」として扱いましょう。</p>
+
+<h3 data-reveal>プロンプトの4大要素（MITスローン校教育コンセンサス）</h3>
+<p>効果的な執筆プロンプト ＝ <strong>役割/背景</strong>（あなたは誰で、誰に向けて書くのか）＋ <strong>タスクとフォーマット</strong>（何を生成し、どのような構成にするか）＋ <strong>トーンと対象読者</strong> ＋ <strong>制約条件</strong>（文字数、必ず含めるべき点・避けるべき点）。この4つをすべて揃えることで一発での完成度が最大化します。その上で対話的にブラッシュアップしていきます：「もっと短く」「第2段落を詳しく展開して」「上司向けのトーンに変更して」。</p>
+
+<h3 data-reveal>効果が実証されている高収益な活用法</h3>
+<table class="tbl">
+  <tr><th>活用法</th><th>実践手順</th></tr>
+  <tr><td><strong>3パターン構成案作成法</strong></td><td>手元の素材を渡し、切り口の異なる3パターンの目次・構成案を要求 → 人間が1つを選ぶ（または組み合せる） → その後セクションごとに執筆。いきなり全文を書かせるより圧倒的に高品質になる</td></tr>
+  <tr><td><strong>会議の音声文字起こし → 議事録</strong></td><td>文字起こしテキストを丸ごと渡し、「決定事項、アクションアイテム（担当者＋期限）、持ち越し課題の3つのリストにまとめて」と指示する</td></tr>
+  <tr><td><strong>長文ドキュメントの圧縮</strong></td><td>「200字の要約 ＋ 10個の箇条書きに圧縮し、数値と結論はすべて保持して」——本文を読む前に要約を確認し、精読が必要か判断する</td></tr>
+  <tr><td><strong>逆アウトライン分析</strong></td><td>自分で書いた初稿をAIに戻し、「この記事の逆アウトライン（論理構成図）を作成し、論理の飛躍や重複を指摘して」と指示する——単に「推敲して」と頼むよりはるかに効果的</td></tr>
+  <tr><td><strong>AI臭さの除去</strong></td><td>自分が過去に書いた文章を2〜3段落スタイルサンプルとして提供。「現代の急速に発展する時代において…」といった陳腐な常套句を禁止し、短い文章・具体的な名詞・数値の使用を指示する</td></tr>
+  <tr><td><strong>多言語推敲・翻訳</strong></td><td>日本語の思考メモ → 英語のメール/ドキュメントへ変換。使用場面と相手との関係性を明記することで、ネイティブに近い自然な表現が得られる</td></tr>
+</table>
+
+<ol class="steps">
+  <li>元の素材（メモ、データ、リンク）を一度にAIへ渡し、まずは全文ではなく構成案（アウトライン）を出させる</li>
+  <li>人間が構成とコアな主張を決定する——これは文章の魂であり、外注してはならない</li>
+  <li>セクションごとに初稿を生成させ、各セクションに具体的な指示（要点、具体例、分量）を与える</li>
+  <li>すべての事実、数値、引用を人間が手作業で検証する——AIの引用リンクは必ず1つずつクリックして確認する</li>
+  <li>最後に自分で通読して手直しする：「自分らしい言葉」になるまで調整する</li>
+</ol>
+
+<div class="callout warn"><b class="t">2つのレッドライン（厳守事項）</b>① 事実と引用は必ず人間が検証すること——モデルは自信満々に文献やデータを捏造（ハルシネーション）するため、学術やビジネスシーンでは致命的になります。② 機密情報（顧客データ、未公開の業績数値、他人のプライバシー）をパブリックなAIサービスに貼り付けないこと。エンタープライズ版やローカル環境を利用してください。</div>
+<p class="src">出典：<a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan: Effective Prompts for AI</a> · 複数のコミュニティコンセンサス（一般的な対話型モデルで直接再現可能）</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="research">
+<div class="sec-tag">シナリオ別パラダイム 04</div>
+<h2>調査と学習シーンのパラダイム</h2>
+
+<h3 data-reveal>調査：Deep Research 4ステップ法</h3>
+<ol class="steps">
+  <li><strong>問いの境界線を明確にする</strong>——何を調べ、何を調べないか、判断基準、期待する出力フォーマット。境界が明確なほどレポートの実用性が高まる</li>
+  <li><strong>ディープリサーチを実行する</strong>——ChatGPT / Gemini / Claude の Deep Research 系機能は自律的に検索・クロスリーディングを行い、10〜30分で引用付きレポートを作成する</li>
+  <li><strong>深掘りと情報源の追跡</strong>——重要な結論に対して「この根拠となった情報源はどれか？」を個別に問い詰め、リンクをクリックして検証する。架空の引用は多発ポイント</li>
+  <li><strong>クロスバリデーション（交差検証）</strong>——重要な意思決定では別のモデルでも同じテーマを実行し、相違点を比較する。意見が分かれる部分こそ、人間が深掘りすべき核心である</li>
+</ol>
+
+<h3 data-reveal>学習：AIを家庭教師として扱い、単なる答え合わせマシンにしない</h3>
+<table class="tbl">
+  <tr><th>学習パラダイム</th><th>プロンプトテンプレート</th></tr>
+  <tr><td><strong>レベル診断と個別最適化</strong></td><td>「Xを学びたいです。まず私の現在の理解度を測る問題を5問出題し、その結果に基づいて4週間の学習計画を作成してください」</td></tr>
+  <tr><td><strong>ソクラテス式対話法</strong></td><td>「直接答えを言わず、質問を投げかけて私自身に結論を導き出させてください」——「分かったつもり」の錯覚を防ぐ</td></tr>
+  <tr><td><strong>ファインマン・テクニック検証</strong></td><td>「Xについて自分の言葉で説明するので、理解が間違っている点や曖昧な部分を指摘してください」</td></tr>
+  <tr><td><strong>難易度調整</strong></td><td>「まず12歳の子どもに向けて説明し、次に専門家向けバージョンを解説し、最後にすぐ実践できる最小の練習問題を出してください」</td></tr>
+  <tr><td><strong>意図的な反復練習</strong></td><td>「毎日難易度が徐々に上がる問題を3問出題してください。私が回答したら採点し、間違えた原因を解説してください」</td></tr>
+</table>
+
+<div class="callout tip"><b class="t">研究の裏付け：使いこなす力は練習で培われる</b>Anthropicの「Learning curves」レポート（2026-03）によると、熟練ユーザーは初心者よりタスク成功率が約10%高く、<strong>1回限りの丸投げではなく反復的な対話協調をより多く採用し</strong>、モデルの能力とタスクの難易度を適切にマッチングさせていることが判明しました。AIを学ぶ最善の方法は、高頻度で実践し、どの聞き方が効果的だったかを振り返ることです。</div>
+
+<h3 data-reveal>学術・研究シーン向けツールのクイック概観</h3>
+<p>文献探索：Elicit、Consensus、Semantic Scholar。論文の精読とQ&A：NotebookLM、Claude（長文コンテキスト）。研究レビューの比較：Elicitのクロススタディ抽出テーブル。原則は変わりません：<strong>情報の発見と要約はAIに任せ、結論の導出と批判的吟味は自分で行うこと。</strong></p>
+<p class="src">出典：<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic: Learning curves (2026-03)</a> · <a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify: Best AI Tools for Academic Research 2026</a> · <a href="https://lumivero.com/resources/blog/ai-tools-for-academic-research/" target="_blank">Lumivero 学術ツール総括</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="data-auto">
+<div class="sec-tag">シナリオ別パラダイム 05</div>
+<h2>データと自動化シーンのパラダイム</h2>
+
+<h3 data-reveal>データ分析：3つのレベル</h3>
+<table class="tbl">
+  <tr><th>レベル</th><th>実践方法</th><th>最適な用途</th></tr>
+  <tr><td><strong>L1 自然言語による表データ問い合わせ</strong></td><td>Excel/CSVをチャットモデル（またはJuliusなどの専用ツール）に直接アップロードし、日本語で質問してグラフを生成させる</td><td>初心者・未経験者；未知のデータを素早く探索したい場合</td></tr>
+  <tr><td><strong>L2 AIに分析コードを書かせる</strong></td><td>AIにPython/SQLスクリプトを書かせて分析を実行——コードはレビュー可能で再現性があり、結果を検証でき、ハルシネーションの余地が小さい</td><td>再利用性や正確性が求められる場合、データ量が多い場合</td></tr>
+  <tr><td><strong>L3 コーディングエージェントによる全自動パイプライン</strong></td><td>Claude Code / Codex がファイルを直接読み込み、クレンジング、分析、レポート出力まで行い、人間が結論を検収する</td><td>複数ファイルにまたがる複雑な多段階分析タスク</td></tr>
+</table>
+<div class="callout tip"><b class="t">なぜAIに「直接答えさせる」のではなく「コードを書かせて計算させる」のか</b>モデルの暗算による数値計算は信用できませんが、AIが書いたコードの実行結果は確定的（決定論的）です——これにより「AIを信じる」から「コードを信じる」へと転換でき、コードなら人間が検証可能です。これこそがデータ分析領域における最も重要なマインドセットの転換です。</div>
+
+<h3 data-reveal>自動化：5段階のステップアップ</h3>
+<ol class="steps">
+  <li><strong>手動チャット</strong>——繰り返しのタスクを都度AIに依頼し、人間が最初から最後まで見届ける</li>
+  <li><strong>プロンプトテンプレート</strong>——上手くいったプロンプトをテンプレートやスキルとして保存し、ワンクリックで再利用する</li>
+  <li><strong>コマンドライン非対話実行</strong>——<code>claude -p "プロンプト"</code> や <code>codex exec</code> をスクリプトに組み込み、バッチ処理を行う</li>
+  <li><strong>定期実行とフック</strong>——日次で自動実行：ファイルの整理、日報の集計、モニタリング（Codexのscheduled tasks / システムのcron）</li>
+  <li><strong>エージェントワークフロー</strong>——n8n / Zapier / 自作エージェントで複数システムを連携。この段階では失敗時のアラート通知と人間による抜き打ちチェックが必須</li>
+</ol>
+
+<div class="callout warn"><b class="t">自動化の2大鉄則</b>① <strong>手動で3回成功させてから自動化すること</strong>——プロセス自体が安定していないのに自動化するのは、エラーを大規模にまき散らすだけです。② <strong>検証のない自動化は絶対に行わないこと</strong>——各レベルの自動化において、確認可能な出力（ログ、diff、レポート）とエラー時のセーフティネット（アラート、人間の承認ポイント）を用意する必要があります。完全自動運転に対する公式ベストプラクティスの要求も同様に「まずチェック体制を確立し、その後に手を離す」ことです。</div>
+<p class="src">出典：<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices (headless / fan-out モード)</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices (scheduled tasks)</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="life">
+<div class="sec-tag">シナリオ別パラダイム 06</div>
+<h2>生活とセルフマネジメントシーンのパラダイム</h2>
+
+<p>第01節のマトリクスでは「日常生活の事務」と「思考の整理/メンタルサポート」が費用対効果ランキングに入り、HBRの年間調査でもプログラミングより上位にランクインしました。しかし第02〜05節はすべて技術・ナレッジワークのパラダイムであり、最も推奨される2つの領域の実践法が抜けていました。本節では、日々の意思決定プロンプトの骨格、思考整理の実践と境界線、そしてマトリクスで触れられていなかった入り口——写真 / スクリーンショット / 音声入力の3点を補完します。</p>
+
+<h3 data-reveal>生活の意思決定：旅行 / 献立 / 買い物 / 契約書の読み解き</h3>
+<p>これらのシーンに共通するのは、<strong>低リスク・高頻度・明確な制約条件がある</strong>ことです——これこそAIが最も得意とするタスクです。骨格は共通しています：制約条件を一度にすべて伝え、単一の「正解」ではなく複数の選択肢を出させることです。</p>
+
+<table class="tbl">
+  <tr><th>サブシナリオ</th><th>プロンプトの骨格（そのままコピー可能）</th><th>出力要件</th></tr>
+  <tr><td><strong>旅行計画</strong></td><td>「私たちは [人数＋関係性] で、[日程範囲] に [目的地] へ行きます。予算は [金額]、好みは [詳細]。日ごとの行程表を作成し、各日の移動手段とバッファ時間を明記してください」</td><td>単一の案ではなく、重視するポイントが異なる2つの代替プランを要求する</td></tr>
+  <tr><td><strong>献立作成</strong></td><td>「冷蔵庫の食材：[リスト]。苦手・アレルギー：[リスト]。30分以内に作れる1週間分の夕食献立表を作成し、スーパーの売り場動線順に並べた買い物リストも出力してください」</td><td>料理名だけでなく主要な調理ステップを出力させ、見ながらすぐ作れるようにする</td></tr>
+  <tr><td><strong>購入・比較検討</strong></td><td>「予算 [金額] で [商品カテゴリ] を購入したいです。重視する条件：[3点以内]。現在販売中の主要3〜5製品を比較し、共通して見られる低評価ポイントと情報源リンクを提示してください」</td><td>情報源を1つずつ開いて検証する。AIがまとめた総合スコアを鵜呑みにしない</td></tr>
+  <tr><td><strong>契約書 / 取扱説明書の解説</strong></td><td>「これは [契約書/説明書の種類] です。平易な言葉で条項ごとに解説してください：私にとって不利な条項、業界慣行である条項、相手方に優先して確認すべき3つの質問を挙げてください」</td><td>「理解を助ける」ものとして使い、「契約すべきかの判断」は委託しない——重要契約は弁護士や専門家が確認すること</td></tr>
+</table>
+
+<div class="duo">
+  <div class="bad"><b>✗ 曖昧な丸投げ</b>「連休の旅行計画を立てて」<br><br>AIはありきたりな一般論しか出せず、人数・予算・好みはすべて推測頼みになります</div>
+  <div class="good"><b>✓ 制約条件付きの依頼</b>「大人2人・子ども1人（6歳）、10月1日〜5日で京都・奈良へ。航空券/新幹線代を除く予算は15万円、子どもは辛いものが苦手で昼寝が必要です。2パターンの日程案をください：観光地を巡るプランと、ゆったりしたプラン。日ごとの移動手段と休憩時間も明記してください。」</div>
+</div>
+
+<h3 data-reveal>思考の整理：ごちゃごちゃした状態から「意思決定可能なリスト」へ</h3>
+<p>この用途はHBRの年間ランキングでも常に上位に入っていますが（第01節マトリクスの注記参照）、コミュニティの議論では「心理カウンセリング」と混同されがちです——ここではまず境界線を明確にし、その上で使えるプロンプトの骨格を提示します。</p>
+<p><strong>プロンプトの骨格：</strong>「[テーマ] について頭の中にたくさんの考えがあり、混乱して整理できません。以下をお願いします：① 『Yes/No』または『A案/B案』で答えられる3〜5個の具体的な問いに要約してください。② 各問いについて、現時点で考えられる選択肢とそれぞれのトレードオフ（代償）を挙げてください。③ どの問いが他の問いに最も影響を与えるかを指摘し、最初にどれを考えるべきか提案してください。私の代わりに決定を下すのではなく、問題を客観的に整理する手助けをしてください。」</p>
+
+<div class="callout warn"><b class="t">境界線の宣言（必ずお読みください）</b>「思考の整理」プロンプトの役割は、散らかった感情や思考を実行可能な質問リストに変換することです。<strong>これは心理カウンセリングではなく、AIは資格を持つ心理カウンセラーや精神科医ではありません。</strong>もし自傷行為の念慮、自殺企図、あるいは長期的・重度なうつや不安などのメンタルヘルスの問題を抱えている場合は、<strong>直ちに精神科医や専門の心理カウンセラーに相談するか、地域の相談窓口・いのちの電話などの危機介入ホットラインに連絡してください。決してAIだけに頼らないでください。</strong>AIは「転職すべきか」「この人間関係を続けるべきか」といった意思決定の整理を助けることはできますが、専門的な診断や治療が必要なメンタルヘルスの問題には対応できません。</div>
+
+<h3 data-reveal>マルチモーダルな入力：写真・スクリーンショット・音声入力</h3>
+<p>本ページのこれまでのパラダイムはすべて「テキスト入力」を前提としていましたが、8大シナリオマトリクスで完全に抜け落ちていたのがこの部分です：多くの人が最初に「AIは便利だ」と実感するのは、まさに写真を1枚撮った瞬間です。主要な対話アプリ（ChatGPT / Gemini / Claude 公式アプリ）はすべて画像アップロードと音声入力に対応しています。具体的な操作画面は各アプリの最新バージョンに準拠してください。</p>
+
+<table class="tbl">
+  <tr><th>入力方法</th><th>使い方（そのまま使える指示文）</th><th>適したシーン</th></tr>
+  <tr><td><strong>写真を撮って質問</strong></td><td>写真を撮影 ＋「これは [説明書/健康診断結果/ホワイトボード/レシピ] です。専門用語が分からないので、要点を平易な言葉で解説してください」</td><td>家電の説明書、健康診断の分かりにくい数値、ホワイトボードの速記メモ、レシピの分量換算</td></tr>
+  <tr><td><strong>スクリーンショットで質問</strong></td><td>スクショ ＋「これはどういう意味ですか？ 私はどう対処すべきですか？」</td><td>アプリやシステムのエラー画面、見づらいWebの表、チャットで追いつけなくなった議論の流れ</td></tr>
+  <tr><td><strong>音声入力</strong></td><td>スマホに向かって2〜3分思いついたことを話し、「文字起こしして、[アウトライン/ToDoリスト/構造化メモ] に整理して」と指示</td><td>運転中や歩行中のアイデア記録、会議の速記、長文を打つのが面倒なときの思考の書き出し</td></tr>
+</table>
+
+<div class="callout note"><b class="t">使ってはいけない場合</b>マイナンバーカード、運転免許証、クレジットカード、医療カルテの原本、契約書の原本など、機密情報を含む写真は無料のパブリックサービスにアップロードしないでください——送信する前に「この画像が流出したらどうなるか」を考えてください。また、画像認識による数値・日付・金額の読み取りには誤読のリスクがあります。意思決定に使う数値は、必ず人間の目で再確認してください。</div>
+
+<p class="src">出典：思考整理シナリオの利用頻度については <a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR: Top 10 Gen AI Use Cases (2025-04)</a>（第01節で引用済み）を参照。その他のプロンプト骨格は主要対話モデルで直接再現可能なテンプレートです。メンタルヘルスの相談先は各地域の公的機関の最新情報をご確認ください。本ページでは電話番号の有効期限切れを防ぐため個別記載を控えています。</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="tools">
+<div class="sec-tag">ツール選定 07</div>
+<h2>3大ツールの選び方：Claude Code vs Codex vs Gemini</h2>
+
+<div class="callout warn"><b class="t">⚠️ 2026-06 重大な変更：Gemini CLI の終了</b>Googleは2026-05-19のI/Oで発表し、<strong>2026-06-18をもって</strong>無料枠およびAI Pro/Ultra登録ユーザー向けGemini CLIサービスの提供を終了しました。Go言語で再設計されたプロプライエタリな <strong>Antigravity CLI</strong>（コマンド <code>agy</code>）へ移行し、無料枠は約1000回/日から約20回/日へと大幅に縮小されました。企業向けGemini Code Assistライセンスおよび有料APIのみ影響を受けません。個人開発者の選択肢としては事実上「2強」となっており、最新状況は公式アナウンスをご確認ください。</div>
+
+<h3 data-reveal>選定比較表（2026-07）</h3>
+<table class="tbl">
+  <tr><th>評価軸</th><th>Claude Code</th><th>Codex</th><th>Gemini系（Antigravity CLI）</th></tr>
+  <tr><td>ポジショニング</td><td><span class="pill a">品質とエコシステム</span></td><td><span class="pill b">サンドボックスとコスパ</span></td><td><span class="pill c">検索連携とエンタープライズ</span></td></tr>
+  <tr><td>公認の強み</td><td>複雑な複数ファイルのリファクタリングにおける出力品質；Skills/Hooks/サブエージェントのエコシステムが最も充実</td><td>OSレベルのサンドボックスが標準有効；Cloudタスクマトリクス；オープンソース</td><td>Web検索統合が最もスムーズ；Googleエコシステムとのシームレスな統合</td></tr>
+  <tr><td>料金・課金の感覚</td><td>無料枠なし。ヘビーユースならサブスクリプション購入が最も経済的</td><td>ChatGPTのサブスクリプションに含まれるため、既存有料ユーザーには「実質無料」</td><td>個人の無料枠ボーナスは終了、現在は企業向け・プロ向けの選択肢</td></tr>
+  <tr><td>提供形態</td><td>CLI / デスクトップ / Web / IDE拡張</td><td>CLI / IDE / Cloud / デスクトップ / GitHubレビュー</td><td>Antigravityプラットフォーム ＋ <code>agy</code> CLI</td></tr>
+  <tr><td>プロジェクト記憶</td><td>CLAUDE.md（AGENTS.md互換）</td><td>AGENTS.md（オープン標準）</td><td>Antigravityプラットフォームの進化に準拠（公式確認推奨）</td></tr>
+</table>
+
+<h3 data-reveal>補完的な使い分け戦略</h3>
+<ul>
+  <li><strong>2つの併用は衝突しない：</strong>Claude Code と Codex はそれぞれ独立した認証とプロセスで動作します。一般的な組み合わせは「普段はサブスクに含まれるツールを使い、難易度の高いリファクタリングではもう一方に切り替える」という運用です。<code>AGENTS.md</code> や Agent Skills はオープン標準であるため、プロジェクト知識を標準レイヤーに蓄積しておけばエージェントの乗り換えコストはゼロです（CodexにはClaude Codeの設定をそのまま読み込む <code>/import</code> コマンドもあります）。</li>
+  <li><strong>汎用チャットモデルの役割分担（コミュニティで定番の手法）：</strong>最新情報の検索やディープリサーチには Gemini / ChatGPT の Deep Research を使用；長文ドキュメントの精読、執筆、コードには Claude を使用；モデルを単一の選択肢ではなく「得意分野が異なる同僚たち」として使い分けるのが鉄則です。</li>
+</ul>
+<p class="src">出典：<a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">google-gemini/gemini-cli 公式アナウンス #27274</a> · <a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ 3大ツール比較 (2026)</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs 比較</a> · <a href="https://www.tomsguide.com/ai/how-i-use-claude-for-strategy-gemini-for-research-and-chatgpt-for-the-grind" target="_blank">Tom's Guide: 複数モデルの使い分け実践</a></p>
+
+<h3 data-reveal>汎用対話型チャットモデルの選び方</h3>
+<p>上記は「コードを書くコーディングエージェントCLI」の比較でした。コードを書かず、Webやアプリで ChatGPT、Claude、Gemini の対話型製品を日常的に使う場合、選定基準は全く異なります——注目すべきは長文処理能力、Web検索の品質、Deep Research の利用枠などです。以下は各社の公式ヘルプセンターから検証した情報です（2026-07）：</p>
+<table class="tbl">
+  <tr><th>評価軸</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th></tr>
+  <tr><td>最適な用途</td><td>汎用的な執筆、マルチモーダル（画像/音声）、オープンな調査レポート；モデルのアップデート頻度が高く、新モデルの展開が早い</td><td>長文ドキュメントの精読、複雑な文章作成、コード生成が公認の強み（上表参照）；ResearchモードはWeb検索と社内ナレッジベース/Workspaceを統合した総合レポート作成に長ける</td><td>会話しながら最新情報を確認したい場面、マルチモーダル（画像/動画）、Gmail/Drive/Google Workspaceとの高度な連携</td></tr>
+  <tr><td>長文処理能力（コンテキスト）</td><td>モデルやプランごとの階層化が明確：公式ヘルプによると GPT-5.6 Luna/Terra は <strong>128K トークン</strong>、GPT-5.6 Sol は <strong>272K トークン</strong>；アカウントで選択可能なモデルに準拠</td><td>公式サポート記事によると Opus 5 / Sonnet 5 は<strong>すべての有料プラン</strong>で <strong>100万トークン</strong> のコンテキストを提供；Opus 4.6〜4.8、Sonnet 4.6 は <strong>50万トークン</strong>；その他は <strong>20万トークン</strong>（約500ページ分）。Freeプランの上限は該当記事に未記載</td><td>公式のプラン別区分が最も明快：無料プラン <strong>3.2万トークン</strong>、AI Plus <strong>12.8万トークン</strong>、AI Pro/AI Ultra <strong>100万トークン</strong>（約1500ページ分）。無料と有料の格差が3社中最も大きい</td></tr>
+  <tr><td>Web検索の品質</td><td>Web検索機能内蔵。情報源の範囲（Webサイト/アップロードファイル/連携アプリ）を指定でき、事前に調査計画を作成して調整してから実行可能</td><td>Web Searchのトグルを手動でオンにする必要あり。オンにすることでResearchモードと連携し、自動検索とインライン引用が可能に；2026-02以降、Researchモードは任意のMCPサーバーと連携して企業データソースに接続可能</td><td>Google検索をデフォルトの情報源とし、ソースの追加・削除が可能（Gmail、Drive、NotebookLMノートブックなど）。3社とも比較可能な「検索品質スコア」は非公表のため定性判断となるが、実際の精度は <a href="#research">調査と学習シーンのパラダイム</a> の4ステップで交差検証を推奨</td></tr>
+  <tr><td>Deep Research の利用枠と所要時間</td><td>公式の記述：ディープリサーチは「通常の検索よりも多くの情報源を読み込んで分析するため、より多くの時間を要する」；<strong>具体的な回数制限は公式ページに固定数値の記載がなく</strong>、「プランによって異なり、アカウント内の利用量カウンターに残り回数がリアルタイム表示される」。月次枠があるプランは「初回利用から30日間」のローリングでリセット</td><td>公式発表では「数分で詳細な回答を提供」；<strong>独立した専用枠はなく</strong>、通常のチャットメッセージ枠を消費（複数ソースの検索により消費が早まる）；Pro/Max/Team/Enterprise 有料プラン限定、<strong>Freeプランは非対応</strong></td><td>公式発表では一般的なレポート作成時間は「約5〜10分、複雑なものはそれ以上」；利用枠の公式記述は「1日の調査リクエスト数および同時実行可能な調査リクエスト数に制限があり、AI Pro/Ultraは上限が高く設定されている」とし、<strong>具体的な数値は非公開</strong>。18歳以上かつログイン必須</td></tr>
+  <tr><td>既知の弱点・制約</td><td>公式注記：「提供状況はプランおよび国/地域によって異なる」；ディープリサーチは連携アプリに対して「読み取り専用」操作のみ実行可能で、送信や代理投稿は不可</td><td>「この質問にResearchを使うべきか」を自動判定しない——公式は明示的な指示（例：「research ツールを使用してください」）を推奨。また事前にWeb検索トグルを手動でオンにしておかないとResearchが動作しない</td><td>無料層の公式明記：「需要のピーク時には、Deep Researchなどの高負荷機能が利用できない場合がある」；情報源にGmail/DriveなどのWorkspaceサービスが含まれる場合、一部のビジュアルレポート機能（チャート生成など）が無効になる</td></tr>
+</table>
+<div class="callout note"><b class="t">利用枠の数値は変動するため、確認すべき2つの場所</b>3社ともDeep Researchの具体的な利用枠をヘルプ記事に固定記載せず、「アカウント内の利用量カウンター」にリアルタイム表示しています——つまり<strong>第三者の記事に書かれた具体的な数字（例：「月X回」など）はすでに古くなっている可能性があります</strong>。正確に比較したい場合は、各社のアカウントにログインして現在のダッシュボードを確認するか、公式サイトの最新の案内に従ってください。</div>
+<p class="src">出典：<a href="https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt" target="_blank">OpenAI Help Center: Deep research in ChatGPT</a> · <a href="https://help.openai.com/en/articles/12003714-chatgpt-business-models-limits" target="_blank">OpenAI Help Center: ChatGPT Business - Models & Limits</a> · <a href="https://support.claude.com/en/articles/11088861-use-research-on-claude" target="_blank">Claude Help Center: Use research on Claude</a> · <a href="https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans" target="_blank">Claude Help Center: context window on paid plans</a> · <a href="https://support.google.com/gemini/answer/15719111" target="_blank">Gemini Apps Help: Use Deep Research</a> · <a href="https://support.google.com/gemini/answer/16275805" target="_blank">Gemini Apps Help: limits & upgrades for Google AI subscribers</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="principles">
+<div class="sec-tag">メンタルモデル 08</div>
+<h2>7つの共通メンタルモデル（シナリオ横断）</h2>
+
+<p>以下の各原則は単なる精神論ではなく、すべて公式ドキュメントや研究レポートに裏付けられたものです。執筆、プログラミング、リサーチ、自動化——シナリオが変わってもメンタルモデルは変わりません。</p>
+<div class="callout note"><b class="t">🎯 メンタルモデルの技術的展開</b>メンタルモデルは「なぜそうするのか」を説くものですが、具体的な「どう伝え、どう素材を与えるか」については姉妹トピックを用意しています：<a href="prompt-context-engineering.ja.html">プロンプト＆コンテキストエンジニアリング</a>——7大技法の ❌/✅ 対照表、9つのそのまま使えるテンプレート、アテンション予算と長時間タスクの3大原則、アンチパターン図鑑を掲載。</div>
+
+<table class="tbl">
+  <tr><th>#</th><th>メンタルモデル</th><th>一言解説</th><th>出典</th></tr>
+  <tr><td>1</td><td><strong>コンテキストは最重要リソース</strong></td><td>関連資料を十分に与え、無関係なノイズを削ぎ落とす。コンテキストが埋まりすぎるとモデルの性能は劣化するため、「どう聞くか」以上に「何を与えるか」が重要</td><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic コンテキストエンジニアリング</a></td></tr>
+  <tr><td>2</td><td><strong>手を動かす前に計画を立てさせる</strong></td><td>複雑なタスクはまず計画を出させ、人間が計画をレビューしてから実行させる。計画をレビューするコストは完成品を直すコストより桁違いに安い</td><td>Claude Code / Codex 公式コンセンサス</td></tr>
+  <tr><td>3</td><td><strong>AIに検証可能な閉ループを与える</strong></td><td>テスト、実例、チェックリスト、比較サンプル——pass/fail の判定シグナルがあって初めてAIは自己修正できる。検証手段なしに手を離してはならない</td><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a></td></tr>
+  <tr><td>4</td><td><strong>完了基準を明確にする</strong></td><td>Goal（目標）＋ Context（文脈）＋ Constraints（制約）＋「どうなれば完了か（Done when）」。曖昧な依頼こそが手戻りの元凶</td><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></td></tr>
+  <tr><td>5</td><td><strong>小さく反復し、2回直らなければリセット</strong></td><td>最初の回答は出発点に過ぎない。軌道がそれたら即座に中断。同じ問題を2回指摘しても直らなければ、得られた教訓を活かしてクリアし最初からやり直す</td><td>公式ベストプラクティス ＋ Learning curves（熟練者ほど反復協調を多用）</td></tr>
+  <tr><td>6</td><td><strong>人間がテイストと事実を管理し、AIは作業を担当</strong></td><td>主張、取捨選択、事実の検証、最終責任は常に人間にある。AIの出力を「答え」ではなく「初稿」とみなす</td><td>METR / HBR / 各所コンセンサス</td></tr>
+  <tr><td>7</td><td><strong>反復作業を資産として定着させる</strong></td><td>成功したプロンプトはテンプレート化し、プロジェクトのルールは CLAUDE.md / AGENTS.md に書き、ワークフローはスキル化する——個人のプロンプト資産は複利を生む</td><td>両社公式ドキュメント（Skills / 記憶ファイル）</td></tr>
+</table>
+
+<div class="callout note"><b class="t">一言でまとめる総則</b>AIを<strong>「能力は極めて高いが、前提知識が一切なく、記憶がすぐリセットされる新入社員」</strong>として扱いましょう：十分な背景情報を渡し（1）、まず作業計画をすり合わせ（2）、検収基準を決め（3、4）、頻繁にフィードバックを与え（5）、重要事項は自分で決断し（6）、優れた協調手順を業務マニュアルに書き記す（7）。7つのメンタルモデルはこの一言に集約されます。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">実践例 09</div>
+<h2>現場の実例集：各シナリオの再現可能テンプレート</h2>
+
+<p>以下の実例は本ページの各パラダイムを具体化したもので、プロンプトはそのままコピー＆カスタマイズ可能です。「実録」と表記されたものは公開報道に基づく事例、その他はパラダイム再現用テンプレートです。</p>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🐛</span><b>プログラミング · バグの修正</b><span class="pt">CODING</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>「ユーザー報告：セッションタイムアウト後の再ログインで画面が真っ白になります。関連コードは <code>src/auth/</code> にあり、トークン更新ロジックが怪しいです。まず問題を再現する失敗テストを書き、それを修正して、auth テストスイート全体が通れば完了とします。」</p>
+      <p><strong>対話の反復：</strong>AIが実装計画を提示 → 人間が「auth のみ変更し、他はリファクタリングしない」ことを確認 → AIがテスト作成（Red）→ 修正実行（Green）→ 人間が diff をレビュー。</p>
+      <p><strong>成果物：</strong>リグレッションテスト付きの修正コミット。核心は「失敗テストの先行作成」——これが検証ループの最小単位の実装です。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">📝</span><b>執筆 · 素材のメモから週報・記事の作成</b><span class="pt">WRITING</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>今週の散らかったメモ（チャットの抜粋、数値、ToDoの完了状況）をすべて貼り付け ＋「技術に詳しくない上司向けに、300字以内で、成果 / リスク / 来週の予定 の3段構成でまとめてください。まず構成案を3パターン出してください。」</p>
+      <p><strong>対話の反復：</strong>構成案を選択 → 段落ごとに生成 →「第2段落のリスク記述が曖昧なので定量化して」→ 人間がすべての数値を手動で照合。</p>
+      <p><strong>成果物：</strong>従来40分かかっていた週報を10分で作成でき、週ごとのフォーマットも安定。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔍</span><b>調査 · 高額商品の購入・選定の意思決定</b><span class="pt">RESEARCH</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>「予算X万円で家庭用NASを購入したいです。要件：写真のバックアップ、2名で利用、静音性最優先、メンテナンスの手間が少ないこと。ディープリサーチ機能を用いて2026年現在販売中の3〜5機種を比較し、比較表 ＋ 各機種の低評価の集中ポイントと情報源リンクを出してください。」</p>
+      <p><strong>対話の反復：</strong>レポート出力後、低評価の情報源を個別に追跡してリンクを確認 → 別のモデルで同じテーマを実行 → 2つのレポートで意見が分かれた点のみを深掘り。</p>
+      <p><strong>成果物：</strong>従来ならフォーラムを2晩巡回して調べていた結論が30分で得られ、根拠も確認可能。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">📊</span><b>データ · 月次レポートの集計と分析</b><span class="pt">DATA</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>売上CSVをアップロード ＋「月ごとにカテゴリ別売上を集計し、前月比で変動が20%を超えているカテゴリを特定して考えられる要因を分析し、グラフを出力してください。計算はコードで行い、そのスクリプトも提示してください。」</p>
+      <p><strong>対話の反復：</strong>合計値が元の表と一致することを確認（検証！）→「祝日の影響を考慮して再集計して」→ AIにスクリプトをパラメータ化させ、翌月以降もそのまま再利用可能にする。</p>
+      <p><strong>成果物：</strong>分析結果 ＋ 再実行可能なスクリプト——一度の分析が毎月の複利資産に。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">⚙️</span><b>自動化 · ダウンロードフォルダの自動仕分け</b><span class="pt">AUTOMATION</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>Claude Code に指示：「~/Downloads 内のファイルを拡張子別にサブフォルダへ整理し、30日以上前のスクリーンショットをゴミ箱候補リストに移動する（直接削除はしない）スクリプトを書いてください。まずはファイル操作を行わず、処理計画のみを表示するドライラン（演習）モードで実行してください。」</p>
+      <p><strong>対話の反復：</strong>ドライラン結果を確認 → 誤分類のルールを修正 → 実際に実行 → 手動で3回問題がないことを確認した後、cron定期タスクに登録。</p>
+      <p><strong>成果物：</strong>毎週自動実行される整理タスク。パラダイムのポイント：ドライランモード ＋ 不可逆な削除は避ける ＋ 3回手動で成功させてから自動化。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎓</span><b>学習 · 30日間で新しい領域に入門する</b><span class="pt">LEARNING</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>「資産運用・投資の基礎概念を学びたいです（銘柄推奨は不要）。まず私のレベルを測る問題を5問出題 → 結果に応じて4週間の計画を作成（週ごとに1テーマ）→ 1日15分：あなたが概念を1つ解説 ＋ 私が答える問題を2問出題 ＋ 採点と解説を行ってください。」</p>
+      <p><strong>対話の反復：</strong>毎週末にファインマン・テクニックを活用：「今週の内容を私が要約して話すので、誤りを指摘してください」→ 曖昧だった部分を翌週重点練習。</p>
+      <p><strong>成果物：</strong>自分のレベルに完全にフィットし、毎日フィードバックが得られる専属チューター講座が費用ゼロで実現。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🏠</span><b>生活 · 1週間の夕食 ＋ 買い出しリスト（実録スタイル）</b><span class="pt">LIFE</span></div>
+    <div class="pb">
+      <p><strong>入力：</strong>「大人2人・子ども1人（5歳）。冷蔵庫の食材：（写真を撮るかリストアップ）。1週間分の夕食を計画してください：30分以内で作れる、油控えめ、水曜日は魚料理。出力：献立表 ＋ スーパーの売り場動線順の買い出しリスト。」</p>
+      <p><strong>対話の反復：</strong>「金曜日のメニューを変更して、子どもがナスを食べられない」→ 翌週からは「家族の苦手な食材リスト」を冒頭テンプレートとして固定化。</p>
+      <p><strong>成果物：</strong>毎週約1時間分の意思決定コストを削減。非エンジニアによるツール自作も同様です：公開報道ではプログラミング未経験者がClaudeと8時間の対話を通じて家族用家計簿アプリを作成した事例があります（Zapier実例集参照、実録）。</p>
+    </div>
+  </div>
+</div>
+<p class="src">出典：パラダイムの根拠は第02〜05節を参照；実録事例は <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier: Vibe coding examples（非開発者による実践プロジェクト集）</a> より引用</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="learning-path">
+<div class="sec-tag">学習・実践 10</div>
+<h2>一般ユーザー向け学習パス：ゼロから習熟へのステップ</h2>
+
+<p>研究結果からの結論：AIの習熟度は<strong>実践で鍛えられる使いこなしの直感</strong>であり、机上の理論ではありません——熟練者のタスク成功率が約10%高いのは、「対話の反復方法」「コンテキストの与え方」「タスクの切り分け方」の違いに起因しています。したがって、学習パスの設計原則はただ1つです：<strong>抽象的な講座を受けるのではなく、常に自分自身のリアルな課題を通じて練習すること。</strong></p>
+<div class="callout note"><b class="t">🧗 発展編：能力の境界線を拡張するメソッド</b>AIを活用して技術的なスキルをフルスタック・クロスプラットフォーム（モバイル/Web/バックエンド）へ拡張したい、あるいは個人開発に挑戦したい方向けに、本ページのメソッドを発展させた姉妹編があります：<a href="ai-capability-expansion.ja.html">AIによる能力境界拡張ガイド</a>——5段階の拡張エンジン、ドメイン間マッピング技術、2つのエンドツーエンド実践事例を収録。</div>
+
+<h3 data-reveal>4段階のステップアップ</h3>
+<ol class="steps">
+  <li><strong>第1〜2週 · 手触り感を掴む：</strong>毎日対話モデルを使って身近なリアルタスクを1つ解決する（メールの推敲、健康診断結果の解説、レシピの提案）。練習するポイントは1つだけ：納得がいかなければ諦めずに質問を重ねて追加情報を補足すること。目標：「最初の回答はただの出発点に過ぎない」ことを体感する。</li>
+  <li><strong>第3〜4週 · コンテキストの与え方を習得する：</strong>背景資料を一度にすべて提供する練習（ファイル、スクリーンショット、過去の事例）；「情報なしでの質問」と「資料を揃えた質問」の出力品質の決定的な差を体感する。目標：メンタルモデル1および4（コンテキスト ＋ 完了基準）を体得する。</li>
+  <li><strong>第2ヶ月 · 特定シナリオの深掘り：</strong>自分が最も高頻度で使う2つのシナリオ（例：執筆 ＋ 調査）を選び、本ページ第03/04節のパラダイムに沿ってフルプロセスをそれぞれ5回実践する。上手くいったプロンプトを個人のテンプレート集として蓄積する。目標：再利用可能な資産を形成する。</li>
+  <li><strong>第3ヶ月以降 · エージェントと自動化の導入：</strong>コーディングエージェント（Claude Code または Codex）を導入し、「日常作業の小さな自動化スクリプト作成」から始めて第05節の階段を一段ずつ登る；重要な意思決定にディープリサーチを活用し始める。目標：「単なる雑談」から「検証付きタスクの委託」へと進化する。</li>
+</ol>
+
+<h3 data-reveal>よくある誤解と正しい対処法</h3>
+<table class="tbl">
+  <tr><th>よくある誤解</th><th>正しい対処法</th></tr>
+  <tr><td>1回で完璧な回答を期待し、最初の回答がイマイチだと「AIは使えない」と結論づける</td><td>AIは反復改善型のツール：追加質問、フィードバック、追加資料の提示——熟練者と初心者の差は主にここにあります</td></tr>
+  <tr><td>AIを検索エンジンと同じように扱い、キーワードだけを投げる</td><td>完全なタスクとして指示する：背景 ＋ 要件 ＋ 完了基準；AIは単なるインデックスではなく実行者です</td></tr>
+  <tr><td>出力を盲信し、そのまま転送・提出してしまう</td><td>事実、数値、引用は必ず人間が検証する；高リスクな内容（法律/医療/財務）はあくまで参考情報として扱う</td></tr>
+  <tr><td>思考のアウトソーシング：視点や立場までAIに決めさせる</td><td>AIには選択肢と論拠を出させ、判断は人間が行う；思考のアウトソーシングを続けると判断力そのものが衰退します</td></tr>
+  <tr><td>教材を買い集めたり新ツールを追いかけるだけで、実践しない</td><td>ツールを頻繁に変えるより、1つのシナリオを5回練習する方がはるかに有効；まずシナリオありきでツールを選ぶ</td></tr>
+  <tr><td>AIを抽象的に学ぶ（理論を詰め込んだり、膨大なプロンプト集を暗記する）</td><td>2週間以内に完了すべき本物の成果物を1つ選び、それに沿って実践する；理論は後から学べば十分です</td></tr>
+  <tr><td>機密情報を不用意に貼り付けてしまう</td><td>個人のプライバシー、顧客データ、社外秘情報はパブリックサービスに入力しない；エンタープライズ版を利用するか、マスキング・匿名化してから利用する</td></tr>
+</table>
+<p class="src">出典：<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic: Learning curves (2026-03)</a> · <a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan: Effective Prompts</a> · 誤解リストは2026年の複数の入門ガイドにおける共通見解を総合</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">リソース 11</div>
+<h2>リソースインデックス（信頼度順）</h2>
+
+<h3 data-reveal>第1ティア · 公式ドキュメント＆エンジニアリングブログ</h3>
+<table class="tbl">
+  <tr><th>リソース</th><th>解説</th></tr>
+  <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code 公式 Best Practices</a></td><td>検証ループ、計画先行、コンテキスト管理、並行展開——本ページ第02/05/07節の主要な底本</td></tr>
+  <tr><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex 公式 Best Practices</a></td><td>Goal/Context/Constraints/Done-when タスク構造、AGENTS.md、スキル化、定期実行タスク</td></tr>
+  <tr><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic: Effective Context Engineering</a></td><td>「コンテキストは最重要リソース」に関する体系的な論考（2025-09）</td></tr>
+  <tr><td><a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">Gemini CLI → Antigravity CLI 公式アナウンス</a></td><td>2026-06-18 の仕様変更に関する一次情報源</td></tr>
+  <tr><td><a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan: Effective Prompts for AI</a></td><td>プロンプト4大要素に関する教育レベルの解説</td></tr>
+</table>
+
+<h3 data-reveal>第2ティア · 調査レポート＆データ分析</h3>
+<table class="tbl">
+  <tr><th>リソース</th><th>解説</th></tr>
+  <tr><td><a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index（シリーズ）</a></td><td>世界規模の実利用分布、協調/自動化の比率、Learning curves 学習曲線レポート</td></tr>
+  <tr><td><a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR ランダム化比較試験 (2025)</a></td><td>「実測19%遅延、体感20%高速化」——効率化のバイアスを正す必読論文</td></tr>
+  <tr><td><a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR: Top Gen AI Use Cases (2025)</a></td><td>Web全体の実利用トップ100ランキング、非技術領域の定量的証拠</td></tr>
+</table>
+
+<h3 data-reveal>第3ティア · 高品質なコミュニティ知見</h3>
+<table class="tbl">
+  <tr><th>リソース</th><th>解説</th></tr>
+  <tr><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang: AI プログラミングガイド（中国語）</a></td><td>初心者向けの体系的な92本のチュートリアル、プログラミング入門に最適</td></tr>
+  <tr><td><a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier: Vibe coding examples</a></td><td>非エンジニアによる実際のプロジェクト事例集</td></tr>
+  <tr><td><a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs</a> · <a href="https://colombani.ai/en/blog/cli-agents-comparison-2026/" target="_blank">colombani.ai</a></td><td>2026年の主要3ツール比較、多角的なクロス検証による高い信頼性</td></tr>
+  <tr><td><a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify 学術ツール総括</a></td><td>学術リサーチツールの選定基準</td></tr>
+  <tr><td>当ナレッジベース</td><td><a href="claude-code-guide.ja.html">Claude Code 実践ガイド</a> · <a href="codex-guide.ja.html">Codex 実践ガイド</a> · <a href="env-auth-clinic.ja.html">環境構築・認証トラブルシューティング</a></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>免責事項・注記</strong>：本ページは2026年7月時点のWeb全体のリサーチを統合したものであり、各社の公式リリースではありません。用途の分布、ツールの勢力図、製品の機能進化は極めて速いため、数値や結論には出典と時期を明記しています。各製品の最新状況（特にGemini / Antigravity関連）については公式の最新アナウンスをご確認ください。医療、法律、投資などの高リスクな意思決定において、AIはあくまで参考情報としてご利用ください。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

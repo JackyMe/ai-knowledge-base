@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="docs.pencil.dev 전체 16개 페이지 완벽 정리: 공식 소개 영상·도해 수록, 섹션별 원문 링크가 포함된 pen.dev 공식 한국어 가이드.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pen.dev 공식 문서 한국어 가이드 · 공식 사양 준수">
+<meta property="og:description" content="docs.pencil.dev 16개 전 페이지 총망라: 공식 영상, 도해, 원문 링크를 포함한 pen.dev 완전 정복 가이드.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/pencil-docs-zh.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>pen.dev 공식 문서 한국어 가이드 · 공식 사양 준수</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#5b5bf6; --accent-2:#8b5cf6; --accent-soft:#eef0ff;
+  --bg:#ffffff; --bg-side:#fafbfc; --bg-code:#0f172a;
+  --text:#1f2430; --text-2:#5a6272; --text-3:#8b93a5;
+  --border:#e7eaf0; --border-2:#d9dee8;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#eef4ff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.75;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:.2px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);margin-left:2px;padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-3)}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:block;padding:6.5px 12px;border-radius:8px;color:var(--text-2);text-decoration:none;
+  font-size:13.8px;transition:.15s}
+.nav-group a:hover{background:#f0f2f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:880px;margin:0 auto;padding:0 44px 120px}
+
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--border)}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);font-weight:600;
+  background:var(--accent-soft);padding:5px 14px;border-radius:99px;margin-bottom:18px}
+.hero h1{font-size:40px;line-height:1.25;letter-spacing:-.5px;font-weight:800}
+.hero h1 .grad{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16.5px;color:var(--text-2);max-width:640px}
+.hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--text-3)}
+.hero .meta span{background:#f4f6fa;border:1px solid var(--border);padding:4px 12px;border-radius:99px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:34px 0 8px}
+.card{border:1px solid var(--border);border-radius:var(--radius);padding:20px 20px 18px;text-decoration:none;
+  color:var(--text);transition:var(--dur-hover,.3s) var(--ease-breathe,ease);background:#fff}
+.card:hover{border-color:var(--accent);box-shadow:0 8px 28px rgba(91,91,246,.10);transform:translateY(-2px)}
+.card .ic{font-size:20px;margin-bottom:10px}
+.card b{display:block;font-size:15px;margin-bottom:4px}
+.card span{font-size:13px;color:var(--text-3);line-height:1.55;display:block}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:28px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19.5px;font-weight:700;margin:34px 0 12px;scroll-margin-top:84px}
+h4{font-size:16px;font-weight:700;margin:24px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.origin{font-size:12.5px;color:var(--text-3);margin:-14px 0 20px}
+.origin a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c9dcff}
+.callout.note b.t{color:#2563eb}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f2f4f9;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4338ca}
+pre{background:var(--bg-code);color:#dbe4f5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7c8aa5}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbfd}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafbff}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+details{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 18px;font-weight:600;font-size:14px;background:#fafbfd;list-style:none}
+details summary::before{content:"▸ ";color:var(--accent)}
+details[open] summary::before{content:"▾ "}
+details .inner{padding:16px 18px 6px;border-top:1px solid var(--border)}
+
+.dot{display:inline-block;width:10px;height:10px;border-radius:99px;margin-right:6px}
+.dot.blue{background:#3b82f6}.dot.magenta{background:#d946ef}.dot.violet{background:#8b5cf6}
+
+/* 이미지 및 영상 */
+figure{margin:20px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 2px 10px rgba(15,23,42,.04)}
+figure img{display:block;width:100%;height:auto}
+figure.tall img{max-height:460px;object-fit:cover;object-position:top}
+figure figcaption{padding:10px 16px;font-size:12.5px;color:var(--text-3);border-top:1px solid var(--border);background:#fafbfd}
+figure figcaption a{color:var(--text-3)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:18px 0}
+.img-grid figure{margin:0}
+.video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  margin:18px 0 6px;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cap{font-size:12.5px;color:var(--text-3);margin:6px 2px 20px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,23,42,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero h1{font-size:30px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">✎</span>pen.dev 문서<span class="sub">한국어 가이드</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <a href="https://docs.pencil.dev/" target="_blank">공식 영문 원문 ↗</a>
+    <span>검증 완료: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…" /><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">개요</div>
+    <a href="#home">문서 홈</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">퀵스타트</div>
+    <a href="#installation">설치</a>
+    <a href="#authentication">인증 및 활성화</a>
+    <a href="#ai-integration">AI 통합 (MCP)</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">핵심 개념</div>
+    <a href="#pen-files">.pen 파일</a>
+    <a href="#design-as-code">Design as Code (설계 즉 코드)</a>
+    <a href="#interface">pen.dev 인터페이스</a>
+    <a href="#variables">변수 (Variables)</a>
+    <a href="#components">컴포넌트</a>
+    <a href="#slots">슬롯 (Slots)</a>
+    <a href="#code-on-canvas">캔버스 상의 코드</a>
+    <a href="#design-libraries">디자인 라이브러리</a>
+    <a href="#import-export">임포트 & 익스포트</a>
+    <a href="#shortcuts">단축키 목록</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">디자인 & 코드</div>
+    <a href="#design-to-code">디자인 ↔ 코드 동기화</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">문제 해결</div>
+    <a href="#troubleshooting">트러블슈팅</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">개발자 사양</div>
+    <a href="#pen-format">.pen 파일 포맷 사양</a>
+    <a href="#pencil-cli">pen.dev CLI & MCP</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="home">
+  <div class="badge">⚡ 공식 문서 사양 준수 · 16개 전 페이지 완벽 정리</div>
+  <h1>pen.dev 문서<br><span class="grad">한국어 가이드</span></h1>
+  <p class="lead">pen.dev는 코드 에디터(VS Code / Cursor)에 직접 내장된 강력한 벡터 디자인 도구입니다. 캔버스에서 디자인하고 즉시 코드로 변환. 공식 docs.pencil.dev의 최신 사양(pen.dev 리브랜딩, 신규 CLI / MCP 도구 체계 반영)을 담은 완성형 레퍼런스입니다.</p>
+  <div class="meta">
+    <span>원문: docs.pencil.dev</span><span>CLI / MCP 도구 반영</span><span>검증 완료: 2026-08-17</span>
+  </div>
+</div>
+
+<div class="sec-tag">개요</div>
+<h2>pen.dev란 무엇인가?</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/" target="_blank">pen.dev Documentation (Home)</a></p>
+
+<p>pen.dev는 <strong>개발 환경(IDE) 내부에 직접 통합된</strong> 벡터 디자인 툴입니다. 별도의 디자인 툴이나 브라우저 탭을 오갈 필요 없이, 코드와 동일한 작업 공간에서 UI를 직접 설계하고 편집할 수 있습니다.</p>
+<p><strong>왜 pen.dev인가?</strong> 디자인과 코드를 동일한 Git 저장소에 모아 양자 간의 괴리를 제거합니다. 캔버스에서 컴포넌트를 설계하고, Design Tokens를 코드와 동기화하며, AI 에이전트와 연계하여 UI 구현 속도를 획기적으로 높입니다.</p>
+
+<div class="video"><iframe src="https://www.youtube.com/embed/mduKhXvmsyA" title="pen.dev 공식 소개 영상" loading="lazy" allowfullscreen></iframe></div>
+<p class="video-cap">▶ 공식 소개 영상 (문서 홈 수록)</p>
+
+<div class="cards">
+  <a class="card" href="#installation"><div class="ic">🚀</div><b>퀵스타트</b><span>설치, 인증, AI 연동의 첫 단계</span></a>
+  <a class="card" href="#pen-files"><div class="ic">🧩</div><b>핵심 개념</b><span>.pen 파일, 변수, 컴포넌트, 슬롯</span></a>
+  <a class="card" href="#design-to-code"><div class="ic">🔄</div><b>디자인 & 코드</b><span>디자인과 코드베이스 양방향 동기화</span></a>
+  <a class="card" href="#troubleshooting"><div class="ic">🛠️</div><b>문제 해결</b><span>자주 묻는 질문과 해결책 퀵 레퍼런스</span></a>
+  <a class="card" href="#pen-format"><div class="ic">📦</div><b>개발자 사양</b><span>.pen 포맷 스키마 및 CLI 도구</span></a>
+</div>
+
+<div class="divider"></div>
+
+<!-- Installation -->
+<section id="installation">
+<div class="sec-tag">퀵스타트</div>
+<h2>설치</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/getting-started/installation" target="_blank">Installation</a></p>
+
+<p>VS Code / Cursor의 확장 프로그램 패널에서 간편하게 설치합니다:</p>
+<ol class="steps">
+  <li>에디터 확장 탭에서 <code>pen.dev</code> (게시자: <code>highagency.pencildev</code>) 검색 후 설치.</li>
+  <li>상태 표시줄 왼쪽 하단의 <strong>Pencil 아이콘</strong>을 클릭하여 캔버스 기동.</li>
+  <li>첫 실행 시 이메일을 입력하여 활성화 완료.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- Authentication -->
+<section id="authentication">
+<div class="sec-tag">퀵스타트</div>
+<h2>인증 및 활성화</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/getting-started/authentication" target="_blank">Authentication</a></p>
+
+<p>입력한 이메일로 발송되는 6자리 인증 코드를 입력하면 즉시 로그인이 완료됩니다. 세션 정보는 로컬에 안전하게 저장됩니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- AI Integration -->
+<section id="ai-integration">
+<div class="sec-tag">퀵스타트</div>
+<h2>AI 통합 (MCP)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">AI Integration</a></p>
+
+<p>pen.dev는 Model Context Protocol (MCP)을 통해 다양한 AI 코딩 에이전트(Claude Code, Cursor, Codex, OpenCode 등)와 매끄럽게 연결됩니다.</p>
+<pre><code><span class="c"># Claude Code에서 MCP 연결 확인</span>
+/mcp</code></pre>
+<p>AI 에이전트는 캔버스 상의 요소 좌표와 Design Tokens를 직접 읽어 디자인을 코드로 변환하거나, 자연어 프롬프트를 바탕으로 새 화면을 캔버스 위에 직접 렌더링할 수 있습니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- Core Concepts -->
+<section id="pen-files">
+<div class="sec-tag">핵심 개념</div>
+<h2>.pen 파일</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/pen-files" target="_blank">.pen Files</a></p>
+
+<p><code>.pen</code>은 pen.dev의 네이티브 파일 형식입니다. <strong>본질은 깔끔한 JSON 데이터</strong>이므로 Git을 통한 버전 관리, 커밋 Diff 비교, 브랜치 머지를 완벽하게 지원합니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-as-code">
+<div class="sec-tag">핵심 개념</div>
+<h2>Design as Code (설계 즉 코드)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/design-as-code" target="_blank">Design as Code</a></p>
+
+<ul>
+  <li><strong>단일 저장소 관리:</strong> <code>design.pen</code>을 소스 코드와 동일한 Git 리포지토리에서 관리.</li>
+  <li><strong>브랜치와 PR 일원화:</strong> 기능 브랜치에서 UI 디자인과 소스 코드를 동시에 수정하고 하나의 PR로 코드 리뷰.</li>
+  <li><strong>동기화된 롤백:</strong> <code>git revert</code> 실행 시 코드와 디자인 시안이 함께 과거의 정상 시점으로 안전하게 롤백.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="interface">
+<div class="sec-tag">핵심 개념</div>
+<h2>pen.dev 인터페이스</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/interface" target="_blank">The Interface</a></p>
+
+<ul>
+  <li><strong>좌측 패널 (Layers / Libraries):</strong> 레이어 계층 구조, 프레임 목록, 임포트된 디자인 라이브러리.</li>
+  <li><strong>중앙 캔버스 (Infinite Canvas):</strong> 벡터 그래픽을 자유롭게 편집하는 무한 캔버스 영역.</li>
+  <li><strong>우측 인스펙터 (Inspector):</strong> 선택 노드의 속성 (좌표, 크기, 채우기, 선, 코너 라운딩, 그림자 이펙트, 변수 바인딩).</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="variables">
+<div class="sec-tag">핵심 개념</div>
+<h2>변수 (Variables / Design Tokens)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/variables" target="_blank">Variables</a></p>
+
+<p>색상, 수치(여백 및 반경), 문자열을 Design Tokens로 정의하고 각 요소에 <code>$color.primary</code> 형태로 바인딩합니다. 토큰 값을 한곳에서 변경하면 캔버스 전체와 CSS 코드에 즉각 전파됩니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="components">
+<div class="sec-tag">핵심 개념</div>
+<h2>컴포넌트 (Components)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/components" target="_blank">Components</a></p>
+
+<p>재사용 가능한 UI 요소를 생성합니다. 마스터 컴포넌트를 수정하면 연결된 모든 인스턴스(참조 노드)에 변경 사항이 일괄 반영됩니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="slots">
+<div class="sec-tag">핵심 개념</div>
+<h2>슬롯 (Slots)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/slots" target="_blank">Slots</a></p>
+
+<p>컴포넌트 내부의 특정 영역을 동적으로 교체할 수 있도록 비워 둔 플레이스홀더입니다. 모달 창의 본문 영역이나 카드 컴포넌트의 미디어 영역 등에 활용됩니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="code-on-canvas">
+<div class="sec-tag">핵심 개념</div>
+<h2>캔버스 상의 코드 (Code on Canvas / Script Nodes)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/code-on-canvas" target="_blank">Code on Canvas</a></p>
+
+<p>JavaScript / TypeScript 스크립트를 작성하여 데이터 기반 차트나 복잡한 기하학적 도형을 캔버스 상에 프로그래밍 방식으로 직접 렌더링할 수 있습니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="design-libraries">
+<div class="sec-tag">핵심 개념</div>
+<h2>디자인 라이브러리 (Design Libraries)</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/core-concepts/design-libraries" target="_blank">Design Libraries</a></p>
+
+<p><code>.lib.pen</code> 포맷으로 저장된 공통 디자인 시스템을 여러 프로젝트 간에 공유하고 손쉽게 임포트하여 사용할 수 있습니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="shortcuts">
+<div class="sec-tag">핵심 개념</div>
+<h2>주요 단축키 목록</h2>
+<table class="tbl">
+  <tr><th>기능</th><th>Mac</th><th>Windows / Linux</th></tr>
+  <tr><td>선택 도구 (Select)</td><td><kbd>V</kbd></td><td><kbd>V</kbd></td></tr>
+  <tr><td>프레임 생성 (Frame)</td><td><kbd>F</kbd></td><td><kbd>F</kbd></td></tr>
+  <tr><td>사각형 생성 (Rectangle)</td><td><kbd>R</kbd></td><td><kbd>R</kbd></td></tr>
+  <tr><td>텍스트 입력 (Text)</td><td><kbd>T</kbd></td><td><kbd>T</kbd></td></tr>
+  <tr><td>AI 어시스턴트 호출</td><td><kbd>Cmd + K</kbd></td><td><kbd>Ctrl + K</kbd></td></tr>
+  <tr><td>캔버스 저장</td><td><kbd>Cmd + S</kbd></td><td><kbd>Ctrl + S</kbd></td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<!-- Design & Code -->
+<section id="design-to-code">
+<div class="sec-tag">디자인 & 코드</div>
+<h2>디자인 ↔ 코드 동기화</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/design-and-code/design-to-code" target="_blank">Design to Code</a></p>
+
+<p>캔버스의 노드 구조로부터 Tailwind CSS, React, Vue, HTML/CSS 컴포넌트를 즉시 추출할 수 있습니다. 반대로 기존 소스 코드를 읽어 캔버스 상의 시각적 요소로 역재현하는 것도 가능합니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- Troubleshooting -->
+<section id="troubleshooting">
+<div class="sec-tag">문제 해결</div>
+<h2>트러블슈팅</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/troubleshooting" target="_blank">Troubleshooting</a></p>
+
+<ul>
+  <li><strong>MCP 연결 실패:</strong> <code>claude</code> CLI 로그인 상태를 점검하고 에디터를 재시작.</li>
+  <li><strong>캔버스 렌더링 불가:</strong> VS Code의 GPU 가속 설정 확인.</li>
+  <li><strong>수정 내용 유실:</strong> 현재 자동 저장 기능이 없으므로 반드시 <kbd>Cmd/Ctrl + S</kbd>로 수동 저장 습관화.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- Developers -->
+<section id="pen-format">
+<div class="sec-tag">개발자 사양</div>
+<h2>.pen 파일 포맷 사양</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/for-developers/pen-format" target="_blank">The .pen Format</a></p>
+
+<pre><code>{
+  "version": 1,
+  "variables": {
+    "color": {
+      "primary": "#5b5bf6",
+      "background": "#ffffff"
+    }
+  },
+  "nodes": [
+    {
+      "id": "root-frame",
+      "type": "frame",
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 800,
+      "children": [...]
+    }
+  ]
+}</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="pencil-cli">
+<div class="sec-tag">개발자 사양</div>
+<h2>pen.dev CLI & MCP 도구 체계</h2>
+<p class="origin">원문: <a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">pen.dev CLI</a></p>
+
+<p>CLI(<code>@pen.dev/cli</code>)를 통한 헤드리스 자동화 실행 및 AI 에이전트가 호출하는 MCP 도구 목록:</p>
+<table class="tbl">
+  <tr><th>MCP 도구명</th><th>기능 설명</th></tr>
+  <tr><td><code>execute</code></td><td>노드 추가·수정·삭제·이동·교체, 변수 읽기 및 쓰기 (<code>GetVariables</code> / <code>SetVariables</code>)</td></tr>
+  <tr><td><code>get_app_state</code></td><td>문서 전체의 노드 구조 및 메타데이터 조회</td></tr>
+  <tr><td><code>get_screenshot</code></td><td>지정 노드를 PNG 이미지로 렌더링 캡처</td></tr>
+  <tr><td><code>export_nodes</code></td><td>노드를 PNG / JPEG / WebP / PDF 등으로 익스포트</td></tr>
+  <tr><td><code>get_guidelines</code></td><td>디자인 가이드라인 및 스타일 규약 조회</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>참고</strong>: 본 문서는 docs.pencil.dev 공식 사양을 기반으로 작성된 한국어 레퍼런스 가이드입니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

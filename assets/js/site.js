@@ -62,14 +62,21 @@ if(order.length){
   foot?wrap.insertBefore(pager,foot):wrap.appendChild(pager);
   pv=pager.querySelector('.pv');nx=pager.querySelector('.nx');
 }
+const docLang = document.documentElement.lang || (location.pathname.endsWith('.ko.html') ? 'ko' : (location.pathname.endsWith('.ja.html') ? 'ja' : (location.pathname.endsWith('.en.html') ? 'en' : 'zh')));
+const isKo = docLang === 'ko' || location.pathname.endsWith('.ko.html');
+const isJa = !isKo && (docLang === 'ja' || location.pathname.endsWith('.ja.html'));
+const isEn = !isKo && !isJa && (docLang === 'en' || location.pathname.endsWith('.en.html'));
+
 function updatePager(){
   if(!pv)return;
   const i=order.indexOf(curPage);
   const p=order[i-1],n=order[i+1];
   pv.style.visibility=p?'visible':'hidden';
   nx.style.visibility=n?'visible':'hidden';
-  if(p){pv.innerHTML='<span>← 上一章</span><b>'+labelOf(p)+'</b>';pv.onclick=()=>showPage(p)}
-  if(n){nx.innerHTML='<span>下一章 →</span><b>'+labelOf(n)+'</b>';nx.onclick=()=>showPage(n)}
+  const pvLabel = isKo ? '← 이전 장' : (isJa ? '← 前の章' : (isEn ? '← Previous' : '← 上一章'));
+  const nxLabel = isKo ? '다음 장 →' : (isJa ? '次の章 →' : (isEn ? 'Next →' : '下一章 →'));
+  if(p){pv.innerHTML='<span>'+pvLabel+'</span><b>'+labelOf(p)+'</b>';pv.onclick=()=>showPage(p)}
+  if(n){nx.innerHTML='<span>'+nxLabel+'</span><b>'+labelOf(n)+'</b>';nx.onclick=()=>showPage(n)}
 }
 
 function showPage(id,anchor){
@@ -132,13 +139,15 @@ $$('figure img').forEach(im=>{
   im.addEventListener('click',()=>{lbImg.src=im.src;lb.classList.add('on')})});
 
 /* ---------- 代码块复制 ---------- */
-$$('pre').forEach(p=>{const b=document.createElement('button');b.className='copy-btn';b.textContent='复制';
+const copyText = isKo ? '복사' : (isJa ? 'コピー' : (isEn ? 'Copy' : '复制'));
+const copiedText = isKo ? '복사됨 ✓' : (isJa ? 'コピー完了 ✓' : (isEn ? 'Copied ✓' : '已复制 ✓'));
+$$('pre').forEach(p=>{const b=document.createElement('button');b.className='copy-btn';b.textContent=copyText;
   b.addEventListener('click',async()=>{const c=p.querySelector('code');const t=(c||p).innerText;
     try{await navigator.clipboard.writeText(t)}
     catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);
       ta.select();document.execCommand('copy');ta.remove()}
-    b.textContent='已复制 ✓';b.classList.add('ok');
-    setTimeout(()=>{b.textContent='复制';b.classList.remove('ok')},1600)});
+    b.textContent=copiedText;b.classList.add('ok');
+    setTimeout(()=>{b.textContent=copyText;b.classList.remove('ok')},1600)});
   p.appendChild(b)});
 
 /* ---------- 侧栏章节筛选 ---------- */
@@ -158,8 +167,15 @@ $$('h2, h3').forEach((h,i)=>{
   if(h.tagName==='H2'){lastH2=h.textContent.trim();items.push({id:anchor,label:lastH2,group:''})}
   else items.push({id:anchor,label:h.textContent.trim(),group:lastH2})});
 const pal=document.createElement('div');pal.className='palette';
-pal.innerHTML='<div class="box"><input placeholder="输入关键词,跳转到任意章节…"><div class="list"></div>'+
-  '<div class="hint"><span>↑↓ 选择</span><span>Enter 跳转</span><span>Esc 关闭</span><span>← → 翻章</span></div></div>';
+const palPlaceholder = isKo ? '키워드를 입력하여 챕터로 이동...' : (isJa ? 'キーワードを入力して章へジャンプ...' : (isEn ? 'Type keyword to jump to section...' : '输入关键词,跳转到任意章节…'));
+const hintSelect = isKo ? '↑↓ 선택' : (isJa ? '↑↓ 選択' : (isEn ? '↑↓ Select' : '↑↓ 选择'));
+const hintJump = isKo ? 'Enter 이동' : (isJa ? 'Enter 移動' : (isEn ? 'Enter Jump' : 'Enter 跳转'));
+const hintClose = isKo ? 'Esc 닫기' : (isJa ? 'Esc 閉じる' : (isEn ? 'Esc Close' : 'Esc 关闭'));
+const hintSwitch = isKo ? '← → 이전/다음' : (isJa ? '← → 前後' : (isEn ? '← → Switch' : '← → 翻章'));
+const emptyText = isKo ? '일치하는 챕터가 없습니다' : (isJa ? '一致する章がありません' : (isEn ? 'No matching sections' : '没有匹配的章节'));
+
+pal.innerHTML='<div class="box"><input placeholder="'+palPlaceholder+'"><div class="list"></div>'+
+  '<div class="hint"><span>'+hintSelect+'</span><span>'+hintJump+'</span><span>'+hintClose+'</span><span>'+hintSwitch+'</span></div></div>';
 document.body.appendChild(pal);
 const pin=pal.querySelector('input'),plist=pal.querySelector('.list');
 let sel=0,shown=[];
@@ -170,7 +186,7 @@ function renderPal(){const q=pin.value.trim().toLowerCase();
     '<div class="it'+(i===sel?' sel':'')+'" data-i="'+i+'">'+
     (it.group?escq(it.label):'<b>'+escq(it.label)+'</b>')+
     (it.group?'<span class="g">'+escq(it.group)+'</span>':'')+'</div>').join('')
-    :'<div class="empty">没有匹配的章节</div>';
+    :'<div class="empty">'+emptyText+'</div>';
   plist.querySelectorAll('.it').forEach(el=>el.addEventListener('click',()=>go(+el.dataset.i)));
   const s=plist.querySelector('.it.sel');s&&s.scrollIntoView({block:'nearest'})}
 function openPal(){pal.classList.add('on');pin.value='';sel=0;renderPal();setTimeout(()=>pin.focus(),30)}
@@ -185,7 +201,8 @@ pal.addEventListener('click',e=>{if(e.target===pal)closePal()});
 
 /* ---------- 顶栏跳转按钮 ---------- */
 const kb=document.createElement('button');kb.className='kbtn';
-kb.innerHTML='跳转 <span>'+(navigator.platform.indexOf('Mac')>-1?'⌘K':'Ctrl K')+'</span>';
+const jumpPrefix = isKo ? '이동 ' : (isJa ? 'ジャンプ ' : (isEn ? 'Jump ' : '跳转 '));
+kb.innerHTML=jumpPrefix+'<span>'+(navigator.platform.indexOf('Mac')>-1?'⌘K':'Ctrl K')+'</span>';
 kb.addEventListener('click',openPal);
 const tr=$('.topbar .right');tr&&tr.prepend(kb);
 

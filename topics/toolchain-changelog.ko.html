@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Claude Code 및 Codex 버전 변경 사항 요약: 실제 개발 작업 습관에 영향을 주는 업데이트만 엄선 수록. 주요 변경점(Breaking Changes) 단독 색인, 월별 아카이브, 공식 1차 출처 및 자가 진단 명령어 수록.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="도구 버전 트래킹 · Claude Code × Codex 변경 이력 로그">
+<meta property="og:description" content="Claude Code와 Codex의 버전 변경점 요약: 실무 개발에 영향을 주는 핵심 업데이트만 엄선 수록. 주요 변경점 색인, 월별 아카이브, 공식 1차 출처 포함.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/toolchain-changelog.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>도구 버전 트래킹 · Claude Code × Codex 변경 이력 로그</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#b45309; --accent-2:#f59e0b; --accent-soft:#fef6e7;
+  --ink:#1c1408; --bg:#ffffff; --bg-side:#fdfbf7; --bg-code:#1c1408;
+  --text:#2b2419; --text-2:#6b6154; --text-3:#9c9385;
+  --border:#f0ebe1; --border-2:#e0d8c9;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#fef6e7;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#efeaf8;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f7efe4;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(180,83,9,.45),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(245,158,11,.24),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fcd34d;font-weight:600;background:rgba(245,158,11,.16);
+  border:1px solid rgba(245,158,11,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fbbf24,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c2bdd6;max-width:640px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a29dbb}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#ddd2f5}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#fdf6ea;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#b45309}
+pre{background:var(--bg-code);color:#f0e6d6;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8b87a0}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#faf9fd}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fbfafe}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fef6e7;color:#b45309}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(21,15,38,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">📅</span>도구 버전 트래킹<span class="sub">변경 이력 로그</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증 완료: 2026-08-25</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…" /><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">가이드</div>
+    <a href="#how-to-read"><span class="no">00</span>이 페이지를 읽는 법</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">업그레이드 필독</div>
+    <a href="#breaking"><span class="no">⚠</span>주요 변경점(Breaking) 총색인</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">월별 아카이브</div>
+    <a href="#m2026-08"><span class="no">08</span>2026년 8월</a>
+    <a href="#m2026-07"><span class="no">07</span>2026년 7월</a>
+    <a href="#m2026-06"><span class="no">06</span>2026년 6월</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">유지관리</div>
+    <a href="#method"><span class="no">99</span>문서 유지관리 정책</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">📅 Claude Code × Codex · 월별 아카이브 · 2026-08-25 검증</div>
+  <h1>도구 버전 트래킹<br><span class="grad">무엇이 바뀌었고 개발 습관을 어떻게 전환해야 하는가</span></h1>
+  <p class="lead">AI 코딩 도구의 진화 속도는 매우 빠르며, 방대한 공식 로그를 일일이 추적하는 것은 비효율적입니다. 본 페이지는 Claude Code와 Codex의 업데이트 중 <strong>'실제 개발 작업에 직접적인 영향을 미치는 핵심 항목'</strong>만을 엄선하여 하위 호환성 파괴(Breaking Changes) 및 즉시 시도해 볼 만한 신기능을 일목요연하게 정리합니다.</p>
+  <div class="meta">
+    <span>실용적 변경점 엄선</span><span>Breaking Changes 단독 색인화</span><span>버전 번호 및 일자 명시</span><span>월별 아카이브</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>🔴 주요 변경점 (Breaking)</b><span>기존 문법·설정 무효화, 업그레이드 전 필독</span></div>
+  <div class="stat"><b>🔄 동작 변경 (Behavior)</b><span>동일 작업 시 결과나 타이밍 변화, 숙지 권장</span></div>
+  <div class="stat"><b>🆕 신기능 & 신규 모델</b><span>새로운 명령어, 옵션 및 차세대 모델</span></div>
+</div>
+
+<section id="how-to-read">
+<div class="sec-tag">가이드 00</div>
+<h2>이 페이지를 읽는 법</h2>
+
+<p>본 문서는 단순한 공식 Changelog 번역이 아닙니다. 내부 리팩토링이나 사소한 패치는 배제하고, <strong>"실제 개발 프로세스에 어떤 영향을 주는가", "어떤 설정을 고쳐야 하는가"</strong>에 초점을 맞춰 정리되었습니다.</p>
+
+<h3 data-reveal>3대 태그 분류 기준</h3>
+<table class="tbl">
+  <tr><th>태그</th><th>의미</th><th>권장 조치</th></tr>
+  <tr><td>🔴 <strong>주요 변경점 (Breaking)</strong></td><td>기존 명령어·구문·설정이 무효화되거나 동작 방식이 반전됨</td><td><strong>필독</strong>. 업데이트 후 에러 발생 시 최우선 확인</td></tr>
+  <tr><td>🔄 <strong>동작 변경 (Behavior)</strong></td><td>파라미터는 유지되나 처리 타이밍이나 결과 형태가 변화</td><td>도구 특성 변화 숙지 (대부분 설정 변경 불필요)</td></tr>
+  <tr><td>🆕 <strong>신기능 (New)</strong></td><td>새로운 명령어, 추가 설정 항목, 신세대 모델 지원</td><td>필요한 항목을 선택적으로 도입</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="breaking">
+<div class="sec-tag">업그레이드 필독</div>
+<h2>주요 변경점 (Breaking Changes) 총색인</h2>
+<p>최신순으로 정리되어 있습니다. 도구 업데이트 후 기존 워크플로가 작동하지 않을 때 즉시 점검하세요.</p>
+
+<h3 data-reveal>Claude Code</h3>
+<table class="tbl">
+  <tr><th>시기 / 버전</th><th>변경 내용</th><th>대응 절차</th></tr>
+  <tr><td>2026-08-06<br><span class="src">v2.1.223</span></td><td><code>/review</code> 명령어가 <code>/code-review</code>의 <strong>별칭(Alias)</strong>으로 통합</td><td>스크립트 내 <code>/review</code>를 <code>/code-review &lt;PR#&gt;</code>로 교체</td></tr>
+  <tr><td>2026-08-07<br><span class="src">Codex 0.147.0</span></td><td><strong><code>codex exec --full-auto</code> 옵션 폐지</strong></td><td>CI 및 자동화 스크립트에서 <code>--full-auto</code>를 <code>--sandbox workspace-write</code>로 변경</td></tr>
+  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> 명령어가 <strong>완전 삭제 및 폐기</strong></td><td>SOP 문서에서 제거하고 <code>/plan</code> 또는 <code>/workflows</code> 사용</td></tr>
+  <tr><td>2026-08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> 동작 변경: <strong>포크 실행 시 신규 Git worktree 자동 생성</strong></td><td>기존 작업 트리에서 작업을 이어가려면 <code>/subtask</code> 사용</td></tr>
+  <tr><td>2026-07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code> 및 <code>/code-review</code>가 더 이상 자동으로 자동 실행되지 않음</td><td>필요 시 명시적으로 명령어를 실행하도록 운영 방식 변경</td></tr>
+  <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td>단일 세그먼트 <code>dir/**</code> 권한 규칙이 <code>&lt;cwd&gt;/dir</code>로 한정</td><td>임의 깊이 하위 경로 매칭을 원할 경우 <code>**/dir/**</code>로 명시</td></tr>
+  <tr><td>2026-07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code>의 의미 구조 반전</td><td>기존 서브에이전트 병렬 실행은 <code>/subtask</code>로 명칭 변경</td></tr>
+</table>
+
+<h3 data-reveal>Codex</h3>
+<table class="tbl">
+  <tr><th>시기</th><th>변경 내용</th><th>대응 절차</th></tr>
+  <tr><td>2026-08-31</td><td><strong>GPT-5.4 및 5.4 mini 공식 지원 종료 (EOL)</strong></td><td>설정 파일 내 모델 지정을 <code>gpt-5.6-terra</code> 또는 <code>gpt-5.6-luna</code>로 마이그레이션</td></tr>
+  <tr><td>2026-07-23</td><td>다중 폴더 워크스페이스 구성 시 설정 로드는 <strong>메인 폴더로 한정</strong></td><td><code>AGENTS.md</code> 및 <code>config.toml</code>을 메인 작업 디렉터리 최상단에 배치</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-08">
+<div class="sec-tag">월별 아카이브 08</div>
+<h2>2026년 8월</h2>
+
+<h3 data-reveal>Claude Code 업데이트 하이라이트</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>버전</th><th>종류</th><th>변경 내용</th></tr>
+  <tr><td>08-17</td><td>-</td><td>🆕</td><td><strong><code>/design</code> Skill (프리뷰)</strong>: 자연어나 스크린샷으로부터 편집 가능한 디자인 아트보드 생성</td></tr>
+  <tr><td>08-14</td><td>v2.1.228</td><td>🔄</td><td><strong>Auto Mode 기본 적용</strong>: Pro / Team 플랜에서 신규 세션 기본 모드가 Auto 모드로 전환</td></tr>
+  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td><strong><code>/ultraplan</code> 삭제</strong>: 단일 Plan 모드로 일원화</td></tr>
+  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td><strong><code>/fork</code>가 독립 worktree 생성형으로 변경</strong></td></tr>
+  <tr><td>08-06</td><td>v2.1.223</td><td>🔄</td><td><strong>1M 컨텍스트 자동 압축 (200K 한도) 일괄 적용</strong></td></tr>
+</table>
+
+<h3 data-reveal>Codex 업데이트 하이라이트</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>버전</th><th>종류</th><th>변경 내용</th></tr>
+  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Markdown 익스포트 & 헤드리스 포크</strong>: <code>/export</code> 명령어 추가</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>Agent Plugins 생태계</strong>: 플러그인 패키지 관리 및 공유 표준화</td></tr>
+  <tr><td>08-07</td><td>0.147.0</td><td>🔴</td><td><strong><code>--full-auto</code> 제거</strong>, 워크스페이스 샌드박스 보안 모델로 전환</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-07">
+<div class="sec-tag">월별 아카이브 07</div>
+<h2>2026년 7월</h2>
+
+<h3 data-reveal>Claude Code</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>버전</th><th>종류</th><th>변경 내용</th></tr>
+  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><strong>Opus 5 공식 탑재</strong> (1M 네이티브 컨텍스트 지원)</td></tr>
+  <tr><td>07-17</td><td>v2.1.212</td><td>🔴</td><td><code>/subtask</code>와 <code>/fork</code>의 명령어 역할 분리</td></tr>
+  <tr><td>07-01</td><td>v2.1.198</td><td>🔄</td><td><strong>서브에이전트가 기본 백그라운드 병렬 실행으로 변경</strong></td></tr>
+</table>
+
+<h3 data-reveal>Codex</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>종류</th><th>변경 내용</th></tr>
+  <tr><td>07-09</td><td>🔄</td><td><strong>GPT-5.6 Sol 정식 출시 (GA)</strong></td></tr>
+  <tr><td>07-09</td><td>🆕</td><td>ChatGPT Desktop App에 Codex 직접 통합</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-06">
+<div class="sec-tag">월별 아카이브 06</div>
+<h2>2026년 6월</h2>
+
+<h3 data-reveal>Claude Code</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>버전</th><th>종류</th><th>변경 내용</th></tr>
+  <tr><td>06-30</td><td>v2.1.197</td><td>🆕</td><td><strong>Sonnet 5 기본 모델 승격</strong></td></tr>
+  <tr><td>06-24</td><td>v2.1.191</td><td>🆕</td><td><strong><code>/rewind</code> 명령어</strong>: <code>/clear</code> 직전 상태로 복원하는 롤백 기능</td></tr>
+  <tr><td>06-17</td><td>v2.1.181</td><td>🆕</td><td><strong><code>/config key=value</code></strong>: 인라인 설정 실시간 변경</td></tr>
+</table>
+
+<h3 data-reveal>Codex</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>종류</th><th>변경 내용</th></tr>
+  <tr><td>06-25</td><td>🆕</td><td><strong>Codex Remote 정식 출시 (GA)</strong>: 모바일 연동 및 원격 호스트 지원</td></tr>
+  <tr><td>06-18</td><td>🆕</td><td><strong>Record & Replay 기능</strong>: 터미널 조작 기록 기반 Skill 자동 생성</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="method">
+<div class="sec-tag">유지관리 99</div>
+<h2>문서 유지관리 정책</h2>
+
+<h3 data-reveal>공식 1차 출처</h3>
+<ul>
+  <li>Claude Code: <a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com/docs/en/changelog</a> (확인 명령어: <code>/release-notes</code>)</li>
+  <li>Codex: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">learn.chatgpt.com/docs/changelog</a> (확인 명령어: <code>codex debug models</code>)</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>참고</strong>: 본 변경 로그는 실무 유용성을 기준으로 엄선된 요약본입니다. 세부적인 내부 패치는 각사 공식 최신 Changelog를 참고하시기 바랍니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

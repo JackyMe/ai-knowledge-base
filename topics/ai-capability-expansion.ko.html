@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="단순한 직군 전환 수기가 아닌 재현 가능한 엔지니어링 방법론: AI를 활용하여 기술 역량의 경계를 확장하는 5단계 엔진. 이종 도메인 매핑 기술과 2가지 엔드투엔드 실전 사례(풀스택·크로스플랫폼 / 기술 기반 1인 개발), 나아가 AI 지원형 학습 시스템과 흔한 함정 대처법을 완벽 해설합니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 기술 역량 확장 가이드 · 엔지니어를 위한 범용 방법론 · 2026.07">
+<meta property="og:description" content="단순한 직군 전환 수기가 아닌 재현 가능한 엔지니어링 방법론: AI를 활용하여 기술 역량의 경계를 확장하는 5단계 엔진. 이종 도메인 매핑 기술과 2가지 엔드투엔드 실전 사례(풀스택·크로스플랫폼 / 기술 기반 1인 개발), 나아가 AI 지원형 학습 시스템과 흔한 함정 대처법을 완벽 해설합니다.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/ai-capability-expansion.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI 기술 역량 확장 가이드 · 2026.07</title>
+<style>
+:root{
+  --accent:#ea580c; --accent-2:#fb923c; --accent-soft:#fef1e7;
+  --ink:#1a1008; --bg:#ffffff; --bg-side:#fdfaf7; --bg-code:#1c130b;
+  --text:#292420; --text-2:#6a5f56; --text-3:#9c9188;
+  --border:#f1e8e0; --border-2:#e5d8cc;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#fef4ec;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Pretendard","Malgun Gothic",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.side-filter{position:relative;margin-bottom:14px;padding:0 4px}
+.side-filter input{width:100%;padding:6px 28px 6px 10px;border:1px solid var(--border-2);border-radius:8px;
+  font-size:12.5px;background:#fff;color:var(--text);outline:none;font-family:inherit}
+.side-filter input:focus{border-color:var(--accent)}
+.side-filter .fk{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;
+  color:var(--text-3);background:var(--border);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#f7efe7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#f9efe6;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(234,88,12,.42),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(251,146,60,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#fdba74;font-weight:600;background:rgba(234,88,12,.16);
+  border:1px solid rgba(234,88,12,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#fb923c,#fed7aa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#cbb8a8;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#a99483}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+.q4{display:block;margin:20px 0 6px;font-size:13.5px;font-weight:700;color:var(--accent);letter-spacing:.02em;text-transform:uppercase}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#f6dcc4}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#faede3;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#c2410c}
+pre{background:var(--bg-code);color:#f0e4d8;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#9a8b7c}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fbf8f5}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fdfaf7}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#fbf8f5;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#fef1e7;color:#c2410c}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.s{background:#fef2f2;color:#dc2626}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(26,16,8,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🧗</span>AI 기술 역량 확장<span class="sub">방법론 가이드</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>검증일: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 필터링…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">인식과 방법론</div>
+    <a href="#mindset"><span class="no">00</span>인식 프레임워크</a>
+    <a href="#engine"><span class="no">01</span>5단계 확장 엔진</a>
+    <a href="#mapping"><span class="no">02</span>이종 도메인 매핑 기술</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">엔드투엔드 사례</div>
+    <a href="#case-studies"><span class="no">03</span>2가지 실전 경로</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">심화와 정착</div>
+    <a href="#indie"><span class="no">04</span>기술 기반 1인 개발 / 솔로프리너</a>
+    <a href="#learning-system"><span class="no">05</span>AI 지원형 학습 시스템</a>
+    <a href="#pitfalls"><span class="no">06</span>함정과 멘탈 모델</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">리소스</div>
+    <a href="#resources"><span class="no">07</span>리소스 라이브러리</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🧗 단순한 직군 전환 수기가 아닌, 체계화된 방법론</div>
+  <h1>AI 기술 역량 확장 가이드<br><span class="grad">엔지니어를 위한 범용 접근법</span></h1>
+  <p class="lead">특정 기술 스택으로의 일회성 전환을 넘어, AI를 레버리지 삼아 자신의 기술 경계를 지속적으로 넓히는 범용 방법론: 격차 진단, AI 고속 인풋, 스캐폴딩(골격 구축), 검증 루프 확립, 그리고 깊은 내재화. 실무에서 증명된 2가지 엔드투엔드 실전 사례(풀스택·크로스플랫폼 / 기술 기반 1인 개발)와 함께 이종 도메인 매핑 기술, AI 지원 학습 시스템, 필수 함정 체크리스트를 제공합니다.</p>
+  <div class="meta">
+    <span>5단계 방법론</span><span>2가지 실전 사례</span><span>이종 도메인 매핑 기술</span><span>2026-07</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>5단계 엔진</b><span>격차 진단 → AI 고속 인풋 → 스캐폴딩 구축 → 검증 루프 → 내재화. 각 단계별 '무엇을/어떻게 배우고 쓰는가' 명시</span></div>
+  <div class="stat"><b>2가지 실전 사례</b><span>풀스택·크로스플랫폼(모바일/Web/백엔드), 기술 기반 1인 개발. 목적에 맞춰 깊이 읽기 가능</span></div>
+  <div class="stat"><b>1가지 독자 기술</b><span>이종 도메인 매핑: 이미 보유한 멘탈 모델을 AI에 주입하여 진짜 미지의 개념만 정밀 추출</span></div>
+  <div class="stat"><b>0의 공허한 말</b><span>각 단계마다 즉시 복사해 사용하는 구체적 프롬프트 제공. "AI에게 많이 질문하라"는 식의 공허함 배제</span></div>
+</div>
+
+<section id="mindset">
+<div class="sec-tag">인식 00</div>
+<h2>인식 프레임워크</h2>
+
+<p>과거 새로운 기술 스택에 발을 들일 때 가장 많은 시간을 빼앗겼던 것은 개념 자체의 난해함이 아니라 <strong>문서 탐색과 삽질(Trial and Error)의 과정</strong>이었습니다. 포럼에서 에러 원인을 찾느라 반나절을 보내거나, 생소한 API 파라미터의 의미를 공식 문서에서 세 번씩 정독한 뒤에야 코드를 작성할 수 있었습니다. AI는 이 탐색 시간을 거의 실시간으로 압축했습니다: 에러를 붙여넣으면 수초 내에 가장 유력한 근본 원인을 짚어주고, 낯선 문법도 한마디 질문으로 파악되며, 하루 종일 읽어야 했던 문서에서 10분 만에 실행 가능한 결론을 도출합니다. <strong>그러나 압축되지 않은 나머지 절반 — "AI가 출력한 결과물이 정말 올바른가?"라는 판단은 여전히 인간 엔지니어의 몫입니다.</strong>&nbsp;<span class="pill b">실측 공통 결론</span>&nbsp;Google DORA 팀의 '2025 State of AI-assisted Software Development' 리포트에서도 1,110건의 서술형 응답 분석을 통해 동일한 결론을 도출했습니다: 생성 단계에서 절약된 시간의 상당 부분이 검증 단계의 오버헤드로 재배분되고 있습니다. 다시 말해, 기술 경계를 확장하는 과정에서 진정한 병목은 "새로운 문법을 외우지 못하는 것"이 아닙니다. 사람들을 가로막는 것은 "AI가 작성한 코드가 올바른지 스스로 판단할 수 있는가"입니다.</p>
+<p class="src">주요 논점은 <a href="https://dora.dev/insights/balancing-ai-tensions/" target="_blank">DORA 공식 인사이트 'Balancing AI tensions'</a> 및 <a href="https://dora.dev/research/2025/dora-report/" target="_blank">2025 DORA report</a>에 기반합니다.</p>
+
+<p>경계 확장은 '만능이 되는 것'과 다릅니다. 이 한계선은 냉정하게 그어져야 합니다: <strong>새로운 영역이 이미 숙달한 멘탈 모델과 동형(Isomorphic)인 경우</strong> — 예를 들어 이미 정적 타입 시스템 언어에 능숙하여 문법은 다르지만 패러다임이 유사한 다른 언어로 전환하거나, 선언형 UI를 깊이 이해하고 있어 동일한 모델을 다른 프레임워크로 구현하는 경우 — AI를 통한 생산성 향상은 폭발적입니다. 절약되는 시간의 대부분이 "그 언어나 프레임워크의 구체적인 구현 문법을 외우는" 부분이기 때문입니다. <strong>반면, 완전히 새로운 영역이어서 전이 가능한 멘탈 모델이 전무한 경우</strong> — 예를 들어 특정 비즈니스 도메인에서 처음으로 아키텍처 결정을 내려야 하는 경우 — AI는 선택지와 트레이드오프를 나열해줄 수는 있지만 최종 결정을 대신 내려줄 수는 없습니다. 자신이 판단할 수 있는 최소한의 내공을 쌓아야 합니다.</p>
+
+<div class="callout warn">
+<b class="t">흔한 2가지 오해</b>
+<strong>오해 1: AI 코딩 툴을 쓰면 새 기술 스택을 마스터한 것이다.</strong> 작동하는 코드를 AI에게 뽑아내게 했다고 해서, 코드의 결함을 스스로 디버깅하고 고품질 코드 리뷰 피드백을 낼 수 있는 것은 아닙니다. '동작하는 것'과 '체득한 것'은 다릅니다.<br>
+<strong>오해 2: AI의 출력을 맹신하고 검증 없이 채택한다.</strong> 이것이 앞서 언급한 '압축되지 않은 나머지 절반'입니다. 구체적으로 검증을 어떻게 실행 가능한 닫힌 루프(피드백 루프)로 떨어뜨릴지는 1절 방법론 엔진 4단계에서 다룹니다.
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="engine">
+<div class="sec-tag">방법론 01</div>
+<h2>범용 방법론: 5단계 확장 엔진</h2>
+
+<p>5단계는 분리된 기법이 아닌 단일한 파이프라인입니다: ①먼저 '진짜 모르는 것이 무엇인지' 진단하고, ②그 부분의 지식만 고속 인풋하며, ③즉시 최소한의 동작하는 스캐폴딩(골격)을 만들고, ④검증 가능한 수단으로 정확성을 확인하며, ⑤회고를 통해 밟았던 함정을 장기 기억과 자산으로 내재화합니다.</p>
+
+<h3 data-reveal>① 격차 진단 (Gap Diagnosis)</h3>
+
+<h4>학습 목표</h4>
+<p>이 단계는 새 기술을 무작정 공부하는 것이 아니라 한 가지를 명확히 하는 것입니다: <strong>"내가 이미 보유한 멘탈 모델이 새 영역의 어느 부분을 커버할 수 있는가?"</strong> 이 진단 결과가 이후 4단계의 학습량을 결정합니다 — 이미 알고 있는 개념은 다시 배울 필요가 없으며, 커버되지 않는 부분만이 진정한 공략 대상이 됩니다.</p>
+<ul>
+  <li>새 영역과 내가 익숙한 기존 영역 사이의 개념 모델이 얼마나 중복되는가?</li>
+  <li>단순한 용어 치환(번역)에 불과한 것은 무엇이고, 진짜 새로운 개념은 무엇인가?</li>
+  <li>지금 당장 달성하고자 하는 첫 번째 구체적인 결과물(산출물)은 무엇인가?</li>
+</ul>
+
+<h4>학습 방식</h4>
+<p>스스로 체크리스트를 작성하는 대신 <strong>AI가 나에게 역으로 질문하게 하는(역질문)</strong> 방식을 취합니다. 사람은 익숙한 영역은 과대평가하고 낯선 영역은 과소평가하기 쉽습니다. AI에게 심층 질문을 던지게 하여 답변에서 드러나는 지식의 경계를 판정하게 하는 것이 훨씬 정확합니다.</p>
+
+<h4>사용 도구</h4>
+<p><strong>Claude Code / Codex의 대화 모드</strong>를 활용합니다. 저장소를 마운트할 필요 없이 순수 채팅으로 충분합니다.</p>
+
+<h4>프롬프트 템플릿</h4>
+<pre><code>나는 [당신의 배경, 예: 5년 차 Java 백엔드 개발자이며 Spring / MySQL / 메시지 큐에 능숙함].
+현재 기술 역량의 경계를 [목표 신규 영역, 예: 분산 시스템 아키텍처 설계]로 확장하고자 함.
+지금 가장 먼저 달성하고 싶은 구체적인 산출물은 [구체적일수록 좋음, 예: 멀티 액티브 재해 복구 설계안 수립]임.
+
+내가 더 설명하기 전에, 먼저 나에게 3~5개의 진단 질문을 던져줘. 목적은 이 신규 영역에서 나의 실제 지식 경계를 파악하는 것임:
+내가 아무것도 모른다고 넘겨짚지 말고, 다 안다고 가정도 하지 말 것. 질문은 내가 한눈에 "이건 안다", "이건 정말 모른다"를 가를 수 있을 만큼 구체적이어야 함.
+
+내 답변이 끝나면, 그 결과를 바탕으로 신규 영역을 표로 3분할 정리해줘:
+① 중복 영역: 내 기존 영역의 개념과 거의 동일하며 용어만 다른 것
+② 번역 영역: 개념이 완전히 같진 않으나 기존 개념과의 유추로 이해 가능한 것 (어떻게 유추할지 명시)
+③ 완전 신규 영역: 대응되는 멘탈 모델이 전혀 없어 제로부터 구축해야 하는 개념</code></pre>
+
+<h3 data-reveal>② AI 고속 인풋 (Fast-Track Learning)</h3>
+
+<h4>학습 목표</h4>
+<p>진단된 <strong>'완전 신규 영역' 중에서 산출물의 정확성을 검증하는 데 필수적인 최소 개념 세트</strong>만 선별하여 학습합니다. 공식 문서나 교과서를 1페이지부터 통독하는 것은 극도로 비효율적입니다. 신규 영역의 대다수는 중복/번역 영역이므로 진짜 모르는 부분에만 집중합니다.</p>
+
+<h4>학습 방식</h4>
+<p>AI를 <strong>'개념 번역기'</strong>로 사용합니다. 신규 개념을 1개 배울 때마다 1단계에서 확인한 기존 개념을 끌어와 유추하게 하고, AI에게 <strong>역출제(퀴즈)</strong>를 요구하여 진정으로 이해했는지 검증합니다.</p>
+
+<h4>사용 도구</h4>
+<p><strong>AI 대화 + 공식 문서</strong>. AI의 유추 설명은 직관적이지만 엄밀성이 떨어질 수 있으므로, 세부 스펙과 엣지 케이스는 공식 문서의 특정 챕터를 교차 확인합니다.</p>
+
+<h4>프롬프트 템플릿</h4>
+<pre><code>나는 [완전 신규 영역의 개념, 예: 분산 트랜잭션의 Saga 패턴]에 대해 멘탈 모델이 전혀 없음.
+내 기존 멘탈 모델 중 연관될 만한 것은 [기존 개념, 예: DB 트랜잭션 ACID 특성, 보상 트랜잭션 로직]임.
+
+다음을 수행해줘:
+1. 내가 이미 아는 [기존 개념]을 빗대어 [신규 개념]이 무엇인지, 어떤 문제를 풀기 위함인지, 본질적 차이가 무엇인지 쉽게 설명해줘.
+2. 설명이 끝나면 멈추지 말고 즉시 3문제의 OX 퀴즈 또는 시나리오 문제를 출제해줘 — 단순 암기가 아닌 본질을 꿰뚫었는지 판별할 수 있는 난이도로 출제할 것.
+3. 내가 답을 제출하면 정오를 판정하고, 내 이해가 어느 지점에서 빗나갔는지 지적해줘.
+
+마지막으로: 내 이해가 틀렸을 경우 공식 문서나 권위 있는 자료의 어느 섹션을 직접 확인해야 하는지 구체적인 키워드나 장(Chapter)을 알려줘.</code></pre>
+
+<h3 data-reveal>③ 스캐폴딩 구축 (Scaffolding & Action)</h3>
+
+<h4>학습 목표</h4>
+<p>모든 원리를 100% 이해하기 전에 <strong>최소한으로 동작하는 산출물(골격)을 만들고 손맛(감각)을 익히는 것</strong>입니다. "원리는 아직 다 모르지만 어떻게 실행하는지는 아는" 상태를 과감히 허용합니다.</p>
+
+<h4>학습 방식</h4>
+<p><strong>만들면서 질문하고 막힐 때만 파고드는</strong> 방식을 철저히 지킵니다. "더 공부하고 나서 만들어야지"라는 완벽주의 함정을 경계하세요. 최소한의 동작 산출물 자체가 가장 훌륭한 피드백 머신입니다.</p>
+
+<h4>사용 도구</h4>
+<p>프로젝트 루트에 배치하여 AI의 동작을 규정하는 <strong>설정 템플릿(CLAUDE.md / AGENTS.md)</strong>과 <strong>상황별 프롬프트 모음</strong>.</p>
+
+<h4>프롬프트 템플릿 및 설정 에셋</h4>
+<p><strong>에셋 1: AI 협업 규약 템플릿 (CLAUDE.md / AGENTS.md)</strong></p>
+<pre><code># 프로젝트 규약 —— [프로젝트명 / 한 줄 설명]
+
+## 기술 스택
+[언어 / 프레임워크 / 데이터베이스 / 배포 방식]
+
+## 엄격한 규칙
+- 코드 변경 전 반드시 계획을 제시할 것. 3개 파일 이상 수정 시 변경 목록을 먼저 보여주고 확인받은 뒤 착수.
+- 불확실한 부분은 임의로 추측해 코딩하지 말고 직접 질문할 것.
+- 새로운 의존성 라이브러리나 낯선 개념을 도입하기 전에 왜 필요한지, 더 단순한 대안은 없는지 설명할 것.
+- 변경 완료 후 다음 검증 명령을 실행할 것: [npm run lint && npm test / pytest / go test 등]
+
+## 소통 원칙
+- 나는 [기존 기술 스택 / 전문 영역]에 능숙함. 새로운 개념은 이에 빗대어 설명하고 완전 초보자로 취급하지 말 것.
+- 코드를 제시할 때는 이 코드가 올바른지 어떻게 검증할 수 있는지도 함께 명시할 것.</code></pre>
+
+<p><strong>에셋 2: 6대 빈출 시나리오 프롬프트 모음</strong></p>
+<table class="tbl">
+  <tr><th>시나리오</th><th>프롬프트 템플릿</th></tr>
+  <tr><td>기능 개발</td><td>"[기능]을 구현해줘. Goal: [목적]; Context: 관련 파일은 X/Y; Constraints: 프로젝트 규약을 준수하고 새 의존성을 추가하지 말 것; Done-when: [수용 기준] + 테스트 통과. 먼저 계획을 제시해줘."</td></tr>
+  <tr><td>데이터 모델링</td><td>"[비즈니스 요구사항]을 위한 데이터 구조를 설계해줘: 스키마/테이블 정의안 + 인덱스 및 유효성 검증 근거 + 권한/RLS 정책 + 롤백 방안을 제시하고, 2가지 엣지 케이스로 견고성을 검증해줘."</td></tr>
+  <tr><td>코드 리뷰</td><td>"이 코드를 리뷰해줘: ①보안(API Key/입력검증/권한) ②엣지 케이스 ③성능 관점에서 결함을 분류하고 수정안을 제시해줘. 마지막으로 나라면 이걸 프로덕션에 배포할지 한 줄로 답해줘."</td></tr>
+  <tr><td>디버깅</td><td>"에러 전문: [로그]. 가장 유력한 근본 원인 3가지를 우선순위대로 꼽고 최소한의 실험으로 하나씩 좁혀가는 절차를 제시해줘. 이 에러는 내가 익숙한 [전문 분야]의 어떤 문제에 해당해?"</td></tr>
+  <tr><td>개념 학습</td><td>"내가 잘 아는 [기존 개념]에 빗대어 [신규 개념]을 설명해주고, 이해도를 측정할 OX 퀴즈 3문제를 내줘."</td></tr>
+  <tr><td>주간 회고</td><td>"이번 주 코드 diff와 에러 기록이야. 정리해줘: ①내가 반복하는 실수 패턴 ②다음 주에 의도적으로 연습할 부분 ③이해했다고 착각했으나 놓친 지식."</td></tr>
+</table>
+
+<h3 data-reveal>④ 검증 루프 확립 (Verification Loop)</h3>
+
+<h4>학습 목표</h4>
+<p>AI가 생성한 코드의 정확성을 <strong>"그냥 돌아가는 것처럼 보인다"는 이유로 믿지 않는 것</strong>입니다. 새로운 영역에 적합한 검증 수단(단위 테스트, 타입 검사, 린터, 실제 데이터 환경 테스트)을 선별하는 판단력을 갖춥니다.</p>
+
+<h4>학습 방식</h4>
+<p><strong>AI 스스로가 자신의 산출물을 어떻게 검증할 수 있는지 증명하게 요구</strong>합니다. AI는 본인이 작성한 코드의 취약 지점을 잘 알고 있지만 요청하지 않으면 침묵합니다.</p>
+
+<h4>사용 도구</h4>
+<p>단위 테스트 프레임워크(Jest, Vitest, pytest 등), 타입 체커(tsc, mypy), 린터(ESLint, Ruff), 공식 문서.</p>
+
+<h4>프롬프트 템플릿</h4>
+<pre><code>[기능/변경사항]을 구현한 뒤, 코드를 제시할 때 반드시 다음 항목을 함께 포함해줘:
+
+1. 이 코드의 정확성을 어떻게 검증할 수 있는지 우선순위대로 제시할 것:
+   ① 단위 테스트를 작성할 수 있는가? 테스트 케이스 골격 제시 (기존 프레임워크 활용)
+   ② 타입 검사 / 정적 분석으로 잡아낼 수 있는 실수는 무엇인가?
+   ③ 어떤 실제 환경/데이터 조건에서 실행해봐야 완결되는가? 구체적 검증 단계 제시
+   ④ 외부 API나 라이브러리 동작에 대한 설명은 공식 문서 몇 버전 기준인가? 내가 직접 대조할 출처 명시
+2. 위 항목 중 적용 불가능한 것이 있다면 왜 불가능한지 명시할 것.
+3. 마지막으로 한 줄 답변: 이 코드가 다른 사람이 제출한 PR이라면 당신은 바로 머지하겠는가?</code></pre>
+
+<h3 data-reveal>⑤ 내재화 및 자산화 (Consolidation & Memory)</h3>
+
+<h4>학습 목표</h4>
+<p>"동작한다"에서 <strong>"왜 이렇게 짜야 하는지 원리를 이해한다"</strong>로 도약합니다. 3~4단계에서 겪었던 삽질과 버그의 원인을 복기하여 지식으로 고정합니다.</p>
+
+<h4>학습 방식</h4>
+<p><strong>파인만 기법의 AI 버전</strong>: 내가 새롭게 이해한 개념을 AI에게 직접 설명하고 AI에게 내 설명의 오류와 빈틈을 지적하게 합니다.</p>
+
+<h4>사용 도구</h4>
+<p><strong>AI 대화 + 개인 노트/지식베이스</strong>. 대화창에만 남겨두면 2주 뒤 망각하므로 반드시 영구 문서로 자산화합니다.</p>
+
+<h4>프롬프트 템플릿</h4>
+<pre><code>【파인만 기법 검증】
+내가 이번에 배운 [개념/모듈]을 내 말로 설명해볼게. 끝까지 듣고 3가지로 지적해줘:
+① 틀리거나 부정확하게 설명한 부분
+② 내가 빠뜨린 핵심 포인트 (맞게 말했더라도 전체 그림에서 누락된 부분)
+③ "왜 이렇게 작성하는 것이 맞고 다른 방식은 안 되는가"를 묻는 꼬리 질문 1~2개
+
+【주기적 지식 자산화】
+이번 학습 주기 동안의 코드 diff, 에러 로그, 파인만 지적 사항이야:
+① 내가 반복하는 패턴 요약
+② 다음 주기에 의도적으로 연습할 구체적 과제
+③ 이해했다고 착각했던 지식 포인트
+④ ①~③을 내 개인 노트 파일에 바로 붙여넣을 수 있는 Markdown 블록으로 출력해줘.</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="mapping">
+<div class="sec-tag">방법론 02</div>
+<h2>이종 도메인 매핑 기술</h2>
+
+<p><strong>이종 도메인 매핑</strong>은 1단계 '격차 진단'의 중복/번역/신규 영역 분류를 구체적으로 실행하는 기법입니다: 이미 알고 있는 A 도메인의 멘탈 모델을 AI에 주입하여 <strong>"이것은 A의 번역판이다"</strong>와 <strong>"이것은 A에 없는 완전히 새로운 개념이다"</strong>로 깔끔하게 이분화합니다.</p>
+
+<h3 data-reveal>3대 크로스 도메인 매핑 예시</h3>
+
+<h4>Android ↔ iOS: 선언형 UI 패러다임 상호 매핑</h4>
+<table class="tbl">
+  <tr><th>개념</th><th>Android (Compose)</th><th>iOS (SwiftUI)</th></tr>
+  <tr><td>선언형 UI 단위</td><td><code>@Composable</code> 함수</td><td><code>View</code> 프로토콜을 따르는 struct + <code>body</code></td></tr>
+  <tr><td>컴포넌트 로컬 상태</td><td><code>remember { mutableStateOf() }</code></td><td><code>@State</code></td></tr>
+  <tr><td>뷰 간 공유 객체 상태</td><td>ViewModel + <code>StateFlow</code></td><td><code>@Observable</code> 매크로 객체</td></tr>
+  <tr><td>생명주기 바인딩 비동기</td><td><code>LaunchedEffect(key)</code></td><td><code>.task</code> / <code>.task(id:)</code> 수정자 (뷰 소멸 시 자동 취소)</td></tr>
+</table>
+
+<h4>모바일 → Web 프런트엔드: Compose/Kotlin → React/TS 핵심 대조</h4>
+<table class="tbl">
+  <tr><th>모바일 (Compose/Kotlin)</th><th>Web 프런트엔드 (React/TS)</th><th>핵심 차이점</th></tr>
+  <tr><td><code>remember { mutableStateOf(0) }</code></td><td><code>useState(0)</code></td><td>상태 변경 시 리렌더링; 단 React는 <strong>객체/배열 내부 직접 변조 시 리렌더링 안 됨</strong> (새 참조 <code>[...items, x]</code> 필요)</td></tr>
+  <tr><td><code>LaunchedEffect(userId) { … }</code></td><td><code>useEffect(() => { … }, [userId])</code></td><td>의존성 배열 ≈ key; cleanup 반환 함수는 재실행 전 및 언마운트 시 동작</td></tr>
+  <tr><td>봉인 클래스 <code>sealed interface</code> + <code>when</code></td><td>구별된 유니온 <code>{ kind: "…" }</code> + <code>switch</code></td><td>TS 데이터 모델링의 핵심, sealed+when과 완벽히 동일한 멘탈 모델</td></tr>
+</table>
+
+<h4>Web 프런트엔드 → 백엔드/서버: 프런트엔드가 가장 흔히 하는 3대 오해</h4>
+<table class="tbl">
+  <tr><th>프런트엔드 직관 (기존 멘탈)</th><th>백엔드 신규 개념</th><th>핵심 매핑 원리</th></tr>
+  <tr><td>setState 때마다 무상태 렌더링</td><td>HTTP 요청은 기본적으로 <strong>무상태 (Stateless)</strong></td><td>서버는 이전 요청을 기억하지 않음; 상태는 DB/Redis에 명시적으로 영속화해야 함</td></tr>
+  <tr><td>브라우저가 TCP 연결을 알아서 관리</td><td>데이터베이스 <strong>커넥션 풀 (Connection Pool)</strong></td><td>요청마다 새로 연결을 맺는 것이 아니라 미리 생성된 풀에서 빌려 쓰고 반납하는 구조</td></tr>
+  <tr><td>버튼 비활성화로 중복 클릭 방지</td><td>API <strong>멱등성 (Idempotency)</strong></td><td>네트워크 재시도 등으로 동일 요청이 여러 번 도착해도 서버 최종 상태는 1회만 변경되어야 함 (멱등키 활용)</td></tr>
+</table>
+
+<h3 data-reveal>범용 도메인 매핑 질의 템플릿</h3>
+<table class="tbl">
+  <tr><th>❌ 평범한 질문</th><th>✅ 숙련자의 매핑 질문</th></tr>
+  <tr><td>"[신기술] 가르쳐줘"</td><td>"내가 아는 [기존 메커니즘]에 빗대어 [신규 개념]의 핵심 멘탈 모델과 동작 시점을 설명해줘"</td></tr>
+  <tr><td>"에러 났는데 어떡해?"</td><td>"에러 전문 첨부. 근본 원인 가설 3개와 최소 검증 실험을 제시해줘. 이게 [내 전문 분야]의 무슨 문제와 같아?"</td></tr>
+  <tr><td>"[신규 보안 설정] 어떻게 해?"</td><td>"실제 시나리오 기반으로 방어 정책을 짜주고, 2가지 우회 공격 시나리오로 차단 여부를 검증해줘"</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="case-studies">
+<div class="sec-tag">실전 03</div>
+<h2>엔드투엔드 심층 실전 사례</h2>
+
+<h3 data-reveal id="case-a">사례 A: 모바일 개발자 → 풀스택 웹 전환</h3>
+<p>Android/iOS 개발자가 모바일 앱을 넘어 프런트엔드 렌더링, 백엔드 API, DB 권한까지 1인으로 구축하는 전 과정 (Next.js + Postgres/Supabase 기준):</p>
+
+<ol class="steps">
+  <li><strong>격차 진단</strong>: 선언형 UI는 React로 자연스럽게 치환되지만, 서버 컴포넌트(RSC)의 렌더링 경계와 백엔드 DB 권한(RLS)이 진짜 신규 영역임을 식별.</li>
+  <li><strong>고속 인풋</strong>: "브라우저에서 실행되는 클라이언트 컴포넌트" vs "서버에서만 실행되는 서버 컴포넌트"의 차이를 역출제 퀴즈로 체득.</li>
+  <li><strong>스캐폴딩 구축</strong>: <code>npx create-next-app@latest</code>로 프로젝트를 생성하고, 사용자 인증 + RLS가 적용된 1개 테이블 CRUD를 완성.</li>
+  <li><strong>검증 루프</strong>: 두 개의 테스트 계정을 만들어 계정 A가 계정 B의 데이터를 조회하려 할 때 RLS가 완벽히 차단하는지 교차 공격 검증.</li>
+  <li><strong>내재화</strong>: 에러 모니터링(Sentry), 환경 변수 분층 관리, 프리뷰 배포 파이프라인 구축.</li>
+</ol>
+
+<h3 data-reveal id="case-b">사례 B: 웹 프런트엔드 → 백엔드 & 서버 엔지니어링</h3>
+<p>React/Vue 엔지니어가 API 소비자를 넘어 서비스 설계자 및 안정성 책임자로 도약하는 과정 (Node.js/Fastify + SQLite/Postgres 기준):</p>
+
+<ol class="steps">
+  <li><strong>격차 진단</strong>: API 호출 로직은 익숙하나, 서버 측 세션/JWT 라이프사이클 관리와 DB 인덱스 설계가 진짜 신규 영역임을 식별.</li>
+  <li><strong>고속 인풋</strong>: 요청 무상태성, DB 트랜잭션 격리 수준, 비밀키 관리 원칙을 집중 학습.</li>
+  <li><strong>스캐폴딩 구축</strong>: Fastify 인스턴스를 조립하고 <code>node:sqlite</code> 기반으로 단일 책임 CRUD 엔드포인트 구축.</li>
+  <li><strong>검증 루프</strong>: <code>fastify.inject()</code>를 사용하여 포트를 열지 않고도 401 인증 거부 및 입력값 유효성 검증 테스트 스위트 자동화.</li>
+  <li><strong>내재화</strong>: Docker 다단계 빌드 컨테이너화, <code>/health</code> 헬스체크 엔드포인트, 구조화된 JSON 로깅 체계 정착.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="indie">
+<div class="sec-tag">심화 04</div>
+<h2>기술 기반 1인 개발 / 솔로프리너 실전</h2>
+
+<h3 data-reveal>1. 아이템 선정 5단계 필터</h3>
+<table class="tbl">
+  <tr><th>검증 질문</th><th>합격 기준</th></tr>
+  <tr><td>1. 나 자신이 이 문제의 실제 사용자인가?</td><td>그렇다 — 자가 소비 제품의 도메인 직관이 가짜 수요를 압도함</td></tr>
+  <tr><td>2. 타깃 유저에게 결제 습관이 있는가?</td><td>개발자 도구 / 생산성 툴 / B2B 버티컬 도구 &gt; 일반 대중 대상 무료 영역</td></tr>
+  <tr><td>3. 검색 수요가 존재하는가?</td><td>명확한 검색 키워드(예: "xxx generator/converter")가 존재하여 SEO 가능</td></tr>
+  <tr><td>4. 혼자서 2주 내에 MVP를 만들 수 있는가?</td><td>핵심 단일 기능만 남겼을 때 프로토타입 완성이 가능해야 함</td></tr>
+  <tr><td>5. 이미 시장에 작은 경쟁자가 존재하는가?</td><td>3~5개의 생존 중인 소형 제품이 존재 = 시장 검증 완료 및 진입 공간 존재</td></tr>
+</table>
+
+<h3 data-reveal>2. 프로그래머틱 SEO와 고객 획득</h3>
+<ul>
+  <li><strong>제품이 곧 콘텐츠</strong>: 모든 기능 페이지와 비교 페이지가 검색 유입구가 되도록 SSG 렌더링 및 <code>sitemap.ts</code>, <code>robots.ts</code>, JSON-LD 구조화 데이터 적용;</li>
+  <li><strong>프로그래머틱 SEO</strong>: <code>generateStaticParams</code>를 통해 데이터 기반으로 수백~수천 개의 롱테일 비교 페이지("A vs B") 대량 자동 생성;</li>
+  <li><strong>초기 유통 3대 채널</strong>: Build in public(개발 과정 공개 연재), 커뮤니티 답변식 유입, 문제 해결형 쇼케이스.</li>
+</ul>
+
+<h3 data-reveal>3. 글로벌 결제 솔루션 (MoR) 활용</h3>
+<p>개인 개발자가 국가별 세금 신고와 환율 결제를 직접 처리하는 것은 불가능에 가깝습니다. **MoR (Merchant of Record, 예: Paddle / Lemon Squeezy)**을 도입하면 수수료는 약간 높지만 글로벌 세무 및 결제 컴플라이언스를 대행해주므로 1인 개발 초기 리스크를 극소화할 수 있습니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="learning-system">
+<div class="sec-tag">심화 05</div>
+<h2>AI 지원형 개인 학습 시스템</h2>
+
+<h3 data-reveal>3계층 학습 프레임워크</h3>
+<table class="tbl">
+  <tr><th>계층</th><th>목표</th><th>실행 방법</th></tr>
+  <tr><td><strong>1층: 고속 탐색</strong></td><td>전체 윤곽 파악</td><td>AI의 도메인 유추 설명으로 전체 지도를 그리고 세부 사항에 매몰되지 않음</td></tr>
+  <tr><td><strong>2층: 실전 구축</strong></td><td>진정한 체득</td><td>프로젝트 병목 발생 → AI 질의 → 직접 코드 해결 → 지식 포인트 축적</td></tr>
+  <tr><td><strong>3층: 의도적 내재화</strong></td><td>장기 기억화</td><td>파인만 기법으로 AI에게 설명하고 첨삭받기 + 주기적 동적 자가 테스트</td></tr>
+</table>
+
+<h3 data-reveal>AI 동적 자가 진단 템플릿</h3>
+<pre><code>현재 나의 학습 단계: [고속 탐색 / 실전 구축 / 의도적 내재화]
+이번 주기에 학습한 내용 목록:
+- [내용 1]
+- [내용 2]
+
+실제 만든 산출물: [프로젝트, 코드, 데모]
+여전히 모호한 부분: [모호한 개념 나열]
+
+위 정보를 바탕으로 "허공에 대고 막힘없이 설명할 수 있어야 통과하는" 자가 진단 문제 10문항을 출제해줘.
+요구사항:
+1. 개념 경계, 동작 메커니즘, 트레이드오프, 장애 진단 및 검증 방법을 골고루 다룰 것;
+2. 단순 암기형이 아니라 내가 안다고 착각하는 맹점을 파고들 것;
+3. 먼저 문제만 출제하고 답은 주지 말 것. 내가 구두로 답한 뒤 피드백을 제공해줘.</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="pitfalls">
+<div class="sec-tag">심화 06</div>
+<h2>함정과 멘탈 모델 (12대 주의사항)</h2>
+
+<table class="tbl">
+  <tr><th>함정 유형</th><th>위험 징후와 탈출 전략</th></tr>
+  <tr><td><strong>튜토리얼 지옥</strong></td><td>강의만 계속 수집하고 손을 안 댐 → <strong>최소 실행 예제를 먼저 구동</strong>하고 프로젝트를 진행하며 필요한 것만 역으로 학습</td></tr>
+  <tr><td><strong>자료 시효성 함정</strong></td><td>옛날 블로그 글을 따라 하다가 폐기된 API로 고생 → 공식 문서와 최신 릴리스 노트를 최우선 확인하고 현재 버전 실측</td></tr>
+  <tr><td><strong>타입 이스케이프 중독</strong></td><td>에러가 나면 <code>any</code>나 ignore 주석으로 덮어버림 → 방어막이 무너짐; 모든 예외는 기술 부채로 기록하고 원인 규명</td></tr>
+  <tr><td><strong>기술 스택 탐닉</strong></td><td>핵심 기능도 안 만들었는데 새 프레임워크나 모델로 바꾸고 싶음 → "이게 지금 배포나 매출을 막고 있는가?" 질문</td></tr>
+  <tr><td><strong>완벽주의 마비</strong></td><td>아키텍처만 다듬으며 론칭을 미룸 → 핵심 가설을 검증할 수 있는 최소 버전을 먼저 시장에 공개하고 피드백 수집</td></tr>
+  <tr><td><strong>AI 대리 의존증</strong></td><td>코드를 AI가 다 짜줘서 본인이 설명 불가 → AI를 대필자가 아닌 코치로 대하고 핵심 로직은 직접 수정 검증</td></tr>
+  <tr><td><strong>인지 급경사 오판</strong></td><td>새 영역 진입 시 쏟아지는 개념에 당황하여 방향을 의심 → <strong>자연스러운 경사일 뿐 실패 신호가 아님</strong>; 문제를 쪼개어 단계별 해결</td></tr>
+  <tr><td><strong>보안 안일주의</strong></td><td>인증, 권한, 비밀키 관리를 '나중에'로 미룸 → 민감 데이터 처리 전 최우선 보안 체크포인트 통과 필수</td></tr>
+  <tr><td><strong>고립감과 수익 조급증</strong></td><td>단기간 성과가 안 나와 쉽게 포기 → 과정을 외부에 공개(Build in public)하고 선행 지표와 후행 매출을 분리해 관찰</td></tr>
+  <tr><td><strong>검증 루프 생략</strong></td><td>AI가 매끄럽게 답을 주면 맞다고 믿고 복사 → 관찰 가능한 결과와 테스트 코드로 닫힌 루프 검증 필수</td></tr>
+  <tr><td><strong>유창성을 증거로 착각</strong></td><td>AI의 전문적 말투에 속아 사실로 수용 → 유창함과 정확성을 구분하고 고위험 결론은 1차 출처 대조</td></tr>
+  <tr><td><strong>속성 학습 공동화</strong></td><td>모든 문제를 AI가 대신 풀어줘서 직접 고민해본 적 없음 → AI 없이 직접 재현하고 디버깅하는 독립 세션 유지</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">리소스 07</div>
+<h2>리소스 라이브러리</h2>
+
+<table class="tbl">
+  <tr><th>등급</th><th>리소스</th><th>활용 가치</th></tr>
+  <tr><td><span class="pill s">S</span></td><td>목표 기술의 공식 문서 및 최신 릴리스 노트</td><td>최우선 1차 출처: 버전별 변경 사항과 마이그레이션 가이드 확인</td></tr>
+  <tr><td><span class="pill s">S</span></td><td><a href="#case-studies">본 가이드의 실전 사례</a></td><td>진단 → 고속 인풋 → 스캐폴딩 → 검증 → 내재화의 닫힌 루프 실전 적용</td></tr>
+  <tr><td><span class="pill a">A</span></td><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang AI 코딩 가이드</a></td><td>초보자 친화적 체계적 튜토리얼 (92편)</td></tr>
+  <tr><td><span class="pill a">A</span></td><td>공식 스캐폴딩 템플릿</td><td><code>create-next-app</code> 등 공식 CLI를 통한 표준 아키텍처 시작</td></tr>
+  <tr><td>본 지식 베이스</td><td><a href="ai-leverage-guide.ko.html">AI 생산성 전경과 실전 마인드셋</a> · <a href="claude-code-guide.ko.html">Claude Code 활용 가이드</a> · <a href="codex-guide.ko.html">Codex 활용 가이드</a> · <a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a></td><td>전방위 AI 에이전트 엔지니어링 실무 내공 강화</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>안내</strong>: 본 문서는 AI 시대를 살아가는 소프트웨어 엔지니어를 위한 범용 역량 확장 방법론입니다. 구체적인 API와 프레임워크 스펙은 각 사의 최신 공식 문서를 기준으로 검증하시기 바랍니다.</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

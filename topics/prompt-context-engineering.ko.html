@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 활용을 지탱하는 기반 기술: 7대 기본 기법 (❌/✅ 대조), 멀티모달 & RAG 입력 설계, 3대 프론티어 모델 특성 비교, 모델 라우팅, 프롬프트 인젝션 방어, Token 경제학과 비용 관리, 6개 실전 수정 사례, 12개 실무 템플릿, CC / Codex 설정 계층까지 총망라.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="프롬프트 & 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026.07">
+<meta property="og:description" content="AI 활용의 핵심 기반: 7대 기본 기법 (❌/✅ 대조), 멀티모달 & RAG 입력 설계, 3대 모델 차이, 모델 라우팅, 보안 방어, Token 비용 최적화, 6개 상세 사례, 12개 템플릿 완벽 정리.">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/prompt-context-engineering.ko.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>프롬프트 & 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026.07</title>
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+:root{
+  --accent:#0891b2; --accent-2:#22d3ee; --accent-soft:#e6f7fb;
+  --ink:#082129; --bg:#ffffff; --bg-side:#f7fbfc; --bg-code:#0b1b20;
+  --text:#1f2a2e; --text-2:#586a70; --text-3:#8b9ba1;
+  --border:#e3eef1; --border-2:#d0e2e7;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#ecf8fb;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eaf4f7;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#e8f4f7;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(8,145,178,.45),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(34,211,238,.20),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#67e8f9;font-weight:600;background:rgba(8,145,178,.18);
+  border:1px solid rgba(8,145,178,.5);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#22d3ee,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#a8c3cb;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#8fabb4}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:23px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#c3e7f0}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#eaf4f7;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#0e7490}
+pre{background:var(--bg-code);color:#dcecf1;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7fa2ac}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#f6fafb}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#f8fbfc}
+.er td:first-child{font-weight:600;min-width:120px}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+.duo code{background:rgba(255,255,255,.7)}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#e6f7fb;color:#0e7490}
+.pill.b{background:#fef2f2;color:#dc2626}
+.pill.c{background:#fff7ed;color:#c2410c}
+
+.case{border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin:20px 0;background:#fff}
+.case-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.case-head .cn{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:2px 10px;border-radius:99px;white-space:nowrap}
+.case-head h4{margin:0;font-size:16.5px}
+.case-scenario{color:var(--text-2);font-size:14px;margin-bottom:6px}
+.cb-label{font-size:12px;font-weight:700;letter-spacing:.04em;margin:14px 0 6px;text-transform:uppercase}
+.cb-label.bad{color:#dc2626}
+.cb-label.good{color:#16a34a}
+.case-diag{margin:14px 0}
+.case-takeaway{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-2);font-size:14px}
+
+/* Template cards */
+.prompt-box{background:#fff;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;
+  padding:14px 18px;margin:14px 0;font-size:13.5px}
+.prompt-box .pt{font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase}
+.prompt-box code{display:block;background:none;border:none;padding:0;color:var(--text);white-space:pre-wrap;line-height:1.75}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(8,33,41,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🎯</span>프롬프트 & 컨텍스트 엔지니어링<span class="sub">기반 기술</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ko.html">◂ 주제 목록</a>
+    <span>공식 사양 검증 · 2026-07</span>
+    <span>검증 완료: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…" /><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">개념</div>
+    <a href="#overview"><span class="no">00</span>전체상: 프롬프트에서 컨텍스트로</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">기법</div>
+    <a href="#basics"><span class="no">01</span>7대 기본 기법 (❌/✅ 대조)</a>
+    <a href="#structured"><span class="no">02</span>구조화 출력 & 포맷 제어</a>
+    <a href="#multimodal"><span class="no">03</span>멀티모달 프롬프트</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">사용 사례 & 모델 비교</div>
+    <a href="#models"><span class="no">04</span>주요 대형 모델 프롬프트 특성 비교</a>
+    <a href="#rag"><span class="no">05</span>RAG 시나리오 프롬프트 설계</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">엔지니어링</div>
+    <a href="#context"><span class="no">06</span>컨텍스트 엔지니어링 핵심</a>
+    <a href="#agentic"><span class="no">07</span>에이전트 컨텍스트 (장기 작업)</a>
+    <a href="#cost"><span class="no">08</span>Token 경제학과 비용 관리</a>
+    <a href="#routing"><span class="no">09</span>모델 라우팅 & 자동 전환</a>
+    <a href="#security"><span class="no">10</span>Prompt 인젝션 & 보안 방어</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">실전</div>
+    <a href="#cases"><span class="no">11</span>실전 수정 사례집 (총 6선)</a>
+    <a href="#templates"><span class="no">12</span>실무 템플릿 모음 (총 12식)</a>
+    <a href="#eval"><span class="no">13</span>평가·반복·버전 관리</a>
+    <a href="#antipatterns"><span class="no">14</span>안티패턴 도감</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">구현</div>
+    <a href="#tools"><span class="no">15</span>CC / Codex 설정 계층</a>
+    <a href="#resources"><span class="no">16</span>리소스 & 출처 인덱스</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎯 AI 활용을 지탱하는 기반 기술 · 2026년 공식 문서 검증</div>
+  <h1>프롬프트 & 컨텍스트 엔지니어링<br><span class="grad">기법에서 사고방식까지</span></h1>
+  <p class="lead">"컨텍스트는 최고의 자산", "프롬프트는 구체적으로"——본 문서에서는 흩어져 있던 노하우를 체계화합니다. 7가지 기본 기법 (❌/✅ 대조), 멀티모달 & RAG 입력 설계, 3대 프론티어 모델의 특성 차이, 인젝션 방어, Token 비용 최적화, 6가지 실전 수정 사례, 12가지 실무 템플릿까지 완벽히 다룹니다.</p>
+  <div class="meta">
+    <span>7대 기법 대조</span><span>12개 실무 템플릿</span><span>6개 완전 사례</span><span>3대 모델 비교</span><span>보안·비용·RAG</span><span>CC × Codex 구현</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1개의 정의</b><span>최소한의 고신호 토큰 세트로 기대 산출물의 생성 확률을 극대화</span></div>
+  <div class="stat"><b>17개 챕터</b><span>기본 문법부터 보안·비용·모델 횡단까지 완전 포괄</span></div>
+  <div class="stat"><b>6대 사례</b><span>원래 지시 → 실패 → 진단 → 수정안 → 성공의 전 과정 수록</span></div>
+  <div class="stat"><b>사실 중심</b><span>공식 확인 / 커뮤니티 합의 / 의견 분기 명확 분류</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">개념 00</div>
+<h2>전체상: 프롬프트 엔지니어링에서 컨텍스트 엔지니어링으로</h2>
+
+<p>2023년에 널리 회자된 '프롬프트 엔지니어링(어떻게 질문할 것인가)'은 2026년 현재 <strong>컨텍스트 엔지니어링(모델에 노출되는 모든 정보를 어떻게 설계하고 관리할 것인가)</strong>으로 진화했습니다. 단발성 질의응답에서 '자율적인 작업 완수'로 AI의 역할이 전환되었기 때문입니다.</p>
+
+<table class="tbl">
+  <tr><th>항목</th><th>프롬프트 엔지니어링 (단발형)</th><th>컨텍스트 엔지니어링 (에이전트 시대)</th></tr>
+  <tr><td>최적화 대상</td><td>단일 지시문의 표현</td><td>컨텍스트 윈도우 전체에 무엇을, 언제 넣고 언제 비울 것인가</td></tr>
+  <tr><td>주요 제약</td><td>지시의 명확성</td><td><strong>Attention(주의 집중) 예산의 유한성</strong>: 과도한 토큰으로 인한 주의 분산</td></tr>
+  <tr><td>대표적 액션</td><td>예시 추가, 출력 포맷 지정</td><td>시스템 프롬프트 계층화, 도구 세트 최소화, 압축 및 메모리 분리</td></tr>
+  <tr><td>공식 정의</td><td colspan="2"><strong>최소한의 고신호 토큰 세트를 통해 목적하는 결과물을 얻을 확률을 극대화한다</strong> (Anthropic Context Engineering 논문 발췌)</td></tr>
+</table>
+
+<div class="callout note"><b class="t">마인드셋과 엔지니어링의 역할 분담</b><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 & 마인드셋</a>이 "AI로 무엇을 할 수 있는가·어떻게 접근할 것인가(원칙)"를 다룬다면, 본 문서는 "구체적으로 어떻게 작성하고 정보를 전달할 것인가(구현)"를 다루는 실무 매뉴얼입니다.</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="basics">
+<div class="sec-tag">기법 01</div>
+<h2>7대 기본 기법 (❌/✅ 대조)</h2>
+
+<h3 data-reveal>1. 명확성과 구체성 (Be Clear & Direct)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 모호한 지시</b>"코드 좀 리팩토링해서 깔끔하게 만들어 줘"</div>
+  <div class="good"><b>✅ 구체적 지시</b>"`calculateTotal` 함수 내부의 다중 중첩 if 문을 가드 절(Early Return)로 변경하고, 계산 로직을 순수 함수로 추출해 주세요"</div>
+</div>
+
+<h3 data-reveal>2. Few-shot (구체적 입출력 예시 제시)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 추상적 규칙 지시만 제공</b>"사용자 피드백을 감성 분석해서 긍정/부정으로 분류해 줘"</div>
+  <div class="good"><b>✅ 2~3건의 입출력 예시 병기</b>"입력: '동작은 빠른데 UI가 복잡함' → 출력: `{"sentiment": "mixed", "aspects": {"performance": "+", "ui": "-"}}`와 같은 포맷으로 출력"</div>
+</div>
+
+<h3 data-reveal>3. 사고 과정 명시 (Chain of Thought / CoT)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 즉시 정답 요구</b>"이 알고리즘의 시간 복잡도를 구해 줘"</div>
+  <div class="good"><b>✅ 사고 단계 지정</b>"먼저 각 루프의 실행 횟수를 수식화하고, 최악의 시나리오를 특정한 뒤, 최종 Big-O 표기법을 도출해 주세요"</div>
+</div>
+
+<h3 data-reveal>4. 구조화 태그를 통한 컨텍스트 분리 (XML/Markdown Tags)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 지시와 참고 자료 혼재</b>"다음 기사 요약해 줘. 기사 내용: ..."</div>
+  <div class="good"><b>✅ 태그로 영역 구분</b>"`&lt;document&gt;...&lt;/document&gt;` 내부 자료를 기반으로, `&lt;instructions&gt;...&lt;/instructions&gt;`에 따라 요약해 주세요"</div>
+</div>
+
+<h3 data-reveal>5. 역할과 페르소나 정의 (Role & Persona)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 일반론적 답변 유도</b>"이 보안 아키텍처를 평가해 줘"</div>
+  <div class="good"><b>✅ 전문적 관점 부여</b>"당신은 금융권 시스템의 수석 보안 아키텍트입니다. OAuth 2.0 PKCE 플로우의 토큰 탈취 위험성에 초점을 맞춰 리뷰해 주세요"</div>
+</div>
+
+<h3 data-reveal>6. 네거티브 제약 (금지 사항의 명확화)</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 긍정 지시만 제공</b>"React 컴포넌트를 작성해 줘"</div>
+  <div class="good"><b>✅ 금지 사항 병기</b>"외부 라이브러리를 새로 설치하지 말고, CSS-in-JS 대신 반드시 CSS Modules를 사용해 주세요"</div>
+</div>
+
+<h3 data-reveal>7. 출력 포맷 엄격 지정</h3>
+<div class="duo">
+  <div class="bad"><b>❌ 자연어 줄글 출력</b>"변경 사항 목록을 알려줘"</div>
+  <div class="good"><b>✅ 스키마나 Markdown 테이블 지정</b>"`파일 경로 | 변경 종류 | 변경 이유` 3개 열의 Markdown 테이블 형식으로 출력해 주세요"</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="structured">
+<div class="sec-tag">기법 02</div>
+<h2>구조화 출력 & 포맷 제어</h2>
+<p>프로그램에 의한 자동 처리를 구현할 때 JSON Mode나 Structured Outputs(Pydantic 스키마 등)를 활용하면 파싱 에러 발생률을 물리적으로 0에 가깝게 낮출 수 있습니다.</p>
+<pre><code><span class="c"># Pydantic 스키마를 활용한 안전한 구조화 출력</span>
+class CodeAuditResult(BaseModel):
+    has_vulnerability: bool
+    severity: Literal["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    cve_id: str | None = None
+    remediation_steps: list[str]</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="multimodal">
+<div class="sec-tag">기법 03</div>
+<h2>멀티모달 프롬프트 작성 요령</h2>
+<ul>
+<li><strong>UI 스크린샷:</strong> 적절한 해상도를 유지하고, 핵심 영역을 빨간 테두리나 번호로 강조.</li>
+<li><strong>설계서 및 PDF:</strong> 페이지 수가 많은 경우 해당 챕터만 추출하여 주입함으로써 Attention 분산 방지.</li>
+<li><strong>OCR 텍스트 병용:</strong> 이미지와 함께 추출 가능한 텍스트 데이터를 함께 넘기면 모델 인식률이 비약적으로 상승.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="models">
+<div class="sec-tag">사용 사례 & 모델 비교 04</div>
+<h2>주요 대형 모델 프롬프트 특성 비교</h2>
+<table class="tbl">
+<tr><th>모델</th><th>프롬프트 특성</th><th>최적의 지시 스타일</th></tr>
+<tr><td><strong>Claude (Anthropic)</strong></td><td>XML 태그(<code>&lt;context&gt;</code> 등) 인식력이 매우 우수하며 지시 준수율이 뛰어남.</td><td>긴 문서를 태그로 구조화하고 세부 제약 사항을 명확히 전달.</td></tr>
+<tr><td><strong>OpenAI (GPT-4o / o3)</strong></td><td>System 프롬프트 민감도가 높고 JSON Mode 및 Tool Calling 연동이 견고함.</td><td>시스템 롤에서 전제를 확정하고 함수 스키마를 엄격히 정의.</td></tr>
+<tr><td><strong>Gemini (Google)</strong></td><td>초대형 컨텍스트(2M) 횡단 추론 및 Context Caching에 강점.</td><td>방대한 문서를 한 번에 주입하고 캐시를 활용하여 질의.</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="rag">
+<div class="sec-tag">사용 사례 & 모델 비교 05</div>
+<h2>RAG 시나리오 프롬프트 설계</h2>
+<p>RAG(검색 증강 생성)에서는 검색된 컨텍스트를 모델이 '절대적 사실'로 우선하도록 프롬프트로 제어합니다:</p>
+<pre><code>&lt;system&gt;
+반드시 아래 &lt;sources&gt;에 기재된 정보만을 근거로 답변하세요.
+자료 내에 답변 근거가 존재하지 않는 경우, 일반적인 추측을 하지 말고 "제공된 자료에는 해당 내용이 없습니다"라고 명확히 밝히세요.
+모든 주장 뒤에는 [1]과 같이 출처 번호를 표기하세요.
+&lt;/system&gt;</code></pre>
+</section>
+
+<div class="divider"></div>
+
+<section id="context">
+<div class="sec-tag">엔지니어링 06</div>
+<h2>컨텍스트 엔지니어링 핵심: 주의력은 희소 자원이다</h2>
+<p>"컨텍스트 윈도우가 크다고 해서 모든 것을 다 집어넣어도 된다는 뜻은 아닙니다." <strong>컨텍스트 내의 정보량이 증가할수록 토큰당 Attention 집중도는 필연적으로 저하</strong>됩니다.</p>
+<ul>
+<li><strong>고신호·저노이즈:</strong> 불필요한 빌드 결과물이나 무관한 코드는 철저히 제외.</li>
+<li><strong>위치 편향 (Lost in the Middle):</strong> 중요한 지시나 규칙은 컨텍스트의 맨 앞이나 맨 뒤에 배치.</li>
+<li><strong>Context Caching 활용:</strong> 정적인 명세서나 리포지토리 정의는 캐싱하여 비용과 지연 시간 단축.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="agentic">
+<div class="sec-tag">엔지니어링 07</div>
+<h2>에이전트 컨텍스트 관리 (장기 작업)</h2>
+<p>장시간 자율 작업을 수행하는 에이전트의 컨텍스트 비대화와 방향 상실을 방지하기 위한 설계입니다:</p>
+<ul>
+<li><strong>서브에이전트 분할:</strong> 조사(Research), 계획(Plan), 구현(Coder)별로 독립된 컨텍스트 부여.</li>
+<li><strong>중간 산출물 영속화:</strong> 사고 과정을 디스크 상의 Markdown(<code>implementation_plan.md</code> 등)에 기록하여 기억을 외부화.</li>
+<li><strong>컨텍스트 정기 리프레시:</strong> 단일 세션에서 과도하게 반복하지 않고 적절한 시점에 새 세션 시작.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="cost">
+<div class="sec-tag">엔지니어링 08</div>
+<h2>Token 경제학과 비용 관리</h2>
+<div class="duo">
+  <div class="good"><b>💡 비용 최적화 모범 사례</b>
+  ・정적 공통 프롬프트를 선두에 고정하여 Prompt Caching 극대화.<br>
+  ・단순 라우팅이나 가벼운 포맷팅에는 경량 모델(Flash / Mini) 할당.<br>
+  ・오래된 대화 로그를 적절히 요약하고 세션 클리어.</div>
+  <div class="bad"><b>💸 비용 폭증 안티패턴</b>
+  ・매번 프롬프트 시작점에 동적 타임스탬프를 넣어 캐시를 무효화.<br>
+  ・모든 단순 작업에 최고가 추론 모델을 일괄 적용.</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="routing">
+<div class="sec-tag">엔지니어링 09</div>
+<h2>모델 라우팅 & 자동 전환</h2>
+<p>작업의 난이도에 따라 경량 모델(판정·분류)에서 최고 성능 추론 모델(아키텍처 설계·심층 디버깅)로 동적 분기하는 아키텍처를 구축합니다.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="security">
+<div class="sec-tag">엔지니어링 10</div>
+<h2>Prompt 인젝션 & 보안 방어</h2>
+<ul>
+<li><strong>간접 인젝션 방어:</strong> 외부 웹페이지나 사용자 입력 텍스트를 읽을 때 프롬프트 지시 영역과 데이터 영역을 엄격히 격리.</li>
+<li><strong>실행 권한 가드레일:</strong> 명령어 실행이나 파일 삭제 전, 미들웨어 단계에서 위험 패턴을 감지하고 차단.</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="cases">
+<div class="sec-tag">실전 11</div>
+<h2>실전 수정 사례집 (총 6선)</h2>
+
+<div class="case">
+  <div class="case-head"><span class="cn">사례 01 · 개발</span><h4>디버깅 프롬프트: '좀 봐줘'에서 근본 원인 규명으로</h4></div>
+  <p class="case-scenario">상황: API 엔드포인트에서 가끔 30초 타임아웃이 발생하여 원인을 찾고 싶은 경우.</p>
+  <div class="cb-label bad">❌ 수정 전 프롬프트</div>
+  <code>api/orders.ts에서 타임아웃 에러가 나는데 왜 이러는지 좀 봐줘.</code>
+  <div class="cb-label good">✅ 수정 후 프롬프트</div>
+  <code>&lt;error&gt;
+TimeoutError: request timed out after 30000ms at fetchUserOrders (api/orders.ts:88)
+&lt;/error&gt;
+
+작업: 이번 타임아웃의 근본 원인을 파악하세요 (단순히 타임아웃 시간을 늘리는 임시방편 제외).
+Done-when:
+1. 쿼리/네트워크/외부 의존성 중 구체적으로 어디서 지연되는지 증거(실행 계획, 시간 측정) 제시
+2. 증상을 덮는 것이 아닌 근본 원인을 해결하는 수정안 제시
+3. 당장 원인 특정이 어렵다면 임의 변경 대신 진단용 로깅 추가
+먼저 조사 계획을 제시하고, 제 승인 후 코드를 수정하세요.</code>
+  <p class="case-takeaway"><strong>핵심:</strong> '좀 봐줘' 식의 지시는 모델이 임시방편(타임아웃 120초로 변경)을 선택하게 만듭니다. Done-when으로 근본 해결을 강제해야 합니다.</p>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="cn">사례 02 · 데이터</span><h4>데이터 분석 프롬프트: 암산 대신 코드로 정확한 계산</h4></div>
+  <p class="case-scenario">상황: 200행의 매출 명세표에서 지역별 전월 대비 성장률을 구하고 싶은 경우.</p>
+  <div class="cb-label bad">❌ 수정 전 프롬프트</div>
+  <code>&lt;data&gt;...(200행 데이터)...&lt;/data&gt;
+각 지역의 이번 달 매출 성장률을 계산해서 높은 순으로 정렬해 줘.</code>
+  <div class="cb-label good">✅ 수정 후 프롬프트</div>
+  <code>&lt;data&gt;...(200행 데이터)...&lt;/data&gt;
+각 지역의 이번 달 매출 성장률을 계산하고 내림차순 정렬하세요.
+요구사항:
+1. 암산하지 말고 반드시 Python 코드를 작성하여 실제 실행하고, 코드와 결과를 함께 보여주세요.
+2. 결측치나 형식 이상이 있다면 건너뛰지 말고 먼저 지적하세요.</code>
+  <p class="case-takeaway"><strong>핵심:</strong> LLM은 계산기가 아닙니다. 수치 연산은 반드시 '코드로 계산하라'고 지시해야 정확도를 담보할 수 있습니다.</p>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="cn">사례 03 · 지식 작업</span><h4>회의록 요약: 긴 문서 속 지시 누락 방지</h4></div>
+  <p class="case-scenario">상황: 40분 회의 녹취록에서 액션 아이템과 논의가 부족했던 결정을 추출하고 싶은 경우.</p>
+  <div class="cb-label bad">❌ 수정 전 프롬프트</div>
+  <code>회의 액션 아이템 정리해 줘: ...(3천 자 녹취)... 아 그리고 논의 부족했던 결정도 표시하고 담당자랑 기한도 적어줘.</code>
+  <div class="cb-label good">✅ 수정 후 프롬프트</div>
+  <code>&lt;transcript&gt;
+...3천 자 회의 녹취...
+&lt;/transcript&gt;
+
+&lt;task&gt;
+위 녹취록을 바탕으로 아래 3개 항목을 출력하세요:
+1. 액션 아이템 목록 (작업 / 담당자 / 마감기한, 미언급 시 '미지정')
+2. 확정된 결정 사항 목록
+3. '충분한 논의 없이 서둘러 통과된' 결정 사항 (판단 기준: 반대 의견 2회 미만 또는 일방적 마무리)
+&lt;/task&gt;</code>
+  <p class="case-takeaway"><strong>핵심:</strong> 긴 자료와 지시사항을 섞어 쓰면 뒷부분 지시가 누락됩니다. <code>&lt;transcript&gt;</code>와 <code>&lt;task&gt;</code>로 물리적으로 분리하세요.</p>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="cn">사례 04 · 에이전트</span><h4>장기 작업 Agent: 컨텍스트 압축 후에도 유지되는 기억</h4></div>
+  <p class="case-scenario">상황: Claude Code에 20개 이상의 파일에 걸친 대규모 리팩토링을 맡기는 경우.</p>
+  <div class="cb-label bad">❌ 수정 전 프롬프트</div>
+  <code>프로젝트의 모든 클래스 컴포넌트를 함수형 컴포넌트와 훅으로 바꾸고, 기존 스타일을 유지하면서 테스트 통과해 줘.</code>
+  <div class="cb-label good">✅ 수정 후 프롬프트</div>
+  <code>모든 클래스 컴포넌트를 함수형 컴포넌트 + 훅으로 리팩토링하세요.
+
+시작 전에 PROGRESS.md를 생성하고 다음을 기록하세요:
+- 스타일 규약: 기존 함수형 컴포넌트(@src/components/UserCard.tsx 참조)와 통일할 문법
+- 대상 파일 체크리스트 (완료 시 체크 및 1줄 변경 요약 기록)
+5개 파일을 처리할 때마다 PROGRESS.md의 스타일 규약을 다시 읽고 방향성을 점검하세요.
+완료 후 테스트를 실행하고 결과를 PROGRESS.md에 추가하세요.</code>
+  <p class="case-takeaway"><strong>핵심:</strong> 컨텍스트 압축이 발생해도 사라지지 않도록 디스크 파일(PROGRESS.md)에 상태와 규칙을 외부화합니다.</p>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="cn">사례 05 · 비즈니스</span><h4>고객센터 시스템 프롬프트: 적절한 고도(Altitude) 교정</h4></div>
+  <p class="case-scenario">상황: 환불 문의에 대응하는 챗봇 프롬프트를 작성하는 경우.</p>
+  <div class="cb-label bad">❌ 너무 낮거나 너무 높은 프롬프트</div>
+  <code>(너무 낮음) "환불"이라 하면 A답변, "취소"라 하면 B답변... (끝없는 if-else)
+(너무 높음) "고객에게 감동을 주는 최고의 환불 서비스를 제공하세요."</code>
+  <div class="cb-label good">✅ 적절한 고도의 프롬프트</div>
+  <code>환불 문의 대응 판단 규칙 (상황에 맞게 자연스러운 언어로 응대):
+- 주문번호와 구매 채널을 먼저 확인 (누락 시 정중히 질의)
+- 구매 후 7일 이내: 이유 불문 즉시 환불 접수
+- 7일 경과: 정책 안내와 함께 대안(포인트 전환/기간 연장) 제시
+- 확인 불가능한 입금 소요 시간을 단정하지 말 것 ("영업일 기준 X일 소요 예정" 안내)
+- 고객이 격앙된 경우: 공감 표현 1문장 후 절차 안내</code>
+  <p class="case-takeaway"><strong>핵심:</strong> 앵무새 같은 템플릿 나열도, 공허한 구호도 아닌 '판단 휴리스틱(원칙과 경계선)'을 제공해야 합니다.</p>
+</div>
+
+<div class="case">
+  <div class="case-head"><span class="cn">사례 06 · 모델 전환</span><h4>프롬프트 마이그레이션: 폐기된 기법 대체</h4></div>
+  <p class="case-scenario">상황: 구형 모델에서 사용하던 프롬프트를 최신 모델로 이전할 때 발생하는 오류 대응.</p>
+  <div class="cb-label bad">❌ 구형 프리필(Prefill) 트릭 그대로 사용</div>
+  <code>// Assistant 메시지에 "{"를 미리 넣어 JSON을 유도하던 옛날 방식 (최신 모델에서 400 에러 발생)</code>
+  <div class="cb-label good">✅ 최신 Structured Outputs 표준 적용</div>
+  <code>system: "사용자 입력을 JSON으로 변환하세요. 서두나 부가 설명 없이 JSON만 출력하세요."
+response_format: { type: "json_schema", json_schema: { ... } }</code>
+  <p class="case-takeaway"><strong>핵심:</strong> 모델 업그레이드 시 편법 트릭에 의존하지 말고 공식 Structured Outputs 기능을 사용하세요.</p>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="templates">
+<div class="sec-tag">실전 12</div>
+<h2>실무 템플릿 모음 (총 12식)</h2>
+
+<div class="prompt-box"><div class="pt">① 만능 작업 프레임워크 (G-C-C-D)</div><code>Goal: 무엇을 완성해야 하는지 1문장 정의
+Context: 배경 자료 및 관련 파일 (&lt;tags&gt;로 격리)
+Constraints: 금지 사항 및 준수 규칙
+Done-when: 완료 여부를 검증할 수 있는 객관적 기준</code></div>
+
+<div class="prompt-box"><div class="pt">② 심층 초안 검토 (역개요 진단형)</div><code>&lt;draft&gt;...내 초안...&lt;/draft&gt;
+이 글의 각 문단이 실제로 무엇을 말하고 있는지 '역개요'를 작성하고, 논리적 비약·중복·누락된 핵심을 진단해 주세요.
+수정문은 작성하지 말고 진단만 먼저 제시하세요. 제 확인 후 수정합니다.</code></div>
+
+<div class="prompt-box"><div class="pt">③ 사실 기반 리서치 (출처 추적형)</div><code>조사 주제: __. 범위: 2025년 이후 정보, __ 제외.
+출력: 핵심 결론(신뢰도 표기) + 근거 목록(출처 링크 포함) + 주요 이견.
+규칙: 확실한 출처가 없는 내용은 추측하지 말고 '확인 불가'로 표기하세요.</code></div>
+
+<div class="prompt-box"><div class="pt">④ 1:1 학습 튜터 (소크라테스 문답식)</div><code>__ 개념을 깊이 있게 이해하고 싶습니다. 바로 설명하지 마세요:
+1. 내 수준을 파악하기 위한 질문 3개를 먼저 출제
+2. 내 답변을 바탕으로 취약점을 파악하고, 내가 익숙한 __ 분야에 빗대어 설명
+3. 마지막으로 확인 응용 문제 출제. 내가 잘못 이해하면 즉시 지적하세요.</code></div>
+
+<div class="prompt-box"><div class="pt">⑤ 코드 기능 개발</div><code>구현할 기능: __. 관련 파일: @a.ts @b.ts.
+제약: 프로젝트 CLAUDE.md 준수, 신규 라이브러리 추가 금지.
+Done-when: npm test 통과 및 신규 로직에 대한 단위 테스트 작성.
+먼저 구현 계획을 제시하고, 제 승인 후 코드를 작성하세요.</code></div>
+
+<div class="prompt-box"><div class="pt">⑥ 비판적 자체 검증 (안전장치)</div><code>방금 당신이 생성한 결과물을 검토하세요:
+1. 사실 오류 및 출처 왜곡
+2. 논리적 허점
+3. 누락된 엣지 케이스
+위 3가지 관점에서 문제점을 지적하고 수정안을 제시하세요.
+마지막으로, 당신의 이름을 걸고 이 결과를 바로 프로덕션에 배포할 수 있습니까?</code></div>
+
+<div class="prompt-box"><div class="pt">⑦ 회의록 및 장문 요약</div><code>&lt;transcript&gt;...원문...&lt;/transcript&gt;
+3가지 목록을 작성하세요: 1) 확정된 결정 2) 액션 아이템(담당자+기한) 3) 남은 쟁점.
+모든 수치와 날짜는 원문 그대로 유지하고 임의로 가공하지 마세요.</code></div>
+
+<div class="prompt-box"><div class="pt">⑧ 데이터 분석 (코드 실행 우선)</div><code>&lt;data&gt;...데이터 또는 파일 경로...&lt;/data&gt;
+분석 질문: __.
+요구사항: 암산하지 말고 Python 코드로 계산하세요. 먼저 계산 기준과 필터링 조건을 제시하고 제 확인 후 실행하세요.
+결론에서 '데이터로 입증된 사실'과 '당신의 추론'을 명확히 구분하세요.</code></div>
+
+<div class="prompt-box"><div class="pt">⑨ 막힘 돌파 및 리셋 (2회 실패 시)</div><code>이 문제를 2회 이상 수정하지 못했습니다. 이전 시도 경로를 모두 잊으세요:
+1. 문제 현상과 이미 배제된 가설을 다시 정리
+2. 가능성 순으로 새로운 접근 방향 3가지 제시
+3. 각 방향별로 5분 이내에 검증 가능한 최소 실험 제시</code></div>
+
+<div class="prompt-box"><div class="pt">⑩ 멀티모달 입력 (스크린샷 / 문서)</div><code>&lt;image&gt;첨부된 스크린샷/문서&lt;/image&gt;
+작업: __ (예: "이 UI를 React 코드로 구현" / "계약서 지급 조건 추출")
+집중 영역: __ (예: "좌측 내비게이션 바의 계층 구조만 확인")
+불확실한 세부 요소(폰트/색상값/문구)는 추측하지 말고 솔직하게 모호하다고 밝히세요.</code></div>
+
+<div class="prompt-box"><div class="pt">⑪ RAG / 지식베이스 질의 (출처 강제)</div><code>&lt;context&gt;
+[문서 1 출처: __] ...
+[문서 2 출처: __] ...
+&lt;/context&gt;
+
+질문: __
+규칙: 반드시 &lt;context&gt; 내부 자료만 근거로 답변하고, 모델의 배경지식으로 보완하지 마세요.
+각 결론마다 출처 문서 번호를 명시하세요.
+문서에 없는 내용은 "제공된 자료에 언급되지 않음"이라고 명시하세요.
+문서 간 모순이 있다면 임의로 선택하지 말고 모순점을 그대로 보고하세요.</code></div>
+
+<div class="prompt-box"><div class="pt">⑫ 장기 에이전트 프로젝트 골격 (노트 우선)</div><code>작업: __ (대규모, 다중 파일 변경 작업)
+시작 전에 PROGRESS.md를 생성하고 다음을 작성하세요:
+- 하드 제약 조건 (코드 스타일/범위/금지 사항)
+- 체크 가능한 할 일 목록
+각 단계를 완료할 때마다 PROGRESS.md를 갱신하세요.
+긴 대화가 이어질 경우 다음 작업을 진행하기 전에 PROGRESS.md를 다시 읽어 규칙 이탈을 방지하세요.</code></div>
+</section>
+
+<div class="divider"></div>
+
+<section id="eval">
+<div class="sec-tag">실전 13</div>
+<h2>평가·반복·버전 관리: 감이 아닌 데이터로 개선하기</h2>
+<ol class="steps">
+  <li><strong>실패 세트 수집:</strong> AI 결과물이 불만족스러울 때마다 [입력 + 나쁜 결과 + 기대한 결과]를 기록 (10개 세트부터 시작).</li>
+  <li><strong>1회 수정, 전체 회귀 테스트:</strong> 프롬프트 변수를 하나 수정할 때마다 실패 세트 전체를 다시 실행하여 개선율 측정 (3개 고치고 2개 망가지면 실패).</li>
+  <li><strong>정기적 가지치기:</strong> 불필요해진 문장을 제거하고 간결한 고신호 프롬프트 유지.</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<section id="antipatterns">
+<div class="sec-tag">실전 14</div>
+<h2>안티패턴 도감</h2>
+<table class="tbl er">
+  <tr><th>안티패턴</th><th>문제 원인 및 올바른 대안</th></tr>
+  <tr><td>프롬프트 비대화</td><td>오류가 날 때마다 규칙을 무한정 추가하여 지시가 상호 충돌함. 정기적인 가지치기 필수.</td></tr>
+  <tr><td>과도한 수식어구</td><td>"당신은 세계 최고의 천재 전문가입니다"는 토큰 낭비. 구체적인 직무와 관점(Persona)을 명시.</td></tr>
+  <tr><td>협박 및 팁 미신</td><td>"틀리면 처벌한다", "팁 100달러 줄게"는 실효성 없음. 명확한 Done-when 기준 제시에 집중.</td></tr>
+  <tr><td>단일 세션 쓰레기통화</td><td>번역, 코딩, 주간 보고서를 한 세션에서 계속 처리하여 컨텍스트 오염. 주제별 세션 분리.</td></tr>
+  <tr><td>대화로 수치 수정 시도</td><td>틀린 계산을 다시 세어보라고 말로 다그침. Python 코드를 실행하여 연산하도록 지시.</td></tr>
+  <tr><td>금지문만 나열</td><td>"하지 마라"만 가득하고 정작 무엇을 해야 하는지 누락. 금지 사항마다 올바른 대안을 함께 제공.</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="tools">
+<div class="sec-tag">구현 15</div>
+<h2>Claude Code / Codex 설정 계층</h2>
+<table class="tbl">
+<tr><th>도구</th><th>글로벌 설정</th><th>프로젝트 설정</th><th>런타임 컨텍스트</th></tr>
+<tr><td><strong>Claude Code</strong></td><td><code>~/.claude/config.json</code></td><td><code>CLAUDE.md</code> / <code>.claude/skills/</code></td><td>터미널 인자 / <code>/mcp</code></td></tr>
+<tr><td><strong>Antigravity / Codex</strong></td><td><code>~/.antigravity/config</code></td><td><code>AGENTS.md</code> / <code>implementation_plan.md</code></td><td>Workspace 상태 / 샌드박스</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="resources">
+<div class="sec-tag">구현 16</div>
+<h2>리소스 & 출처 인덱스</h2>
+<ul>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">Anthropic 공식 Prompt Engineering 가이드</a></li>
+<li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">OpenAI 공식 Prompt Engineering 가이드</a></li>
+<li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank">Google AI 공식 프롬프팅 전략</a></li>
+<li><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 & 마인드셋</a></li>
+<li><a href="claude-code-guide.ko.html">Claude Code 실전 가이드</a></li>
+<li><a href="codex-guide.ko.html">Codex 가이드</a></li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p>프롬프트 & 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026년 7월 개정</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
+
+<script src="../assets/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="初心者からエキスパートへ: クラッシュ図鑑、ANR の解剖、Native クラッシュ、完全なツールチェーン、GP/Firebase コンソール、難解バグの調査術、そして AI トリアージワークフローとオリジナル crash-triage スキル。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Crash &amp; ANR 調査・根本解決 × AI 効率化 · 初心者からエキスパートへ · 2026.07">
+<meta property="og:description" content="初心者からエキスパートへ: クラッシュ図鑑、ANR の解剖、Native クラッシュ、完全なツールチェーン、GP/Firebase コンソール、難解バグの調査術、そして AI トリアージワークフローとオリジナル crash-triage スキル。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/android-crash-anr.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Android Crash & ANR 調査・根本解決 × AI 効率化 · 初心者からエキスパートへ · 2026.07</title>
+<style>
+:root{
+  --accent:#65a30d; --accent-2:#84cc16; --accent-soft:#f1f8e5;
+  --ink:#141a0d; --bg:#ffffff; --bg-side:#fafbf7; --bg-code:#161c10;
+  --text:#232920; --text-2:#5a6352; --text-3:#8e9884;
+  --border:#e8ece2; --border-2:#d8dfcd;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f4f9e8;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#eff3e8;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:900px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#eef4e4;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(132,204,22,.35),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(101,163,13,.28),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#bef264;font-weight:600;background:rgba(132,204,22,.14);
+  border:1px solid rgba(132,204,22,.4);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a3e635,#d9f99d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#c2ccb2;max-width:660px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9aa58a}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3)}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#dcebbc}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f1f5e8;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#4d7c0f}
+pre{background:var(--bg-code);color:#e2e8d5;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8b9779}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#fafbf6}
+.tbl td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fafcf5}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 14px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#fafbf6;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){
+  .duo{grid-template-columns:1fr}
+  .tbl{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f1f8e5;color:#4d7c0f}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#fdeaea;color:#b91c1c}
+.pill.d{background:#eef4fe;color:#1d4ed8}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(20,26,13,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:27px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">⚡</span>Android 安定性ガイド<span class="sub">Crash · ANR · AI</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <span>作成日: 2026-07-15</span>
+    <span>検証日: 2026-08-17</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">入門 · 全体像の把握</div>
+    <a href="#overview"><span class="no">00</span>全体像と方法論</a>
+    <a href="#read-crash"><span class="no">01</span>第1課: クラッシュログを読み解く</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実践 · カテゴリ別対策</div>
+    <a href="#crash-catalog"><span class="no">02</span>頻出 Crash 図鑑と根本解決</a>
+    <a href="#anr"><span class="no">03</span>ANR の徹底解剖</a>
+    <a href="#native"><span class="no">04</span>Native Crash</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">武器庫</div>
+    <a href="#toolbox"><span class="no">05</span>ツールボックスと活用法</a>
+    <a href="#consoles"><span class="no">06</span>Play Console と Firebase</a>
+    <a href="#device-data"><span class="no">07</span>実機データの抽出</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">エキスパート · 難問とAI</div>
+    <a href="#detective"><span class="no">08</span>難解バグの調査術</a>
+    <a href="#ai-method"><span class="no">09</span>AI 連携: 方法論とプロンプト</a>
+    <a href="#ai-workflow"><span class="no">10</span>AI ワークフローとオリジナル Skill</a>
+    <a href="#governance"><span class="no">11</span>ガバナンス体制とリソース</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🤖 Android 安定性 · 初心者からエキスパートへのロードマップ · 公式ドキュメント検証日: 2026-08-17</div>
+  <h1>Crash & ANR 調査・根本解決<br><span class="grad">× AI 効率化実践</span></h1>
+  <p class="lead">スタックトレースの最初の1行を読み解くところから、本番環境の難解バグの根本治療、さらには AI エージェントにクラッシュチケットのトリアージを任せるまで――完全なステップアップパス。クラッシュ図鑑、ANR の解剖、Native クラッシュ、完全なツールチェーン、Play Console / Firebase コンソールの活用法、実機からのデータ抽出、そして本リポジトリオリジナルの crash-triage AI スキルまでを完全網羅。</p>
+  <div class="meta">
+    <span>全12章のステップアップ</span><span>20種以上のクラッシュ図鑑</span><span>全ツールチェーンコマンド早見表</span><span>そのまま使えるオリジナル AI Skill</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>1.09%</b><span>Play クラッシュ率のレッドライン: 超過するとストア全体の露出低下（公式閾値）</span></div>
+  <div class="stat"><b>0.47%</b><span>Play ANR 率のレッドライン（単一端末のレッドラインはいずれも 8%）</span></div>
+  <div class="stat"><b>5 秒</b><span>入力イベント無応答で ANR 発生――メインスレッドの生死ライン</span></div>
+  <div class="stat"><b>5 段階</b><span>現象確認 → 特定 → 原因究明 → 根本解決 → 再発防止（全体の骨格）</span></div>
+</div>
+
+<section id="overview">
+<div class="sec-tag">入門 00</div>
+<h2>全体像と方法論</h2>
+
+<h3 data-reveal>安定性問題の分類マップ</h3>
+<p>まず全体マップを描き、それから調査に着手する。Android の「クラッシュ／フリーズ」は大きく4つに分類され、それぞれ証拠、ツール、対応章が異なります:</p>
+<table class="tbl">
+  <tr><th>タイプ</th><th>現象</th><th>本質</th><th>主要な証拠</th><th>詳細</th></tr>
+  <tr><td><span class="pill c">Java/Kotlin Crash</span></td><td>アプリが強制終了</td><td>未捕捉の例外がコールスタックを遡りメインスレッドの最上位に到達</td><td>logcat 内の <code>FATAL EXCEPTION</code> スタックトレース</td><td><a href="#crash-catalog">02</a></td></tr>
+  <tr><td><span class="pill c">Native Crash</span></td><td>アプリが強制終了</td><td>C/C++ レイヤーのシグナル (SIGSEGV/SIGABRT 等)</td><td>tombstone ファイル、<code>*** ***</code> セクションのログ</td><td><a href="#native">04</a></td></tr>
+  <tr><td><span class="pill b">ANR</span></td><td>フリーズ → システムの「応答なし」ダイアログ</td><td>メインスレッドがブロックされ、制限時間内に重要なイベントを処理できない</td><td><code>/data/anr/</code> の trace、Vitals の ANR レポート</td><td><a href="#anr">03</a></td></tr>
+  <tr><td><span class="pill d">システムによるプロセス強制終了</span></td><td>「使っている最中にホーム画面に戻る」、バックグラウンドでプロセス消滅</td><td>OOM/LMK（Low Memory Killer）による強制終了、バックグラウンド制限、ユーザーによる強制停止</td><td><code>ApplicationExitInfo</code> の終了理由</td><td><a href="#detective">08</a></td></tr>
+</table>
+<div class="callout note"><b class="t">初心者に最も多い誤認</b>「クラッシュログがない強制終了」の多くは通常の Crash ではありません。Native クラッシュ（tombstone を確認）か、システムによるプロセス終了（ExitInfo を確認）のいずれかです。まず正しく分類してから調査に入る――マップを間違えると、すべての努力が無駄になります。</div>
+
+<h3 data-reveal>なぜ解決が必須なのか: プラットフォームの厳格なレッドライン</h3>
+<p>Google Play の Android Vitals では「不正な動作の基準値（Bad behavior threshold）」が定められています。<strong>ユーザー認知クラッシュ率 ≥ 1.09%</strong> または <strong>ユーザー認知 ANR 率 ≥ 0.47%</strong>（全デバイス集計）に達すると、アプリは<strong>ストア全体での露出度が引き下げられます</strong>。また、特定の単一端末モデルで ≥ 8% に達した場合、その端末での露出低下に加え、ストア掲載情報に警告が表示される場合があります。安定性は技術的なこだわりではなく、ユーザー流入とビジネスに直結する問題です。</p>
+
+<h3 data-reveal>全体を貫く 5 段階の方法論</h3>
+<ol class="steps">
+  <li><strong>現象の保全</strong> —— 最も信頼できる生の証拠を確保する: 完全なスタックトレース / trace / ログ、端末情報、OS バージョン、アプリバージョン、再現手順。「人づての曖昧な報告」だけで作業を開始してはならない。</li>
+  <li><strong>特定</strong> —— スタックトレースから「第1現場」を見つける: 自社コードはどのフレームにあるか？難読化されている場合はまず復元（retrace）する。</li>
+  <li><strong>原因究明</strong> ——「なぜこのステップに到達したのか」に答える: null はどこから来たのか？ロックは誰が保持しているのか？メモリは誰が消費したのか？――推測に頼らずツールで証拠を掴む。</li>
+  <li><strong>根本解決</strong> —— 安易に try-catch で囲むのではなく根本原因を修正する。修正後は、修正を証明できる検証手段（再現手順 / リグレッションテスト / カナリアリリース指標）を必ず用意する。</li>
+  <li><strong>再発防止</strong> —— 同類の問題に対する防壁を築く: lint ルール、StrictMode、CI チェック、監視アラート。1つのバグを修正したら、同系統のバグ全体を根絶する。</li>
+</ol>
+<div class="callout tip"><b class="t">ステップアップの推奨パス</b>初心者: 00→01→02（NPE レベルの日常的なクラッシュを自力で解決できるようにする）; 中級者: 03→07（ANR や本番チケットに対応できるようにする）; 上級者: 08以降（再現困難な難解バグを解明し、AI をワークフローに組み込む）。</div>
+
+<h3 data-reveal>最初の当番: 最初の 30 分間の行動チェックリスト</h3>
+<table class="tbl">
+  <tr><th>時間</th><th>必須完了タスク</th><th>成果物 / 意思決定</th></tr>
+  <tr><td>0〜5分</td><td>バージョン、発生時刻、影響ユーザー数、起動直後クラッシュか／コアフロー不能かを確認。関連するカナリア配信を一時停止</td><td>重大度レベル、インシデント対策グループ／担当者の決定。緊急停止基準に達した場合は即座にロールバックまたは feature flag を OFF</td></tr>
+  <tr><td>5〜10分</td><td>4大分類マップに従ってトリアージ: Java/Kotlin、Native、ANR、システムプロセス終了</td><td>唯一の主証拠を選択: stack / tombstone / trace / ExitInfo</td></tr>
+  <tr><td>10〜20分</td><td>3件以上のイベントサンプルを抽出し、mapping/Build ID を突合。バージョン、OS、端末、国、カスタムキーごとに共通点を分析</td><td>「確定した事実」と「未知の項目」のリストを作成。単一サンプルを全体原因と決めつけることを禁止</td></tr>
+  <tr><td>20〜30分</td><td>反証可能な仮説を最大3つ立て、それぞれに検証コマンド、担当者、期限を設定</td><td>カナリア継続／一時停止／ロールバックの意思決定。チーム向けに未検証の修正約束ではなく初報を発信</td></tr>
+</table>
+<div class="callout warn"><b class="t">緊急止血の優先順位</b>起動クラッシュ、決済／ログインなどのコアフロー、新バージョンで急拡大する問題は、まずロールバック／スイッチ OFF による「止血」を行い、その後に分析を進めます。止血は案件のクローズを意味しません。復旧後も根本解決と再発防止をやり遂げる必要があります。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="read-crash">
+<div class="sec-tag">入門 01</div>
+<h2>第1課: クラッシュログを読み解く</h2>
+
+<h3 data-reveal>スタックトレースの解剖: 4つの情報で瞬時に特定</h3>
+<pre><code>FATAL EXCEPTION: main                                    <span class="c">← ① どのスレッドでクラッシュしたか（main = メインスレッド）</span>
+Process: com.example.app, PID: 12345
+java.lang.NullPointerException:                          <span class="c">← ② 例外タイプ: どの図鑑章を参照すべきかを決定</span>
+    Attempt to invoke virtual method 'int java.lang.String.length()'
+    on a null object reference                           <span class="c">← ③ 例外メッセージ: どのオブジェクトのどんな操作か</span>
+  at com.example.app.OrderDetail.bind(OrderDetail.kt:87) <span class="c">← ④ 第1現場: 自社パッケージ名の最上位フレーム</span>
+  at com.example.app.OrderAdapter.onBindViewHolder(OrderAdapter.kt:42)
+  at androidx.recyclerview.widget.RecyclerView...        <span class="c">← フレームワークフレーム: 通常は「通過」しただけ</span>
+Caused by: ...                                           <span class="c">← Caused by がある場合、根本原因は最下部にある！</span></code></pre>
+<ul>
+  <li><strong>スタックの読み順</strong>: まず例外のタイプとメッセージを確認 → 上から下へ走査して<strong>自社パッケージに属する最初のコードフレーム</strong>を見つける → <code>Caused by</code> チェーンがある場合は、最も底にあるものが根本原因;</li>
+  <li><strong>難読化されたスタックの復元</strong>: 本番環境のスタックが <code>a.b.c(Unknown Source)</code> の場合、R8 の mapping.txt を使って復元します: <code>retrace mapping.txt stacktrace.txt</code>（リリースごとの mapping は必ずアーカイブ保存すること！）;</li>
+  <li><strong>現場捕捉の3つの鉄則</strong>: <code>adb logcat -b crash</code> でクラッシュバッファのみを確認; <code>adb logcat --pid $(adb shell pidof -s パッケージ名)</code> で自プロセスのみを追跡; クラッシュ瞬間のログを逃した場合は <code>adb bugreport</code> で事後取得（第07章参照）。</li>
+</ul>
+
+<h3 data-reveal>再現環境の構築: 調査価値の半分を占める重要工程</h3>
+<p>スタックトレースを入手して最初に行うべきはコードの変更ではなく、<strong>安定した再現環境の構築</strong>です。再現できるバグはすでに半分解決したも同然です。3つのレベルで順に試みます: 正確な手順での再現（ユーザー操作パスのトレース）→ 条件付き再現（特定のデータ／ネットワーク／権限状態）→ 負荷テストによる再現（monkey / 画面の連続回転 / 開発者向けオプションの「アクティビティを保持しない」によるプロセス再生成シミュレーション）。</p>
+<pre><code><span class="c"># 3つの代表的なストレステスト・再現スイッチ</span>
+adb shell settings put global always_finish_activities 1   <span class="c"># アクティビティを保持しない: プロセス再生成に伴うクラッシュを顕在化</span>
+adb shell monkey -p com.example.app --throttle 300 -v 5000 <span class="c"># monkey によるランダムイベントストリーム</span>
+<span class="c"># 開発者向けオプション → セカンダリディスプレイのエミュレート／言語切り替え／ダークモード切り替え: 構成変更関連のクラッシュを顕在化</span></code></pre>
+<div class="callout warn"><b class="t">初心者のためのガードレール</b>「グローバルな try-catch で例外をもみ消す」ことでクラッシュを「修正」してはなりません。これはクラッシュを、より検知が難しいデータ不整合や状態異常に変えてしまうだけです。同様に、「クラッシュ防止 SDK」の自動例外キャッチ機能を安易に使用すると、Vitals の数値は見かけ上良くなってもユーザー体験はさらに悪化します。</div>
+
+<h3 data-reveal>証拠引き継ぎシート: 誰が引き継いでも即座に継続できる形式</h3>
+<pre><code>問題 ID / 初回発生時刻 / 現在の担当者：
+影響範囲：バージョン、配信トラック、ユーザー数、Crash/ANR 率、コアフロー
+分類：Java/Kotlin | Native | ANR | システムプロセス終了
+バージョン突合：mapping / native Build ID / ソースコード commit
+分布状況：アプリバージョン、OS、端末モデル、国、feature flags
+主証拠：完全な stack/trace/tombstone へのリンク（スクリーンショット単体は不可）
+確定した事実：証拠によって直接裏付けられた結論のみを記載
+候補仮説：確率 × 影響度で順位付け。各仮説に反証手順を明記
+止血ステータス：ロールバック／フラグOFF／機能制限／未対応（タイムスタンプ付き）
+次のアクション：検証コマンドまたはテスト、担当者、期限</code></pre>
+<p>この引き継ぎシートは、第09章で扱う「クラッシュコンテキストバンドル」の雛形でもあります。まずは人間同士が情報の欠落なく引き継げるようにし、同じ構造化された証拠を AI に渡します。そうでなければ、AI は未検証の推測をより高速に出力するだけに終わってしまいます。</p>
+
+<h3 data-reveal>上記の NPE を最後まで完結させる実例</h3>
+<p>87行目が <code>order.title.length</code> であったと仮定し、Java/JSON の境界まで遡ったところ、サーバー側の古いデータに title が欠落しており、Kotlin が platform type を非 null とみなしていたことが判明したとします。完全なクローズドループは次のようになります:</p>
+<ol class="steps">
+  <li><strong>根本原因の検証:</strong> title が欠落した固定レスポンスを用いて再現。同様のデータが mapper に入ると null が発生し、正常なレスポンスでは発生しないことを確認;</li>
+  <li><strong>根本解決:</strong> DTO → Domain の境界でフィールドを <code>String?</code> と宣言し、ビジネスルールに従って表示可能なプレースホルダーまたは明示的な <code>MalformedOrder</code> を返すようにし、UI レイヤーには常に非 null の Domain のみを渡す;</li>
+  <li><strong>リグレッション確認:</strong> 欠落フィールド、空文字列、正常値、古いキャッシュのデシリアライズをテストで網羅。release + R8 ビルドを実行し、元の操作パスを再テスト;</li>
+  <li><strong>再発防止:</strong> 厳格なデシリアライズ／スキーマ監視を有効化し、Java platform type の境界に対する lint/review ルールを追加。Crashlytics のカスタムキーに応答スキーマバージョンを記録する。</li>
+</ol>
+<div class="callout tip"><b class="t">根本解決できたかの判定基準</b>修正パッチが単に <code>order.title.length</code> を <code>order.title?.length ?: 0</code> に変更しただけで、「title が欠落した注文が有効かどうか」を定義していない場合、それはクラッシュを消しただけであり、データ契約を修正したことにはなりません。</div>
+</section>
+
+<div class="divider"></div>
+<section id="crash-catalog">
+<div class="sec-tag">実践 02</div>
+<h2>頻出 Crash 図鑑と根本解決</h2>
+
+<p>図鑑は例外名を暗記するためのものではなく、「例外メッセージ」から次の調査アクションへと素早く移るためのガイドです。表中の解決策はすべて同一の原則に従っています: <strong>状態と境界を修正し、例外をもみ消さないこと</strong>。</p>
+<table class="tbl">
+  <tr><th>例外 / 典型的シグナル</th><th>発生原因と調査方法</th><th>根本解決と再発防止</th></tr>
+  <tr><td><strong>NullPointerException</strong><br><code>... on a null object reference</code></td><td>Java の null 許容値に対する null チェック漏れ。Kotlin で最も危険なのは Java platform type（<code>String!</code> と表示される）、デシリアライズ時のフィールド欠落、<code>lateinit</code> の未初期化。まず自社の最初の業務フレームを確認し、null 値が生成されたパスを逆引きする。</td><td>Java／ネットワーク／データベースの境界で即座に明示的な null 許容型またはドメインオブジェクトに変換する。<code>requireNotNull</code> は真の不変条件の保護にのみ使用する。<code>?.</code> の連続で必須データを暗黙的にもみ消さないこと。</td></tr>
+  <tr><td><strong>IndexOutOfBoundsException</strong><br><code>Index: 5, Size: 5</code></td><td>インデックスとコレクションが同一スナップショットでない。ページングコールバック、DiffUtil、または並行更新後に古い position を参照している。index、size、adapterPosition、データバージョンを記録する。</td><td><code>getOrNull</code> は欠落が許容される読み取りにのみ使用。RecyclerView のクリック時は <code>bindingAdapterPosition</code> を再取得して <code>NO_POSITION</code> をチェック。イミュータブルなリストを submit する。</td></tr>
+  <tr><td><strong>ClassCastException</strong><br><code>X cannot be cast to Y</code></td><td>Bundle/Intent、JSON、複数タイプ混在リスト、または誤った ClassLoader により、前提と異なる実際の型が渡された。まず実際のクラス名と入力データを出力する。</td><td>タイプセーフな Navigation 引数、sealed class、明示的なシリアライズスキーマを使用する。バージョンを跨ぐデータは必ずマイグレーションを行い、キャストに頼らない。</td></tr>
+  <tr><td><strong>IllegalStateException</strong><br><code>Fragment not attached</code><br><code>after onSaveInstanceState</code></td><td>Fragment が detach されているのに Context にアクセス。状態保存（onSaveInstanceState）後にトランザクションをコミット。RecyclerView のレイアウト途中でデータを変更すると inconsistency エラーが発生。ライフサイクルのタイムラインと全データの書き込み口を照合する。</td><td>適切なライフサイクル内でのみ UI にアクセスする。Navigation イベントの重複排除を行い、復元可能な状態でのみ実行する。リストは単一のデータソースから新しいスナップショットのみを送信する。<code>commitAllowingStateLoss</code> は UI 状態の破棄が真に許容される場合にのみ適する。</td></tr>
+  <tr><td><strong>WindowManager.BadTokenException</strong><br><code>Unable to add window</code></td><td>非 Activity Context でダイアログを表示、または Activity が finishing/destroyed 状態。画面のライフサイクルとコールバックのタイミングを突き合わせて判断する。</td><td>UI イベントは現在表示されている画面で消費させる。表示前の状態チェックは最後の防壁に過ぎず、根本解決は期限切れとなった非同期処理のキャンセルである。</td></tr>
+  <tr><td><strong>WindowLeaked</strong><br><code>Activity has leaked window</code></td><td>Activity 破棄時に Dialog/PopupWindow が表示されたまま。フレームワークがログに出力してウィンドウリークを警告するものであり、<strong>必ずしも未捕捉の Crash 1件と同等とは限りません</strong>。「無効なトークンによるウィンドウ追加失敗」である BadTokenException とは別カテゴリの問題です。</td><td>LifecycleOwner が保持し <code>onDestroy</code> で確実に dismiss する。DialogFragment の使用を推奨。同時にログ後続の真の FATAL EXCEPTION を確認し、診断ログを最終的なクラッシュタイプと誤認しないようにする。</td></tr>
+  <tr><td><strong>IllegalArgumentException</strong><br><code>Receiver not registered</code></td><td>登録と解除のパスが非対称、二重解除、または登録失敗後にクリーンアップを実行した。</td><td>登録状態を一元管理する。<code>onStart/onStop</code> または <code>onResume/onPause</code> とペアにする。新しい API では可視性に応じた receiver flags を明示する。</td></tr>
+  <tr><td><strong>ConcurrentModificationException</strong></td><td>コレクションの反復処理中に現在のスレッドまたは他スレッドから変更された。ログにはスレッド名と変更箇所を同時に記録する。</td><td>単一スレッドへの帰属、イミュータブルなスナップショット、または並行コレクションを使用する。イテレーションを try-catch で囲んで握りつぶしてはならない。</td></tr>
+  <tr><td><strong>ClassNotFoundException / NoSuchMethodError</strong></td><td>R8 によるリフレクション対象の誤削除、Dynamic Feature の未インストール、MultiDex 初期化の順序問題、依存ライブラリのバイナリバージョン競合。APK の内容、dependencyInsight、mapping、影響を受ける ABI/バージョンを照合する。</td><td>リフレクション／JNI／シリアライズの入り口に正確な keep ルールを追加する。依存バージョンを固定し release ビルドでスモークテストを実施。動的モジュール呼び出し前にインストール状態を確認する。</td></tr>
+  <tr><td><strong>ActivityNotFoundException</strong></td><td>暗黙的 Intent の処理ハンドラが存在しない、コンポーネントが削減された、または OEM 端末のアプリが欠落。</td><td>呼び出し前に PackageManager で resolve する。アプリ内フォールバックパスを用意する。明示的コンポーネントは manifest と共にテストする。</td></tr>
+  <tr><td><strong>SecurityException</strong></td><td>実行時パーミッションの欠落、Android 12+ の exported 設定漏れ、バックグラウンド起動／フォアグラウンドサービス制限、未認可 URI へのアクセス。</td><td>ターゲット SDK に合わせた権限ステートマシンを構築。Activity Result API を使用。コンポーネントの露出を最小化し URI は一時的権限を付与。パーミッション拒否や「今後表示しない」のテストを網羅する。</td></tr>
+  <tr><td><strong>TransactionTooLargeException</strong></td><td>Binder トランザクションバッファはプロセス間で共有される。巨大な Bundle、Intent、Fragment 引数、saved state はライフサイクル遷移時に上限を超えやすい。<code>dumpsys activity</code> とシリアライズ後サイズで特定する。</td><td>ID のみを渡し、巨大オブジェクトは DB／ファイル／Repository に保存する。SavedState には UI 復元に必要な最小限の状態のみを保持する。</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>Java heap space</code></td><td>Bitmap、キャッシュ、コレクション、またはメモリリークによる retained heap の増大。heap dump の dominator tree と GC 後の生存オブジェクトを確認する。</td><td>参照チェーンを切断し、画像を適切にリサイズし、上限付き LRU キャッシュを設定する。<code>largeHeap</code> を根本解決策としてはならない。</td></tr>
+  <tr><td><strong>OutOfMemoryError</strong><br><code>pthread_create failed</code></td><td>Java オブジェクトヒープの枯渇ではなく、スレッド数またはスレッドごとのスタック領域の枯渇。スレッドリストを取得し、スレッド名／生成元スタックでクラスタリングする。</td><td>上限付きの共有スレッドプールを使用し、並行数を制限し、リークしたタスクをキャンセルする。リクエストごとの新規スレッド生成を禁止する。</td></tr>
+  <tr><td><strong>EMFILE / too many open files</strong></td><td>ファイルディスクリプタ（fd）の枯渇。OOM、SQLite、またはネットワーク例外としてラップされることが多い。<code>/proc/PID/fd</code> の数とソフトリミットを比較する。</td><td>すべての Cursor、ストリーム、ParcelFileDescriptor、Socket を <code>use</code> で確実にクローズする。ストレステストで fd の推移を監視する。</td></tr>
+  <tr><td><strong>CursorWindowAllocationException</strong></td><td>クエリの列／行が大きすぎる、複数の Cursor が未クローズ、巨大な BLOB の一括読み込み。まず SQL、ウィンドウサイズ、生存している Cursor を調査する。</td><td>必要な列のみをクエリしページングする。BLOB はファイルやストリームに変更。Cursor は構造化して確実にクローズする。</td></tr>
+  <tr><td><strong>SQLiteException / SQLiteDatabaseLockedException</strong></td><td>マイグレーション不備、スキーマとコードの不一致、並行実行される長時間トランザクション、ディスクフルまたは破損。生の SQLite エラーコードを保持し、アップグレードパスを照合する。</td><td>各バージョンのマイグレーションに対して実 DB テストを作成する。トランザクションは短く保つ。Room はシングルトンにする。ディスクフルは復旧可能にし、無条件の DB 削除を禁止する。</td></tr>
+  <tr><td><strong>Resources.NotFoundException</strong></td><td>カラー値をリソース ID と誤認、リソース縮小によるリフレクション参照の誤削除、着せ替えテーマパッケージのバージョン不一致。</td><td>タイプセーフなリソース API を使用する。リソースの keep ルールを正確に定義。テーマパッケージはスキーマバージョンを保持・検証する。</td></tr>
+  <tr><td><strong>RxJava UndeliverableException</strong></td><td>ストリームがキャンセルされた後に非同期エラーの購読者が不在となり、グローバルエラーハンドラに流入。cause を確認し、キャンセル後のネットワークエラーと真のプログラミングエラーを区別する。</td><td>dispose と業務エラーを適切に処理する。グローバルハンドラでは明らかに無害なキャンセル／中断系の cause のみを無視し、それ以外はレポートまたはスレッド例外ハンドラに渡す。</td></tr>
+  <tr><td><strong>CancellationException / コルーチン例外</strong></td><td><code>CancellationException</code> は通常、協調的キャンセルのシグナルである。これを不用意にもみ消すとタスクが継続してしまう。兄弟タスク同士の相互キャンセルは Job 階層を点検する。</td><td>広範な Exception をキャッチした後は必ずキャンセルを再スローする。独立した子タスクには <code>SupervisorJob</code> / <code>supervisorScope</code> を使用。<code>CoroutineExceptionHandler</code> はルートコルーチンの未捕捉例外のみを処理し、try-catch の代用にはならない。</td></tr>
+  <tr><td><strong>ForegroundServiceStartNotAllowedException</strong><br><code>android.app</code>, API 31+</td><td>アプリがバックグラウンド状態でフォアグラウンドサービスを開始しようとした（プッシュ通知受信時や定期タスクコールバック内での直接 <code>startForeground</code> が多発原因）。一部の例外（ユーザーが通知をタップした直後など）を除き、起動は拒否される。</td><td>バックグラウンド契機の処理は <code>WorkManager</code> / <code>JobScheduler</code> にキューイングする。フォアグラウンドサービスが真に必要な場合は、アプリがフォアグラウンドにある間にトリガーするか、<code>startForegroundService</code> の前に免除条件を満たしているか確認する。</td></tr>
+  <tr><td><strong>MissingForegroundServiceTypeException</strong><br><code>android.app</code>, API 31+</td><td><code>startForeground()</code> を呼び出したが、<code>AndroidManifest.xml</code> 内の対応する <code>&lt;service&gt;</code> に <code>android:foregroundServiceType</code>（location/camera/microphone 等）が宣言されていない。</td><td>各フォアグラウンドサービスに manifest でタイプを明示的に宣言する。Android 14+ では一部のタイプで実行時権限も要求されるため、リリース前に targetSdk 34+ の実機でスモークテストを実施する。</td></tr>
+  <tr><td><strong>InvalidForegroundServiceTypeException / StartForegroundCalledOnStoppedServiceException</strong><br><code>android.app</code></td><td>前者は宣言された type と実際の呼び出しパラメータが不一致。後者はサービスが既に <code>stopSelf()</code> 済み／システムに回収された後に <code>startForeground()</code> を呼び出した（非同期コールバックが <code>onDestroy</code> の後に戻ってきた場合に多発）。</td><td>startForeground の呼び出し前にサービス自身のライフサイクル状態を検証する。非同期結果のコールバックは「サービスがまだ生存しているか」の判定レイヤーを一律通過させ、Activity 側の「画面がまだ存在するか」と同じパターンを適用する。</td></tr>
+</table>
+
+<h3 data-reveal>ライフサイクル関連のクラッシュ: 真の問題は「状態の陳腐化」</h3>
+<ol class="steps">
+  <li><strong>プロセス再生成</strong>: システムがバックグラウンドプロセスを強制終了した後、<code>savedInstanceState</code> を用いて Activity/Fragment を再生成します。静的シングルトンにデータが残っている前提を禁止し、永続化された ID から復元し、ViewModel の SavedStateHandle には最小限の状態のみを保存します。</li>
+  <li><strong>Fragment View のライフサイクル</strong>: Fragment が生存していても View が生存しているとは限りません。LiveData/Flow を購読する際は <code>viewLifecycleOwner</code> にバインドし、<code>onDestroyView</code> で binding をクリアします。</li>
+  <li><strong>非同期結果の陳腐化</strong>: ネットワーク／位置情報／決済のコールバックが戻った時点で、画面は既に破棄されている可能性があります。タスクを lifecycleScope/viewModelScope に連動させてキャンセルするか、結果を状態コンテナに書き込み、現在表示されている UI がそれを描画するように設計します。</li>
+</ol>
+<div class="duo">
+  <div class="bad"><b>一見解決に見える対処</b>Activity を WeakReference でラップする。これは強参照リークを減らすだけであり、画面が依然として更新可能な状態にあることを証明せず、バックグラウンド処理のキャンセルも行いません。</div>
+  <div class="good"><b>根本解決パターン</b>ライフサイクルがキャンセルを担当し、状態コンテナが結果の保持を担当し、画面は STARTED 状態の時のみ収集・描画する。プロセス再生成時は永続層から復元する。</div>
+</div>
+<div class="callout tip"><b class="t">3つの汎用予防ライン</b>① Kotlin の境界引き締め: Java/JSON/データベースの入り口で直ちに null 許容性とスキーマを検証; ② チーム内で多発するミスを Android Lint/Detekt ルール化; ③ CI で release + R8 スモークテスト、マイグレーションテスト、プロセス再生成および画面回転のリグレッションを必須実行。</div>
+<p class="src">出典: <a href="https://developer.android.com/topic/libraries/architecture/saving-states" target="_blank">Android: UI 状態の保存</a> · <a href="https://developer.android.com/guide/fragments/lifecycle" target="_blank">Fragment のライフサイクル</a> · <a href="https://kotlinlang.org/docs/exception-handling.html" target="_blank">Kotlin コルーチンの例外処理</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="anr">
+<div class="sec-tag">実践 03</div>
+<h2>ANR の徹底解剖：メインスレッドのスナップショットからブロック源を突き止める</h2>
+
+<h3 data-reveal>まずタイムアウトの種類を正確に把握する</h3>
+<table class="tbl">
+  <tr><th>タイプ</th><th>AOSP / Pixel のデフォルトタイムアウト</th><th>最初のチェックポイント</th></tr>
+  <tr><td>Input dispatch</td><td><strong>5 秒</strong></td><td>main が実行中か、実行可能（Runnable）なのにスケジュールされていないか、ロック／Binder 待ちか</td></tr>
+  <tr><td>Broadcast</td><td>Android 13 以下: フォアグラウンド優先度 10 秒、バックグラウンド 60 秒; Android 14+ では CPU 逼迫時に <strong>20 / 120 秒</strong> に延長可能</td><td>ANR subject の intent flags、コールドスタート時間、<code>onReceive</code>/<code>goAsync</code> が速やかに finish されているか</td></tr>
+  <tr><td>Execute service</td><td>フォアグラウンドサービスプロセス 20 秒; バックグラウンド 200 秒</td><td><code>onCreate/onStartCommand/onBind</code> およびコールドスタートがメインスレッドをブロックしていないか</td></tr>
+  <tr><td>ContentProvider</td><td>呼び出し側の <code>ContentProviderClient.setDetectNotResponding</code> で指定</td><td>リモートクエリ、コールドスタート、Binder スレッドプールがブロックされていないか</td></tr>
+</table>
+<div class="callout note"><b class="t">バージョンの境界</b>上記は現在の Android 公式ドキュメントに記載されている AOSP/Pixel のデフォルト値であり、OEM によって調整される場合があります。また、フォアグラウンドサービスが 5 秒以内に <code>startForeground()</code> を呼び出さなかった場合や、JobScheduler のコールバックタイムアウトなど、独立した ANR タイプも存在します。「5秒」という数字だけで全ての ANR を判断してはなりません。</div>
+
+<h3 data-reveal>8 つの頻出根本原因</h3>
+<ul>
+  <li><strong>メインスレッドでの I/O:</strong> ファイル、データベース、DNS、ネットワーク、Binder、または巨大な JSON/Proto のシリアライズ;</li>
+  <li><strong>SharedPreferences:</strong> <code>commit()</code> による同期的ディスク書き込み。<code>apply()</code> は非同期ディスク書き込みですが、未完了の書き込みは Activity/Service のライフサイクル遷移時にフレームワークによって待機されるため、QueuedWork を通じて ANR を引き起こす可能性があります。新規プロジェクトでは DataStore を優先;</li>
+  <li><strong>ロック競合／デッドロック:</strong> main スレッドがバックグラウンドスレッドの保持するロックを待機し、そのバックグラウンドスレッドが main や同期 Binder を待機している;</li>
+  <li><strong>同期 Binder:</strong> スタックが <code>BinderProxy.transactNative</code> で停止しており、真のボトルネックが system_server または別プロセスにある;</li>
+  <li><strong>ブロードキャストとサービス:</strong> <code>onReceive</code>、コールドスタート時の初期化、<code>onStartCommand</code> で重い処理を実行している。<code>goAsync()</code> の <code>finish()</code> 呼び出し忘れ;</li>
+  <li><strong>レイアウトストーム:</strong> 深いネスト、頻繁な requestLayout、Compose の高頻度な無効再構成（recomposition）による measure/layout のタイムアウト;</li>
+  <li><strong>GC スラッシング:</strong> 短時間の大量メモリ割り当てにより main スレッドが頻繁に一時停止。単一の GC ログだけで断定せず、Perfetto の割り当てとスケジューリングのタイムラインを照合する;</li>
+  <li><strong>システム負荷:</strong> main が Runnable 状態のまま長時間 CPU が割り当てられない、system_server のロック、GPU ハングなど、アプリ自身の長時間タスクに起因しないケース。</li>
+</ul>
+
+<h3 data-reveal>trace の読み方: ロックチェーンを辿り真の保持者を見つける</h3>
+<pre><code>"main" prio=5 tid=1 Blocked
+  | group="main" sCount=1 dsCount=0 flags=1 obj=0x... self=0x...
+  | sysTid=18420 nice=-10 cgrp=default sched=0/0 handle=0x...
+  | state=S schedstat=(...) utm=82 stm=21 core=4 HZ=100
+  | held mutexes=
+  at com.example.Cache.read(Cache.kt:48)
+  - waiting to lock &lt;0x07c1&gt; (a java.lang.Object)
+  at com.example.HomeActivity.onResume(HomeActivity.kt:91)
+
+"sync-worker" prio=5 tid=27 TimedWaiting
+  - locked &lt;0x07c1&gt; (a java.lang.Object)
+  at android.os.BinderProxy.transactNative(Native method)
+  at com.example.remote.ISyncService$Stub$Proxy.refresh(...)</code></pre>
+<ol class="steps">
+  <li><strong>main の状態を確認:</strong> Runnable は計算処理中または CPU 飢餓の可能性; Blocked はモニターロック待ち; Waiting/TimedWaiting は何を待っているかを確認; Native は最上位の native メソッドと Perfetto を併せて確認。</li>
+  <li><strong>待機オブジェクトを特定:</strong> <code>&lt;0x07c1&gt;</code> をコピーし、ファイル全体で <code>locked</code> または「held by thread N」を検索してロック保持スレッドを特定。</li>
+  <li><strong>チェーンをさらに追跡:</strong> ロック保持スレッドがさらに Binder や別のロックを待っている場合、最終的な実行者まで追跡。同時に system_server と Binder スレッドのスタックも確認。</li>
+  <li><strong>スナップショットの補正:</strong> trace はタイムアウト発生後に取得される場合があります。最上位が <code>nativePollOnce</code> で main が既にアイドル状態になっている場合は、推測に頼らず同一クラスタの別イベントや Perfetto を優先して確認する。</li>
+</ol>
+
+<h3 data-reveal>根本解決と早期検出</h3>
+<pre><code>if (BuildConfig.DEBUG) {
+    StrictMode.setThreadPolicy(
+        StrictMode.ThreadPolicy.Builder()
+            .detectAll()
+            .penaltyLog()
+            .penaltyDeath()
+            .build()
+    )
+}</code></pre>
+<ul>
+  <li>I/O とシリアライズは上限付きの dispatcher に逃がし、キャンセル、タイムアウト、メインスレッドへの結果通知の境界を設計する;</li>
+  <li>ロックを保持した状態で I/O、Binder、コールバックを実行しないこと。クリティカルセクションを極小化し、共有可変状態の代わりにイミュータブルなスナップショットや単一スレッドのステートマシンを採用する;</li>
+  <li>ブロードキャストはタスクのスケジュールのみを行う。実行保証が必要な場合は WorkManager/JobScheduler を適切に使用し、<code>onReceive</code> 内で結果を待機しない;</li>
+  <li>ANR-Watchdog はスレッドが長時間無応答の場合に自社スレッドのスタックを先行取得できますが、デバッガ接続、システムの CPU 飢餓、長フレームによる誤検知があり、システム全体の ANR コンテキストを把握することもできません。これは補完的な観測手段であり、Vitals、ExitInfo、bugreport の代替にはなりません。</li>
+</ul>
+<p class="src">出典: <a href="https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs" target="_blank">Android: ANR の診断と修正</a> · <a href="https://developer.android.com/reference/android/content/SharedPreferences" target="_blank">SharedPreferences API</a> · <a href="https://developer.android.com/topic/performance/vitals/anr" target="_blank">Android Vitals: ANR</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="native">
+<div class="sec-tag">実践 04</div>
+<h2>Native Crash：シグナルからソースコード行へ</h2>
+
+<table class="tbl">
+  <tr><th>シグナル</th><th>一般的な意味</th><th>優先すべき証拠</th></tr>
+  <tr><td><code>SIGSEGV</code></td><td>null/不正ポインタ、境界外アクセス、use-after-free、メモリアクセス権限エラー</td><td>signal code、fault addr、最初の自社 so フレーム、memory map</td></tr>
+  <tr><td><code>SIGABRT</code></td><td><code>abort/assert</code>、FORTIFY または CHECK による自発的終了</td><td>Abort message とクラッシュ直前の logcat。すべての Java 例外を安易に SIGABRT と総称しない</td></tr>
+  <tr><td><code>SIGILL</code></td><td>不正命令、破損した関数ポインタ、CPU/ABI 不一致</td><td>pc が位置するマッピング、ABI、逆アセンブル結果</td></tr>
+  <tr><td><code>SIGBUS</code></td><td>非アライメントアクセス、mmap ファイルの切り詰め、バスエラー</td><td>fault addr、マップされたファイルのサイズとアクセスオフセット</td></tr>
+  <tr><td><code>SIGFPE</code></td><td>ゼロ除算、オーバーフロートラップ等の算術エラー</td><td>レジスタ、命令、入力値</td></tr>
+</table>
+
+<h3 data-reveal>まず tombstone を入手する: 4 つの経路</h3>
+<p>以下の5つのセクションの読み方に進む前に、手元に tombstone ファイルがないケースが多いため、まず入手経路を整理します:</p>
+<table class="tbl">
+  <tr><th>シナリオ</th><th>入手方法</th></tr>
+  <tr><td>root 済みの検証端末</td><td><code>/data/tombstones/tombstone_NN</code> を直接読み出す（番号順にローテーション上書きされるため放置しない）</td></tr>
+  <tr><td>非 root 端末</td><td><code>adb bugreport</code> で生成された zip 内、<code>FS/data/tombstones/</code> などのパス</td></tr>
+  <tr><td>コマンドライン直接照会（非 root）</td><td><code>adb shell dumpsys dropbox --print SYSTEM_TOMBSTONE</code></td></tr>
+  <tr><td>Crashlytics NDK 導入済み</td><td>Firebase コンソールの該当 native crash イベントページからシンボル化前の tombstone を直接ダウンロード</td></tr>
+</table>
+
+<h3 data-reveal>tombstone 5 つのブロックの読み解き方</h3>
+<p>以下は AOSP 公式ドキュメントに示されている tombstone フォーマットの例です（過去モデルの例ですが、フィールド構造は現在と同一であり、16進数アドレスのビット幅のみが ABI によって異なります）:</p>
+<pre><code>*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Build fingerprint: 'Android/aosp_flounder/flounder:5.1.51/AOSP/enh08201009:eng/test-keys'
+Revision: '0'
+ABI: 'arm'
+pid: 1656, tid: 1656, name: crasher  &gt;&gt;&gt; crasher &lt;&lt;&lt;
+signal 6 (SIGABRT), code -6 (SI_TKILL), fault addr --------
+Abort message: 'some_file.c:123: some_function: assertion "false" failed'
+    r0 00000000  r1 00000678  r2 00000006  r3 f70b6dc8
+    r4 f70b6dd0  r5 f70b6d80  r6 00000002  r7 0000010c
+    r8 ffffffed  r9 00000000  sl 00000000  fp ff96ae1c
+    ip 00000006  sp ff96ad18  lr f700ced5  pc f700dc98  cpsr 400b0010
+backtrace:
+    #00 pc 00042c98  /system/lib/libc.so (tgkill+12)
+    #01 pc 00041ed1  /system/lib/libc.so (pthread_kill+32)
+    #02 pc 0001bb87  /system/lib/libc.so (raise+10)
+    #03 pc 00018cad  /system/lib/libc.so (__libc_android_abort+34)
+    #04 pc 000168e8  /system/lib/libc.so (abort+4)
+    #05 pc 0001a78f  /system/lib/libc.so (__libc_fatal+16)
+    #06 pc 00018d35  /system/lib/libc.so (__assert2+20)
+    #07 pc 00000f21  /system/xbin/crasher
+    #08 pc 00016795  /system/lib/libc.so (__libc_init+44)
+    #09 pc 00000abc  /system/xbin/crasher
+Tombstone written to: /data/tombstones/tombstone_06
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***</code></pre>
+<ol class="steps">
+  <li><strong>Abort message:</strong> 自発的な異常終了の場合、条件がすでに記載されているため最優先で確認します――上記の例ではアサーション元のファイル、行番号、条件が明記されています;</li>
+  <li><strong>signal / code / fault addr:</strong> この例は <code>SIGABRT</code>（自発的終了、<code>fault addr</code> は空）です。<code>SIGSEGV</code> の場合は <code>signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0</code> のような形式になります――<code>0x0</code> や極めて低いアドレスは一般に null ポインタやフィールドオフセットを示し、上位のランダムアドレスは野良ポインタ／境界外アクセスが疑われますが、map や sanitizer の証拠と突き合わせる必要があります。stack guard 付近ならスタックオーバーフローを考慮します;</li>
+  <li><strong>backtrace:</strong> 各行の形式は <code>#フレーム番号 pc 相対アドレス  ライブラリパス (シンボル名+オフセット)</code>（上の <code>#00 pc 00042c98  /system/lib/libc.so (tgkill+12)</code> など）です。libc の memcpy/free で止まらず、自社 so に属する最初の pc offset を見つけます;</li>
+  <li><strong>registers:</strong> クラッシュ箇所の命令と照合し、どのレジスタが不正ポインタであるかを判断します;</li>
+  <li><strong>memory map:</strong> fault addr がマッピング済み領域内にあるか、アクセス権限と一致しているかを確認し、ライブラリの Build ID を照合します。シンボルファイルは本番 APK の ABI および Build ID と厳密に一致している必要があります。</li>
+</ol>
+
+<h3 data-reveal>シンボル化の 3 点セット</h3>
+<pre><code><span class="c"># まず候補ディレクトリをリスト化; readelf -n で tombstone 内の Build ID と突合（古いハッシュの誤用を厳禁）</span>
+find app/build/intermediates/cxx -type d \
+  -path '*/RelWithDebInfo/*/obj/arm64-v8a' -print
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf \
+  -n 候補ディレクトリ/libfoo.so | grep 'Build ID'
+
+<span class="c"># Build ID 突合後、ACTUAL_HASH を一致したディレクトリに置換</span>
+SYMBOL_DIR=app/build/intermediates/cxx/RelWithDebInfo/ACTUAL_HASH/obj/arm64-v8a
+$ANDROID_NDK_HOME/ndk-stack \
+  -sym "$SYMBOL_DIR" \
+  -dump tombstone.txt
+
+<span class="c"># 単一 so + 相対 PC; -C は C++ 名のデマングル、-f は関数名表示、-e は ELF 指定</span>
+$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-addr2line \
+  -C -f -e libfoo.so 0x1234
+
+<span class="c"># Crashlytics NDK シンボルアップロード; パスはビルド成果物に合わせて調整</span>
+firebase crashlytics:symbols:upload \
+  --app=1:1234567890:android:abcdef app/build/native-debug-symbols</code></pre>
+
+<h3 data-reveal>メモリデバッグツールの選び方</h3>
+<table class="tbl">
+  <tr><th>ツール</th><th>適用フェーズ</th><th>コスト / 特徴</th></tr>
+  <tr><td>ASan</td><td>ローカル／テスト環境でのヒープ境界外、UAF の検出</td><td>互換性が広いがオーバーヘッドが高い。現在の NDK ガイドに従ってテストビルドを設定</td></tr>
+  <tr><td>HWASan</td><td>64 ビット Arm テスト環境での徹底的なメモリバグ探索</td><td>従来の ASan より Android に適しているが、依然として顕著なメモリオーバーヘッドあり。端末／OS 要件あり</td></tr>
+  <tr><td>GWP-ASan</td><td>本番環境での低オーバーヘッドサンプリング</td><td>一部の割り当てのみをサンプリングするため、サンプル数が多いほどヒットしやすい。Android 14+ には Recoverable GWP-ASan 機能あり</td></tr>
+  <tr><td>MTE</td><td>ハードウェアによる継続的検出／保護</td><td>メモリタギングを活用。同期モードは特定精度が高く、非同期モードは低オーバーヘッド。端末とデプロイ戦略に依存</td></tr>
+</table>
+<h3 data-reveal>ヒット箇所からソースコードの根本解決へ</h3>
+<ul>
+  <li><strong>UAF / 二重解放:</strong> オブジェクトの所有権を明確化し、RAII と <code>std::unique_ptr</code> を優先。スレッド間で共有ライフサイクルを渡す場合のみ <code>shared_ptr</code> を使用し、停止／破棄の順序を設計する;</li>
+  <li><strong>境界外アクセス:</strong> すべての長さとオフセットを同一箇所で検証し、長さ情報を持つコンテナ／ビューを使用する。パーサーには切り詰め、超長、不正入力の単体テストと fuzzing を追加する;</li>
+  <li><strong>JNI 規約:</strong> Java 例外、ローカル／グローバル参照、スレッドのアタッチ状態を確認する。スレッドを跨いだローカル参照の保持を禁止し、method/class ID のキャッシュ時は ClassLoader とアンロード境界を処理する。CheckJNI を有効化し、本番の native crash になる前に開発段階でエラーを検出する（下記 CheckJNI 節参照）;</li>
+  <li><strong>スタックオーバーフロー:</strong> 無限再帰や巨大なスタック配列を排除し、イテレーション／ヒープ割り当てに変更し、深度に上限を設ける;</li>
+  <li><strong>再発防止:</strong> 修正後に同一の sanitizer で元の入力を再テストし、release シンボルアップロード検証、ABI スモークテスト、native 単体テスト／fuzzing、本番 GWP-ASan サンプリングを追加する。</li>
+</ul>
+<div class="callout warn"><b class="t">最も無駄な作業パターン</b>バージョンが異なる so ファイルを使ってシンボル化すること。アドレスから「何らかの関数名が引けた」としても、その結果が正しいとは限りません。まず ABI、Build ID、バージョン番号を照合してからソースコードの行を確認してください。</div>
+
+<h3 data-reveal>CheckJNI: JNI 規約違反を実行時・開発期にエラーとして顕在化</h3>
+<p>エミュレータではデフォルトで有効（logcat に <code>CheckJNI is ON</code> と表示）ですが、実機で有効化する方法は以下の通りです:</p>
+<pre><code><span class="c"># 非 root: 以降に起動するプロセスに対して有効</span>
+adb shell setprop debug.checkjni 1
+
+<span class="c"># root 済み: システムレベルで常時有効化</span>
+adb shell stop &amp;&amp; adb shell setprop dalvik.vm.checkjni true &amp;&amp; adb shell start</code></pre>
+<p><code>android:debuggable="true"</code> のアプリでも自動的に有効になります。CheckJNI は、以下のような規約違反が発生した際に静かに native crash するのではなく、その場で即座にエラーを報告して処理を遮断します:</p>
+<table class="tbl">
+  <tr><th>チェックカテゴリ</th><th>代表的なトリガーシナリオ</th></tr>
+  <tr><td>不正参照／不正ポインタ</td><td>解放済みの jobject/jarray/jstring を JNI に渡す。オブジェクトを渡すべき箇所に NULL を渡す</td></tr>
+  <tr><td>スレッド帰属エラー</td><td>異なるスレッドから、そのスレッドに属さない <code>JNIEnv*</code> を使用する（各スレッドの <code>JNIEnv*</code> はスレッド間を跨げない）</td></tr>
+  <tr><td>未処理例外がある状態での JNI 呼び出し</td><td>クリアされていない Java 例外がある状態で新たな JNI 呼び出しを発行（<code>DeleteGlobalRef</code>/<code>DeleteLocalRef</code>/例外関連関数は例外的に許容される）</td></tr>
+  <tr><td>jfieldID / jmethodID の誤用</td><td>NULL フィールド ID、型の不一致、static/non-static の混同、戻り値の型と宣言の不一致</td></tr>
+  <tr><td>参照タイプの誤用</td><td>ローカル参照に対して <code>DeleteGlobalRef</code> を呼ぶ、またはその逆</td></tr>
+  <tr><td>UTF-8 検証エラー</td><td>不正な Modified UTF-8 バイトシーケンスを渡す</td></tr>
+</table>
+<p>ローカル参照で最も多い2大トラップ: ループ内でローカル参照を大量生成して解放しない（<code>DeleteLocalRef</code> または <code>PushLocalFrame</code>/<code>PopLocalFrame</code> で囲むべき）; <code>AttachCurrentThread</code> でアタッチしたネイティブスレッドで作成されたローカル参照は、<strong>スレッドが detach されるまで自動解放されない</strong>ため手動削除が必須です。グローバル参照で最も多いトラップは、2つの参照が同一オブジェクトを指しているかを <code>==</code> で比較することです――必ず <code>IsSameObject</code> を使用してください。公式ドキュメントでも「オブジェクト参照が定数である、または一意であると仮定してはならない」と強調されています。</p>
+<p class="src">出典: <a href="https://developer.android.com/ndk/guides/debug" target="_blank">Android NDK: プロジェクトのデバッグ</a> · <a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">AOSP: ネイティブ クラッシュの診断</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">メモリ エラーのデバッグと軽減</a> · <a href="https://developer.android.com/training/articles/perf-jni" target="_blank">JNI Tips（CheckJNI と参照管理）</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="toolbox">
+<div class="sec-tag">武器庫 05</div>
+<h2>ツールボックスと活用法：まず「証拠はどこにあるか」を問う</h2>
+
+<table class="tbl">
+  <tr><th>現象</th><th>第1ツール</th><th>高度な調査ツール</th></tr>
+  <tr><td>直前の Java/Kotlin クラッシュ</td><td><code>adb logcat -b crash -v threadtime</code></td><td>Crashlytics / Play Vitals + retrace</td></tr>
+  <tr><td>フリーズ、ANR、散発的な遅延</td><td>ANR trace / ApplicationExitInfo</td><td>bugreport + Perfetto でスケジューリング、ロック、Binder を分析</td></tr>
+  <tr><td>Native クラッシュ</td><td>tombstone + バージョン一致シンボル</td><td>ASan/HWASan/GWP-ASan</td></tr>
+  <tr><td>メモリ増加</td><td>Memory Profiler / heap dump</td><td>LeakCanary、MAT dominator tree、fd/スレッド数カウント</td></tr>
+  <tr><td>フレーム落ち／再構成の異常</td><td>CPU Profiler、Layout Inspector</td><td>Perfetto Frame Timeline / Compose 重組カウント</td></tr>
+</table>
+<h3 data-reveal>ツールが証拠を与え、証拠が根本解決を決定する</h3>
+<table class="tbl">
+  <tr><th>証拠の確定</th><th>根本解決アクション</th><th>リグレッションの証明</th></tr>
+  <tr><td>業務第1フレーム + 入力状態が null / 境界外を証明</td><td>データ境界、ステートマシン、スナップショット整合性を修正</td><td>最小再現テスト + release/R8 スモークテスト</td></tr>
+  <tr><td>Perfetto が main の長時間タスク、ロック待ち、CPU 飢餓を示す</td><td>タスクの非同期化、ロック区間の短縮、Binder 対向の追跡; システム負荷問題は端末/OS別にクラスタリング</td><td>同一シナリオの trace 比較 + ANR カナリア指標</td></tr>
+  <tr><td>heap dominator がリークチェーン／無制限キャッシュを指す</td><td>ライフサイクル参照の切断、キャッシュへの予算（上限）設定</td><td>同一シナリオの反復操作後に retained heap が低下することを確認</td></tr>
+  <tr><td>sanitizer が割り当て／解放スタックを報告</td><td>所有権、境界チェック、JNI 規約の修正</td><td>同一入力で sanitizer のエラーが再発しないこと + fuzzing リグレッション</td></tr>
+  <tr><td>ExitInfo が LMK／ユーザー要求／権限変更を示す</td><td>終了タイプに応じた復元処理とメモリ予算の調整（偽の Crash 修正を行わない）</td><td>プロセス再生成テスト + 本番終了理由の分布確認</td></tr>
+</table>
+
+<h3 data-reveal>コマンドラインでの証拠採取</h3>
+<pre><code><span class="c"># クラッシュバッファの取得; 発生時刻、PID、TID を保持</span>
+adb logcat -b crash -v threadtime -d &gt; crash.log
+
+<span class="c"># 現在のプロセスのみを監視; アプリ再起動後は PID が変化する</span>
+adb logcat --pid=$(adb shell pidof -s com.example.app) -v threadtime
+
+<span class="c"># システム全体の包括的現場パッケージ</span>
+adb bugreport bugreport.zip
+
+<span class="c"># 20秒間の Perfetto トレース: スケジューリング、周波数、ウィンドウ、描画、Binder、ランタイム</span>
+adb shell perfetto -o /data/misc/perfetto-traces/anr.perfetto-trace \
+  -t 20s sched freq idle am wm gfx view binder_driver hal dalvik input res memory
+adb pull /data/misc/perfetto-traces/anr.perfetto-trace .</code></pre>
+<p>取得した trace を <a href="https://ui.perfetto.dev" target="_blank">ui.perfetto.dev</a> にドラッグ＆ドロップし、まず main の Thread State を確認します: Running は実際に処理を実行中、長区間の Runnable は CPU 飢餓の疑い、Sleeping/Blocked の場合は wakeup 側やロックチェーンを辿ります。古い Android バージョンで pull 権限がない場合は <code>adb shell cat パス &gt; ローカルファイル</code> を使用します。</p>
+
+<h3 data-reveal>開発時のガードレールとメモリツール</h3>
+<ul>
+  <li><strong>StrictMode:</strong> debug ビルドでメインスレッドのディスク／ネットワーク I/O、Closeable のリーク、未登録オブジェクトを早期検出; <code>penaltyDeath</code> は開発ビルドのみで使用;</li>
+  <li><strong>LeakCanary:</strong> 破棄されたオブジェクトへの弱参照を保持し、GC 実行後も到達不能になるべきなのに回収されない場合に自動で heap を dump して参照チェーンを特定。メモリリークを特定するものであり、あらゆる OOM を説明するわけではありません;</li>
+  <li><strong>Memory Profiler / MAT:</strong> 2つの時点での生存オブジェクトを比較し、dominator tree で retained heap の順にソートして「それを削除すると最も多くのメモリが解放される」支配者を見つける;</li>
+  <li><strong>CPU / Energy Profiler:</strong> 再現操作の前後に記録し、メインスレッドのホットスポット、システムコール、wakeup を確認。サンプリングは負荷が低く、インストルメンテーション（計測コード挿入）は詳細ですがタイミングが変化します;</li>
+  <li><strong>Compose Layout Inspector:</strong> Recomposition 数 / Skip 数を確認し、状態の読み取りスコープを特定。カウントの高さは手掛かりに過ぎず、Perfetto と組み合わせて真にフレーム予算を超過しているかを判断します;</li>
+  <li><strong>Native sanitizer:</strong> テスト環境では ASan/HWASan で検出率を高め、本番では GWP-ASan でサンプリングします（第04章参照）。</li>
+</ul>
+
+<h3 data-reveal>アプリ起動時に前回の終了証拠を回収する</h3>
+<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.R) {
+    val am = getSystemService(ActivityManager::class.java)
+    val exits = am.getHistoricalProcessExitReasons(packageName, 0, 8)
+    exits.filter { it.timestamp &gt; lastUploadedAt }.forEach { info -&gt;
+        val kind = when (info.reason) {
+            ApplicationExitInfo.REASON_ANR -&gt; "ANR"
+            ApplicationExitInfo.REASON_CRASH -&gt; "JAVA_CRASH"
+            ApplicationExitInfo.REASON_CRASH_NATIVE -&gt; "NATIVE_CRASH"
+            ApplicationExitInfo.REASON_LOW_MEMORY -&gt; "LOW_MEMORY"
+            else -&gt; "OTHER_${info.reason}"
+        }
+        uploadExit(kind, info.timestamp, info.importance, info.description)
+    }
+}</code></pre>
+<div class="callout note"><b class="t">ツール選定の極意</b>まず「どの証拠が不足しているか」を定義し、最小のツールを選択する。スタックトレースは「どこでクラッシュしたか」を答え、heap dump は「誰がメモリを占有しているか」を答え、Perfetto は「その時誰が実行／待機していたか」を答える――金槌を持って釘を探すようなやり方は、ノイズを増やすだけです。</div>
+<p class="src">出典: <a href="https://developer.android.com/tools/logcat" target="_blank">Logcat コマンドライン</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto: システム トレースの記録</a> · <a href="https://developer.android.com/reference/android/app/ActivityManager#getHistoricalProcessExitReasons(java.lang.String,%20int,%20int)" target="_blank">ActivityManager 終了履歴 API</a></p>
+</section>
+
+<div class="divider"></div>
+<section id="consoles">
+<div class="sec-tag">武器庫 06</div>
+<h2>Play Console と Firebase：本番課題を捉える 2 つのレンズ</h2>
+
+<h3 data-reveal>Android Vitals：まず影響度を見て、次に切り口を変える</h3>
+<p>「ユーザー認知（User-perceived）」は、バックグラウンドの全例外の合計ではありません。指標は<strong>1日あたりのアクティブユーザーのうち、少なくとも1回のインシデントを経験したユーザーの割合</strong>で計算されます: ユーザー認知 Crash はアプリが Activity を表示中またはフォアグラウンドサービスを実行中の未処理クラッシュを指し、現在のユーザー認知 ANR は <code>Input dispatching timed out</code> のみをカウントします。Play の現在のコア不良動作基準値は: クラッシュ率 <strong>1.09%</strong>、ANR 率 <strong>0.47%</strong>; 単一<strong>スマートフォン機種</strong>ではいずれも <strong>8%</strong>、Wear OS の単一ウォッチ機種ではそれぞれ Crash <strong>4%</strong>、ANR <strong>5%</strong> です。Play は直近28日間のデータを用いて品質を毎日評価し、基準値を超過すると露出低下やストア警告の対象になります。</p>
+<ol class="steps">
+  <li><strong>まず新規クラスタを確認:</strong> 同一バージョンで突如現れた新規の問題は、長年の既存問題よりも対応可能性が高いのが一般的です;</li>
+  <li><strong>アプリバージョンで切り分け:</strong> 新バージョンで混入したものか、古いバージョンの未アップデートユーザーかを判別;</li>
+  <li><strong>OS / 端末モデルで切り分け:</strong> 単一ベンダー、単一 GPU、特定 Android バージョンでのスパイクは、互換性とシステムスタックを優先調査;</li>
+  <li><strong>国 / 配信トラックで切り分け:</strong> ネットワーク環境、地域設定、カナリア配信対象によりトリガー条件が変化する可能性があります;</li>
+  <li><strong>発生回数だけでなく affected users を比較:</strong> 1人のユーザーがループで100回クラッシュするのと、100人のユーザーが各1回クラッシュするのでは、対応の優先順位が異なります。</li>
+</ol>
+<table class="tbl">
+  <tr><th>Vitals と Crashlytics の数値が異なる理由</th><th>説明</th></tr>
+  <tr><td>収集レイヤーの違い</td><td>Vitals は Android OS レイヤーから収集するため、SDK 初期化前のクラッシュ等も捕捉可能; Crashlytics は SDK の初期化と送信成功に依存。</td></tr>
+  <tr><td>サンプル対象の違い</td><td>Vitals は Google Play 経由でインストールされ、認証済み端末で、診断データの共有に同意したユーザーのみを対象とし、プライバシーの最低閾値の影響を受けます。</td></tr>
+  <tr><td>分母の定義の違い</td><td>Vitals は日次アクティブユーザー基準; Crashlytics は crash-free users と crash-free sessions の両方を提供。1人のユーザーが同日に3回の独立セッションを行い、そのうち1回でクラッシュした場合、<strong>クラッシュ率に換算</strong>するとユーザー基準では 100%、セッション基準では約 33%（crash-free 率はそれぞれ 0% と約 67%）となります。「3回起動」が必ずしも3つのセッションとは限りません。</td></tr>
+  <tr><td>クラスタリング手法の違い</td><td>スタックの正規化、バリアントの分割、重複排除ウィンドウが異なります。バージョン、期間、端末、issue サンプルを揃えてから傾向を比較してください。</td></tr>
+</table>
+
+<h3 data-reveal>Crashlytics：各イベントに再現コンテキストを埋め込む</h3>
+<pre><code>Firebase.crashlytics.apply {
+    setUserId(hashUserId(accountId))       <span class="c">// メールアドレスや電話番号などの直接的識別子は送信しない</span>
+    setCustomKey("app_track", buildTrack)
+    setCustomKey("feature_flags", flagDigest)
+    setCustomKey("screen", currentRoute)
+    setCustomKey("order_state", orderState.name)
+    log("checkout: confirm tapped")
+}
+
+try {
+    repository.refresh()
+} catch (e: RecoverableDomainException) {
+    Firebase.crashlytics.recordException(e) {
+        key("endpoint", "orders")
+        key("retry_count", retryCount)
+    }
+    showRecoverableError(e)
+}</code></pre>
+<ul>
+  <li><strong>Keys:</strong> 安定しており、カーディナリティが低く、クラスタリング可能なディメンションを使用する。現在の Android SDK は最大 64 個の key/value を保持可能。タイムスタンプやランダム ID を例外メッセージに埋め込んでクラスタリングを壊さないこと;</li>
+  <li><strong>Logs:</strong> 重要な状態遷移を記録し、HTTP レスポンス全体をそのままコピーしない。1セッションあたりのログサイズには上限があり、古いログはローテーション削除されます;</li>
+  <li><strong>User ID:</strong> 社内の匿名／ハッシュ化された識別子を使用し、プライバシー規約およびデータ削除フローを遵守する;</li>
+  <li><strong>Non-fatal:</strong> 「処理済みだが統計として把握が必要」な例外のみを記録する。すべての 404 やキャンセルを <code>recordException</code> すると、真の問題が埋もれ、コストが増加しアラートが汚染されます;</li>
+  <li><strong>Velocity alert:</strong> 短時間の急増を検知して緊急止血を発動させるために注視する。影響ユーザー数やバージョン分布に基づく優先順位付けの代用にはならない;</li>
+  <li><strong>BigQuery:</strong> カスタムの傾向分析、feature flag とのクロス分析、長期保存が必要な場合にエクスポートする。バージョン普及率と crash-free 率／イベント率を併せてカナリア配信継続の可否を判断する。</li>
+</ul>
+
+<h3 data-reveal>シンボル配信パイプライン: mapping 未アップロードなら前章までの努力が水泡に帰す</h3>
+<p>第02〜04章のクラッシュ図鑑、tombstone の解剖、ANR trace の分析は、すべて「本番スタックがソースコードに復元できる」ことを前提としています。mapping やシンボルがアップロードされていないと、Vitals や Crashlytics には <code>a.b.c</code> や生のアドレスの羅列しか表示されません――この工程は見落とされがちで、本番で障害が発生して初めてスタックが読めないことに気づくケースが多発します。</p>
+<pre><code><span class="c">// build.gradle.kts: release バリアントで mapping と native symbol の自動アップロードを有効化</span>
+android {
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = true
+      configure&lt;com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension&gt; {
+        mappingFileUploadEnabled = true   <span class="c">// デフォルトで true（難読化ビルドで必要）</span>
+        nativeSymbolUploadEnabled = true  <span class="c">// デフォルト false（ビルド高速化のため）。native コードがある場合は必ず true に設定</span>
+      }
+    }
+  }
+}</code></pre>
+<table class="tbl">
+  <tr><th>成果物</th><th>AAB</th><th>APK</th></tr>
+  <tr><td>Java/Kotlin 難読化 mapping（Play Console 側）</td><td>AAB アップロード時に自動同梱（ビルド時に <code>uploadCrashlyticsMappingFileRelease</code> 等の Gradle タスクが実行されているか、Play App Signing 連携を使用している前提）</td><td>Play Console の「App Bundle エクスプローラ」の該当バージョンで <code>mapping.txt</code> を手動アップロード</td></tr>
+  <tr><td>Native symbol（Crashlytics 側）</td><td><code>uploadCrashlyticsSymbolFile&lt;Variant&gt;</code> タスクに伴い自動生成・アップロード。または手動で <code>firebase crashlytics:symbols:upload --app=&lt;FIREBASE_APP_ID&gt; &lt;シンボルディレクトリ&gt;</code></td><td>左記と同様。コマンドライン方式も AAB と共通</td></tr>
+</table>
+<div class="callout warn"><b class="t">トラブルシューティング: Vitals にはシンボルがあるが Crashlytics にはない場合</b>まず native ライブラリに GNU build ID が付与されているかを確認してください――<code>readelf -n libfoo.so</code> で build ID が確認できない場合、Crashlytics はアップロードされたシンボルと本番バイナリを紐付けることができず、シンボルをアップロードしていてもマッチしません。build ID の欠落は通常、リンク引数に <code>-Wl,--build-id</code> が漏れていることが原因です。CI において、この mapping/シンボルアップロードタスクを <code>assembleRelease</code>/<code>bundleRelease</code> と同一ビルドにバインドし、commit と共にアーカイブ保存することが、事後アップロードよりも確実です。</div>
+<p class="src">出典: <a href="https://firebase.google.com/docs/crashlytics/android/get-deobfuscated-reports" target="_blank">Firebase: 難読化解除されたクラッシュ レポートの取得</a> · <a href="https://firebase.google.com/docs/crashlytics/ndk-reports" target="_blank">Firebase: NDK レポートの取得とカスタマイズ</a></p>
+
+<h3 data-reveal>Gemini AI insights と MCP</h3>
+<p>Firebase コンソールの AI insights は issue に対して要約、潜在的な根本原因、デバッグの提案を生成できますが、ローカルコードを読み取ったり変更したりすることはできません。公式の Firebase MCP server を使用すると、コーディングエージェントが issue、イベントサンプル、スタックトレース、ユーザー数／イベント数、バージョンディメンション、notes を取得したり、note の追加／削除、issue の更新やクローズを行ったりできるようになります。これは実行環境内の Firebase CLI の現在の認証情報を使用します。外部 AI ツールにデータを渡した後の取り扱いは各ツールの利用規約に準拠するため、最小権限のアカウントを使用し、利用可能なプロジェクトを制限し、すべての書き込み操作には人間の確認を必須とし監査ログを保持してください。<strong>2026年7月15日現在、この機能は実験的（Experimental）</strong>であり、破壊的変更が発生する可能性があるため、導入時はバージョンを固定し手動でのフォールバック手段を準備してください。</p>
+<div class="callout warn"><b class="t">管理画面の結論は根本原因の証明ではない</b>クラスタリング、AI insight、アラートは優先順位付けと仮説の出発点に過ぎません。最終的にはソースコード、バージョン一致シンボル、再現条件、またはカナリア指標に立ち返って検証を完了する必要があります。</div>
+<table class="tbl">
+  <tr><th>確認された本番の証拠</th><th>根本解決</th><th>再発防止 / クローズ</th></tr>
+  <tr><td>新バージョン、特定 feature flag グループでのみ急増</td><td>ロールバック／フラグ OFF で止血し、該当 diff を特定して修正</td><td>カナリア配信ゲートで新規クラスタ、ユーザー率、バージョン普及率に応じた自動一時停止を設定</td></tr>
+  <tr><td>単一機種／OS に集中しシステムスタックを含む</td><td>機能プロービングとフォールバック。必要に応じて対象範囲を調整し、端末メーカーに最小再現を提出</td><td>代表機種ラボの構築と互換性リグレッションテストの整備</td></tr>
+  <tr><td>カスタムキーが同一の業務状態を指している</td><td>例外グループの変更だけでなく、ステートマシン／入力データを修正</td><td>その状態を低カーディナリティの監視ディメンションおよびリグレッションテストケース化</td></tr>
+</table>
+<p class="src">出典: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://firebase.google.com/docs/crashlytics/android/customize-crash-reports" target="_blank">Crashlytics レポートのカスタマイズ</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Crashlytics MCP</a> · <a href="https://firebase.google.com/docs/crashlytics/bigquery-export" target="_blank">BigQuery エクスポート</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="device-data">
+<div class="sec-tag">武器庫 07</div>
+<h2>実機データの抽出：事故現場を完全に持ち帰る</h2>
+
+<h3 data-reveal>bugreport は非 root 端末におけるシステムスナップショット</h3>
+<pre><code>adb bugreport bugreport.zip
+unzip -l bugreport.zip | less
+
+<span class="c"># 主要サービスのスナップショット</span>
+adb shell dumpsys meminfo com.example.app
+adb shell dumpsys gfxinfo com.example.app framestats
+adb shell dumpsys activity activities
+adb shell dumpsys dbinfo com.example.app
+adb shell dumpsys batterystats --charged com.example.app
+
+<span class="c"># システム DropBox イベントインデックス; 具体的なタグは OS バージョンにより異なる</span>
+adb shell dumpsys dropbox --print SYSTEM_TOMBSTONE
+adb shell dumpsys dropbox --print data_app_anr</code></pre>
+<table class="tbl">
+  <tr><th>bugreport 内の領域</th><th>何に答えられるか</th></tr>
+  <tr><td><code>FS/data/anr/</code> または ANR dump セクション</td><td>ANR 発生時の各スレッド、ロックチェーン。非 root 端末では <code>/data/anr</code> の直接 pull ではなく bugreport 経由で取得</td></tr>
+  <tr><td>tombstones / SYSTEM_TOMBSTONE</td><td>Native シグナル、fault addr、Build ID、backtrace。内容はバージョン、権限、プライバシーポリシーにより切り詰められる場合あり</td></tr>
+  <tr><td>logcat buffers</td><td>クラッシュ前後のシステムおよびアプリログ。時刻、PID、プロセス名で突合</td></tr>
+  <tr><td>dumpsys</td><td>プロセス、Activity、メモリ、データベース、ウィンドウ、バッテリー等のシステムサービス状態</td></tr>
+  <tr><td>dumpstate_board / ベンダーセクション</td><td>温度、GPU、カーネル、ベンダーサービスの手掛かり。フィールドが流動的なため機種ごとに解釈が必要</td></tr>
+</table>
+<div class="callout note"><b class="t">プライバシーとファイルサイズ</b>bugreport にはアカウント情報、通知、Wi-Fi、位置情報の手掛かりや大量のシステムログが含まれる可能性があります。承認された検証端末でのみ採取し、共有範囲を最小化し、チケットに有効期限とアクセス制御を設定してください。</div>
+
+<h3 data-reveal>ApplicationExitInfo：起動後に前回の ANR trace を回収する</h3>
+<p>Android 11（API 30）以降、アプリの次回起動時に過去の終了理由を問い合わせることができます。ANR レコードにはシステムが採取した trace が含まれることが多く、ユーザー端末が adb に接続できない本番環境での証拠補完に非常に適しています。ただし、すべてのレコードに trace が保証されるわけではなく、リアルタイムの ANR コールバックでもありません。</p>
+<pre><code>class ExitInfoReporter(
+    private val context: Context,
+    private val store: ExitCursorStore,
+    private val upload: suspend (ExitEnvelope) -&gt; Unit
+) {
+    private val collectMutex = Mutex()
+
+    suspend fun collect() = collectMutex.withLock {
+      withContext(Dispatchers.IO) {
+        if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.R) return@withContext
+
+        val am = context.getSystemService(ActivityManager::class.java)
+        val records = am.getHistoricalProcessExitReasons(
+            context.packageName, 0, 32
+        ).sortedWith(compareBy({ it.timestamp }, { it.processName }, { it.reason }))
+
+        for (info in records) {
+            val eventKey = listOf(
+                info.timestamp, info.processName, info.reason, info.status
+            ).joinToString(":")
+            if (!store.shouldAttempt(eventKey, System.currentTimeMillis())) continue
+
+            try {
+                val trace = info.traceInputStream?.use { input -&gt;
+                    input.readAtMost(512 * 1024)        <span class="c">// API 30 互換かつサイズ制限</span>
+                }
+                upload(
+                    ExitEnvelope(
+                        eventKey = eventKey,
+                        timestamp = info.timestamp,
+                        processName = info.processName,
+                        reason = info.reason,
+                        status = info.status,
+                        importance = info.importance,
+                        description = info.description,
+                        pssKb = info.pss,
+                        rssKb = info.rss,
+                        traceGzip = trace?.let(::gzip)
+                    )
+                )
+                store.markUploaded(eventKey)
+            } catch (retryable: RetryableUploadException) {
+                store.scheduleRetry(eventKey, retryable) <span class="c">// 上限付き指数バックオフ。オフライン回数のみで直ちに破棄しない</span>
+                continue
+            } catch (io: IOException) {
+                store.scheduleRetry(eventKey, io)
+                continue
+            } catch (permanent: PermanentUploadException) {
+                store.markDiscarded(eventKey, permanent) <span class="c">// スキーマ／権限等、確定的な恒久エラーのみ破棄</span>
+                continue                                <span class="c">// Error や未知の例外はもみ消さず再スロー</span>
+            }
+        }
+      }
+    }
+
+    private fun InputStream.readAtMost(limit: Int): ByteArray {
+        val output = ByteArrayOutputStream(minOf(limit, 64 * 1024))
+        val buffer = ByteArray(16 * 1024)
+        var remaining = limit
+        while (remaining &gt; 0) {
+            val count = read(buffer, 0, minOf(buffer.size, remaining))
+            if (count == -1) break
+            output.write(buffer, 0, count)
+            remaining -= count
+        }
+        return output.toByteArray()
+    }
+}</code></pre>
+<ul>
+  <li>コールドスタートのクリティカルパス外で呼び出し、制限付きバックグラウンドタスクで実行する; <code>shouldAttempt/scheduleRetry</code> で次回実行時刻を永続化し、上限付きの指数バックオフを適用。オフライン回数だけで即座にデッドレター化しないこと。確定的なスキーマ／権限等の恒久エラーのみ破棄し、<code>Throwable</code> 全体を無差別にキャッチしない;</li>
+  <li>ローカルとサーバーの両方で eventKey（timestamp + process + reason + status）による冪等な重複排除を行い、アプリバージョン、端末／OS、feature flags を保持する;</li>
+  <li><code>REASON_ANR</code>、<code>REASON_CRASH</code>、<code>REASON_CRASH_NATIVE</code>、<code>REASON_LOW_MEMORY</code> は個別にガバナンスを行う; <code>REASON_USER_REQUESTED</code> はアプリのクラッシュではありません;</li>
+  <li>プロセスが後から別の理由で終了した場合でも trace が記録に残ることがあるため、reason、timestamp、内容を総合して判断する必要があります。</li>
+</ul>
+
+<h3 data-reveal>adb に接続できない端末での対応</h3>
+<p>テスターやユーザーに開発者向けオプションの「バグレポートの送信 / バグレポートの取得」を案内し、問題発生時刻、アプリバージョン、操作パスを明記してもらいます。一部のメーカーには専用のログアシスタントやダイヤルコードが存在しますが、社内のプライバシー承認とメーカーの公式ドキュメントに必ず従い、端末全体のログを無制限にアップロードさせないようにしてください。</p>
+<table class="tbl">
+  <tr><th>取得した証拠</th><th>根本解決アクション</th><th>再発防止</th></tr>
+  <tr><td>ANR trace の main / ロックチェーン</td><td>ブロッキング処理の非同期化またはロック順序の修正</td><td>同一シナリオの Perfetto 比較 + StrictMode / 並行処理リグレッションテスト</td></tr>
+  <tr><td>ExitInfo が LOW_MEMORY</td><td>PSS/RSS、プロセスの重要度、システム全体の負荷に応じてメモリ予算を削減</td><td>低メモリ／バックグラウンド再生成テストと ExitInfo 傾向アラート</td></tr>
+  <tr><td>tombstone + 一致する Build ID</td><td>シンボル化後に native の所有権／境界チェックを修正</td><td>sanitizer / fuzzing + シンボルアップロードのゲートチェック</td></tr>
+  <tr><td>ログ不足または上書き消失</td><td>低コストなカスタムキー、終了情報回収、ローリング診断を追加し、次のサンプルを待つ</td><td>「証拠完全率」を安定性インフラの KPI に組み込む</td></tr>
+</table>
+<p class="src">出典: <a href="https://developer.android.com/studio/debug/bug-report" target="_blank">バグレポートの取得と確認</a> · <a href="https://developer.android.com/tools/dumpsys" target="_blank">dumpsys</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="detective">
+<div class="sec-tag">エキスパート 08</div>
+<h2>難解バグの調査術：観測不能を検証可能に変える</h2>
+
+<div class="plays">
+  <div class="play"><div class="ph"><span class="pic">🧩</span><b>シナリオ 1: 再現困難・サンプル数が極少</b><span class="pt">CLUSTER</span></div><div class="pb"><p><strong>証拠採取:</strong> バージョン、端末モデル、OS、国、ネットワーク環境、アカウント状態、feature flag ごとにクラスタリング。各切り口でまず affected users と母数を確認し、小サンプルの 100% 一致を主原因と決めつけない。</p><p><strong>アプローチ:</strong> 反証可能な仮説を列挙 → 最優先仮説に対して低カーディナリティのカスタムキー／状態遷移ログを追加 → ターゲットを絞ったカナリア配信 → 対象群と対照群を比較。一度に変更する観測変数は1つに限定する。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">📱</span><b>シナリオ 2: 特定ベンダーの ROM でのみクラッシュ</b><span class="pt">OEM</span></div><div class="pb"><p><strong>証拠採取:</strong> クラッシュフレームが自社アプリ、公開 Android API、ベンダー独自フレームワークのいずれに属するかを確認。同一 Android バージョンの AOSP / 他社端末を対照群とし、Build fingerprint とシステムコンポーネントのバージョンを収集。</p><p><strong>根本解決:</strong> 公開 API への切り替えを最優先とする。リフレクションによる互換対応はブランド名で分岐せず機能プロービングを行い、no-op／フォールバックパスを用意する。最小再現コード、bugreport、発生時刻、機種情報をメーカーのサポート窓口に提出し、業務レイヤーで <code>Throwable</code> 全体を安易にもみ消さない。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🧠</span><b>シナリオ 3: すべて OOM に見える問題</b><span class="pt">MEMORY</span></div><div class="pb"><pre><code><span class="c"># fd とスレッドは独立した2つの予算枠; /proc の可視性は OS バージョンと権限に依存</span>
+PID=$(adb shell pidof -s com.example.app)
+adb shell ls -l /proc/$PID/fd | wc -l
+adb shell 'cat /proc/'$PID'/status | grep -E "Threads|VmRSS"'
+adb shell cat /proc/$PID/limits</code></pre><p><strong>トリアージ:</strong> <code>Java heap space</code> は hprof の dominator を確認; <code>pthread_create failed</code> はスレッド生成スタック／総数を確認; <code>EMFILE</code> は fd の種類を確認。ExitInfo が LOW_MEMORY/LMK の場合は RSS/PSS とシステム全体の負荷を考慮し、Java ヒープの設定だけを安易に変更しない。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🔒</span><b>シナリオ 4: フリーズしているが ANR がまだ発生していない</b><span class="pt">DEADLOCK</span></div><div class="pb"><pre><code>PID=$(adb shell pidof -s com.example.app)
+adb shell kill -3 $PID        <span class="c"># ART プロセスに Java スレッドダンプを要求。出力先は OS により異なる</span>
+adb logcat -d -v threadtime &gt; manual-thread-dump.log</code></pre><p>連続して 2〜3 回採取: 同一のロックチェーンで静止していればデッドロックの可能性が高く、スタックが前進していれば単に処理が遅いだけです。main がロック待ちの場合は保持者を特定し、保持者が Binder/IO 待ちならさらに追跡。デバッガのアタッチはタイミングを変えてしまうため、補助的な確認に留めます。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">🧯</span><b>シナリオ 5: 起動クラッシュストーム、アプリが開かない</b><span class="pt">RECOVERY</span></div><div class="pb"><p><strong>セーフモード（ヒューズ）:</strong> 可能な限り早期かつ安定したプロセスの入口で起動試行を記録。同一バージョンで短時間に連続 N 回失敗した場合、最小復旧モードに移行: リモートフラグを OFF、任意の初期化をスキップ、安全に再構築可能なキャッシュをクリアし、復旧／フィードバック画面を表示する。</p><p><strong>境界条件:</strong> カウンタはプロセスを跨いで永続化し、起動成功によるリセット、タイムウィンドウ、バージョンごとの分離を行うこと。ユーザーのデータベースやログインセッションを自動削除してはならない。ヒューズは止血のみを担当し、最終的には根本原因を修正する。</p></div></div>
+
+  <div class="play"><div class="ph"><span class="pic">✂️</span><b>シナリオ 6: 未知のリグレッションを二分探索（Bisect）で特定</b><span class="pt">BISECT</span></div><div class="pb"><pre><code>git bisect start
+git bisect bad BAD_COMMIT
+git bisect good LAST_KNOWN_GOOD
+<span class="c"># 毎回同一の自動再現スクリプトで判定し、git bisect good/bad を実行</span>
+git bisect reset</code></pre><p>安定した再現手順がない場合は、feature flags、初期化モジュール、リクエストパスを二分探索できます。CI に各候補のビルド成果物と mapping を保存。判定スクリプトが不安定だと二分探索全体が狂うため、まず誤検知率を測定すること。</p></div></div>
+</div>
+
+<h3 data-reveal>調査の完了後は必ず防壁へと落とし込む</h3>
+<table class="tbl">
+  <tr><th>シナリオ</th><th>根本解決</th><th>再発防止の検証</th></tr>
+  <tr><td>OOM / fd / スレッド</td><td>リーク／無制限キャッシュの修正、スレッドプールの一元化、fd の構造化クローズ</td><td>負荷再現後に heap、Threads、fd が安定状態に戻り、予算アラートを設定</td></tr>
+  <tr><td>フリーズ / デッドロック</td><td>ロック順序の統一、ロック保持中の I/O/Binder 呼び出し禁止、必要に応じてメッセージパッシングへ変更</td><td>並行処理テスト + 複数回のスレッドダンプ／Perfetto でロックサイクルが再発しないことを確認</td></tr>
+  <tr><td>二分探索による特定</td><td>最初の問題コミットに対する最小限の修正またはロールバック</td><td>判定スクリプトを CI に組み込み、mapping／成果物の追跡可能なアーカイブ体制を構築</td></tr>
+</table>
+
+<div class="callout tip"><b class="t">難問解決の共通原則</b>「散発的」を観測可能なディメンションに分解し、「疑い」を反証可能な仮説として言語化し、「修正完了」をリグレッションの証拠に結びつける。ログ、カスタムキー、trace、二分探索、カナリア配信の本質は、すべて未知の変数を減らすことにあります。</div>
+<p class="src">出典: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://developer.android.com/topic/performance/memory-overview" target="_blank">Android メモリ管理の概要</a> · <a href="https://source.android.com/docs/core/tests/debug" target="_blank">AOSP デバッグの開始点</a> · <a href="https://git-scm.com/docs/git-bisect" target="_blank">Git bisect ドキュメント</a>。起動ヒューズ、feature flag の二分探索、複数回の <code>kill -3</code> 比較はエンジニアリングプラクティスです。シグナル出力、<code>/proc</code> の可視性、ベンダーログの仕様は Android/ROM/権限により変化するため、対象端末での検証が必須です。</p>
+</section>
+
+<div class="divider"></div>
+<section id="ai-method">
+<div class="sec-tag">エキスパート 09</div>
+<h2>AI 連携：証拠の品質が調査の上限を決める</h2>
+
+<p><strong>AI による調査の品質 ≈ 証拠の完全性 × 問題の制約 × 検証のフィードバック。</strong>LLM はスタックトレース、ソースコード、diff、分布データ間の相関を見出す能力に長けていますが、提示されていない mapping、ランタイム状態、失敗サンプルを見ることはできません。プロンプトのテクニックを語る前に、まず入力を標準化する必要があります。</p>
+<div class="callout note"><b class="t">関連ガイド</b>本章の方法論の汎用版（コンテキスト第一リソース、検証クローズドループ、7つの原則）は <a href="ai-leverage-guide.ja.html">AI 効率化の全体像と原則</a> を参照。Claude Code ツールの具体的な使用法は <a href="claude-code-guide.ja.html">利用ガイド</a> を参照してください。</div>
+
+<h3 data-reveal>クラッシュコンテキストバンドル: 人間と AI に共通の入力契約</h3>
+<table class="tbl">
+  <tr><th>要素</th><th>最低要件</th><th>欠落時のリスク</th></tr>
+  <tr><td>完全な主証拠</td><td>retrace 済みの Java stack、バージョン一致 tombstone、完全な ANR main + ロックチェーン（cause とスレッド名を保持）</td><td>症状フレームのみに囚われ、フレームワークの呼び出し元を根本原因と誤認する</td></tr>
+  <tr><td>ソースコードとバージョン</td><td>業務第1フレームの関連ファイル、呼び出し元、ビルド commit、mapping / Build ID</td><td>誤ったバージョンを解析したり、存在しない API を捏造（ハルシネーション）する</td></tr>
+  <tr><td>分布と影響度</td><td>affected users、バージョン/OS/端末/国、初回発生日時、配信トラック</td><td>小サンプルの偶然の一致を全体的な根本原因と誤認する</td></tr>
+  <tr><td>実行コンテキスト</td><td>安定した低カーディナリティのカスタムキー、主要な状態遷移、再現手順、ネットワーク/権限/アカウント状態</td><td>「どこでクラッシュしたか」しか説明できず、「なぜそこに至ったか」を説明できない</td></tr>
+  <tr><td>変更の証拠</td><td>関連ファイルの直近の <code>git log -p</code>、依存関係／target SDK／フラグの変更履歴</td><td>最も可能性の高い直近のリグレッションを見落とす</td></tr>
+  <tr><td>負例サンプル</td><td>同バージョンの正常端末／パス、影響を受けていないグループ</td><td>仮説の反証ができず、相関関係を因果関係と誤認する</td></tr>
+</table>
+<div class="callout note"><b class="t">証拠のゲートチェック</b>mapping/Build ID が未突合である場合、スタックが途中で切れている場合、ANR で遅れて取得された単一スナップショットしかない場合、AI の正しい出力は「証拠不足 + 次の証拠取得コマンドの提示」であるべきであり、自信満々にパッチを提示することではありません。</div>
+
+<h3 data-reveal>5 段構成プロンプトテンプレート: コピーして即利用可能</h3>
+<pre><code>あなたは Android 安定性のリードエンジニアです。証拠と仮説を厳格に区別してください。
+ソースコード、API の挙動、欠落したログを勝手に捏造することは禁止します。
+証拠が不十分な場合は、まず不足している点を指摘し、直接パッチを提示しないでください。
+
+[主要な証拠]
+retrace 済みの完全な stack / ANR trace / tombstone を貼り付け。スレッド名、Caused by、Build ID を保持。
+
+[環境と分布]
+アプリバージョンと commit：___；Android/端末モデル/ABI：___；
+影響ユーザー数と時間推移：___；feature flags/業務状態：___；正常な対照群：___。
+
+[関連ソースコードと変更履歴]
+業務第1フレーム、呼び出し元、ライフサイクル／並行処理関連コード、直近の diff を貼り付け。
+
+[タスクと出力要件]
+1. まず「確定した事実」を列挙し、それぞれ具体的な証拠の行を引用してください；
+2. 最大 3 つの根本原因仮説を提示し、確率 × 影響度で順位付けしてください；
+3. 各仮説に対して反証条件、最小限の検証コマンド／テスト、期待される結果を記載してください；
+4. 検証が通った後にのみ最小限の修正案を提示し、ライフサイクル、並行性、互換性の境界を説明してください；
+5. リグレッションテスト、カナリア配信指標、再発防止策を提示してください；
+6. 出力形式：事実一覧 → 仮説一覧 → 次のアクション → 修正候補 → リスク／未知の項目。</code></pre>
+
+<div class="duo">
+  <div class="bad"><b>悪いプロンプト</b>「このクラッシュを見て、ついでに直して。」スクリーンショットの断片しかなく、バージョン、ソースコード、分布情報がなく、検証要求もないため、AI はありがちなパターンから推測するしかありません。</div>
+  <div class="good"><b>良いプロンプト</b>完全な証拠バンドル、正常な対照群、直近の diff を提供。事実の逐条引用、最大3つの反証可能な仮説を求め、検証が完了するまでコードの変更を禁止する。</div>
+</div>
+
+<h3 data-reveal>高価値な 3 つのタスク別プロンプト</h3>
+<div class="plays">
+  <div class="play"><div class="ph"><span class="pic">💥</span><b>スタックトレース → ソースコードの根本原因</b><span class="pt">STACK</span></div><div class="pb"><p>「最下層の cause から開始し、自社の最初の業務フレームを特定。引数／状態の生成チェーンを上流へ遡ってください。null や不正な状態がどこから入り込み、なぜ境界で検知されなかったのか、どの呼び出し元を確認すべきかを出力してください。安易な null チェックをデフォルトの回答としないこと。」</p></div></div>
+  <div class="play"><div class="ph"><span class="pic">⏳</span><b>ANR → ロックチェーンとスケジューリング</b><span class="pt">TRACE</span></div><div class="pb"><p>「まず main が Running/Runnable/Blocked/Waiting のいずれであるかを判定してください。ロック待ちならオブジェクトアドレスから実行中スレッドまで保持者を追跡。Binder なら対向側／system_server のどの trace を補完すべきか指摘。アプリのブロッキング、CPU 飢餓、遅れて取得されたスナップショットを明確に区別してください。」</p></div></div>
+  <div class="play"><div class="ph"><span class="pic">🗂️</span><b>Top 20 → 根本原因グループ</b><span class="pt">PORTFOLIO</span></div><div class="pb"><p>「例外クラス名で機械的にグループ化しないでください。共通の根本原因／修正レバーでクラスタリングしてください: ライフサイクル、状態境界、バージョン互換性、メモリ予算、スレッド／ロック、シンボル／配信パイプライン。affected users、一括修正可能な項目、優先度、担当モジュールを出力してください。」</p></div></div>
+</div>
+
+<h3 data-reveal>AI ハルシネーション防止の検証プロトコル</h3>
+<ol class="steps">
+  <li><strong>証拠の引用:</strong> すべての事実はスタックトレースのフレーム、ソースコードの行、分布データ、または公式ドキュメントを直接指し示す必要があり、引用できないものは仮説としてマークする。</li>
+  <li><strong>反例のチェック:</strong> 「どのような証拠があればこの結論を覆せるか？正常な対照群ではなぜ発生しなかったのか？」と能動的に問いかける。</li>
+  <li><strong>ツールによる検証:</strong> AI にコマンドを提示させ、管理された環境で実行。コマンドの出力をフィードバックした後に確率を更新する。</li>
+  <li><strong>最小限のパッチ:</strong> 根本原因のパスのみを変更し、失敗するテストケースを添付する。広範な「ついでに行うリファクタリング」は受け入れない。</li>
+  <li><strong>独立した相互レビュー:</strong> 第2のエージェントは誤った原因究明、カバーされていない境界条件、リグレッションリスクのみを探索し、第1エージェントの「確信度」に惑わされない。</li>
+  <li><strong>本番でのクローズドループ:</strong> テスト通過は完了を意味しない。カナリア配信で新規クラスタ、ユーザー率、副作用を監視し、観察期間を満たした後に issue をクローズする。</li>
+</ol>
+<p class="src">出典: <a href="https://firebase.google.com/docs/crashlytics/ai-assistance" target="_blank">Firebase: Crashlytics AI assistance</a> · <a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex Best Practices</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="ai-workflow">
+<div class="sec-tag">エキスパート 10</div>
+<h2>AI ワークフローとオリジナル crash-triage Skill</h2>
+
+<h3 data-reveal>ワークフロー 1: 公式 Crashlytics MCP × コーディングエージェント</h3>
+<pre><code><span class="c"># パターン A（対話型・公式推奨）: Firebase プラグインをインストール（パターン B と二者択一）</span>
+claude plugin marketplace add firebase/firebase-tools
+claude plugin install firebase@firebase
+claude plugin marketplace list
+
+<span class="c"># パターン B（本番固定版）: 上記プラグインを入れず、Crashlytics のみを手動連携</span>
+<span class="c"># 初回に現在バージョンを確認後、具体的なバージョン番号を設定と変更ログに記録</span>
+FIREBASE_TOOLS_VERSION=$(npm view firebase-tools version)
+claude mcp add firebase-crashlytics npx -- \
+  -y firebase-tools@$FIREBASE_TOOLS_VERSION mcp \
+  --dir "$(pwd)" --only crashlytics
+claude mcp list
+
+<span class="c"># この固定バージョンが実際に公開しているツールを確認・監査（以降、latest に自動追従させない）</span>
+npx -y firebase-tools@$FIREBASE_TOOLS_VERSION mcp \
+  --only crashlytics --generate-tool-list</code></pre>
+<ol class="steps">
+  <li>まずエージェントに「現バージョンで新規発生した Top 5 の issue をリスト化し、affected users と増加率で順位付けして（この段階ではコードは変更しないこと）」と指示;</li>
+  <li>1つ目の issue について複数のイベントサンプル、バージョン／端末分布、notes を取得し、第09章の証拠バンドルを生成。MCP prompt に対応したクライアントでは <code>crashlytics:connect</code> を実行可能;</li>
+  <li>エージェントに関連ソースコードと diff を特定させ、事実／仮説／検証のみを出力させる。検証完了後に失敗するテストと最小パッチを作成;</li>
+  <li>人間のレビュー後、エージェントが調査サマリーと PR リンクを note に書き戻す。issue のクローズは書き込み操作であるため、必ず人間が確認する。</li>
+</ol>
+<div class="callout warn"><b class="t">最小権限の原則</b>MCP は Firebase CLI の現在の認証情報を使用し、Crashlytics MCP は 2026-07-15 現在も Experimental です。例では <code>--only crashlytics</code> で機能グループを絞り込んでいますが、core tools が残る可能性があるため、生成された tool list を必ず監査してください。本番プロジェクトでは専用の最小権限アカウントを使用し、検証済みの firebase-tools バージョンを固定してください。エージェントによる issue の自動クローズ、コードの自動マージ、無関係なユーザーデータの読み取りは禁止してください。</div>
+
+<h3 data-reveal>ワークフロー 2: アラート → CI 自動トリアージ（デフォルト読み取り専用）</h3>
+<h4><code>triage-schema.json</code>（Claude と Codex で共通の出力契約）</h4>
+<pre><code>{
+  "type": "object",
+  "properties": {
+    "facts": {"type": "array", "items": {"type": "string"}},
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cause": {"type": "string"},
+          "verification": {"type": "string"}
+        },
+        "required": ["cause", "verification"],
+        "additionalProperties": false
+      }
+    },
+    "risk": {"type": "string"}
+  },
+  "required": ["facts", "hypotheses", "risk"],
+  "additionalProperties": false
+}</code></pre>
+<pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+ISSUE_JSON="$1"                         <span class="c"># webhook worker が生成した匿名化済み証拠バンドル（任意の URL は受け付けない）</span>
+test -f "$ISSUE_JSON"
+test "$(wc -c &lt; "$ISSUE_JSON")" -lt 10485760
+test -f triage-schema.json
+
+OUTPUT_DIR=${OUTPUT_DIR:-"$(pwd)/triage-output"}
+mkdir -p "$OUTPUT_DIR"
+RUN_DIR=$(mktemp -d)
+trap 'rm -rf "$RUN_DIR"' EXIT
+cp "$ISSUE_JSON" "$RUN_DIR/issue.json"
+cp triage-schema.json "$RUN_DIR/triage-schema.json"
+cd "$RUN_DIR"                            <span class="c"># 空ディレクトリ: ソースコード、認証情報、ユーザー設定をマウントしない</span>
+SCHEMA=$(jq -c . triage-schema.json)
+
+AI_PROVIDER=${AI_PROVIDER:-claude}       <span class="c"># claude または codex（1つのみ実行）</span>
+case "$AI_PROVIDER" in
+  claude)
+    cat issue.json | claude --bare -p \
+      "読み取り専用のトリアージのみを実行してください。事実と仮説を区別し、根本原因の候補、検証手順、リグレッションリスクを出力してください。コードの変更は禁止です。" \
+      --permission-mode plan --tools "" \
+      --output-format json --json-schema "$SCHEMA" \
+      | jq -e '.structured_output' &gt; "$OUTPUT_DIR/triage-result.json"
+    ;;
+  codex)
+    cat issue.json | codex exec --ephemeral --ignore-user-config --ignore-rules \
+      --skip-git-repo-check --sandbox read-only \
+      --output-schema triage-schema.json \
+      "stdin の匿名化済み証拠バンドルを解析してください。トリアージのみを行い、ファイルの変更は行わないこと。" \
+      -o "$OUTPUT_DIR/triage-result-codex.json"
+    ;;
+  *) echo "AI_PROVIDER must be claude or codex" &gt;&amp;2; exit 2 ;;
+esac</code></pre>
+<p>本番パイプラインの流れ: Velocity alert/webhook → キューでの重複排除とレート制限 → サーバー側認証情報による証拠取得 → 匿名化とサイズ上限の適用 → 隔離コンテナ内での読み取り専用 AI トリアージ → スキーマ検証 → issue の作成／更新 → 人間が修正エージェントを起動するか判断。隔離コンテナには <strong>Firebase や業務の認証情報、ソースコード、ユーザー設定を含めてはなりません</strong>。Claude/Codex の認証情報は、CI の secret store から単一プロセスに短期・最小限のトークンとして注入するか、ツールプロセスにキーを露出させないプロキシ経由で完了させ、ネットワークのアウトバウンドをモデルサービスのみに制限します。Webhook の内容は信頼できない入力であるため、ワークスペースの隔離、ツールの無効化、エフェメラルセッション、マウント／通信の境界管理のすべてが不可欠です。</p>
+
+<h3 data-reveal>ワークフロー 3: 修正エージェント + 反対派レビューエージェント</h3>
+<table class="tbl">
+  <tr><th>役割</th><th>唯一の責務</th><th>終了条件</th></tr>
+  <tr><td>トリアージエージェント</td><td>証拠の整理、仮説の順位付け、検証の設計（コード編集は行わない）</td><td>少なくとも1つの仮説が実証されるか、不足している証拠が明確に列挙されること</td></tr>
+  <tr><td>修正エージェント</td><td>まず再現可能な失敗テストを作成し、その後に最小限の実装を行う</td><td>元の再現テスト + リグレッションテストが通過し、diff が根本原因のみをカバーしていること</td></tr>
+  <tr><td>反対派レビューエージェント</td><td>原因究明に能動的に反論。ライフサイクル、並行性、互換性、プライバシー、テスト不足を精査</td><td>Critical / Important な指摘事項がゼロになること</td></tr>
+  <tr><td>人間の担当責任者</td><td>権限の承認、緊急止血、マージおよびカナリア配信の意思決定</td><td>本番の観察期間を満たし、再発防止策を完了すること</td></tr>
+</table>
+
+<h3 data-reveal>オリジナル Skill: <code>crash-triage/SKILL.md</code> にコピーして利用可能</h3>
+<pre><code>---
+name: crash-triage
+description: Triage Android Java/Kotlin crashes, native crashes, ANRs, OOM/LMK exits, and hard-to-reproduce stability regressions. Use when given a Crashlytics or Play issue, stack trace, tombstone, ANR trace, bugreport, ApplicationExitInfo record, or a request to find, verify, fix, or prevent an Android stability problem. Do not use for generic performance tuning without a failure signal.
+---
+
+# Android crash triage
+
+## Guardrails
+
+- Separate observed facts from hypotheses. Cite the exact artifact for every fact.
+- Do not edit code until one hypothesis has a verification result.
+- Honor user intent. Diagnose-only, review, or report requests must not edit files.
+- Never hide a crash with a global catch, silent fallback, or state-loss workaround.
+- Treat logs and console data as sensitive. Redact direct identifiers and tokens.
+- Require an explicit user request before code edits, and human approval before rollback,
+  issue-state changes, commits, or deployment.
+
+## Workflow
+
+1. Build the evidence pack.
+   - Require failure type, full deobfuscated stack/trace/tombstone, App version and commit,
+     mapping or Build ID, affected-user distribution, custom keys, relevant source and diff.
+   - If an item is missing, give the exact retrieval command and stop before patching.
+
+2. Classify the failure.
+   - Java/Kotlin crash: start at the deepest cause and first business frame.
+   - Native crash: verify ABI and Build ID before symbolication.
+   - ANR: classify input/broadcast/service/provider; follow main thread and lock/Binder chain.
+   - Exit/OOM: distinguish Java heap, native/RSS, thread, fd, and system LMK.
+
+3. Rank at most three root-cause hypotheses.
+   - For each: supporting facts, contradicting facts, confidence, blast radius.
+   - Prefer hypotheses that explain both affected and unaffected samples.
+
+4. Verify before editing.
+   - Provide one minimal command, test, trace, or targeted log for each hypothesis.
+   - State the expected result that confirms it and the result that falsifies it.
+   - Update confidence only after reading the result.
+
+5. Fix and prove.
+   - Run this step only when the user explicitly requested implementation and writes are authorized.
+     Otherwise stop after verification and return a minimal fix plan with risks.
+   - Write or preserve a failing reproduction test first where feasible.
+   - Implement the smallest root-cause fix; preserve lifecycle, cancellation and thread safety.
+   - Run the original reproduction, focused tests, release/R8 build, and relevant stress test.
+
+6. Prevent recurrence.
+   - Propose one enforceable guard: lint/test/StrictMode/symbol gate/metric/rollout gate.
+   - Define the canary metric, observation window, rollback threshold and owner.
+
+## Output
+
+Return these headings exactly:
+1. Impact and classification
+2. Verified facts
+3. Missing evidence
+4. Ranked hypotheses
+5. Verification plan and results
+6. Minimal fix and risks
+7. Regression tests
+8. Rollout and prevention
+</code></pre>
+<p>SKILL.md はシンプルに保ち、決定論的な反復作業は <code>scripts/</code> に配置します: 例えば <code>retrace-stack.sh</code> はバージョンに応じた mapping の検索と検証を担当し、<code>unpack-bugreport.py</code> は ANR/tombstone/logcat のインデックス抽出のみを行い、<code>check-native-build-id.sh</code> は tombstone と so ファイルを突合します。スクリプトはバージョン欠落や複数候補が存在する場合にエラー終了する必要があり、「最も近そうなものを推測する」ことは厳禁です。チームのスキーマ、重大度基準、プライバシー規則は <code>references/</code> に置き、必要に応じて読み込むようにして、すべての背景を Skill 本体に詰め込まないようにします。</p>
+
+<h3 data-reveal>AI が単にドキュメントを増やすだけでなく、真に効率化しているかを判断する方法</h3>
+<table class="tbl">
+  <tr><th>指標</th><th>定義</th><th>不正防止策</th></tr>
+  <tr><td>証拠完備時間</td><td>アラート発生からコンテキストバンドルが揃うまでの P50/P90</td><td>mapping/Build ID が欠落している場合は完備とみなさない</td></tr>
+  <tr><td>最初の反証可能仮説までの時間</td><td>アラート発生から最初の反証アクションを生成・実行するまでの時間</td><td>「〜の可能性がある」と述べるだけではカウントしない</td></tr>
+  <tr><td>1回での修正成功率</td><td>ロールバックや再修正が不要で、観察期間中に再発しなかった割合</td><td>同一の根本原因クラスタで追跡すること</td></tr>
+  <tr><td>AI 提案の採用率</td><td>証拠によって検証され、最終的にマージされた提案の割合</td><td>高ければ良いと盲信せず、誤導率も同時に計測する</td></tr>
+  <tr><td>再発防止策の着地率</td><td>RCA で約束した項目が期日通りに lint/test/ゲート/監視に組み込まれた割合</td><td>ドキュメントに記載があっても担当者／期限がないものはノーカウント</td></tr>
+</table>
+<p class="src">出典: <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">Firebase Crashlytics MCP</a> · <a href="https://code.claude.com/docs/en/headless" target="_blank">Claude Code 非対話モード</a> · <a href="https://learn.chatgpt.com/docs/non-interactive-mode" target="_blank">Codex 非対話モード</a> · <a href="https://developers.openai.com/codex/skills" target="_blank">Codex Skills</a></p>
+</section>
+
+<div class="divider"></div>
+
+<section id="governance">
+<div class="sec-tag">エキスパート 11</div>
+<h2>ガバナンス体制：対症療法から安定性の複利効果へ</h2>
+
+<h3 data-reveal>4 道の防衛線</h3>
+<table class="tbl">
+  <tr><th>防衛線</th><th>メカニズム</th><th>実行可能なゲート</th></tr>
+  <tr><td><span class="pill a">予防・ゲート</span></td><td>Kotlin の null 安全境界、lint/Detekt、StrictMode、単体／マイグレーション／プロセス再生成テスト、レビューチェックリスト</td><td>release + R8 スモークテスト; mapping/native symbols のアーカイブと検索性確保; 高リスクな新規 API にテストが存在すること</td></tr>
+  <tr><td><span class="pill b">カナリア・段階配信</span></td><td>段階的ロールアウト、feature flags、バージョン普及率と新規クラスタの併用監視</td><td>社内の Crash/ANR エラーバジェットを超過した場合、または起動／コアフローに新規クラッシュが発生した場合に自動一時停止</td></tr>
+  <tr><td><span class="pill c">監視・アラート</span></td><td>Vitals + Crashlytics + ExitInfo; 新規／既存、ユーザー／イベント、全体／機種別で細分化</td><td>アラートは必ず担当者にルーティングされ、コンテキストバンドルへのリンク、重大度、緊急止血ボタン、SOP が添付されていること</td></tr>
+  <tr><td><span class="pill d">振り返り・RCA</span></td><td>タイムライン、根本原因、なぜ事前検出できなかったのかの分析、止血対応と恒久修正の分離記録</td><td>S 級の全インシデントにおいて、担当者と期日を設定した自動実行可能な再発防止策を最低 1 件策定すること</td></tr>
+</table>
+
+<h3 data-reveal>SLO とエラーバジェット：プラットフォームのレッドラインを大幅に下回る水準へ</h3>
+<p>Play の不良動作基準値はストアからのペナルティ基準であり、品質目標ではありません。チームはビジネスの重要度、過去のベースライン、ユーザー規模に応じてより厳格な SLO を設定し、新規問題と既存の技術的負債を明確に分けるべきです。以下は<strong>一例としての出発点であり、Android 公式の目標値ではありません</strong>:</p>
+<table class="tbl">
+  <tr><th>指標</th><th>目標の一例</th><th>ゲート基準</th></tr>
+  <tr><td>ユーザー認知 Crash 率</td><td>重要アプリ ≤ 0.20%、または crash-free users ≥ 99.8%</td><td>新バージョンがベースラインに対して統計的有意に悪化した場合、1.09% を待たずに即座に一時停止</td></tr>
+  <tr><td>ユーザー認知 ANR 率</td><td>≤ 0.10%</td><td>新規の input dispatch クラスタまたは単一機種でのスパイク発生時にタスクフォースを組成</td></tr>
+  <tr><td>起動／コアフローのクラッシュ</td><td>新規発生ゼロ許容</td><td>信頼性の高い新規クラスタは即座に止血対応</td></tr>
+  <tr><td>証拠完全率</td><td>Top issue の ≥ 95% がバージョン一致し、担当者を特定可能</td><td>mapping/symbol/バージョンアーカイブの欠落は配信パイプラインの障害として扱う</td></tr>
+</table>
+
+<h3 data-reveal>当番エンジニアの SOP：トリアージ → 緊急止血 → 根本解決</h3>
+<ol class="steps">
+  <li><strong>トリアージ:</strong> 例外名ではなく、影響ユーザー数、増加速度、コアフロー、復旧可能性に基づいて判断。起動クラッシュストーム／データ破損が最優先。</li>
+  <li><strong>緊急止血:</strong> カナリア配信の一時停止、ロールバック、フラグ OFF、サーバー側フォールバック、またはセーフモードの発動。各操作の時刻と効果を記録。</li>
+  <li><strong>根本解決:</strong> 証拠バンドルの構築、仮説検証、最小限の修正、リグレッション確認、カナリア配信。止血パッチは恒久的な修正の代用にはならない。</li>
+  <li><strong>振り返り:</strong> 「なぜ発生したのか、なぜテストで防げなかったのか、なぜ監視でより早く検知できなかったのか、どのような自動メカニズムで同類を防げるのか」に答える。</li>
+</ol>
+
+<h3 data-reveal>1 ページ完了チェックリスト</h3>
+<ul>
+  <li>影響範囲とバージョン範囲が定量化され、Play と Crashlytics の集計基準が明記されていること;</li>
+  <li>主要な証拠がバージョン突合され、根本原因に再現／反証可能な結果が存在すること（AI やクラスタリングの推測のみに頼らない）;</li>
+  <li>緊急止血と恒久修正が分けて記録され、パッチに元の再現テストと境界リグレッションテストが添付されていること;</li>
+  <li>カナリア配信の観察期間、成功指標、ロールバック基準、担当者が明確になっていること;</li>
+  <li>同系統の防壁が lint / test / StrictMode / リリースゲート / 監視のいずれかに組み込まれていること;</li>
+  <li>Crashlytics / チケットの note に PR、検証証拠、RCA へのリンクが記載され、次の当番が追跡可能になっていること。</li>
+</ul>
+
+<h3 data-reveal>公式リソースインデックス</h3>
+<table class="tbl">
+  <tr><th>テーマ</th><th>第一推奨ドキュメント</th></tr>
+  <tr><td>Crash / ANR / Vitals</td><td><a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals の概要</a> · <a href="https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs" target="_blank">ANR の診断と修正</a></td></tr>
+  <tr><td>Native / メモリ</td><td><a href="https://source.android.com/docs/core/tests/debug/native-crash" target="_blank">Native クラッシュの診断</a> · <a href="https://developer.android.com/ndk/guides/memory-debug" target="_blank">メモリデバッグガイド</a></td></tr>
+  <tr><td>システム証拠採取</td><td><a href="https://developer.android.com/studio/debug/bug-report" target="_blank">バグレポートの取得</a> · <a href="https://perfetto.dev/docs/getting-started/system-tracing" target="_blank">Perfetto</a> · <a href="https://developer.android.com/reference/android/app/ApplicationExitInfo" target="_blank">ApplicationExitInfo</a></td></tr>
+  <tr><td>Play / Firebase</td><td><a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Play の技術的品質基準</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Crashlytics</a> · <a href="https://firebase.google.com/docs/crashlytics/ai-assistance-mcp" target="_blank">公式 MCP</a></td></tr>
+  <tr><td>AI エンジニアリング</td><td><a href="claude-code-guide.ja.html">本リポジトリの Claude Code ガイド</a> · <a href="codex-guide.ja.html">本リポジトリの Codex ガイド</a> · <a href="https://agentskills.io/specification" target="_blank">Agent Skills 仕様</a></td></tr>
+</table>
+<div class="callout tip"><b class="t">究極の能力基準</b>初心者は 00〜02 章を使って 30 分以内に最初の有効なチケットを処理できる; 中級者は 03〜07 章を使って ANR / Native / 実機の現場を復元できる; 上級者は 08〜10 章を使って再現不能な難問を攻略し安全に AI を統合できる; オーナーは 11 章を活用してすべてのインシデントを「二度と起こさせない」組織的・仕組み的な能力へと昇華させる。</div>
+<p class="src">出典: <a href="https://developer.android.com/topic/performance/vitals" target="_blank">Android Vitals</a> · <a href="https://support.google.com/googleplay/android-developer/answer/9844486" target="_blank">Google Play の技術的品質</a> · <a href="https://firebase.google.com/docs/crashlytics" target="_blank">Firebase Crashlytics</a></p>
+</section>
+
+<div class="footer">
+  <p><strong>補足</strong>: 本ガイドは Android 公式ドキュメント（developer.android.com、support.google.com、firebase.google.com、2026年7月検証時点）およびエンジニアリングプラクティスに基づいて編集されたものであり、公式刊行物ではありません。API や管理画面は進化するため、最新の正確な情報は公式ドキュメントを参照してください。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="ページ上部へ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>
