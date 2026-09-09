@@ -684,37 +684,32 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">Quota Guide</div>
-<h2>How to Maximize Your Membership Quota (A Guide for Everyday Users)</h2>
+<div class="sec-tag">Best Practices</div>
+<h2>Maximizing Premium Subscriptions: OpenAI Ecosystem Synergy</h2>
 
-<p>Many users spend $20 (or more) a month on a ChatGPT Plus or Pro subscription, only to hit the dreaded "You've reached your limit, please try again in a few hours" message when using Codex to code. The truth is, by adopting a few simple everyday habits, you can easily avoid these limits and get every penny's worth out of your membership.</p>
+<p>After subscribing to ChatGPT Plus or Pro, many users quickly trigger rate limits because they frequently request large contexts within their local terminals. To truly unlock the value of a premium membership, you must understand the positioning of OpenAI's product lines and establish a professional workflow: "Plan on the Web, Execute in the Terminal."</p>
 
-<h3 data-reveal>🔋 1. Understand Your "Stamina Bar"</h3>
-<p>Think of your membership quota as a "Stamina Bar." Typically, this bar refills every 5 hours. However, different tasks drain stamina at entirely different rates:</p>
+<h3 data-reveal>📊 1. The Core Logic of Quota Management</h3>
+<p>OpenAI utilizes dynamic compute quotas. This means consumption depends not just on the number of messages, but critically on <strong>context length</strong> and <strong>model selection</strong>.</p>
 <ul>
-  <li><strong>High Drain:</strong> Asking Codex to read hundreds of code files at once, or uploading dozens of high-res images on the web version for analysis.</li>
-  <li><strong>Low Drain:</strong> Regular text chatting, asking simple questions, or having Codex edit just one or two small files.</li>
-</ul>
-<div class="callout warn"><b class="t">Heads Up!</b>
-The ChatGPT website, mobile app, and Codex terminal on your computer <strong>all share the same stamina bar!</strong> If you spend the morning generating a bunch of images on the web, you might find yourself out of quota when you try to code with Codex that night.</div>
-
-<h3 data-reveal>💡 2. Three Simple Tricks to Save Quota</h3>
-
-<h4>Trick 1: Separate "Brainstorming" from "Typing"</h4>
-<p>When you want to learn a new concept or are stuck on a confusing error, <strong>don't interrogate Codex over and over again.</strong> Every time you ask a question in Codex, it silently attaches your project background, which wastes a lot of stamina.</p>
-<ul>
-  <li><strong>The Right Way:</strong> Open the ChatGPT <strong>Web version</strong>. Paste your error there. Brainstorm and figure out the logic with the AI on the web. Once the AI gives you a clear solution, go back to Codex and say: "Apply this exact fix to my code."</li>
+  <li>In Codex or IDE terminals, the system automatically appends substantial project background information to ensure code generation accuracy.</li>
+  <li>If you repeatedly ask minor questions in a chat containing dozens of files, the massive context is re-transmitted every time. This will rapidly deplete your quota within the 5-hour rolling window.</li>
 </ul>
 
-<h4>Trick 2: Don't Use a Sledgehammer to Crack a Nut (Use Small Models)</h4>
-<p>ChatGPT offers the smartest flagship models, but also lightning-fast, nearly unlimited "small models" (like the 'mini' or fast versions).</p>
+<h3 data-reveal>🚀 2. Efficient Division of Labor: Web vs. Terminal</h3>
+<p>Highly efficient developers never try to solve everything in the terminal. They leverage the synergy of the entire OpenAI ecosystem:</p>
 <ul>
-  <li>When you just need to fix a typo, add a few comments, or change a button color, <strong>manually switch to the smaller model</strong> in the menu.</li>
-  <li>Only switch back to the most powerful model when facing real logical challenges, like "design a complete login and registration flow for me."</li>
+  <li><strong>Phase 1: Web-based Deep Research</strong>. When encountering unknown framework errors or complex architectural designs, start the discussion on the ChatGPT Web interface. The web version's multi-modal capabilities (web browsing, image parsing) are more robust and prevent polluting your local coding context.</li>
+  <li><strong>Phase 2: Structured Documentation</strong>. Once the logic is clear on the web, ask the AI to output a concise "Technical Specification" or "Step-by-Step Fix."</li>
+  <li><strong>Phase 3: Precise Terminal Execution</strong>. Return to the Codex terminal, provide this specification, and issue clear instructions (e.g., "Modify the current module according to this spec"). This "precision strike" drastically improves code accuracy and protects your compute quota.</li>
 </ul>
 
-<h4>Trick 3: Organize Your Notes First</h4>
-<p>Reading long documents takes a lot of AI stamina. If you have a 100-page API manual, don't upload it every single time you ask a question. Instead, create a <strong>Project</strong> on the Web version and upload the long document there. In a Project, the AI "memorizes" the document, so it won't repeatedly drain your reading quota every time you chat.</p>
+<h3 data-reveal>🧠 3. The Art of Dynamic Model Switching</h3>
+<p>Avoid forcing the heaviest reasoning models for every task:</p>
+<ul>
+  <li><strong>Heavy Logical Refactoring</strong>: Use the flagship model to ensure rigorous logic.</li>
+  <li><strong>Routine Syntax Fixes & Commenting</strong>: Manually switch your terminal to a lightweight, high-speed model with generous quotas. This provides zero-latency responses and reserves your premium quota for critical tasks.</li>
+</ul>
 </section>
 
 <section id="playbook">

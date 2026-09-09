@@ -704,34 +704,37 @@ claude mcp login api-tool
 </ul>
 
 <section id="subscription-quotas">
-<div class="sec-tag">Quota Guide</div>
-<h2>How to Use Pro Wisely? Practical Everyday Tips</h2>
+<div class="sec-tag">Best Practices</div>
+<h2>Claude Pro/Team Best Practices: Context Management & Synergy</h2>
 
-<p>Many new Claude Pro subscribers ($20/month) feel their quota drains incredibly fast when using Claude Code. This is because Claude has an amazing "memory"—but remembering everything costs a lot of quota. Master these basic habits, and your quota will last significantly longer.</p>
+<p>Anthropic equips Claude with industry-leading long-context processing and deep logical reasoning. However, for Pro ($20/month) or Team users, poor context management can quickly trigger the 5-hour quota limits. Mastering the following best practices will yield a qualitative leap in your development efficiency.</p>
 
-<h3 data-reveal>🧠 1. Why Does My Quota Disappear So Fast?</h3>
-<p>Imagine that every time you ask Claude a question, it doesn't just read your current message; it re-reads every single question you've ever asked and every line of code it has ever written in that chat, from start to finish.</p>
+<h3 data-reveal>⚡ 1. Leveraging the Prompt Caching Dividend</h3>
+<p>Claude features an incredibly powerful underlying caching mechanism—this is the core secret to preserving your quota:</p>
 <ul>
-  <li>If you chat with it for 50 messages, when you send the 51st message, it is essentially re-reading the entire 50-message history.</li>
-  <li><strong>This means the longer a conversation goes on, the more exaggerated the quota cost becomes for every single prompt!</strong></li>
+  <li>If you place a large amount of stable, unchanging content (like team coding standards, complete API dictionaries, or long documents) at the <strong>very beginning</strong> of your conversation, Claude automatically caches it.</li>
+  <li>In subsequent interactions, as long as this prefix content remains unmodified, the cost and quota consumption to read it are <strong>massively reduced (up to 90% savings)</strong>.</li>
+  <li><strong>Practical Advice</strong>: Always place static reference materials at the top of your prompt, and put your dynamic, ever-changing queries at the very bottom.</li>
 </ul>
 
-<h3 data-reveal>🧹 2. Core Money-Saving Secrets: Clean Often, Restart Often</h3>
-
-<h4>Trick 1: Clean Up When Done (Use /compact)</h4>
-<p>Once Claude successfully fixes a bug for you, or finishes a small feature, do not continue discussing a completely unrelated topic in the same chat.</p>
+<h3 data-reveal>📚 2. Using Projects for Persistent Knowledge Bases</h3>
+<p>If you are developing a large-scale application, never manually re-upload dozens of core code files every time you start a new chat with Claude.</p>
 <ul>
-  <li>Type this magic command: <code>/compact</code>.</li>
-  <li>This command tells Claude: "Summarize this long conversation into a tiny notebook, and forget all the useless rambling." This instantly saves you a massive amount of quota.</li>
+  <li>Use the <strong>Projects</strong> feature on the Claude Web interface to create a dedicated workspace.</li>
+  <li>Upload your core source code, third-party library documentation, and even PDF requirement specs directly as Project Knowledge.</li>
+  <li>All conversations within that Project will automatically and highly efficiently reference this knowledge. This ensures extreme accuracy while preventing the rapid quota drain caused by repetitive uploads.</li>
 </ul>
 
-<h4>Trick 2: Leverage Web Artifacts (Preview Window)</h4>
-<p>The Web version of Claude has an amazing right-side panel called Artifacts, which can directly preview websites, mini-games, or charts.<br>
-<strong>Best Combo:</strong> If you want to build a web interface, have Claude write it on the Web version first and look at the preview directly. Tweak it there until you're happy, because web limits are more forgiving. Once it's perfect, copy the code into your local project. Never blindly tweak visual UI layouts over and over in your local terminal.</p>
+<h3 data-reveal>🧹 3. Context Dehydration & Long-Task Management</h3>
+<p>During complex debugging sessions, conversations often accumulate massive amounts of useless error stacks and intermediate attempts. Long-running conversations are the number one quota killer.</p>
+<ul>
+  <li><strong>Timely Summarization (Dehydration)</strong>: Once a bug is successfully fixed, if you need to move on, use tools like <code>/compact</code>, or manually ask Claude: "Summarize the correct code logic we just established, and let's start a new chat."</li>
+  <li>Bring only this "summary" into the new conversation, leaving behind the dozens of rounds of invalid troubleshooting. The system will regain its speed and efficiency.</li>
+</ul>
 
-<h4>Trick 3: Use Web Projects for Long Documents</h4>
-<p>If you have massive background materials (like a 100-page tech manual or long product requirements), don't send them in the chat over and over. Go to the <strong>Projects</strong> tab on the Web version, create a new project, and upload these large files as "reference books." Claude can read them efficiently without burning through your standard chat quota.</p>
-
+<h3 data-reveal>🎨 4. Rapid Validation with Artifacts</h3>
+<p>When developing Web UIs, charts, or simple utilities, fully utilize the <strong>Artifacts (Preview Panel)</strong> in the Claude Web interface.</p>
+<p>Artifacts allow you to directly preview and interactively debug the generated UI code in the right-hand panel. Refine the visuals and logic perfectly on the web first, and only integrate the finalized code into your local project afterward. This avoids the massive waste of repeatedly generating incorrect UIs in your local terminal.</p>
 </section>
 
 <section id="playbook">
