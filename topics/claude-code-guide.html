@@ -192,7 +192,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-08-31</span>
+    <span>核对至 2026-09-09</span>
 
 <div class="progress" id="prog"></div>
 
@@ -239,7 +239,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-08-31</div>
+  <div class="badge">⛏️ 官方文档 × 社区精华 · 全场景提炼 · 核对至 2026-09-09</div>
   <h1>Claude Code<br><span class="grad">使用指南 · 干货版</span></h1>
   <p class="lead">从心法到命令,从扩展体系到八大实战场景。以官方 Best Practices 与命令参考为底,融合社区高阶经验,压缩成一页可反复查阅的实战手册——只留干货,不讲废话。</p>
   <div class="meta">
@@ -347,7 +347,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">动态</div>
 <h2>近期重要变化</h2>
 
-<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-31</strong> · 对照 Claude Code <strong>v2.1.251</strong>(2026-08 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
+<div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-09-09</strong> · 对照 Claude Code <strong>v2.1.266</strong>(2026-09 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
 <h3 data-reveal>🔴 破坏性变更:老习惯会失效</h3>
 <table class="tbl">
@@ -364,6 +364,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <h3 data-reveal>🔄 行为变化:同样的操作,结果不同了</h3>
 <ul>
+  <li><strong>终端输出上限大幅放宽</strong>(09-04,v2.1.261)—— 新增 <code>bashOutputMaxChars</code> 与 <code>taskOutputMaxChars</code> 配置，最高支持 128K 字符直读，不再轻易触发截断。</li>
   <li><strong>子代理默认后台运行</strong>(07-01,v2.1.198)—— 最影响手感的一条。派出子代理后 Claude 会继续干自己的活,不再干等结果回来。想要同步等待得显式要求。</li>
   <li><strong>子代理可嵌套派生,默认深度 3</strong>(07-24,原来是 1)—— 子代理自己也能再派子代理了。不想要设 <code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1</code>。</li>
   <li><strong>每会话配额上限</strong>(07-17)—— WebSearch 200 次、子代理派生 200 个,可用 <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code> / <code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> 调。长时间无人值守任务要留意。</li>
@@ -379,6 +380,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3 data-reveal>🆕 新增能力:值得马上试的</h3>
 <table class="tbl">
   <tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
+  <tr><td>09-04</td><td><strong><code>/skill-doctor</code> 诊断</strong></td><td>运行以一键诊断未使用的冗余技能及其上下文开销，轻松清理运行环境。</td></tr>
+  <tr><td>09-04</td><td><strong>巨型 Prompt 文件直传</strong></td><td>使用 <code>--append-subagent-system-prompt-file</code> 将超长的系统提示词通过文件传递给子代理。</td></tr>
   <tr><td>08-28</td><td><strong>生命周期 Hooks</strong></td><td>新增 <code>PreModelSwitch</code> 和 <code>PostModelSwitch</code> hooks，在切换模型前后执行自动化逻辑。</td></tr>
   <tr><td>08-24</td><td><strong>Loops 任务追踪与控制台登录</strong></td><td>支持通过 Anthropic Console 无密钥登录，并在 <code>/usage</code> 中查看 Loops 长程任务的开销追踪。配置 <code>modelPicker</code> 定制可选模型。</td></tr>
   <tr><td>08-17</td><td><strong><code>/design</code> Skill (预览版)</strong></td><td>在终端直接基于想法或现有图片生成可编辑的设计画板 (Artboards)，实现设计与代码的无缝衔接。</td></tr>

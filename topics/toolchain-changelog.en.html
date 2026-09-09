@@ -176,38 +176,39 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     </div>
     <a href="../index.en.html">◂ Topic Hub</a>
     
-      <span>Verified until 2026-08-31</span>
+      <span>Verified until 2026-09-09</span>
    
-
-<div class="progress" id="prog"></div>
-
-<nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="Filter chapters..."><span class="fk">/</span></div>
-  <div class="nav-group">
-    <div class="gt">Usage</div>
-    <a href="#how-to-read"><span class="no">00</span>How to use this page</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">Must-read for upgrades</div>
-    <a href="#breaking"><span class="no">⚠</span>Breaking changes index</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">Archived by month</div>
-    <a href="#m2026-08"><span class="no">08</span>August 2026</a>
-    <a href="#m2026-07"><span class="no">07</span>July 2026</a>
-    <a href="#m2026-06"><span class="no">06</span>June 2026</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">Maintenance</div>
-    <a href="#method"><span class="no">99</span>How to maintain this page</a>
-  </div>
-</nav>
-
-<main class="main">
-<div class="wrap">
-
-<div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · Archived by month · Verified until 2026-08-31</div>
+ 
+ <div class="progress" id="prog"></div>
+ 
+ <nav class="sidebar" id="sidebar">
+   <div class="side-filter"><input id="sideFilter" placeholder="Filter versions..."><span class="fk">/</span></div>
+   <div class="nav-group">
+     <div class="gt">User Guide</div>
+     <a href="#how-to-read"><span class="no">00</span>How to read this page</a>
+   </div>
+   <div class="nav-group">
+     <div class="gt">Must Read</div>
+     <a href="#breaking"><span class="no">⚠</span>Breaking Changes Index</a>
+   </div>
+   <div class="nav-group">
+     <div class="gt">Monthly Archives</div>
+     <a href="#m2026-09"><span class="no">09</span>September 2026</a>
+     <a href="#m2026-08"><span class="no">08</span>August 2026</a>
+     <a href="#m2026-07"><span class="no">07</span>July 2026</a>
+     <a href="#m2026-06"><span class="no">06</span>June 2026</a>
+   </div>
+   <div class="nav-group">
+     <div class="gt">Maintenance</div>
+     <a href="#method"><span class="no">99</span>How this page is maintained</a>
+   </div>
+ </nav>
+ 
+ <main class="main">
+ <div class="wrap">
+ 
+ <div class="hero" id="top">
+   <div class="badge">📅 Claude Code × Codex · Archived by month · Verified until 2026-09-09</div>
   <h1>Tool Version Tracker<br><span class="grad">What changed · Should you change your habits</span></h1>
   <p class="lead">AI programming tools iterate too fast, and official changelogs are long and trivial. This page does only one thing: filters the version changes of Claude Code and Codex to <strong>"those relevant to you"</strong>, clearly marking which ones will invalidate your old habits and which ones are worth trying right away.</p>
   <div class="meta">
@@ -281,6 +282,31 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </table>
 
 <div class="callout note"><b class="t">How to self-check quickly</b>For Claude Code, use <code>/release-notes</code> to see changes between your current version and the latest; for Codex, use <code>codex debug models</code> to verify actual available models, and <code>/debug-config</code> to check "why this config key isn't working".</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-09">
+<div class="sec-tag">Archive 09</div>
+<h2>September 2026</h2>
+
+<h3 data-reveal>Claude Code: Performance Tuning & Diagnostics</h3>
+<table class="tbl">
+  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
+  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>Includes general improvements and bug fixes.</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> Diagnostic</strong>: New command to find and prune unused skills that consume context overhead.</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>Massive Terminal Output</strong>: Added <code>bashOutputMaxChars</code> and <code>taskOutputMaxChars</code> (up to 128K characters).</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>External System Prompt File</strong>: Added <code>--append-subagent-system-prompt-file</code> to inject extremely long prompts into subagents.</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>Fixed bugs where resumed sessions lost Hook outputs and parallel tool context; resolved TLS proxy hangs in the Bedrock setup wizard.</td></tr>
+</table>
+
+<h3 data-reveal>Codex: Astra Model & UX Enhancements</h3>
+<table class="tbl">
+  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
+  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Native Astra Integration</strong>: The built-in picker now supports setting GPT-6 Astra as the default model; optimized async Guidance error handling.</td></tr>
+  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim Mode Enhanced & Plugin CLI</strong>: Undo (`u`) / Redo (`Ctrl+R`) natively preserve attachments and drafts; added <code>plugin</code> subcommand for remote marketplace management.</td></tr>
+  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool disabled by default, requires opt-in via configuration.</td></tr>
+</table>
 </section>
 
 <div class="divider"></div>

@@ -192,7 +192,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.en.html">◂ Topic Hub</a>
-    <span>Verified 2026-08-31</span> 
+    <span>Verified until 2026-09-09</span> 
 
 <div class="progress" id="prog"></div>
 
@@ -239,7 +239,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">⛏️ Official Docs × Community Highlights · All-scenario extraction · Verified August 31, 2026</div>
+  <div class="badge">⛏️ Official Docs × Community Gems · Verified 2026-09-09</div>
   <h1>Claude Code<br><span class="grad">Guide · Essential Edition</span></h1>
   <p class="lead">From mental models to commands, from extension systems to eight practical scenario playbooks. Based on official Best Practices and command references, fused with advanced community experience, compressed into a single-page practical manual for repeated reference—only the essentials, no fluff.</p>
   <div class="meta">
@@ -347,7 +347,7 @@ dig into hard problems I might not have considered. After asking, write the comp
 <div class="sec-tag">Updates</div>
 <h2>Recent Important Changes</h2>
 
-<div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-31</strong> · Against Claude Code <strong>v2.1.251</strong> (August 2026) · Data source: <a href="https://code.claude.com/docs/en/changelog" target="_blank">Official changelog</a>. This section only includes changes that <strong>will alter your habits</strong>, not a comprehensive log; for the full history see <a href="toolchain-changelog.en.html">Tool Version Tracking</a>.</div>
+<div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-09-09</strong> · Against Claude Code <strong>v2.1.266</strong> (September 2026) · Data source: <a href="https://code.claude.com/docs/en/changelog" target="_blank">Official changelog</a>. This section only includes changes that <strong>will alter your habits</strong>, not a comprehensive log; for the full history see <a href="toolchain-changelog.en.html">Tool Version Tracking</a>.</div>
 
 <h3 data-reveal>🔴 Breaking Changes: Old Habits Will Fail</h3>
 <table class="tbl">
@@ -364,6 +364,7 @@ dig into hard problems I might not have considered. After asking, write the comp
 
 <h3 data-reveal>🔄 Behavioral Changes: Same Action, Different Result</h3>
 <ul>
+  <li><strong>Terminal Output Limits Dramatically Increased</strong> (09-04, v2.1.261) —— Added <code>bashOutputMaxChars</code> and <code>taskOutputMaxChars</code> config options, supporting up to 128K characters inline reading without aggressive truncation.</li>
   <li><strong>Subagents run in background by default</strong> (07-01, v2.1.198) —— The change that affects feel the most. After dispatching a subagent, Claude will continue its own work instead of waiting for the result. You must explicitly request it if you want synchronous waiting.</li>
   <li><strong>Subagents can spawn subagents, default depth 3</strong> (07-24, was 1) —— Subagents can now spawn their own subagents. If unwanted, set <code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1</code>.</li>
   <li><strong>Per-session quotas</strong> (07-17) —— WebSearch 200 times, Subagent spawns 200 times. Adjustable via <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code> / <code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code>. Be mindful for long unattended tasks.</li>
@@ -379,6 +380,8 @@ dig into hard problems I might not have considered. After asking, write the comp
 <h3 data-reveal>🆕 New Features: Worth Trying Immediately</h3>
 <table class="tbl">
   <tr><th>Date</th><th>New Feature</th><th>How to Use</th></tr>
+  <tr><td>09-04</td><td><strong><code>/skill-doctor</code> Diagnostic</strong></td><td>Run to identify unused redundant skills and their context cost, making environment cleanup easy.</td></tr>
+  <tr><td>09-04</td><td><strong>Giant Prompt File Injection</strong></td><td>Use <code>--append-subagent-system-prompt-file</code> to pass extremely long system prompts to a subagent via a local file.</td></tr>
   <tr><td>08-28</td><td><strong>Lifecycle Hooks</strong></td><td>Added <code>PreModelSwitch</code> and <code>PostModelSwitch</code> hooks to execute automation logic before/after switching models.</td></tr>
   <tr><td>08-24</td><td><strong>Loops Tracking & Console Sign-in</strong></td><td>Support for keyless login via Anthropic Console, and loop cost tracking in <code>/usage</code>. Configure <code>modelPicker</code> to curate available models.</td></tr>
   <tr><td>08-17</td><td><strong><code>/design</code> Skill (Preview)</strong></td><td>Generate editable design artboards directly in the terminal from ideas or screenshots, seamlessly connecting design and code implementation.</td></tr>

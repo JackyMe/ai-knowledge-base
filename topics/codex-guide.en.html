@@ -187,44 +187,45 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.en.html">◂ Topic Hub</a>
-    <span>Verified to 2026-08-31</span>
+    <span>Verified until 2026-09-09</span>
   </div>
 </header>
 
 <div class="progress" id="prog"></div>
 
 <nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="Filter sections…"><span class="fk">/</span></div>
+  <div class="side-filter"><input id="sideFilter" placeholder="Filter topics..."><span class="fk">/</span></div>
   <div class="nav-group">
     <div class="gt">Overview & Selection</div>
-    <a href="#overview"><span class="no">00</span>Overview & Prisms</a>
+    <a href="#overview"><span class="no">00</span>Ecosystem Prisms</a>
     <a href="#learning-paths"><span class="no">01</span>4 Learning Paths</a>
   </div>
   <div class="nav-group">
     <div class="gt">Setup & Environment</div>
-    <a href="#setup"><span class="no">02</span>Setup & Tuning</a>
+    <a href="#setup"><span class="no">02</span>Install & Tuning</a>
     <a href="#whats-new"><span class="no">NEW</span>Recent Updates</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Quickref & Security</div>
+    <div class="gt">Reference & Security</div>
     <a href="#commands"><span class="no">03</span>Command Cheat Sheet</a>
     <a href="#sandbox"><span class="no">04</span>3×3 Sandbox Matrix</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Methodology & Workflow</div>
-    <a href="#methodology"><span class="no">05</span>Core Discipline</a>
-    <a href="#long-tasks"><span class="no">06</span>Long Task 4 Stages</a>
-    <a href="#memory-system"><span class="no">07</span>Memory & Closeout</a>
+    <div class="gt">Mindset & Long Tasks</div>
+    <a href="#methodology"><span class="no">05</span>Core Methods & Traps</a>
+    <a href="#long-tasks"><span class="no">06</span>4-Stage Separation</a>
+    <a href="#memory-system"><span class="no">07</span>Memory Loop</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Extensions & Config</div>
-    <a href="#skills-mcp"><span class="no">08</span>Skill / MCP / Browser</a>
-    <a href="#config-auth"><span class="no">09</span>Config & Accounts</a>
+    <div class="gt">Extensions & Ops</div>
+    <a href="#skills-mcp"><span class="no">08</span>Skill/MCP/Browser</a>
+    <a href="#config-auth"><span class="no">09</span>Configs & Auth</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Pipelines & Advanced</div>
+    <div class="gt">Practices & Scenarios</div>
+    <a href="#best-practices"><span class="no">ADV</span>Best Practices</a>
     <a href="#playbook"><span class="no">10</span>Pipelines & Playbook</a>
-    <a href="#hidden-config"><span class="no">11</span>Under-the-Hood & Dual-Agent</a>
+    <a href="#hidden-config"><span class="no">11</span>Under-the-Hood Flags</a>
     <a href="#resources"><span class="no">12</span>Resource Index</a>
   </div>
 </nav>
@@ -233,7 +234,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI Coding Agent · Deep CodexGuide Integration · Verified to 2026-08-31</div>
+  <div class="badge">🟢 OpenAI Agent · Official Docs Synced · Verified until 2026-09-09</div>
   <h1>Codex<br><span class="grad">Comprehensive Practical Guide</span></h1>
   <p class="lead">OpenAI's agentic coding system: from your first terminal command to enterprise-grade code delivery. Combining official docs with real-world CodexGuide.io insights, covering <strong>decision prisms, 3×3 sandbox matrix, 4-stage long task discipline, memory closeout loop, browser E2E acceptance, GitHub automated pipelines</strong>, and <strong>Claude Code dual-agent synergy</strong>.</p>
   <div class="meta">
@@ -398,12 +399,13 @@ codex update</code></pre>
 
 <div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-31</strong> · Data source: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex Official Changelog</a>. This section only includes changes that <strong>affect your usage habits</strong>; for complete history see <a href="toolchain-changelog.en.html">Toolchain Version Tracker</a>.</div>
 
-<h3 data-reveal>🆕 0.150.0 New Features (2026-08)</h3>
+<h3 data-reveal>🆕 0.153.4 New Features (2026-09)</h3>
 <ul>
-  <li><strong>Interactive Agents Dashboard</strong>: 0.149.0 introduces the <strong>Agents Dashboard</strong>, allowing you to search, rename, and manage multiple concurrent tasks from a single view.</li>
-  <li><strong>Cross-Tool Integration</strong>: Added the <code>/import</code> command to bring in setups and recent chat history directly from Claude Code and Cursor.</li>
-  <li><strong>Visualization Customization</strong>: 0.150.0 adds iOS-style appearance settings for inline visualizations and data rendering.</li>
-  <li><strong>Markdown Export & Headless Forking</strong>: 0.148.0 added the <code>/export</code> command and <code>codex exec fork</code> for session branching, and enabled token-based cost estimation.</li>
+  <li><strong>GPT-6 Astra Built-in</strong>: Codex is now fully integrated with the GPT-6 Astra model. You can set it as default directly via the Model Picker, unlocking next-gen complex reasoning capabilities.</li>
+  <li><strong>Vim Mode Enhanced</strong>: 0.153.0 drastically improved Vim UX in TUI. Undo (<code>u</code>) and Redo (<code>Ctrl+R</code>) now correctly preserve complete draft states (including pasted text and attachments).</li>
+  <li><strong>Remote Plugin Marketplace CLI</strong>: Subcommands <code>codex plugin list/install/remove</code> let you manage plugins directly from the official remote marketplace.</li>
+  <li><strong>Agents Dashboard & Import</strong>: 0.149.0 added the <strong>Agents Dashboard</strong> and the <code>/import</code> command to pull configs from Claude Code or Cursor.</li>
+  <li><strong>Markdown Export & Headless Forking</strong>: 0.148.0 added <code>/export</code> and <code>codex exec fork</code> capabilities.</li>
 </ul>
 
 <h3 data-reveal>🚨 Key Breaking Changes</h3>

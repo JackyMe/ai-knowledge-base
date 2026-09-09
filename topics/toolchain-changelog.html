@@ -176,7 +176,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     </div>
     <a href="../index.html">◂ 主题中心</a>
     
-      <span>核对至 2026-08-31</span>
+      <span>核对至 2026-09-09</span>
    
 
 <div class="progress" id="prog"></div>
@@ -193,6 +193,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">按月归档</div>
+    <a href="#m2026-09"><span class="no">09</span>2026 年 9 月</a>
     <a href="#m2026-08"><span class="no">08</span>2026 年 8 月</a>
     <a href="#m2026-07"><span class="no">07</span>2026 年 7 月</a>
     <a href="#m2026-06"><span class="no">06</span>2026 年 6 月</a>
@@ -207,7 +208,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-08-31</div>
+  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-09-09</div>
   <h1>工具版本追踪<br><span class="grad">变了什么 · 要不要改习惯</span></h1>
   <p class="lead">AI 编程工具迭代太快,官方 changelog 又长又琐碎。这一页只做一件事:把 Claude Code 与 Codex 的版本变化<strong>筛成"跟你有关的"</strong>,标清楚哪些会让你的老习惯失效,哪些值得马上试。</p>
   <div class="meta">
@@ -281,6 +282,31 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </table>
 
 <div class="callout note"><b class="t">怎么快速自查</b>Claude Code 用 <code>/release-notes</code> 看你当前版本到最新之间的变化;Codex 用 <code>codex debug models</code> 确认实际可用型号,用 <code>/debug-config</code> 查"为什么这个配置键不生效"。</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-09">
+<div class="sec-tag">归档 09</div>
+<h2>2026 年 9 月</h2>
+
+<h3 data-reveal>Claude Code: 性能调优与环境诊断</h3>
+<table class="tbl">
+  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>包含大量一般性改进与 Bug 修复。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> 诊断</strong>: 新增指令自动寻找并清理长期未使用但占据 Context 成本的 Skills。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>解禁极长终端输出</strong>: 新增 <code>bashOutputMaxChars</code> 与 <code>taskOutputMaxChars</code> (最高支持 128K)。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>外挂系统 Prompt</strong>: 增加 <code>--append-subagent-system-prompt-file</code> 应对超长子代理注入提示词。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>修复了从会话恢复时丢失 Hook 输出与并行工具调用上下文的缺陷；修复了 TLS 代理下 Bedrock 向导卡死问题。</td></tr>
+</table>
+
+<h3 data-reveal>Codex: Astra 模型与体验强化</h3>
+<table class="tbl">
+  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
+  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Astra 原生集成</strong>: 内置选择器支持直接将 GPT-6 Astra 设置为默认模型；优化异步 Guidance 防错。</td></tr>
+  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim Mode 增强与插件系统</strong>: Undo (`u`) / Redo (`Ctrl+R`) 原生保留所有附件与草稿；新增 <code>plugin</code> 子命令支持远程市场管理。</td></tr>
+  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool 默认关闭，如需使用需在配置中重新开启。</td></tr>
+</table>
 </section>
 
 <div class="divider"></div>

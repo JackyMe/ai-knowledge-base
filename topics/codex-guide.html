@@ -187,7 +187,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.html">◂ 主题中心</a>
-    <span>核对至 2026-08-31</span>
+    <span>核对至 2026-09-09</span>
   </div>
 </header>
 
@@ -223,6 +223,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">实战与进阶</div>
+    <a href="#best-practices"><span class="no">进阶</span>最佳实践与最优示例</a>
     <a href="#playbook"><span class="no">10</span>场景与 GitHub 流水线</a>
     <a href="#hidden-config"><span class="no">11</span>底层反查与双代理</a>
     <a href="#resources"><span class="no">12</span>资源索引</a>
@@ -233,7 +234,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-08-31</div>
+  <div class="badge">🟢 OpenAI 编码代理 · 官方文档核对 · 核对至 2026-09-09</div>
   <h1>Codex<br><span class="grad">全景实战指南 · 旗舰版</span></h1>
   <p class="lead">OpenAI 的代理式编码工具体系：从第一次打开终端，到完成企业级代码交付。本指南吸纳官方权威文档与 CodexGuide.io 实战精髓，打通<strong>选型决策、3×3 沙箱审批、长任务四权分立、收尾记忆闭环、浏览器 E2E 验收、GitHub 自动化流水线</strong>与 <strong>Claude Code 双代理协同</strong>。</p>
   <div class="meta">
@@ -410,12 +411,13 @@ codex update</code></pre>
 
 <div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-31</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
-<h3 data-reveal>🆕 0.150.0 最新能力 (2026-08)</h3>
+<h3 data-reveal>🆕 0.153.4 最新能力 (2026-09)</h3>
 <ul>
-  <li><strong>交互式任务面板</strong>：0.149.0 引入了全新的 <strong>Agents Dashboard</strong>，可单界面搜索、重命名并管理多个并发任务。</li>
-  <li><strong>跨工具联动集成</strong>：新增 <code>/import</code> 指令，支持直接导入 Claude Code 或 Cursor 的历史记录与项目配置。</li>
-  <li><strong>可视化界面定制</strong>：0.150.0 为行内代码与数据可视化新增了 iOS 风格的外观选项。</li>
-  <li><strong>Markdown 导出与无头会话</strong>：0.148.0 支持了 <code>/export</code> 以及 <code>codex exec fork</code> 分支能力，并全面启用成本预估显示。</li>
+  <li><strong>内置 GPT-6 Astra 模型</strong>：Codex 现已全面整合 GPT-6 Astra 模型，您可在内置的 Model Picker 中直接将其设为默认选项，体验断崖式提升的复杂逻辑推理能力。</li>
+  <li><strong>Vim 模式全面增强</strong>：0.153.0 大幅强化了 TUI 下的 Vim 操作手感，现在的 Undo (<code>u</code>) 与 Redo (<code>Ctrl+R</code>) 将完整保留您的草稿状态（含粘贴内容与附件）。</li>
+  <li><strong>远程插件 Marketplace CLI</strong>：通过 <code>codex plugin list/install/remove</code> 子命令，在终端可直接管理与同步官方插件市场的各类生态插件。</li>
+  <li><strong>交互式任务面板与导入</strong>：0.149.0 引入了 <strong>Agents Dashboard</strong>，并新增 <code>/import</code> 指令以直接导入 Claude Code / Cursor 配置。</li>
+  <li><strong>Markdown 导出与无头会话</strong>：0.148.0 支持了 <code>/export</code> 以及 <code>codex exec fork</code> 分支能力。</li>
 </ul>
 
 <h3 data-reveal>🚨 关键破坏性变更与模型迁移</h3>
