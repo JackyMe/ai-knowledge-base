@@ -221,7 +221,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">实战</div>
     <a href="#subscription-quotas"><span class="no">进阶</span>Pro/Team 额度机制</a>
-    <a href="#vision-artifacts-guide"><span class="no">进阶</span>视觉理解·SVG/Artifacts 实战</a>
+    <a href="#vision-artifacts-guide"><span class="no">进阶</span>Artifacts 沙盒与 Computer Use 实战</a>
     <a href="#playbook"><span class="no">07</span>八大场景实战手册</a>
     <a href="#context"><span class="no">08</span>上下文管理进阶</a>
     <a href="#permissions"><span class="no">09</span>权限与安全</a>
@@ -823,8 +823,8 @@ claude mcp login api-tool
 <div class="divider"></div>
 
 <section id="vision-artifacts-guide">
-<div class="sec-tag">进阶视觉专题</div>
-<h2>视觉理解、SVG/Artifacts 渲染与多模态工程实战</h2>
+<div class="sec-tag">Anthropic 独家核武</div>
+<h2>Artifacts 实时执行沙盒与 Computer Use 桌面自主接管实战</h2>
 
 <p>与单纯生成位图图片的模型不同，Anthropic 在视觉领域贯彻了极具辨识度的<strong>“代码即视觉”与“纯粹多模态理解”</strong>哲学。Claude 不直接吐出不可控的 PNG/JPEG 像素，而是通过强大的多模态视觉理解能力解析设计图，并直接输出<strong>语义化的 React 组件、响应式 SVG 矢量资产与可交互的 HTML/Canvas 画布</strong>。这种将视觉完全转化为纯代码的范式，在前端工程化、架构拓扑绘制与资产轻量化上展现出压倒性的工程优势。本章深度解析如何借助 Claude 的视觉与 Artifacts 体系，打造零像素失真、高度工程化的视觉资产管线。</p>
 
@@ -904,7 +904,23 @@ claude mcp login api-tool
   <li><strong>渐变与滤镜规范</strong>：指定 <code>&lt;defs&gt;</code> 区域内的渐变定义使用语义化 ID，避免在大型页面中由于重复 ID 导致渐变失效。</li>
 </ul>
 
-<h3 data-reveal>📋 四、 100+ 来源精选：生产级实战 Prompt 模板库</h3>
+<h3 data-reveal>🤖 四、 Computer Use（桌面与浏览器自主接管）实战指南</h3>
+<p><span class="tag-badge tag-official">业界独创功能</span> 2026 年 Anthropic 最令人震撼的独家护城河，莫过于 <strong>Computer Use（计算机自主控制）</strong>。它彻底颠覆了“AI 只能在对话框里打字”的局限，让 Claude 能够直接<strong>看懂屏幕截图、移动鼠标光标、点击按钮、输入文本、快捷键组合并自主操控真实的桌面软件与浏览器</strong>。</p>
+
+<h4>1. 核心应用场景与工程价值</h4>
+<ul>
+  <li><strong>端到端 E2E 自动化验收测试</strong>：传统编写 Cypress / Playwright 脚本需要花费数天时间定位 DOM 选择器。使用 Computer Use，只需一句话指令：“打开本地运行的电商网站，完成注册、将第一件商品加入购物车、进入结算页面并验证折扣码是否生效”。Claude 会像真实人类用户一样点击并截图验证。</li>
+  <li><strong>遗留无 API 系统的数据搬运</strong>：面对完全没有开放 REST API 的老旧政企系统或桌面客户端，让 Claude 自主登录界面，逐步点击翻页并将数据复制导出为 CSV。</li>
+</ul>
+
+<h4>2. 生产级沙箱防护与防跑偏军规</h4>
+<div class="callout warn"><b class="t">安全铁律：务必关进 Docker 沙箱或虚拟桌面</b>
+切勿直接给 Computer Use 授权你日常办公的个人 macOS/Windows 主桌面！最佳实践：
+1. <strong>环境隔离</strong>：将其运行在一个独立的轻量级 Docker（带 X11 / noVNC 虚拟屏幕的容器）或独立虚拟机中；
+2. <strong>步数上限约束</strong>：每次自主执行任务必须在客户端设置 <code>max_steps=25</code> 强制熔断机制，防止模型在遇到未知弹窗时陷入死循环点击；
+3. <strong>敏感操作二次人工审批</strong>：对于涉及“点击支付”、“删除数据库”或“提交工单”的关键动作，配置必须弹出 <code>[Approve / Reject]</code> 交互模态框。</div>
+
+<h3 data-reveal>📋 五、 生产级实战 Prompt 模板库</h3>
 
 <h4>模板 1：企业级微服务系统交互式拓扑图（带动效的纯 SVG）</h4>
 <div class="code-block">
@@ -940,7 +956,7 @@ Requirements:
 4. Fully responsive, clean code, no external JavaScript dependencies, easily styled via CSS variables.</code></pre>
 </div>
 
-<h3 data-reveal>🛡️ 五、 工程避坑与 MCP 视觉扩展生态</h3>
+<h3 data-reveal>🛡️ 六、 工程避坑与 MCP 扩展生态</h3>
 <div class="duo">
   <div class="card">
     <div class="card-title">如果我的项目确实需要生成写实位图照片怎么办？</div>

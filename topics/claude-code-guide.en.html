@@ -221,7 +221,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">Real World Scenarios</div>
     <a href="#subscription-quotas"><span class="no">ADV</span>Pro/Team Quota Limits</a>
-    <a href="#vision-artifacts-guide"><span class="no">ADV</span>Visual & Artifacts Playbook</a>
+    <a href="#vision-artifacts-guide"><span class="no">ADV</span>Artifacts Sandbox & Computer Use</a>
     <a href="#playbook"><span class="no">07</span>Eight Scenario Playbooks</a>
     <a href="#context"><span class="no">08</span>Advanced Context Management</a>
     <a href="#permissions"><span class="no">09</span>Permissions and Security</a>
@@ -819,8 +819,8 @@ claude mcp login api-tool
 <div class="divider"></div>
 
 <section id="vision-artifacts-guide">
-<div class="sec-tag">Advanced Visual Engineering</div>
-<h2>Visual Intelligence, SVG/Artifacts Rendering & Multimodal Playbook</h2>
+<div class="sec-tag">Anthropic Superpower</div>
+<h2>Artifacts Live Execution Sandbox & Computer Use Desktop Automation</h2>
 
 <p>Unlike conventional diffusion models that merely output static pixel bitmaps, Anthropic adheres to a distinct philosophy of <strong>"Code as Visuals" and pure multimodal comprehension</strong>. Rather than generating uncontrollable PNG/JPEG blocks, Claude leverages its world-class vision models to deconstruct designs and output <strong>semantic React components, responsive SVG vector assets, and live interactive HTML/Canvas artifacts</strong>. This code-native paradigm offers overwhelming architectural advantages in scalability, zero-latency rendering, and codebase maintainability. This chapter details how to utilize Claude's vision and Artifacts architecture to build a pixel-perfect, highly maintainable visual engineering pipeline.</p>
 
@@ -900,7 +900,23 @@ Audit the visual delta: Check 1. Responsive collapse under mobile breakpoints; 2
   <li><strong>Scoped Gradient Defs</strong>: Require unique, semantic IDs inside <code>&lt;defs&gt;</code> blocks to prevent cross-component gradient overrides on complex pages.</li>
 </ul>
 
-<h3 data-reveal>📋 4. Production Prompt Blueprints</h3>
+<h3 data-reveal>🤖 4. Computer Use (Autonomous Desktop & Browser Control) Guide</h3>
+<p><span class="tag-badge tag-official">Industry-First Capability</span> Anthropic's defining technological moat is <strong>Computer Use</strong>. Breaking out of the chatbox, Claude can directly <strong>inspect screen captures, move the mouse, click buttons, type keystrokes, and navigate native desktop software and web browsers like a human user</strong>.</p>
+
+<h4>1. Core Engineering Use Cases</h4>
+<ul>
+  <li><strong>Zero-Script E2E Acceptance Testing</strong>: Instead of spending days authoring Cypress/Playwright selectors, issue a plain-English directive: "Navigate to localhost:3000, sign up as a test user, add an item to the cart, and verify discount coupon application." Claude executes the steps visually, verifying each screen transition.</li>
+  <li><strong>Automating Legacy No-API Systems</strong>: For antiquated enterprise desktop clients lacking REST APIs, Claude navigates the GUI, extracts tabular data, and compiles CSV exports autonomously.</li>
+</ul>
+
+<h4>2. Sandboxing & Safety Guardrails</h4>
+<div class="callout warn"><b class="t">Safety Rule: Run inside Isolated Docker / Virtual Displays</b>
+Never grant Computer Use raw access to your primary personal workstation! Best Practices:
+1. <strong>Environment Isolation</strong>: Deploy within a headless Docker container running a lightweight X11/noVNC virtual framebuffer;
+2. <strong>Hard Step Limits</strong>: Enforce a strict <code>max_steps=25</code> cap to prevent infinite-loop clicking upon encountering unexpected modals;
+3. <strong>Human-in-the-Loop Confirmation</strong>: Require interactive <code>[Approve / Reject]</code> prompts for sensitive actions (payments, database drops, irreversible writes).</div>
+
+<h3 data-reveal>📋 5. Production Prompt Blueprints</h3>
 
 <h4>Blueprint 1: Interactive Enterprise Microservices Topology (Animated SVG)</h4>
 <div class="code-block">
@@ -925,7 +941,7 @@ Design details:
 Ensure fully functional React code using Lucide-react icons, rendered live in Artifacts.</code></pre>
 </div>
 
-<h3 data-reveal>🛡️ 5. Engineering Pitfalls & MCP Visual Extensions</h3>
+<h3 data-reveal>🛡️ 6. Engineering Pitfalls & MCP Extensions</h3>
 <div class="duo">
   <div class="card">
     <div class="card-title">What if my project genuinely requires photorealistic image assets?</div>

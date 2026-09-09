@@ -174,8 +174,8 @@ pre code{background:none;color:inherit;padding:0}
       <a href="#ch5-2"><span class="no">5.2</span>避坑图鉴：坚决不做的 5 件事</a>
     </div>
       <div class="nav-group"><div class="gt">六 · 订阅与额度</div>
-      <a href="#ch6-1"><span class="no">6.1</span>AI Pro/Ultra 额度体系与效能拉满</a>
-      <a href="#ch6-2"><span class="no">6.2</span>Imagen 3 视觉生成与多模态实战</a>
+      <a href="#ch6-1"><span class="no">6.1</span>NotebookLM 独家核武与事实提纯</a>
+      <a href="#ch6-2"><span class="no">6.2</span>原生 2M 多模态与 AI Studio 免费矩阵</a>
     </div>
   </nav>
 </aside>
@@ -953,203 +953,82 @@ sequenceDiagram
         </div>
       </section>
       <section id="ch6-1">
-  <h2>6.1 Gemini Advanced / Ultra 资产全景利用与生态协同指南</h2>
-  <p><span class="tag-badge tag-tip">进阶实战手册</span> Google 将其 AI 订阅服务（Google One AI Premium / AI Pro / Ultra）打造成了一个庞大的生产力矩阵，其核心竞争力远非一个单一的 Web 聊天窗口，而是<strong>深度融合了 Google Workspace、NotebookLM 知识库与 Imagen 3 多模态生成</strong>的生态集群。本节系统拆解如何盘活 Google AI 的每一项专属特权，打造零门槛、高续航的专业开发工作流。</p>
+  <h2>6.1 NotebookLM 独家核武：无限事实源、Audio Overview 与跨文档审计</h2>
+  <p><span class="tag-badge tag-official">Google 独家护城河</span> 很多开发者和高阶用户购买了 Google One AI Premium 订阅后，依然仅在 Gemini 网页端打字，却不知道 Google 生态中隐藏着目前全球最强大、最慷慨的“降维打击”工具——<strong>NotebookLM</strong>。它拥有完全独立、不计入日常提问限制的专属算力池，是业界唯一真正做到<strong>100% 严格基于事实源（Source-Grounded）、零幻觉引用</strong>的知识引擎。本节深度拆解如何将 NotebookLM 作为你的专属数字化技术外脑。</p>
 
-  <h3 data-reveal>🧭 一、 揭开 Google 算力计量与平滑降级 (Graceful Fallback) 机制</h3>
-  <p>理解 Google 的资源调配逻辑，是避免在核心工作时段遭遇卡顿或代码质量波动的关键：</p>
+  <h3 data-reveal>🧬 一、 为什么 NotebookLM 是不可替代的“无幻觉”利器？</h3>
+  <p>通用大模型（如 ChatGPT、常规 Gemini）由于其开放域预训练机制，在回答长文档细节时极易“自作聪明”地胡编乱造。而 NotebookLM 的底层推理机制完全被死死锁定在您上传的<strong>源文件（Sources）</strong>内部：</p>
+  <ul>
+    <li><strong>严格证据锚定</strong>：NotebookLM 输出的每一句话、每一个技术结论，都会在末尾附带可点击的小角标。点击即可瞬间高亮定位到原始 PDF、代码文件或 Google Doc 的确切段落。</li>
+    <li><strong>完全独立的算力池</strong>：NotebookLM 不消耗您的 Gemini 5 小时滚动算力，也不计入普通对话的 Token 账单。您可以无脑上传多达 50 个高容量源文件（单文件最高支持 50 万字）。</li>
+  </ul>
 
-  <div class="table-wrap">
-    <table class="tbl">
-      <thead>
-        <tr>
-          <th>核心功能与权益</th>
-          <th>底层计算特性与优势</th>
-          <th>使用陷阱与算力瓶颈</th>
-          <th>最佳实践策略</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Gemini 旗舰模型 (Ultra / Pro)</strong></td>
-          <td>高达 1M~2M 超长上下文，极强的大篇幅代码推理与数学逻辑能力。</td>
-          <td>在终端向旗舰模型单次灌入超大文件，后台算力点数消耗极大，容易在短时间内触发限额。</td>
-          <td>用于系统架构攻坚与核心逻辑重构；日常任务让模型保持在简洁上下文状态。</td>
-        </tr>
-        <tr>
-          <td><strong>平滑降级 (Graceful Fallback)</strong></td>
-          <td><strong>Google 不拔管</strong>。当 5 小时内的高阶算力点数耗尽，系统自动无缝切换至 <strong>Gemini Flash</strong> 极速模型。</td>
-          <td>Flash 模型响应极快，但面对复杂的跨文件指针或状态机时推理深度下降，易出现逻辑漏洞。</td>
-          <td>一旦感知模型输出变快但回答变简短，应立即暂停核心架构修改，转为让其编写单测或技术文档。</td>
-        </tr>
-        <tr>
-          <td><strong>NotebookLM 知识前哨</strong></td>
-          <td><strong>完全独立且极其慷慨的知识解析算力池</strong>。支持多源文档深度比对与严格基于事实的无幻觉引用。</td>
-          <td>直接上传扫描件质量差的 PDF 可能导致表格错乱。</td>
-          <td>把最耗算力的上百页长文档、需求规格书全部交给 NotebookLM 解析，不占用日常对话额度。</td>
-        </tr>
-        <tr>
-          <td><strong>Google Workspace 原生联动</strong></td>
-          <td>直接调用云端 Drive 中的 Docs、Sheets 与 Gmail，免除本地剪贴板搬运。</td>
-          <td>在未授权或个人多账号混用的浏览器环境下，容易找不到对应文件夹。</td>
-          <td>将团队 PRD 和接口文档维护在 Google Docs 中，对话时通过 <code>@GoogleDrive</code> 瞬间精准挂载。</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <h3 data-reveal>🚀 二、 NotebookLM 的三大颠覆级高能玩法</h3>
 
-  <h3 data-reveal>🚀 二、 黄金四大协同武器：把 Google 生态价值榨取到极致</h3>
-
-  <h4>武器 1：NotebookLM 作为无限 RAG 知识前哨（规避终端算力浪费）</h4>
-  <p>许多开发者习惯在终端里让 AI 硬吃几十万行的项目代码或上百页的 API 规范，这是极其浪费宝贵旗舰算力的做法。<br>
-  <strong>极致降本工作流：</strong></p>
+  <h4>玩法 1：Audio Overview（双主播技术播客）——通勤中的超强吸纳法</h4>
+  <p>这是 2026 年风靡硅谷工程师圈的“黑客级学习法”。面对一份 300 页的枯燥开源框架架构方案、冗长的季度财报或冷门的后端 RFC 规范：</p>
   <ol>
-    <li><strong>建立专用笔记本</strong>：在 NotebookLM 中为当前项目新建笔记本，将庞大的官方技术文档、企业内部 PDF、甚至源码压缩包直接上传。</li>
-    <li><strong>无幻觉提纯</strong>：NotebookLM 严格基于您上传的文件进行推理，每一句回答都附带可点击的原文章节引用。输入指令：<code>"全面梳理这套资料中的数据结构契约与核心状态转移图，为我提取出一份结构化的【极简开发字典】。"</code></li>
-    <li><strong>成果轻量交接</strong>：将提纯后仅几 KB 的精炼 Markdown 字典拿到日常终端里作为上下文基准。这样既把最重的文档解析留给了免费独立的 NotebookLM，又让本地终端能够以极少 Token 享受 100% 精准的上下文支持。</li>
+    <li>在 NotebookLM 笔记本中勾选所有技术资料，点击右侧的 <strong>Generate Audio Overview（生成深度技术对谈）</strong>。</li>
+    <li>后台会自动派出两个 AI 主播（一男一女），用极其自然生动、甚至带有插话、顿悟和反问的语调，对这套复杂资料进行长达 15~20 分钟的“降维级白话拆解”。</li>
+    <li><strong>实战收益</strong>：在上下班通勤、健身或休息时戴上耳机，原本需要枯燥精读两天的庞大规范，只需听一遍对谈就能瞬间抓住核心架构决策与边界缺陷。</li>
   </ol>
 
-  <h4>武器 2：Google Workspace 原生打通（免除复制粘贴税）</h4>
-  <p>高级会员享有直接连接 Google 云端生态的特权。切忌在本地反复手动复制、粘贴上千行的产品需求或会议纪要：</p>
-  <ul>
-    <li>在 Gemini 对话框中，直接键入：<code>@GoogleDrive 找到我本周更新的《会员系统升级 PRD》，基于第 3 节的数据库改动，输出对应的 Prisma Schema 定义。</code></li>
-    <li>AI 会直接从云端读取最新版本的文档，彻底消除本地文件版本不一致带来的代码返工，同时避免了大段文本在剪贴板粘贴造成的格式错乱。</li>
-  </ul>
+  <h4>玩法 2：跨文档交叉审计与矛盾发现（Gap & Conflict Analysis）</h4>
+  <p>在研发全生命周期中，最容易埋雷的是“产品 PRD 写的与后端接口文档不一致，UI 设计稿又遗漏了异常状态”。</p>
+  <div class="callout tip"><b class="t">跨源交叉审计 Prompt 范式</b>
+  <code>【已勾选源文件：PRD_v2.docx + API_Contract.json + UI_Specs.pdf】
+请作为资深系统分析师，交叉比对以上三个源文件：
+1. 列出 PRD 中要求、但在 API 接口定义中完全缺失的字段与业务场景；
+2. 找出 API 错误码定义与 UI 设计稿提示文案之间存在语义矛盾的地方；
+3. 输出一份严格对齐的【设计遗漏与接口阻断清单】。</code></div>
 
-  <h4>武器 3：Gems（定制专家库）模块化工程分工</h4>
-  <p>不要在同一个漫无边际的对话窗口中既让 AI 写前端 CSS，又让它调数据库 SQL。利用高级会员的 <strong>Gems</strong> 功能创建专注型数字专家：</p>
-  <ul>
-    <li><strong>创建“代码审查专家 (Code Reviewer Gem)”</strong>：预置提示词：“专注于内存泄漏、并发安全与 TypeScript 严格类型检查，只输出缺陷点与 Diff 方案”。</li>
-    <li><strong>创建“UI 样式专家 (Tailwind Specialist Gem)”</strong>：预置提示词：“精通现代响应式与深色模式布局，输出严格遵循移动优先原则”。</li>
-    <li>每个 Gem 拥有纯粹、独立的上下文，分门别类处理专业任务，不仅回答质量跃升，更有效隔离了对话内存膨胀。</li>
-  </ul>
-
-  <h4>武器 4：多模态落地（Imagen 3 到工程代码的视觉闭环）</h4>
-  <p>在前端 UI 研发中，切忌在终端里让 AI“凭空想象”界面样式：</p>
-  <ul>
-    <li>第一步：在 Web 端利用 Imagen 3 的画图特权生成概念图：“为一款极简风格的健康打卡 App 生成首页 UI 概念图，采用深色玻璃拟态风格”。</li>
-    <li>第二步：在网页端直观确认视觉效果符合预期后，上传该图并下达指令：“精确解析这张设计图的色彩搭配与组件层级，输出对应的 React + Tailwind 页面骨架”。</li>
-    <li>第三步：将经过视觉检验的代码骨架复制至项目，一次性验收通过，完全省去了在终端反复调整色值和边距的巨大消耗。</li>
-  </ul>
-
-  <h3 data-reveal>🛡️ 三、 生产级场景实战 SOP</h3>
-
-  <h4>场景：无文档旧系统的“破荒式”逆向工程</h4>
-  <div class="callout tip"><b class="t">NotebookLM + Gemini 协同两步法</b>
-  <p>1. <strong>在 NotebookLM 中</strong>：将旧系统的所有 SQL 导出文件、Controller 源码打包导入，提问：<code>"绘制系统全局 ER 关系图，并列出所有隐藏的外键关联逻辑与遗留历史包袱。"</code></p>
-  <p>2. <strong>在 Gemini 终端中</strong>：拿到 ER 清单后下达重构指令：<code>"依据这份经过验证的 ER 清单，使用最新的 Nest.js + TypeORM 重构用户权限模块。"</code></p></div>
-
-  <h3 data-reveal>❓ 四、 常见高频疑问解答</h3>
-  <div class="duo">
-    <div class="card">
-      <div class="card-title">NotebookLM 解析文件会消耗我的 Gemini 提问配额吗？</div>
-      <div class="card-desc"><strong>完全不消耗。</strong> NotebookLM 运行在 Google 独立的知识库检索架构上，它拥有自己独立的资源池。这是目前 Google AI 生态中价值最高、性价比最强的高效利器。</div>
-    </div>
-    <div class="card">
-      <div class="card-title">被平滑降级到 Flash 模型后，我该如何应对？</div>
-      <div class="card-desc">平滑降级通常在 5 小时内恢复。在处于降级状态时，不要尝试让它进行复杂的算法推演。您可以利用 Flash 模型极高的响应速度，让它批量生成单元测试、批量翻译代码注释，或者编写用户使用手册，将算力优势发挥到极致。</div>
-    </div>
-  </div>
+  <h4>玩法 3：提炼“代码生成字典”反哺开发终端</h4>
+  <p>面对数十个老旧遗留代码文件，在 NotebookLM 中提炼出仅几 KB 的核心状态机与数据模型字典（<code>Minimal Architecture Dictionary</code>），再把这份纯净文档喂给 Antigravity 或本地开发代理，避免了让编码代理硬吃海量长文本导致的算力雪崩与逻辑走形。</p>
 </section>
 
 <section id="ch6-2">
-  <h2>6.2 Imagen 3 视觉生成与 Gemini 原生多模态工程实战</h2>
-  <p><span class="tag-badge tag-tip">多模态进阶</span> Google 在生成式视觉领域的王牌不仅是新一代照片级生图引擎 <strong>Imagen 3</strong>，更在于将其与 Gemini 1.5/2.0 Ultra 的<strong>超长上下文原生多模态（Native Multimodal）</strong>深度打通。开发者不仅能生成高精度、无塑料感的产品渲染与设计资产，更可以直接把长达 1 小时的视频录屏、海量 PDF 规范图集甚至复杂的音视频数据一股脑丢给模型进行端到端逻辑逆向。本节全面拆解如何利用 Imagen 3 与原生多模态，打造企业级视觉工程流水线。</p>
+  <h2>6.2 原生 2M 超长上下文、全长视频逆向与 AI Studio 免费算力矩阵</h2>
+  <p><span class="tag-badge tag-tip">多模态进阶</span> 除了 NotebookLM 外，Google 生态的另一大绝对壁垒在于<strong>真正的原生全模态（Native Multimodal）与高达 200 万 Token 的上下文窗口</strong>。这不仅意味着可以进行千万级代码全库分析，更意味着您可以直接把 1 小时的真实录屏视频直接喂给大模型进行逻辑逆向。</p>
 
-  <h3 data-reveal>🧬 一、 技术演进与核心突破：从 Imagen 2 到 Imagen 3 的质变</h3>
+  <h3 data-reveal>🎬 一、 录屏视频逆向业务工程 (Video-to-Spec) 实战</h3>
+  <p>复刻复杂前端动效、手势交互或梳理竞品工作流时，文字描述永远存在巨大偏差：</p>
+  <ul>
+    <li>录制一段 2~3 分钟的高清操作录屏（MP4 格式）直接拖入 Gemini 1.5/2.0 Ultra。</li>
+    <li>利用原生多模态指令提取状态机：<code>"精确分析此录屏视频：逐秒记录用户点击坐标与对应的动画过渡曲线；用 Mermaid 绘制前端状态机的完整跳转逻辑；提取所有 Toast 错误提示文案。"</code></li>
+    <li>Gemini 会按照真实物理时序逐帧解析动作，生成的业务规格书不仅 100% 还原现场，更节省数天的人肉对齐时间。</li>
+  </ul>
+
+  <h3 data-reveal>🔌 二、 Google AI Studio：被忽视的免费开发者宝库</h3>
+  <p>很多开发者只知道在网页端使用付费 Gemini，却不知道面向开发者的 <strong>Google AI Studio (aistudio.google.com)</strong> 提供了极为惊人的官方资源：</p>
   <div class="table-wrap">
     <table class="tbl">
       <thead>
         <tr>
-          <th>技术指标</th>
-          <th>早期 Imagen 2 / 传统竞品</th>
-          <th>Imagen 3 核心工程突破</th>
-          <th>在敏捷研发中的价值</th>
+          <th>开发通道</th>
+          <th>可用额度与计费模式</th>
+          <th>核心能力与控制权</th>
+          <th>工程落地定位</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>排版与文字渲染</strong></td>
-          <td>文本生成极其不稳定，易出现字符粘连或拼写畸变。</td>
-          <td><strong>复杂英文排版准确率领先业内</strong>，支持多种字体层级与规整对齐。</td>
-          <td>直接产出带有精确文案的产品包装图、电商主图、Marketing 海报与 UI 按钮。</td>
+          <td><strong>Google AI Studio (免费层)</strong></td>
+          <td><strong>极高免费并发</strong>（Gemini Flash 通常提供高达 15 RPM / 100 万 TPM 的免费开发配额）。</td>
+          <td>自由调节 Temperature、Top-P、Top-K；直接配置全局 System Instructions；支持可视化的 Function Calling 测试。</td>
+          <td><strong>独立开发者的首选基建</strong>：用于日常的单测生成、文档翻译、轻量爬虫脚本与数据提取，不耗费任何个人账单。</td>
         </tr>
         <tr>
-          <td><strong>光影与物理微距质感</strong></td>
-          <td>浓重的“AI 涂抹感”，高光溢出，皮肤或材质呈现塑料光泽。</td>
-          <td><strong>真实光学相机的景深（DoF）、散射光照与微观纹理</strong>极其细腻。</td>
-          <td>高拟真度工业级 3D 硬件外壳渲染、消费电子概念图，无需手搓 Blender。</td>
-        </tr>
-        <tr>
-          <td><strong>超长视频多模态解析</strong></td>
-          <td>只能逐帧抽样低分辨率截屏，无法理解连续动作时序。</td>
-          <td><strong>原生支持 1 小时以上的高清视频直灌</strong>，精准理解时间轴上的动作演变。</td>
-          <td>录制一段竞品 App 的操作视频或复杂 Bug 复现视频，一键自动生成时序图与需求规格书。</td>
+          <td><strong>Gemini Advanced (网页端)</strong></td>
+          <td>基于 Google One 订阅，面向综合生产力。</td>
+          <td>打通 Google Workspace（Docs/Drive）、一键调用 Imagen 3 出图、支持原生音频对话与移动端 App。</td>
+          <td>用于个人头脑风暴、战略规划、文档协同与设计物料生成。</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h3 data-reveal>🚀 二、 三大核心工程落地范式</h3>
-
-  <h4>范式 1：录屏视频逆向业务规格书 (Video-to-Spec)</h4>
-  <p>在复刻复杂的前端动效、手势交互或分析竞品 App 业务流时，手动截图与文字描述极其低效。<br>
-  <strong>最佳实战流程：</strong></p>
-  <ol>
-    <li>使用手机或电脑屏幕录制一段 2~3 分钟的 App 完整操作视频（涵盖登录、异常校验、表单交互）。</li>
-    <li>直接将 MP4 视频文件上传至 Gemini Advanced 对话框，下达高能逆向指令：
-      <div class="callout tip"><b class="t">视频逆向时序状态机 Prompt</b>
-      <code>请完整分析此录屏视频：
-1. 梳理视频中用户触发的所有交互行为，按时间戳（如 00:15, 01:20）列出操作步骤；
-2. 绘制前端界面的【状态转移图 (State Machine)】，采用 Mermaid 语法输出；
-3. 提取所有输入边界校验逻辑与 Toast 提示文案，整理为可交付给测试团队的 QA 测试用例文档。</code></div>
-    </li>
-    <li>模型会依据视频的时间轴，逐秒分析界面变化，生成极其精准的业务逻辑规范，节省数天的产品需求文档梳理时间。</li>
-  </ol>
-
-  <h4>范式 2：Imagen 3 驱动的工业级视觉资产流水线</h4>
-  <p>为科技产品、硬件项目或官方网站生成高质量的视觉物料：</p>
-  <ul>
-    <li><strong>硬件概念 3D 渲染</strong>：通过明确指定焦段与光照（如 <code>85mm lens, f/2.8, studio diffuse lighting, matte anodized aluminum texture</code>），产出工业设计级的高端硬件概念图。</li>
-    <li><strong>网站 Hero 全屏横幅</strong>：指定宽画幅比例（<code>--ar 16:9</code>）与留白区域（<code>negative space on the left for hero text</code>），方便前端直接将文字与 CTA 按钮叠放在背景图上方。</li>
-  </ul>
-
-  <h4>范式 3：全量设计规范一致性审计 (Design System Audit)</h4>
-  <p>利用 Gemini 的百万上下文窗口，同时上传公司的《UI 设计系统规范 PDF》以及前端团队刚上线的 10 张网页截图，指令其执行全量一致性审计：对比每一个按钮的圆角弧度、主色调十六进制色值与字体行高是否 100% 契合规范，直接输出不合规组件列表。</p>
-
-  <h3 data-reveal>🎨 三、 提示词工程与专业摄影调教规范</h3>
-  <p>Imagen 3 对“摄影专业术语”的响应极佳。避免使用“好看、高级”等抽象形容词，采用专业镜头语言控制：</p>
-  <ul>
-    <li><strong>镜头与景深控制</strong>：指定焦距与光圈值（如 <code>shot on 50mm f/1.8 lens, shallow depth of field with soft creamy bokeh background</code>）。</li>
-    <li><strong>打光系统配置</strong>：指定光源类型（如 <code>Rembrandt lighting, rim light highlighting product contours, soft directional studio softbox</code>）。</li>
-    <li><strong>文字排版限定</strong>：渲染文字时必须用双引号标注，并注明排版位置：<code>with crisp typography "NEXUS AI" cleanly embossed on the brushed metal surface</code>。</li>
-  </ul>
-
-  <h3 data-reveal>📋 四、 生产级实战 Prompt 模板库</h3>
-
-  <h4>模板 1：极简现代消费电子硬件产品渲染图</h4>
-  <div class="code-block">
-    <div class="code-header"><span>Prompt 模板 · Hardware Product Render</span><button class="copy-btn">复制</button></div>
-    <pre><code>Studio product photography of a sleek minimalist smart home edge-computing gateway device. Matte obsidian anodized aluminum chassis with smooth chamfered edges. A subtle, elegant glowing teal ring indicator on the top circular surface. Studio setup: placed on a neutral dark slate surface, dramatic soft rim lighting highlighting the metallic contours, shallow depth of field (f/2.8, 85mm lens), neutral gray studio background. Ultra-clean commercial aesthetic, no clutter, photorealistic industrial design.</code></pre>
-  </div>
-
-  <h4>模板 2：科技企业官网全屏 Hero 概念背景图 (带排版留白)</h4>
-  <div class="code-block">
-    <div class="code-header"><span>Prompt 模板 · Website Hero Banner</span><button class="copy-btn">复制</button></div>
-    <pre><code>Wide landscape banner (16:9) for an AI enterprise cloud platform website hero section. Dark futuristic aesthetic with deep navy background (#070B19). On the right side, an intricate, elegant glowing crystalline geometric sphere with ethereal neural data threads floating around it. Left side features ample clean, empty negative space with subtle deep gradients, specifically reserved for headline typography. Soft volumetric cinematic lighting, pristine render, professional tech landing page background.</code></pre>
-  </div>
-
-  <h3 data-reveal>🛡️ 五、 SynthID 水印与合规准则</h3>
-  <div class="duo">
-    <div class="card">
-      <div class="card-title">什么是 SynthID 水印？会影响图像在产品中的显示吗？</div>
-      <div class="card-desc"><strong>完全不影响肉眼视觉呈现。</strong> Google DeepMind 的 SynthID 是一种不可见的数字隐形水印，它直接嵌入在图像像素的频率特征中，肉眼看不到任何噪点或标记，但可通过检测工具验证是否为 AI 生成，完全不影响商业发布与前端展示。</div>
-    </div>
-    <div class="card">
-      <div class="card-title">在 Google AI Studio 中批量调用 Imagen 3 会被限流吗？</div>
-      <div class="card-desc">Imagen 3 的 API 调用拥有专门的并发（RPM/TPM）配额。对于大规模自动化批量生成资产，建议在客户端代码中实现指数退避重试（Exponential Backoff）机制，或者使用 Batch API 享受 50% 的离线计费折扣。</div>
-    </div>
-  </div>
+  <h3 data-reveal>☁️ 三、 Google Workspace 原生直连（免除复制粘贴税）</h3>
+  <p>在企业开发场景下，将需求与技术规范维护在 Google Docs 中。在对话中直接通过 <code>@GoogleDrive</code> 语法调用最新文档，大模型自动拉取云端版本，彻底消除本地剪贴板搬运引起的版本混乱与排版破损。</p>
 </section>
 
 <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
