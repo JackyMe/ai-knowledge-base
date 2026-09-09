@@ -225,6 +225,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <div class="gt">Practices & Scenarios</div>
     <a href="#best-practices"><span class="no">ADV</span>Best Practices</a>
     <a href="#subscription-quotas"><span class="no">ADV</span>Quotas & Maximization</a>
+    <a href="#image-guide"><span class="no">ADV</span>Image 2.0/2.5 & Vision Playbook</a>
     <a href="#playbook"><span class="no">10</span>Pipelines & Playbook</a>
     <a href="#hidden-config"><span class="no">11</span>Under-the-Hood Flags</a>
     <a href="#resources"><span class="no">12</span>Resource Index</a>
@@ -810,6 +811,170 @@ OpenAI's limits are not based on simple message counts, but on a dynamic pool de
   <div class="card">
     <div class="card-title">Are Web, Desktop, and Mobile quotas separate?</div>
     <div class="card-desc"><strong>No, they share a unified account quota pool.</strong> The only independent allowances are Deep Research monthly credits and Advanced Voice minutes. If your desktop client hits a rate limit, the web and mobile apps will be locked as well.</div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="image-guide">
+<div class="sec-tag">Advanced Image Engineering</div>
+<h2>Image 2.0/2.5 Visual Intelligence & Engineering Handbook</h2>
+
+<p>In traditional software development, engineers often fall into the inefficient cycle of "writing code blindly -> refreshing browser -> manual visual inspection -> tweaking CSS." As OpenAI's image models have progressed from DALL-E 3 into <strong>GPT-4o native diffusion</strong> and the latest <strong>Image 2.0 / 2.5 visual engines</strong>, AI image generation has evolved far beyond casual art. It has become an indispensable "engineering specification engine" for modern developers. This chapter aggregates battle-tested lessons from top frontend teams, UI/UX design systems, and indie developers to establish an end-to-end bridge between visual concepts and production code.</p>
+
+<h3 data-reveal>🧬 1. Technological Evolution: From DALL-E to Image 2.5</h3>
+<p>Understanding generational capabilities is essential for selecting the right model and formulating deterministic prompts:</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Generation</th>
+        <th>Architecture & Breakthroughs</th>
+        <th>Typography & Detail Fidelity</th>
+        <th>Role in Software Engineering</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>DALL-E 3</strong></td>
+        <td>Standalone text-to-image diffusion model relying on LLM-expanded prompts.</td>
+        <td>Prone to misspelled text; melting geometry; uncontrollable spatial proportions.</td>
+        <td>Early conceptual moodboarding; unsuitable for direct UI mockups or icons.</td>
+      </tr>
+      <tr>
+        <td><strong>GPT-4o Native Image</strong></td>
+        <td>Native omni-modal architecture; visual and text tokens natively aligned.</td>
+        <td>Renders short, correct words; significantly improved understanding of physical occlusion.</td>
+        <td>Rapid UI prototyping, drafting system topology diagrams, and functional placeholders.</td>
+      </tr>
+      <tr>
+        <td><strong>Image 2.0 / 2.5</strong></td>
+        <td>Integrated with Sora physical priors and high-precision vector heuristics.</td>
+        <td><strong>Text rendering accuracy surpasses 95%</strong>; pixel-perfect grid alignment; crisp component hierarchy.</td>
+        <td><strong>Production-Grade Asset Pipeline</strong>: Direct high-fidelity UI mockups, compliant App Icons, and clean vector illustrations for automated Tailwind extraction.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 2. Three Core Engineering Paradigms</h3>
+
+<h4>Paradigm 1: Visual-First UI Reverse Engineering</h4>
+<p>Building complex frontend interfaces from vague bullet points leads to endless revisions.<br>
+<strong>Production-Grade SOP:</strong></p>
+<ol>
+  <li><strong>Generate Visual Baseline</strong>: Use Image 2.5 on ChatGPT Web to generate 2–3 high-fidelity UI mockups (e.g., a dark-mode Web3 analytics dashboard).</li>
+  <li><strong>Multimodal Design Token Extraction</strong>: Feed the approved concept into the GPT-4o vision model:
+    <div class="callout tip"><b class="t">Design Token Extraction Prompt</b>
+    <code>Act as a Senior Frontend Architect analyzing this UI screenshot: 1. Extract the complete color palette (hex codes for Primary, Secondary, Background, Border); 2. Measure the grid layout and spacing rules (4px/8px system); 3. Output the corresponding Tailwind CSS config snippet (tailwind.config.js) and base HTML skeleton.</code></div>
+  </li>
+  <li><strong>Terminal Execution</strong>: Hand this Tailwind config and layout skeleton to Codex in the local terminal. Codex builds the production components against verified design tokens with 100% first-pass acceptance.</li>
+</ol>
+
+<h4>Paradigm 2: Atomic Asset Pipelines (Icons & Empty States)</h4>
+<p>Waiting for custom designer assets slows down release velocity:</p>
+<ul>
+  <li><strong>Compliant App Icons</strong>: Prompt Image 2.5 with clean geometric constraints to produce squircle-ready icons adhering to Apple HIG and Material Design rules.</li>
+  <li><strong>Empty State Vector Graphics</strong>: Specify a pure white background (<code>solid pure white #FFFFFF background</code>). Run an automated local CLI script (using <code>potrace</code> or <code>rembg</code>) to strip the background and vectorize it into crisp, lightweight SVG assets directly committed into your repository.</li>
+</ul>
+
+<h4>Paradigm 3: Bidirectional Visual Regression Loop</h4>
+<p>Combine Codex with Playwright or Puppeteer to launch automated headless browser test runs, taking high-res screenshots of running code. Feed both the "Design Target" and the "Rendered Output" to the vision model for automated visual regression diffing:</p>
+<div class="callout note"><b class="t">Visual Regression Diff Prompt</b>
+<code>[Image 1: Design Target] vs [Image 2: Actual Playwright Screenshot]
+Strictly compare discrepancies across: 1. Padding and element alignment; 2. Font sizing and hierarchy; 3. Shadow blur and border colors. Output the exact CSS patch required to resolve all deviations.</code></div>
+
+<h3 data-reveal>🎨 3. Prompt Tuning & Engineering Framework</h3>
+<p>Eliminate conversational fluff and adopt the Six-Element Engineering Framework for deterministic results:</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Framework Dimension</th>
+        <th>Casual Prompting (Anti-Pattern)</th>
+        <th>Engineering Precision (Best Practice)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Subject & Function</strong></td>
+        <td>"A nice finance dashboard"</td>
+        <td><code>SaaS analytics dashboard interface, high-density data visualization, financial charts, transaction table</code></td>
+      </tr>
+      <tr>
+        <td><strong>2. Design System / Medium</strong></td>
+        <td>"Modern and clean"</td>
+        <td><code>Clean modern UI design, Swiss typographic style, Apple Human Interface Guidelines aesthetic, 8px grid system</code></td>
+      </tr>
+      <tr>
+        <td><strong>3. Color Tokens</strong></td>
+        <td>"Cool colors"</td>
+        <td><code>Dark mode palette: deep slate #0B0F17 background, vibrant emerald #10B981 accents, subtle border #1F2937</code></td>
+      </tr>
+      <tr>
+        <td><strong>4. Surface & Materials</strong></td>
+        <td>"Hyperrealistic, 8k render"</td>
+        <td><code>Matte texture, soft ambient occlusion, crisp 1px borders, subtle glassmorphism card elevation, zero glossy glare</code></td>
+      </tr>
+      <tr>
+        <td><strong>5. Typography & Text</strong></td>
+        <td>"With numbers on it"</td>
+        <td><code>Exact typography: with crisp white text "$124,580.00" displayed prominently, and "Total Revenue" above in gray</code></td>
+      </tr>
+      <tr>
+        <td><strong>6. Negative Constraints</strong></td>
+        <td>None</td>
+        <td><code>--no 3d clay style, no realistic human faces, no blurry gradients, no misspelled pseudo-latin text</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>Advanced Tuning Rules:</h4>
+<ul>
+  <li><strong>Eliminate "AI Glare & Plasticity"</strong>: Banish empty buzzwords like "ultra-detailed", "photorealistic", and "cinematic lighting." They inject cheap glowing artifacts. Instead, use professional design terms: <code>minimalist</code>, <code>clean lines</code>, <code>matte finish</code>, <code>subtle contrast</code>.</li>
+  <li><strong>Deterministic Typography</strong>: Wrap target button text or titles in double quotes: <code>a primary button with text "GET STARTED" in bold sans-serif</code>. Keep text elements under 4 words per cluster for maximum fidelity.</li>
+  <li><strong>Targeted Inpainting</strong>: If a dashboard layout is flawless except for one card, use the Web brush tool to mask only that region. Prompt: "Replace this card with a clean line chart while preserving the surrounding 1px border and background color." Never re-roll the entire image.</li>
+</ul>
+
+<h3 data-reveal>📋 4. Production Prompt Blueprints</h3>
+
+<h4>Blueprint 1: Modern Dark-Mode SaaS Analytics Dashboard</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt Blueprint · SaaS Dashboard UI</span><button class="copy-btn">Copy</button></div>
+  <pre><code>A high-fidelity modern SaaS web application dashboard interface for server monitoring. Dark mode theme with deep obsidian background (#0A0E1A). The layout features a clean left sidebar navigation, top header with user profile, and a central grid of 4 metric cards (CPU, Memory, Bandwidth, Uptime) with emerald green glowing sparkline charts. Crisp 1px borders (#1E293B), minimalist sans-serif typography, subtle dark card elevation. Professional Figma screenshot aesthetic, pixel-perfect alignment, no clutter.</code></pre>
+</div>
+
+<h4>Blueprint 2: Mobile Fintech Card Component (iOS / Flutter Spec)</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt Blueprint · Fintech Mobile Card</span><button class="copy-btn">Copy</button></div>
+  <pre><code>Mobile UI component for a premium debit card widget on iOS screen. Sleek frosted dark glass design with subtle holographic rim lighting. Prominent embossed white text "8492" and "VISA" logo in top corner. Clean balance display "$34,250.80" with minimalist typography. Below the card, two circular action buttons labeled "Send" and "Top Up". Clean solid background (#121212), Apple HIG design guidelines, modern Dribbble showcase style.</code></pre>
+</div>
+
+<h4>Blueprint 3: Developer App Icon Suite (App Store Standard)</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt Blueprint · Minimalist App Icon</span><button class="copy-btn">Copy</button></div>
+  <pre><code>App icon design for a developer code intelligence tool. A smooth rounded squircle container on pure black background. In the center, a minimalist geometric logo combining an abstract bracket '{' and a sparkling cyan star. Premium matte texture, subtle radial gradient, smooth beveled edges, modern iOS icon aesthetic. High resolution, centered composition, zero text, vector emblem clarity.</code></pre>
+</div>
+
+<h4>Blueprint 4: Vector Empty-State Illustration (SVG Traceable)</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt Blueprint · Empty State Vector</span><button class="copy-btn">Copy</button></div>
+  <pre><code>Clean vector empty state illustration for a '404 Page Not Found' error screen. A cute, minimalist floating astronaut robot looking puzzled at a disconnected glowing cable. Flat 2D vector art style, clean outline strokes, limited modern color palette (indigo, mint green, and soft gray). Isolated on a solid pure white (#FFFFFF) background. Modern tech startup illustration aesthetic, zero realistic shading, ready for SVG tracing.</code></pre>
+</div>
+
+<h3 data-reveal>🛡️ 5. Production Pitfalls & Compliance</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">How to maintain stylistic consistency across 10 in-app illustrations?</div>
+    <div class="card-desc"><strong>Lock the style modifier suffix.</strong> Append an identical descriptor to every prompt: <code>--style: flat geometric 2D vector, mint and slate palette, soft outlines, pure white background</code>. Keep the generation process within the same ChatGPT Web thread to allow the model to anchor on contextual visual memory.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">What are the commercial rights and safety boundaries?</div>
+    <div class="card-desc">OpenAI explicitly grants <strong>full commercial ownership of generated images to paid subscribers</strong>. To ensure compliance, avoid referencing protected trademarks (e.g., "Apple logo", "Disney character"). Instead, describe aesthetic characteristics ("sleek minimalist tech branding") to guarantee clean commercial deployment.</div>
   </div>
 </div>
 </section>

@@ -225,6 +225,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <div class="gt">实战与进阶</div>
     <a href="#best-practices"><span class="no">进阶</span>最佳实践与最优示例</a>
     <a href="#subscription-quotas"><span class="no">进阶</span>订阅额度与榨干指南</a>
+    <a href="#image-guide"><span class="no">进阶</span>Image 2.0/2.5 图像与视觉实战</a>
     <a href="#playbook"><span class="no">10</span>场景与 GitHub 流水线</a>
     <a href="#hidden-config"><span class="no">11</span>底层反查与双代理</a>
     <a href="#resources"><span class="no">12</span>资源索引</a>
@@ -854,6 +855,170 @@ OpenAI 的限制并不是看你“发了几句话”，而是根据<strong>“�
   <div class="card">
     <div class="card-title">网页版配额与手机端、桌面端是分开的吗？</div>
     <div class="card-desc"><strong>不是分开的，全平台共用统一的账户算力池。</strong> 唯一拥有独立额度的是“Deep Research”和“高级语音通话时长”。如果桌面端提示被限流，网页端和手机端同样会受到限制，因此必须掌握多端分工节奏。</div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="image-guide">
+<div class="sec-tag">进阶图像专题</div>
+<h2>Image 2.0/2.5 视觉赋能与全栈工程落地实战</h2>
+
+<p>在传统的编码范式中，开发者往往陷入“手搓代码 -> 刷新浏览器 -> 肉眼检查 -> 微调 CSS”的低效泥潭。随着 OpenAI 图像模型从早期的 DALL-E 演化为 <strong>GPT-4o 原生扩散多模态</strong> 以及最新的 <strong>Image 2.0 / 2.5 视觉引擎</strong>，图像生成已经彻底跨越了“画插图”的娱乐边界，成为现代敏捷开发中不可或缺的“工程规格原型机”。本章聚合了全网顶尖前端团队、UI/UX 实验室与独立黑客的实战经验，深度拆解如何通过 Image 2.0/2.5 打通从概念草图到生产代码的高效闭环。</p>
+
+<h3 data-reveal>🧬 一、 技术演进全景：从 DALL-E 到 Image 2.5 的质变</h3>
+<p>理解不同代际模型的底层特性，是精准选型与避免提示词“对牛弹琴”的基础：</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>技术代际</th>
+        <th>底层架构与核心突破</th>
+        <th>文字渲染与细节精度</th>
+        <th>在编程开发中的典型定位</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>DALL-E 3</strong></td>
+        <td>独立的文本-图像扩散模型，依赖 LLM 隐式改写用户 Prompt。</td>
+        <td>文字经常拼写错误；物体边缘易出现融化或幻觉；几何比例不可控。</td>
+        <td>早期概念灵感探索，不适合直接用于精确的 UI 界面或图标生成。</td>
+      </tr>
+      <tr>
+        <td><strong>GPT-4o 原生图像</strong></td>
+        <td>原生全模态架构，视觉 Token 与文本 Token 深度对齐，支持严格的上下文跟随。</td>
+        <td>能够生成简短正确的英文单词；对现实光影和物理遮挡理解显著提升。</td>
+        <td>快速生成产品原型、绘制系统架构草图与简单的功能占位图。</td>
+      </tr>
+      <tr>
+        <td><strong>Image 2.0 / 2.5</strong></td>
+        <td>融入 Sora 物理时空引擎与高精度矢量先验，支持局部精准重绘与几何锁定。</td>
+        <td><strong>文字渲染准确率突破 95%</strong>；支持像素级网格对齐、清晰的 UI 组件层级与无畸变材质。</td>
+        <td><strong>生产级设计系统资产生成</strong>：直接产出高质量 UI Mockup、规范化 App Icon、空状态矢量插画并无缝提取 Tailwind Tokens。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 二、 三大工程使用范式：视觉与代码的高效闭环</h3>
+
+<h4>范式 1：UI 原型逆向工程（Visual-First Design to Code）</h4>
+<p>许多前端工程师最头疼的是“根据一堆文字需求凭空写页面”，写完往往被产品经理打回重做。<br>
+<strong>最佳落地 SOP：</strong></p>
+<ol>
+  <li><strong>生成视觉基准</strong>：在 ChatGPT 网页端输入结构化 Prompt，让 Image 2.5 生成 2~3 套高保真 UI 效果图（如：深色微光风格的 Web3 仪表盘）。</li>
+  <li><strong>多模态 Token 提取</strong>：选中最满意的方案，将其喂给 GPT-4o 视觉模型，执行系统级逆向指令：
+    <div class="callout tip"><b class="t">设计系统提取 Prompt</b>
+    <code>请以高级前端架构师身份分析此设计图：1. 提取完整的色彩 Palette（十六进制 Primary, Secondary, Background, Border 颜色）；2. 测量栅格网格与间距系统（4px/8px 网格规范）；3. 输出对应的 Tailwind CSS 配置文件 (tailwind.config.js) 代码片段与基础 HTML 骨架。</code></div>
+  </li>
+  <li><strong>终端执行</strong>：将生成的标准 Tailwind 配置和骨架代码交给本地 Codex 终端，执行文件落盘并填充真实的业务数据逻辑。这种方式能将 UI 开发效率提升 3 倍以上，且首次验收通过率近乎 100%。</li>
+</ol>
+
+<h4>范式 2：应用资产原子化流水线（App Icon & Empty States）</h4>
+<p>在开发独立应用或企业软件时，找设计师做几十个图标和空状态插画周期长、成本高：</p>
+<ul>
+  <li><strong>标准应用图标（App Icon）</strong>：使用 Image 2.5 的“纯几何扁平化”调教指令，产出符合 Apple HIG 与 Material Design 规范的圆角矩形图。</li>
+  <li><strong>空状态矢量插画（Empty State）</strong>：通过指定纯白色背景（<code>solid pure white #FFFFFF background</code>），出图后利用简单的本地脚本（如 <code>potrace</code> 或 <code>rembg</code>）一秒去除背景并转为轻量级 SVG 格式，直接嵌入工程代码库。</li>
+</ul>
+
+<h4>范式 3：双向视觉回归测试（Visual Regression Loop）</h4>
+<p>利用 Codex 编写端到端测试脚本（Playwright / Puppeteer），自动化启动本地前端服务并截取当前界面的高清截图；随后将“设计基准图”与“代码实现图”一同输入给视觉模型，进行像素级对比：</p>
+<div class="callout note"><b class="t">视觉 Diff 审查 Prompt</b>
+<code>【图1：设计目标基准】 vs 【图2：Playwright 实际渲染结果】
+请严格对比两张图的差异，重点检查：1. 按钮间距与内边距偏差；2. 字体大小与粗细层级；3. 阴影模糊度与边框颜色。请直接给出修正这些差异所需的具体 CSS 修改补丁。</code></div>
+
+<h3 data-reveal>🎨 三、 提示词工程与使用调教 (Prompt Tuning Guide)</h3>
+<p>要让 Image 2.0 / 2.5 产出符合工程师审美的工业级产物，必须彻底摒弃“网民聊天式”提示词，采用严谨的六要素工程框架：</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>要素维度</th>
+        <th>传统泛泛写法（反面教材）</th>
+        <th>工程化专业调教（推荐范式）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. 主体与功能</strong></td>
+        <td>"一个漂亮的理财网站界面"</td>
+        <td><code>SaaS analytics dashboard interface, high-density data visualization, financial charts, transaction table</code></td>
+      </tr>
+      <tr>
+        <td><strong>2. 介质与设计流派</strong></td>
+        <td>"现代风、高级感"</td>
+        <td><code>Clean modern UI design, Swiss typographic style, Apple Human Interface Guidelines aesthetic, 8px grid system</code></td>
+      </tr>
+      <tr>
+        <td><strong>3. 色彩与视觉系统</strong></td>
+        <td>"好看的颜色，酷炫"</td>
+        <td><code>Dark mode palette: deep slate #0B0F17 background, vibrant emerald #10B981 accents, subtle border #1F2937</code></td>
+      </tr>
+      <tr>
+        <td><strong>4. 材质与光影质感</strong></td>
+        <td>"逼真、8K 渲染"</td>
+        <td><code>Matte texture, soft ambient occlusion, crisp 1px borders, subtle glassmorphism card elevation, zero glossy glare</code></td>
+      </tr>
+      <tr>
+        <td><strong>5. 排版与文字渲染</strong></td>
+        <td>"上面写着财务数据"</td>
+        <td><code>Exact typography: with crisp white text "$124,580.00" displayed prominently, and "Total Revenue" above in gray</code></td>
+      </tr>
+      <tr>
+        <td><strong>6. 负向边界排除</strong></td>
+        <td>无</td>
+        <td><code>--no 3d clay style, no realistic human faces, no blurry gradients, no misspelled pseudo-latin text</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>进阶调教技巧：</h4>
+<ul>
+  <li><strong>去“AI 塑料感”</strong>：严禁在提示词中使用 "ultra-detailed", "cinematic lighting", "photorealistic" 等虚浮词汇，它们会强行增加廉价的高光与杂乱细节。改用 <code>minimalist</code>, <code>clean lines</code>, <code>matte finish</code>, <code>subtle contrast</code> 等专业设计术语。</li>
+  <li><strong>精确文字渲染秘籍</strong>：在需要渲染英文标题或按钮文字时，<strong>务必使用双引号严格包裹目标文本</strong>（例如：<code>a button with text "GET STARTED" in bold sans-serif</code>）。避免一次性要求渲染超过 4 个单词的长句。</li>
+  <li><strong>局部重绘 (Inpainting) 定向手术</strong>：如果生成的仪表盘整体完美，只有某个图表样式不满意，在 Web 端使用画笔工具将该区域涂抹，并输入新指令：“将此区域重绘为平滑的折线渐变图，保持周围网格与背景色绝对一致”。严禁重新生成整张图。</li>
+</ul>
+
+<h3 data-reveal>📋 四、 100+ 来源精选：生产级实战 Prompt 模板库</h3>
+
+<h4>模板 1：现代化暗黑系 SaaS 分析面板（可直接提取 Tailwind）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · SaaS Dashboard UI</span><button class="copy-btn">复制</button></div>
+  <pre><code>A high-fidelity modern SaaS web application dashboard interface for server monitoring. Dark mode theme with deep obsidian background (#0A0E1A). The layout features a clean left sidebar navigation, top header with user profile, and a central grid of 4 metric cards (CPU, Memory, Bandwidth, Uptime) with emerald green glowing sparkline charts. Crisp 1px borders (#1E293B), minimalist sans-serif typography, subtle dark card elevation. Professional Figma screenshot aesthetic, pixel-perfect alignment, no clutter.</code></pre>
+</div>
+
+<h4>模板 2：移动端极简金融资产卡片（React Native / Flutter 视觉基准）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · Fintech Mobile Card</span><button class="copy-btn">复制</button></div>
+  <pre><code>Mobile UI component for a premium debit card widget on iOS screen. Sleek frosted dark glass design with subtle holographic rim lighting. Prominent embossed white text "8492" and "VISA" logo in top corner. Clean balance display "$34,250.80" with minimalist typography. Below the card, two circular action buttons labeled "Send" and "Top Up". Clean solid background (#121212), Apple HIG design guidelines, modern Dribbble showcase style.</code></pre>
+</div>
+
+<h4>模板 3：独立开发者极简 App 图标套件（符合 App Store 规范）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · Minimalist App Icon</span><button class="copy-btn">复制</button></div>
+  <pre><code>App icon design for a developer code intelligence tool. A smooth rounded squircle container on pure black background. In the center, a minimalist geometric logo combining an abstract bracket '{' and a sparkling cyan star. Premium matte texture, subtle radial gradient, smooth beveled edges, modern iOS icon aesthetic. High resolution, centered composition, zero text, vector emblem clarity.</code></pre>
+</div>
+
+<h4>模板 4：404 错误状态矢量微插画（易于 SVG 矢量化提取）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · Empty State Vector</span><button class="copy-btn">复制</button></div>
+  <pre><code>Clean vector empty state illustration for a '404 Page Not Found' error screen. A cute, minimalist floating astronaut robot looking puzzled at a disconnected glowing cable. Flat 2D vector art style, clean outline strokes, limited modern color palette (indigo, mint green, and soft gray). Isolated on a solid pure white (#FFFFFF) background. Modern tech startup illustration aesthetic, zero realistic shading, ready for SVG tracing.</code></pre>
+</div>
+
+<h3 data-reveal>🛡️ 五、 生产级避坑经验与合规准则</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">如何确保一套 App 内的 10 张插画风格完全一致？</div>
+    <div class="card-desc"><strong>锁定“核心风格修饰短语”与色板。</strong> 在所有 Prompt 的末尾附加完全相同的修饰后缀（例如：<code>--style: flat geometric 2D vector, mint and slate palette, soft outlines, pure white background</code>）。在 ChatGPT Web 端保持在同一个会话内连续生成，模型会自动利用上下文记忆维持角色特征与笔触一致性。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">商业化发布的合规与安全边界是什么？</div>
+    <div class="card-desc">OpenAI 明确声明：<strong>付费订阅用户拥有其生成图像的完整商业使用权</strong>。但在提示词中应避免直接引用受严格版权保护的商业角色名称（如“迪士尼米老鼠”或特定知名 App 的专属注册商标），改用“抽象几何风格”、“现代扁平科技风”等通用设计语言进行描述，以确保 100% 的商用合规性。</div>
   </div>
 </div>
 </section>
