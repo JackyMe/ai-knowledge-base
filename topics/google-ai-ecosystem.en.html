@@ -952,42 +952,43 @@ sequenceDiagram
         </div>
       </section>
       <section id="ch6-1">
-  <h2>6.1 Squeezing AI Pro/Ultra Value: Context Caching & Ecosystem Hacks</h2>
-  <p><span class="tag-badge tag-tip">💰 Masterclass</span> Since the late 2026 revamp, Google shifted from "One AI Premium" to a **"Compute Points"** tiered system (Plus, Pro, Ultra). If you don't understand Google's hidden Implicit Caching and ecosystem synergies, coding in the terminal will result in sudden, brutal model downgrades.</p>
+  <h2>6.1 Maximizing AI Pro/Ultra Compute Points & Ecosystem Synergy</h2>
+  <p><span class="tag-badge tag-tip">Resource Mgmt</span> Google's late-2026 restructuring of the AI Plus/Pro/Ultra tiers completely shifted metering to a granular <strong>"Compute Points"</strong> model. Maintaining a buttery-smooth code generation experience in the Antigravity terminal hinges on mastering Implicit Caching triggers and leveraging the broader Workspace ecosystem matrix.</p>
 
-  <h3 data-reveal>📊 1. The Compute Point "Dark Web" and Graceful Fallbacks</h3>
+  <h3 data-reveal>📊 1. Compute Points & Graceful Degradation Mechanics</h3>
+  <p>LLM capability allocation is non-linear. Understanding these two core mechanics is the prerequisite to avoiding workflow bottlenecks:</p>
   <ul>
-    <li><strong>The 1M Context Multiplier Trap</strong>: Shoving a 1M token repo into Gemini 1.5/2.0 Ultra burns 150x more compute points than a standard web chat. Rendering one Imagen 3 high-res image costs the equivalent of 50 deep code reviews.</li>
-    <li><strong>Graceful Fallback Mechanism</strong>: When you burn through your Ultra compute within the 5-hour window, Google **does not pull the plug**. The system seamlessly downgrades your backend to <strong>Gemini 3.5/3.6 Flash</strong>. Responses get blazing fast, but deep logical reasoning plummets. If Antigravity suddenly seems "dumb," stop writing complex architectural algorithms immediately and switch to generating docs or unit tests.</li>
+    <li><strong>Resource Multipliers for Long-Context/Multi-modal</strong>: Sending a 1M-context repository to 1.5/2.0 Ultra in the terminal consumes hundreds of times more compute points than a standard web chat. Similarly, generating an Imagen 3 high-res image is vastly more expensive than code completion.</li>
+    <li><strong>Graceful Degradation</strong>: Exhausting your high-tier compute points within the 5-hour rolling window does not cause service interruption. Google intelligently falls back to lightning-fast models like <strong>Gemini 3.5 Flash</strong>. When this happens, shift your tasks from "deep architectural refactoring" to "documentation and unit test generation" to match the lightweight model's strengths.</li>
   </ul>
 
-  <h3 data-reveal>💡 2. Top 1% Workflow: Implicit Caching & XML Formatting</h3>
-  <p>Many developers complain about inconsistent retrieval accuracy in Gemini. The global best practice in 2026 dictates that Google's caching engine heavily favors <strong>XML-tagged</strong> prefix structures.</p>
-  <h4>The XML Wrapper Hack (Boosts Recall to 99% & Triggers Deep Caching)</h4>
-  <p>Never dump raw, unstructured code files into Gemini. Use a pre-commit script to wrap your codebase like this, placing it at the **absolute top** of the prompt:</p>
+  <h3 data-reveal>💡 2. Triggering Implicit Caching via XML Tagging</h3>
+  <p>The key to maximizing Gemini's code Retrieval Accuracy and cache hit rate lies in upfront prompt standardization. Google's underlying architecture heavily favors XML-structured data.</p>
+  <h4>Standardized Code Envelopes:</h4>
+  <p>Avoid dumping loose code snippets into the terminal. Use a build script to tightly encapsulate your source code in XML format, placing it at the absolute top of your prompt:</p>
   <pre><code class="language-xml">&lt;repository&gt;
   &lt;file path="src/main.ts"&gt;
-    // Source code...
+    // Source implementation
   &lt;/file&gt;
   &lt;file path="docs/schema.graphql"&gt;
-    // Doc content...
+    // API Documentation
   &lt;/file&gt;
 &lt;/repository&gt;</code></pre>
-  <p>Keep this exact prefix **verbatim and immutable** across multiple conversations. The system will trigger <strong>Implicit Caching</strong>, saving you up to 80% on compute points and ensuring terrifyingly accurate code retrieval across massive contexts.</p>
+  <p>Keeping this XML prefix strictly immutable across multiple conversation turns (and typically meeting the >4096 Tokens minimum threshold) reliably triggers Implicit Caching. This massively reduces latency and compute point deductions per request, while boosting ultra-long context targeting precision to over 99%.</p>
 
-  <h3 data-reveal>📚 3. Cheat Code: NotebookLM "Infinite RAG" Synergy</h3>
-  <p>The biggest legitimate loophole in the Google ecosystem is <strong>NotebookLM</strong>. It possesses a completely independent, hyper-generous knowledge parsing quota. Never force the Antigravity terminal to brute-force read dozens of legacy GitHub repos!</p>
+  <h3 data-reveal>📚 3. NotebookLM as an Infinite RAG External Brain</h3>
+  <p>The most powerful cross-platform synergy combo is utilizing Google's highly generous <strong>NotebookLM</strong> as a frontline knowledge processor.</p>
   <ol>
-    <li>Zip up the massive legacy project, along with dozens of enterprise PDFs, and dump them into NotebookLM.</li>
-    <li>Prompt NotebookLM: <code>"As a senior architect, extract the complete API contract, database schemas, and highlight all Breaking Changes to generate the ultimate design dictionary."</code></li>
-    <li>You can even use NotebookLM's <strong>Audio Overview</strong> to distill the knowledge rapidly. Then, feed the generated minimalist Markdown dictionary into your local Antigravity terminal.</li>
-    <li>**Result**: You offloaded the heaviest parsing workload to the free, unlimited NotebookLM pool, saving your precious Ultra compute solely for executing code generation.</li>
+    <li>When faced with massive legacy GitHub repositories or thousands of pages of business PDF requirements, import them entirely into NotebookLM.</li>
+    <li>Instruct NotebookLM to distill the information: <code>"Map the complete API contract and database relations, extract Breaking Changes, and generate a core design dictionary."</code></li>
+    <li>Pass this condensed, lightweight Markdown dictionary (a few KBs) to your local Antigravity agent for implementation.</li>
+    <li>This workflow offloads the heaviest "full-text parsing" costs to the NotebookLM tier, reserving your precious Ultra compute strictly for high-quality logic generation.</li>
   </ol>
 
-  <h3 data-reveal>🎨 4. Vision-to-Code Pipeline (Imagen 3 to React/Flutter)</h3>
-  <p>Use your dedicated visual quotas in Gemini Advanced (Web) to generate stunning Imagen 3 concepts. Once you have the perfect image, never vaguely ask for "the code."<br>
-  <strong>Advanced Prompt Paradigm:</strong><br>
-  <code>"Act as a Senior Flutter Engineer analyzing this Imagen 3 render. Step 1: Output a strictly rigorous Widget Tree structure using Mermaid syntax. Step 2: Only after I approve the Widget Tree will you begin writing the Dart implementation."</code></p>
+  <h3 data-reveal>🎨 4. Imagen 3 & Terminal Code Relay</h3>
+  <p>UI prototype development should strictly separate "visual generation" from "code implementation." Utilize your dedicated quotas in the Web Gemini Advanced environment to generate and tweak Imagen 3 concept art. Once finalized, initiate a <strong>Code Relay</strong>:<br>
+  <code>"Analyze this Imagen 3 design. First: Output a rigorous Widget Tree / DOM Tree structure. Second: Await my confirmation on the structure before outputting the complete Dart / TSX code."</code><br>
+  This ensures accurate translation of visual intent to code logic, eliminating compute waste caused by iterative, erroneous UI generation in the terminal.</p>
 </section>
 
 <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">

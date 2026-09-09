@@ -728,46 +728,44 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">Masterclass / 骨灰级实战</div>
-<h2>2026 极限压榨指南：OpenAI 全家桶高阶玩法与 API 兜底</h2>
+<div class="sec-tag">进阶调优</div>
+<h2>高级订阅资源效能优化与跨端协同</h2>
 
-<p>如果您每年向 OpenAI 支付上千美元订阅 ChatGPT Pro (5x/20x)，却只把它当成代码补全工具，那您至少浪费了 80% 的价值。2026 年的 OpenAI 生态已经彻底分离了各个底层产品线。这篇长文汇集了海外顶尖极客博客（如 The Rundown AI、Dev.to 等）的最强实战策略，教您如何真正榨干每一分钱。</p>
+<p>在 OpenAI 2026 年的生态架构中，ChatGPT Plus 与 Pro (5x/20x) 的订阅权益已全面细分为不同的计算面（Surfaces）。开发者如果仅在本地 Codex 终端中消耗算力，将面临频繁的限流问题。本节整合了来自资深工程团队的最佳实践，指导您如何通过跨端协同（Web、Work 项目区、API）最大化订阅价值。</p>
 
-<h3 data-reveal>🛑 1. 揭开官方不说的隐藏限流规则</h3>
-<p>OpenAI 表面上说“按需分配”，但在系统底层，额度被严格划分为三个独立的算力池：</p>
+<h3 data-reveal>📊 1. 多面体 (Surfaces) 架构下的资源隔离</h3>
+<p>OpenAI 底层采用“算力令牌 (Compute Tokens)”动态配额机制，不同界面的消耗池是互相隔离且规则迥异的：</p>
 <ul>
-  <li><strong>终端代码生成池 (Codex/Cursor/Antigravity)</strong>：采用严苛的 5 小时滚动窗口。处理 1M Token 的大文件时，极其容易在 2 小时内被降级到 <code>gpt-5.6-luna</code>。</li>
-  <li><strong>深度研究池 (Deep Research)</strong>：拥有绝对独立的配额。Plus 每月约 25 次，Pro 每月 250+ 次。这个池子专为解决“多步搜索与千页资料整合”而生。</li>
-  <li><strong>o3/Astra 思考模型池 (Thinking Mode)</strong>：限制最死。哪怕您是 Pro 用户，每天能让模型“深度思考超过 5 分钟”的次数也屈指可数。</li>
+  <li><strong>Codex 终端代码生成池</strong>：执行严格的 5 小时滚动限流。由于终端请求会自动挂载环境变量与工程上下文，1M 级巨型上下文的频繁传输会极速削减可用额度，触发平滑降级（如强制回退至 <code>gpt-5.6-luna</code>）。</li>
+  <li><strong>Web 深度研究池 (Deep Research)</strong>：拥有完全独立的月度配额（Plus 约 25 次，Pro 250+ 次）。专用于多步网络爬虫与千页资料整合。</li>
+  <li><strong>o3/Astra 思考模型池 (Thinking Mode)</strong>：限制最为严格，每日允许的“深层并发思考”时间存在硬性上限，主要为解决重度逻辑死锁保留。</li>
 </ul>
 
-<h3 data-reveal>🛠 2. 顶级工作流 SOP：AST 语法树分离与 API 兜底</h3>
-<p>这是硅谷高阶工程师每天都在使用的工作流，彻底解决“改一行代码却烧光整个工程算力”的痛点：</p>
+<h3 data-reveal>🚀 2. Web 与本地终端的协同 SOP (标准作业程序)</h3>
+<p>顶级开发者的核心工作流在于<strong>“职责分离”</strong>：将“学习与整合”交给 Web 端，将“执行与编译”留给本地 Codex。</p>
 
-<h4>第一步：不要让终端读源码，让它读 AST 语法树</h4>
-<p>把几百个 <code>.ts</code> 文件扔给终端，是新手最容易踩的坑。最佳实践是利用 Python 或 Node 脚本，一键提取出整个工程的 <strong>AST（抽象语法树）骨架</strong>，只保留类名、函数签名和类型定义，剥离所有的具体实现代码。然后把这份 20KB 的骨架文件上传给 Web 端的 <strong>Work Projects (工作区)</strong>。这能将上下文占用降低 95%。</p>
+<h4>阶段 A：利用 Deep Research 进行架构破冰</h4>
+<p>在引入全新框架（如 Next.js 16）或整合未知的第三方 SDK 时，不要在本地终端进行反复的报错重试，这会造成算力极度浪费。</p>
+<div class="callout tip"><b class="t">最佳实践 Prompt (网页端执行)</b>
+<code>启动深度研究：爬取官方文档的最新版本。要求输出一个严格遵循以下 JSON Schema 的迁移指南：{ "components": [...], "deprecated_hooks": [...] }。仅返回结构化数据，不输出多余解释。</code></div>
+<p>将 Web 端生成的零幻觉、高度结构化的 JSON 文件下载到本地目录，交由 Codex 读取并执行，可确保代码生成的极高准确率。</p>
 
-<h4>第二步：Web 端 Deep Research 负责“破荒”</h4>
-<p>在迁移旧工程或引入完全没用过的框架（如 Next.js 16）时：<br>
-<strong>不要：</strong> 在本地瞎试报错。<br>
-<strong>最佳做法：</strong> 在网页端触发 <code>/Deepresearch</code>。使用以下高阶 Prompt：<br>
-<code>"启动深度研究：爬取官方文档的最新版本。要求输出一个严格遵循以下 JSON Schema 的迁移指南：{ 'components': [...], 'deprecated_hooks': [...] }。不要输出废话。"</code><br>
-拿到这绝对精准的 JSON 后，再交给本地 Codex 执行重构，确保零幻觉。</p>
+<h4>阶段 B：AST 语法树降维提取</h4>
+<p>对于动辄上百个文件的全量重构任务，直接让终端读取 <code>.ts</code> 源码会瞬间触碰上下文上限。建议编写前置 Python/Node 脚本，一键提取工程的 <strong>AST（抽象语法树）骨架</strong>（仅保留类名、函数签名和类型定义），将数 MB 的代码压缩为几十 KB 的骨架文件上传至 Web 端的 <strong>Work Projects (工作区)</strong> 形成稳定记忆，从而降低 95% 的终端上下文开销。</p>
 
-<h4>第三步：配置 API Fallback（无缝兜底防挂机）</h4>
-<p>当 Codex 触发 5 小时滚动限流时，普通人只能去喝咖啡。高手会配置 API Key 作为备用通道（Fallback）。<br>
-在 <code>~/.codex/config.json</code> 中：</p>
+<h3 data-reveal>🔌 3. API 兜底 (Fallback) 与服务稳定性</h3>
+<p>对于重度依赖编码代理的高阶团队，5 小时限流导致的“被迫挂机”是不可接受的。您可以在 <code>~/.codex/config.json</code> 中配置 API Fallback（备用通道）策略：</p>
 <pre><code class="language-json">{
   "fallback_strategy": "api_key",
   "api_model": "gpt-5.6-turbo",
   "max_fallback_spend": 5.0
 }</code></pre>
-<p>当订阅额度耗尽时，系统自动切到 API 计费，花几毛钱保证灵感不中断。</p>
+<p>当订阅额度耗尽时，系统将自动无缝切换至按量计费的 API 通道，花费极低成本即可保证工程流水的连续性。</p>
 
-<h3 data-reveal>🎨 3. 视觉管线极限压缩（Image 2.5 转代码）</h3>
-<p>在 UI 还原时，直接把截图发给终端改 10 次，会立刻耗尽视觉解析算力。<br>
-<strong>最佳实践 (Dimensional Reduction)</strong>：在 Web 端的 GPT-6 中上传截图，输入：<code>"以资深前端架构师视角，描述这张图的所有 CSS 细节（包括 flex 关系、色号、阴影），并直接输出 Tailwind 骨架树。纯文本返回。"</code><br>
-随后，将生成的纯文本喂给 Codex。文本的处理速度不仅是图片的 100 倍，且几乎没有限流惩罚。</p>
+<h3 data-reveal>🎨 4. 多模态降维策略 (Vision-to-Code)</h3>
+<p>视觉解析（Vision）模型极其消耗算力。在进行 UI 还原时，切忌直接在终端反复发送设计截图进行微调。<br>
+<strong>降维打击方案</strong>：在 Web 端上传 UI 截图，并要求其：“以资深前端工程师视角，详细描述所有 CSS 细节（Flex 布局、绝对定位、色号、阴影），并输出为纯文本的 Tailwind DOM 树结构。”<br>
+随后，将生成的纯文本结构喂给 Codex。文本解析的响应速度与成本远优于图像解析，能够实现几乎无损的 <code>Text-to-Code</code> 极速复刻。</p>
 </section>
 
 <section id="playbook">

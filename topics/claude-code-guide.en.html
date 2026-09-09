@@ -704,49 +704,47 @@ claude mcp login api-tool
 </ul>
 
 <section id="subscription-quotas">
-<div class="sec-tag">Masterclass</div>
-<h2>2026 Max Exploitation Guide: Anthropic Caching Magic & Anti-Blackhole Tactics</h2>
+<div class="sec-tag">Advanced Architecture</div>
+<h2>Advanced Subscription Management & Anthropic Ecosystem Synergy</h2>
 
-<p>Compared to other platforms, Anthropic provides the highest reasoning quality over the longest (and most expensive) context windows. Paying $20 or $100 for Pro/Team is not just about getting "more messages." In 2026, top-tier developers agree that the ultimate cost-reduction and efficiency weapon is total mastery of <strong>Prompt Caching</strong> and seamless bridging of Web Artifacts.</p>
+<p>Anthropic provides Claude Pro ($20) and Team users with industry-leading, massive context capabilities. However, maintaining the high efficiency of the local Claude Code terminal under exceptionally strict dual-layer rate limits is the core divider between novice users and senior architects. This section deeply analyzes the underlying Prompt Caching mechanisms and cross-platform synergy strategies.</p>
 
-<h3 data-reveal>⚡ 1. Core Secret: The 90% Discount Rule of Prompt Caching</h3>
-<p>Under the hood, Claude APIs and clients integrate powerful Prompt Caching. Master this, and your $20 account will do 10x the work of a novice's. Here are the unspoken mechanics:</p>
+<h3 data-reveal>⚡ 1. Deep Dive: Dual-Layer Throttling & Prompt Caching</h3>
+<p>Claude's quota management system differs from other platforms, relying fundamentally on maintaining high cache hit rates:</p>
 <ul>
-  <li><strong>Exact Prefix Matching</strong>: Caching relies on 100% verbatim matching of the prompt's beginning. If your system prompt starts with a dynamic timestamp or random session ID, **the entire cache is instantly invalidated.**</li>
-  <li><strong>5-Minute TTL Keep-Alive</strong>: By default, cache lives for 5 minutes. A cache hit resets the timer. Therefore, frequent, short interactions can keep massive static documents cached indefinitely.</li>
-  <li><strong>1024 Token Threshold</strong>: For Sonnet-tier models, static content must exceed 1024 tokens for the system to bother caching it at all.</li>
+  <li><strong>Dual-Layer Throttling</strong>: Combines a "5-hour short-term burst limit" with a "weekly sustained compute cap." Unoptimized, massive codebase modifications in the terminal can easily exhaust your long-term quota within an hour.</li>
+  <li><strong>Exact Prefix Match</strong>: Claude's Prompt Caching can save approximately 90% of input costs and quota consumption, but it requires <strong>100% verbatim prefix matching</strong>. Any dynamically inserted timestamp or session ID will instantly break the entire cache chain.</li>
+  <li><strong>1024 Token Minimum Threshold</strong>: For Sonnet models, static prefix content must exceed 1024 tokens for the system to establish a cache. The default cache Time-to-Live (TTL) is 5 minutes, and every cache hit resets this timer.</li>
 </ul>
 
-<h3 data-reveal>🛠 2. Top 1% SOP: Architecting Caching in Claude Code</h3>
-<p>To maximize caching in the terminal and protect your "5-Hour Burst Cap" from rapid depletion, use this project structure strategy:</p>
-<h4>Place All Stable Foundations at the Top (Static Context)</h4>
-<p>Utilize the explicit <code>&lt;static_context&gt;</code> tag (or a fixed <code>system_prompt.txt</code>). Dump your massive "Code Guidelines", "Full API Dictionaries", and project dependencies here.</p>
+<h3 data-reveal>🛠 2. Engineering Application of &lt;static_context&gt;</h3>
+<p>To flawlessly trigger Caching in the Claude Code terminal and protect compute limits, the engineering community established the "Static Foundation Up-Front" best practice. Utilize the specific <code>&lt;static_context&gt;</code> tag to anchor immutable documents firmly at the top of the prompt:</p>
 <pre><code class="language-markdown">&lt;static_context&gt;
-// Dump massive, ultra-stable docs here. DO NOT alter this text.
+// Import team "Coding Standards", "Core API Dictionaries", massive dependencies
+// The text within this block MUST NOT CHANGE during the dev cycle
 &lt;/static_context&gt;
 
-// Dynamic User Query follows below
-I am now encountering an auth error in...</code></pre>
-<p>For the next 100 turns of your conversation, those tens of thousands of tokens of static docs will be read at a **90%+ compute discount**, preserving your quota aggressively.</p>
+// Dynamic User Query
+I am currently encountering a Token parsing error in the auth middleware...</code></pre>
+<p>This architecture ensures that during dozens of subsequent high-frequency interactions, the massive background knowledge docs are processed at a 90%+ discount, exponentially increasing the runway of your Pro subscription.</p>
 
-<h3 data-reveal>🎭 3. Bridging Web Artifacts to Local CI/CD (Zero Quota Loss)</h3>
-<p>Web Artifacts generation uses a separate, highly optimized compute pool. Power users don't just "look" at Artifacts online; they bridge them:</p>
+<h3 data-reveal>🎭 3. Seamless Integration: From Artifacts to Local Projects</h3>
+<p>Interactive rendering of Web Artifacts utilizes an independent, highly optimized computational pipeline. The workflow of advanced teams is typically <strong>"Cloud Trial-and-Error, Local Integration"</strong>:</p>
 <ol>
-  <li>Use the Web UI to rapidly iterate and debug a complex React Dashboard with mock data (iteration here is incredibly cheap).</li>
-  <li>Export the finished micro-environment as a ZIP/JSON payload directly from the Web.</li>
-  <li>Write a Bash script that tells your local Claude Code to unzip this payload and run <code>npm run test</code> to integrate it locally.</li>
-  <li><strong>Result</strong>: You offloaded expensive logical trial-and-error to the cheap Web tier, using the expensive local terminal only for final integration testing.</li>
+  <li>Generate and iterate complex React components or data visualization panels on <strong>Claude.ai (Web)</strong>, utilizing its WYSIWYG nature for cost-free interactive micro-adjustments.</li>
+  <li>Use the Web export features to obtain clean, modular code.</li>
+  <li>Instruct Claude Code in the local terminal: <code>"Read the downloaded Artifacts module, adapt it to our local project dependencies, and automatically generate unit tests."</code></li>
+  <li>This prevents consuming hundreds of thousands of long-context tokens in the terminal just to fix a layout misalignment.</li>
 </ol>
 
-<h3 data-reveal>🕳 4. Anti-Blackhole: Jailing "Computer Use" in Docker</h3>
-<p>The highly acclaimed <strong>Computer Use</strong> feature is an **absolute compute blackhole**. If given access to your raw macOS desktop, it acts like a headless fly, sending high-res screenshots on every click, draining your daily limit in minutes.<br>
-<strong>The Fix:</strong> Jail it in a Headless Docker container! Build a lightweight Alpine container running only Chrome and your target app. With fewer visual distractors and no other apps, its task success rate skyrockets, and its action-token consumption drops by 80%.</p>
+<h3 data-reveal>🕳 4. Context Dehydration & Computer Use Sandboxing</h3>
+<h4>Context Dehydration Command (/compact)</h4>
+<p>Terminal memory inevitably accumulates bloat. Senior developers execute high-precision dehydration commands after completing a functional milestone:<br>
+<code>/compact --prompt "Retain ONLY the final Database Schema state and auth logic. Discard all intermediate errors and debugging processes."</code><br>
+This instantly purges useless context baggage, restoring the system's high-speed responsiveness.</p>
 
-<h3 data-reveal>✂️ 5. Ruthless Context Amputation (/compact)</h3>
-<p>The CLI terminal accumulates every code diff and error stack. <br>
-<strong>Advanced Usage</strong>: Don't just type <code>/compact</code>. Use explicit instructions:<br>
-<code>/compact --prompt "Retain ONLY the final DB schema changes and the working React hook. Discard all previous errors and debugging attempts."</code><br>
-This dehydrates the conversation with extreme precision, instantly zeroing out context pressure.</p>
+<h4>Computer Use (Beta) Sandboxing</h4>
+<p>When utilizing Claude's powerful Computer Use feature (GUI & browser takeover), granting raw host machine access turns it into a **compute blackhole** due to high-frequency global screenshots. Engineering Best Practice: Deploy it within a streamlined Headless Docker container (e.g., an Alpine-based pure browser container). A clean, restricted visual search space skyrockets task success rates while reducing compute overhead by nearly 80%.</p>
 </section>
 
 <section id="playbook">
