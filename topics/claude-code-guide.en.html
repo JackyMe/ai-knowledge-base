@@ -704,47 +704,34 @@ claude mcp login api-tool
 </ul>
 
 <section id="subscription-quotas">
-<div class="sec-tag">Advanced Architecture</div>
-<h2>Advanced Subscription Management & Anthropic Ecosystem Synergy</h2>
+<div class="sec-tag">Quota Guide</div>
+<h2>How to Use Pro Wisely? Practical Everyday Tips</h2>
 
-<p>Anthropic provides Claude Pro ($20) and Team users with industry-leading, massive context capabilities. However, maintaining the high efficiency of the local Claude Code terminal under exceptionally strict dual-layer rate limits is the core divider between novice users and senior architects. This section deeply analyzes the underlying Prompt Caching mechanisms and cross-platform synergy strategies.</p>
+<p>Many new Claude Pro subscribers ($20/month) feel their quota drains incredibly fast when using Claude Code. This is because Claude has an amazing "memory"—but remembering everything costs a lot of quota. Master these basic habits, and your quota will last significantly longer.</p>
 
-<h3 data-reveal>⚡ 1. Deep Dive: Dual-Layer Throttling & Prompt Caching</h3>
-<p>Claude's quota management system differs from other platforms, relying fundamentally on maintaining high cache hit rates:</p>
+<h3 data-reveal>🧠 1. Why Does My Quota Disappear So Fast?</h3>
+<p>Imagine that every time you ask Claude a question, it doesn't just read your current message; it re-reads every single question you've ever asked and every line of code it has ever written in that chat, from start to finish.</p>
 <ul>
-  <li><strong>Dual-Layer Throttling</strong>: Combines a "5-hour short-term burst limit" with a "weekly sustained compute cap." Unoptimized, massive codebase modifications in the terminal can easily exhaust your long-term quota within an hour.</li>
-  <li><strong>Exact Prefix Match</strong>: Claude's Prompt Caching can save approximately 90% of input costs and quota consumption, but it requires <strong>100% verbatim prefix matching</strong>. Any dynamically inserted timestamp or session ID will instantly break the entire cache chain.</li>
-  <li><strong>1024 Token Minimum Threshold</strong>: For Sonnet models, static prefix content must exceed 1024 tokens for the system to establish a cache. The default cache Time-to-Live (TTL) is 5 minutes, and every cache hit resets this timer.</li>
+  <li>If you chat with it for 50 messages, when you send the 51st message, it is essentially re-reading the entire 50-message history.</li>
+  <li><strong>This means the longer a conversation goes on, the more exaggerated the quota cost becomes for every single prompt!</strong></li>
 </ul>
 
-<h3 data-reveal>🛠 2. Engineering Application of &lt;static_context&gt;</h3>
-<p>To flawlessly trigger Caching in the Claude Code terminal and protect compute limits, the engineering community established the "Static Foundation Up-Front" best practice. Utilize the specific <code>&lt;static_context&gt;</code> tag to anchor immutable documents firmly at the top of the prompt:</p>
-<pre><code class="language-markdown">&lt;static_context&gt;
-// Import team "Coding Standards", "Core API Dictionaries", massive dependencies
-// The text within this block MUST NOT CHANGE during the dev cycle
-&lt;/static_context&gt;
+<h3 data-reveal>🧹 2. Core Money-Saving Secrets: Clean Often, Restart Often</h3>
 
-// Dynamic User Query
-I am currently encountering a Token parsing error in the auth middleware...</code></pre>
-<p>This architecture ensures that during dozens of subsequent high-frequency interactions, the massive background knowledge docs are processed at a 90%+ discount, exponentially increasing the runway of your Pro subscription.</p>
+<h4>Trick 1: Clean Up When Done (Use /compact)</h4>
+<p>Once Claude successfully fixes a bug for you, or finishes a small feature, do not continue discussing a completely unrelated topic in the same chat.</p>
+<ul>
+  <li>Type this magic command: <code>/compact</code>.</li>
+  <li>This command tells Claude: "Summarize this long conversation into a tiny notebook, and forget all the useless rambling." This instantly saves you a massive amount of quota.</li>
+</ul>
 
-<h3 data-reveal>🎭 3. Seamless Integration: From Artifacts to Local Projects</h3>
-<p>Interactive rendering of Web Artifacts utilizes an independent, highly optimized computational pipeline. The workflow of advanced teams is typically <strong>"Cloud Trial-and-Error, Local Integration"</strong>:</p>
-<ol>
-  <li>Generate and iterate complex React components or data visualization panels on <strong>Claude.ai (Web)</strong>, utilizing its WYSIWYG nature for cost-free interactive micro-adjustments.</li>
-  <li>Use the Web export features to obtain clean, modular code.</li>
-  <li>Instruct Claude Code in the local terminal: <code>"Read the downloaded Artifacts module, adapt it to our local project dependencies, and automatically generate unit tests."</code></li>
-  <li>This prevents consuming hundreds of thousands of long-context tokens in the terminal just to fix a layout misalignment.</li>
-</ol>
+<h4>Trick 2: Leverage Web Artifacts (Preview Window)</h4>
+<p>The Web version of Claude has an amazing right-side panel called Artifacts, which can directly preview websites, mini-games, or charts.<br>
+<strong>Best Combo:</strong> If you want to build a web interface, have Claude write it on the Web version first and look at the preview directly. Tweak it there until you're happy, because web limits are more forgiving. Once it's perfect, copy the code into your local project. Never blindly tweak visual UI layouts over and over in your local terminal.</p>
 
-<h3 data-reveal>🕳 4. Context Dehydration & Computer Use Sandboxing</h3>
-<h4>Context Dehydration Command (/compact)</h4>
-<p>Terminal memory inevitably accumulates bloat. Senior developers execute high-precision dehydration commands after completing a functional milestone:<br>
-<code>/compact --prompt "Retain ONLY the final Database Schema state and auth logic. Discard all intermediate errors and debugging processes."</code><br>
-This instantly purges useless context baggage, restoring the system's high-speed responsiveness.</p>
+<h4>Trick 3: Use Web Projects for Long Documents</h4>
+<p>If you have massive background materials (like a 100-page tech manual or long product requirements), don't send them in the chat over and over. Go to the <strong>Projects</strong> tab on the Web version, create a new project, and upload these large files as "reference books." Claude can read them efficiently without burning through your standard chat quota.</p>
 
-<h4>Computer Use (Beta) Sandboxing</h4>
-<p>When utilizing Claude's powerful Computer Use feature (GUI & browser takeover), granting raw host machine access turns it into a **compute blackhole** due to high-frequency global screenshots. Engineering Best Practice: Deploy it within a streamlined Headless Docker container (e.g., an Alpine-based pure browser container). A clean, restricted visual search space skyrockets task success rates while reducing compute overhead by nearly 80%.</p>
 </section>
 
 <section id="playbook">

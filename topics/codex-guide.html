@@ -728,44 +728,37 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">进阶调优</div>
-<h2>高级订阅资源效能优化与跨端协同</h2>
+<div class="sec-tag">额度指南</div>
+<h2>会员额度怎么用最划算？(小白与新手必读)</h2>
 
-<p>在 OpenAI 2026 年的生态架构中，ChatGPT Plus 与 Pro (5x/20x) 的订阅权益已全面细分为不同的计算面（Surfaces）。开发者如果仅在本地 Codex 终端中消耗算力，将面临频繁的限流问题。本节整合了来自资深工程团队的最佳实践，指导您如何通过跨端协同（Web、Work 项目区、API）最大化订阅价值。</p>
+<p>很多朋友每个月花了 20 美元（甚至更多）订阅了 ChatGPT Plus 或 Pro 会员，但在使用 Codex 辅助写代码时，经常遇到“由于请求过多，请几小时后再试”的提示。其实，只要掌握几个简单的日常使用习惯，就能轻松避开这些限制，把会员的每一分钱都花在刀刃上。</p>
 
-<h3 data-reveal>📊 1. 多面体 (Surfaces) 架构下的资源隔离</h3>
-<p>OpenAI 底层采用“算力令牌 (Compute Tokens)”动态配额机制，不同界面的消耗池是互相隔离且规则迥异的：</p>
+<h3 data-reveal>🔋 1. 了解你的“体力槽”：额度是怎么消耗的？</h3>
+<p>您可以把会员额度想象成一个“体力槽”。通常情况下，体力槽每 5 个小时会回满一次。但是不同的操作，消耗的体力完全不同：</p>
 <ul>
-  <li><strong>Codex 终端代码生成池</strong>：执行严格的 5 小时滚动限流。由于终端请求会自动挂载环境变量与工程上下文，1M 级巨型上下文的频繁传输会极速削减可用额度，触发平滑降级（如强制回退至 <code>gpt-5.6-luna</code>）。</li>
-  <li><strong>Web 深度研究池 (Deep Research)</strong>：拥有完全独立的月度配额（Plus 约 25 次，Pro 250+ 次）。专用于多步网络爬虫与千页资料整合。</li>
-  <li><strong>o3/Astra 思考模型池 (Thinking Mode)</strong>：限制最为严格，每日允许的“深层并发思考”时间存在硬性上限，主要为解决重度逻辑死锁保留。</li>
+  <li><strong>最耗体力：</strong>让 Codex 一次性读取几百个代码文件，或者在网页端上传十几张高清大图让它分析。</li>
+  <li><strong>最省体力：</strong>普通的文字聊天、问答，或者只让 Codex 修改一两个小文件。</li>
+</ul>
+<div class="callout warn"><b class="t">注意</b>
+网页版 ChatGPT、手机版 App 和电脑上的 Codex 终端，它们是<strong>共用同一个体力槽</strong>的！如果你白天在网页版画了一堆图，晚上用 Codex 写代码时可能就会提示额度不够。</div>
+
+<h3 data-reveal>💡 2. 普通人也能掌握的 3 个省额度神技</h3>
+
+<h4>技巧一：“动嘴”和“动手”分开</h4>
+<p>当您想学习一个新技术，或者遇到一个复杂的报错完全没头绪时，<strong>千万不要直接在 Codex 里反反复复地问</strong>。每次在 Codex 里提问，它都会默默带上您的代码环境，非常浪费体力。</p>
+<ul>
+  <li><strong>正确做法：</strong>打开 ChatGPT <strong>网页版</strong>，把报错信息复制进去问。在网页版里和 AI 慢慢探讨、理清思路。等 AI 在网页上给出了明确的代码修改方案，您再回到 Codex 里，对它说：“按照这个方案，帮我把代码改好。”</li>
 </ul>
 
-<h3 data-reveal>🚀 2. Web 与本地终端的协同 SOP (标准作业程序)</h3>
-<p>顶级开发者的核心工作流在于<strong>“职责分离”</strong>：将“学习与整合”交给 Web 端，将“执行与编译”留给本地 Codex。</p>
+<h4>技巧二：大炮不要用来打蚊子（善用小模型）</h4>
+<p>ChatGPT 里有最聪明的旗舰模型，也有速度极快、几乎不限流的“小模型”（比如 mini 版或快速版）。</p>
+<ul>
+  <li>当你只是想改个错别字、加几行代码注释，或者调整一下按钮颜色时，在界面上<strong>手动切换到小模型</strong>。</li>
+  <li>只有当你遇到真正的逻辑难题，比如“帮我设计一个完整的登录注册流程”时，再切回最强大的模型。</li>
+</ul>
 
-<h4>阶段 A：利用 Deep Research 进行架构破冰</h4>
-<p>在引入全新框架（如 Next.js 16）或整合未知的第三方 SDK 时，不要在本地终端进行反复的报错重试，这会造成算力极度浪费。</p>
-<div class="callout tip"><b class="t">最佳实践 Prompt (网页端执行)</b>
-<code>启动深度研究：爬取官方文档的最新版本。要求输出一个严格遵循以下 JSON Schema 的迁移指南：{ "components": [...], "deprecated_hooks": [...] }。仅返回结构化数据，不输出多余解释。</code></div>
-<p>将 Web 端生成的零幻觉、高度结构化的 JSON 文件下载到本地目录，交由 Codex 读取并执行，可确保代码生成的极高准确率。</p>
-
-<h4>阶段 B：AST 语法树降维提取</h4>
-<p>对于动辄上百个文件的全量重构任务，直接让终端读取 <code>.ts</code> 源码会瞬间触碰上下文上限。建议编写前置 Python/Node 脚本，一键提取工程的 <strong>AST（抽象语法树）骨架</strong>（仅保留类名、函数签名和类型定义），将数 MB 的代码压缩为几十 KB 的骨架文件上传至 Web 端的 <strong>Work Projects (工作区)</strong> 形成稳定记忆，从而降低 95% 的终端上下文开销。</p>
-
-<h3 data-reveal>🔌 3. API 兜底 (Fallback) 与服务稳定性</h3>
-<p>对于重度依赖编码代理的高阶团队，5 小时限流导致的“被迫挂机”是不可接受的。您可以在 <code>~/.codex/config.json</code> 中配置 API Fallback（备用通道）策略：</p>
-<pre><code class="language-json">{
-  "fallback_strategy": "api_key",
-  "api_model": "gpt-5.6-turbo",
-  "max_fallback_spend": 5.0
-}</code></pre>
-<p>当订阅额度耗尽时，系统将自动无缝切换至按量计费的 API 通道，花费极低成本即可保证工程流水的连续性。</p>
-
-<h3 data-reveal>🎨 4. 多模态降维策略 (Vision-to-Code)</h3>
-<p>视觉解析（Vision）模型极其消耗算力。在进行 UI 还原时，切忌直接在终端反复发送设计截图进行微调。<br>
-<strong>降维打击方案</strong>：在 Web 端上传 UI 截图，并要求其：“以资深前端工程师视角，详细描述所有 CSS 细节（Flex 布局、绝对定位、色号、阴影），并输出为纯文本的 Tailwind DOM 树结构。”<br>
-随后，将生成的纯文本结构喂给 Codex。文本解析的响应速度与成本远优于图像解析，能够实现几乎无损的 <code>Text-to-Code</code> 极速复刻。</p>
+<h4>技巧三：整理好资料再喂给 AI</h4>
+<p>AI 阅读长文章很费力。如果你有一份长达 100 页的接口说明书，不要每次提问都发给它。最好是在网页版的 <strong>Projects（工作区）</strong>里创建一个项目，把这份长文档传进去。在工作区里，AI 会把文档“记”在脑子里，提问时就不会重复扣除大量的阅读额度了。</p>
 </section>
 
 <section id="playbook">

@@ -952,43 +952,32 @@ sequenceDiagram
         </div>
       </section>
       <section id="ch6-1">
-  <h2>6.1 Maximizing AI Pro/Ultra Compute Points & Ecosystem Synergy</h2>
-  <p><span class="tag-badge tag-tip">Resource Mgmt</span> Google's late-2026 restructuring of the AI Plus/Pro/Ultra tiers completely shifted metering to a granular <strong>"Compute Points"</strong> model. Maintaining a buttery-smooth code generation experience in the Antigravity terminal hinges on mastering Implicit Caching triggers and leveraging the broader Workspace ecosystem matrix.</p>
+  <h2>6.1 Mastering AI Pro/Ultra: The Everyday User's Guide</h2>
+  <p><span class="tag-badge tag-tip">Everyday Guide</span> Google's AI memberships (AI Plus, Pro, Ultra) are like a supercharged Swiss Army knife. Many everyday users just treat it as a "chatbox connected to the internet," which is a huge waste. Used correctly, it can save you massive amounts of time and quota, whether for work, study, or coding.</p>
 
-  <h3 data-reveal>📊 1. Compute Points & Graceful Degradation Mechanics</h3>
-  <p>LLM capability allocation is non-linear. Understanding these two core mechanics is the prerequisite to avoiding workflow bottlenecks:</p>
+  <h3 data-reveal>💡 1. The Golden Rule: Big Documents Belong in NotebookLM</h3>
+  <p>If you have a 300-page PDF, massive financial spreadsheets, or a whole folder of source code, <strong>never dump it straight into a normal chat window.</strong> It reads slowly and easily eats up your daily quota.</p>
   <ul>
-    <li><strong>Resource Multipliers for Long-Context/Multi-modal</strong>: Sending a 1M-context repository to 1.5/2.0 Ultra in the terminal consumes hundreds of times more compute points than a standard web chat. Similarly, generating an Imagen 3 high-res image is vastly more expensive than code completion.</li>
-    <li><strong>Graceful Degradation</strong>: Exhausting your high-tier compute points within the 5-hour rolling window does not cause service interruption. Google intelligently falls back to lightning-fast models like <strong>Gemini 3.5 Flash</strong>. When this happens, shift your tasks from "deep architectural refactoring" to "documentation and unit test generation" to match the lightweight model's strengths.</li>
+    <li><strong>The Smart Way:</strong> Open Google's free and powerful <strong>NotebookLM</strong>. Toss all your long documents and zip files in there. It acts as your personal librarian.</li>
+    <li>Ask it directly: "Summarize the key points in these files into a short outline."</li>
+    <li>Take that short outline and feed it to your regular Gemini chat. It’s fast, accurate, and completely protects your quota from being swallowed by long documents.</li>
   </ul>
 
-  <h3 data-reveal>💡 2. Triggering Implicit Caching via XML Tagging</h3>
-  <p>The key to maximizing Gemini's code Retrieval Accuracy and cache hit rate lies in upfront prompt standardization. Google's underlying architecture heavily favors XML-structured data.</p>
-  <h4>Standardized Code Envelopes:</h4>
-  <p>Avoid dumping loose code snippets into the terminal. Use a build script to tightly encapsulate your source code in XML format, placing it at the absolute top of your prompt:</p>
-  <pre><code class="language-xml">&lt;repository&gt;
-  &lt;file path="src/main.ts"&gt;
-    // Source implementation
-  &lt;/file&gt;
-  &lt;file path="docs/schema.graphql"&gt;
-    // API Documentation
-  &lt;/file&gt;
-&lt;/repository&gt;</code></pre>
-  <p>Keeping this XML prefix strictly immutable across multiple conversation turns (and typically meeting the >4096 Tokens minimum threshold) reliably triggers Implicit Caching. This massively reduces latency and compute point deductions per request, while boosting ultra-long context targeting precision to over 99%.</p>
+  <h3 data-reveal>📝 2. Connect Your Google Workspace (Docs/Drive)</h3>
+  <p>One of the best perks of a premium membership is that the AI is fully integrated with your Google Docs and Google Drive.</p>
+  <ul>
+    <li>When you are coding or planning a project, you don't need to copy and paste your requirements.</li>
+    <li>Just tell it: "Go to my Google Drive, find the doc named 'Q4 Product Requirements', and write the code based on that."</li>
+    <li>The AI will read the document directly. Because it's an internal ecosystem feature, it is incredibly smooth and bypasses typical text input limits.</li>
+  </ul>
 
-  <h3 data-reveal>📚 3. NotebookLM as an Infinite RAG External Brain</h3>
-  <p>The most powerful cross-platform synergy combo is utilizing Google's highly generous <strong>NotebookLM</strong> as a frontline knowledge processor.</p>
-  <ol>
-    <li>When faced with massive legacy GitHub repositories or thousands of pages of business PDF requirements, import them entirely into NotebookLM.</li>
-    <li>Instruct NotebookLM to distill the information: <code>"Map the complete API contract and database relations, extract Breaking Changes, and generate a core design dictionary."</code></li>
-    <li>Pass this condensed, lightweight Markdown dictionary (a few KBs) to your local Antigravity agent for implementation.</li>
-    <li>This workflow offloads the heaviest "full-text parsing" costs to the NotebookLM tier, reserving your precious Ultra compute strictly for high-quality logic generation.</li>
-  </ol>
-
-  <h3 data-reveal>🎨 4. Imagen 3 & Terminal Code Relay</h3>
-  <p>UI prototype development should strictly separate "visual generation" from "code implementation." Utilize your dedicated quotas in the Web Gemini Advanced environment to generate and tweak Imagen 3 concept art. Once finalized, initiate a <strong>Code Relay</strong>:<br>
-  <code>"Analyze this Imagen 3 design. First: Output a rigorous Widget Tree / DOM Tree structure. Second: Await my confirmation on the structure before outputting the complete Dart / TSX code."</code><br>
-  This ensures accurate translation of visual intent to code logic, eliminating compute waste caused by iterative, erroneous UI generation in the terminal.</p>
+  <h3 data-reveal>🎨 3. Separate Drawing from Coding</h3>
+  <p>The Web version of the AI isn't just for chatting; it can also generate extremely high-quality images (via Imagen 3).</p>
+  <ul>
+    <li>If you want to build a mini-app or website, first ask it on the Web: "Draw a UI design for a fitness app homepage."</li>
+    <li>If you don't like it, ask it to redraw until it's perfect (image generation limits on the Web are very generous).</li>
+    <li>Once satisfied, give that image to the AI and say: "Now, write the web code to match this exact design." This avoids the headache of making the AI blindly guess how you want your app to look.</li>
+  </ul>
 </section>
 
 <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">

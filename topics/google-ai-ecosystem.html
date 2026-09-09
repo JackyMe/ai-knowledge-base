@@ -952,43 +952,32 @@ sequenceDiagram
         </div>
       </section>
       <section id="ch6-1">
-  <h2>6.1 AI Pro/Ultra 算力点数效能最大化与全家桶协同</h2>
-  <p><span class="tag-badge tag-tip">资源统筹</span> Google 2026 年底重构后的 AI Plus/Pro/Ultra 体系，全面转向基于<strong>“算力点数 (Compute Points)”</strong>的精细化计量。要在 Antigravity 终端中保持丝滑的代码生成体验，核心在于掌握 Implicit Caching（隐式缓存）的触发规范以及 Workspace 生态矩阵的联动。</p>
+  <h2>6.1 怎么玩转 AI Pro/Ultra？新手必看的全家桶指南</h2>
+  <p><span class="tag-badge tag-tip">日常指南</span> Google 的 AI 会员（AI Plus、Pro、Ultra）就像一个装满工具的超级瑞士军刀。很多普通用户只把它当成一个“能联网聊天的对话框”，这其实非常亏。只要用对方法，无论是工作、学习还是写代码，它都能帮你省下大量时间和额度。</p>
 
-  <h3 data-reveal>📊 1. 算力点数 (Compute Points) 与平滑降级机制</h3>
-  <p>大模型能力的调配并非线性。深刻理解以下两条核心机制，是避免开发卡顿的前提：</p>
+  <h3 data-reveal>💡 1. 黄金搭档：大文档必须配 NotebookLM</h3>
+  <p>如果你手里有一本几百页的 PDF、大量的财务报表，或者一整个文件夹的代码源码，<strong>千万不要直接扔进普通的对话框里让 AI 读</strong>。不仅读得慢，还很容易耗尽你今天的额度。</p>
   <ul>
-    <li><strong>长文本与多模态的资源乘数</strong>：在终端向 1.5/2.0 Ultra 发送 1M 上下文级别的大型代码库，其算力消耗相当于网页版标准请求的上百倍；同时，生成 Imagen 3 高清图像的开销远高于代码补全。</li>
-    <li><strong>Graceful Degradation (平滑降级)</strong>：在 5 小时滚动窗口内耗尽高阶模型的算力点后，Google 服务不会中断，而是智能回退至 <strong>Gemini 3.5 Flash</strong> 等轻量极速模型。此时，建议将任务重心从“深层架构重构”转移到“文档补充与单元测试生成”上，以匹配轻量模型的专长。</li>
+    <li><strong>最聪明的方法：</strong>打开 Google 免费且强大的 <strong>NotebookLM</strong>。把所有的长文档、压缩包全扔进去。它就像一个你的专属私人图书管理员。</li>
+    <li>你可以直接问它：“帮我总结一下这里面的重点，整理成一份简短的提纲。”</li>
+    <li>拿到简短提纲后，你再发给普通的 Gemini 终端去处理，这样既快又准，还不用担心额度被长文件吃光。</li>
   </ul>
 
-  <h3 data-reveal>💡 2. XML 标签化触发隐式缓存 (Implicit Caching)</h3>
-  <p>影响 Gemini 代码召回率（Retrieval Accuracy）与缓存命中率的关键，在于 Prompt 结构的前置标准化。Google 官方底层极度偏好 XML 结构化数据。</p>
-  <h4>代码规范化封套：</h4>
-  <p>切忌将松散的代码片段直接抛入终端。使用构建脚本，将项目源码以 XML 格式进行严密封装，并置于 Prompt 的绝对顶部：</p>
-  <pre><code class="language-xml">&lt;repository&gt;
-  &lt;file path="src/main.ts"&gt;
-    // 源码实现
-  &lt;/file&gt;
-  &lt;file path="docs/schema.graphql"&gt;
-    // 接口文档
-  &lt;/file&gt;
-&lt;/repository&gt;</code></pre>
-  <p>在多轮对话中保持该 XML 前缀绝对不变（满足通常 >4096 Tokens 的下限），即可稳定触发系统的 Implicit Caching，大幅降低每次请求的延迟与算力扣分，同时将超大上下文的寻址精度提升至 99% 以上。</p>
+  <h3 data-reveal>📝 2. 打通 Google 办公文档 (Docs/Drive)</h3>
+  <p>买了高级会员后，最爽的功能之一就是 AI 和你的 Google Docs（文档）以及 Google Drive（云端硬盘）是打通的。</p>
+  <ul>
+    <li>当你在终端里写代码，或者在策划一个方案时，不需要把需求复制粘贴过来。</li>
+    <li>直接告诉它：“去我的 Google Docs 里找那篇叫做《下半年产品需求》的文档，按照里面的要求帮我写。”</li>
+    <li>AI 会自己去看文档并生成结果。由于是生态内联动，这种操作非常顺滑，并且不占用你常规的输入字符限制。</li>
+  </ul>
 
-  <h3 data-reveal>📚 3. NotebookLM 作为无限 RAG 外脑</h3>
-  <p>跨端协同的最强组合技是利用 Google 免费且额度极高的 <strong>NotebookLM</strong> 作为前置知识处理器。</p>
-  <ol>
-    <li>面对历史遗留的庞大 GitHub 仓库或海量业务需求 PDF，先将其统一导入 NotebookLM。</li>
-    <li>通过指令让 NotebookLM 提纯信息：<code>"梳理全量 API 契约与数据库关联，并提取 Breaking Changes，生成核心设计字典。"</code></li>
-    <li>将提纯后仅几 KB 的精简 Markdown 字典传递给本地的 Antigravity 代理进行代码落地。</li>
-    <li>此工作流将最沉重的“全文解析”成本留在了 NotebookLM 端，确保终端 Ultra 算力全部用于高质量的逻辑生成。</li>
-  </ol>
-
-  <h3 data-reveal>🎨 4. Imagen 3 与终端的代码接力</h3>
-  <p>UI 原型开发应充分剥离“视觉生成”与“代码实现”。在 Web 端的 Gemini Advanced 环境中利用专属配额完成 Imagen 3 概念图的生成与微调。定稿后，再发起<strong>代码接力</strong>：<br>
-  <code>"分析此 Imagen 3 设计稿。首先：输出严谨的 Widget Tree / DOM Tree 结构。其次：待我确认结构无误后，再输出完整的 Dart / TSX 代码。"</code><br>
-  这保证了视觉意图向代码逻辑的精准转化，杜绝了在终端反复生成错误 UI 造成的算力浪费。</p>
+  <h3 data-reveal>🎨 3. 画图与写代码分开做</h3>
+  <p>AI 的网页版不仅能聊天，还能用极高质量的模型（Imagen 3）画图。</p>
+  <ul>
+    <li>如果你想开发一个小程序或者网页，最好先在网页版里对它说：“帮我画一张健身 App 首页的设计图。”</li>
+    <li>看着不满意就让它重画，一直画到满意为止（网页版的画图功能非常大方）。</li>
+    <li>满意之后，你再拿着这张图对 AI 说：“请根据这张图的样式，帮我写出网页代码。”这就避免了一开始就让 AI 盲猜代码样式带来的麻烦。</li>
+  </ul>
 </section>
 
 <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">

@@ -684,44 +684,37 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">Advanced Tuning</div>
-<h2>Advanced Subscription Optimization & Cross-Platform Synergy</h2>
+<div class="sec-tag">Quota Guide</div>
+<h2>How to Maximize Your Membership Quota (A Guide for Everyday Users)</h2>
 
-<p>In OpenAI's 2026 ecosystem architecture, the subscription benefits of ChatGPT Plus and Pro (5x/20x) are strictly segmented across various computational surfaces. Developers relying solely on the local Codex terminal will inevitably encounter frequent rate limits. This section synthesizes best practices from senior engineering teams, guiding you on how to maximize your subscription value through cross-platform synergy (Web, Work Projects, API).</p>
+<p>Many users spend $20 (or more) a month on a ChatGPT Plus or Pro subscription, only to hit the dreaded "You've reached your limit, please try again in a few hours" message when using Codex to code. The truth is, by adopting a few simple everyday habits, you can easily avoid these limits and get every penny's worth out of your membership.</p>
 
-<h3 data-reveal>📊 1. Resource Isolation Under the Surfaces Architecture</h3>
-<p>OpenAI utilizes a dynamic "Compute Tokens" quota mechanism, meaning different interfaces draw from isolated pools with distinct rules:</p>
+<h3 data-reveal>🔋 1. Understand Your "Stamina Bar"</h3>
+<p>Think of your membership quota as a "Stamina Bar." Typically, this bar refills every 5 hours. However, different tasks drain stamina at entirely different rates:</p>
 <ul>
-  <li><strong>Codex Terminal Code Gen Pool</strong>: Governed by a strict 5-hour rolling limit. Because terminal requests automatically mount environment variables and project context, frequent transmission of 1M-token contexts rapidly depletes available quotas, triggering graceful degradation (e.g., forced fallback to <code>gpt-5.6-luna</code>).</li>
-  <li><strong>Web Deep Research Pool</strong>: Possesses a completely independent monthly quota (~25 uses for Plus, 250+ for Pro). It is dedicated to multi-step web crawling and the synthesis of thousands of pages of documentation.</li>
-  <li><strong>o3/Astra Thinking Mode Pool</strong>: The most heavily restricted pool, featuring a hard daily cap on "deep concurrent thinking" time, reserved primarily for severe logical deadlocks.</li>
+  <li><strong>High Drain:</strong> Asking Codex to read hundreds of code files at once, or uploading dozens of high-res images on the web version for analysis.</li>
+  <li><strong>Low Drain:</strong> Regular text chatting, asking simple questions, or having Codex edit just one or two small files.</li>
+</ul>
+<div class="callout warn"><b class="t">Heads Up!</b>
+The ChatGPT website, mobile app, and Codex terminal on your computer <strong>all share the same stamina bar!</strong> If you spend the morning generating a bunch of images on the web, you might find yourself out of quota when you try to code with Codex that night.</div>
+
+<h3 data-reveal>💡 2. Three Simple Tricks to Save Quota</h3>
+
+<h4>Trick 1: Separate "Brainstorming" from "Typing"</h4>
+<p>When you want to learn a new concept or are stuck on a confusing error, <strong>don't interrogate Codex over and over again.</strong> Every time you ask a question in Codex, it silently attaches your project background, which wastes a lot of stamina.</p>
+<ul>
+  <li><strong>The Right Way:</strong> Open the ChatGPT <strong>Web version</strong>. Paste your error there. Brainstorm and figure out the logic with the AI on the web. Once the AI gives you a clear solution, go back to Codex and say: "Apply this exact fix to my code."</li>
 </ul>
 
-<h3 data-reveal>🚀 2. Web & Local Terminal Synergy SOP (Standard Operating Procedure)</h3>
-<p>The core workflow of top-tier developers relies on <strong>"Separation of Concerns"</strong>: delegating "learning and synthesis" to the Web, and reserving "execution and compilation" for local Codex.</p>
+<h4>Trick 2: Don't Use a Sledgehammer to Crack a Nut (Use Small Models)</h4>
+<p>ChatGPT offers the smartest flagship models, but also lightning-fast, nearly unlimited "small models" (like the 'mini' or fast versions).</p>
+<ul>
+  <li>When you just need to fix a typo, add a few comments, or change a button color, <strong>manually switch to the smaller model</strong> in the menu.</li>
+  <li>Only switch back to the most powerful model when facing real logical challenges, like "design a complete login and registration flow for me."</li>
+</ul>
 
-<h4>Phase A: Architectural Icebreaking with Deep Research</h4>
-<p>When introducing a novel framework (like Next.js 16) or integrating unknown third-party SDKs, avoid iterative trial-and-error in the local terminal, which wastes massive compute.</p>
-<div class="callout tip"><b class="t">Best Practice Prompt (Execute on Web)</b>
-<code>Initiate Deep Research: Crawl the latest version of the official docs. Output a migration guide strictly adhering to this JSON Schema: { "components": [...], "deprecated_hooks": [...] }. Return only structured data without superfluous explanations.</code></div>
-<p>Download this zero-hallucination, highly structured JSON file to your local directory for Codex to read and execute, ensuring exceptionally high accuracy in code generation.</p>
-
-<h4>Phase B: AST Dimensionality Reduction</h4>
-<p>For full-scale refactors involving hundreds of files, forcing the terminal to read raw <code>.ts</code> source code will instantly hit context ceilings. Recommendation: Write a pre-processing Python/Node script to extract the project's <strong>AST (Abstract Syntax Tree) skeleton</strong> (retaining only class names, function signatures, and type definitions). Uploading this compressed skeleton (tens of KBs instead of MBs) to a Web <strong>Work Project</strong> forms a stable memory, reducing terminal context overhead by 95%.</p>
-
-<h3 data-reveal>🔌 3. API Fallback & Service Stability</h3>
-<p>For advanced teams heavily dependent on coding agents, "forced downtime" due to a 5-hour rate limit is unacceptable. You can configure an API Fallback strategy in <code>~/.codex/config.json</code>:</p>
-<pre><code class="language-json">{
-  "fallback_strategy": "api_key",
-  "api_model": "gpt-5.6-turbo",
-  "max_fallback_spend": 5.0
-}</code></pre>
-<p>When the subscription quota is exhausted, the system seamlessly switches to the pay-as-you-go API channel, maintaining the continuity of your engineering pipeline at a minimal cost.</p>
-
-<h3 data-reveal>🎨 4. Multi-modal Dimensional Reduction (Vision-to-Code)</h3>
-<p>Vision parsing is highly compute-intensive. When recreating UIs, strictly avoid sending design screenshots iteratively in the terminal for micro-adjustments.<br>
-<strong>Dimensional Reduction Strategy</strong>: Upload the UI screenshot on the Web and request: "From the perspective of a senior frontend engineer, detail all CSS properties (Flex layouts, absolute positioning, hex colors, shadows), and output a pure-text Tailwind DOM tree structure."<br>
-Subsequently, feed this text structure to Codex. Text parsing is exponentially faster and cheaper than image processing, achieving nearly lossless, instantaneous <code>Text-to-Code</code> replication.</p>
+<h4>Trick 3: Organize Your Notes First</h4>
+<p>Reading long documents takes a lot of AI stamina. If you have a 100-page API manual, don't upload it every single time you ask a question. Instead, create a <strong>Project</strong> on the Web version and upload the long document there. In a Project, the AI "memorizes" the document, so it won't repeatedly drain your reading quota every time you chat.</p>
 </section>
 
 <section id="playbook">
