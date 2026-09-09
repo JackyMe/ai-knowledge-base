@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>33. 디스크 대청소: system prune - Docker 35단계 완벽 마스터</title>
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 제2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 문제 해결 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 설치 및 설정 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 설치 및 설정 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정으로 다운로드 가속화</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 마법의 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -352,7 +351,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이사: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 제6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 제6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐구: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 입력과의 작별</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요한가?</span></a>
@@ -361,7 +360,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>실전 배틀(하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 제7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 제7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>성벽 방어: .env를 통한 비밀 정보 보호</span></a>
     <a class="nav-item on" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 대청소: system prune</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 절대 원칙: Root 실행 금지</span></a>
@@ -370,7 +369,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 단계: 보안 & 프로덕션 운영 · 제 33 / 35 레슨</div>
+  <div class="chapter-badge">🐳 단계: 보안 &amp; 프로덕션 운영 · 제 33 / 35 레슨</div>
   <h1>제33레슨: 디스크 대청소: "No space left on device" 에러 탈출기</h1>
 
   <p>Docker를 사용한 지 몇 달 동안 수없이 <code>build</code>하고, 새 이미지를 <code>pull</code>하고, 컨테이너를 <code>up</code> / <code>down</code>하며 즐겁게 개발하던 어느 날, 터미널에 갑자기 싸늘한 붉은색 에러가 나타납니다:</p>
@@ -435,7 +434,7 @@ $ <span class="bash-cmd">docker system</span> prune -a
   <h2>3. Docker Desktop 가상 디스크 용량 회수 (macOS / Windows)</h2>
   <p>Mac이나 Windows의 Docker Desktop 사용자는 터미널에서 <code>prune</code>을 실행해도 컴퓨터 본체의 남은 디스크 용량이 늘어나지 않는 현상을 겪을 수 있습니다.</p>
   <p><strong>원인:</strong> Docker Desktop은 호스트 OS 안에 가상 디스크 파일(<code>Docker.raw</code> 또는 <code>vhdx</code>)을 두고 작동합니다. 풍선처럼 크기가 늘어나는 것은 쉽지만, 내부 파일을 지운다고 해서 가상 디스크 파일의 외형 크기가 자동으로 줄어들지는 않기 때문입니다.</p>
-  <p><strong>해결법:</strong> Docker Desktop 설정 창 -> 상단 🐛 (Troubleshoot) 아이콘 -> <strong>Clean / Purge data</strong> -> <strong>Virtual disk image</strong>를 선택하여 가상 디스크를 리셋하고 물리 디스크 공간을 완전히 반환받을 수 있습니다.</p>
+  <p><strong>해결법:</strong> Docker Desktop 설정 창 -&gt; 상단 🐛 (Troubleshoot) 아이콘 -&gt; <strong>Clean / Purge data</strong> -&gt; <strong>Virtual disk image</strong>를 선택하여 가상 디스크를 리셋하고 물리 디스크 공간을 완전히 반환받을 수 있습니다.</p>
 
   <div class="trouble-box">
     <div class="trouble-title">🚨 트러블슈팅 응급실</div>
@@ -445,7 +444,7 @@ $ <span class="bash-cmd">docker system</span> prune -a
     </div>
     <div class="trouble-item">
       <div class="q">Q2: 수십 기가바이트로 불어난 컨테이너 로그 파일은 어떻게 정리하나요?</div>
-      <div class="a">A: 호스트의 <code>/var/lib/docker/containers</code> 내부 로그 파일을 직접 수동 삭제하면 Docker 데몬 오류가 발생할 수 있습니다. <code>docker-compose.yml</code>에 다음과 같이 로그 롤링 정책을 지정하는 것이 올바른 방법입니다:<br/>
+      <div class="a">A: 호스트의 <code>/var/lib/docker/containers</code> 내부 로그 파일을 직접 수동 삭제하면 Docker 데몬 오류가 발생할 수 있습니다. <code>docker-compose.yml</code>에 다음과 같이 로그 롤링 정책을 지정하는 것이 올바른 방법입니다:<br>
       <code>logging: driver: "json-file", options: { "max-size": "10m", "max-file": "3" }</code></div>
     </div>
   </div>
@@ -563,5 +562,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

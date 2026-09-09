@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>06. Mac & Linux 通关密码 - Docker 35 级通关专栏</title>
+<title>06. Mac &amp; Linux 通关密码 - Docker 35 级通关专栏</title>
 <style>
 :root {
   --accent: #0284c7;
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item on" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item on" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -383,7 +382,7 @@ pre:hover .copy-btn { opacity: 1; }
 
 <main class="main-wrap">
   <div class="chapter-badge">🐳 阶段：环境搭建 · 第 06 / 35 讲</div>
-  <h1>06. Mac & Linux 通关密码</h1>
+  <h1>06. Mac &amp; Linux 通关密码</h1>
 <p>在上一节中我们讲了 Windows 玩家的避坑指南，今天我们来看看对于开发者来说最主流的两个操作系统：macOS 和 Linux，到底该怎么优雅地安装 Docker。这两个系统虽然和 Docker 是“亲戚”（尤其是 Linux 本身就是 Docker 的宿主），但安装时依然有一些坑需要避开。</p>
 
 <h2>一、Mac 玩家：优雅的界面派</h2>
@@ -397,7 +396,7 @@ pre:hover .copy-btn { opacity: 1; }
       <li>如果你是 M1/M2/M3 等苹果自研芯片，选择 <strong>Mac with Apple silicon</strong>。</li>
       <li>如果你是老的 Intel 芯片 Mac，选择 <strong>Mac with Intel chip</strong>。</li>
     </ul>
-    <p><em>选错了会导致极高的 CPU 占用或者无法启动！如果不确定，点击屏幕左上角苹果图标 -> 关于本机，查看“芯片”一栏。</em></p>
+    <p><em>选错了会导致极高的 CPU 占用或者无法启动！如果不确定，点击屏幕左上角苹果图标 -&gt; 关于本机，查看“芯片”一栏。</em></p>
     <p>2. 下载 <code>.dmg</code> 文件后，双击打开，把 Docker 图标拖进 Applications 文件夹。</p>
     <p>3. 在启动台中打开 Docker，同意许可协议，然后你会在右上角菜单栏看到一个“小鲸鱼”图标。当小鲸鱼停止动画并且显示绿色的“Docker Desktop is running”时，就大功告成了！</p>
   </div>
@@ -416,7 +415,7 @@ pre:hover .copy-btn { opacity: 1; }
   <span class="ic">💡</span>
   <div>
     <span class="tt">Pro-tip：Mac 性能优化设置</span>
-    Docker Desktop 默认的资源分配可能不适合你的机器。点击右上角小鲸鱼 -> Settings -> Resources：
+    Docker Desktop 默认的资源分配可能不适合你的机器。点击右上角小鲸鱼 -&gt; Settings -&gt; Resources：
     <br>1. <strong>Memory (内存)</strong>：建议分配 4GB-8GB，太少容易导致编译卡死。
     <br>2. <strong>Virtual disk limit (磁盘)</strong>：默认通常是 60GB，如果你的 Mac 存储吃紧，可以调小；同时建议更改 <code>Disk image location</code> 到外接硬盘。
     <br>3. <strong>VirtioFS</strong>：在 General 设置里，强烈建议开启 <code>VirtioFS</code>，这会极大提升 Mac 和 Docker 容器之间的文件同步性能！
@@ -444,7 +443,7 @@ pre:hover .copy-btn { opacity: 1; }
 <span class="bash-cmd">sudo</span> <span class="bash-cmd">sh</span> get-docker.sh</code></pre>
     <p>耐心等待两分钟，你会看到类似这样的输出：</p>
     <pre><code># Executing docker install script, commit: 7cae5f34...
-+ sh -c apt-get update -qq >/dev/null
++ sh -c apt-get update -qq &gt;/dev/null
 + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ...
 ...
 Client: Docker Engine - Community
@@ -599,5 +598,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

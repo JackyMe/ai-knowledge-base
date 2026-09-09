@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>19. 그림으로 보는 레이어 캐시의 마법 - Docker 35단계 완벽 마스터</title>
@@ -283,6 +281,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -325,7 +324,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 제2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 문제 해결 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 설치 및 설정 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 설치 및 설정 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정으로 다운로드 가속화</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 마법의 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -356,7 +355,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이사: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 제6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 제6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐구: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 입력과의 작별</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요한가?</span></a>
@@ -365,7 +364,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>실전 배틀(하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 제7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 제7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>성벽 방어: .env를 통한 비밀 정보 보호</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 대청소: system prune</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 절대 원칙: Root 실행 금지</span></a>
@@ -385,11 +384,11 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="mermaid-box">
 <pre><code class="language-mermaid">
 graph TD
-    A["FROM node:18-alpine"] --> B["WORKDIR /app"]
-    B --> C["COPY package.json ."]
-    C --> D["RUN npm install"]
-    D --> E["COPY . ."]
-    E --> F["CMD ['node', 'server.js']"]
+    A["FROM node:24-alpine"] --&gt; B["WORKDIR /app"]
+    B --&gt; C["COPY package.json ."]
+    C --&gt; D["RUN npm install"]
+    D --&gt; E["COPY . ."]
+    E --&gt; F["CMD ['node', 'server.js']"]
     style A fill:#bfdbfe,stroke:#2563eb
     style C fill:#bbf7d0,stroke:#16a34a
     style D fill:#fef08a,stroke:#ca8a04
@@ -406,7 +405,7 @@ graph TD
   <div class="step-panel">
     <div class="step-header">❌ 잘못된 작성법: 초보자가 자주 범하는 실수</div>
     <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 <span class="bash-comment"># 전체 소스코드와 package.json을 한 번에 통째로 복사</span>
 COPY . .
@@ -420,7 +419,7 @@ CMD ["node", "server.js"]</pre>
   <div class="step-panel">
     <div class="step-header">✅ 모범적인 작성법: 단계별 분할 복사 기법</div>
     <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 <span class="bash-comment"># 1단계: 패키지 정의 파일만 먼저 복사</span>
 COPY package.json .
@@ -437,20 +436,20 @@ CMD ["node", "server.js"]</pre>
 <pre><code class="language-mermaid">
 flowchart LR
     subgraph Bad ["잘못된 작성법"]
-        A1["COPY . ."] --> B1["코드 변경 감지!<br>전체 코드 재전송"] --> C1["RUN npm install<br>캐시 무효화!<br>패키지 전체 재설치 고통"]
+        A1["COPY . ."] --&gt; B1["코드 변경 감지!<br>전체 코드 재전송"] --&gt; C1["RUN npm install<br>캐시 무효화!<br>패키지 전체 재설치 고통"]
     end
     subgraph Good ["모범적인 작성법"]
-        A2["COPY package.json ."] --> B2["변경 없음! 캐시 히트"] --> C2["RUN npm install<br>캐시 히트! 1초 만에 통과"] --> D2["COPY . .<br>변경된 코드만 전송"]
+        A2["COPY package.json ."] --&gt; B2["변경 없음! 캐시 히트"] --&gt; C2["RUN npm install<br>캐시 히트! 1초 만에 통과"] --&gt; D2["COPY . .<br>변경된 코드만 전송"]
     end
 </code></pre>
   </div>
 
   <h2>4. 레이어 수 최적화: RUN 명령어의 체이닝 기법</h2>
-  <p>앞서 설명했듯이 RUN 명령어를 작성할 때마다 새로운 레이어가 생성되며 이미지 크기가 증가합니다. 시스템 패키지를 설치할 때는 <code>&&</code> 연산자로 명령어를 하나로 연결하고, 마지막에 반드시 캐시 파일(예: apt 캐시)을 정리해 주세요. 다음 레이어에서 <code>rm</code>을 실행하더라도 이전 레이어에 기록된 용량은 줄어들지 않기 때문입니다(Git 커밋 기록과 동일한 원리입니다).</p>
+  <p>앞서 설명했듯이 RUN 명령어를 작성할 때마다 새로운 레이어가 생성되며 이미지 크기가 증가합니다. 시스템 패키지를 설치할 때는 <code>&amp;&amp;</code> 연산자로 명령어를 하나로 연결하고, 마지막에 반드시 캐시 파일(예: apt 캐시)을 정리해 주세요. 다음 레이어에서 <code>rm</code>을 실행하더라도 이전 레이어에 기록된 용량은 줄어들지 않기 때문입니다(Git 커밋 기록과 동일한 원리입니다).</p>
   <pre><span class="bash-comment"># 완벽한 한 줄 설치 모범 예시</span>
 <span class="bash-cmd">RUN</span> apt-get update \
-    && apt-get install -y --no-install-recommends vim curl net-tools \
-    && rm -rf /var/lib/apt/lists/*</pre>
+    &amp;&amp; apt-get install -y --no-install-recommends vim curl net-tools \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*</pre>
 
   <div class="alert tip">
     <span class="ic">💡</span>
@@ -579,5 +578,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

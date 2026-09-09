@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>24. 開発の神技：バインドマウント - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linuxセットアップの極意</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
   </div>
@@ -397,14 +396,14 @@ pre:hover .copy-btn { opacity: 1; }
 <pre><code class="language-mermaid">
 flowchart LR
     subgraph Host ["ホストマシン (作業用PC)"]
-        A["D:\projects\my-web<br/>VS Code で編集中"]:::host
+        A["D:\projects\my-web<br>VS Code で編集中"]:::host
     end
     
     subgraph Container ["Docker コンテナ"]
-        B["マウント先 /app<br/>Node.js アプリが実行中"]:::container
+        B["マウント先 /app<br>Node.js アプリが実行中"]:::container
     end
     
-    A <==>|どこでもドア：リアルタイム双方向同期| B
+    A &lt;==&gt;|どこでもドア：リアルタイム双方向同期| B
     
     classDef host fill:#e0f2fe,stroke:#0284c7;
     classDef container fill:#fef3c7,stroke:#d97706;
@@ -415,7 +414,7 @@ flowchart LR
 <p>使い方は Volume とほぼ共通ですが、コロン <code>:</code> の左側にホストマシンの<strong>絶対パス</strong>を指定します。</p>
 
 <pre><code><span class="bash-comment"># カレントディレクトリ $(pwd) をコンテナの /app にマウント</span>
-<span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> $(pwd):/app nginx</code></pre>
+<span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> "$(pwd):/app" nginx</code></pre>
 <p><em>※補足：Windows のコマンドプロンプト（cmd）では <code>$(pwd)</code> の代わりに <code>%cd%</code>、PowerShell では <code>${PWD}</code> を使用します。</em></p>
 
 <h2>実践演習：Node.js のホットリロード開発</h2>
@@ -428,15 +427,15 @@ flowchart LR
 <pre><code><span class="bash-comment"># ファイル変更を監視して自動再起動する nodemon をコンテナ内で実行</span>
 <span class="bash-cmd">docker</span> run <span class="bash-arg">-it</span> <span class="bash-arg">--rm</span> \
   <span class="bash-arg">-p</span> 3000:3000 \
-  <span class="bash-arg">-v</span> $(pwd):/app \
+  <span class="bash-arg">-v</span> "$(pwd):/app" \
   <span class="bash-arg">-w</span> /app \
-  node:18-alpine \
+  node:24-alpine \
   npx nodemon server.js</code></pre>
   
 <p><strong>オプション解説：</strong></p>
 <ul>
   <li><code>--rm</code>: コンテナ停止時に自動でコンテナを破棄（クリーンな環境維持）</li>
-  <li><code>-v $(pwd):/app</code>: <strong>最重要！</strong> ホストのカレントコードディレクトリをコンテナ内の <code>/app</code> に直結</li>
+  <li><code>-v "$(pwd):/app"</code>: <strong>最重要！</strong> ホストのカレントコードディレクトリをコンテナ内の <code>/app</code> に直結</li>
   <li><code>-w /app</code>: コンテナ内の作業ディレクトリを <code>/app</code> に設定</li>
   <li><code>npx nodemon ...</code>: <code>/app</code> 内の変更を監視し、コード保存時に自動リスタート。マウントされているため、ホスト側での保存が即座に検知されます！</li>
 </ul>
@@ -447,9 +446,9 @@ flowchart LR
 <p>上記の構成で開発を進める際、ローカル環境（Mac/Windows）で <code>npm install</code> を実行して生成された <code>node_modules</code> をそのまま Linux コンテナへバインドマウントすると、ネイティブ C++ 拡張モジュール（node-sass 等）が OS 違いでクラッシュすることがあります。</p>
 
 <p><strong>解決テクニック：匿名ボリュームによるマスキング</strong></p>
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> $(pwd):/app <span class="bash-arg">-v</span> /app/node_modules node:18 npm start</code></pre>
+<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> "$(pwd):/app" <span class="bash-arg">-v</span> /app/node_modules node:24 npm start</code></pre>
 <p>ポイントは2つの <code>-v</code> の組み合わせです：<br>
-1. <code>-v $(pwd):/app</code> でプロジェクト全体をマウント。<br>
+1. <code>-v "$(pwd):/app"</code> でプロジェクト全体をマウント。<br>
 2. <code>-v /app/node_modules</code> でコンテナ内の <code>node_modules</code> に匿名ボリュームを重ねる。<br>
 Docker は<strong>より深いサブパスのマウントを優先</strong>するため、コンテナ内の <code>/app/node_modules</code> はホスト側のディレクトリで上書きされず、コンテナ固有の Linux 用依存関係が安全に保護されます！</p>
 
@@ -585,5 +584,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

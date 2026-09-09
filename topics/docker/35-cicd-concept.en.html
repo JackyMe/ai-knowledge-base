@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>35. Finale: Automated CI/CD Pipelines - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Stage 2: Environment Setup</div>
   <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passcode</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passcode</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Snail-Speed No More</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
 </div>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Stage 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Volume Backup</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Stage 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Stage 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to Hardcoded IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Ultimate Battle (Part 2): Microservice Networks</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Stage 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Stage 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Space Cleanup: Docker System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 Stage: Security & Production · Lesson 35 / 35</div>
+  <div class="chapter-badge">🐳 Stage: Security &amp; Production · Lesson 35 / 35</div>
   <h1>35. Finale: Automated CI/CD Pipelines</h1>
 
 <p>Congratulations on reaching the grand finale! You can now command Docker effortlessly on your local machine. But will you SSH into production servers, pull code manually, run <code>docker build</code>, and execute <code>docker compose up</code> every single deployment?</p>
@@ -394,25 +393,24 @@ pre:hover .copy-btn { opacity: 1; }
 <p>A picture is worth a thousand words. Here is how modern software flows seamlessly from a developer's commit into production:</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-sequenceDiagram
+<pre class="mermaid">sequenceDiagram
     participant Dev as Developer
     participant Git as GitHub / GitLab
-    participant CI as CI Runner<br/>(Build Agent)
-    participant Reg as Docker Registry<br/>(Image Repository)
+    participant CI as CI Runner<br>(Build Agent)
+    participant Reg as Docker Registry<br>(Image Repository)
     participant Prod as Production Host
 
-    Dev->>Git: 1. git push commit
-    Git-->>CI: 2. Trigger Webhook
+    Dev-&gt;&gt;Git: 1. git push commit
+    Git--&gt;&gt;CI: 2. Trigger Webhook
     activate CI
-    CI->>CI: 3. Run automated unit tests
-    CI->>CI: 4. docker build image
-    CI->>Reg: 5. docker push release image
+    CI-&gt;&gt;CI: 3. Run automated unit tests
+    CI-&gt;&gt;CI: 4. docker build image
+    CI-&gt;&gt;Reg: 5. docker push release image
     deactivate CI
-    CI-->>Prod: 6. Notify deployment agent
+    CI--&gt;&gt;Prod: 6. Notify deployment agent
     activate Prod
-    Prod->>Reg: 7. docker pull latest image
-    Prod->>Prod: 8. docker compose up -d (Restart with zero-downtime)
+    Prod-&gt;&gt;Reg: 7. docker pull latest image
+    Prod-&gt;&gt;Prod: 8. docker compose up -d (Restart with zero-downtime)
     deactivate Prod
 </pre>
 </div>
@@ -421,34 +419,34 @@ sequenceDiagram
 <p>The essence of CI is simple: <strong>Every code push automatically triggers tests and builds to catch errors immediately.</strong></p>
 <p>Using GitHub Actions as an example, create <code>.github/workflows/docker-build.yml</code> in your repository:</p>
 
-<pre><code><span class="bash-comment"># Example GitHub Actions Workflow</span>
+<pre><code># Example GitHub Actions Workflow
 name: CI to Docker Hub
 
 on:
   push:
-    branches: [ <span class="bash-str">"main"</span> ] <span class="bash-comment"># Triggers only on push to main branch</span>
+    branches: [ "main" ] # Triggers only on push to main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
-          <span class="bash-comment"># Dual tagging is critical!</span>
+          # Dual tagging is critical!
           tags: myname/myapp:latest, myname/myapp:${{ github.sha }}
-</code></pre>
+</code></pre><p><a href="https://github.com/docker/build-push-action" target="_blank" rel="noopener">Docker · GitHub Actions</a> — Example versions checked 2026-09-09; verify self-hosted runner compatibility and pin reviewed commit SHAs for production.</p>
 
 <div class="step-panel">
   <div class="step-header">🏷️ The Art of Container Tagging</div>
@@ -461,11 +459,9 @@ jobs:
 <h2>3. CD: Seamless Deployment (Continuous Deployment)</h2>
 
 <p>CD ensures newly published images are automatically deployed to target servers.</p>
-<p>For standalone Docker hosts, many engineering teams use <strong>Watchtower</strong>. Watchtower is itself a lightweight Docker container that monitors specified containers and their upstream registries. Whenever a new image version is detected, Watchtower gracefully restarts the container with the updated image—requiring zero manual intervention!</p>
+<p>Deploy tested versions or image digests and record a rollback target. Review configuration and migrations, update in a maintenance window, then check health. Do not default to socket-mounted tools automatically replacing all containers.</p>
 
-<pre><code><span class="bash-comment"># Launch Watchtower for automated container updates</span>
-$ <span class="bash-cmd">docker run</span> -d --name watchtower -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
-</code></pre>
+
 
 <h2>4. The Road Ahead: The Calling of Kubernetes</h2>
 
@@ -485,8 +481,8 @@ $ <span class="bash-cmd">docker run</span> -d --name watchtower -v /var/run/dock
   <div class="ic">🎓</div>
   <div>
     <span class="tt">The End of a Journey, the Dawn of Mastery</span>
-    From Lesson 1 where Xiao Ming struggled with local dependency conflicts, to Lesson 35 where you architect multi-container microservices, drop root privileges, and automate CI/CD pipelines—you have conquered a fundamental milestone in modern software engineering.<br/><br/>
-    The terminal is your canvas; containers are your palette. Go build resilient, scalable applications that execute flawlessly across every environment.<br/><br/>
+    From Lesson 1 where Xiao Ming struggled with local dependency conflicts, to Lesson 35 where you architect multi-container microservices, drop root privileges, and automate CI/CD pipelines—you have conquered a fundamental milestone in modern software engineering.<br><br>
+    The terminal is your canvas; containers are your palette. Go build resilient, scalable applications that execute flawlessly across every environment.<br><br>
     <strong>May your code always compile and pass on the first run! 🎉</strong>
   </div>
 </div>
@@ -602,5 +598,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

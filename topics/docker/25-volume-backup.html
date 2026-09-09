@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>25. 保险箱搬家：数据备份 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -393,8 +392,7 @@ pre:hover .copy-btn { opacity: 1; }
 <p>我们的核心思想是：不直接去碰深层系统的 Volume 目录，而是<strong>临时启动一个小容器</strong>。把需要备份的 Volume 挂载给它，再把宿主机的当前目录也挂载给它。让这个工具人在内部执行 <code>tar</code> 打包命令，把压缩包扔到外面来。</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart TD
+<pre class="mermaid">flowchart TD
     subgraph 宿主机 Host
         A[需要备份的数据卷: db-data]
         B[当前目录 pwd]
@@ -407,12 +405,12 @@ flowchart TD
         E((执行 tar 命令))
     end
     
-    A -.->|挂载 1| C
-    B -.->|挂载 2| D
+    A -.-&gt;|挂载 1| C
+    B -.-&gt;|挂载 2| D
     
-    C -->|读取数据| E
-    E -->|写入压缩包| D
-    D ===> F
+    C --&gt;|读取数据| E
+    E --&gt;|写入压缩包| D
+    D ===&gt; F
 </pre>
 </div>
 
@@ -420,13 +418,13 @@ flowchart TD
 
 <p>假设我们有一个名为 <code>db-data</code> 的数据卷，里面存着 MySQL 的身家性命。我们要把它打包成 <code>backup.tar.gz</code> 放到当前目录。</p>
 
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span>   <span class="bash-arg">-v</span> db-data:/volume-data   <span class="bash-arg">-v</span> $(pwd):/backup   ubuntu   <span class="bash-cmd">tar</span> cvzf /backup/backup.tar.gz -C /volume-data .</code></pre>
+<p class="callout warn">备份前置条件：下面的 tar 示例只适用于已停止写入的卷。数据库运行中应使用数据库原生的一致性备份方案；确认备份可恢复、数据库版本兼容后，再迁移。恢复到新的空卷，不覆盖唯一的数据副本。</p><pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span>   <span class="bash-arg">-v</span> db-data:/volume-data   <span class="bash-arg">-v</span> "$(pwd):/backup"   ubuntu   <span class="bash-cmd">tar</span> cvzf /backup/backup.tar.gz -C /volume-data .</code></pre>
 
 <p><strong>保姆级拆解：</strong></p>
 <ul>
   <li><code>--rm</code>: 完事后立马销毁这个工具人容器，不留痕迹。</li>
   <li><code>-v db-data:/volume-data</code>: 把需要备份的宝藏挂载到工具人的 <code>/volume-data</code> 目录。</li>
-  <li><code>-v $(pwd):/backup</code>: 把宿主机当前目录挂载到工具人的 <code>/backup</code> 目录，作为接应。</li>
+  <li><code>-v "$(pwd):/backup"</code>: 把宿主机当前目录挂载到工具人的 <code>/backup</code> 目录，作为接应。</li>
   <li><code>tar cvzf ...</code>: 工具人干的活。把 <code>/volume-data</code> 里的所有内容压缩，保存到 <code>/backup/backup.tar.gz</code> 里。因为 <code>/backup</code> 映射到了外面，所以压缩包直接出现在你的宿主机当前目录！</li>
 </ul>
 
@@ -444,7 +442,7 @@ flowchart TD
 <pre><code><span class="bash-cmd">docker</span> volume create new-db-data</code></pre>
 
 <p>2. 召唤工具人解压（注意命令最后的 <code>-xzf</code> 变成了解压）：</p>
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span>   <span class="bash-arg">-v</span> new-db-data:/volume-data   <span class="bash-arg">-v</span> $(pwd):/backup   ubuntu   <span class="bash-cmd">tar</span> xvzf /backup/backup.tar.gz -C /volume-data</code></pre>
+<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span>   <span class="bash-arg">-v</span> new-db-data:/volume-data   <span class="bash-arg">-v</span> "$(pwd):/backup"   ubuntu   <span class="bash-cmd">tar</span> xvzf /backup/backup.tar.gz -C /volume-data</code></pre>
   
 <p>3. 启动新的数据库容器，挂载这个装满数据的卷：</p>
 <pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-d</span> <span class="bash-arg">--name</span> my-mysql <span class="bash-arg">-v</span> new-db-data:/var/lib/mysql mysql:8.0</code></pre>
@@ -455,7 +453,7 @@ flowchart TD
   <div class="ic">💡</div>
   <div><span class="tt">老鸟技巧 (Pro Tip): 数据库专属备份</span>
   虽然 <code>tar</code> 备份 Volume 非常通用，但对于像 MySQL/PostgreSQL 这样的关系型数据库，最稳妥的做法其实是使用数据库自带的逻辑备份工具（如 <code>mysqldump</code>）。<br>
-  例如：<code>docker exec my-mysql mysqldump -uroot -p123456 my_db > backup.sql</code><br>
+  例如：<code>docker exec my-mysql mysqldump -uroot -p123456 my_db &gt; backup.sql</code><br>
   这种方式可以在数据库运行时进行热备份，避免了文件系统的锁问题，跨版本恢复也更兼容。</div>
 </div>
 
@@ -584,5 +582,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

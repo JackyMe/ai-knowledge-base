@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>06. Mac & Linux 環境構築プレイブック - Docker 35段階完全マスター</title>
+<title>06. Mac &amp; Linux 環境構築プレイブック - Docker 35段階完全マスター</title>
 <style>
 :root {
   --accent: #0284c7;
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item on" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item on" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -371,7 +370,7 @@ pre:hover .copy-btn { opacity: 1; }
 
 <main class="main-wrap">
   <div class="chapter-badge">🛠️ フェーズ：環境構築 · 第 06 / 35 レッスン</div>
-  <h1>06. Mac & Linux 環境構築プレイブック</h1>
+  <h1>06. Mac &amp; Linux 環境構築プレイブック</h1>
 
   <p>前回のレッスンでは Windows での導入手順を解説しました。今回は、多くのソフトウェアエンジニアに愛用されている macOS と Linux でのスマートな構築手順を紹介します。両者とも Unix の系譜に連なり、特に Linux はコンテナ技術の故郷ですが、環境構築にあたっては見落としがちな注意点や落とし穴が存在します。</p>
 
@@ -386,7 +385,7 @@ pre:hover .copy-btn { opacity: 1; }
         <li>Apple Silicon 搭載 Mac（M1, M2, M3, M4 等）：<strong>Mac with Apple silicon</strong> を選択。</li>
         <li>従来の Intel 製 Mac：<strong>Mac with Intel chip</strong> を選択。</li>
       </ul>
-      <p><em>※アーキテクチャを間違えると、CPU エミュレーションによる極端な性能低下や起動失敗の原因になります。不明な場合は、画面左上の Apple メニュー &rarr;「この Mac について」でチップ/プロセッサを確認してください。</em></p>
+      <p><em>※アーキテクチャを間違えると、CPU エミュレーションによる極端な性能低下や起動失敗の原因になります。不明な場合は、画面左上の Apple メニュー →「この Mac について」でチップ/プロセッサを確認してください。</em></p>
       <p>2. ダウンロードした <code>.dmg</code> ファイルを開き、Docker アイコンを Applications（アプリケーション）フォルダにドラッグ＆ドロップします。</p>
       <p>3. Launchpad から Docker を起動し、利用規約に同意します。macOS の上部メニューバーにクジラのアイコンが現れ、アニメーションが停止して緑色の「Docker Desktop is running」になれば準備完了です！</p>
     </div>
@@ -405,7 +404,7 @@ pre:hover .copy-btn { opacity: 1; }
     <span class="ic">💡</span>
     <div>
       <span class="tt">プロの知恵：Mac でのパフォーマンス最適化</span>
-      高負荷なコンパイルや開発を行う場合、Docker Desktop のリソース設定を調整しておくと快適です。メニューバーのクジラアイコン &rarr; Settings &rarr; Resources を開きます：<br>
+      高負荷なコンパイルや開発を行う場合、Docker Desktop のリソース設定を調整しておくと快適です。メニューバーのクジラアイコン → Settings → Resources を開きます：<br>
       1. <strong>Memory（メモリ）</strong>：4GB〜8GB を推奨。少なすぎるとコンテナ内のビルド時にフリーズや OOM が発生します。<br>
       2. <strong>Virtual Disk Limit（ディスク上限）</strong>：デフォルトは 60GB。内蔵 SSD の空き容量に応じて調整してください。<br>
       3. <strong>VirtioFS</strong>：General 設定で <code>VirtioFS</code> が有効になっていることを確認してください。macOS とコンテナ間のバインドマウントのファイル I/O 速度が劇的に向上します！
@@ -433,7 +432,7 @@ pre:hover .copy-btn { opacity: 1; }
 <span class="bash-cmd">sudo</span> <span class="bash-cmd">sh</span> get-docker.sh</code></pre>
       <p>1〜2分待つと、最新の Docker Engine Community 版のインストール完了ログが出力されます。</p>
       <pre><code># Executing docker install script, commit: 7cae5f34...
-+ sh -c apt-get update -qq >/dev/null
++ sh -c apt-get update -qq &gt;/dev/null
 + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ...
 ...
 Client: Docker Engine - Community
@@ -590,5 +589,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

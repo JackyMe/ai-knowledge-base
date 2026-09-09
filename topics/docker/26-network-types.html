@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>26. 网络探秘：Bridge 与 Host - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -394,17 +393,16 @@ pre:hover .copy-btn { opacity: 1; }
 <p>在深入敲命令之前，咱们先用一张图看看 Docker 网络的整体架构。Docker 引擎自带了一个“虚拟交换机”，把不同的容器连接在一起。</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart TD
-    Internet((Internet)) <--> HostPort[Host Port: 8080]
-    HostPort <--> DockerEngine{Docker Engine (NAT)}
+<pre class="mermaid">flowchart TD
+    Internet((Internet)) &lt;--&gt; HostPort[Host Port: 8080]
+    HostPort &lt;--&gt; DockerEngine{Docker Engine (NAT)}
     
     subgraph Host OS [宿主机 Host OS]
-        DockerEngine <--> Bridge[Bridge Network (docker0) 172.17.0.0/16]
-        Bridge <--> C1[Container 1: Web (172.17.0.2)]
-        Bridge <--> C2[Container 2: DB (172.17.0.3)]
+        DockerEngine &lt;--&gt; Bridge[Bridge Network (docker0) 172.17.0.0/16]
+        Bridge &lt;--&gt; C1[Container 1: Web (172.17.0.2)]
+        Bridge &lt;--&gt; C2[Container 2: DB (172.17.0.3)]
         
-        HostNet[Host Network] <--> C3[Container 3: Perf App (Uses Host IP)]
+        HostNet[Host Network] &lt;--&gt; C3[Container 3: Perf App (Uses Host IP)]
     end
 </pre>
 </div>
@@ -631,5 +629,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

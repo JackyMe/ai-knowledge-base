@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>33. 空间大扫除 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -447,7 +446,7 @@ $ <span class="bash-cmd">docker system</span> prune -a
 
 <p>如果你用的是 Mac 或 Windows 的 Docker Desktop，你会发现即使你在终端里运行了 <code>prune</code> 清出了空间，你电脑的实际硬盘好像并没有变大？</p>
 <p><strong>原理：</strong> Docker Desktop 在你的系统里创建了一个虚拟磁盘文件（比如 <code>Docker.raw</code> 或虚拟机的 <code>vhdx</code>）。它像气球一样，胀大容易，缩小难。你在 Docker 里面删除了文件，只是把气球里的东西拿出来了，气球还是那么大。</p>
-<p><strong>怎么破？</strong> 打开 Docker Desktop 设置 -> 图标右上角的 🐛 Bug 图标 (Troubleshoot) -> <strong>Clean / Purge data</strong>。选择 Disk image。这相当于把气球戳破换个新的。注意，这会让你的所有本地镜像消失，需要重新 pull。</p>
+<p><strong>怎么破？</strong> 打开 Docker Desktop 设置 -&gt; 图标右上角的 🐛 Bug 图标 (Troubleshoot) -&gt; <strong>Clean / Purge data</strong>。选择 Disk image。这相当于把气球戳破换个新的。注意，这会让你的所有本地镜像消失，需要重新 pull。</p>
 
 <div class="trouble-box">
   <div class="trouble-title">🚑 踩坑自救室</div>
@@ -457,7 +456,7 @@ $ <span class="bash-cmd">docker system</span> prune -a
   </div>
   <div class="trouble-item">
     <div class="q">Q2: 怎么清理那些产生了几十个 G 日志的容器？</div>
-    <div class="a">不要手动去 <code>/var/lib/docker/containers</code> 删日志文件，这会导致 Docker 崩溃。你应该在 <code>docker-compose.yml</code> 里给服务加上日志轮转限制：<br/><code>logging: driver: "json-file", options: { "max-size": "10m", "max-file": "3" }</code></div>
+    <div class="a">不要手动去 <code>/var/lib/docker/containers</code> 删日志文件，这会导致 Docker 崩溃。你应该在 <code>docker-compose.yml</code> 里给服务加上日志轮转限制：<br><code>logging: driver: "json-file", options: { "max-size": "10m", "max-file": "3" }</code></div>
   </div>
 </div>
 
@@ -574,5 +573,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

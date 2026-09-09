@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="OpenAI Coding Agent Comprehensive Guide: 20+ subcommands and 40+ slash commands quick reference, 3x3 sandbox and approval matrix, 4 goal-oriented learning paths, selection prisms, long-task separation of concerns, closeout memory loop, browser E2E acceptance, Issue-to-PR workflow, Skills/MCP, and synergy with Claude Code.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Codex User Guide · CLI × IDE × Cloud Comprehensive Handbook">
-<meta property="og:description" content="OpenAI Coding Agent Overview: Selection prisms, 3x3 sandbox & approval matrix, long task 4-stage workflow, closeout memory loop, browser E2E testing, GitHub automation, and dual-agent synergy.">
+<meta property="og:description" content="OpenAI Coding Agent Overview: Selection prisms, 3x3 sandbox &amp; approval matrix, long task 4-stage workflow, closeout memory loop, browser E2E testing, GitHub automation, and dual-agent synergy.">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/codex-guide.en.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -173,6 +171,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -196,38 +195,38 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <nav class="sidebar" id="sidebar">
   <div class="side-filter"><input id="sideFilter" placeholder="Filter topics..."><span class="fk">/</span></div>
   <div class="nav-group">
-    <div class="gt">Overview & Selection</div>
+    <div class="gt">Overview &amp; Selection</div>
     <a href="#overview"><span class="no">00</span>Ecosystem Prisms</a>
     <a href="#learning-paths"><span class="no">01</span>4 Learning Paths</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Setup & Environment</div>
-    <a href="#setup"><span class="no">02</span>Install & Tuning</a>
+    <div class="gt">Setup &amp; Environment</div>
+    <a href="#setup"><span class="no">02</span>Install &amp; Tuning</a>
     <a href="#whats-new"><span class="no">NEW</span>Recent Updates</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Reference & Security</div>
+    <div class="gt">Reference &amp; Security</div>
     <a href="#commands"><span class="no">03</span>Command Cheat Sheet</a>
     <a href="#sandbox"><span class="no">04</span>3×3 Sandbox Matrix</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Mindset & Long Tasks</div>
-    <a href="#methodology"><span class="no">05</span>Core Methods & Traps</a>
+    <div class="gt">Mindset &amp; Long Tasks</div>
+    <a href="#methodology"><span class="no">05</span>Core Methods &amp; Traps</a>
     <a href="#long-tasks"><span class="no">06</span>4-Stage Separation</a>
     <a href="#memory-system"><span class="no">07</span>Memory Loop</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Extensions & Ops</div>
+    <div class="gt">Extensions &amp; Ops</div>
     <a href="#skills-mcp"><span class="no">08</span>Skill/MCP/Browser</a>
-    <a href="#config-auth"><span class="no">09</span>Configs & Auth</a>
+    <a href="#config-auth"><span class="no">09</span>Configs &amp; Auth</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Practices & Scenarios</div>
-    <a href="#best-practices"><span class="no">ADV</span>Best Practices</a>
-    <a href="#subscription-quotas"><span class="no">ADV</span>Quotas & Maximization</a>
-    <a href="#image-guide"><span class="no">ADV</span>Image 2.0/2.5 & Vision Playbook</a>
-    <a href="#playbook"><span class="no">10</span>Pipelines & Playbook</a>
-    <a href="#hidden-config"><span class="no">11</span>Under-the-Hood Flags</a>
+    <div class="gt">Practices &amp; Scenarios</div>
+    <a href="#best-practices">Task and acceptance template</a>
+    <a href="#subscription-quotas">Plans, APIs, and context</a>
+    <a href="#image-guide">Image work has its own guide</a>
+    <a href="#playbook"><span class="no">10</span>Pipelines &amp; Playbook</a>
+    <a href="#hidden-config">Verify local capabilities</a>
     <a href="#resources"><span class="no">12</span>Resource Index</a>
   </div>
 </nav>
@@ -254,42 +253,42 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <!-- ================= SECTION 00 ================= -->
 <section id="overview">
 <div class="sec-tag">Overview 00</div>
-<h2>Codex Overview & Selection Prisms</h2>
+<h2>Codex Overview &amp; Selection Prisms</h2>
 
 <p>Codex is OpenAI's agentic coding assistant: more than just an AI chatbot, it is an autonomous engineering partner with <strong>codebase comprehension, tool invocation, OS-level sandbox isolation, patch validation, and cross-platform execution</strong> capabilities.</p>
 
-<h3 data-reveal>1. Five Modalities, One Account</h3>
+<h3 data-reveal="">1. Five Modalities, One Account</h3>
 <table class="tbl">
-  <tr><th>Modality</th><th>Entrypoint</th><th>Best For</th><th>Key Privileges & Mechanics</th></tr>
+  <tbody><tr><th>Modality</th><th>Entrypoint</th><th>Best For</th><th>Key Privileges &amp; Mechanics</th></tr>
   <tr><td><strong>Interactive CLI (TUI)</strong></td><td>Run <code>codex</code> in terminal</td><td>Daily core coding, architecture discovery, quick refactoring</td><td>Full terminal UI, interactive shortcuts, real-time diff review</td></tr>
   <tr><td><strong>Non-interactive (exec)</strong></td><td><code>codex exec</code> / <code>codex e</code></td><td>CI/CD pipelines, shell scripts, batch processing</td><td>Streamed stdout or JSONL, supports <code>--json</code> machine parsing</td></tr>
   <tr><td><strong>IDE Extension</strong></td><td>VS Code / Cursor / JetBrains</td><td>Editing within active file context, inline refactoring</td><td>Reuses open files/selection context, shares CLI credentials</td></tr>
   <tr><td><strong>Codex Cloud</strong></td><td><code>codex cloud</code> / Web UI</td><td>Async long-running tasks, isolated builds, best-of-N trials</td><td>Isolated cloud sandbox, supports 1-4 parallel attempts, local <code>codex apply</code></td></tr>
-  <tr><td><strong>Desktop App / GitHub</strong></td><td><code>codex app</code>; PR comment <code>@codex review</code></td><td>Visual workspace, task orchestration, PR reviews</td><td>Integrated browser & connectors, automated inline PR review</td></tr>
-</table>
+  <tr><td><strong>Desktop App / GitHub</strong></td><td><code>codex app</code>; PR comment <code>@codex review</code></td><td>Visual workspace, task orchestration, PR reviews</td><td>Integrated browser &amp; connectors, automated inline PR review</td></tr>
+</tbody></table>
 
-<h3 data-reveal>2. Selection Prism ①: Chat vs ChatGPT Work vs Codex</h3>
+<h3 data-reveal="">2. Selection Prism ①: Chat vs ChatGPT Work vs Codex</h3>
 <table class="tbl">
-  <tr><th>Dimension</th><th>ChatGPT Chat</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
+  <tbody><tr><th>Dimension</th><th>ChatGPT Chat</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
   <tr><td><strong>Core Deliverable</strong></td><td>Text answers, code snippets, explanations</td><td>Word/Excel/Notion shared docs, team knowledge</td><td><strong>Real filesystem modifications, Git diffs, runnable code</strong></td></tr>
-  <tr><td><strong>Execution & Testing</strong></td><td>Basic cloud Python sandbox only</td><td>Office data linking, collaborative editing</td><td><strong>Local/container full shell, tests, build pipelines, E2E</strong></td></tr>
-  <tr><td><strong>Context Management</strong></td><td>Single thread history, degrades over length</td><td>Workspace document index</td><td><strong>Full repository index, AGENTS.md, session forking & memory</strong></td></tr>
+  <tr><td><strong>Execution &amp; Testing</strong></td><td>Basic cloud Python sandbox only</td><td>Office data linking, collaborative editing</td><td><strong>Local/container full shell, tests, build pipelines, E2E</strong></td></tr>
+  <tr><td><strong>Context Management</strong></td><td>Single thread history, degrades over length</td><td>Workspace document index</td><td><strong>Full repository index, AGENTS.md, session forking &amp; memory</strong></td></tr>
   <tr><td><strong>Best Stage</strong></td><td>Brainstorming, pseudocode, initial bug lookup</td><td>PRD drafting, design docs, meeting synthesis</td><td><strong>Implementation, bug remediation, test writing, PR workflow</strong></td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>3. Selection Prism ②: Combining App, CLI, IDE & Cloud</h3>
+<h3 data-reveal="">3. Selection Prism ②: Combining App, CLI, IDE &amp; Cloud</h3>
 <div class="duo">
   <div class="good">
     <b>✅ Recommended Pipeline (High Efficiency Practice)</b>
     <ul>
-      <li><strong>Planning & Discovery</strong>: Run <code>/plan</code> in Desktop App or CLI to assess impact;</li>
+      <li><strong>Planning &amp; Discovery</strong>: Run <code>/plan</code> in Desktop App or CLI to assess impact;</li>
       <li><strong>Core Implementation</strong>: Interactive coding in CLI or IDE with instant diff checks;</li>
       <li><strong>Heavy Refactoring / Mass Migration</strong>: Delegate to <code>codex cloud exec --attempts 3</code>;</li>
       <li><strong>Pre-Merge Gate</strong>: Trigger <code>@codex review</code> for automated double-checking.</li>
     </ul>
   </div>
   <div class="bad">
-    <b>❌ Common Anti-Patterns (Causes Fragility & Drift)</b>
+    <b>❌ Common Anti-Patterns (Causes Fragility &amp; Drift)</b>
     <ul>
       <li>Asking regular Web Chat for long code blocks and copy-pasting manually;</li>
       <li>Blocking your local CLI on a 30-minute massive migration task;</li>
@@ -309,7 +308,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="plays">
   <div class="play">
-    <div class="ph"><span class="pic">🌱</span><b>Track 01: Beginner Fundamentals (Safety & Reversibility)</b><span class="pt">TRACK 01</span></div>
+    <div class="ph"><span class="pic">🌱</span><b>Track 01: Beginner Fundamentals (Safety &amp; Reversibility)</b><span class="pt">TRACK 01</span></div>
     <div class="pb">
       <p><strong>Audience:</strong> First-time Codex users who haven't yet completed a reversible real-world task.</p>
       <ol class="steps">
@@ -322,11 +321,11 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">⚡</span><b>Track 02: Professional Developer (TDD & High Quality)</b><span class="pt">TRACK 02</span></div>
+    <div class="ph"><span class="pic">⚡</span><b>Track 02: Professional Developer (TDD &amp; High Quality)</b><span class="pt">TRACK 02</span></div>
     <div class="pb">
       <p><strong>Audience:</strong> Developers proficient with Git and backend/frontend languages seeking maximum velocity.</p>
       <ol class="steps">
-        <li><strong>Project Memory Init</strong>: Run <code>/init</code> to generate a lean <code>AGENTS.md</code> with build & test rules;</li>
+        <li><strong>Project Memory Init</strong>: Run <code>/init</code> to generate a lean <code>AGENTS.md</code> with build &amp; test rules;</li>
         <li><strong>TDD Red-to-Green Remediation</strong>: Require a failing regression test before writing fixes;</li>
         <li><strong>4-Stage Long Tasks</strong>: Execute Plan → Exec → Review → Closeout across isolated sessions;</li>
         <li><strong>GitHub Issue to PR</strong>: Connect cloud tasks and <code>@codex review</code> for automated PR lifecycles.</li>
@@ -335,7 +334,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">🛠️</span><b>Track 03: Capability Extension & Automation</b><span class="pt">TRACK 03</span></div>
+    <div class="ph"><span class="pic">🛠️</span><b>Track 03: Capability Extension &amp; Automation</b><span class="pt">TRACK 03</span></div>
     <div class="pb">
       <p><strong>Audience:</strong> Senior engineers and DevOps automating repetitive workflows.</p>
       <ol class="steps">
@@ -348,7 +347,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">📑</span><b>Track 04: Non-Programmer & Content Ops Workflows</b><span class="pt">TRACK 04</span></div>
+    <div class="ph"><span class="pic">📑</span><b>Track 04: Non-Programmer &amp; Content Ops Workflows</b><span class="pt">TRACK 04</span></div>
     <div class="pb">
       <p><strong>Audience:</strong> Document maintainers, product managers, and content creators.</p>
       <ol class="steps">
@@ -367,29 +366,29 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <!-- ================= SECTION 02 ================= -->
 <section id="setup">
 <div class="sec-tag">Setup 02</div>
-<h2>Setup & Platform Tuning</h2>
+<h2>Setup &amp; Platform Tuning</h2>
 
-<div class="callout warn"><b class="t">🚑 Login or Environment Errors?</b> For port 1455 callback blocks, proxy TLS issues, headless server auth, or multi-account clashes, visit the dedicated <a href="env-auth-clinic.en.html">Environment & Auth Clinic</a>.</div>
+<div class="callout warn"><b class="t">🚑 Login or Environment Errors?</b> For port 1455 callback blocks, proxy TLS issues, headless server auth, or multi-account clashes, visit the dedicated <a href="env-auth-clinic.en.html">Environment &amp; Auth Clinic</a>.</div>
 
-<h3 data-reveal>1. Cross-Platform Installation</h3>
-<pre><code><span class="c"># Method 1: Global npm install (Node >= 18 recommended)</span>
+<h3 data-reveal="">1. Cross-Platform Installation</h3>
+<pre><code><span class="c"># Method 1: Global npm install (Node &gt;= 18 recommended)</span>
 npm install -g @openai/codex
 
 <span class="c"># Method 2: Homebrew (macOS)</span>
 brew install codex
 
-<span class="c"># Launch & Self-update</span>
+<span class="c"># Launch &amp; Self-update</span>
 codex
 codex update</code></pre>
 
-<h3 data-reveal>2. Windows & WSL2 Performance & Compatibility Tuning</h3>
+<h3 data-reveal="">2. Windows &amp; WSL2 Performance &amp; Compatibility Tuning</h3>
 <table class="tbl">
-  <tr><th>Critical Issue</th><th>Pitfall / Symptom</th><th>Recommended Resolution</th></tr>
+  <tbody><tr><th>Critical Issue</th><th>Pitfall / Symptom</th><th>Recommended Resolution</th></tr>
   <tr><td><strong>Cross-Filesystem I/O Drag</strong></td><td>Running Codex in Windows mount paths (e.g. <code>/mnt/c/Users/...</code>) causes extreme slowdowns and build timeouts</td><td><strong>Always clone and run projects inside the native Linux filesystem (e.g. <code>~/projects/...</code>)</strong> for a 5~10x speedup!</td></tr>
-  <tr><td><strong>Encoding & Line Endings</strong></td><td>PowerShell UTF-8 corruption or Git CRLF conflicts</td><td>Use <strong>Windows Terminal</strong>, set <code>chcp 65001</code>, and configure Git with <code>core.autocrlf = input</code></td></tr>
-  <tr><td><strong>npm Global Permissions</strong></td><td><code>EACCES</code> errors during global npm installs on WSL</td><td>Set user prefix: <code>mkdir ~/.npm-global && npm config set prefix '~/.npm-global'</code> and export to <code>PATH</code></td></tr>
+  <tr><td><strong>Encoding &amp; Line Endings</strong></td><td>PowerShell UTF-8 corruption or Git CRLF conflicts</td><td>Use <strong>Windows Terminal</strong>, set <code>chcp 65001</code>, and configure Git with <code>core.autocrlf = input</code></td></tr>
+  <tr><td><strong>npm Global Permissions</strong></td><td><code>EACCES</code> errors during global npm installs on WSL</td><td>Set user prefix: <code>mkdir ~/.npm-global &amp;&amp; npm config set prefix '~/.npm-global'</code> and export to <code>PATH</code></td></tr>
   <tr><td><strong>Terminal Key Clashes</strong></td><td><kbd>Ctrl+W</kbd> closes tabs accidentally</td><td>Unbind <kbd>Ctrl+W</kbd> in Windows Terminal Codex profile to preserve standard shell shortcuts</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -397,20 +396,20 @@ codex update</code></pre>
 <!-- ================= SECTION WHATS-NEW ================= -->
 <section id="whats-new">
 <div class="sec-tag">Updates</div>
-<h2>Recent Updates & Breaking Changes</h2>
+<h2>Recent Updates &amp; Breaking Changes</h2>
 
 <div class="callout note"><b class="t">Page Verification Status</b>Last verified <strong>2026-08-31</strong> · Data source: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex Official Changelog</a>. This section only includes changes that <strong>affect your usage habits</strong>; for complete history see <a href="toolchain-changelog.en.html">Toolchain Version Tracker</a>.</div>
 
-<h3 data-reveal>🆕 0.153.4 New Features (2026-09)</h3>
+<h3 data-reveal="">🆕 0.153.4 New Features (2026-09)</h3>
 <ul>
   <li><strong>GPT-6 Astra Built-in</strong>: Codex is now fully integrated with the GPT-6 Astra model. You can set it as default directly via the Model Picker, unlocking next-gen complex reasoning capabilities.</li>
   <li><strong>Vim Mode Enhanced</strong>: 0.153.0 drastically improved Vim UX in TUI. Undo (<code>u</code>) and Redo (<code>Ctrl+R</code>) now correctly preserve complete draft states (including pasted text and attachments).</li>
   <li><strong>Remote Plugin Marketplace CLI</strong>: Subcommands <code>codex plugin list/install/remove</code> let you manage plugins directly from the official remote marketplace.</li>
-  <li><strong>Agents Dashboard & Import</strong>: 0.149.0 added the <strong>Agents Dashboard</strong> and the <code>/import</code> command to pull configs from Claude Code or Cursor.</li>
-  <li><strong>Markdown Export & Headless Forking</strong>: 0.148.0 added <code>/export</code> and <code>codex exec fork</code> capabilities.</li>
+  <li><strong>Agents Dashboard &amp; Import</strong>: 0.149.0 added the <strong>Agents Dashboard</strong> and the <code>/import</code> command to pull configs from Claude Code or Cursor.</li>
+  <li><strong>Markdown Export &amp; Headless Forking</strong>: 0.148.0 added <code>/export</code> and <code>codex exec fork</code> capabilities.</li>
 </ul>
 
-<h3 data-reveal>🚨 Key Breaking Changes</h3>
+<h3 data-reveal="">🚨 Key Breaking Changes</h3>
 <ul>
   <li><strong>GPT-5.4 Retirement Complete</strong>: OpenAI has officially retired <strong>GPT-5.4</strong> and <strong>mini</strong> as of <strong>2026-08-31</strong>. If you encounter errors, immediately migrate <code>config.toml</code> to <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>, or <code>gpt-5.6-luna</code>.</li>
   <li><strong><code>codex exec --full-auto</code> Removed</strong>: Replaced in 0.147.0 with <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code>. For unattended auto-approval, use <code>--approve-for-me</code>.</li>
@@ -426,9 +425,9 @@ codex update</code></pre>
 <div class="sec-tag">Quickref 03</div>
 <h2>Command Cheat Sheet</h2>
 
-<h3 data-reveal>⚡ Core High-Frequency Commands</h3>
+<h3 data-reveal="">⚡ Core High-Frequency Commands</h3>
 <div class="hotcmds">
-  <div class="hotcmd must"><span class="hc-cmd">codex ["task description"]</span><span class="hc-desc">Launch interactive TUI with optional prompt & -i image</span></div>
+  <div class="hotcmd must"><span class="hc-cmd">codex ["task description"]</span><span class="hc-desc">Launch interactive TUI with optional prompt &amp; -i image</span></div>
   <div class="hotcmd must"><span class="hc-cmd">codex exec (e)</span><span class="hc-desc">Non-interactive execution, ideal for CI/CD and automation</span></div>
   <div class="hotcmd must"><span class="hc-cmd">/diff</span><span class="hc-desc">Inspect git diffs including untracked files</span></div>
   <div class="hotcmd"><span class="hc-cmd">/plan</span><span class="hc-desc">Enter planning mode to produce an action plan before editing</span></div>
@@ -438,9 +437,9 @@ codex update</code></pre>
   <div class="hotcmd"><span class="hc-cmd">/side (/btw)</span><span class="hc-desc">Launch temporary side thread without polluting main context</span></div>
 </div>
 
-<h3 data-reveal>1. Terminal Subcommands</h3>
+<h3 data-reveal="">1. Terminal Subcommands</h3>
 <table class="tbl">
-  <tr><th>Command</th><th>Example</th><th>Function</th></tr>
+  <tbody><tr><th>Command</th><th>Example</th><th>Function</th></tr>
   <tr><td><code>codex</code></td><td><code>codex "refactor auth"</code></td><td>Interactive TUI workspace with optional prompt and images</td></tr>
   <tr><td><code>codex exec</code> (<code>e</code>)</td><td><code>codex exec "run tests"</code></td><td>Non-interactive execution streaming to stdout/JSONL with <code>--json</code></td></tr>
   <tr><td><code>codex resume</code></td><td><code>codex resume &lt;ID&gt;</code></td><td>Resume session; <code>--last</code> picks the most recent</td></tr>
@@ -451,25 +450,25 @@ codex update</code></pre>
   <tr><td><code>codex mcp-server</code></td><td><code>codex mcp-server</code></td><td>Expose Codex as an MCP server via stdio for other agents</td></tr>
   <tr><td><code>codex sandbox</code></td><td><code>codex sandbox -- &lt;cmd&gt;</code></td><td>Run commands manually in Codex OS sandbox to test permissions</td></tr>
   <tr><td><code>codex features</code></td><td><code>codex features list / enable</code></td><td>Inspect and toggle internal Rust feature flags</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>2. Slash Commands by Category</h3>
+<h3 data-reveal="">2. Slash Commands by Category</h3>
 <table class="tbl">
-  <tr><th>Category</th><th>Command</th><th>Usage</th></tr>
-  <tr><td rowspan="4"><strong>Session & Context</strong></td><td><code>/new</code> · <code>/clear</code></td><td>Open new session / Clear screen and reset context (<kbd>Ctrl+L</kbd> only clears visual screen)</td></tr>
+  <tbody><tr><th>Category</th><th>Command</th><th>Usage</th></tr>
+  <tr><td rowspan="4"><strong>Session &amp; Context</strong></td><td><code>/new</code> · <code>/clear</code></td><td>Open new session / Clear screen and reset context (<kbd>Ctrl+L</kbd> only clears visual screen)</td></tr>
   <tr><td><code>/compact</code></td><td>Compress session context to free tokens</td></tr>
   <tr><td><code>/side</code> (<code>/btw</code>)</td><td>Open disposable side discussion; leaves main thread clean</td></tr>
   <tr><td><code>/archive</code> · <code>/delete</code></td><td>Archive session / Permanently delete session record</td></tr>
-  <tr><td rowspan="3"><strong>Planning & Steering</strong></td><td><code>/plan [prompt]</code></td><td>Plan mode: explore codebase and generate file modification plan</td></tr>
+  <tr><td rowspan="3"><strong>Planning &amp; Steering</strong></td><td><code>/plan [prompt]</code></td><td>Plan mode: explore codebase and generate file modification plan</td></tr>
   <tr><td><code>/goal [goal]</code></td><td>Set and persist session goals for continuous self-checking</td></tr>
-  <tr><td><code>/model</code> · <code>/fast</code></td><td>Switch active model & reasoning effort / Toggle fast tier</td></tr>
-  <tr><td rowspan="3"><strong>Workflow & Review</strong></td><td><code>/diff</code></td><td>Inspect all unstaged/staged workspace changes</td></tr>
-  <tr><td><code>/review</code></td><td>Trigger comprehensive robustness, edge-case & security review</td></tr>
+  <tr><td><code>/model</code> · <code>/fast</code></td><td>Switch active model &amp; reasoning effort / Toggle fast tier</td></tr>
+  <tr><td rowspan="3"><strong>Workflow &amp; Review</strong></td><td><code>/diff</code></td><td>Inspect all unstaged/staged workspace changes</td></tr>
+  <tr><td><code>/review</code></td><td>Trigger comprehensive robustness, edge-case &amp; security review</td></tr>
   <tr><td><code>/mention &lt;file&gt;</code></td><td>Pin specific files into context to avoid unnecessary search wandering</td></tr>
-  <tr><td rowspan="3"><strong>Extensions & Tools</strong></td><td><code>/init</code></td><td>Scaffold clean <code>AGENTS.md</code> file for the repo</td></tr>
+  <tr><td rowspan="3"><strong>Extensions &amp; Tools</strong></td><td><code>/init</code></td><td>Scaffold clean <code>AGENTS.md</code> file for the repo</td></tr>
   <tr><td><code>/skills</code> · <code>/plugins</code> · <code>/mcp</code></td><td>Inspect and manage active skills, plugins, and MCP servers</td></tr>
   <tr><td><code>/import</code></td><td><strong>Import settings, project files, and history from Claude Code</strong></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -477,11 +476,11 @@ codex update</code></pre>
 <!-- ================= SECTION 04 ================= -->
 <section id="sandbox">
 <div class="sec-tag">Security 04</div>
-<h2>3×3 Sandbox & Approval Matrix</h2>
+<h2>3×3 Sandbox &amp; Approval Matrix</h2>
 <p>Codex's security model uses <strong>two orthogonal dials</strong>: <strong>Sandbox (what can be touched)</strong> and <strong>Approval (when to ask you)</strong>.</p>
 
 <table class="tbl">
-  <tr><th>Sandbox ＼ Approval</th><th><code>untrusted</code><br><span class="src">Ask before every command</span></th><th><code>on-request</code> <span class="pill a">Recommended</span><br><span class="src">Ask only when escalating</span></th><th><code>never</code><br><span class="src">Fail immediately on escalation</span></th></tr>
+  <tbody><tr><th>Sandbox ＼ Approval</th><th><code>untrusted</code><br><span class="src">Ask before every command</span></th><th><code>on-request</code> <span class="pill a">Recommended</span><br><span class="src">Ask only when escalating</span></th><th><code>never</code><br><span class="src">Fail immediately on escalation</span></th></tr>
   <tr>
     <td><code>read-only</code><br><span class="src">Read only, no write/net</span></td>
     <td><strong>Paranoid Audit</strong>: Prompts on file reads. Best for inspecting suspicious external codebases.<br><span class="src">Pitfall: Annoying approval fatigue</span></td>
@@ -491,7 +490,7 @@ codex update</code></pre>
   <tr>
     <td><code>workspace-write</code><br><span class="pill a">Recommended</span><br><span class="src">Write workspace, net restricted</span></td>
     <td><strong>Guarded Development</strong>: Allowed to edit workspace, but confirms every execution. Great for production refactoring.</td>
-    <td><strong>Daily Driver ✅</strong>: Standard official setting. Full workspace edits & testing; prompts only for network/out-of-bounds access.</td>
+    <td><strong>Daily Driver ✅</strong>: Standard official setting. Full workspace edits &amp; testing; prompts only for network/out-of-bounds access.</td>
     <td><strong>CI Unattended Write</strong>: Automated linters, test runs, and patch creation in CI; fails fast if unauthorized.</td>
   </tr>
   <tr>
@@ -500,7 +499,7 @@ codex update</code></pre>
     <td><strong>Container Development</strong>: Full system access inside isolated Docker containers with confirmation on high-risk actions.</td>
     <td><strong>= <code>--yolo</code> ⚠️</strong>: Zero sandboxing and zero prompts. Only for throwaway containers without credentials!</td>
   </tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -508,9 +507,9 @@ codex update</code></pre>
 <!-- ================= SECTION 05 ================= -->
 <section id="methodology">
 <div class="sec-tag">Methodology 05</div>
-<h2>Core Methodology & 8 Anti-Patterns</h2>
+<h2>Core Methodology &amp; 8 Anti-Patterns</h2>
 
-<h3 data-reveal>1. The 4-Anchor Formula (Goal-Context-Constraints-Done)</h3>
+<h3 data-reveal="">1. The 4-Anchor Formula (Goal-Context-Constraints-Done)</h3>
 <ul>
   <li><strong>Goal</strong>: Express exactly what needs to be delivered in one concise sentence;</li>
   <li><strong>Context</strong>: Pinpoint key files and relevant documentation using <code>/mention</code>;</li>
@@ -518,9 +517,9 @@ codex update</code></pre>
   <li><strong>Done-when</strong>: Define objective verification criteria (e.g. specific test suite passing).</li>
 </ul>
 
-<h3 data-reveal>2. Top 8 Newcomer Anti-Patterns</h3>
+<h3 data-reveal="">2. Top 8 Newcomer Anti-Patterns</h3>
 <table class="tbl">
-  <tr><th>#</th><th>Anti-Pattern</th><th>Consequence</th><th>Defense SOP</th></tr>
+  <tbody><tr><th>#</th><th>Anti-Pattern</th><th>Consequence</th><th>Defense SOP</th></tr>
   <tr><td>01</td><td>Jumping straight into editing without a plan</td><td>Broad unrelated changes that break architecture</td><td>Enforce <code>/plan</code> before any multi-file change</td></tr>
   <tr><td>02</td><td>Working on a dirty git working tree</td><td>Agent edits blend with uncommitted work; rollback is impossible</td><td>Always <code>git stash</code> or create a clean <code>feat/xxx</code> branch</td></tr>
   <tr><td>03</td><td>Assuming <kbd>Ctrl+L</kbd> starts a fresh conversation</td><td>Residual context causes subtle hallucinations</td><td>Always reset context via <code>/new</code> or <code>/clear</code></td></tr>
@@ -529,7 +528,7 @@ codex update</code></pre>
   <tr><td>06</td><td>Trusting verbal "Done" without viewing diffs</td><td>Silent bugs and unwanted regressions slip through</td><td>Always run <code>/diff</code> to review line by line</td></tr>
   <tr><td>07</td><td>Fixing bugs by guessing instead of testing</td><td>Agent wraps errors in try/catch to suppress symptoms</td><td><strong>Enforce TDD</strong>: Write failing test first, then fix to green</td></tr>
   <tr><td>08</td><td>Using <code>--yolo</code> on your personal machine</td><td>Risk of credential leakage or accidental system file deletions</td><td>Reserve <code>--yolo</code> strictly for isolated disposable containers</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -537,15 +536,15 @@ codex update</code></pre>
 <!-- ================= SECTION 06 ================= -->
 <section id="long-tasks">
 <div class="sec-tag">Collaboration 06</div>
-<h2>Long Tasks & 4-Stage Separation</h2>
+<h2>Long Tasks &amp; 4-Stage Separation</h2>
 
 <p>When dealing with complex tasks lasting over 30 minutes, rolling everything in one session leads to severe context pollution. Use <strong>Separation of Concerns</strong>:</p>
 
 <ol class="steps">
-  <li><strong>Discuss & Plan</strong>: In <code>read-only</code> mode, run <code>/plan</code> to produce a precise file list, design decisions, and risk assessments. Zero code modifications.</li>
+  <li><strong>Discuss &amp; Plan</strong>: In <code>read-only</code> mode, run <code>/plan</code> to produce a precise file list, design decisions, and risk assessments. Zero code modifications.</li>
   <li><strong>Isolated Execution</strong>: In a fresh session with <code>workspace-write</code>, feed the approved plan and execute changes with incremental tests.</li>
   <li><strong>Independent Review</strong>: In a fresh thread or via <code>/review</code>, audit the diffs from an outside perspective for security and edge cases.</li>
-  <li><strong>Closeout & Handover</strong>: Extract test evidence, update <code>DECISIONS.md</code> and <code>AGENTS.md</code>, and draft structured PR descriptions.</li>
+  <li><strong>Closeout &amp; Handover</strong>: Extract test evidence, update <code>DECISIONS.md</code> and <code>AGENTS.md</code>, and draft structured PR descriptions.</li>
 </ol>
 </section>
 
@@ -554,28 +553,28 @@ codex update</code></pre>
 <!-- ================= SECTION 07 ================= -->
 <section id="memory-system">
 <div class="sec-tag">Memory 07</div>
-<h2>Task Closeout & Memory Loop</h2>
+<h2>Task Closeout &amp; Memory Loop</h2>
 
-<h3 data-reveal>1. The 3-Step Closeout Protocol</h3>
+<h3 data-reveal="">1. The 3-Step Closeout Protocol</h3>
 <ol class="steps">
   <li><strong>Gather Hard Evidence</strong>: Export test suite logs and capture E2E browser screenshots of UI changes.</li>
   <li><strong>Record Decisions in <code>DECISIONS.md</code></strong>: Document rationale behind architecture choices and known constraints.</li>
   <li><strong>Incrementally Update <code>AGENTS.md</code></strong>: Add newly discovered run commands or build requirements so future sessions don't need re-prompting.</li>
 </ol>
 
-<h3 data-reveal>2. Standard Lean AGENTS.md Template</h3>
-<pre><code><span class="c"># AGENTS.md · Interoperable standard across Codex, Cursor & Claude Code</span>
-## Build & Test
+<h3 data-reveal="">2. Standard Lean AGENTS.md Template</h3>
+<pre><code><span class="c"># AGENTS.md · Interoperable standard across Codex, Cursor &amp; Claude Code</span>
+## Build &amp; Test
 - Dependencies: pnpm install --frozen-lockfile
 - Build: pnpm build   Test: pnpm test -- --run
-- Pre-commit Gate: pnpm typecheck && pnpm lint
+- Pre-commit Gate: pnpm typecheck &amp;&amp; pnpm lint
 
 ## Core Architecture Conventions
 - Routes declared in src/router/index.ts using dynamic imports;
 - State managed strictly via Zustand; never mutate store directly in UI;
 - Database changes must append new files in migrations/; never edit past files.
 
-## Environment & External Dependencies
+## Environment &amp; External Dependencies
 - Start local services: docker compose up -d redis postgres</code></pre>
 </section>
 
@@ -584,9 +583,9 @@ codex update</code></pre>
 <!-- ================= SECTION 08 ================= -->
 <section id="skills-mcp">
 <div class="sec-tag">Extensions 08</div>
-<h2>Skills, MCP & Browser Engineering</h2>
+<h2>Skills, MCP &amp; Browser Engineering</h2>
 
-<h3 data-reveal>1. Authoring Custom Codex Skills</h3>
+<h3 data-reveal="">1. Authoring Custom Codex Skills</h3>
 <pre><code>my-custom-skill/
 ├── SKILL.md            <span class="c"># Required: YAML frontmatter (name, description) and instructions</span>
 ├── scripts/            <span class="c"># Optional: Executable Python/Node/Shell scripts</span>
@@ -594,15 +593,15 @@ codex update</code></pre>
 └── assets/             <span class="c"># Optional: Template files and visual references</span></code></pre>
 <div class="callout tip"><b class="t">Skill Routing Tip</b> The <code>description</code> field routes skill invocation. Clearly detail the exact scenarios and keywords that should trigger this skill so Codex only loads <code>SKILL.md</code> when relevant.</div>
 
-<h3 data-reveal>2. Browser Control & E2E Visual Verification</h3>
+<h3 data-reveal="">2. Browser Control &amp; E2E Visual Verification</h3>
 <table class="tbl">
-  <tr><th>Browser Modality</th><th>Mechanism</th><th>Session / Cookie Handling</th><th>Best Used For</th></tr>
+  <tbody><tr><th>Browser Modality</th><th>Mechanism</th><th>Session / Cookie Handling</th><th>Best Used For</th></tr>
   <tr><td><strong>In-App Browser</strong></td><td>Built-in headless browser</td><td>Isolated clean session</td><td>Public page layout checks, SSR rendering, broken link scans</td></tr>
   <tr><td><strong>External Browser (CDP)</strong></td><td>Chrome DevTools Protocol bridge</td><td><strong>Reuses local authenticated session</strong></td><td>Authenticated dashboards, form submissions, real user flows</td></tr>
-  <tr><td><strong>Computer Use</strong></td><td>OS-level screenshots & input events</td><td>Inherits desktop state</td><td>Cross-desktop app interaction, non-web GUI testing</td></tr>
-</table>
+  <tr><td><strong>Computer Use</strong></td><td>OS-level screenshots &amp; input events</td><td>Inherits desktop state</td><td>Cross-desktop app interaction, non-web GUI testing</td></tr>
+</tbody></table>
 
-<h3 data-reveal>3. Two-Way MCP Protocol</h3>
+<h3 data-reveal="">3. Two-Way MCP Protocol</h3>
 <ul>
   <li><strong>Codex consuming MCP tools</strong>: Connect PostgreSQL, Sentry, Figma, or Pencil via <code>codex mcp add</code>;</li>
   <li><strong>Codex serving other agents</strong>: Launch <code>codex mcp-server</code> so Claude Code or other orchestrators can delegate coding tasks to Codex.</li>
@@ -614,15 +613,15 @@ codex update</code></pre>
 <!-- ================= SECTION 09 ================= -->
 <section id="config-auth">
 <div class="sec-tag">Config 09</div>
-<h2>Configuration & Accounts</h2>
+<h2>Configuration &amp; Accounts</h2>
 
 <table class="tbl">
-  <tr><th>File / Path</th><th>Purpose</th><th>Security Recommendation</th></tr>
+  <tbody><tr><th>File / Path</th><th>Purpose</th><th>Security Recommendation</th></tr>
   <tr><td><code>~/.codex/config.toml</code></td><td>Global user config (default model, sandbox mode, approval policy, MCPs)</td><td>✅ Back up in personal dotfiles</td></tr>
   <tr><td><code>.codex/config.toml</code></td><td>Project-level config (overrides global, sensitive provider keys restricted)</td><td>✅ Commit to repo for team sharing</td></tr>
   <tr><td><code>~/.codex/auth.json</code></td><td><strong>User credential tokens (Plaintext)</strong></td><td>❌ <strong>Never commit or post in tickets</strong></td></tr>
-  <tr><td><code>~/.codex/sessions/</code></td><td>Local conversation history for <code>resume</code> & <code>fork</code></td><td>Local cache; does not roam across machines</td></tr>
-</table>
+  <tr><td><code>~/.codex/sessions/</code></td><td>Local conversation history for <code>resume</code> &amp; <code>fork</code></td><td>Local cache; does not roam across machines</td></tr>
+</tbody></table>
 
 <p><strong>Config Hierarchy (High to Low):</strong> Enterprise Requirements ➔ CLI <code>-c key=value</code> ➔ <code>--profile</code> ➔ Project <code>.codex/config.toml</code> ➔ Global <code>~/.codex/config.toml</code> ➔ Built-in defaults.</p>
 </section>
@@ -632,356 +631,23 @@ codex update</code></pre>
 <!-- ================= SECTION 10 ================= -->
 
 <!-- ================= SECTION BEST PRACTICES ================= -->
-<section id="best-practices">
-<div class="sec-tag">Advanced 09</div>
-<h2>Best Practices & Optimal Examples Library</h2>
-<p>To ensure you push Codex to its absolute limits, we've compiled the industry's universally recognized best techniques, standard command combinations, and the most bulletproof Prompt templates, making it easy for anyone to learn and replicate.</p>
-
-<h3 data-reveal>1. The Ultimate Prompt Template: Zero-Hallucination TDD</h3>
-<p>This is the task assignment template with the highest success rate in real-world enterprise projects. By enforcing strict constraints and acceptance criteria, it prevents the model from "freestyling":</p>
-<pre><code>&gt; [Goal] Add Refresh Token sliding window renewal logic to src/auth/jwt.ts.
-  [Context] Read docs/auth-flow.md and the current jwt.ts code.
-  [Constraints]
-  1. Only modify jwt.ts and corresponding test files. Do NOT touch the routes module.
-  2. Keep the existing HMAC-SHA256 signature algorithm. Do not introduce new npm libraries.
-  3. Beware of concurrent locks; prevent the same Token from being refreshed twice.
-  [Acceptance]
-  First, write 3 test cases in tests/auth/jwt.test.ts (including a concurrency test).
-  Run the tests until they all pass green. Finally, show me the /diff.</code></pre>
-
-<h3 data-reveal>2. Four Power-User Scenarios & "Killer" Command Combos</h3>
-<table class="tbl">
-  <tr><th>Scenario</th><th>Optimal Command / Action</th><th>Why is it optimal?</th></tr>
-  <tr>
-    <td><strong>1. "Safe Snapshot" Before Major Refactoring</strong></td>
-    <td><code>git add . && git commit -m "WIP" && codex exec fork</code></td>
-    <td>Leverages the 0.148.0 headless fork capability. Keeps the main session as a safe anchor, branching out to attempt dangerous refactoring. If it fails, trash the branch without polluting the main timeline.</td>
-  </tr>
-  <tr>
-    <td><strong>2. Unattended CI/CD Automation</strong></td>
-    <td><code>codex exec --sandbox workspace-write --approve-for-me "Fix lint errors based on .github/ISSUE_TEMPLATE"</code></td>
-    <td>Strips interactivity completely. <code>--approve-for-me</code> allows Codex to auto-approve safe commands within the designated sandbox, without human intervention.</td>
-  </tr>
-  <tr>
-    <td><strong>3. Handling Massive Logs & Errors</strong></td>
-    <td><code>npm run build > build-error.log</code> <br> Then in Codex: <code>Read build-error.log and fix the errors</code></td>
-    <td><strong>Never paste a 10,000-line error dump into the chat!</strong> It instantly exhausts context tokens and causes hallucination. Piping to a file and instructing Codex to read it is highly precise and consumes minimal context.</td>
-  </tr>
-  <tr>
-    <td><strong>4. Knowledge Preservation & Sharing</strong></td>
-    <td>Upon task completion, type: <code>/export</code></td>
-    <td>Instantly dumps a brilliant debugging session or architecture decision process into a clean Markdown file. Drop it directly into Notion/Confluence as team wiki, complete with coherent code blocks.</td>
-  </tr>
-</table>
-
-<h3 data-reveal>3. Codebase "Cold Start" Optimal Onboarding</h3>
-<p>When inheriting legacy code or a massive new repository, use this exact combo to help Codex build a fast mental index of the project:</p>
-<ol class="steps">
-  <li><strong>Global Scan & Cartography</strong>: Run <code>Analyze the entire src/ directory, summarize its architectural patterns, and write a high-level ARCHITECTURE.md</code>.</li>
-  <li><strong>Establish Defensive Guardrails</strong>: Follow up with <code>Based on your analysis, generate a strict AGENTS.md (containing forbidden actions and specific coding standards for this project) for future AI sessions to obey</code>.</li>
-  <li><strong>One-Click Noise Cleanup</strong>: Run <code>/compact</code>. This compresses the lengthy reading process into a summary memory, freeing up maximum Token space for actual feature development.</li>
-</ol>
-</section>
+<section id="best-practices"><h2>Task and acceptance template</h2><p>Specify goals, scope, constraints, and completion checks. Tests should address real risks; a prompt cannot guarantee zero hallucinations or make TDD appropriate for every text edit.</p><pre><code>Goal:
+Relevant files:
+Allowed scope:
+Behavior to preserve:
+Acceptance checks:
+Report changes, results, and unverified items.</code></pre></section>
 
 <div class="divider"></div>
-<section id="subscription-quotas">
-<div class="sec-tag">Advanced Practice</div>
-<h2>OpenAI Subscription Value Maximization & Cross-Surface Synergy Guide</h2>
-
-<p>Many developers and professionals pay $20 (Plus) or even $200 (Pro) monthly, yet only use ChatGPT as a simple web chatbot or an autocomplete tool, frequently hitting the frustrating "You've reached your limit, please try again in 5 hours" wall. In reality, OpenAI has evolved into a multi-device, multi-modal productivity matrix. This guide synthesizes battle-tested workflows from dozens of senior engineers to help you unlock every asset and establish an end-to-end, high-leverage development pipeline.</p>
-
-<h3 data-reveal>🧭 1. Subscription Asset Inventory & Metering Logic</h3>
-<p>To truly extract full value from your membership, you must first understand your portfolio of compute assets and how the backend meters usage:</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>Feature Module</th>
-        <th>Core Use Case & Asset Type</th>
-        <th>Quota Metering Characteristics</th>
-        <th>Optimal Strategy</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Codex Terminal / IDE Agent</strong></td>
-        <td>Local code edits, multi-file batch refactoring, CLI & Git automation</td>
-        <td><strong>High Consumption</strong>. Each interaction mounts workspace state and repo context; massive files rapidly drain the 5-hour rolling limit.</td>
-        <td>Invoke strictly for executing concrete file writes; avoid conversational architecture debates here.</td>
-      </tr>
-      <tr>
-        <td><strong>Web Deep Research</strong></td>
-        <td>Autonomous multi-step web crawling, documentation synthesis, tech evaluations</td>
-        <td><strong>Independent Monthly Pool</strong> (~20-25 runs for Plus, 250+ for Pro); does not drain the 5-hour chat interaction limits.</td>
-        <td>Deploy for mastering novel tech stacks or synthesizing industry specs into structured blueprints.</td>
-      </tr>
-      <tr>
-        <td><strong>Canvas Workspace</strong></td>
-        <td>Targeted document polishing, modular code refactors, inline execution & tests</td>
-        <td><strong>Extremely Efficient</strong>. Allows highlighting specific functions for selective surgical edits without re-streaming unmodified lines.</td>
-        <td>Use for tweaking complex algorithms and components, eliminating context bloat caused by full-file rewrites.</td>
-      </tr>
-      <tr>
-        <td><strong>Advanced Voice Mode</strong></td>
-        <td>Verbal architecture debates, feature brainstorming, post-mortem reviews</td>
-        <td>Dedicated monthly audio minutes; ultra-low latency; supports natural interruptions.</td>
-        <td>Brainstorm architecture before touching code; configure custom instructions to suppress conversational fluff.</td>
-      </tr>
-      <tr>
-        <td><strong>Multimodal Vision / Image Gen</strong></td>
-        <td>UI mockup generation, architecture diagram analysis, design token extraction</td>
-        <td>Image generation (Image 2.5 / DALL-E) has independent rate caps; visual OCR/parsing counts as standard tokens.</td>
-        <td>Render UI concepts on the web first, then use vision models to extract Tailwind/CSS tokens before coding.</td>
-      </tr>
-      <tr>
-        <td><strong>Projects & Memory</strong></td>
-        <td>Persistent team coding rules, API dictionaries, specialized domain terminology</td>
-        <td>Leverages <strong>Native Prompt Caching</strong>; immutable reference docs enjoy massive token read discounts.</td>
-        <td>Configure core guidelines inside Project Knowledge once, rather than pasting them in every new session.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="callout note"><b class="t">Core Principle: The Nature of the 5-Hour Rolling Window</b>
-OpenAI's limits are not based on simple message counts, but on a dynamic pool determined by <strong>"Request Complexity × Context Length × Reasoning Depth"</strong>. Asking a single question in a terminal session with 20 mounted files can consume the compute equivalent of 50 basic chat prompts. Understanding this dynamic is the prerequisite for optimal resource management.</div>
-
-<h3 data-reveal>🚀 2. The 4-Stage Synergy Paradigm: From Idea to Production</h3>
-<p>The core philosophy of top developers is <strong>"Separation of Concerns"</strong>: offload cheap, broad exploration to the Web and Voice surfaces, and reserve deterministic code execution for local terminals:</p>
-
-<h4>Stage 1: Ideation & Architectural Discovery (Voice + Deep Research)</h4>
-<p>When introducing a novel framework or kicking off a new system module, never start by hacking code in the terminal:</p>
-<ul>
-  <li><strong>Voice Brainstorming</strong>: Put on your headphones and spend 5 minutes exploring ideas with Advanced Voice: "I want to implement an adaptive Stripe checkout in Next.js. Walk me through the edge cases and database schema." Clear out logical dead ends verbally.</li>
-  <li><strong>Targeted Deep Research</strong>: For unfamiliar APIs, launch an autonomous research task on the web with structured constraints:</li>
-</ul>
-<div class="callout tip"><b class="t">Structured Research Prompt Paradigm</b>
-<code>Initiate Deep Research to crawl the latest official documentation and verified community practices for [Target Tech]. Deliver an implementation guide containing: 1. Core architecture & data flow; 2. Breaking changes list; 3. Exact data models adhering to JSON Schema. Output only structured insights without pleasantries.</code></div>
-
-<h4>Stage 2: Visuals & UI Stabilization (Image / Vision to Code)</h4>
-<p>Frontend iterations burn massive quotas when done blindly in code. Decouple visual validation from implementation:</p>
-<ol>
-  <li>Use image generation on the web to render 2–3 high-fidelity UI concepts and pick the best one.</li>
-  <li>Use Vision analysis to reverse-engineer the selected mockup: <code>"Extract the color palette (hex codes), spacing grid, typography hierarchy, and Flex/Grid layout. Output as clean Tailwind CSS configuration."</code></li>
-  <li>Hand this exact text specification to the coding phase. Code generation accuracy will approach 100% on the first try.</li>
-</ol>
-
-<h4>Stage 3: Surgical Refinement & Sandbox Testing (Canvas)</h4>
-<p>When developing core algorithmic logic or complex UI components, switch to ChatGPT <strong>Canvas</strong>:</p>
-<ul>
-  <li><strong>Targeted Selective Edits</strong>: Highlight the 10 critical lines inside a function: "Add a retry mechanism and structured logging here." Canvas rewrites only those 10 lines rather than regenerating the entire 500-line file, <strong>saving 80%+ of token output time and context accumulation</strong>.</li>
-  <li><strong>Built-in Tooling</strong>: Use the "Add Logs" or "Code Review" quick actions for immediate, focused audits.</li>
-</ul>
-
-<h4>Stage 4: Deterministic Production Delivery (Codex Terminal)</h4>
-<p>Finally, transition to your local terminal with Codex:</p>
-<ul>
-  <li>You now possess an approved architectural blueprint, verified Tailwind tokens, and a tested Canvas logic core.</li>
-  <li>Instruct Codex in the terminal: <code>"Following the attached specification, generate the implementation in src/modules/ and execute local test suites."</code></li>
-  <li>Because the input is crisp and deterministic, Codex will pass tests and commit changes on the first pass with minimal terminal quota consumption.</li>
-</ul>
-
-<h3 data-reveal>🛡️ 3. Quota Preservation & Context Hygiene Rules</h3>
-<p>Adopt these community-proven operational habits to multiply your effective quota:</p>
-
-<h4>1. "Edit the Prompt" Instead of "Following Up"</h4>
-<p>The most overlooked power habit: when an answer is slightly off-target, <strong>do not send a new message to correct it</strong>. Appending follow-ups forces the system to re-send the entire conversation history including all errors. Instead, click the "Edit" button on your previous prompt and adjust your constraints. The conversation branches cleanly without compounding historical context bloat.</p>
-
-<h4>2. Standardize Global Custom Instructions</h4>
-<p>Stop repeating "I use TypeScript and Next.js, omit fluff" in every session. Embed persistent stack instructions in your ChatGPT settings or maintain a project-level <code>SKILL.md</code>.</p>
-<div class="callout note"><b class="t">High-Performance Custom Instruction Blueprint</b>
-<code>- Persona: Senior Full-Stack Architect.
-- Output Style: Rigorous, minimalistic, production-ready. Eliminate pleasantries and follow-up offers.
-- Code Standards: Output only modified code blocks (use // ... existing code ... for unchanged logic); include TypeScript interfaces by default.
-- Voice Constraint: Provide concise, high-density answers without trailing questions.</code></div>
-
-<h4>3. Dynamic Model Tiering: Save Heavy Models for Heavy Problems</h4>
-<ul>
-  <li><strong>Flagship / Reasoning Models (o3 / Astra / Thinking)</strong>: Reserve exclusively for race conditions, mathematical algorithms, and large-scale architectural refactors. These are expensive and subject to strict daily caps.</li>
-  <li><strong>Fast / Mini Models</strong>: Deploy for routine regex generation, JSON/YAML reformatting, Git commit drafting, and minor syntax fixes. They are instantaneous and carry virtually unlimited quotas.</li>
-</ul>
-
-<h3 data-reveal>❓ 4. Frequently Asked Questions</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">Why did my quota run out after only a few questions?</div>
-    <div class="card-desc">This usually happens when you upload giant PDFs or multiple high-res images into a thread that extends past 30 turns. Every new prompt re-processes the entire historical payload. Remedy: open a clean, fresh chat window whenever a project milestone is completed.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Are Web, Desktop, and Mobile quotas separate?</div>
-    <div class="card-desc"><strong>No, they share a unified account quota pool.</strong> The only independent allowances are Deep Research monthly credits and Advanced Voice minutes. If your desktop client hits a rate limit, the web and mobile apps will be locked as well.</div>
-  </div>
-</div>
-</section>
+<section id="subscription-quotas"><h2>Plans, APIs, and context</h2><p>Subscription allowance, API billing, cumulative tokens, and current context are different metrics. Check sign-in method, usage panels, and reset times. Switching surfaces or signing in again does not imply extra allowance.</p></section>
 
 <div class="divider"></div>
 
-<section id="image-guide">
-<div class="sec-tag">Advanced Image Engineering</div>
-<h2>Image 2.0/2.5 Visual Intelligence & Engineering Handbook</h2>
-
-<p>In traditional software development, engineers often fall into the inefficient cycle of "writing code blindly -> refreshing browser -> manual visual inspection -> tweaking CSS." As OpenAI's image models have progressed from DALL-E 3 into <strong>GPT-4o native diffusion</strong> and the latest <strong>Image 2.0 / 2.5 visual engines</strong>, AI image generation has evolved far beyond casual art. It has become an indispensable "engineering specification engine" for modern developers. This chapter aggregates battle-tested lessons from top frontend teams, UI/UX design systems, and indie developers to establish an end-to-end bridge between visual concepts and production code.</p>
-
-<h3 data-reveal>🧬 1. Technological Evolution: From DALL-E to Image 2.5</h3>
-<p>Understanding generational capabilities is essential for selecting the right model and formulating deterministic prompts:</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>Generation</th>
-        <th>Architecture & Breakthroughs</th>
-        <th>Typography & Detail Fidelity</th>
-        <th>Role in Software Engineering</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>DALL-E 3</strong></td>
-        <td>Standalone text-to-image diffusion model relying on LLM-expanded prompts.</td>
-        <td>Prone to misspelled text; melting geometry; uncontrollable spatial proportions.</td>
-        <td>Early conceptual moodboarding; unsuitable for direct UI mockups or icons.</td>
-      </tr>
-      <tr>
-        <td><strong>GPT-4o Native Image</strong></td>
-        <td>Native omni-modal architecture; visual and text tokens natively aligned.</td>
-        <td>Renders short, correct words; significantly improved understanding of physical occlusion.</td>
-        <td>Rapid UI prototyping, drafting system topology diagrams, and functional placeholders.</td>
-      </tr>
-      <tr>
-        <td><strong>Image 2.0 / 2.5</strong></td>
-        <td>Integrated with Sora physical priors and high-precision vector heuristics.</td>
-        <td><strong>Text rendering accuracy surpasses 95%</strong>; pixel-perfect grid alignment; crisp component hierarchy.</td>
-        <td><strong>Production-Grade Asset Pipeline</strong>: Direct high-fidelity UI mockups, compliant App Icons, and clean vector illustrations for automated Tailwind extraction.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 data-reveal>🚀 2. Three Core Engineering Paradigms</h3>
-
-<h4>Paradigm 1: Visual-First UI Reverse Engineering</h4>
-<p>Building complex frontend interfaces from vague bullet points leads to endless revisions.<br>
-<strong>Production-Grade SOP:</strong></p>
-<ol>
-  <li><strong>Generate Visual Baseline</strong>: Use Image 2.5 on ChatGPT Web to generate 2–3 high-fidelity UI mockups (e.g., a dark-mode Web3 analytics dashboard).</li>
-  <li><strong>Multimodal Design Token Extraction</strong>: Feed the approved concept into the GPT-4o vision model:
-    <div class="callout tip"><b class="t">Design Token Extraction Prompt</b>
-    <code>Act as a Senior Frontend Architect analyzing this UI screenshot: 1. Extract the complete color palette (hex codes for Primary, Secondary, Background, Border); 2. Measure the grid layout and spacing rules (4px/8px system); 3. Output the corresponding Tailwind CSS config snippet (tailwind.config.js) and base HTML skeleton.</code></div>
-  </li>
-  <li><strong>Terminal Execution</strong>: Hand this Tailwind config and layout skeleton to Codex in the local terminal. Codex builds the production components against verified design tokens with 100% first-pass acceptance.</li>
-</ol>
-
-<h4>Paradigm 2: Atomic Asset Pipelines (Icons & Empty States)</h4>
-<p>Waiting for custom designer assets slows down release velocity:</p>
-<ul>
-  <li><strong>Compliant App Icons</strong>: Prompt Image 2.5 with clean geometric constraints to produce squircle-ready icons adhering to Apple HIG and Material Design rules.</li>
-  <li><strong>Empty State Vector Graphics</strong>: Specify a pure white background (<code>solid pure white #FFFFFF background</code>). Run an automated local CLI script (using <code>potrace</code> or <code>rembg</code>) to strip the background and vectorize it into crisp, lightweight SVG assets directly committed into your repository.</li>
-</ul>
-
-<h4>Paradigm 3: Bidirectional Visual Regression Loop</h4>
-<p>Combine Codex with Playwright or Puppeteer to launch automated headless browser test runs, taking high-res screenshots of running code. Feed both the "Design Target" and the "Rendered Output" to the vision model for automated visual regression diffing:</p>
-<div class="callout note"><b class="t">Visual Regression Diff Prompt</b>
-<code>[Image 1: Design Target] vs [Image 2: Actual Playwright Screenshot]
-Strictly compare discrepancies across: 1. Padding and element alignment; 2. Font sizing and hierarchy; 3. Shadow blur and border colors. Output the exact CSS patch required to resolve all deviations.</code></div>
-
-<h3 data-reveal>🎨 3. Prompt Tuning & Engineering Framework</h3>
-<p>Eliminate conversational fluff and adopt the Six-Element Engineering Framework for deterministic results:</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>Framework Dimension</th>
-        <th>Casual Prompting (Anti-Pattern)</th>
-        <th>Engineering Precision (Best Practice)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>1. Subject & Function</strong></td>
-        <td>"A nice finance dashboard"</td>
-        <td><code>SaaS analytics dashboard interface, high-density data visualization, financial charts, transaction table</code></td>
-      </tr>
-      <tr>
-        <td><strong>2. Design System / Medium</strong></td>
-        <td>"Modern and clean"</td>
-        <td><code>Clean modern UI design, Swiss typographic style, Apple Human Interface Guidelines aesthetic, 8px grid system</code></td>
-      </tr>
-      <tr>
-        <td><strong>3. Color Tokens</strong></td>
-        <td>"Cool colors"</td>
-        <td><code>Dark mode palette: deep slate #0B0F17 background, vibrant emerald #10B981 accents, subtle border #1F2937</code></td>
-      </tr>
-      <tr>
-        <td><strong>4. Surface & Materials</strong></td>
-        <td>"Hyperrealistic, 8k render"</td>
-        <td><code>Matte texture, soft ambient occlusion, crisp 1px borders, subtle glassmorphism card elevation, zero glossy glare</code></td>
-      </tr>
-      <tr>
-        <td><strong>5. Typography & Text</strong></td>
-        <td>"With numbers on it"</td>
-        <td><code>Exact typography: with crisp white text "$124,580.00" displayed prominently, and "Total Revenue" above in gray</code></td>
-      </tr>
-      <tr>
-        <td><strong>6. Negative Constraints</strong></td>
-        <td>None</td>
-        <td><code>--no 3d clay style, no realistic human faces, no blurry gradients, no misspelled pseudo-latin text</code></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h4>Advanced Tuning Rules:</h4>
-<ul>
-  <li><strong>Eliminate "AI Glare & Plasticity"</strong>: Banish empty buzzwords like "ultra-detailed", "photorealistic", and "cinematic lighting." They inject cheap glowing artifacts. Instead, use professional design terms: <code>minimalist</code>, <code>clean lines</code>, <code>matte finish</code>, <code>subtle contrast</code>.</li>
-  <li><strong>Deterministic Typography</strong>: Wrap target button text or titles in double quotes: <code>a primary button with text "GET STARTED" in bold sans-serif</code>. Keep text elements under 4 words per cluster for maximum fidelity.</li>
-  <li><strong>Targeted Inpainting</strong>: If a dashboard layout is flawless except for one card, use the Web brush tool to mask only that region. Prompt: "Replace this card with a clean line chart while preserving the surrounding 1px border and background color." Never re-roll the entire image.</li>
-</ul>
-
-<h3 data-reveal>📋 4. Production Prompt Blueprints</h3>
-
-<h4>Blueprint 1: Modern Dark-Mode SaaS Analytics Dashboard</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt Blueprint · SaaS Dashboard UI</span><button class="copy-btn">Copy</button></div>
-  <pre><code>A high-fidelity modern SaaS web application dashboard interface for server monitoring. Dark mode theme with deep obsidian background (#0A0E1A). The layout features a clean left sidebar navigation, top header with user profile, and a central grid of 4 metric cards (CPU, Memory, Bandwidth, Uptime) with emerald green glowing sparkline charts. Crisp 1px borders (#1E293B), minimalist sans-serif typography, subtle dark card elevation. Professional Figma screenshot aesthetic, pixel-perfect alignment, no clutter.</code></pre>
-</div>
-
-<h4>Blueprint 2: Mobile Fintech Card Component (iOS / Flutter Spec)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt Blueprint · Fintech Mobile Card</span><button class="copy-btn">Copy</button></div>
-  <pre><code>Mobile UI component for a premium debit card widget on iOS screen. Sleek frosted dark glass design with subtle holographic rim lighting. Prominent embossed white text "8492" and "VISA" logo in top corner. Clean balance display "$34,250.80" with minimalist typography. Below the card, two circular action buttons labeled "Send" and "Top Up". Clean solid background (#121212), Apple HIG design guidelines, modern Dribbble showcase style.</code></pre>
-</div>
-
-<h4>Blueprint 3: Developer App Icon Suite (App Store Standard)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt Blueprint · Minimalist App Icon</span><button class="copy-btn">Copy</button></div>
-  <pre><code>App icon design for a developer code intelligence tool. A smooth rounded squircle container on pure black background. In the center, a minimalist geometric logo combining an abstract bracket '{' and a sparkling cyan star. Premium matte texture, subtle radial gradient, smooth beveled edges, modern iOS icon aesthetic. High resolution, centered composition, zero text, vector emblem clarity.</code></pre>
-</div>
-
-<h4>Blueprint 4: Vector Empty-State Illustration (SVG Traceable)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt Blueprint · Empty State Vector</span><button class="copy-btn">Copy</button></div>
-  <pre><code>Clean vector empty state illustration for a '404 Page Not Found' error screen. A cute, minimalist floating astronaut robot looking puzzled at a disconnected glowing cable. Flat 2D vector art style, clean outline strokes, limited modern color palette (indigo, mint green, and soft gray). Isolated on a solid pure white (#FFFFFF) background. Modern tech startup illustration aesthetic, zero realistic shading, ready for SVG tracing.</code></pre>
-</div>
-
-<h3 data-reveal>🛡️ 5. Production Pitfalls & Compliance</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">How to maintain stylistic consistency across 10 in-app illustrations?</div>
-    <div class="card-desc"><strong>Lock the style modifier suffix.</strong> Append an identical descriptor to every prompt: <code>--style: flat geometric 2D vector, mint and slate palette, soft outlines, pure white background</code>. Keep the generation process within the same ChatGPT Web thread to allow the model to anchor on contextual visual memory.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">What are the commercial rights and safety boundaries?</div>
-    <div class="card-desc">OpenAI explicitly grants <strong>full commercial ownership of generated images to paid subscribers</strong>. To ensure compliance, avoid referencing protected trademarks (e.g., "Apple logo", "Disney character"). Instead, describe aesthetic characteristics ("sleek minimalist tech branding") to guarantee clean commercial deployment.</div>
-  </div>
-</div>
-</section>
+<section id="image-guide"><h2>Image work has its own guide</h2><p>Keep engineering work centered on code, design constraints, and verification. Image generation and editing are maintained in the dedicated guide.</p><p><a href="gpt-image-guide.en.html">GPT Image →</a></p></section>
 
 <section id="playbook">
 <div class="sec-tag">Playbook 10</div>
-<h2>Automated Pipelines & Playbook</h2>
+<h2>Automated Pipelines &amp; Playbook</h2>
 
 <div class="plays">
   <div class="play">
@@ -990,14 +656,14 @@ Strictly compare discrepancies across: 1. Padding and element alignment; 2. Font
       <ol class="steps">
         <li><strong>Parse Issue Structure</strong>: Extract Goal, Scope, Acceptance criteria, and Constraints;</li>
         <li><strong>Dispatch Cloud Task</strong>: <code>codex cloud exec "Fix auth timeout per Issue #108, write tests first"</code>;</li>
-        <li><strong>Local Patch & Verify</strong>: Run <code>codex apply &lt;TASK_ID&gt;</code>, inspect with <code>/diff</code> and run test suite;</li>
-        <li><strong>Open PR & Trigger Review</strong>: Push branch, create PR, and trigger <code>@codex review</code> for automated cross-checking.</li>
+        <li><strong>Local Patch &amp; Verify</strong>: Run <code>codex apply &lt;TASK_ID&gt;</code>, inspect with <code>/diff</code> and run test suite;</li>
+        <li><strong>Open PR &amp; Trigger Review</strong>: Push branch, create PR, and trigger <code>@codex review</code> for automated cross-checking.</li>
       </ol>
     </div>
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">🎬</span><b>Pipeline ②: Multimedia & Video Automation</b><span class="pt">PIPELINE · MULTIMEDIA</span></div>
+    <div class="ph"><span class="pic">🎬</span><b>Pipeline ②: Multimedia &amp; Video Automation</b><span class="pt">PIPELINE · MULTIMEDIA</span></div>
     <div class="pb">
       <p>Compose <strong>Remotion / FFmpeg / Subtitle Skills</strong> to automate batch media transcoding:</p>
       <pre><code>&gt; Using video-workflow skill, transcode all 4K files in raw_videos/ to 1080p WebP/H.264,
@@ -1032,41 +698,24 @@ Strictly compare discrepancies across: 1. Padding and element alignment; 2. Font
 <div class="divider"></div>
 
 <!-- ================= SECTION 11 ================= -->
-<section id="hidden-config">
-<div class="sec-tag">Advanced 11</div>
-<h2>Under-the-Hood Flags & Hidden Features</h2>
-
-<table class="tbl">
-  <tr><th>Feature Flag</th><th>Status</th><th>Capability</th></tr>
-  <tr><td><code>guardian_approval</code></td><td><span class="pill a">stable (enabled)</span></td><td>Security guardian layer intercepting prompt injections and destructive commands</td></tr>
-  <tr><td><code>browser_use_full_cdp_access</code></td><td><span class="pill a">stable (enabled)</span></td><td>Full Chrome DevTools Protocol access for advanced automation</td></tr>
-  <tr><td><code>multi_agent_v2</code></td><td><span class="pill b">under development</span></td><td>Next-generation multi-agent task orchestrator</td></tr>
-  <tr><td><code>concurrent_reasoning_summaries</code></td><td><span class="pill b">under development</span></td><td>Parallel reasoning summaries to accelerate long-context throughput</td></tr>
-  <tr><td><code>token_budget</code></td><td><span class="pill b">under development</span></td><td>Session-level token circuit breaker preventing runaway token spend</td></tr>
-</table>
-
-<h3 data-reveal>High-Value Hidden Debug Commands</h3>
-<ul>
-  <li><code>codex debug prompt-input</code> — Print raw prompt JSON sent to model to inspect exact context assembly;</li>
-  <li><code>codex debug models</code> — Query internal model catalog metadata and candidate model ids;</li>
-  <li><code>codex sandbox -- &lt;cmd&gt;</code> — Test commands in the isolated OS sandbox independently of conversation sessions.</li>
-</ul>
-</section>
+<section id="hidden-config"><h2>Verify local capabilities</h2><p>Check the installed version and help before changing configuration. Experimental flags are not stable contracts. Without versioned output, do not claim local testing or assume defaults.</p><pre><code>codex --version
+codex --help
+codex exec --help</code></pre><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 12 ================= -->
 <section id="resources">
 <div class="sec-tag">Resources 12</div>
-<h2>Resource Index & Further Reading</h2>
+<h2>Resource Index &amp; Further Reading</h2>
 
 <table class="tbl">
-  <tr><th>Resource</th><th>Link</th><th>Description</th></tr>
+  <tbody><tr><th>Resource</th><th>Link</th><th>Description</th></tr>
   <tr><td><strong>Official Codex Documentation</strong></td><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>Primary reference for CLI, IDE, Cloud, and configuration schemas</td></tr>
   <tr><td><strong>CodexGuide.io Hub</strong></td><td><a href="https://codexguide.io/paths" target="_blank">codexguide.io/paths</a></td><td>Curated learning paths, real-world case studies, and practical workflows</td></tr>
   <tr><td><strong>AGENTS.md Specification</strong></td><td><a href="https://agents.md" target="_blank">agents.md</a></td><td>Open standard for repository instructions</td></tr>
-  <tr><td><strong>Related Guides in this Hub</strong></td><td><a href="claude-code-guide.en.html">Claude Code Guide</a> · <a href="env-auth-clinic.en.html">Auth & Environment Clinic</a> · <a href="prompt-context-engineering.en.html">Prompt & Context Engineering</a></td><td>Foundational engineering and agent mastery guides</td></tr>
-</table>
+  <tr><td><strong>Related Guides in this Hub</strong></td><td><a href="claude-code-guide.en.html">Claude Code Guide</a> · <a href="env-auth-clinic.en.html">Auth &amp; Environment Clinic</a> · <a href="prompt-context-engineering.en.html">Prompt &amp; Context Engineering</a></td><td>Foundational engineering and agent mastery guides</td></tr>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -1080,7 +729,10 @@ Strictly compare discrepancies across: 1. Padding and element alignment; 2. Font
 
 <button class="top-btn" id="topBtn" title="Back to top">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

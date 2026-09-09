@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>03. 降维打击：VM vs 容器 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -420,20 +419,20 @@ pre:hover .copy-btn { opacity: 1; }
 flowchart TB
     subgraph 虚拟机架构 (VM)
         direction BT
-        V1[App A] --> V2[Guest OS (如 CentOS)]
-        V3[App B] --> V4[Guest OS (如 Ubuntu)]
-        V2 --> V5(Hypervisor 虚拟化层)
-        V4 --> V5
-        V5 --> V6[Host OS (宿主机系统)]
-        V6 --> V7[(底层物理硬件 Server)]
+        V1[App A] --&gt; V2[Guest OS (如 CentOS)]
+        V3[App B] --&gt; V4[Guest OS (如 Ubuntu)]
+        V2 --&gt; V5(Hypervisor 虚拟化层)
+        V4 --&gt; V5
+        V5 --&gt; V6[Host OS (宿主机系统)]
+        V6 --&gt; V7[(底层物理硬件 Server)]
     end
     
     subgraph 容器架构 (Docker)
         direction BT
-        D1[App A + Libs] --> D3(Docker Engine)
-        D2[App B + Libs] --> D3
-        D3 --> D4[Host OS 宿主机系统 / 共享内核]
-        D4 --> D5[(底层物理硬件 Server)]
+        D1[App A + Libs] --&gt; D3(Docker Engine)
+        D2[App B + Libs] --&gt; D3
+        D3 --&gt; D4[Host OS 宿主机系统 / 共享内核]
+        D4 --&gt; D5[(底层物理硬件 Server)]
     end
     
     style V5 fill:#fef08a,stroke:#ca8a04
@@ -448,7 +447,7 @@ flowchart TB
 <p>废话不多说，看看性能数据上，容器是如何进行“降维打击”的：</p>
 
 <table style="width:100%; border-collapse: collapse; margin: 24px 0; font-size: 14px;">
-    <tr style="background:#f8fafc; border-bottom: 2px solid var(--border); text-align:left;">
+    <tbody><tr style="background:#f8fafc; border-bottom: 2px solid var(--border); text-align:left;">
         <th style="padding:10px;">对比维度</th>
         <th style="padding:10px;">传统虚拟机 (VM)</th>
         <th style="padding:10px;">Docker 容器</th>
@@ -478,12 +477,12 @@ flowchart TB
         <td style="padding:10px; color:#10b981;">极高（硬件级别的彻底隔离）</td>
         <td style="padding:10px; color:#ef4444;">中等（进程级别的隔离，共享内核）</td>
     </tr>
-</table>
+</tbody></table>
 
 <h3>老鸟技巧（Pro-Tip）：虚拟机就该被淘汰了吗？</h3>
 
 <p>答案是：<strong>绝对不是。</strong> 它们在现代数据中心里往往是“相辅相成”的关系：</p>
-<p>在企业级环境中，标准做法是：买物理机 -> 在物理机上用 VMware/KVM 虚拟出几个大的 VM（保证多租户环境下的绝对安全和资源划分） -> 然后在 VM 里面装 Linux -> 最后在 Linux 里跑 Docker 容器。</p>
+<p>在企业级环境中，标准做法是：买物理机 -&gt; 在物理机上用 VMware/KVM 虚拟出几个大的 VM（保证多租户环境下的绝对安全和资源划分） -&gt; 然后在 VM 里面装 Linux -&gt; 最后在 Linux 里跑 Docker 容器。</p>
 <p><strong>何时必须用虚拟机？</strong></p>
 <ul>
     <li>你需要运行一个和宿主机完全不同内核的系统（比如你想在 Linux 服务器上跑 Windows 系统，容器做不到，必须用 VM）。</li>
@@ -609,5 +608,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

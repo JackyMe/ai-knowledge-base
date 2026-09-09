@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="AI Coding Agents (Claude Code/Codex) and UI Design Tools (pencil.dev/Figma/Next-Gen AI Design) Collaboration Panorama: Tool Map, Android End-to-End Pipeline, Design Token Engineering, Real Device Regression, and Anti-patterns.">
@@ -191,6 +189,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
   <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -223,23 +222,23 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <div class="gt">Android End-to-End</div>
     <a href="#pipeline"><span class="no">03</span>Five-Step Pipeline</a>
     <a href="#tokens"><span class="no">04</span>Figma → Material 3 Token</a>
-    <a href="#compose"><span class="no">05</span>Compose Code Gen & Write-back</a>
+    <a href="#compose"><span class="no">05</span>Compose Code Gen &amp; Write-back</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Quality & Regression</div>
+    <div class="gt">Quality &amp; Regression</div>
     <a href="#verify"><span class="no">06</span>Real/Virtual Screenshot Regression</a>
-    <a href="#sync"><span class="no">07</span>Bidirectional Sync & System Maint.</a>
+    <a href="#sync"><span class="no">07</span>Bidirectional Sync &amp; System Maint.</a>
   </div>
   <div class="nav-group">
     <div class="gt">Practice</div>
     <a href="#cases"><span class="no">08</span>Real Case (E-com Detail Page)</a>
-    <a href="#antipatterns"><span class="no">09</span>Anti-patterns & Pitfalls</a>
+    <a href="#antipatterns"><span class="no">09</span>Anti-patterns &amp; Pitfalls</a>
   </div>
   <div class="nav-group">
     <div class="gt">Appendix</div>
     <a href="#prompts"><span class="no">A</span>Prompt Template Library</a>
     <a href="#ios-web"><span class="no">X</span>iOS / Web Cross-Platform</a>
-    <a href="#resources"><span class="no">R</span>Resources & Sources</a>
+    <a href="#resources"><span class="no">R</span>Resources &amp; Sources</a>
   </div>
 </nav>
 
@@ -268,18 +267,18 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">Introduction 00</div>
 <h2>Panorama: Why This Suddenly Became "Must-Do" in 2026</h2>
 
-<h3 data-reveal>Design-Code Gap: Not a Tool Issue, But a Structure Issue</h3>
+<h3 data-reveal="">Design-Code Gap: Not a Tool Issue, But a Structure Issue</h3>
 <p>Before 2024, designers marked pixels in Figma, and developers rewrote them. General AI coding tools (early Copilot) could only generate "looks similar" components based on "patterns seen across the web", completely blind to <strong>your</strong> design system. The output code felt like a "distant cousin of the design"—colors slightly off, spacing wrong by a few pixels, hover states undocumented, harder to refactor than writing from scratch.</p>
 <p>In 2026, three things matured together, shrinking the gap to a negligible scale:</p>
 <ol>
   <li><strong>MCP (Model Context Protocol) becomes the de facto standard</strong>—pen.dev, Figma, Google Stitch all expose MCP servers. Once equipped, Claude Code / Codex can "read" the precise structure, Tokens, and node relationships of the design file, no longer guessing from images.</li>
   <li><strong>Design tools natively support "Draw + Code" dual output</strong>—pen.dev's <code>.pen</code> files are JSON and Git-diffable; Figma's Dev Mode + Variables expose structured data; Stitch / Galileo output component code directly.</li>
-  <li><strong>Real/virtual regression costs drop to zero</strong>—Paparazzi / Roborazzi run Compose screenshots on the JVM, delivering full-device snapshots within 30 seconds after AI modifies the UI, tightening the feedback loop enough to enter CI.</li>
+  <li>Automated screenshots and assertions can shorten feedback time. Runtime depends on page count, device matrix, and environment. Keep human review for key tasks, interactions, and design differences.</li>
 </ol>
 
 <div class="callout note"><b class="t">The Promise of This Page</b>After learning this you will be able to: ① Install MCP for any design tool (pencil / Figma / Stitch) so Claude Code can read it directly; ② Bridge Figma Variables → Material 3 Color Scheme → Compose Theme all the way through; ③ Let Paparazzi / Roborazzi auto-diff for regression after AI modifies the UI; ④ Judge what work AI should do and what must be hand-written.</div>
 
-<h3 data-reveal>Three Things You Must First Agree On</h3>
+<h3 data-reveal="">Three Things You Must First Agree On</h3>
 <ul>
   <li><strong>Design files are "first-class citizen" inputs</strong>—on par with PRs, issues, and CLAUDE.md. They are not reference images, they are the source of truth.</li>
   <li><strong>Design Tokens take priority over visuals</strong>—when AI changes colors, it changes <code>colorScheme.primary</code>, not some hex code; when changing spacing, it changes <code>Spacing.md</code>, not <code>16.dp</code>.</li>
@@ -326,7 +325,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="callout warn"><b class="t">Outdated Merged Cards Separated</b>Galileo AI ceased independent operations in 2026 (domain <code>usegalileo.ai</code> 308 redirects to Stitch, LinkedIn marked "acquired by Google"), integrating its capabilities into Stitch; Uizard and Visily are independent but lean towards "screenshot → wireframe", which isn't directly related to this topic's "Design ↔ Code" mainline—so three old cards merged into Stitch + v0 two independent cards, Galileo is no longer listed separately. <strong>Verified Date 2026-08-05</strong>.</div>
 
-<h3 data-reveal>Selection Decision Tree</h3>
+<h3 data-reveal="">Selection Decision Tree</h3>
 <p>Don't just use "whatever is newest", choose based on your starting point:</p>
 <div class="pipeline">
   <div class="pipe-step"><div class="ps-num">START</div><div class="ps-icon">❓</div><div class="ps-name">Have a Design?</div><div class="ps-tool">→ See next step</div></div>
@@ -342,18 +341,18 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <section id="consume">
-  <tr>
-    <td><span class="pill d">Exports</span></td>
-    <td>Figma Dev Mode "Copy as Compose", pen.dev export React, Stitch "Export to Code"</td>
-    <td>Code snippets generated by design tools themselves</td>
-    <td>High (but with inherent tool limitations)</td>
-    <td>One-time copy and paste, no bidirectional sync</td>
-  </tr>
-</table>
+
+    <span class="pill d">Exports</span>
+    Figma Dev Mode "Copy as Compose", pen.dev export React, Stitch "Export to Code"
+    Code snippets generated by design tools themselves
+    High (but with inherent tool limitations)
+    One-time copy and paste, no bidirectional sync
+
+
 
 <div class="callout note"><b class="t">MCP is the "Watershed" of 2026</b>Using MCP, Claude Code can say when generating code, "Use <code>colorScheme.primary</code> for the main color, because it's called <code>brand/primary/500</code> in Figma"; without MCP, it can only look at the screenshot and say "Use blue here". The former is <strong>design system collaboration</strong>, the latter is <strong>pixel-level imitation</strong>. All discussions below assume the MCP channel.</div>
 
-<h3 data-reveal>Specific Connections for the Three Channels</h3>
+<h3 data-reveal="">Specific Connections for the Three Channels</h3>
 
 <h4>① Figma MCP (Official · Most Stable)</h4>
 <pre><code># Install official plugin (simplest)
@@ -367,12 +366,12 @@ claude mcp list
 # Should see figma / connected</code></pre>
 <p>Select a Frame in the Figma file → say in Claude Code "Use Figma MCP to read this Frame's structure and variables, generate the corresponding Compose implementation", and the tools will automatically be called. Core tools:</p>
 <table class="tbl">
-  <tr><th>Tool</th><th>What It Does</th></tr>
+  <tbody><tr><th>Tool</th><th>What It Does</th></tr>
   <tr><td><code>get_design_context</code></td><td>Returns structured React + Tailwind representation (most Web-friendly; Android requires subsequent translation)</td></tr>
   <tr><td><code>get_variable_defs</code></td><td>Extracts Variables (color palettes, font sizes, spacing) and their Light/Dark modes</td></tr>
   <tr><td><code>get_metadata</code></td><td>High-level node map: what Frame, what components, hierarchical relationships</td></tr>
   <tr><td><code>get_screenshot</code></td><td>Visual reference (pixel-level)</td></tr>
-</table>
+</tbody></table>
 <p>Codex can achieve the same using the <code>[mcp_servers.figma]</code> block in <code>config.toml</code> with <code>url = "https://mcp.figma.com/mcp"</code>.</p>
 
 <h4>② pen.dev MCP (Native, Local, Zero Cloud)</h4>
@@ -401,7 +400,7 @@ claude mcp list
 
 <p class="src">Why 5 steps instead of 3? Skip one step and you either lose Token sync (design changes color but code doesn't), or lose regression (AI modifies UI without review). These 5 steps can be parallelized (multiple pages advancing at once) but cannot be omitted.</p>
 
-<h3 data-reveal>STEP 1 · Design Tokens: Figma Variables are the Source of Truth</h3>
+<h3 data-reveal="">STEP 1 · Design Tokens: Figma Variables are the Source of Truth</h3>
 <p>Design Tokens are the <strong>named</strong> values for colors / font sizes / spacing / border radii. In Figma, they look like this:</p>
 <pre><code>brand/primary/500      → #476810
 brand/primary/600      → #3a5609
@@ -415,7 +414,7 @@ spacing/md             → 16dp
 radius/lg              → 16dp</code></pre>
 <p>This step is completed on the Figma side using the <strong>Material Theme Builder</strong> (material.io/material-theme-builder) or Figma's built-in Material 3 Design Kit; Claude Code does nothing in this step—it is <strong>structured context</strong> to be used later.</p>
 
-<h3 data-reveal>STEP 2 · Components/Pages: Figma Frame is the Contract</h3>
+<h3 data-reveal="">STEP 2 · Components/Pages: Figma Frame is the Contract</h3>
 <p>Each page to be implemented is a Frame in Figma, and the Frame naming must be stable (developers will use it as a key):</p>
 <pre><code>📁 Figma: App / 1.0
   📄 Page: ProductDetail
@@ -423,7 +422,7 @@ radius/lg              → 16dp</code></pre>
     🟦 Frame: ProductDetailScreen / Dark</code></pre>
 <p>Use <strong>Auto Layout</strong> (Figma's Flexbox) + 100% constraints, so when Claude Code reads <code>get_metadata</code>, it gets a structured layout, not absolute coordinates.</p>
 
-<h3 data-reveal>STEP 3 · Read + Plan: Claude Code / Codex Startup</h3>
+<h3 data-reveal="">STEP 3 · Read + Plan: Claude Code / Codex Startup</h3>
 <p>Start Claude Code in the Android project root (where <code>app/</code> source already exists) and give explicit instructions: <strong>don't let it "figure it out itself", hardcode what to read, where to write, and what to test</strong>.</p>
 <div class="prompt-box">
 <div class="pt">PROMPT 03-A · Startup</div>
@@ -436,7 +435,7 @@ radius/lg              → 16dp</code></pre>
 
 <div class="callout tip"><b class="t">Why "Plan First, Code Later"</b>Claude Code's Plan mode (toggle with <code>Shift+Tab</code>) will first explore the code, generating reviewable implementation steps before executing. Modifying UI is a high-rework area—one misstep and subsequent screenshots will all be red. <strong>Spending 2 minutes reviewing the plan = Saving 20 minutes redoing it</strong>. Codex works the same way (<code>--plan</code> mode).</div>
 
-<h3 data-reveal>STEP 4 · Generate Code: Compose + Tests + Screenshots Trio</h3>
+<h3 data-reveal="">STEP 4 · Generate Code: Compose + Tests + Screenshots Trio</h3>
 <p>AI will actually produce three types of artifacts, none of which can be missing:</p>
 <ol>
   <li><strong>Composable functions</strong>—business components; <strong>using Tokens instead of hardcoding</strong> is a core discipline (<code>MaterialTheme.colorScheme.primary</code> instead of <code>Color(0xFF476810)</code>).</li>
@@ -454,18 +453,18 @@ radius/lg              → 16dp</code></pre>
 5. Once done, run ./gradlew verifyPaparazziDebug and show me the results</code>
 </div>
 
-<h3 data-reveal>STEP 5 · Visual Regression: Choose Paparazzi / Roborazzi</h3>
+<h3 data-reveal="">STEP 5 · Visual Regression: Choose Paparazzi / Roborazzi</h3>
 <p>This step is the <strong>quality gate</strong> of the entire pipeline. See the <a href="#verify">Real/Virtual Screenshot Regression</a> section for details, the core sentence is: <strong>Before AI modifies the UI, have a baseline; after modifying, auto-diff, and push to humans only on anomalies</strong>.</p>
 </section>
 
 <div class="divider"></div>
 
-<section id="tokens">
+<section id="tokens"><p>The following is a partial role mapping, not a complete ColorScheme reference. Check surfaceContainer and other roles against your Material 3 dependency.</p><p class="src"><a href="https://developer.android.com/reference/kotlin/androidx/compose/material3/ColorScheme" target="_blank" rel="noopener">developer.android.com · ColorScheme</a> · 2026-09-09</p>
 <div class="sec-tag">End-to-End 04</div>
 <h2>Figma → Material 3 Token: A Standard Bridge</h2>
 <p>Material 3's ColorScheme / Typography / Shapes are Compose's <strong>first-class Design Tokens</strong>; Figma Variables are the design side's <strong>first-class Design Tokens</strong>. The two must strictly correspond one-to-one, otherwise "design changes but code doesn't" is inevitable.</p>
 
-<h3 data-reveal>Official Standard Practice: Material Theme Builder</h3>
+<h3 data-reveal="">Official Standard Practice: Material Theme Builder</h3>
 <ol class="steps">
   <li>In <a href="https://material.io/material-theme-builder" target="_blank">m3.material.io/theme-builder</a>, pick base colors + secondary colors, and the tool auto-expands into the M3 palette (assigning one of 13 tones to each role).</li>
   <li>Export to "Jetpack Compose" format, yielding <code>Color.kt</code> (5 key colors + derived roles) and <code>Theme.kt</code> (<code>lightColorScheme(...)</code> / <code>darkColorScheme(...)</code>).</li>
@@ -474,7 +473,7 @@ radius/lg              → 16dp</code></pre>
   <li>Set the same "base colors + secondary colors" in Figma Material 3 Design Kit (plugin auto-syncs), and Variables align automatically.</li>
 </ol>
 
-<h3 data-reveal>Figma Variables ↔ Compose ColorScheme Full Mapping</h3>
+<h3 data-reveal="">Figma Variables ↔ Compose ColorScheme Full Mapping</h3>
 <p>All roles in Material 3 ColorScheme and Variables in Figma Material 3 Design Kit have <strong>exactly the same naming</strong> (both use <code>primary / onPrimary / primaryContainer / onPrimaryContainer / secondary / onSecondary / ...</code>). Claude Code can read them via Figma MCP's <code>get_variable_defs</code> and write directly to <code>lightColorScheme(primary = Color(0xFF...), ...)</code>. Here is the full role list (so you can check for omissions):</p>
 <pre><code>// M3 ColorScheme full 32 roles (one set each for light/dark)
 lightColorScheme(
@@ -489,29 +488,29 @@ lightColorScheme(
   surfaceTint, scrim,
 )</code></pre>
 
-<h3 data-reveal>The Bridge for Typography and Shapes</h3>
+<h3 data-reveal="">The Bridge for Typography and Shapes</h3>
 <p>M3 Typography consists of 15 TextStyles (<code>displayLarge/Medium/Small</code>, <code>headlineLarge/...</code>, <code>titleLarge/...</code>, <code>bodyLarge/...</code>, <code>labelLarge/...</code>); Shapes are 5 <code>RoundedCornerShape</code>s (<code>extraSmall/small/medium/large/extraLarge</code>).</p>
 <p>On the Figma side, stick to <strong>using official components from the Figma Material 3 Design Kit</strong>—its Text Styles and Shape naming align with M3, allowing Claude Code to map them directly when reading <code>get_metadata</code>.</p>
 
 <div class="callout tip"><b class="t">Balancing Dynamic Color (Material You) vs Brand Colors</b>Android 12+ devices have system color extraction (<code>dynamicLightColorScheme(LocalContext.current)</code>). Whether your brand colors should be overwritten is a <strong>product decision</strong>. Common practices: ① Strong brand → disable dynamic colors, always use brand ColorScheme; ② Weak brand (consumer-oriented) → enable dynamic colors, but keep 1-2 brand accent colors out of the ColorScheme, using custom <code>ExtendedColors</code> instead. When Claude Code / Codex handles this decision, specify it in CLAUDE.md / AGENTS.md.</div>
 
-<h3 data-reveal>Dynamic Color vs Brand Color: Decision Matrix</h3>
+<h3 data-reveal="">Dynamic Color vs Brand Color: Decision Matrix</h3>
 <table class="tbl">
-  <tr><th>Product Type</th><th>Dynamic Color</th><th>Brand Color</th><th>Approach</th></tr>
+  <tbody><tr><th>Product Type</th><th>Dynamic Color</th><th>Brand Color</th><th>Approach</th></tr>
   <tr><td>Finance / Tools (Strong Brand Identity)</td><td>Off</td><td>Always use brand</td><td><code>val colors = if (darkTheme) DarkColors else LightColors</code>, don't use dynamicXxx</td></tr>
   <tr><td>Consumer / Content (User-Driven)</td><td>On</td><td>Accent buttons/Logo only</td><td>dynamicXxx leads, pull brand color separately via <code>ExtendedColors.brand</code></td></tr>
   <tr><td>Enterprise Embedded / White-label</td><td>Off</td><td>Swappable at runtime</td><td>ColorScheme not hardcoded, fetched from backend/BuildConfig</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
 
 <section id="compose">
 <div class="sec-tag">End-to-End 05</div>
-<h2>Compose Code Gen & Write-back: AI UI Mod Disciplines</h2>
-<p>This is the "deliverable" step, and also the most prone to producing code that "looks like it works, but actually doesn't". Below are disciplines synthesized from 30+ real PRs:</p>
+<h2>Compose Code Gen &amp; Write-back: AI UI Mod Disciplines</h2>
+<p>This guide illustrates design-to-code workflows; cases are examples, not published project statistics.</p>
 
-<h3 data-reveal>Discipline 1: Tokens First, Never Hardcode</h3>
+<h3 data-reveal="">Discipline 1: Tokens First, Never Hardcode</h3>
 <div class="duo">
   <div class="bad"><b>❌ Hardcoding (Common AI Mistake)</b>
 <pre><code>Text("Save",
@@ -529,14 +528,14 @@ lightColorScheme(
   </div>
 </div>
 
-<h3 data-reveal>Discipline 2: Use State Hoisting for Any State Change</h3>
+<h3 data-reveal="">Discipline 2: Use State Hoisting for Any State Change</h3>
 <p>AI often writes code where the component uses <code>remember { mutableStateOf(...) }</code> itself—it previews fine, but breaks in real use. Rule: <strong>Stateless Composables first</strong>, pass state down from the caller, and hoist events up.</p>
 <div class="prompt-box">
 <div class="pt">PROMPT 05-A · Fix Buggy AI Compose</div>
 <code>Check src/.../ProductDetailScreen.kt, change all internal remember { mutableStateOf } to hoisted parameters; wrap remember in the Preview. After fixing, verify with ./gradlew :app:compileDebugKotlin.</code>
 </div>
 
-<h3 data-reveal>Discipline 3: At Least One @Preview per Composable</h3>
+<h3 data-reveal="">Discipline 3: At Least One @Preview per Composable</h3>
 <p>This is a prerequisite for running Paparazzi / Roborazzi regression, and also the lowest-cost feedback for design-dev collaboration—after AI writes it, view it directly in Android Studio's Design panel without deploying to a device.</p>
 <pre><code>@Preview(name = "Light", showBackground = true)
 @Composable
@@ -554,7 +553,7 @@ private fun ProductDetailScreenDarkPreview() {
   }
 }</code></pre>
 
-<h3 data-reveal>Discipline 4: Write-back Design System from Code</h3>
+<h3 data-reveal="">Discipline 4: Write-back Design System from Code</h3>
 <p>Designer modifies Figma → Claude Code modifies Compose is the forward path; what about the reverse? After modifying Compose and getting it running, you realize "the button corner radius doesn't match Figma". Who modifies what?</p>
 <p><strong>Rule: Whoever merges first is responsible for syncing</strong>. If Figma is the source, update Figma; if code is the source (modifying token config), update Figma Variables. The worst mistake is updating both independently, so no one knows which side is right.</p>
 <p>Specific write-back workflow (using Figma as source):</p>
@@ -575,17 +574,17 @@ private fun ProductDetailScreenDarkPreview() {
 <h2>Real/Virtual Screenshot Regression: Safety Catch After AI UI Mods</h2>
 <p>AI generating a UI PR in 30 seconds is too fast for human review. It must rely on <strong>automated visual regression</strong>—after AI makes changes, machines diff all page screenshots and push back to humans only on anomalies.</p>
 
-<h3 data-reveal>Why "Real Device Testing" Takes a Back Seat in the AI Era</h3>
+<h3 data-reveal="">Why "Real Device Testing" Takes a Back Seat in the AI Era</h3>
 <p>An instrumented test takes 90 seconds on a Pixel 6, and 15 minutes for 10 devices, failing entirely to keep up with the speed of AI UI mods. <strong>JVM-based screenshot testing</strong> (Paparazzi / Roborazzi) generating full-device snapshots in seconds is the correct answer for the new era.</p>
 
-<h3 data-reveal>Paparazzi (JVM Render, No Device)</h3>
+<h3 data-reveal="">Paparazzi (JVM Render, No Device)</h3>
 <p>Created by Cash App, it renders Android Views and Jetpack Compose on the JVM using LayoutLib, outputting PNGs for baseline diffing. <strong>Advantage: Does not rely on emulators, runs even faster than Robolectric in CI</strong>.</p>
 <table class="tbl">
-  <tr><th>Configuration</th><th>Purpose</th></tr>
+  <tbody><tr><th>Configuration</th><th>Purpose</th></tr>
   <tr><td><code>PIXEL_5</code> / <code>PIXEL_6</code> / <code>NEXUS_5</code></td><td>Device size + DPI, affects dp→px conversion</td></tr>
   <tr><td><code>theme = "android:Theme.Material.Light.NoActionBar"</code></td><td>Used for legacy Views; Compose uses its own <code>AppTheme</code></td></tr>
   <tr><td><code>nightMode = NIGHT_MODE_NIGHT</code></td><td>Run both light + dark snapshots at once</td></tr>
-</table>
+</tbody></table>
 <p>Key Gradle tasks:</p>
 <pre><code>./gradlew :app:recordPaparazziDebug   # Record baseline first time → src/test/snapshots/
 ./gradlew :app:verifyPaparazziDebug   # Run this after changes, fails on diffs
@@ -624,7 +623,7 @@ private fun ProductDetailScreenDarkPreview() {
 
 <div class="callout note"><b class="t">Unexpected Discovery: Screenshot Regression Caught a Real Bug</b>While running this sample, I found: <strong>Demo01's <code>Column</code> without an explicit background exposes the device's default dark background</strong>. You can't see this reading plain code, but running Paparazzi makes it obvious—this is the value of "must run screenshot regression after AI UI mods", plain text descriptions cannot provide this regression catch capability. Full project is in <code>drafts/paparazzi-demo/</code>, including troubleshooting notes for 4 failed version combos.</div>
 
-<h3 data-reveal>Roborazzi (Robolectric route, can integrate Hilt)</h3>
+<h3 data-reveal="">Roborazzi (Robolectric route, can integrate Hilt)</h3>
 <p>Produced by takahirom, based on Robolectric rendering Compose in JVM, supports <code>@Preview</code> auto-generating tests, no conflicts with DI frameworks like Hilt. <strong>Advantage: Can test real components with dependency injection</strong>.</p>
 <p>Key capabilities:</p>
 <ul>
@@ -642,16 +641,16 @@ private fun ProductDetailScreenDarkPreview() {
 <pre><code>npx skills add takahirom/roborazzi</code></pre>
 <p>Once installed, when the AI coding agent encounters issues like "add screenshot test", "adjust baseline", or "view Roborazzi failure", it will automatically load the correct knowledge without you having to teach it step-by-step.</p>
 
-<h3 data-reveal>How to Choose Between the Two Paths</h3>
+<h3 data-reveal="">How to Choose Between the Two Paths</h3>
 <table class="tbl">
-  <tr><th>Scenario</th><th>Choose</th><th>Reason</th></tr>
+  <tbody><tr><th>Scenario</th><th>Choose</th><th>Reason</th></tr>
   <tr><td>Pure UI components, no Hilt / complex dependencies</td><td><strong>Paparazzi</strong></td><td>Faster, purer, CI-friendly</td></tr>
   <tr><td>Has Hilt / business state injection / mock ViewModel</td><td><strong>Roborazzi</strong></td><td>Can run on Robolectric, coexists with existing test stack</td></tr>
   <tr><td>Mixing Compose and View</td><td><strong>Paparazzi</strong></td><td>Supports both, more mature ecosystem</td></tr>
   <tr><td>Need AI to determine if screenshot diff is expected</td><td><strong>Roborazzi + roborazzi-ai-gemini</strong></td><td>Experimental but usable</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>The Complete AI UI Mod Feedback Loop</h3>
+<h3 data-reveal="">The Complete AI UI Mod Feedback Loop</h3>
 <pre><code>Design changes ──→ Figma MCP reads diff ──→ Claude Code generates Compose changes
                                               │
                                               ▼
@@ -664,7 +663,7 @@ private fun ProductDetailScreenDarkPreview() {
                                 ▼                           ▼
                           Raise PR, auto-screenshot     AI reverts (auto)
                           Attach to PR comment          Or human review /look decides</code></pre>
-<p><strong>Key: This loop must be able to complete locally within 30 seconds</strong>. Paparazzi / Roborazzi can finish all screenshots for a module in 5-15 seconds on an MBP, which is the prerequisite for a sustainable AI UI mod workflow; if it's slow, it degrades back to "relying on human eyes".</p>
+<p>Automated screenshots and assertions can shorten feedback time. Runtime depends on page count, device matrix, and environment. Keep human review for key tasks, interactions, and design differences.</p>
 </section>
 
 <div class="divider"></div>
@@ -672,9 +671,9 @@ private fun ProductDetailScreenDarkPreview() {
 <section id="sync">
 <div class="sec-tag">Quality 07</div>
 <h2>Bidirectional Sync: Make the Design System Truly "Alive"</h2>
-<p>A "design system" is not a Figma page, it is a <strong>living, continuously evolving entity</strong>. The role of AI coding agents in the middle is to <strong>reduce the sync cost between Design ↔ Code to zero</strong>.</p>
+<p>Automated screenshots and assertions can shorten feedback time. Runtime depends on page count, device matrix, and environment. Keep human review for key tasks, interactions, and design differences.</p>
 
-<h3 data-reveal>Three Sync Patterns</h3>
+<h3 data-reveal="">Three Sync Patterns</h3>
 
 <h4>① Figma → Code (Forward, Most Common)</h4>
 <p>Designer modifies Figma → Claude Code modifies Compose, the pipeline explained earlier covers this entirely. <strong>Key constraint</strong>: After the designer modifies Variables, you must make Claude Code pull <code>get_variable_defs</code> again before generating code; do not rely on cache.</p>
@@ -689,7 +688,7 @@ private fun ProductDetailScreenDarkPreview() {
 <h4>③ Figma ↔ Code Bidirectional (Advanced, Requires Middleware)</h4>
 <p>Use <a href="https://amzn.github.io/style-dictionary/" target="_blank">Style Dictionary</a> or <a href="https://github.com/salesforce/theo" target="_blank">Theo</a> as the <strong>Single Source of Truth for Tokens</strong> (one JSON). Figma syncs via the Tokens Studio plugin, and Compose uses a Gradle plugin to generate ColorScheme. Modify in one place, both sides auto-update. <strong>This is the "correct posture" for design system engineering in 2026</strong>, provided small teams are willing to spend a week setting up the infrastructure.</p>
 
-<h3 data-reveal>Known Gap: No Official Bidirectional Sync for Figma ↔ pen.dev</h3>
+<h3 data-reveal="">Known Gap: No Official Bidirectional Sync for Figma ↔ pen.dev</h3>
 <p>Checking first-hand documentation as of 2026-08-05 confirms: <strong>There is no official "bidirectional sync" link between Figma Variables and pen.dev Variables</strong>—neither an official pen.dev plugin to push variables back to Figma, nor a native bridge on the Figma side to read the <code>.pen</code> file format. Both sides expose variables as machine-readable JSON (Figma REST API, <code>.pen</code> file), but a 1-to-1 official API does not exist.</p>
 
 <p>If your design system coexists between Figma + pen.dev, the most practical solution currently is a <strong>"Four-hop bridge"</strong> (using DTCG JSON as the hub):</p>
@@ -722,17 +721,17 @@ await sd.buildAllPlatforms();</code></pre>
 
 <p><strong>Choosing the Middleware Bridge</strong>:</p>
 <table class="tbl">
-  <tr><th>Bridge</th><th>Capabilities</th><th>Limitations</th></tr>
+  <tbody><tr><th>Bridge</th><th>Capabilities</th><th>Limitations</th></tr>
   <tr><td><strong>Tokens Studio</strong> (formerly Figma Tokens)</td><td>Figma Variables ↔ DTCG JSON, 300k users, 9+ sync providers (GitHub/GitLab/JSONBin)</td><td>UI is on the Figma side, requires separate authorization</td></tr>
   <tr><td><strong>Style Dictionary v4</strong> (by Amazon)</td><td>DTCG JSON → Compose Kotlin / iOS Swift / Android XML / CSS / SCSS / Flutter Dart, cross-platform</td><td>Only compiles, doesn't solve the Figma ↔ JSON segment</td></tr>
   <tr><td><strong>Custom Scripts</strong> (Figma REST API + pen.dev CLI)</td><td>Fully controllable, supports cron + triggers</td><td>Requires writing glue code + CI deployment</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout warn"><b class="t">Friendly Reminder</b>The Figma Variables POST API requires a <strong>full Tier 3 + Enterprise seat + <code>file_variables:write</code> scope</strong>, personal accounts cannot write to it; additionally, each Collection is limited to ≤ 40 modes, ≤ 5000 variables, POST body ≤ 4 MB, and changes are submitted as atomic transactions. <strong>Verified Date 2026-08-05</strong>—if Figma or pen.dev releases official bidirectional sync later, this section will be updated.</div>
 
 <p>Full research (including 4 executable code snippets, gotcha list, and source index) available at <a href="https://github.com/JackyMe/ai-knowledge-base/blob/main/drafts/ai-ui-collab-figma-pen-vars.md" target="_blank">drafts/ai-ui-collab-figma-pen-vars.md</a>.</p>
 
-<h3 data-reveal>6 Disciplines for Design System Maintenance</h3>
+<h3 data-reveal="">6 Disciplines for Design System Maintenance</h3>
 <ol>
   <li><strong>Token naming is documentation</strong>—<code>surface/container/high</code> is better than <code>gray-100</code>. When AI sees semantic names it knows where to use them; color names only tell it it's gray.</li>
   <li><strong>Do not use system colors like <code>Color.White</code> directly</strong>—all colors go through ColorScheme. Even if "I really just want white", use <code>colorScheme.surface</code>. This ensures Dark Mode auto-inverts.</li>
@@ -756,10 +755,10 @@ Output three tables, I will fix them one by one.</code>
 
 <section id="cases">
 <div class="sec-tag">Case Study 08</div>
-<h2>Real Case: From Figma to Play Store, A Product Detail Page</h2>
+<h2>Example: a product detail page</h2>
 <p>Stringing all the above points into an end-to-end example. Background: An e-commerce app needs a "Product Detail Page", design is in Figma, code is in Android Studio, 5 screens (Light/Dark × 2 states × English/Chinese), requiring Play Store launch within a week.</p>
 
-<h3 data-reveal>Day 1 · Prep Phase (2 Hours)</h3>
+<h3 data-reveal="">Day 1 · Prep Phase (2 Hours)</h3>
 <ol class="steps">
   <li>Install <strong>Material 3 Design Kit</strong> (official) in Figma, paste in base colors, and generate Variables.</li>
   <li>Export Variables description file (JSON), save to <code>design/tokens/figma-variables.json</code>, track with Git.</li>
@@ -767,7 +766,7 @@ Output three tables, I will fix them one by one.</code>
   <li>Install Claude Code plugin <code>figma@claude-plugins-official</code>, use <code>claude mcp list</code> to confirm figma connected.</li>
 </ol>
 
-<h3 data-reveal>Day 2-3 · Pipeline Setup (2 Days)</h3>
+<h3 data-reveal="">Day 2-3 · Pipeline Setup (2 Days)</h3>
 <ol class="steps">
   <li>Claude Code reads Figma Variables, generates <code>Color.kt</code> / <code>Type.kt</code> / <code>Shape.kt</code>.</li>
   <li>Reads Figma Frame <code>ProductDetailScreen</code>, generates Composable + @Preview + Paparazzi tests.</li>
@@ -775,7 +774,7 @@ Output three tables, I will fix them one by one.</code>
   <li>Submit PR #1: "design system integration + detail page initial version".</li>
 </ol>
 
-<h3 data-reveal>Day 4 · Business Logic Integration (1 Day)</h3>
+<h3 data-reveal="">Day 4 · Business Logic Integration (1 Day)</h3>
 <ol class="steps">
   <li>Change Composable to hoisted state (<code>ProductDetailScreen(state, onIntent)</code>).</li>
   <li>Add ViewModel + Hilt injection, fetch data from Repository.</li>
@@ -784,7 +783,7 @@ Output three tables, I will fix them one by one.</code>
   <li>Submit PR #2: "business logic integration".</li>
 </ol>
 
-<h3 data-reveal>Day 5 · Designer Adjustments & Sync (0.5 Days)</h3>
+<h3 data-reveal="">Day 5 · Designer Adjustments &amp; Sync (0.5 Days)</h3>
 <ol class="steps">
   <li>Designer says "Let's brighten the primary color slightly", edits <code>brand/primary/500</code> in Figma Variables.</li>
   <li>Claude Code auto-detects: reads latest <code>get_variable_defs</code> → compares against <code>Color.kt</code> → generates patch.</li>
@@ -793,7 +792,7 @@ Output three tables, I will fix them one by one.</code>
   <li>Submit PR #3: "Brand color adjustment" with attached Paparazzi diff screenshots.</li>
 </ol>
 
-<h3 data-reveal>Day 6-7 · Internationalization & Release (1.5 Days)</h3>
+<h3 data-reveal="">Day 6-7 · Internationalization &amp; Release (1.5 Days)</h3>
 <ol class="steps">
   <li>Add <code>values-zh-rCN/strings.xml</code> and <code>values-en/strings.xml</code>.</li>
   <li>Record new baselines (Light/Dark × EN/ZH = 8 snapshots via Paparazzi).</li>
@@ -811,7 +810,7 @@ Output three tables, I will fix them one by one.</code>
 <h2>Anti-patterns and Pitfalls Checklist</h2>
 <p>The following are pitfalls repeatedly encountered by the community (and my own projects), each with "why it's wrong" and "what to do instead":</p>
 
-<h3 data-reveal>Design Side Anti-patterns</h3>
+<h3 data-reveal="">Design Side Anti-patterns</h3>
 <div class="duo">
   <div class="bad"><b>❌ Designer only exports images, no Tokens</b>
   <p>Making AI "guess" color values from screenshots results in code that's always slightly off-brand.</p></div>
@@ -833,7 +832,7 @@ Output three tables, I will fix them one by one.</code>
   <p>1-to-1 mapping between Figma Frame names and Compose function names yields the most accurate AI inference.</p></div>
 </div>
 
-<h3 data-reveal>Coding Side Anti-patterns</h3>
+<h3 data-reveal="">Coding Side Anti-patterns</h3>
 <div class="duo">
   <div class="bad"><b>❌ AI directly modifies production code</b>
   <p>No plan, no regression, produces 5 bugs but you only notice 2.</p></div>
@@ -855,7 +854,7 @@ Output three tables, I will fix them one by one.</code>
   <p>AI has limited context + hard to trace errors; small steps are 10x safer than leaps.</p></div>
 </div>
 
-<h3 data-reveal>Workflow Side Anti-patterns</h3>
+<h3 data-reveal="">Workflow Side Anti-patterns</h3>
 <div class="duo">
   <div class="bad"><b>❌ Modifying both Figma and Code without records</b>
   <p>All parties (design/frontend/AI) modify things, ending in desync.</p></div>
@@ -870,7 +869,7 @@ Output three tables, I will fix them one by one.</code>
   <p>Screenshot diffs are part of PR review, baseline updates need reasons.</p></div>
 </div>
 
-<h3 data-reveal>4 Metrics to Judge if AI UI Mods Truly Improve Efficiency</h3>
+<h3 data-reveal="">4 Metrics to Judge if AI UI Mods Truly Improve Efficiency</h3>
 <p>Don't be fooled by "looks like a PR in 30 seconds", real efficiency relies on:</p>
 <ol>
   <li><strong>PR Merge Rate</strong>—% of AI PRs approved on the first pass. &lt; 50% means AI is creating rework.</li>
@@ -887,7 +886,7 @@ Output three tables, I will fix them one by one.</code>
 <h2>Prompt Template Library (Copy-Pasteable)</h2>
 <p>The following prompts follow a three-part "what to read / where to write / what to test" structure, adapted for Claude Code and Codex; tweak details as needed.</p>
 
-<h3 data-reveal>A1 · Startup: Read Figma Design + Save Tokens</h3>
+<h3 data-reveal="">A1 · Startup: Read Figma Design + Save Tokens</h3>
 <div class="prompt-box">
 <div class="pt">PROMPT A1</div>
 <code>Read ProductDetailScreen in Figma file &lt;FILE_KEY&gt; (using figma MCP):
@@ -897,7 +896,7 @@ Output three tables, I will fix them one by one.</code>
 4. Show me the diff for Color.kt</code>
 </div>
 
-<h3 data-reveal>A2 · Generate Composable + Preview + Test</h3>
+<h3 data-reveal="">A2 · Generate Composable + Preview + Test</h3>
 <div class="prompt-box">
 <div class="pt">PROMPT A2</div>
 <code>Generate based on Figma Frame structure:
@@ -908,7 +907,7 @@ Output three tables, I will fix them one by one.</code>
 - Run ./gradlew :app:verifyPaparazziDebug, report back only when green</code>
 </div>
 
-<h3 data-reveal>A3 · Auto-Sync After Designer Token Changes</h3>
+<h3 data-reveal="">A3 · Auto-Sync After Designer Token Changes</h3>
 <div class="prompt-box">
 <div class="pt">PROMPT A3</div>
 <code>Designer just modified Variables in Figma, link: &lt;FIGMA_URL&gt;
@@ -918,7 +917,7 @@ Output three tables, I will fix them one by one.</code>
 4. Raise a PR, title "design: sync tokens from Figma (2026-08-05)"</code>
 </div>
 
-<h3 data-reveal>A4 · Add New Page (Same Design System)</h3>
+<h3 data-reveal="">A4 · Add New Page (Same Design System)</h3>
 <div class="prompt-box">
 <div class="pt">PROMPT A4</div>
 <code>Read Figma Frame &lt;FRAME_ID&gt;, create &lt;FeatureName&gt;Screen.kt
@@ -929,7 +928,7 @@ Output three tables, I will fix them one by one.</code>
 - Upon completion, run :app:lintDebug, then run :app:verifyPaparazziDebug</code>
 </div>
 
-<h3 data-reveal>A5 · Screenshot Regression Fails → Let AI Fix Itself</h3>
+<h3 data-reveal="">A5 · Screenshot Regression Fails → Let AI Fix Itself</h3>
 <div class="prompt-box">
 <div class="pt">PROMPT A5</div>
 <code>I just ran :app:verifyPaparazziDebug, the following tests failed:
@@ -942,7 +941,7 @@ Please:
 5. After fixing, verify again until all green</code>
 </div>
 
-<h3 data-reveal>A6 · Reverse Write-back: Figma → Token JSON</h3>
+<h3 data-reveal="">A6 · Reverse Write-back: Figma → Token JSON</h3>
 <div class="prompt-box">
 <div class="pt">PROMPT A6</div>
 <code>Read all ColorScheme roles from app/src/main/java/.../ui/theme/Color.kt
@@ -960,7 +959,7 @@ Use a format compatible with Style Dictionary</code>
 <h2>Cross-Platform Rollout: iOS × Web (Copying the Android Pipeline)</h2>
 <p><strong>Reader Profile</strong>: You're reading this booklet, but <strong>you don't write Android yourself</strong>—you write SwiftUI or React/Tailwind. This appendix only covers two things: ① How to copy the 5-step pipeline into SwiftUI / React; ② What their respective "counterpart mechanisms" are (Compose has <code>MaterialTheme</code>, what are the equivalents in iOS / Web?). <strong>Verified Date 2026-08-05</strong>, section X4 at the end has full links.</p>
 
-<h3 data-reveal>X1. iOS Rollout (SwiftUI)</h3>
+<h3 data-reveal="">X1. iOS Rollout (SwiftUI)</h3>
 <p>Apple doesn't use the term "Design Token", but has three equivalent mechanisms that form the "Figma Variables → SwiftUI" bridge:</p>
 
 <h4>① Semantic Colors + Asset Catalog</h4>
@@ -1016,13 +1015,13 @@ await sd.buildAllPlatforms();</code></pre>
 
 <h4>④ iOS Side "5-Step Pipeline" Mirror</h4>
 <table class="tbl">
-  <tr><th>Step</th><th>Android Main Text Approach</th><th>iOS Counterpart</th></tr>
+  <tbody><tr><th>Step</th><th>Android Main Text Approach</th><th>iOS Counterpart</th></tr>
   <tr><td>1. Token Savings</td><td>Material Theme Builder → Color.kt</td><td>Tokens Studio + Style Dictionary → BrandTheme.swift</td></tr>
   <tr><td>2. Component / Page Contract</td><td>Figma Frame</td><td>Same Figma Frame (<code>Copy as SwiftUI</code> missing, needs translation)</td></tr>
   <tr><td>3. AI Reads Design</td><td>Figma MCP <code>get_design_context</code> + Translation</td><td>Same Figma MCP, but React→SwiftUI is AI's workload</td></tr>
   <tr><td>4. AI Code Gen</td><td>Compose + @Preview + Screenshot test</td><td>SwiftUI + #Preview + SnapshotTesting</td></tr>
   <tr><td>5. Visual Regression</td><td>Paparazzi / Roborazzi (JVM, seconds)</td><td><strong>SnapshotTesting (simulator, slow)—currently no "deviceless" equivalent</strong></td></tr>
-</table>
+</tbody></table>
 
 <h4>⑤ Real AI Coding Agent Capability Limits for SwiftUI</h4>
 <p>Frankly, AI writing SwiftUI has several <strong>obvious shortcomings</strong> (Status as of 2026.8):</p>
@@ -1047,7 +1046,7 @@ Output:
 
 Prohibited: .foregroundColor(.red) / hardcoded hex values / direct Combine orchestrations imported in the View</code></pre>
 
-<h3 data-reveal>X2. Web Implementation (Tailwind v4 × shadcn)</h3>
+<h3 data-reveal="">X2. Web Implementation (Tailwind v4 × shadcn)</h3>
 <p>The evolution of "Design Tokens as First-Class Citizens" on the Web over the past three years: <strong>Tailwind v3 config.js → Tailwind v4 <code>@theme</code> CSS variables → shadcn semantic CSS variables</strong>. The significance of v4 is that Tailwind directly consumes CSS variables, bypassing the <code>tailwind.config.js</code> path.</p>
 
 <h4>① Tailwind v4 <code>@theme</code> Directive</h4>
@@ -1067,23 +1066,23 @@ Prohibited: .foregroundColor(.red) / hardcoded hex values / direct Combine orche
 }</code></pre>
 <p>Key change: v4's <code>@theme</code> <strong>directly generates utility classes</strong> — <code>bg-brand-500</code> / <code>font-display</code> / <code>rounded-card</code> all come from it, without needing to write <code>tailwind.config.js</code>. Three advanced directives (corresponding to the Compose Token system):</p>
 <table class="tbl">
-  <tr><th>Directive</th><th>What it does</th><th>Compose Analogy</th></tr>
+  <tbody><tr><th>Directive</th><th>What it does</th><th>Compose Analogy</th></tr>
   <tr><td><code>@theme inline { ... }</code></td><td>Expands Tokens directly into utilities, without generating CSS variables</td><td>(Similar to) <code>colorScheme.primary</code> "expanded" mode</td></tr>
   <tr><td><code>@theme static { ... }</code></td><td><strong>Disallows overriding</strong>, true "hardcoding"</td><td>(Similar to) MaterialTheme cannot be changed at runtime</td></tr>
   <tr><td><code>--*: initial</code></td><td>Resets Tailwind default spacing / radius, giving you naming control</td><td>Global reset to in-house design baseline</td></tr>
-</table>
+</tbody></table>
 
 <h4>② shadcn's "Code is Design" Philosophy</h4>
 <p>shadcn does not publish an npm package; you install the <strong>component source code</strong> (pasted into <code>components/ui/</code>), so "changing Design Tokens" = changing CSS variables like <code>bg-primary</code> in the source. <strong>It corresponds one-to-one with Figma Variables</strong>:</p>
 <table class="tbl">
-  <tr><th>shadcn CSS Variable</th><th>Figma Variable Counterpart</th><th>Usage</th></tr>
+  <tbody><tr><th>shadcn CSS Variable</th><th>Figma Variable Counterpart</th><th>Usage</th></tr>
   <tr><td><code>--background</code> / <code>--foreground</code></td><td>surface / onSurface</td><td>Container background + text</td></tr>
   <tr><td><code>--primary</code> / <code>--primary-foreground</code></td><td>primary / onPrimary</td><td>Buttons, primary links</td></tr>
   <tr><td><code>--secondary</code> / <code>--muted</code> / <code>--accent</code></td><td>secondaryContainer / surfaceVariant / tertiary</td><td>Secondary containers / muted / accent</td></tr>
   <tr><td><code>--destructive</code></td><td>error</td><td>Destructive actions (delete, error)</td></tr>
   <tr><td><code>--border</code> / <code>--input</code> / <code>--ring</code></td><td>outline / outlineVariant / focus</td><td>Borders / input borders / focus rings</td></tr>
   <tr><td><code>--radius</code></td><td>shape.cornerMedium</td><td>Global radius baseline</td></tr>
-</table>
+</tbody></table>
 <p><strong>Watch out for this pitfall</strong>: shadcn defaults to a neutral gray tone; <strong>simply override <code>--primary</code> with your brand color</strong>. Do not change the hardcoded colors in the component source code—next time you run <code>shadcn add</code> for a new component, it will pull the defaults again.</p>
 
 <h4>③ Claude Code × Next.js / Vite Pipeline</h4>
@@ -1100,15 +1099,15 @@ claude&gt; Use Figma MCP to read this Frame:{URL}, convert the Frame into equiva
 
 <h4>④ Web Visual Regression Pick One of Three</h4>
 <table class="tbl">
-  <tr><th>Tool</th><th>Based on</th><th>Strengths</th><th>Cost</th></tr>
+  <tbody><tr><th>Tool</th><th>Based on</th><th>Strengths</th><th>Cost</th></tr>
   <tr><td><strong>Playwright screenshot</strong></td><td>Headless browser</td><td>Free, most flexible, shares with E2E tests</td><td>Requires managing baselines + diff reports manually</td></tr>
   <tr><td><strong>Chromatic</strong> (Storybook team)</td><td>Storybook + Cloud</td><td>PR comments attach screenshot diffs directly, one-stop UI review</td><td>Paid, requires setting up Storybook</td></tr>
   <tr><td><strong>VRT</strong> (Visual Regression Tracker)</td><td>Independent service</td><td>Cross-project, self-hosted</td><td>Maintenance cost</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>X3. Cross-Platform Comparison Cheat Sheet</h3>
+<h3 data-reveal="">X3. Cross-Platform Comparison Cheat Sheet</h3>
 <table class="tbl">
-  <tr><th>Dimension</th><th>Android (Compose)</th><th>iOS (SwiftUI)</th><th>Web (Tailwind v4 + shadcn)</th></tr>
+  <tbody><tr><th>Dimension</th><th>Android (Compose)</th><th>iOS (SwiftUI)</th><th>Web (Tailwind v4 + shadcn)</th></tr>
   <tr><td><strong>Tokens as First-Class Citizens</strong></td><td><code>MaterialTheme.colorScheme</code></td><td><code>@Entry</code> macro + <code>BrandTheme</code> (iOS 18+)</td><td>CSS variables + <code>@theme</code> (Tailwind v4)</td></tr>
   <tr><td><strong>Official Bridge: Design → Code</strong></td><td>Material Theme Builder exports Compose</td><td>Tokens Studio + Style Dictionary compiles Swift</td><td>shadcn CLI + CSS variables / Style Dictionary</td></tr>
   <tr><td><strong>Figma MCP</strong></td><td>Native, 5-step pipeline proven</td><td>Native, but React→SwiftUI requires self-translation</td><td>Native, <code>get_design_context</code> directly produces React + Tailwind</td></tr>
@@ -1119,9 +1118,9 @@ claude&gt; Use Figma MCP to read this Frame:{URL}, convert the Frame into equiva
   <tr><td><strong>Responsive Layout Tokens</strong></td><td><code>Modifier.fillMaxWidth()</code></td><td><code>.containerRelativeFrame()</code> (iOS 17+)</td><td>Tailwind breakpoint + <code>@container</code></td></tr>
   <tr><td><strong>Fastest Path to Sync Design with AI</strong></td><td>Figma MCP + Material Theme Builder</td><td>Figma MCP + Tokens Studio</td><td>Figma MCP + shadcn CLI</td></tr>
   <tr><td><strong>What AI is Bad At</strong></td><td>State hoisting / hoisted preview order</td><td>Gesture chains / Combine / SwiftData migration</td><td>v3→v4 config migration / Radix internals</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>X4. Sources (Verified Date 2026-08-05)</h3>
+<h3 data-reveal="">X4. Sources (Verified Date 2026-08-05)</h3>
 <ol>
   <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations" target="_blank">Apple HIG / Foundations (Main Directory)</a> — Color / Typography / Materials / Dark Mode / Accessibility</li>
   <li><a href="https://developer.apple.com/design/human-interface-guidelines/foundations/color" target="_blank">Apple HIG / Foundations / Color</a> — Semantic Colors, SF Symbols, Dynamic Type, Asset Catalog Integration</li>
@@ -1144,7 +1143,7 @@ claude&gt; Use Figma MCP to read this Frame:{URL}, convert the Frame into equiva
 </ol>
 If any reader finds these in primary documentation, PRs are welcome.
 </div>
-</section>
+<p class="src"><a href="https://ui.shadcn.com/docs/mcp" target="_blank" rel="noopener">ui.shadcn.com · mcp</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -1152,7 +1151,7 @@ If any reader finds these in primary documentation, PRs are welcome.
 <div class="sec-tag">Appendix R</div>
 <h2>Resources and Sources Index</h2>
 
-<h3 data-reveal>Official Documentation (Primary Sources)</h3>
+<h3 data-reveal="">Official Documentation (Primary Sources)</h3>
 <ul>
   <li><a href="https://docs.pencil.dev/" target="_blank">pen.dev Official Documentation</a> — Included in this repository as <a href="pencil-docs-zh.en.html">"pen.dev Documentation Chinese Version"</a></li>
   <li><a href="https://docs.pencil.dev/getting-started/ai-integration" target="_blank">pen.dev AI Integration</a> — MCP integration, Claude Code / Codex workflows</li>
@@ -1163,7 +1162,7 @@ If any reader finds these in primary documentation, PRs are welcome.
   <li><a href="https://stitch.withgoogle.com/" target="_blank">Google Stitch</a></li>
 </ul>
 
-<h3 data-reveal>Tool Repositories</h3>
+<h3 data-reveal="">Tool Repositories</h3>
 <ul>
   <li><a href="https://github.com/cashapp/paparazzi" target="_blank">Paparazzi</a> — JVM screenshot testing</li>
   <li><a href="https://github.com/takahirom/roborazzi" target="_blank">Roborazzi</a> — Robolectric screenshot testing + AI skill (<code>npx skills add takahirom/roborazzi</code>)</li>
@@ -1171,13 +1170,13 @@ If any reader finds these in primary documentation, PRs are welcome.
   <li><a href="https://github.com/salesforce/theo" target="_blank">Theo</a> — Another Token tool</li>
 </ul>
 
-<h3 data-reveal>Related Topics in this Repository (Cross-Reading)</h3>
+<h3 data-reveal="">Related Topics in this Repository (Cross-Reading)</h3>
 <ul>
   <li><a href="pencil-claude-code-best-practices.en.html">pen.dev × Claude Code Best Practices</a> — Deep dive practical manual for this combination</li>
   <li><a href="pencil-docs-zh.en.html">pen.dev Official Documentation Chinese Version</a> — Page-by-page translation</li>
   <li><a href="claude-code-guide.en.html">Claude Code Usage Guide</a> — Commands, Skills, MCP general basics</li>
   <li><a href="codex-guide.en.html">Codex Usage Guide</a> — OpenAI coding agent comparison</li>
-  <li><a href="android-crash-anr.en.html">Android Crash & ANR Root Cause Analysis</a> — Using AI to modify UI without affecting stability</li>
+  <li><a href="android-crash-anr.en.html">Android Crash &amp; ANR Root Cause Analysis</a> — Using AI to modify UI without affecting stability</li>
   <li><a href="prompt-context-engineering.en.html">Prompt and Context Engineering</a> — The underlying methodology of all prompts on this page</li>
 </ul>
 
@@ -1194,6 +1193,9 @@ If any reader finds these in primary documentation, PRs are welcome.
 
 <button class="top-btn" id="topBtn" title="Back to Top">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header></body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>27. Container Matchmaking: Farewell to Hardcoded IPs - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Stage 2: Environment Setup</div>
   <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passcode</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passcode</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Snail-Speed No More</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
 </div>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Stage 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Volume Backup</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Stage 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Stage 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item on" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to Hardcoded IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Ultimate Battle (Part 2): Microservice Networks</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Stage 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Stage 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Space Cleanup: Docker System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 Stage: Networking & Orchestration · Lesson 27 / 35</div>
+  <div class="chapter-badge">🐳 Stage: Networking &amp; Orchestration · Lesson 27 / 35</div>
   <h1>27. Container Matchmaking: Farewell to Hardcoded IPs, Call Me by My Name</h1>
 
 <p>In the previous lesson, we mentioned that if you still hardcode IP addresses to connect your Web container to a database container, you are bound to suffer a series of catastrophic crashes. Today, we'll walk through Xiao Ming's painful lesson and perform a flawless rescue using Docker custom networks.</p>
@@ -405,22 +404,21 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
 </div>
 
-<h2>2. The Rescue Plan: Custom Networks & Service Discovery</h2>
+<h2>2. The Rescue Plan: Custom Networks &amp; Service Discovery</h2>
 
 <p>The fix for Xiao Ming is straightforward: ditch the default <code>bridge</code> network and create a custom user-defined network!</p>
 
 <p>Within a custom network, Docker Engine provides an embedded DNS server (CoreDNS). As long as containers are attached to the same custom network, they can treat <strong>container names</strong> as hostnames to communicate with each other seamlessly!</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-sequenceDiagram
+<pre class="mermaid">sequenceDiagram
     participant Web as Web (app-server)
     participant DNS as Docker DNS (127.0.0.11)
     participant DB as DB (mysql-server)
     
-    Web->>DNS: Query: What is the IP for "mysql-server"?
-    DNS-->>Web: Answer: 172.18.0.3
-    Web->>DB: Initiate DB connection using resolved IP
+    Web-&gt;&gt;DNS: Query: What is the IP for "mysql-server"?
+    DNS--&gt;&gt;Web: Answer: 172.18.0.3
+    Web-&gt;&gt;DB: Initiate DB connection using resolved IP
 </pre>
 </div>
 
@@ -474,7 +472,7 @@ sequenceDiagram
   <span class="ic">🎯</span>
   <div>
     <span class="tt">Pro Tip: Network Aliases</span>
-    Beyond using <code>--name</code> as the DNS hostname, you can also assign aliases! For instance, if you run 3 backend replicas, you can assign all of them <code>--network-alias backend-api</code>.<br/>
+    Beyond using <code>--name</code> as the DNS hostname, you can also assign aliases! For instance, if you run 3 backend replicas, you can assign all of them <code>--network-alias backend-api</code>.<br>
     Something magical happens: when internal containers ping <code>backend-api</code>, Docker DNS returns one of the 3 container IPs in round-robin order. That gives you lightweight internal load balancing for free!
   </div>
 </div>
@@ -492,7 +490,7 @@ sequenceDiagram
 </div>
   
   <div class="page-nav">
-  <a href="26-network-types.en.html" class="page-nav-link prev"><span class="dir">← Previous Lesson</span><span class="title">26. Network Deep Dive: Bridge & Host</span></a>
+  <a href="26-network-types.en.html" class="page-nav-link prev"><span class="dir">← Previous Lesson</span><span class="title">26. Network Deep Dive: Bridge &amp; Host</span></a>
   <a href="28-why-compose.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">28. Why Do We Need Compose?</span></a>
 </div>
 
@@ -602,5 +600,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

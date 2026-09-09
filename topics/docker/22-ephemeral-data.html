@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>22. 短命容器与消失的数据 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -393,15 +392,14 @@ pre:hover .copy-btn { opacity: 1; }
 <p>在第 19 集中我们讲过，Docker 镜像是分层的，而且这些层是<strong>只读的 (Read-only)</strong>。当你运行一个容器时，Docker 会在这些只读层之上，偷偷加上一个<strong>读写层 (Writable Layer)</strong>。</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart TD
+<pre class="mermaid">flowchart TD
     subgraph 容器运行时的存储结构
-    A[容器读写层 Writable Layer <br/>数据随容器消亡]:::writable
-    B[镜像层 3: COPY . /app <br/>只读]:::readonly
-    C[镜像层 2: RUN apt-get install <br/>只读]:::readonly
-    D[镜像层 1: FROM ubuntu <br/>只读]:::readonly
+    A[容器读写层 Writable Layer <br>数据随容器消亡]:::writable
+    B[镜像层 3: COPY . /app <br>只读]:::readonly
+    C[镜像层 2: RUN apt-get install <br>只读]:::readonly
+    D[镜像层 1: FROM ubuntu <br>只读]:::readonly
     
-    A --> B --> C --> D
+    A --&gt; B --&gt; C --&gt; D
     end
     
     classDef writable fill:#fee2e2,stroke:#ef4444,stroke-width:2px;
@@ -421,7 +419,7 @@ flowchart TD
 <pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-it</span> <span class="bash-arg">--name</span> my-ubuntu ubuntu bash</code></pre>
 
 <p>2. 在容器内部，我们创建一个文件并写点秘密：</p>
-<pre><code><span class="bash-cmd">echo</span> <span class="bash-str">"这是我一辈子的积蓄"</span> > /root/diary.txt
+<pre><code><span class="bash-cmd">echo</span> <span class="bash-str">"这是我一辈子的积蓄"</span> &gt; /root/diary.txt
 <span class="bash-cmd">cat</span> /root/diary.txt
 <span class="bash-comment"># 输出: 这是我一辈子的积蓄</span></code></pre>
 
@@ -582,5 +580,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

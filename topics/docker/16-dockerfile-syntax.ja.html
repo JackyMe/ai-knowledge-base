@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>16. Dockerfile 構文の完全解説 - Docker 35段階完全マスター</title>
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -386,7 +385,7 @@ pre:hover .copy-btn { opacity: 1; }
         <li><strong>バージョンの固定：</strong> <code>FROM ubuntu:latest</code> と書くのは厳禁です！ ビルドのたびに中身が変わるガチャになってしまいます。必ず <code>FROM ubuntu:22.04</code> のように明示的なバージョンタグを固定してください。</li>
       </ul>
 <pre><span class="bash-comment"># 推奨されるベースイメージ宣言例</span>
-<span class="bash-cmd">FROM</span> node:18-alpine</pre>
+<span class="bash-cmd">FROM</span> node:24-alpine</pre>
     </div>
   </div>
 
@@ -426,8 +425,8 @@ pre:hover .copy-btn { opacity: 1; }
           小さなコマンドごとに個別の RUN 行を書かないでください。命令ごとに別個のファイルシステムレイヤーが生成されてしまいます（第19章で詳述）。<br>
           ❌ 悪い例：<br>
           <code>RUN apt-get update</code><br><code>RUN apt-get install -y vim</code><br>
-          ✅ 良い例：<code>&&</code> で繋ぎ、同じレイヤー内で不要なパッケージキャッシュを掃除する：<br>
-          <code>RUN apt-get update && apt-get install -y vim && rm -rf /var/lib/apt/lists/*</code>
+          ✅ 良い例：<code>&amp;&amp;</code> で繋ぎ、同じレイヤー内で不要なパッケージキャッシュを掃除する：<br>
+          <code>RUN apt-get update &amp;&amp; apt-get install -y vim &amp;&amp; rm -rf /var/lib/apt/lists/*</code>
         </div>
       </div>
     </div>
@@ -463,7 +462,7 @@ pre:hover .copy-btn { opacity: 1; }
   <h2>二、実践：本番対応 Node.js Dockerfile の1行ずつ徹底解説</h2>
   <p>現場で実際に使われている美しい Node.js 本番用 Dockerfile を見てみましょう：</p>
 <pre><span class="bash-comment"># 1. ベースイメージ：バージョン固定された公式の最小限 alpine イメージを採用</span>
-<span class="bash-cmd">FROM</span> node:18-alpine
+<span class="bash-cmd">FROM</span> node:24-alpine
 
 <span class="bash-comment"># 2. メタデータ：メンテナーや責任者を明記</span>
 <span class="bash-cmd">LABEL</span> maintainer="engineer@example.com"
@@ -625,5 +624,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

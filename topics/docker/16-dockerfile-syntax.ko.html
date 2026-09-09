@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>16. Dockerfile 핵심 문법 완전 정복 - Docker 35단계 완벽 마스터</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 함정 탈출 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 환경 구축 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 환경 구축 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정: 느린 다운로드 속도 탈출</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -363,7 +362,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이전: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐색: Bridge와 Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 지정 탈출</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요할까?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>최종 실전 (하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>보안 방벽: .env로 비밀번호 보호하기</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 공간 대청소</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 철칙: Root 계정 사용 금지</span></a>
@@ -395,10 +394,10 @@ pre:hover .copy-btn { opacity: 1; }
       <ul>
         <li><strong>공식 이미지 사용:</strong> Docker Hub 공식 인증(Official) 이미지(예: <code>node</code>, <code>python</code>, <code>openjdk</code>)를 사용합니다.</li>
         <li><strong>Alpine vs Debian(slim):</strong> <code>alpine</code>은 약 5MB로 극도로 가볍지만 C 표준 라이브러리로 <code>musl libc</code>를 사용하여 C/C++ 네이티브 확장 패키지 빌드 시 호환성 이슈가 생길 수 있습니다. 일반적인 환경에서는 안정적인 <code>debian-slim</code> 계열이 권장됩니다.</li>
-        <li><strong>버전 태그 고정:</strong> 절대 <code>FROM ubuntu:latest</code>처럼 작성하지 마세요! 최신 버전 업데이트로 빌드가 불시에 깨질 수 있으므로 <code>FROM node:18-alpine</code>처럼 명확한 버전을 명시하세요.</li>
+        <li><strong>버전 태그 고정:</strong> 절대 <code>FROM ubuntu:latest</code>처럼 작성하지 마세요! 최신 버전 업데이트로 빌드가 불시에 깨질 수 있으므로 <code>FROM node:24-alpine</code>처럼 명확한 버전을 명시하세요.</li>
       </ul>
 <pre><code><span class="bash-comment"># 권장되는 작성 예시</span>
-<span class="bash-cmd">FROM</span> node:18-alpine</code></pre>
+<span class="bash-cmd">FROM</span> node:24-alpine</code></pre>
     </div>
   </div>
 
@@ -437,8 +436,8 @@ pre:hover .copy-btn { opacity: 1; }
           <span class="tt">안티패턴 주의: 무분별한 다중 RUN 남발 금지</span>
           각 RUN 명령어는 별도의 이미지 레이어(Layer)를 생성하여 이미지 용량을 비대하게 만듭니다.<br>
           ❌ 잘못된 예:<br><code>RUN apt-get update</code><br><code>RUN apt-get install -y vim</code><br>
-          ✅ 올바른 예: <code>&&</code> 연산자로 묶고 임시 캐시 파일 정리까지 한 줄에서 수행<br>
-          <code>RUN apt-get update && apt-get install -y vim && rm -rf /var/lib/apt/lists/*</code>
+          ✅ 올바른 예: <code>&amp;&amp;</code> 연산자로 묶고 임시 캐시 파일 정리까지 한 줄에서 수행<br>
+          <code>RUN apt-get update &amp;&amp; apt-get install -y vim &amp;&amp; rm -rf /var/lib/apt/lists/*</code>
         </div>
       </div>
     </div>
@@ -475,7 +474,7 @@ pre:hover .copy-btn { opacity: 1; }
   <p>실제 엔터프라이즈 환경에서 사용되는 완벽한 Node.js Dockerfile 예제입니다.</p>
 
 <pre><code><span class="bash-comment"># 1. 베이스 이미지 선택: 경량화된 Alpine 기반 및 버전 명시</span>
-<span class="bash-cmd">FROM</span> node:18-alpine
+<span class="bash-cmd">FROM</span> node:24-alpine
 
 <span class="bash-comment"># 2. 메타데이터 라벨 등록</span>
 <span class="bash-cmd">LABEL</span> maintainer="devops@company.com"
@@ -639,5 +638,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

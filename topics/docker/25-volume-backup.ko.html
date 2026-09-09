@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>25. 금고 이사: 데이터 백업 및 복원 - Docker 35단계 완벽 마스터</title>
@@ -283,6 +281,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -325,7 +324,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 제2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 문제 해결 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 설치 및 설정 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 설치 및 설정 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정으로 다운로드 가속화</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 마법의 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -356,7 +355,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item on" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이사: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 제6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 제6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐구: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 입력과의 작별</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요한가?</span></a>
@@ -365,7 +364,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>실전 배틀(하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 제7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 제7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>성벽 방어: .env를 통한 비밀 정보 보호</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 대청소: system prune</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 절대 원칙: Root 실행 금지</span></a>
@@ -385,8 +384,7 @@ pre:hover .copy-btn { opacity: 1; }
   <p>핵심 원리는 간단합니다: 복잡한 시스템 내부 디렉토리를 직접 건드리지 않고, <strong>임시 도우미 컨테이너</strong>를 하나 실행합니다. 백업할 Volume과 호스트의 현재 디렉토리를 동시에 마운트한 뒤, 이 도우미 컨테이너가 내부에서 <code>tar</code> 압축을 수행하여 압축 파일을 호스트로 던져주게 만드는 것입니다.</p>
 
   <div class="mermaid-box">
-<pre class="mermaid">
-flowchart TD
+<pre class="mermaid">flowchart TD
     subgraph Host ["호스트 머신 Host"]
         A["백업 대상 데이터 볼륨: db-data"]
         B["호스트 현재 디렉토리 $(pwd)"]
@@ -399,21 +397,21 @@ flowchart TD
         E(("tar 압축 명령어 실행"))
     end
     
-    A -.->|볼륨 마운트| C
-    B -.->|바인드 마운트| D
+    A -.-&gt;|볼륨 마운트| C
+    B -.-&gt;|바인드 마운트| D
     
-    C -->|데이터 읽기| E
-    E -->|압축 아카이브 작성| D
-    D ===> F
+    C --&gt;|데이터 읽기| E
+    E --&gt;|압축 아카이브 작성| D
+    D ===&gt; F
 </pre>
   </div>
 
   <h2>실전 1: 데이터 볼륨 백업 (Backup)</h2>
   <p>MySQL 데이터가 저장된 <code>db-data</code>라는 볼륨이 있다고 가정하고, 이를 현재 디렉토리에 <code>backup.tar.gz</code>로 압축 백업해 보겠습니다.</p>
 
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span> \
+<p class="callout warn">tar 예제는 쓰기가 중지된 볼륨용입니다. 실행 중인 DB는 전용 일관성 백업을 사용하고 버전 호환성과 새 빈 볼륨 복원을 검증하세요.</p><pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span> \
   <span class="bash-arg">-v</span> db-data:/volume-data \
-  <span class="bash-arg">-v</span> $(pwd):/backup \
+  <span class="bash-arg">-v</span> "$(pwd):/backup" \
   ubuntu \
   <span class="bash-cmd">tar</span> cvzf /backup/backup.tar.gz -C /volume-data .</code></pre>
 
@@ -421,7 +419,7 @@ flowchart TD
   <ul>
     <li><code>--rm</code>: 작업 완료 즉시 임시 도우미 컨테이너를 자동 파기하여 흔적을 남기지 않음.</li>
     <li><code>-v db-data:/volume-data</code>: 백업할 소중한 볼륨을 컨테이너의 <code>/volume-data</code>로 마운트.</li>
-    <li><code>-v $(pwd):/backup</code>: 호스트의 현재 폴더를 컨테이너의 <code>/backup</code>으로 연결하여 결과물 수령 준비.</li>
+    <li><code>-v "$(pwd):/backup"</code>: 호스트의 현재 폴더를 컨테이너의 <code>/backup</code>으로 연결하여 결과물 수령 준비.</li>
     <li><code>tar cvzf ... -C /volume-data .</code>: <code>/volume-data</code> 디렉토리 내부로 이동(<code>-C</code>)한 후 모든 내용(<code>.</code>)을 압축하여 <code>/backup/backup.tar.gz</code>에 저장. 호스트와 연결되어 있으므로 호스트 현재 폴더에 압축 파일이 즉시 생성됩니다!</li>
   </ul>
 
@@ -441,7 +439,7 @@ flowchart TD
 <p><strong>2. 도우미 컨테이너를 통한 압축 해제 (명령어가 <code>-xvzf</code>로 변경됨):</strong></p>
 <pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span> \
   <span class="bash-arg">-v</span> new-db-data:/volume-data \
-  <span class="bash-arg">-v</span> $(pwd):/backup \
+  <span class="bash-arg">-v</span> "$(pwd):/backup" \
   ubuntu \
   <span class="bash-cmd">tar</span> xvzf /backup/backup.tar.gz -C /volume-data</code></pre>
   
@@ -454,7 +452,7 @@ flowchart TD
     <div class="ic">💡</div>
     <div><span class="tt">프로의 팁 (Pro Tip): 데이터베이스 전용 논리 백업</span>
     <code>tar</code>를 이용한 파일 시스템 수준 볼륨 백업은 매우 범용적이지만, MySQL이나 PostgreSQL 같은 관계형 데이터베이스의 경우 데이터베이스 전용 논리 백업 도구(예: <code>mysqldump</code>)를 활용하는 것이 더욱 안전합니다.<br>
-    예시: <code>docker exec my-mysql mysqldump -uroot -p123456 my_db > backup.sql</code><br>
+    예시: <code>docker exec my-mysql mysqldump -uroot -p123456 my_db &gt; backup.sql</code><br>
     이 방식은 DB 실행 중에도 안전한 핫 백업이 가능하며, 파일 시스템 락 문제를 방지하고 서로 다른 DB 버전 간 마이그레이션에도 호환성이 뛰어납니다.</div>
   </div>
 
@@ -583,5 +581,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

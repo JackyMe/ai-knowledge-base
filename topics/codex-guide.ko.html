@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="OpenAI 코딩 에이전트 실전 활용 가이드: 20+ 서브명령어 및 40+ 슬래시 명령어 빠른 참조, 3×3 샌드박스 & 승인 매트릭스, 4가지 목표 지향 학습 경로, 선정 프리즘, 장시간 작업 4단계 규율, 메모리 완료 루프, 브라우저 E2E 검증, Issue-to-PR 자동화, Skills/MCP, Claude Code 협업 전략.">
+<meta name="description" content="OpenAI 코딩 에이전트 실전 활용 가이드: 20+ 서브명령어 및 40+ 슬래시 명령어 빠른 참조, 3×3 샌드박스 &amp; 승인 매트릭스, 4가지 목표 지향 학습 경로, 선정 프리즘, 장시간 작업 4단계 규율, 메모리 완료 루프, 브라우저 E2E 검증, Issue-to-PR 자동화, Skills/MCP, Claude Code 협업 전략.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Codex 실전 가이드 · CLI × IDE × Cloud 완전 활용 매뉴얼">
 <meta property="og:description" content="OpenAI 코딩 에이전트 전경: 선정 프리즘, 3×3 샌드박스 승인 매트릭스, 장시간 작업 4단계 규율, 메모리 정착 루프, 브라우저 E2E 검증, GitHub 자동화 및 듀얼 에이전트 협업.">
@@ -179,6 +177,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -203,7 +202,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="side-filter"><input id="sideFilter" placeholder="섹션 필터링…"><span class="fk">/</span></div>
   <div class="nav-group">
     <div class="gt">이해와 선정</div>
-    <a href="#overview"><span class="no">00</span>전체 개요 & 선정 프리즘</a>
+    <a href="#overview"><span class="no">00</span>전체 개요 &amp; 선정 프리즘</a>
     <a href="#learning-paths"><span class="no">01</span>4가지 학습 경로</a>
   </div>
   <div class="nav-group">
@@ -214,13 +213,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">빠른 참조와 보안</div>
     <a href="#commands"><span class="no">03</span>명령어 빠른 참조</a>
-    <a href="#sandbox"><span class="no">04</span>샌드박스 & 승인 3×3</a>
+    <a href="#sandbox"><span class="no">04</span>샌드박스 &amp; 승인 3×3</a>
   </div>
   <div class="nav-group">
     <div class="gt">핵심 규율과 장시간 작업</div>
-    <a href="#methodology"><span class="no">05</span>핵심 방법론 & 안티패턴</a>
+    <a href="#methodology"><span class="no">05</span>핵심 방법론 &amp; 안티패턴</a>
     <a href="#long-tasks"><span class="no">06</span>장시간 작업 4단계 규율</a>
-    <a href="#memory-system"><span class="no">07</span>마무리 & 메모리 루프</a>
+    <a href="#memory-system"><span class="no">07</span>마무리 &amp; 메모리 루프</a>
   </div>
   <div class="nav-group">
     <div class="gt">확장과 엔지니어링</div>
@@ -229,11 +228,11 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">실전과 심화</div>
-    <a href="#best-practices"><span class="no">심화</span>Codex 모범 사례 및 실전 예제</a>
-    <a href="#subscription-quotas"><span class="no">심화</span>ChatGPT Plus/Pro 멤버십 가치 극대화</a>
-    <a href="#image-guide"><span class="no">심화</span>Image 2.0/2.5 비주얼 엔지니어링</a>
+    <a href="#best-practices">작업 및 검증 템플릿</a>
+    <a href="#subscription-quotas">구독, API 및 컨텍스트</a>
+    <a href="#image-guide">이미지 작업 전용 가이드</a>
     <a href="#playbook"><span class="no">10</span>실전 GitHub 파이프라인</a>
-    <a href="#hidden-config"><span class="no">11</span>내부 분석과 듀얼 에이전트</a>
+    <a href="#hidden-config">로컬 버전 및 기능 확인</a>
     <a href="#resources"><span class="no">12</span>리소스 색인</a>
   </div>
 </nav>
@@ -264,27 +263,27 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>Codex는 OpenAI가 선보인 에이전틱 코딩 도구 생태계입니다: 단순히 "코드를 잘 짜는 챗봇"이 아니라 <strong>프로젝트 전반의 이해, 도구 호출, OS 수준 샌드박스 격리, 코드 패치 검증 및 크로스 플랫폼 실행 역량</strong>을 두루 갖춘 자율 개발 보조 시스템입니다.</p>
 
-<h3 data-reveal>1. 5가지 활용 형태, 단일 계정 공유</h3>
+<h3 data-reveal="">1. 5가지 활용 형태, 단일 계정 공유</h3>
 <table class="tbl">
-  <tr><th>형태</th><th>진입 명령어</th><th>가장 적합한 시나리오</th><th>핵심 메커니즘</th></tr>
+  <tbody><tr><th>형태</th><th>진입 명령어</th><th>가장 적합한 시나리오</th><th>핵심 메커니즘</th></tr>
   <tr><td><strong>대화형 CLI (TUI)</strong></td><td>터미널에서 <code>codex</code></td><td>일상 주력 개발, 아키텍처 탐색, 빠른 리팩토링</td><td>몰입형 터미널 UI, 전체 단축키 지원, 실시간 diff 검토</td></tr>
   <tr><td><strong>비대화형 모드 (exec)</strong></td><td><code>codex exec</code> / <code>codex e</code></td><td>CI/CD 자동화 파이프라인, 셸 스크립트, 대량 파일 일괄 처리</td><td>stdout 또는 JSONL 스트리밍 출력, <code>--json</code> 파싱 지원</td></tr>
   <tr><td><strong>IDE 확장 프로그램</strong></td><td>VS Code / Cursor / JetBrains</td><td>현재 편집 중인 파일 컨텍스트 내 미세 조정, 인라인 코드 수정</td><td>열린 파일 및 선택 영역 컨텍스트 재사용, CLI 로그인 상태 공유</td></tr>
   <tr><td><strong>Codex Cloud</strong></td><td><code>codex cloud</code> / 웹 콘솔</td><td>장시간 백그라운드 위임, 비동기 격리 빌드, best-of-N 다중 시도</td><td>독립 클라우드 샌드박스 실행, 1~4회 병렬 시도, 로컬 <code>codex apply</code> 반영</td></tr>
   <tr><td><strong>데스크톱 App / GitHub</strong></td><td><code>codex app</code>; PR 댓글 <code>@codex review</code></td><td>독립 워크벤치, 시각적 태스크 관리, 코드 리뷰 파이프라인</td><td>내장 브라우저 및 커넥터 통합, GitHub PR 인라인 자동 리뷰</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>2. 선정 프리즘 ①: ChatGPT Chat vs ChatGPT Work vs Codex</h3>
+<h3 data-reveal="">2. 선정 프리즘 ①: ChatGPT Chat vs ChatGPT Work vs Codex</h3>
 <p>"이미 ChatGPT를 쓰고 있는데, 언제 Codex로 전환해야 하는가?" — <strong>산출물 형태와 실행 권한</strong>을 기준으로 구분합니다:</p>
 <table class="tbl">
-  <tr><th>차원</th><th>ChatGPT 대화 (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
+  <tbody><tr><th>차원</th><th>ChatGPT 대화 (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
   <tr><td><strong>핵심 산출물</strong></td><td>텍스트 답변, 코드 스니펫, 개념 설명</td><td>문서, 스프레드시트 등 공유 문서/지식베이스</td><td><strong>실제 파일 트리 수정, Git Diff, 즉시 실행 가능한 코드</strong></td></tr>
   <tr><td><strong>실행 및 검증</strong></td><td>클라우드 샌드박스에서 단순 Python 실행에 국한</td><td>오피스 소프트웨어 데이터 연동</td><td><strong>로컬/컨테이너 풀 터미널, 테스트 실행, 빌드 컴파일, E2E 검증</strong></td></tr>
   <tr><td><strong>컨텍스트 관리</strong></td><td>단일 대화 히스토리 의존, 길어지면 망각 발생</td><td>프로젝트 작업 공간 파일 색인</td><td><strong>코드 리포지토리 전체 색인, AGENTS.md, 세션 분기 및 영구 메모리</strong></td></tr>
   <tr><td><strong>적용 단계</strong></td><td>요구사항 브레인스토밍, 의사코드 설계, 오류 원인 초벌 분석</td><td>PRD 기획서 작성, 요구사항 정의서 정리</td><td><strong>기능 구현, 버그 근본 해결, 테스트 작성부터 PR 제출까지 전 과정</strong></td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>3. 선정 프리즘 ②: App vs CLI vs IDE vs Cloud 조합 전략</h3>
+<h3 data-reveal="">3. 선정 프리즘 ②: App vs CLI vs IDE vs Cloud 조합 전략</h3>
 <div class="duo">
   <div class="good">
     <b>✅ 권장 황금 조합 (고효율 모범 사례)</b>
@@ -378,10 +377,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">설치 02</div>
 <h2>설치 및 플랫폼 튜닝</h2>
 
-<div class="callout warn"><b class="t">🚑 환경 및 로그인 문제 발생 시</b>포트 콜백 오류, 프록시 차단, 헤드리스 환경 인증, 다중 계정 충돌이 발생하면 전용 가이드를 확인하세요: <a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a>.</div>
+<div class="callout warn"><b class="t">🚑 환경 및 로그인 문제 발생 시</b>포트 콜백 오류, 프록시 차단, 헤드리스 환경 인증, 다중 계정 충돌이 발생하면 전용 가이드를 확인하세요: <a href="env-auth-clinic.ko.html">환경 &amp; 로그인 응급실</a>.</div>
 
-<h3 data-reveal>1. 전 플랫폼 설치 명령어</h3>
-<pre><code><span class="c"># 방법 1: npm 전역 설치 (크로스 플랫폼 공통, Node >= 18 권장)</span>
+<h3 data-reveal="">1. 전 플랫폼 설치 명령어</h3>
+<pre><code><span class="c"># 방법 1: npm 전역 설치 (크로스 플랫폼 공통, Node &gt;= 18 권장)</span>
 npm install -g @openai/codex
 
 <span class="c"># 방법 2: Homebrew (macOS)</span>
@@ -391,16 +390,16 @@ brew install codex
 codex
 codex update</code></pre>
 
-<h3 data-reveal>2. Windows 및 WSL2 심층 최적화 가이드</h3>
+<h3 data-reveal="">2. Windows 및 WSL2 심층 최적화 가이드</h3>
 <table class="tbl">
-  <tr><th>핵심 이슈</th><th>치명적 함정 / 증상</th><th>공식 해결책 및 튜닝 팁</th></tr>
+  <tbody><tr><th>핵심 이슈</th><th>치명적 함정 / 증상</th><th>공식 해결책 및 튜닝 팁</th></tr>
   <tr><td><strong>크로스 파일시스템 I/O 병목</strong></td><td>Windows 드라이브 경로(예: <code>/mnt/c/Users/...</code>)에서 실행 시 파일 입출력이 극도로 느려지고 빌드가 멈춤</td><td><strong>반드시 WSL 네이티브 Linux 파일시스템(예: <code>~/projects/...</code>) 내에서 리포지토리를 클론하고 실행</strong>할 것! (5~10배 속도 향상)</td></tr>
-  <tr><td><strong>터미널 인코딩 & 줄바꿈</strong></td><td>CMD/PowerShell에서 한글 깨짐 및 Git CRLF 충돌</td><td><strong>Windows Terminal</strong> 사용 권장, <code>chcp 65001</code> (UTF-8) 설정, Git <code>core.autocrlf = input</code> 적용</td></tr>
-  <tr><td><strong>npm 글로벌 권한 충돌</strong></td><td>WSL 환경에서 <code>npm install -g</code> 실행 시 <code>EACCES</code> 권한 오류</td><td>사용자 레벨 npm prefix 구성: <code>mkdir ~/.npm-global && npm config set prefix '~/.npm-global'</code> 후 <code>PATH</code> 등록</td></tr>
+  <tr><td><strong>터미널 인코딩 &amp; 줄바꿈</strong></td><td>CMD/PowerShell에서 한글 깨짐 및 Git CRLF 충돌</td><td><strong>Windows Terminal</strong> 사용 권장, <code>chcp 65001</code> (UTF-8) 설정, Git <code>core.autocrlf = input</code> 적용</td></tr>
+  <tr><td><strong>npm 글로벌 권한 충돌</strong></td><td>WSL 환경에서 <code>npm install -g</code> 실행 시 <code>EACCES</code> 권한 오류</td><td>사용자 레벨 npm prefix 구성: <code>mkdir ~/.npm-global &amp;&amp; npm config set prefix '~/.npm-global'</code> 후 <code>PATH</code> 등록</td></tr>
   <tr><td><strong>단축키 가로채기</strong></td><td><kbd>Ctrl+W</kbd> 탭 닫기 충돌 또는 복사/붙여넣기 꼬임</td><td>Windows Terminal 프로필 설정에서 <kbd>Ctrl+W</kbd> 단축키 바인딩 해제</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>3. 신규 프로젝트 착수 시 4단계 표준 절차</h3>
+<h3 data-reveal="">3. 신규 프로젝트 착수 시 4단계 표준 절차</h3>
 <ol class="steps">
   <li><code>/init</code> —— 저장소를 자동 분석하여 정제된 <code>AGENTS.md</code>(빌드, 테스트, 아키텍처 규칙) 생성;</li>
   <li><code>/model</code> —— 주력 모델 및 추론 강도 지정(기본값 <strong>GPT-5.6 Sol</strong> 또는 Terra / Luna); <code>/status</code>로 세션 설정 확인;</li>
@@ -418,7 +417,7 @@ codex update</code></pre>
 
 <div class="callout note"><b class="t">본 페이지 검증 기준일</b>최종 검증 <strong>2026-08-25</strong> · 출처: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 공식 changelog</a>. 전체 이력은 <a href="toolchain-changelog.ko.html">툴체인 변경 이력</a>을 참고하세요.</div>
 
-<h3 data-reveal>🆕 0.148.0 최신 기능 (2026-08-18)</h3>
+<h3 data-reveal="">🆕 0.148.0 최신 기능 (2026-08-18)</h3>
 <ul>
   <li><strong>Markdown 내보내기</strong>: <code>/export</code> 명령어가 추가되어 전체 TUI 대화 기록을 깔끔한 Markdown 파일로 내보낼 수 있습니다.</li>
   <li><strong>헤드리스 세션 분기 (Session Forking)</strong>: <code>codex exec fork</code>를 통해 헤드리스 환경에서도 세션을 분기하고 아카이브(archive) 및 복원(restore)할 수 있습니다.</li>
@@ -426,7 +425,7 @@ codex update</code></pre>
   <li><strong>인프라 백엔드 확장</strong>: Amazon Bedrock Runtime을 내장 추론 백엔드로 지원하며, hooks가 비동기 명령 실행이나 MCP 도구 호출을 수행할 수 있게 되었습니다.</li>
 </ul>
 
-<h3 data-reveal>🚨 주요 브레이킹 체인지 및 모델 마이그레이션</h3>
+<h3 data-reveal="">🚨 주요 브레이킹 체인지 및 모델 마이그레이션</h3>
 <ul>
   <li><strong>GPT-5.4 계열 퇴역 카운트다운</strong>: OpenAI는 <strong>GPT-5.4</strong> 및 <strong>mini</strong>가 2026-08-31 전면 은퇴함을 확정했습니다. <code>config.toml</code>을 확인하여 <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>, <code>gpt-5.6-luna</code>로 전환하세요.</li>
   <li><strong><code>codex exec --full-auto</code> 제거</strong>: 0.147.0에서 <code>--full-auto</code> 플래그가 삭제되었습니다. 스크립트에서는 <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code>로 변경하고, 완전 무인 자동 승인이 필요한 경우 <code>--approve-for-me</code>를 사용하세요.</li>
@@ -442,7 +441,7 @@ codex update</code></pre>
 <div class="sec-tag">빠른 참조 03</div>
 <h2>명령어 빠른 참조 매뉴얼</h2>
 
-<h3 data-reveal>⚡ 필수 핵심 명령어 (근육 기억)</h3>
+<h3 data-reveal="">⚡ 필수 핵심 명령어 (근육 기억)</h3>
 <div class="hotcmds">
   <div class="hotcmd must"><span class="hc-cmd">codex ["작업 설명"]</span><span class="hc-desc">대화형 TUI 실행, 초기 프롬프트 및 -i 이미지 지정 가능</span></div>
   <div class="hotcmd must"><span class="hc-cmd">codex exec (e)</span><span class="hc-desc">비대화형 실행, 자동화 및 CI/CD 스크립트 핵심</span></div>
@@ -454,9 +453,9 @@ codex update</code></pre>
   <div class="hotcmd"><span class="hc-cmd">/side (/btw)</span><span class="hc-desc">임시 서브 대화 실행, 메인 컨텍스트 오염 방지</span></div>
 </div>
 
-<h3 data-reveal>1. 터미널 서브명령어</h3>
+<h3 data-reveal="">1. 터미널 서브명령어</h3>
 <table class="tbl">
-  <tr><th>서브명령어</th><th>구문 예시</th><th>기능 및 활용 시나리오</th></tr>
+  <tbody><tr><th>서브명령어</th><th>구문 예시</th><th>기능 및 활용 시나리오</th></tr>
   <tr><td><code>codex</code></td><td><code>codex "auth 모듈 리팩토링"</code></td><td>대화형 TUI 워크벤치 실행</td></tr>
   <tr><td><code>codex exec</code> (<code>e</code>)</td><td><code>codex exec "테스트 돌리고 lint 수정"</code></td><td>비대화형 실행, 결과 콘솔 스트리밍 출력 (<code>--json</code> 지원)</td></tr>
   <tr><td><code>codex resume</code></td><td><code>codex resume &lt;SESSION_ID&gt;</code></td><td>ID로 과거 세션 복원; <code>--last</code>로 직전 세션 즉시 재개</td></tr>
@@ -467,11 +466,11 @@ codex update</code></pre>
   <tr><td><code>codex mcp-server</code></td><td><code>codex mcp-server</code></td><td>Codex 자체를 타 도구에 stdio MCP 서비스로 노출</td></tr>
   <tr><td><code>codex sandbox</code></td><td><code>codex sandbox -- &lt;cmd&gt;</code></td><td>Codex OS 샌드박스 내에서 임의의 명령어 격리 테스트 실행</td></tr>
   <tr><td><code>codex features</code></td><td><code>codex features list / enable / disable</code></td><td>Rust 백엔드 기능 플래그 확인 및 활성화/비활성화</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>2. 주요 실행 옵션 플래그</h3>
+<h3 data-reveal="">2. 주요 실행 옵션 플래그</h3>
 <table class="tbl">
-  <tr><th>옵션 플래그</th><th>단축형</th><th>기능 설명</th></tr>
+  <tbody><tr><th>옵션 플래그</th><th>단축형</th><th>기능 설명</th></tr>
   <tr><td><code>--model &lt;name&gt;</code></td><td><code>-m</code></td><td>실행 모델 오버라이드 (<code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code> 등)</td></tr>
   <tr><td><code>--sandbox &lt;mode&gt;</code></td><td><code>-s</code></td><td>샌드박스 보안 등급: <code>read-only</code> | <code>workspace-write</code> | <code>danger-full-access</code></td></tr>
   <tr><td><code>--ask-for-approval &lt;policy&gt;</code></td><td><code>-a</code></td><td>승인 정책: <code>untrusted</code> | <code>on-request</code> | <code>never</code></td></tr>
@@ -482,25 +481,25 @@ codex update</code></pre>
   <tr><td><code>--oss</code></td><td>-</td><td>로컬 Ollama 오픈소스 모델에 직접 연결하여 실행</td></tr>
   <tr><td><code>-c key=value</code></td><td>-</td><td><code>config.toml</code> 설정값을 단회성으로 오버라이드</td></tr>
   <tr><td><code>--profile &lt;name&gt;</code></td><td><code>-p</code></td><td>지정된 설정 프로필(예: <code>ci.config.toml</code>) 로드</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>3. 세션 내 슬래시 명령어 요약</h3>
+<h3 data-reveal="">3. 세션 내 슬래시 명령어 요약</h3>
 <table class="tbl">
-  <tr><th>분류</th><th>명령어</th><th>기능 및 용도</th></tr>
-  <tr><td rowspan="4"><strong>세션 & 컨텍스트</strong></td><td><code>/new</code> · <code>/clear</code></td><td>새 세션 시작 및 컨텍스트 리셋 / 화면 및 컨텍스트 정리 (<kbd>Ctrl+L</kbd>은 화면만 청소)</td></tr>
+  <tbody><tr><th>분류</th><th>명령어</th><th>기능 및 용도</th></tr>
+  <tr><td rowspan="4"><strong>세션 &amp; 컨텍스트</strong></td><td><code>/new</code> · <code>/clear</code></td><td>새 세션 시작 및 컨텍스트 리셋 / 화면 및 컨텍스트 정리 (<kbd>Ctrl+L</kbd>은 화면만 청소)</td></tr>
   <tr><td><code>/compact</code></td><td>대화 히스토리를 압축 요약하여 컨텍스트 토큰 확보</td></tr>
   <tr><td><code>/side</code> (<code>/btw</code>)</td><td>임시 서브 대화를 열어 지선 질문을 탐색한 뒤 복귀 (메인 토큰 보존)</td></tr>
   <tr><td><code>/archive</code> · <code>/delete</code></td><td>현재 세션 아카이브 보관 / 세션 완전 삭제</td></tr>
-  <tr><td rowspan="3"><strong>계획 & 실행 모드</strong></td><td><code>/plan [프롬프트]</code></td><td>계획 수립 모드로 진입하여 파일 변경 목록 사전 도출</td></tr>
+  <tr><td rowspan="3"><strong>계획 &amp; 실행 모드</strong></td><td><code>/plan [프롬프트]</code></td><td>계획 수립 모드로 진입하여 파일 변경 목록 사전 도출</td></tr>
   <tr><td><code>/goal [목표]</code></td><td>영속적 태스크 목표 설정/확인, 매 단계 목표 대비 자가 검증</td></tr>
   <tr><td><code>/model</code> · <code>/fast</code></td><td>모델 및 추론 강도 전환 / Fast 모드 토글</td></tr>
-  <tr><td rowspan="3"><strong>워크플로우 & 검토</strong></td><td><code>/diff</code></td><td>현재 작업 공간의 모든 변경사항 실시간 검토</td></tr>
+  <tr><td rowspan="3"><strong>워크플로우 &amp; 검토</strong></td><td><code>/diff</code></td><td>현재 작업 공간의 모든 변경사항 실시간 검토</td></tr>
   <tr><td><code>/review</code></td><td>코드 리뷰 모드를 실행하여 견고성, 엣지 케이스, 보안 자가 검증</td></tr>
   <tr><td><code>/mention &lt;file&gt;</code></td><td>특정 파일 컨텍스트를 정밀 마운트하여 전역 방황 방지</td></tr>
-  <tr><td rowspan="3"><strong>확장 & 설정</strong></td><td><code>/init</code></td><td>저장소 내 <code>AGENTS.md</code> 스캐폴딩 생성</td></tr>
+  <tr><td rowspan="3"><strong>확장 &amp; 설정</strong></td><td><code>/init</code></td><td>저장소 내 <code>AGENTS.md</code> 스캐폴딩 생성</td></tr>
   <tr><td><code>/skills</code> · <code>/plugins</code> · <code>/mcp</code></td><td>마운트된 스킬, 플러그인, MCP 도구 탐색 및 실행</td></tr>
   <tr><td><code>/import</code></td><td><strong>Claude Code 설정, 프로젝트 파일 및 히스토리 원클릭 임포트</strong></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -508,11 +507,11 @@ codex update</code></pre>
 <!-- ================= SECTION 04 ================= -->
 <section id="sandbox">
 <div class="sec-tag">보안 04</div>
-<h2>샌드박스 & 승인 3×3 보안 모델</h2>
+<h2>샌드박스 &amp; 승인 3×3 보안 모델</h2>
 <p>Codex의 안전 방어선은 <strong>샌드박스(접근 가능 범위)</strong>와 <strong>승인 정책(확인 시점)</strong>이라는 두 개의 독립적인 축으로 구성됩니다.</p>
 
 <table class="tbl">
-  <tr><th>샌드박스 ＼ 승인 정책</th><th><code>untrusted</code><br><span class="src">화이트리스트 외 무조건 확인</span></th><th><code>on-request</code> <span class="pill a">추천 기본값</span><br><span class="src">권한 초과 시에만 확인</span></th><th><code>never</code><br><span class="src">확인 없이 즉시 실패</span></th></tr>
+  <tbody><tr><th>샌드박스 ＼ 승인 정책</th><th><code>untrusted</code><br><span class="src">화이트리스트 외 무조건 확인</span></th><th><code>on-request</code> <span class="pill a">추천 기본값</span><br><span class="src">권한 초과 시에만 확인</span></th><th><code>never</code><br><span class="src">확인 없이 즉시 실패</span></th></tr>
   <tr>
     <td><code>read-only</code><br><span class="src">읽기 전용 / 네트워크 차단</span></td>
     <td><strong>초보수적 감사 모드</strong>: 모든 파일 읽기 시 승인 요구. 출처가 불분명한 코드 분석용.<br><span class="src">단점: 과도한 팝업</span></td>
@@ -531,7 +530,7 @@ codex update</code></pre>
     <td><strong>컨테이너 내 개발</strong>: 일회용 Docker 컨테이너 내에서 시스템 종속성을 다룰 때 사용.</td>
     <td><strong>= <code>--yolo</code> ⚠️</strong>: 무제한 권한 무인 실행. 민감 정보가 없는 일회용 컨테이너에서만 사용!</td>
   </tr>
-</table>
+</tbody></table>
 
 <div class="callout tip"><b class="t">선택 기준</b>일상적인 대화형 개발에서는 <code>workspace-write</code> + <code>on-request</code>를 기본값으로 사용하세요.</div>
 </section>
@@ -541,9 +540,9 @@ codex update</code></pre>
 <!-- ================= SECTION 05 ================= -->
 <section id="methodology">
 <div class="sec-tag">규율 05</div>
-<h2>핵심 방법론 & 초보자 함정 탈출</h2>
+<h2>핵심 방법론 &amp; 초보자 함정 탈출</h2>
 
-<h3 data-reveal>1. 작업 정의 4요소 원칙 (Goal-Context-Constraints-Done)</h3>
+<h3 data-reveal="">1. 작업 정의 4요소 원칙 (Goal-Context-Constraints-Done)</h3>
 <ul>
   <li><strong>Goal (목표)</strong>: 달성할 구체적 결과를 명확히 정의 ("이 모듈 좀 봐줘" 지양);</li>
   <li><strong>Context (컨텍스트)</strong>: 연관된 핵심 파일 및 관련 Issue/API 문서 지정 (<code>/mention</code> 활용);</li>
@@ -551,9 +550,9 @@ codex update</code></pre>
   <li><strong>Done-when (완료 기준)</strong>: 정량적 검증 기준 명시 (특정 단위 테스트 전체 통과, 특정 JSON 반환 등).</li>
 </ul>
 
-<h3 data-reveal>2. 초보자가 흔히 저지르는 8대 실수와 해결책</h3>
+<h3 data-reveal="">2. 초보자가 흔히 저지르는 8대 실수와 해결책</h3>
 <table class="tbl">
-  <tr><th>실수 번호</th><th>대표적 잘못된 행동</th><th>발생하는 문제</th><th>올바른 표준 해결책</th></tr>
+  <tbody><tr><th>실수 번호</th><th>대표적 잘못된 행동</th><th>발생하는 문제</th><th>올바른 표준 해결책</th></tr>
   <tr><td><strong>실수 01</strong></td><td>계획 요청 없이 무작정 수정 지시</td><td>무관한 파일을 대규모 수정하여 기존 구조 파괴</td><td>복잡 작업은 <code>/plan</code>으로 영향 범위 사전 검토</td></tr>
   <tr><td><strong>실수 02</strong></td><td>커밋되지 않은 지저분한 브랜치에서 실행</td><td>AI 수정분과 내 작업분이 뒤섞여 롤백 불가</td><td>착수 전 <code>git stash</code> 또는 새 <code>feat/xxx</code> 브랜치 생성</td></tr>
   <tr><td><strong>실수 03</strong></td><td><kbd>Ctrl+L</kbd>을 새 대화로 오인</td><td>화면만 지워지고 컨텍스트가 남아 환각 발생</td><td>완전 리셋은 반드시 <code>/new</code> 또는 <code>/clear</code> 사용</td></tr>
@@ -562,7 +561,7 @@ codex update</code></pre>
   <tr><td><strong>실수 06</strong></td><td>"완료되었습니다"라는 말만 믿고 diff 미확인</td><td>예상치 못한 논리 누락이나 구문 결함 방치</td><td>커밋 전 반드시 <code>/diff</code>로 변경 줄을 직접 검토</td></tr>
   <tr><td><strong>실수 07</strong></td><td>버그 수정 시 감으로 코드를 고치게 함</td><td>try-catch로 에러만 숨기고 근본 원인 방치</td><td><strong>TDD 준수</strong>: 실패하는 재현 테스트 작성 후 패스 유도</td></tr>
   <tr><td><strong>실수 08</strong></td><td>편의를 위해 메인 머신에서 <code>--yolo</code> 사용</td><td>시스템 파일 오삭제 및 API Key 유출 위험</td><td>개인 로컬 머신에서 <code>--yolo</code> 절대 금지</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -570,19 +569,19 @@ codex update</code></pre>
 <!-- ================= SECTION 06 ================= -->
 <section id="long-tasks">
 <div class="sec-tag">협업 06</div>
-<h2>장시간 작업 4단계 규율 & 멀티 세션 엔지니어링</h2>
+<h2>장시간 작업 4단계 규율 &amp; 멀티 세션 엔지니어링</h2>
 
 <p>30분 이상 소요되는 대형 리팩토링이나 복잡한 모듈 개발 시, 단일 세션으로 끝까지 진행하면 주의력 분산과 환각이 발생합니다. Codex의 전문 워크플로우는 <strong>4단계 규율과 세션 분류</strong>입니다.</p>
 
-<h3 data-reveal>1. 장시간 작업 4단계 규율 (Four-Stage Discipline)</h3>
+<h3 data-reveal="">1. 장시간 작업 4단계 규율 (Four-Stage Discipline)</h3>
 <ol class="steps">
   <li><strong>토의 및 기획 단계 (Discuss / Plan)</strong>: <code>read-only</code> 샌드박스에서 <code>/plan</code>을 실행하여 코드베이스를 분석하고 구체적 수정 계획, 파일 목록, 리스크 평가 도출. (코드 수정 안 함)</li>
   <li><strong>격리 실행 단계 (Execute)</strong>: 새 세션을 열고 승인된 Plan을 마운트하여 <code>workspace-write</code> 권한으로 모듈을 단계별 구현하며 최소 단위 검증 실행.</li>
   <li><strong>독립 검토 단계 (Review)</strong>: 새로운 세션을 열거나 <code>/review</code>를 호출하여 제3자 시각에서 견고성, 경계 조건, 보안성 검토 수행.</li>
-  <li><strong>마무리 및 인수인계 단계 (Closeout & Handover)</strong>: 테스트 통과 증빙과 스크린샷을 추출하고 <code>DECISIONS.md</code>와 <code>AGENTS.md</code>를 업데이트한 뒤 PR 생성.</li>
+  <li><strong>마무리 및 인수인계 단계 (Closeout &amp; Handover)</strong>: 테스트 통과 증빙과 스크린샷을 추출하고 <code>DECISIONS.md</code>와 <code>AGENTS.md</code>를 업데이트한 뒤 PR 생성.</li>
 </ol>
 
-<h3 data-reveal>2. 멀티 세션 및 협업 툴킷</h3>
+<h3 data-reveal="">2. 멀티 세션 및 협업 툴킷</h3>
 <ul>
   <li><strong>임시 서브 대화 <code>/side</code> (<code>/btw</code>)</strong>: 궁금한 점(예: "이 라이브러리 버전이 왜 2.1로 고정되어 있지?")이 생겼을 때 서브 대화로 탐색하고 결론만 가지고 복귀하여 <strong>메인 세션의 토큰 오염을 방지</strong>합니다.</li>
   <li><strong>세션 분기 <code>codex fork</code></strong>: 동일한 문제에 대해 A안(리팩토링)과 B안(핫픽스)을 모두 시도해보고 싶을 때 세션을 분기하여 병렬 검증합니다.</li>
@@ -595,21 +594,21 @@ codex update</code></pre>
 <!-- ================= SECTION 07 ================= -->
 <section id="memory-system">
 <div class="sec-tag">메모리 07</div>
-<h2>작업 마무리 & 프로젝트 메모리 루프</h2>
+<h2>작업 마무리 &amp; 프로젝트 메모리 루프</h2>
 
-<h3 data-reveal>1. 작업 완료 시의 3단계 마무리 루틴</h3>
+<h3 data-reveal="">1. 작업 완료 시의 3단계 마무리 루틴</h3>
 <ol class="steps">
   <li><strong>객관적 검증 증빙 수집</strong>: 테스트 스위트 실행 로그를 확보하고, UI 작업의 경우 실제 렌더링 스크린샷 캡처;</li>
   <li><strong>결정 사항 기록 (Decision Log)</strong>: 프로젝트 내 <code>DECISIONS.md</code>에 기술 선정 이유, 회피한 함정, 알려진 제약사항 기록;</li>
   <li><strong><code>AGENTS.md</code> 증분 업데이트</strong>: 이번 작업으로 새로 알게 된 실행 방식이나 환경 요구사항이 있다면 <code>AGENTS.md</code>에 추가.</li>
 </ol>
 
-<h3 data-reveal>2. AGENTS.md 표준 템플릿 (크로스 툴 공용)</h3>
+<h3 data-reveal="">2. AGENTS.md 표준 템플릿 (크로스 툴 공용)</h3>
 <pre><code><span class="c"># AGENTS.md · 핵심 간결 템플릿 (Codex / Cursor / Claude Code 공통 호환)</span>
 ## 빌드 및 테스트
 - 의존성 설치: pnpm install --frozen-lockfile
 - 빌드: pnpm build   테스트: pnpm test -- --run
-- PR 전 필수 검증: pnpm typecheck && pnpm lint
+- PR 전 필수 검증: pnpm typecheck &amp;&amp; pnpm lint
 
 ## 아키텍처 및 핵심 규약
 - 라우팅은 src/router/index.ts에 선언하며 지연 로딩(Lazy loading) 적용;
@@ -627,7 +626,7 @@ codex update</code></pre>
 <div class="sec-tag">확장 08</div>
 <h2>Skills, MCP 및 브라우저 엔지니어링</h2>
 
-<h3 data-reveal>1. Codex Skill 개발 엔지니어링 표준</h3>
+<h3 data-reveal="">1. Codex Skill 개발 엔지니어링 표준</h3>
 <pre><code>my-custom-skill/
 ├── SKILL.md            <span class="c"># 필수: YAML frontmatter (name, description) 및 수행 가이드</span>
 ├── scripts/            <span class="c"># 선택: 실행 가능한 Python/Node/Shell 보조 스크립트</span>
@@ -635,15 +634,15 @@ codex update</code></pre>
 └── assets/             <span class="c"># 선택: 이미지, 템플릿 파일</span></code></pre>
 <div class="callout tip"><b class="t">Skill 작성 황금률</b><code>description</code> 필드는 모델의 라우팅 핵심입니다. "어떤 상황에서 어떤 키워드를 만났을 때 호출할지"를 명확히 작성하여 조건이 일치할 때만 <code>SKILL.md</code>를 로드하게 함으로써 컨텍스트를 절약하세요.</div>
 
-<h3 data-reveal>2. 브라우저 조작 및 E2E 시각적 검증</h3>
+<h3 data-reveal="">2. 브라우저 조작 및 E2E 시각적 검증</h3>
 <table class="tbl">
-  <tr><th>브라우저 연동 형태</th><th>구현 원리</th><th>로그인 세션 (Cookie) 관리</th><th>적합한 시나리오</th></tr>
+  <tbody><tr><th>브라우저 연동 형태</th><th>구현 원리</th><th>로그인 세션 (Cookie) 관리</th><th>적합한 시나리오</th></tr>
   <tr><td><strong>내장 브라우저 (In-App)</strong></td><td>내장 헤드리스/경량 렌더러</td><td>독립된 격리 세션</td><td>정적 페이지 레이아웃, SSR 결과물 외관 회귀 검증</td></tr>
   <tr><td><strong>외부 브라우저 (CDP 브리지)</strong></td><td>Chrome DevTools Protocol 연결</td><td><strong>개발자의 실제 로컬 로그인 상태 재사용</strong></td><td>로그인이 필요한 어드민 페이지, 결제/폼 제출 플로우 E2E 검증</td></tr>
   <tr><td><strong>Computer Use 데스크톱</strong></td><td>OS 화면 캡처 및 키보드/마우스 제어</td><td>현재 데스크톱 환경 완전 상속</td><td>크로스 데스크톱 앱 연동, 웹 인터페이스가 없는 복잡 GUI 검증</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>3. MCP 프로토콜 양방향 활용</h3>
+<h3 data-reveal="">3. MCP 프로토콜 양방향 활용</h3>
 <ul>
   <li><strong>Codex가 외부 도구 사용</strong>: <code>codex mcp add &lt;name&gt; -- &lt;cmd&gt;</code>로 PostgreSQL, Sentry, Figma, Pencil MCP 연결;</li>
   <li><strong>Codex를 타 에이전트에 제공</strong>: <code>codex mcp-server</code>를 실행하여 Claude Code 등 다른 에이전트가 복잡한 코딩 태스크를 Codex에 위임하게 구성.</li>
@@ -657,378 +656,45 @@ codex update</code></pre>
 <div class="sec-tag">설정 09</div>
 <h2>설정 및 계정 체계 완벽 해설</h2>
 
-<h3 data-reveal>1. CODEX_HOME 디렉토리 구조</h3>
+<h3 data-reveal="">1. CODEX_HOME 디렉토리 구조</h3>
 <table class="tbl">
-  <tr><th>파일 / 경로</th><th>역할 및 내용</th><th>보안 및 버전 관리 방침</th></tr>
+  <tbody><tr><th>파일 / 경로</th><th>역할 및 내용</th><th>보안 및 버전 관리 방침</th></tr>
   <tr><td><code>~/.codex/config.toml</code></td><td>전역 핵심 설정 (기본 모델, 샌드박스, 승인 정책, MCP 서버)</td><td>✅ 개인 Dotfiles에 백업 권장</td></tr>
   <tr><td><code>.codex/config.toml</code></td><td>프로젝트 레벨 설정 (전역 설정을 덮어씀)</td><td>✅ 코드 리포지토리에 커밋하여 팀과 공유</td></tr>
   <tr><td><code>~/.codex/auth.json</code></td><td><strong>사용자 인증 토큰 캐시 (평문 토큰)</strong></td><td>❌ <strong>Git 커밋 및 외부에 절대 유출 금지</strong></td></tr>
   <tr><td><code>~/.codex/sessions/</code></td><td>로컬 과거 세션 기록 (<code>resume</code> 및 <code>fork</code>에 사용)</td><td>로컬 자산, 타 머신으로 이동하지 않음</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>2. 설정 적용 우선순위</h3>
+<h3 data-reveal="">2. 설정 적용 우선순위</h3>
 <p>높은 순서대로: <strong>기업 관리 Requirements</strong> ➔ <strong>단회성 플래그 <code>-c key=value</code></strong> ➔ <strong>프로필 <code>--profile &lt;name&gt;</code></strong> ➔ <strong>프로젝트 <code>.codex/config.toml</code></strong> ➔ <strong>사용자 전역 <code>~/.codex/config.toml</code></strong> ➔ <strong>내장 기본값</strong>.</p>
 </section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION BEST-PRACTICES ================= -->
-<section id="best-practices">
-<div class="sec-tag">심화 09</div>
-<h2>Codex 모범 사례 및 실전 예제 (Best Practices & Optimal Examples)</h2>
-<p>Codex의 성능을 극대화할 수 있도록 개발자 커뮤니티에서 검증된 모범 활용 기법, 표준 명령어 조합, 실패 확률이 가장 낮은 프롬프트 템플릿을 체계적으로 정리했습니다. 복사하여 즉시 활용할 수 있습니다.</p>
-
-<h3 data-reveal>1. 최강의 Prompt 템플릿: TDD 무환각 포맷 (Zero-Hallucination)</h3>
-<p>실제 엔터프라이즈 프로젝트에서 가장 승률이 높은 태스크 지시 템플릿입니다. 엄격한 제약 조건과 검수 기준을 강제하여 모델이 임의로 코드를 상상하거나 폭주하는 것을 완벽히 방지합니다:</p>
-<pre><code>&gt; 【목표】src/auth/jwt.ts에 Refresh Token 슬라이딩 윈도우 갱신 로직을 추가해줘.
-  【컨텍스트】docs/auth-flow.md 문서와 현재 jwt.ts 코드를 읽고 분석할 것.
-  【제약 사항】
-  1. jwt.ts 및 대응하는 테스트 파일만 수정 가능하며, routes 모듈은 절대 건드리지 말 것.
-  2. 기존 HMAC-SHA256 서명 알고리즘을 유지하고, 새로운 npm 라이브러리를 추가하지 말 것.
-  3. 동시성 환경에서의 락(Lock) 메커니즘을 고려하여 동일 토큰이 중복 갱신되지 않도록 할 것.
-  【검수 기준】
-  먼저 tests/auth/jwt.test.ts에 3개의 테스트 케이스(동시 갱신 테스트 포함)를 작성할 것.
-  테스트를 실행하고 모두 녹색(Pass)으로 통과할 때까지 자가 교정을 수행한 뒤, 최종 /diff 결과를 보여줄 것.</code></pre>
-
-<h3 data-reveal>2. 4대 고급 시나리오 및 결정적 명령어 조합</h3>
-<table class="tbl">
-  <tr><th>시나리오</th><th>최적 명령어 체인 및 조작법</th><th>최적인 이유</th></tr>
-  <tr>
-    <td><strong>1. 대규모 리팩터링 전의 '안전 스냅샷'</strong></td>
-    <td><code>git add . && git commit -m "WIP" && codex exec fork</code></td>
-    <td>0.148.0의 헤드리스 분기(Forking) 기능을 활용합니다. 메인 세션을 안전한 앵커로 보존한 상태에서 새 세션을 분기해 위험한 리팩터링을 진행합니다. 실패 시 해당 세션을 폐기하면 메인 환경은 완벽히 오염되지 않습니다.</td>
-  </tr>
-  <tr>
-    <td><strong>2. CI/CD 무인 자동화 운영</strong></td>
-    <td><code>codex exec --sandbox workspace-write --approve-for-me ".github/ISSUE_TEMPLATE 규격에 따라 lint 문제 수정"</code></td>
-    <td>대화형 입력을 완전히 배제합니다. <code>--approve-for-me</code> 플래그를 통해 지정된 샌드박스 경계 내의 안전한 명령을 자동 승인하므로, 터미널 앞에서 Enter를 누르고 대기할 필요가 없습니다.</td>
-  </tr>
-  <tr>
-    <td><strong>3. 초장대 로그 및 에러 처리</strong></td>
-    <td><code>npm run build > build-error.log</code> <br> 이후 Codex에서 입력: <code>build-error.log를 읽고 빌드 오류를 수정해줘</code></td>
-    <td><strong>수만 줄의 에러 로그를 터미널 대화창에 직접 붙여넣지 마십시오!</strong> 컨텍스트 토큰을 순식간에 고갈시켜 모델의 망각을 유발합니다. 파일로 리다이렉션하여 직접 읽게 하면 토큰 소모가 극히 적고 정확도가 올라갑니다.</td>
-  </tr>
-  <tr>
-    <td><strong>4. 지식 축적 및 팀 공유</strong></td>
-    <td>태스크가 완벽히 끝난 후 입력: <code>/export</code></td>
-    <td>방금 수행한 심층 트러블슈팅과 추론 과정을 깔끔한 Markdown 파일로 원클릭 내보내기합니다. 코드 블록이 보존되어 사내 Notion이나 Wiki에 즉시 공유할 수 있는 팀 자산이 됩니다.</td>
-  </tr>
-</table>
-
-<h3 data-reveal>3. 코드베이스 '콜드 스타트' 최적 플로우 (Onboarding)</h3>
-<p>기존 대규모 레거시 프로젝트를 인수인계받거나 새로운 저장소를 분석할 때, 다음 콤보를 실행하면 Codex가 프로젝트 색인을 신속하게 구축합니다:</p>
-<ol class="steps">
-  <li><strong>전체 스캔 및 구조 맵 생성</strong>: <code>src/ 디렉터리 전체를 분석하고, 아키텍처 패턴을 요약한 ARCHITECTURE.md를 작성해줘</code>를 입력합니다.</li>
-  <li><strong>방어적 가드레일 수립</strong>: 이어서 <code>분석 결과를 토대로, 향후 AI 세션이 준수해야 할 엄격한 AGENTS.md(금지 사항 및 특정 코딩 컨벤션 포함)를 작성해줘</code>를 지시합니다.</li>
-  <li><strong>원클릭 노이즈 정리</strong>: <code>/compact</code>를 실행합니다. 이전의 방대한 코드 탐색 기록을 압축된 요약 메모리로 치환하여, 실제 기능 구현을 위한 컨텍스트 공간을 즉시 확보합니다.</li>
-</ol>
-</section>
+<section id="best-practices"><h2>작업 및 검증 템플릿</h2><p>목표, 범위, 제약, 완료 기준을 지정하세요. 테스트는 실제 위험을 다루며 모든 문구 수정에 TDD가 필요한 것은 아닙니다.</p><pre><code>목표:
+관련 파일:
+변경 범위:
+유지할 동작:
+검증 방법:
+변경, 결과, 미검증 항목을 보고하세요.</code></pre></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION SUBSCRIPTION-QUOTAS ================= -->
-<section id="subscription-quotas">
-<div class="sec-tag">심화 실전 가이드</div>
-<h2>ChatGPT Plus/Pro 멤버십 가치 극대화 및 멀티 디바이스 연계 매뉴얼</h2>
-
-<p>수많은 개발자와 기술 전문가들이 매달 $20(Plus) 또는 $200(Pro)의 구독료를 결제하지만, 일상 업무에서는 단순 웹 채팅창이나 코드 자동완성 도구로만 사용하여 "사용량 한도에 도달했습니다. 5시간 후에 다시 시도하세요"라는 벽에 수시로 부딪힙니다. 현재의 OpenAI는 다중 디바이스와 멀티모달이 결합된 종합 생산성 플랫폼으로 진화했습니다. 본 매뉴얼은 최상위 엔지니어와 파워 유저들의 실전 노하우를 집대성하여, 모든 멤버십 혜택을 남김없이 활용해 최고의 산출물을 이끌어내는 엔드투엔드 워크플로를 다룹니다.</p>
-
-<h3 data-reveal>🧭 1. 구독 자산 전체 구성도 및 할당량 측정 기본 로직</h3>
-<p>멤버십 혜택을 온전히 누리려면 보유한 '컴퓨팅 리소스 포트폴리오'와 시스템 백엔드에서 소모량을 계산하는 원리를 명확히 이해해야 합니다:</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>기능 모듈</th>
-        <th>핵심 시나리오 및 자산 특성</th>
-        <th>할당량 소모 특성 및 내부 메커니즘</th>
-        <th>권장 모범 전략</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Codex 터미널 / IDE 에이전트</strong></td>
-        <td>로컬 코드 수정, 다중 파일 일괄 리팩터링, CLI 및 Git 자동화</td>
-        <td><strong>고소모 영역</strong>. 매 상호작용마다 프로젝트 구조와 컨텍스트를 로드하므로 파일이 많을수록 소모가 크며, 5시간 롤링 한도에 쉽게 도달함.</td>
-        <td>실제 코드를 변경하고 테스트할 때만 호출. 일반적인 기술 조사나 막연한 질문은 터미널 외부에서 진행.</td>
-      </tr>
-      <tr>
-        <td><strong>Web 버전 Deep Research</strong></td>
-        <td>다단계 자율 웹 리서치, 방대한 기술 문서 통합, 기술 스택 비교 분석</td>
-        <td><strong>독립 월간 쿼터 풀</strong>(Plus: 월 약 20~25회, Pro: 월 250회 이상). 일상 대화의 5시간 주기 제한을 소모하지 않음.</td>
-        <td>새로운 기술 스택 검증 및 아키텍처 조사에 집중 활용. 구조화된 설계 문서를 도출한 후 터미널에 전달.</td>
-      </tr>
-      <tr>
-        <td><strong>Canvas 협업 캔버스</strong></td>
-        <td>장문 문서 정제, 국소적 코드 리팩터링, 실시간 실행 및 단위 테스트</td>
-        <td><strong>극대화된 토큰 절약</strong>. 코드의 특정 영역만 하이라이트하여 수정할 수 있어, 변경되지 않은 수백 줄을 매번 재생성할 필요가 없음.</td>
-        <td>핵심 알고리즘과 개별 컴포넌트의 국소 수술식 수정에 활용하여, 전체 재생성에 따른 컨텍스트 팽창을 방지.</td>
-      </tr>
-      <tr>
-        <td><strong>고급 음성 모드 (Advanced Voice)</strong></td>
-        <td>아키텍처 구두 브레인스토밍, 요구사항 토론, 코드 리뷰 회고</td>
-        <td>별도의 독립 음성 사용 시간이 제공되어 텍스트 쿼터의 빠른 고갈을 방지.</td>
-        <td>코딩 전 설계 단계에서 음성 대화를 통해 로직의 사각지대와 엣지 케이스를 신속하게 식별.</td>
-      </tr>
-      <tr>
-        <td><strong>멀티모달 비주얼 (Vision / Image)</strong></td>
-        <td>UI 디자인 시안 복각, 손그림 구성도 코드화, 제품 프로토타입 생성</td>
-        <td>이미지 생성(Image 2.0/2.5)은 별도의 생성 한도로 제어되며, Vision 이미지 인식은 표준 토큰으로 합산.</td>
-        <td>프론트엔드 개발 시 먼저 이미지로 시각적 기준을 확정한 후, 비주얼 모델을 통해 CSS/Tailwind 토큰을 추출.</td>
-      </tr>
-      <tr>
-        <td><strong>Projects / Memory 지식 베이스</strong></td>
-        <td>팀 코딩 컨벤션, 핵심 API 명세서, 영속적 비즈니스 도메인 용어</td>
-        <td><strong>네이티브 Prompt Caching</strong> 메커니즘을 통해 안정적인 사전 지식은 대폭 할인된 비용으로 읽기 처리.</td>
-        <td>팀 표준 규약과 의존성 정보를 Project에 한 번 등록하여, 매 질문마다 긴 배경 설명을 재전송하는 낭비를 방지.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="callout note"><b class="t">핵심 인식: 5시간 롤링 윈도우의 본질</b>
-OpenAI의 사용량 한도는 단순히 "몇 번 질문했는가"가 아니라 <strong>"요청의 복잡도 × 컨텍스트 길이 × 추론 사고 깊이"</strong>를 종합적으로 반영한 동적 버킷입니다. 20개 파일이 마운트된 터미널 세션에서의 1회 질문은 단순 텍스트 잡담 50회 이상의 컴퓨팅 파워를 소모할 수 있습니다.</div>
-
-<h3 data-reveal>🚀 2. 황금 4단계 협업 패러다임: 구상에서 엔지니어링 딜리버리까지의 SOP</h3>
-<p>가장 뛰어난 성과를 내는 엔지니어들의 비결은 <strong>"명확한 역할 분담과 정적/동적 분리"</strong>에 있습니다. 시행착오는 비용이 낮고 시야가 넓은 웹/음성에서 해결하고, 확정된 구현만 로컬 터미널에 위임합니다:</p>
-
-<h4>1단계: 구상 및 아키텍처 브레인스토밍 (Voice + Deep Research)</h4>
-<p>새로운 기능을 개발하거나 낯선 라이브러리를 도입할 때 터미널에서 즉흥적으로 코드를 작성하며 시도하지 마십시오:</p>
-<ul>
-  <li><strong>음성 브레인스토밍</strong>: 고급 음성 모드를 켜고 5분간 아키텍처 구상을 구두로 설명합니다: "기존 Next.js 구조에 Stripe 결제 흐름을 붙이려 해. 발생 가능한 엣지 케이스와 DB 설계안을 짚어줘." 음성 대화를 통해 로직 결함을 빠르게 걸러냅니다.</li>
-  <li><strong>Deep Research 기술 검증</strong>: 새로운 라이브러리나 기술 문서에 대해 웹 버전에서 심층 연구를 수행합니다:</li>
-</ul>
-<div class="callout tip"><b class="t">구조화된 리서치 Prompt 템플릿</b>
-<code>심층 연구를 시작하여 최신 공식 문서와 베스트 프랙티스를 종합적으로 조사한 뒤, 【대상 기술 스택】 도입 가이드를 작성해줘. 필수 포함 항목: 1. 핵심 아키텍처 및 데이터 흐름도; 2. 브레이킹 체인지(Breaking Changes) 목록; 3. JSON Schema를 준수하는 데이터 모델 정의. 인사말은 생략하고 순수 기술적 핵심만 출력할 것.</code></div>
-
-<h4>2단계: 비주얼 및 UI 디자인 확정 (Image / Vision to Code)</h4>
-<p>프론트엔드 작업은 스타일의 미세 조정 과정에서 막대한 토큰을 낭비하기 쉽습니다. 시각적 기준 결정과 코드 생성을 분리합니다:</p>
-<ol>
-  <li>웹 버전의 이미지 생성 기능을 사용해 UI 콘셉트 이미지를 2~3종 렌더링하고, 가장 만족스러운 안을 선택합니다.</li>
-  <li>선택한 이미지를 Vision 기능에 입력하여 디자인 시스템 명세를 추출합니다: <code>"이 화면에서 컬러 팔레트(16진수), 그리드 간격, 폰트 계층, Flex/Grid 레이아웃 뼈대를 추출하여 Tailwind CSS 기본 설정으로 출력해줘."</code></li>
-  <li>순수 텍스트 형태의 디자인 명세를 확보한 후 코딩에 들어가면 불필요한 스타일 수정 삽질이 사라집니다.</li>
-</ol>
-
-<h4>3단계: 국소 집중 리팩터링 및 샌드박스 검증 (Canvas 협업)</h4>
-<p>핵심 알고리즘이나 복잡한 비즈니스 로직을 작성할 때는 ChatGPT의 <strong>Canvas 모드</strong>를 활용합니다:</p>
-<ul>
-  <li><strong>타깃 지정 국소 수정</strong>: 함수의 특정 10줄만 하이라이트하고 지시합니다: "이 로직에 재시도 처리와 에러 로깅을 추가해줘." Canvas는 선택된 10줄만 수정하므로, 전체 500줄을 재출력하며 생기는 시간과 토큰 낭비를 80% 이상 절감합니다.</li>
-  <li><strong>내장 리뷰 도구</strong>: 우측 하단의 '코드 리뷰' 또는 '로그 추가' 단축 도구를 클릭해 그 자리에서 품질을 검증합니다.</li>
-</ul>
-
-<h4>4단계: 정밀 구현 및 로컬 검증 (Codex 터미널 전달)</h4>
-<p>마지막 단계로 로컬 터미널로 돌아와 Codex를 실행합니다:</p>
-<ul>
-  <li>이미 이전 단계에서 <strong>명확한 설계안, Tailwind 설정, Canvas로 검증된 알고리즘 코드</strong>가 확보되어 있습니다.</li>
-  <li>터미널에서 간결하게 지시: <code>"설계 명세에 따라 src/modules/ 디렉터리에 파일을 생성하고 로컬 자동화 테스트를 실행해줘."</code></li>
-  <li>입력이 극도로 정밀하므로 단 한 번에 테스트를 통과하고 Git Commit까지 완료하여, 터미널 쿼터 소모를 최소한으로 억제합니다.</li>
-</ul>
-
-<h3 data-reveal>🛡️ 3. 쿼터 방어 및 컨텍스트 최적화 수칙</h3>
-<p>실전에서 검증된, 사용 한도를 현격히 연장해 주는 핵심 규칙들입니다:</p>
-
-<h4>1. '새 메시지 추가' 대신 '직전 메시지 편집' 활용</h4>
-<p>대다수 사용자가 놓치고 있는 가장 중요한 절약 테크닉입니다. AI의 답변이 의도와 벗어났을 때, <strong>새 메시지로 반박하거나 추가 질문을 보내지 마십시오</strong>. 매번 추가할 때마다 이전의 모든 실패 시도가 누적되어 재전송됩니다. 직전 질문의 '편집' 버튼을 눌러 프롬프트를 수정하고 재제출하면, 이전의 잘못된 브랜치가 현재 컨텍스트에 누적되지 않습니다.</p>
-
-<h4>2. 명확한 Custom Instructions (사용자 지정 지침) 구축</h4>
-<p>매 대화마다 "TypeScript로 써줘", "불필요한 인사말은 생략해줘"라고 반복하지 않도록, 설정의 <strong>사용자 지정 지침</strong>이나 프로젝트 루트의 <code>SKILL.md</code>에 사전 정의해 둡니다.</p>
-<div class="callout note"><b class="t">권장 사용자 지정 지침 템플릿 (설정 -> ChatGPT 맞춤 설정)</b>
-<code>- 역할: 시니어 풀스택 아키텍트.
-- 출력 스타일: 간결, 엄격, 엔지니어링 지향. "알겠습니다", "좋은 질문입니다" 등 불필요한 인사말과 맺음말 일체 금지.
-- 코드 규칙: 변경된 부분만 출력(변경되지 않은 부분은 // ... existing code ...로 표기). TypeScript 타입 선언 필수.
-- 음성 모드 제약: 요점만 간결하게 답변하며, "더 필요하신 것이 있나요?" 등의 상투적 질문 생략.</code></div>
-
-<h4>3. 모델 등급별 활용 수칙: 사소한 작업에 고사양 모델 낭비 금지</h4>
-<ul>
-  <li><strong>Reasoning / 심층 사고 모드 (o3 / 사고 모델)</strong>: 복잡한 동시성 경합 해결, 알고리즘 증명, 저장소 단위 대규모 리팩터링 등 난제 해결에만 집중 투입.</li>
-  <li><strong>Fast / Mini 모드</strong>: 정규식 작성, JSON/YAML 포맷 변환, Git 커밋 메시지 생성, 사소한 스타일 수정 등 일상적 작업에 사용. 속도가 월등히 빠르고 쿼터 소모가 거의 없습니다.</li>
-</ul>
-
-<h3 data-reveal>❓ 4. 자주 묻는 질문과 트러블슈팅</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">질문을 몇 번 하지 않았는데 사용 한도에 도달했다고 나오는 이유는?</div>
-    <div class="card-desc">하나의 긴 대화창에서 대용량 PDF나 여러 장의 고해상도 이미지를 업로드하고 대화가 30턴을 초과한 경우가 전형적입니다. 한 번 질문할 때마다 과거의 방대한 데이터가 매번 재연산됩니다. 해결책: 마일스톤마다 새로운 깨끗한 대화창을 시작하십시오.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">웹 버전, 모바일 앱, 데스크톱 앱의 사용 한도는 별개인가요?</div>
-    <div class="card-desc"><strong>별개가 아니며, 모든 플랫폼이 단일 계정의 연산 풀을 공유합니다.</strong> 독립적인 쿼터를 갖는 것은 Deep Research와 고급 음성 통화 시간뿐입니다. 데스크톱에서 제한에 걸리면 웹에서도 제한되므로, 디바이스 간 역할 분담을 체계화해야 합니다.</div>
-  </div>
-</div>
-</section>
+<section id="subscription-quotas"><h2>구독, API 및 컨텍스트</h2><p>구독 할당량, API 요금, 누적 토큰, 현재 컨텍스트는 다른 지표입니다. 로그인 방식, 사용량, 초기화 시간을 확인하세요.</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION IMAGE-GUIDE ================= -->
-<section id="image-guide">
-<div class="sec-tag">비주얼 엔지니어링</div>
-<h2>Image 2.0/2.5 비주얼 엔지니어링 및 풀스택 개발 워크플로</h2>
-
-<p>전통적인 프론트엔드 개발에서 엔지니어들은 종종 "수동 코딩 → 브라우저 새로고침 → 육안 확인 → CSS 미세 조정"이라는 비효율적인 늪에 빠지곤 합니다. OpenAI의 이미지 모델이 초기 DALL-E에서 <strong>GPT-4o 네이티브 확산 멀티모달</strong>을 거쳐 최신 <strong>Image 2.0 / 2.5 비주얼 엔진</strong>으로 진화함에 따라, 이미지 생성은 단순 삽화 그리기를 넘어 현대 애자일 개발에 필수적인 '엔지니어링 명세 프로토타입 생성기'로 변모했습니다. 본 장에서는 최상위 프론트엔드 팀과 UI/UX 연구소에서 검증된, Image 2.0/2.5를 활용한 효율적인 개발 폐루프를 다룹니다.</p>
-
-<h3 data-reveal>🧬 1. 기술 진화 전체 개요: DALL-E에서 Image 2.5까지의 패러다임 전환</h3>
-<p>세대별 특성을 파악해야만 올바른 모델 선택과 정밀한 프롬프트 엔지니어링이 가능합니다:</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>기술 세대</th>
-        <th>아키텍처 및 핵심 혁신</th>
-        <th>텍스트 렌더링 및 디테일 정밀도</th>
-        <th>프로그래밍/개발에서의 역할</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>DALL-E 3</strong></td>
-        <td>독립 텍스트-이미지 확산 모델. LLM의 암묵적 프롬프트 재작성에 의존.</td>
-        <td>영단어 철자 오류 빈발. 객체 외곽선 왜곡 및 기하학적 비례 제어 불가.</td>
-        <td>초기 콘셉트 탐색용. 정밀한 UI 화면이나 아이콘 생성에는 부적합.</td>
-      </tr>
-      <tr>
-        <td><strong>GPT-4o 네이티브 이미지</strong></td>
-        <td>네이티브 올모달 설계. 비주얼 토큰과 텍스트 토큰의 완벽한 정렬 및 문맥 추종.</td>
-        <td>짧은 영단어의 정확한 표기 가능. 현실의 조명과 물리적 차폐 이해도 대폭 향상.</td>
-        <td>신속한 제품 프로토타이핑, 시스템 아키텍처 스케치, 간단한 플레이스홀더 생성.</td>
-      </tr>
-      <tr>
-        <td><strong>Image 2.0 / 2.5</strong></td>
-        <td>Sora의 물리 시공간 엔진과 고정밀 벡터 사전 지식 결합. 국소 정밀 인페인팅 및 기하학적 고정 지원.</td>
-        <td><strong>텍스트 렌더링 정확도 95% 돌파</strong>. 픽셀 그리드 정렬, 명확한 UI 컴포넌트 계층 및 무왜곡 텍스처 구현.</td>
-        <td><strong>프로덕션급 디자인 자산 생성</strong>: 고품질 UI 목업, 표준 준수 앱 아이콘, 빈 상태 벡터 일러스트 생성 및 Tailwind Tokens 직접 추출.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 data-reveal>🚀 2. 3대 엔지니어링 실무 패러다임: 비주얼과 코드의 효율적 루프</h3>
-
-<h4>패러다임 1: UI 프로토타입 역공학 (Visual-First Design to Code)</h4>
-<p>텍스트 요구사항만 보고 맨땅에서 UI 코드를 작성하면, 완성 후 기획자와의 인식 차이로 인해 대대적인 재작업이 발생하기 쉽습니다.<br>
-<strong>권장 SOP:</strong></p>
-<ol>
-  <li><strong>시각적 기준 생성</strong>: ChatGPT 웹 버전에서 구조화된 프롬프트를 입력하여 Image 2.5로 고충실도 UI 시안을 2~3개 생성합니다 (예: 다크 모드 기반 Web3 대시보드).</li>
-  <li><strong>멀티모달 토큰 추출</strong>: 최적의 시안을 선정하여 GPT-4o Vision 모델에 입력하고, 디자인 시스템 역공학 지시를 내립니다:
-    <div class="callout tip"><b class="t">디자인 시스템 추출 Prompt</b>
-    <code>시니어 프론트엔드 아키텍트로서 이 디자인 시안을 분석해줘: 1. 완전한 컬러 팔레트(Primary, Secondary, Background, Border 16진수 색상값); 2. 그리드 간격 시스템(4px/8px 그리드 규약); 3. 이에 대응하는 Tailwind CSS 설정(tailwind.config.js) 스니펫과 기본 HTML 레이아웃 뼈대 출력.</code></div>
-  </li>
-  <li><strong>터미널 구현</strong>: 추출된 표준 Tailwind 설정과 골격 코드를 로컬 Codex 터미널에 전달하여 실제 파일로 작성하고 비즈니스 데이터를 연동합니다. UI 개발 속도가 3배 이상 향상되며 검수 통과율이 비약적으로 높아집니다.</li>
-</ol>
-
-<h4>패러다임 2: 앱 자산 아토믹 파이프라인 (App Icon & Empty States)</h4>
-<p>1인 개발이나 소규모 팀에서 수십 개의 아이콘과 빈 상태(Empty state) 일러스트를 외주 제작하는 것은 비용과 시간이 많이 소요됩니다:</p>
-<ul>
-  <li><strong>표준 앱 아이콘 (App Icon)</strong>: Image 2.5의 미니멀 플랫 기하 프롬프트를 적용하여 Apple HIG 및 Material Design 규격에 완벽히 부합하는 둥근 사각형 아이콘을 즉시 생성.</li>
-  <li><strong>빈 상태(Empty State) 벡터 일러스트</strong>: 404 페이지나 데이터 없음 화면에 어울리는 현대적 그래픽을 생성한 뒤, 벡터 트레이싱 도구를 통해 SVG로 추출하여 배치.</li>
-</ul>
-
-<h4>패러다임 3: 양방향 시각적 회귀 테스트 (Visual Regression Loop)</h4>
-<p>Codex를 통해 Playwright / Puppeteer E2E 스크립트를 작성하고, 헤드리스 브라우저로 실제 렌더링된 스크린샷을 캡처한 뒤 디자인 원본과 시각 모델을 통해 비교 검증합니다:</p>
-<div class="callout note"><b class="t">비주얼 Diff 검증 Prompt</b>
-<code>【이미지 1: 디자인 원본 기준】 vs 【이미지 2: Playwright 실제 렌더링 캡처】
-두 화면의 차이점을 엄격히 비교하여 보고해줘: 1. 버튼 여백(Margin/Padding) 편차; 2. 폰트 크기 및 굵기 계층 차이; 3. 테두리 색상 및 그림자 블러 불일치. 이를 교정하기 위한 구체적인 CSS 수정 패치 코드를 출력할 것.</code></div>
-
-<h3 data-reveal>🎨 3. 프롬프트 엔지니어링 및 품질 튜닝 가이드 (Prompt Tuning Guide)</h3>
-<p>Image 2.0 / 2.5에서 엔지니어링 눈높이에 부합하는 산업용 결과물을 얻기 위한 6대 요소 프레임워크:</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>요소 차원</th>
-        <th>일반적인 비전문적 작성 (지양)</th>
-        <th>엔지니어링 전문 튜닝 (권장)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>1. 주제 및 기능</strong></td>
-        <td>"예쁜 금융 사이트 화면"</td>
-        <td><code>SaaS analytics dashboard interface, high-density data visualization, financial charts, transaction table</code></td>
-      </tr>
-      <tr>
-        <td><strong>2. 디자인 양식</strong></td>
-        <td>"현대적이고 고급스러운 느낌"</td>
-        <td><code>Clean modern UI design, Swiss typographic style, Apple Human Interface Guidelines aesthetic, 8px grid system</code></td>
-      </tr>
-      <tr>
-        <td><strong>3. 컬러 시스템</strong></td>
-        <td>"멋진 다크 테마 색상"</td>
-        <td><code>Dark mode palette: deep slate #0B0F17 background, vibrant emerald #10B981 accents, subtle border #1F2937</code></td>
-      </tr>
-      <tr>
-        <td><strong>4. 질감 및 셰이딩</strong></td>
-        <td>"사실적인 8K 렌더링"</td>
-        <td><code>Matte texture, soft ambient occlusion, crisp 1px borders, subtle glassmorphism card elevation, zero glossy glare</code></td>
-      </tr>
-      <tr>
-        <td><strong>5. 타이포그래피</strong></td>
-        <td>"수익 수치가 표시되어 있음"</td>
-        <td><code>Exact typography: with crisp white text "$124,580.00" displayed prominently, and "Total Revenue" above in gray</code></td>
-      </tr>
-      <tr>
-        <td><strong>6. 네거티브 프롬프트</strong></td>
-        <td>지정 없음</td>
-        <td><code>--no 3d clay style, no realistic human faces, no blurry gradients, no misspelled pseudo-latin text</code></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h4>고급 튜닝 테크닉:</h4>
-<ul>
-  <li><strong>AI 특유의 과도한 연출 배제</strong>: "ultra-detailed"나 "photorealistic" 같은 모호한 수식어는 저렴한 번들거림과 불필요한 노이즈를 유발합니다. 대신 <code>minimalist</code>, <code>clean lines</code>, <code>matte finish</code>, <code>subtle contrast</code> 등의 전문 디자인 용어를 사용합니다.</li>
-  <li><strong>정확한 텍스트 렌더링 기법</strong>: UI 내의 영문 제목이나 버튼 문구를 렌더링할 때는 <strong>반드시 대상 텍스트를 큰따옴표로 감싸 지정합니다</strong> (예: <code>a button with text "GET STARTED" in bold sans-serif</code>). 한 번에 4단어 이하의 짧은 문구를 권장합니다.</li>
-  <li><strong>인페인팅(국소 재렌더링) 활용</strong>: 생성된 대시보드의 특정 차트만 마음에 들지 않을 경우 전체를 재생성하지 말고, 웹 버전의 브러시 도구로 해당 영역을 칠한 뒤 "이 영역만 꺾은선 차트로 변경하고 배경색과 그리드는 완벽히 유지해줘"라고 지시합니다.</li>
-</ul>
-
-<h3 data-reveal>📋 4. 프로덕션급 실전 Prompt 템플릿 모음</h3>
-
-<h4>템플릿 1: 모던 다크 SaaS 분석 대시보드 (Tailwind CSS 추출 대응)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 템플릿 · SaaS Dashboard UI</span><button class="copy-btn">복사</button></div>
-  <pre><code>A high-fidelity modern SaaS web application dashboard interface for server monitoring. Dark mode theme with deep obsidian background (#0A0E1A). The layout features a clean left sidebar navigation, top header with user profile, and a central grid of 4 metric cards (CPU, Memory, Bandwidth, Uptime) with emerald green glowing sparkline charts. Crisp 1px borders (#1E293B), minimalist sans-serif typography, subtle dark card elevation. Professional Figma screenshot aesthetic, pixel-perfect alignment, no clutter.</code></pre>
-</div>
-
-<h4>템플릿 2: 모바일 초소형 핀테크 자산 카드 (React Native / Flutter 기준)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 템플릿 · Fintech Mobile Card</span><button class="copy-btn">복사</button></div>
-  <pre><code>Mobile UI component for a premium debit card widget on iOS screen. Sleek frosted dark glass design with subtle holographic rim lighting. Prominent embossed white text "8492" and "VISA" logo in top corner. Clean balance display "$34,250.80" with minimalist typography. Below the card, two circular action buttons labeled "Send" and "Top Up". Clean solid background (#121212), Apple HIG design guidelines, modern Dribbble showcase style.</code></pre>
-</div>
-
-<h4>템플릿 3: 1인 개발자용 미니멀 App 아이콘 (App Store 규격 준수)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 템플릿 · Minimalist App Icon</span><button class="copy-btn">복사</button></div>
-  <pre><code>App icon design for a developer code intelligence tool. A smooth rounded squircle container on pure black background. In the center, a minimalist geometric logo combining an abstract bracket '{' and a sparkling cyan star. Premium matte texture, subtle radial gradient, smooth beveled edges, modern iOS icon aesthetic. High resolution, centered composition, zero text, vector emblem clarity.</code></pre>
-</div>
-
-<h4>템플릿 4: 404 에러 화면용 벡터 일러스트 (SVG 벡터화 대응)</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 템플릿 · Empty State Vector</span><button class="copy-btn">복사</button></div>
-  <pre><code>Clean vector empty state illustration for a '404 Page Not Found' error screen. A cute, minimalist floating astronaut robot looking puzzled at a disconnected glowing cable. Flat 2D vector art style, clean outline strokes, limited modern color palette (indigo, mint green, and soft gray). Isolated on a solid pure white (#FFFFFF) background. Modern tech startup illustration aesthetic, zero realistic shading, ready for SVG tracing.</code></pre>
-</div>
-
-<h3 data-reveal>🛡️ 5. 프로덕션 함정 회피 및 라이선스 컴플라이언스</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">앱 내 여러 일러스트의 스타일 톤앤매너를 완벽히 일치시키려면?</div>
-    <div class="card-desc"><strong>'핵심 스타일 수식어'와 팔레트를 고정합니다.</strong> 모든 프롬프트 끝에 동일한 스타일 접미사(예: <code>--style: flat geometric 2D vector, mint and slate palette, soft outlines, pure white background</code>)를 부여하고, 웹 버전의 단일 대화창 내에서 연속 생성하여 모델의 컨텍스트 기억을 활용합니다.</div>
-  </div>
-  <div class="card">
-    <div class="card-title">생성된 이미지의 상업적 이용 및 법적 안전 기준은?</div>
-    <div class="card-desc">OpenAI 이용약관에 따라 <strong>유료 구독 사용자는 자신이 생성한 이미지의 완전한 상업적 이용 권리를 보유합니다</strong>. 단, 프롬프트에서 디즈니 캐릭터나 특정 유명 상표명을 직접 언급하는 것은 피하고, "추상 기하학 스타일", "현대적 플랫 테크 디자인" 등 보편적인 디자인 언어로 서술해야 법적으로 안전합니다.</div>
-  </div>
-</div>
-</section>
+<section id="image-guide"><h2>이미지 작업 전용 가이드</h2><p>개발은 코드, 디자인 제약, 검증을 중심으로 진행하세요. 이미지 생성과 편집은 전용 가이드에서 관리합니다.</p><p><a href="gpt-image-guide.ko.html">GPT Image →</a></p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 10 ================= -->
 <section id="playbook">
 <div class="sec-tag">실전 10</div>
-<h2>실전 시나리오 핸드북 & 파이프라인</h2>
+<h2>실전 시나리오 핸드북 &amp; 파이프라인</h2>
 
 <div class="plays">
   <div class="play">
@@ -1082,27 +748,9 @@ OpenAI의 사용량 한도는 단순히 "몇 번 질문했는가"가 아니라 <
 <div class="divider"></div>
 
 <!-- ================= SECTION 11 ================= -->
-<section id="hidden-config">
-<div class="sec-tag">심화 11</div>
-<h2>내부 분석과 숨겨진 고급 기능</h2>
-
-<h3 data-reveal>1. <code>codex features</code> 주요 플래그 분석</h3>
-<table class="tbl">
-  <tr><th>내부 기능 플래그</th><th>기본 상태</th><th>기능 설명 및 활용 시나리오</th></tr>
-  <tr><td><code>guardian_approval</code></td><td><span class="pill a">stable (기본 활성)</span></td><td>보안 가디언 승인 계층, 인젝션 및 파괴적 명령 자동 식별 차단</td></tr>
-  <tr><td><code>browser_use_full_cdp_access</code></td><td><span class="pill a">stable (기본 활성)</span></td><td>Chrome DevTools Protocol의 전체 상호작용 권한 개방</td></tr>
-  <tr><td><code>multi_agent_v2</code></td><td><span class="pill b">under development</span></td><td>차세대 다중 에이전트 병렬 협업 스케줄러 (수동 enable 가능)</td></tr>
-  <tr><td><code>concurrent_reasoning_summaries</code></td><td><span class="pill b">under development</span></td><td>동시 추론 요약 생성으로 심층 사고 모델의 장문 처리 가속화</td></tr>
-  <tr><td><code>token_budget</code></td><td><span class="pill b">under development</span></td><td>스레드 및 턴 단위 토큰 예산 서킷 브레이커, 과도한 토큰 소모 방지</td></tr>
-</table>
-
-<h3 data-reveal>2. 유용한 디버그 명령어</h3>
-<ul>
-  <li><code>codex debug prompt-input</code> —— 모델에 전달되는 원시 Prompt JSON을 출력하여 Codex가 바라보는 실제 컨텍스트 확인;</li>
-  <li><code>codex debug models</code> —— 공식 모델 저장소의 원시 메타데이터 확인 및 최신 모델 코드 확인;</li>
-  <li><code>codex sandbox -- &lt;cmd&gt;</code> —— 대화 세션 없이 Codex OS 샌드박스에서 직접 명령어를 실행하여 권한 문제 진단.</li>
-</ul>
-</section>
+<section id="hidden-config"><h2>로컬 버전 및 기능 확인</h2><p>설정 변경 전에 버전과 도움말을 확인하세요. 실험 플래그는 안정된 계약이 아니며 기록 없이 실기 검증을 주장할 수 없습니다.</p><pre><code>codex --version
+codex --help
+codex exec --help</code></pre><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -1112,12 +760,12 @@ OpenAI의 사용량 한도는 단순히 "몇 번 질문했는가"가 아니라 <
 <h2>리소스 색인 및 추천 자료</h2>
 
 <table class="tbl">
-  <tr><th>자료명</th><th>접속 링크</th><th>성격 및 활용 가치</th></tr>
+  <tbody><tr><th>자료명</th><th>접속 링크</th><th>성격 및 활용 가치</th></tr>
   <tr><td><strong>공식 문서 포털</strong></td><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>공식 1차 출처: CLI, IDE, Cloud 및 설정 전체 레퍼런스</td></tr>
   <tr><td><strong>CodexGuide 실전 가이드</strong></td><td><a href="https://codexguide.io/paths" target="_blank">codexguide.io/paths</a></td><td>다양한 시나리오별 실전 사례 및 학습 경로</td></tr>
   <tr><td><strong>AGENTS.md 규격</strong></td><td><a href="https://agents.md" target="_blank">agents.md 개방형 표준</a></td><td>도구 간 호환되는 프로젝트 메모리 표준 사양</td></tr>
-  <tr><td><strong>본 지식 베이스 연계 주제</strong></td><td><a href="claude-code-guide.ko.html">Claude Code 활용 가이드</a> · <a href="env-auth-clinic.ko.html">환경 & 로그인 응급실</a> · <a href="prompt-context-engineering.ko.html">프롬프트 & 컨텍스트 엔지니어링</a></td><td>AI 에이전트 기반 소프트웨어 엔지니어링 내공 다지기</td></tr>
-</table>
+  <tr><td><strong>본 지식 베이스 연계 주제</strong></td><td><a href="claude-code-guide.ko.html">Claude Code 활용 가이드</a> · <a href="env-auth-clinic.ko.html">환경 &amp; 로그인 응급실</a> · <a href="prompt-context-engineering.ko.html">프롬프트 &amp; 컨텍스트 엔지니어링</a></td><td>AI 에이전트 기반 소프트웨어 엔지니어링 내공 다지기</td></tr>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -1131,7 +779,10 @@ OpenAI의 사용량 한도는 단순히 "몇 번 질문했는가"가 아니라 <
 
 <button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

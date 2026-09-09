@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>11. 내부 진입: 실행 중인 컨테이너 접속 - Docker 35단계 완벽 마스터</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 함정 탈출 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 환경 구축 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 환경 구축 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정: 느린 다운로드 속도 탈출</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -363,7 +362,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이전: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐색: Bridge와 Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 지정 탈출</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요할까?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>최종 실전 (하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>보안 방벽: .env로 비밀번호 보호하기</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 공간 대청소</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 철칙: Root 계정 사용 금지</span></a>
@@ -437,7 +436,7 @@ pre:hover .copy-btn { opacity: 1; }
 <span class="bash-cmd">whoami</span>
 
 <span class="bash-comment"># 현재 작업 디렉터리 및 파일 목록 확인</span>
-<span class="bash-cmd">pwd</span> && <span class="bash-cmd">ls</span> -la
+<span class="bash-cmd">pwd</span> &amp;&amp; <span class="bash-cmd">ls</span> -la
 
 <span class="bash-comment"># 에러를 유발한 설정 파일 내용 직접 열람</span>
 <span class="bash-cmd">cat</span> /data/config.json
@@ -451,7 +450,7 @@ pre:hover .copy-btn { opacity: 1; }
   <h3>필요한 진단 도구 즉석 설치하기</h3>
   <p>네트워크 핑 테스트를 위한 <code>curl</code>이나 <code>ping</code> 명령어가 컨테이너에 없다면, 셸 안에서 패키지 매니저로 즉시 설치할 수 있습니다.</p>
 <pre><code><span class="bash-comment"># Debian / Ubuntu 기반 컨테이너</span>
-<span class="bash-cmd">apt-get</span> update && <span class="bash-cmd">apt-get</span> install -y curl
+<span class="bash-cmd">apt-get</span> update &amp;&amp; <span class="bash-cmd">apt-get</span> install -y curl
 
 <span class="bash-comment"># Alpine Linux 기반 컨테이너</span>
 <span class="bash-cmd">apk</span> add --no-cache curl</code></pre>
@@ -499,7 +498,7 @@ pre:hover .copy-btn { opacity: 1; }
     <div>
       <span class="tt">실무 철칙: 일회용 컨테이너 (Disposable Container) 원칙</span>
       <code>docker exec</code>나 <code>docker cp</code>로 컨테이너 내부 파일을 직접 수정하는 것은 임급 처방일 뿐, 영구적인 해결책이 아닙니다(안티패턴).<br>
-      컨테이너가 재시작되거나 새로 배포되면 내부 변경사항은 모두 유실됩니다. 정확한 워크플로는 <strong>"exec로 원인을 파악 -> 로컬 코드나 Dockerfile 수정 -> 새 이미지 빌드 및 재배포"</strong>의 순서를 따르는 것입니다.
+      컨테이너가 재시작되거나 새로 배포되면 내부 변경사항은 모두 유실됩니다. 정확한 워크플로는 <strong>"exec로 원인을 파악 -&gt; 로컬 코드나 Dockerfile 수정 -&gt; 새 이미지 빌드 및 재배포"</strong>의 순서를 따르는 것입니다.
     </div>
   </div>
   
@@ -614,5 +613,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

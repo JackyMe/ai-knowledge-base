@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>11. 破门而入：钻进容器内部 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -439,7 +438,7 @@ graph TD
 <span class="bash-cmd">whoami</span>
 
 <span class="bash-comment"># 看看我在哪，目录里有啥</span>
-<span class="bash-cmd">pwd</span> && <span class="bash-cmd">ls</span> -la
+<span class="bash-cmd">pwd</span> &amp;&amp; <span class="bash-cmd">ls</span> -la
 
 <span class="bash-comment"># 查看那个该死的配置文件到底存不存在</span>
 <span class="bash-cmd">cat</span> /data/config.json
@@ -453,7 +452,7 @@ graph TD
 <h3>想要个工具？现场装！</h3>
 <p>如果在容器里发现缺少了排错工具（比如想测试网络，但没有 <code>curl</code>），不用急着去改镜像，你可以直接在里面装：</p>
 <pre><code><span class="bash-comment"># 如果是 Debian/Ubuntu 系统的容器</span>
-<span class="bash-cmd">apt-get</span> update && <span class="bash-cmd">apt-get</span> install -y curl
+<span class="bash-cmd">apt-get</span> update &amp;&amp; <span class="bash-cmd">apt-get</span> install -y curl
 
 <span class="bash-comment"># 如果是 Alpine 系统的容器</span>
 <span class="bash-cmd">apk</span> add --no-cache curl</code></pre>
@@ -617,5 +616,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

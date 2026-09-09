@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>08. 最初のコマンドに隠された仕組み - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item on" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -414,13 +413,13 @@ To generate this message, Docker took the following steps:
     participant D as Docker デーモン (Engine)
     participant R as レジストリ (Docker Hub)
     
-    U->>D: 1. docker run hello-world を実行
-    D-->>D: 2. ローカルディスク確認: イメージがあるか? (なし)
-    D->>R: 3. リモートレジストリからイメージレイヤーを取得
-    R-->>D: 4. hello-world イメージデータを返却
-    D-->>D: 5. イメージからコンテナを実体化して起動
-    D->>U: 6. バイナリを実行し Hello メッセージを端末へ出力
-    D-->>D: 7. プロセス終了、コンテナは Exited 状態へ遷移
+    U-&gt;&gt;D: 1. docker run hello-world を実行
+    D--&gt;&gt;D: 2. ローカルディスク確認: イメージがあるか? (なし)
+    D-&gt;&gt;R: 3. リモートレジストリからイメージレイヤーを取得
+    R--&gt;&gt;D: 4. hello-world イメージデータを返却
+    D--&gt;&gt;D: 5. イメージからコンテナを実体化して起動
+    D-&gt;&gt;U: 6. バイナリを実行し Hello メッセージを端末へ出力
+    D--&gt;&gt;D: 7. プロセス終了、コンテナは Exited 状態へ遷移
 </code></pre>
   </div>
 
@@ -486,8 +485,8 @@ To generate this message, Docker took the following steps:
     <div>
       <span class="tt">プロの知恵：docker run = docker create + docker start</span>
       初心者の多くは <code>docker run</code> を単一のコマンドと思いがちですが、実際には<strong>複合コマンド</strong>です：<br>
-      1. <code>docker create [image]</code> &rarr; イメージからコンテナを生成（未起動状態）<br>
-      2. <code>docker start [container_id]</code> &rarr; コンテナのプロセスを起動<br>
+      1. <code>docker create [image]</code> → イメージからコンテナを生成（未起動状態）<br>
+      2. <code>docker start [container_id]</code> → コンテナのプロセスを起動<br>
       さらに <code>docker run --pull=always</code> を指定すると、起動前に必ずリモートレジストリの最新ダイジェストを問い合わせて更新する挙動になります。
     </div>
   </div>
@@ -603,5 +602,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

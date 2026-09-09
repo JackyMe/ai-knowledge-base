@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>14. Health Checks: Container Self-Diagnosis - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,14 +331,14 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passkey</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passkey</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Mirror Acceleration: Faster Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secret of the First Line of Magic</span></a>
   </div>
   <div class="nav-group">
     <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
     <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Run an Nginx Site in Detached</span></a>
-    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life & Death (State Machine)</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life &amp; Death (State Machine)</span></a>
     <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Breaking In: Stepping Inside Container</span></a>
     <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: How to Inspect Logs</span></a>
     <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Shackles: Prevent OOM Crashes</span></a>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Named Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
-    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup & Restore</span></a>
+    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup &amp; Restore</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Quest: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Goodbye IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>The Ultimate Battle 2: Microservices</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>System Cleanup: Freeing Space</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Graduation Red Line: Never Root</span></a>
@@ -399,7 +398,7 @@ pre:hover .copy-btn { opacity: 1; }
 <p>By default, Docker's sole criterion for judging whether a container is alive or dead is <strong>whether process PID 1 has terminated</strong>. It does not know if your application hit an internal deadlock, failed database handshakes, or leaked all worker threads.</p>
 <p>To bridge this gap, Docker introduced the Healthcheck mechanism. It allows you to define custom diagnostic probes—executing periodic check commands. If the command succeeds, the container is confirmed healthy; if it fails consecutively, Docker flags it as unhealthy.</p>
 
-<h2>2. How It Works & State Progression</h2>
+<h2>2. How It Works &amp; State Progression</h2>
 <p>Once a container is configured with health checks, its STATUS column in <code>docker ps</code> includes an explicit health diagnosis:</p>
 <ul>
   <li><code>Up (health: starting)</code>: The container just started, initializing or awaiting its first probe window.</li>
@@ -410,12 +409,12 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="mermaid-box">
 <div class="mermaid">
 stateDiagram-v2
-    [*] --> starting : Container Starts
-    starting --> healthy : Probe check passes
-    starting --> unhealthy : Exceeds start-period & fails
-    healthy --> unhealthy : N consecutive probe failures
-    unhealthy --> healthy : Probe recovers successfully
-    unhealthy --> Restart : If auto-healing configured (Orchestrator)
+    [*] --&gt; starting : Container Starts
+    starting --&gt; healthy : Probe check passes
+    starting --&gt; unhealthy : Exceeds start-period &amp; fails
+    healthy --&gt; unhealthy : N consecutive probe failures
+    unhealthy --&gt; healthy : Probe recovers successfully
+    unhealthy --&gt; Restart : If auto-healing configured (Orchestrator)
 </div>
 </div>
 
@@ -468,8 +467,7 @@ stateDiagram-v2
   <span class="ic">🚀</span>
   <div>
     <span class="tt">Pro Tips: Does Becoming Unhealthy Automatically Restart the Container?</span>
-    <p>This is a widespread misconception! <strong>A standalone Docker daemon will NEVER automatically restart a container just because it turns unhealthy!</strong> It merely flags the container as unhealthy in metadata.<br>
-    To achieve automated self-healing and automatic restarts upon failure, you need container orchestrators like <strong>Docker Swarm</strong> or <strong>Kubernetes (K8s)</strong>. Alternatively, in <strong>Docker Compose</strong>, you can use <code>depends_on</code> conditions (<code>condition: service_healthy</code>) to coordinate service dependencies. Health checks are the fundamental building blocks of modern resilient systems.</p>
+    <p>Health state and restart policies are separate. unhealthy does not trigger Docker restart policies. Compose depends_on with service_healthy waits during startup; it does not continuously heal runtime failures. Applications still need retries.</p>
   </div>
 </div>
   
@@ -584,5 +582,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

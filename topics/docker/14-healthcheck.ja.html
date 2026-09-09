@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>14. ヘルスチェック：コンテナの自己診断 - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -409,12 +408,12 @@ pre:hover .copy-btn { opacity: 1; }
 
 <div class="mermaid-box">
 <pre><code class="language-mermaid">stateDiagram-v2
-    [*] --> starting : コンテナ起動
-    starting --> healthy : 診断プローブ成功
-    starting --> unhealthy : 起動猶予時間超過 & 失敗
-    healthy --> unhealthy : N回連続失敗
-    unhealthy --> healthy : 診断プローブが復旧成功
-    unhealthy --> Restart : 自動復旧連携 (オーケストレーター)
+    [*] --&gt; starting : コンテナ起動
+    starting --&gt; healthy : 診断プローブ成功
+    starting --&gt; unhealthy : 起動猶予時間超過 &amp; 失敗
+    healthy --&gt; unhealthy : N回連続失敗
+    unhealthy --&gt; healthy : 診断プローブが復旧成功
+    unhealthy --&gt; Restart : 自動復旧連携 (オーケストレーター)
 </code></pre>
 </div>
 
@@ -467,8 +466,7 @@ pre:hover .copy-btn { opacity: 1; }
   <span class="ic">🚀</span>
   <div>
     <span class="tt">プロの知恵：unhealthy になったら自動で再起動してくれるのか？</span>
-    <p>初心者が最も抱きやすい勘違いです！ <strong>単体の Docker デーモンは、unhealthy になったコンテナを自動で再起動することは絶対にありません！</strong> 単にメタデータ上のフラグを <code>unhealthy</code> に書き換えるだけです。<br>
-    真の自己修復（異常検知時の自動再作成・再起動）を実現するには、<strong>Kubernetes (K8s)</strong> や <strong>Docker Swarm</strong> などのオーケストレーターと組み合わせるか、<strong>Docker Compose</strong> の <code>depends_on</code>（<code>condition: service_healthy</code>）で起動順序を制御する必要があります。ヘルスチェックは、高可用性アーキテクチャの基礎となる最重要パーツです。</p>
+    <p>unhealthy は Docker の restart を発動しません。Compose の service_healthy は起動時の依存待機であり、継続的な障害復旧ではありません。</p>
   </div>
 </div>
   
@@ -583,5 +581,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

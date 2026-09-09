@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>34. 毕业红线：绝不用 Root - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -399,10 +398,10 @@ pre:hover .copy-btn { opacity: 1; }
 <p>我们在写 <code>Dockerfile</code> 时，必须用 <code>USER</code> 指令来创建一个“普通打工人”并切换过去。来看一个标准的 Node.js 降权写法：</p>
 
 <pre><code><span class="bash-comment"># 标准降权 Dockerfile</span>
-FROM node:18-alpine
+FROM node:24-alpine
 
 <span class="bash-comment"># 1. 创建普通用户组和用户 (alpine自带了 node 用户，这里手动建一个作演示)</span>
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -436,9 +435,9 @@ CMD [<span class="bash-str">"node"</span>, <span class="bash-str">"server.js"</s
   <div class="step-header">🔒 常见权限坑与自救指南</div>
   <div class="step-body">
     <ol>
-      <li><strong>端口监听失败：</strong>在 Linux 中，只有 root 才能监听 1024 以下的端口（比如 80, 443）。<br/><em>解法：</em>让你的应用监听 8080、3000 等大端口。在外面用 Nginx 或 Docker 映射去转 80 端口。</li>
-      <li><strong>写文件/日志报错：</strong>切换到 <code>appuser</code> 后，你发现程序没法写 <code>/var/log</code> 目录了。<br/><em>解法：</em>提前在 <code>USER root</code> 阶段，用 <code>RUN mkdir -p /var/log/app && chown appuser:appgroup /var/log/app</code> 把目录所有权交给打工人。</li>
-      <li><strong>全球包安装失败：</strong>像 <code>npm install -g</code> 这种需要写全局目录的操作会失败。<br/><em>解法：</em>所有的构建安装必须放在 <code>USER appuser</code> 指令<strong>之上</strong>执行。</li>
+      <li><strong>端口监听失败：</strong>在 Linux 中，只有 root 才能监听 1024 以下的端口（比如 80, 443）。<br><em>解法：</em>让你的应用监听 8080、3000 等大端口。在外面用 Nginx 或 Docker 映射去转 80 端口。</li>
+      <li><strong>写文件/日志报错：</strong>切换到 <code>appuser</code> 后，你发现程序没法写 <code>/var/log</code> 目录了。<br><em>解法：</em>提前在 <code>USER root</code> 阶段，用 <code>RUN mkdir -p /var/log/app &amp;&amp; chown appuser:appgroup /var/log/app</code> 把目录所有权交给打工人。</li>
+      <li><strong>全球包安装失败：</strong>像 <code>npm install -g</code> 这种需要写全局目录的操作会失败。<br><em>解法：</em>所有的构建安装必须放在 <code>USER appuser</code> 指令<strong>之上</strong>执行。</li>
     </ol>
   </div>
 </div>
@@ -586,5 +585,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

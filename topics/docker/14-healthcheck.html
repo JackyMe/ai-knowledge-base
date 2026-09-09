@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>14. 健康检查：容器自我把脉 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -411,12 +410,12 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="mermaid-box">
 <div class="mermaid">
 stateDiagram-v2
-    [*] --> starting : 容器启动
-    starting --> healthy : 探针检测成功
-    starting --> unhealthy : 超过启动宽限期且失败
-    healthy --> unhealthy : 连续N次探针失败
-    unhealthy --> healthy : 某次探针恢复成功
-    unhealthy --> Restart : 如果配置了自愈(Orchestrator)
+    [*] --&gt; starting : 容器启动
+    starting --&gt; healthy : 探针检测成功
+    starting --&gt; unhealthy : 超过启动宽限期且失败
+    healthy --&gt; unhealthy : 连续N次探针失败
+    unhealthy --&gt; healthy : 某次探针恢复成功
+    unhealthy --&gt; Restart : 如果配置了自愈(Orchestrator)
 </div>
 </div>
 
@@ -460,8 +459,7 @@ stateDiagram-v2
   <span class="ic">🚀</span>
   <div>
     <span class="tt">Pro-tip / 老鸟技巧：变成 unhealthy 会自动重启吗？</span>
-    <p>这是一个经典的误区！<strong>纯原生的单机 Docker，即使容器变成了 unhealthy，也不会自动重启它！</strong> 它只会挂在那里打上不健康的标签。<br>
-    想要实现“一旦病危自动重启”的自愈能力，你需要结合 <strong>Docker Swarm</strong> 或 <strong>Kubernetes (K8s)</strong> 这样的容器编排平台。或者退而求其次，在 <strong>Docker Compose</strong> 里结合 <code>depends_on</code> 来控制启动顺序。健康检查是迈向高级高可用架构的基石。</p>
+    <p>健康状态与重启策略分别配置。unhealthy 本身不会触发 Docker 的 restart 策略；Compose 的 depends_on: condition: service_healthy 用于依赖的启动等待，不会持续监控并修复运行中的故障。应用仍需重试与故障处理。</p>
   </div>
 </div>
   
@@ -576,5 +574,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

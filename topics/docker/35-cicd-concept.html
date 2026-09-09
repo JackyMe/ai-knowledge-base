@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>35. 尾声：CI/CD 自动化流水线 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -394,25 +393,24 @@ pre:hover .copy-btn { opacity: 1; }
 <p>一图胜千言，来看现代软件是怎么通过流水线“流”进服务器的：</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-sequenceDiagram
+<pre class="mermaid">sequenceDiagram
     participant Dev as 程序员
     participant Git as GitHub/GitLab
-    participant CI as CI Runner<br/>(构建服务器)
-    participant Reg as Docker Registry<br/>(镜像仓库)
+    participant CI as CI Runner<br>(构建服务器)
+    participant Reg as Docker Registry<br>(镜像仓库)
     participant Prod as 生产服务器
 
-    Dev->>Git: 1. git push 提交代码
-    Git-->>CI: 2. 触发 Webhook
+    Dev-&gt;&gt;Git: 1. git push 提交代码
+    Git--&gt;&gt;CI: 2. 触发 Webhook
     activate CI
-    CI->>CI: 3. 运行自动单元测试
-    CI->>CI: 4. docker build 打包镜像
-    CI->>Reg: 5. docker push 上传镜像
+    CI-&gt;&gt;CI: 3. 运行自动单元测试
+    CI-&gt;&gt;CI: 4. docker build 打包镜像
+    CI-&gt;&gt;Reg: 5. docker push 上传镜像
     deactivate CI
-    CI-->>Prod: 6. 远程通知服务器部署
+    CI--&gt;&gt;Prod: 6. 远程通知服务器部署
     activate Prod
-    Prod->>Reg: 7. docker pull 下载新镜像
-    Prod->>Prod: 8. docker compose up 重启服务
+    Prod-&gt;&gt;Reg: 7. docker pull 下载新镜像
+    Prod-&gt;&gt;Prod: 8. docker compose up 重启服务
     deactivate Prod
 </pre>
 </div>
@@ -421,34 +419,34 @@ sequenceDiagram
 <p>CI (Continuous Integration) 的核心是：<strong>每次提交代码，机器自动帮你验证有没有写错。</strong></p>
 <p>以最流行的 GitHub Actions 为例，我们在项目根目录建一个 <code>.github/workflows/docker-build.yml</code>：</p>
 
-<pre><code><span class="bash-comment"># GitHub Actions 示例脚本</span>
+<pre><code># GitHub Actions 示例脚本
 name: CI to Docker Hub
 
 on:
   push:
-    branches: [ <span class="bash-str">"main"</span> ] <span class="bash-comment"># 只有推送到 main 分支才触发</span>
+    branches: [ "main" ] # 只有推送到 main 分支才触发
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
-          <span class="bash-comment"># 这里的 tags 极其重要！</span>
+          # 这里的 tags 极其重要！
           tags: myname/myapp:latest, myname/myapp:${{ github.sha }}
-</code></pre>
+</code></pre><p><a href="https://github.com/docker/build-push-action" target="_blank" rel="noopener">Docker · GitHub Actions</a> — 示例版本核对于 2026-09-09；自托管 Runner 需核对兼容性，生产建议固定已审核的提交 SHA。</p>
 
 <div class="step-panel">
   <div class="step-header">🏷️ Tag 标记的艺术</div>
@@ -461,10 +459,8 @@ jobs:
 <h2>三、CD：让更新如丝般顺滑 (持续部署)</h2>
 
 <p>CD (Continuous Deployment) 负责把推送到仓库的镜像，真正跑在服务器上。</p>
-<p>如果是最简单的单机服务器，很多团队会使用 Watchtower 这个神器。它本身就是一个 Docker 容器，它会 24 小时盯着你服务器上的镜像，一旦发现 Docker Hub 上有了新版本，它会自动下载并重启你的容器，完全零手工参与！</p>
-<pre><code><span class="bash-comment"># 极其暴力的自动更新神器：Watchtower</span>
-$ <span class="bash-cmd">docker run</span> -d --name watchtower -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
-</code></pre>
+<p>部署使用经过测试的版本或镜像摘要，记录上一版本并准备回退。先拉取、检查配置与数据迁移，再在维护窗口更新并检查健康状态。不要默认让挂载 docker.sock 的工具自动替换全部运行中的容器。</p>
+
 
 <h2>四、前方的路：Kubernetes 的呼唤</h2>
 
@@ -484,12 +480,12 @@ $ <span class="bash-cmd">docker run</span> -d --name watchtower -v /var/run/dock
   <div class="ic">🎓</div>
   <div>
     <span class="tt">旅程的终点，也是起点</span>
-    从第 1 集那个对“配环境”抓狂的小明，到第 35 集能构建微服务、懂权限降权、玩转 CI/CD 的你，你已经跨越了现代软件工程最重要的一道门槛。<br/><br/>
-    终端就是你的画布，容器就是你的颜料。去构建属于你的伟大应用吧，让它们在任何机器上，都一如既往地完美运行。<br/><br/>
+    从第 1 集那个对“配环境”抓狂的小明，到第 35 集能构建微服务、懂权限降权、玩转 CI/CD 的你，你已经跨越了现代软件工程最重要的一道门槛。<br><br>
+    终端就是你的画布，容器就是你的颜料。去构建属于你的伟大应用吧，让它们在任何机器上，都一如既往地完美运行。<br><br>
     <strong>愿你的代码，永远一次跑通！🎉</strong>
   </div>
 </div>
-\n</div>
+\n
   
   <div class="page-nav">
   <a href="34-production-root.html" class="page-nav-link prev"><span class="dir">← 上一节</span><span class="title">34. 毕业红线：绝不用 Root</span></a>
@@ -602,5 +598,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

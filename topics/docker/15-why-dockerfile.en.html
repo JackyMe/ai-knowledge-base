@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>15. Farewell to Manual Setup - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,14 +331,14 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passkey</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passkey</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Mirror Acceleration: Faster Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secret of the First Line of Magic</span></a>
   </div>
   <div class="nav-group">
     <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
     <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Run an Nginx Site in Detached</span></a>
-    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life & Death (State Machine)</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life &amp; Death (State Machine)</span></a>
     <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Breaking In: Stepping Inside Container</span></a>
     <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: How to Inspect Logs</span></a>
     <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Shackles: Prevent OOM Crashes</span></a>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Named Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
-    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup & Restore</span></a>
+    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup &amp; Restore</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Quest: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Goodbye IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>The Ultimate Battle 2: Microservices</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>System Cleanup: Freeing Space</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Graduation Red Line: Never Root</span></a>
@@ -457,11 +456,11 @@ docker commit container_id my-app</code></pre>
 <div class="mermaid-box">
 <div class="mermaid">
 flowchart LR
-    A["Dockerfile<br>Code & Directives"] -->|Execute| B(docker build)
-    C["Source Code / Assets<br>(Build Context)"] -->|Send to| B
-    B -->|Automatic Layer-by-Layer Build| D[(Container Image)]
-    D -->|Execute| E(docker run)
-    E --> F[Running Container]
+    A["Dockerfile<br>Code &amp; Directives"] --&gt;|Execute| B(docker build)
+    C["Source Code / Assets<br>(Build Context)"] --&gt;|Send to| B
+    B --&gt;|Automatic Layer-by-Layer Build| D[(Container Image)]
+    D --&gt;|Execute| E(docker run)
+    E --&gt; F[Running Container]
     
     style B fill:#f97316,color:#fff
     style D fill:#0ea5e9,color:#fff
@@ -597,5 +596,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

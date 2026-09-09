@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>03. 次元の違い：仮想マシン vs コンテナ - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -419,20 +418,20 @@ pre:hover .copy-btn { opacity: 1; }
 flowchart TB
     subgraph VMArch["仮想マシン アーキテクチャ (VM)"]
         direction BT
-        V1[アプリ A] --> V2[Guest OS 例: CentOS]
-        V3[アプリ B] --> V4[Guest OS 例: Ubuntu]
-        V2 --> V5(Hypervisor層)
-        V4 --> V5
-        V5 --> V6[ホストOS]
-        V6 --> V7[(物理サーバー / ハードウェア)]
+        V1[アプリ A] --&gt; V2[Guest OS 例: CentOS]
+        V3[アプリ B] --&gt; V4[Guest OS 例: Ubuntu]
+        V2 --&gt; V5(Hypervisor層)
+        V4 --&gt; V5
+        V5 --&gt; V6[ホストOS]
+        V6 --&gt; V7[(物理サーバー / ハードウェア)]
     end
     
     subgraph DockerArch["コンテナ アーキテクチャ (Docker)"]
         direction BT
-        D1[アプリ A + ライブラリ] --> D3(Docker Engine)
-        D2[アプリ B + ライブラリ] --> D3
-        D3 --> D4[ホストOS / 共有カーネル]
-        D4 --> D5[(物理サーバー / ハードウェア)]
+        D1[アプリ A + ライブラリ] --&gt; D3(Docker Engine)
+        D2[アプリ B + ライブラリ] --&gt; D3
+        D3 --&gt; D4[ホストOS / 共有カーネル]
+        D4 --&gt; D5[(物理サーバー / ハードウェア)]
     end
     
     style V5 fill:#fef08a,stroke:#ca8a04
@@ -447,7 +446,7 @@ flowchart TB
   <p>主要なパフォーマンス指標において、コンテナが従来の仮想マシンに対してどれほどの「次元の違い（圧倒的アドバンテージ）」を持つかを比較してみましょう。</p>
 
   <table style="width:100%; border-collapse: collapse; margin: 24px 0; font-size: 14px;">
-    <tr style="background:#f8fafc; border-bottom: 2px solid var(--border); text-align:left;">
+    <tbody><tr style="background:#f8fafc; border-bottom: 2px solid var(--border); text-align:left;">
       <th style="padding:10px;">評価項目</th>
       <th style="padding:10px;">従来の仮想マシン (VM)</th>
       <th style="padding:10px;">Docker コンテナ</th>
@@ -477,12 +476,12 @@ flowchart TB
       <td style="padding:10px; color:#10b981;">非常に強固（ハードウェアレベルの境界分離）</td>
       <td style="padding:10px; color:#ef4444;">中程度（プロセス空間の論理分離、カーネル共有）</td>
     </tr>
-  </table>
+  </tbody></table>
 
   <h3>プロの知恵：仮想マシンは完全に不要になったのか？</h3>
 
   <p>答えは<strong>「断じてNO」</strong>です。現代のクラウドデータセンターでは、仮想マシンとコンテナは美しく協調して動作しています。</p>
-  <p>現代のエンタープライズ標準アーキテクチャ：ベアメタル物理サーバーを購入 &rarr; VMware や KVM で大きな仮想マシンに分割（マルチテナント間のハードウェア分離とクォータを担保） &rarr; 各VM内にLinuxをインストール &rarr; その上で軽量なDockerコンテナ群を展開する。</p>
+  <p>現代のエンタープライズ標準アーキテクチャ：ベアメタル物理サーバーを購入 → VMware や KVM で大きな仮想マシンに分割（マルチテナント間のハードウェア分離とクォータを担保） → 各VM内にLinuxをインストール → その上で軽量なDockerコンテナ群を展開する。</p>
   <p><strong>仮想マシンが必須となるユースケース：</strong></p>
   <ul>
     <li>ホストと全く異なるカーネルを動かす必要がある場合（例：Linuxサーバー上でWindows専用のGUIアプリやバイナリを動かす場合、コンテナでは不可能でありVMが必須です）。</li>
@@ -608,5 +607,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

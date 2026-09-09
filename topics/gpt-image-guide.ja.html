@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="GPT 画像生成完全実戦ガイド：DALL-E から GPT-4o ネイティブ画像、Image 2.5 までの進化系譜、6要素プロンプトフレームワーク、15+ 実戦プロンプトテンプレート、スタイル語彙集、画像編集ループ、文字描画攻略、競合ツール比較とエンタープライズ向けコンプライアンス。">
@@ -180,6 +178,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -204,8 +203,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="side-filter"><input id="sideFilter" placeholder="セクションを検索…"><span class="fk">/</span></div>
   <div class="nav-group">
     <div class="gt">基礎と進化</div>
-    <a href="#evolution"><span class="no">00</span>技術進化の全貌</a>
-    <a href="#subscription"><span class="no">01</span>プランとクォータ早見表</a>
+    <a href="#evolution">画像モデルとインターフェース</a>
+    <a href="#subscription">使用量と費用の確認</a>
   </div>
   <div class="nav-group">
     <div class="gt">プロンプト工学</div>
@@ -220,17 +219,17 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">画像編集</div>
     <a href="#image-editing"><span class="no">06</span>画像編集と反復プロセス</a>
-    <a href="#consistency"><span class="no">07</span>一貫性維持テクニック</a>
+    <a href="#consistency">人物とスタイルの一貫性</a>
   </div>
   <div class="nav-group">
     <div class="gt">実践シナリオ</div>
     <a href="#scenarios"><span class="no">08</span>15+ 実戦シナリオテンプレート</a>
-    <a href="#expert-tricks"><span class="no">09</span>エキスパート秘伝テクニック</a>
+    <a href="#expert-tricks">制御しやすくする方法</a>
   </div>
   <div class="nav-group">
     <div class="gt">比較とコンプライアンス</div>
-    <a href="#comparison"><span class="no">10</span>競合比較と選定ガイド</a>
-    <a href="#safety-copyright"><span class="no">11</span>規約・著作権・企業FAQ</a>
+    <a href="#comparison">同じ課題でツールを比較</a>
+    <a href="#safety-copyright">納品前の確認</a>
     <a href="#resources"><span class="no">12</span>リソース索引</a>
   </div>
 </nav>
@@ -239,7 +238,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🎨 GPT 画像生成 · 100+ の良質記事を凝縮 · 2026-09-09 検証済み</div>
+  <div class="badge">画像生成と編集：手順、例、公式資料。</div>
   <h1>GPT 画像生成<br><span class="grad">入門から極意まで · 完全実戦ハンドブック</span></h1>
   <p class="lead">ChatGPT Plus / Pro / Team / Enterprise 会員向けの画像生成完全マニュアル。ネット上の <strong>100本以上の高品質記事</strong> を徹底的に網羅し、DALL-E から GPT-4o ネイティブ画像、最新の Image 2.5 までの進化系譜、<strong>6要素プロンプトフレームワーク</strong>、<strong>15+ の実戦プロンプトテンプレート</strong>、ビジュアル語彙集、画像編集ループ、文字レンダリング攻略、競合比較、エンタープライズ向けコンプライアンス実践までを完全解説。</p>
   <div class="meta">
@@ -251,82 +250,18 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="stat"><b>4世代の進化</b><span>DALL-E 2 → DALL-E 3 → GPT-4o ネイティブ → Image 2.5</span></div>
   <div class="stat"><b>6要素フレームワーク</b><span>主体 · 動作 · 環境 · スタイル · 技術 · 雰囲気</span></div>
   <div class="stat"><b>15+ シナリオ</b><span>EC · SNS · ロゴ · UI · ジブリ風 · ドット絵 · インフォグラフィック</span></div>
-  <div class="stat"><b>100+ ソース</b><span>公式ドキュメント · コミュニティ知見 · 専門ブログ · 実戦事例</span></div>
+  <div class="stat">画像生成と編集：手順、例、公式資料。</div>
 </div>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 0: 技術進化 ================= -->
-<section id="evolution">
-<div class="sec-tag">技術認知 00</div>
-<h2>技術進化の全貌：DALL-E から Image 2.5 まで</h2>
-
-<p>OpenAI の画像生成機能の進化プロセスを正しく理解することは、実務で使いこなすための第一歩です。以下に主要なマイルストーンを整理します：</p>
-
-<table class="tbl">
-  <tr><th>時期</th><th>マイルストーン</th><th>革新的な変化点</th></tr>
-  <tr><td>2022年</td><td>DALL-E 2</td><td>拡散モデル（Diffusion）アーキテクチャ。テキストから画像生成を初めて実用化したが、文字描画はほぼ判読不能で、空間的関係性も破綻しがちだった。</td></tr>
-  <tr><td>2023年10月</td><td>DALL-E 3</td><td>ChatGPT がユーザーのプロンプトを自動拡張して DALL-E に渡す仕組みを導入。指示の遵守率が大幅に向上し、初歩的な英単語の描画に対応。</td></tr>
-  <tr><td>2025年3月</td><td>GPT-4o ネイティブ画像</td><td><strong>歴史的パラダイムシフト</strong>：外部の拡散モデルを廃止し、自己回帰型（Autoregressive）ネイティブマルチモーダル構造へ移行。文字描画精度が飛躍的に向上し、複雑な日本語・英語のレンダリングに対応。</td></tr>
-  <tr><td>2025年4月</td><td>gpt-image-1 API</td><td>ネイティブ画像生成機能を開発者向けに独立した API として提供開始。</td></tr>
-  <tr><td>2025年12月</td><td>gpt-image-1.5</td><td>生成レイテンシを大幅に削減し、マルチターンの部分編集（Inpainting）の安定性を強化。</td></tr>
-  <tr><td>2026年4月</td><td>GPT Image 2.0</td><td>「ビジュアル推論層（Visual Reasoning Layer）」を導入：ピクセル描画前に構図・物理・ライティングを思考。高精度な文字組版と厳格なプロンプト遵守を実現。</td></tr>
-  <tr><td>2026年9月</td><td><span class="pill a">GPT Image 2.5</span></td><td>スケッチ指示（@Sketch）、テンプレート機能、コメント指定による高精度な局所編集をサポート。レイテンシを従来比 50% 削減。</td></tr>
-</table>
-
-<h3>アーキテクチャの本質的変革：「翻訳者」から「創造者」へ</h3>
-
-<div class="duo">
-  <div class="bad">
-    <b>❌ 旧アーキテクチャ（DALL-E 3 時代）</b>
-    ユーザー入力 → ChatGPT が英訳・拡張 → 外部 DALL-E モデルへ伝送 → 画像返却。<br>
-    <em>問題点：セマンティックの欠落が大きく、コンテキストが分断され、微細なディテール制御が困難。</em>
-  </div>
-  <div class="good">
-    <b>✅ 新アーキテクチャ（GPT-4o ネイティブ）</b>
-    モデル自身がテキストとピクセルを同時に理解 → エンドツーエンドのネイティブ生成。<br>
-    <em>利点：セマンティックロス皆無、マルチターン対話の文脈を完全維持、正確無比なテキスト描画。</em>
-  </div>
-</div>
-
-<h3>各世代の機能比較マトリクス</h3>
-
-<table class="tbl">
-  <tr><th>機能項目</th><th>DALL-E 3</th><th>GPT-4o ネイティブ / Image 1.x</th><th>Image 2.0 / 2.5</th></tr>
-  <tr><td><strong>文字描画</strong></td><td>誤字やレイアウト破綻が多発</td><td>精度が極めて高く、複雑な日本語・英語に対応</td><td>商業出版レベル。多様なフォント、複数行、3Dエフェクト文字に対応</td></tr>
-  <tr><td><strong>編集機能</strong></td><td>ほぼ皆無（全体再生成のみ）</td><td>対話形式による部分修正（Inpainting）</td><td>マルチターンの非破壊編集、スケッチ誘導、コメント注記編集</td></tr>
-  <tr><td><strong>スタイル制御</strong></td><td>イラスト・誇張表現に偏りやすい</td><td>リアルさが大幅向上、現実世界の物理を再現</td><td>プロ仕様の光学パラメータ・テンプレート制約に対応、極めて精緻</td></tr>
-  <tr><td><strong>解像度</strong></td><td>固定（1024×1024 など）</td><td>柔軟なマルチアスペクト比</td><td>超高解像度、細部の鮮明さが大幅に向上</td></tr>
-  <tr><td><strong>プロンプト遵守度</strong></td><td>中程度（複雑な指示で破綻しやすい）</td><td>優秀（空間的配置や関係性の理解が大幅向上）</td><td>業界最高水準（推論してから描画を実行）</td></tr>
-</table>
-
-<div class="callout note">
-  <b class="t">💡 コミュニティにおける Image 2.0 / 2.5 / 3.0 の定義</b>
-  これらは OpenAI の公式 SKU 名ではなく、AI クリエイターコミュニティが進化フェーズを分類した呼称です。<strong>Image 2.0</strong> は「お絵描きトイ」から「本格的な実務生産ツール」への転換点（文字描画のブレイクスルー）；<strong>Image 2.5</strong> はスケッチ＋テンプレート＋高精度編集を備えた最新世代；<strong>Image 3.0</strong> は「ビジュアル思考パートナー」として描画前に空間と光を推論する次世代パラダイムを指します。
-</div>
-</section>
+<section id="evolution"><h2>画像モデルとインターフェース</h2><p>ChatGPT の画像機能と API を区別します。現在の一覧には GPT-Image-2.5 Sunburst と Flare があります。ID、編集入力、サイズなどはモデル別に確認します。</p><p class="src"><a href="https://developers.openai.com/api/docs/models" target="_blank" rel="noopener">developers.openai.com · models</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 1: 購読プランとクォータ ================= -->
-<section id="subscription">
-<div class="sec-tag">技術認知 01</div>
-<h2>サブスクリプションプランとクォータ早見表</h2>
-
-<table class="tbl">
-  <tr><th>プラン</th><th>画像生成の利用権限</th><th>主な特徴と用途</th></tr>
-  <tr><td><strong>Free（無料版）</strong></td><td>非常に厳しい制限（1日数枚程度）</td><td>高解像度やマルチターン編集は非対応、動作確認・体験用</td></tr>
-  <tr><td><strong>Plus（個人有料版）</strong></td><td>動的な高クォータ（1日数十〜100枚以上）</td><td>一般的なクリエイターに十分。ピーク時にはクールダウンが発生する場合あり</td></tr>
-  <tr><td><strong>Pro（ヘビーユーザー）</strong></td><td>コンシューマー向け最高優先度とクォータ上限</td><td>プロデザイナーやヘビークリエイター向け。サーバー混雑時の制限を受けにくい</td></tr>
-  <tr><td><strong>Team（チーム版）</strong></td><td>Plus 以上の容量、チーム内でのプール共有に対応</td><td>中小規模スタジオや制作チームの高頻度な共同生成に最適</td></tr>
-  <tr><td><strong>Enterprise（エンタープライズ）</strong></td><td>契約コンピュートクレジット制</td><td>専用クラスタ、データ学習なしの完全プライバシー保証、エンタープライズ SLA</td></tr>
-</table>
-
-<div class="callout warn">
-  <b class="t">⚠️ クォータの運用ポリシー</b>
-  画像生成はテキスト処理に比べ莫大な計算リソースを消費します。OpenAI はリアルタイムのサーバー負荷と 3〜5 時間のローリングウィンドウに基づく<strong>動的クォータ制</strong>を採用しており、「1日無制限」は保証されていません。<strong>北米のコア業務時間</strong>（日本時間の夜間〜未明）を避けて利用すると、より高速で安定したレスポンスが得られます。
-</div>
-</section>
+<section id="subscription"><h2>使用量と費用の確認</h2><p>ChatGPT の利用条件と API 課金を別々に確認します。アカウントの上限を確認し、モデルと設定で API 費用を見積もります。</p><p class="src"><a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">developers.openai.com · pricing</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -409,13 +344,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>実世界のシネマティックパラメータや光学設定をプロンプトに組み込むことで、スタジオ撮影に匹敵するフォトリアルな質感を実現できます：</p>
 
 <table class="tbl">
-  <tr><th>パラメータ項目</th><th>キーワード</th><th>視覚効果</th></tr>
+  <tbody><tr><th>パラメータ項目</th><th>キーワード</th><th>視覚効果</th></tr>
   <tr><td><strong>レンズの種類</strong></td><td><code>35mm</code> / <code>85mm</code> / <code>macro</code> / <code>fisheye</code></td><td>ドキュメンタリー感 / ポートレートボケ / 超接写マクロ / 魚眼パース</td></tr>
   <tr><td><strong>絞り値（F値）</strong></td><td><code>f/1.2</code> / <code>f/1.8</code> / <code>f/8</code></td><td>極浅い被写界深度 / 美しい背景ボケ / 画面全体へのパンフォーカス</td></tr>
   <tr><td><strong>シャッター速度</strong></td><td><code>1/1000s</code> / <code>2s exposure</code></td><td>高速動体の静止 / 動体ブレ・光跡の描写</td></tr>
   <tr><td><strong>照明設計</strong></td><td><code>Golden hour</code> / <code>Rembrandt</code> / <code>Cinematic</code></td><td>暖色のマジックアワー / レンブラント光（三角シャドウ） / 映画的明暗</td></tr>
   <tr><td><strong>フィルム銘柄</strong></td><td><code>Kodak Portra 400</code> / <code>Fuji Superia</code></td><td>温かみのあるスキントーン / レトロで硬質なシネマティックスタイル</td></tr>
-</table>
+</tbody></table>
 
 <div class="prompt-box">
   <span class="label">📸 フォトリアル黄金レシピ</span>
@@ -521,13 +456,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3>ビジュアルスタイル語彙早見表</h3>
 
 <table class="tbl">
-  <tr><th>分類</th><th>実戦キーワード集</th></tr>
+  <tbody><tr><th>分類</th><th>実戦キーワード集</th></tr>
   <tr><td><strong>質感・マテリアル</strong></td><td><code>visible pores</code> (毛穴の質感) · <code>gritty</code> (ザラつき) · <code>cross-hatching</code> (クロスハッチング) · <code>matte</code> (マット調) · <code>glossy</code> (光沢) · <code>iridescent</code> (玉虫色) · <code>translucent</code> (半透明) · <code>corroded metal</code> (錆びた金属) · <code>smooth porcelain</code> (滑らかな陶器)</td></tr>
   <tr><td><strong>照明・ライティング</strong></td><td><code>volumetric fog</code> (薄明光線・フォグ) · <code>cinematic moody lighting</code> (映画的ムード光) · <code>bioluminescent</code> (生物発光) · <code>golden hour</code> (マジックアワー) · <code>neon reflections</code> (ネオンの反射) · <code>rim light</code> (輪郭光) · <code>split lighting</code> (スプリット照明)</td></tr>
   <tr><td><strong>色彩設計</strong></td><td><code>pastel colors</code> (パステル調) · <code>earth tones</code> (アーストーン) · <code>monochromatic</code> (モノトーン) · <code>duotone</code> (デュオトーン) · <code>high contrast vivid</code> (高彩度鮮明) · <code>60-30-10 color rule</code> (色彩比率原則)</td></tr>
   <tr><td><strong>構図・アングル</strong></td><td><code>rule of thirds</code> (三分割法) · <code>bird's-eye view</code> (俯瞰・鳥瞰) · <code>Dutch angle</code> (ダッチアングル・斜め) · <code>low-angle</code> (アオリ構図) · <code>isometric</code> (等角投影) · <code>macro shot</code> (マクロ接写) · <code>medium shot</code> (ミディアムショット)</td></tr>
   <tr><td><strong>感情・ムード</strong></td><td><code>nostalgic</code> (ノスタルジック) · <code>epic</code> (壮大・叙事詩的) · <code>serene</code> (静謐) · <code>whimsical</code> (幻想的・風変わり) · <code>tense</code> (緊迫感) · <code>cozy</code> (温かみ・居心地の良さ)</td></tr>
-</table>
+</tbody></table>
 
 <h3>ジブリ風プロンプトのフィルタ回避テクニック</h3>
 <div class="callout tip">
@@ -564,12 +499,12 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <h3>フォントスタイル語彙集</h3>
 <table class="tbl">
-  <tr><th>書体カテゴリ</th><th>指定用英語キーワード</th></tr>
+  <tbody><tr><th>書体カテゴリ</th><th>指定用英語キーワード</th></tr>
   <tr><td>明朝・セリフ体</td><td><code>elegant thin-stroke serif font</code> · <code>classic newspaper typography</code></td></tr>
   <tr><td>ゴシック・サンセリフ体</td><td><code>modern minimalist sans-serif</code> · <code>bold geometric font</code> · <code>clean Swiss design</code></td></tr>
   <tr><td>手書き・筆文字</td><td><code>messy handwritten script</code> · <code>vintage calligraphy</code> · <code>brush stroke lettering</code></td></tr>
   <tr><td>装飾・ディスプレイ体</td><td><code>3D bubble letters</code> · <code>retro neon glow text</code> · <code>gothic blackletter</code></td></tr>
-</table>
+</tbody></table>
 
 <h3>統計グラフ・インフォグラフィックの正しい作成法</h3>
 <div class="duo">
@@ -621,7 +556,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <ul>
     <li>同一スレッドで3回以上修正に失敗した場合、AI の文脈が混乱している可能性があります。その場合は<strong>新しいチャットを開き</strong>、整理した最良プロンプトで最初から生成し直すのが賢明です。</li>
     <li>段階的な修正を行う際は、必ず<strong>「〜は一切変更せずに」</strong>と明示してください。指定を怠ると全体の構図が変わってしまうリスクがあります。</li>
-    <li>納得のいく画像が生成されたら、直ちに GPT に完全な英語プロンプトと seed 値を出力させ、保存しておきましょう。</li>
+    <li>プロンプト、参照画像、出力を保存し、架空の seed を求めないでください。</li>
   </ul>
 </div>
 
@@ -637,52 +572,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <!-- ================= SECTION 7: 一貫性維持 ================= -->
-<section id="consistency">
-<div class="sec-tag">実践ノウハウ 07</div>
-<h2>キャラクターとスタイルの一貫性維持</h2>
-
-<p>複数枚の画像で同一のキャラクターや統一された世界観を維持することは、AI 制作における最大の技術的挑戦です。コミュニティで実証された4つの高度な戦略を紹介します：</p>
-
-<h3>キャラクター一貫性の4大戦略</h3>
-
-<div class="plays">
-  <div class="play">
-    <div class="ph"><span class="pic">📋</span><b>戦略1：キャラクター設定シート</b><span class="pt">CHARACTER SHEET</span></div>
-    <div class="pb">
-      <p>最初の生成時に、キャラクターの<strong>正面・側面・背面の三面図および複数の表情パターン</strong>を一枚に収めた「設定シート」を出力させます。以降の生成では、この設定シートを参考画像として毎回アップロードします。</p>
-    </div>
-  </div>
-  <div class="play">
-    <div class="ph"><span class="pic">🧬</span><b>戦略2：テキスト DNA アンカー</b><span class="pt">DNA TEMPLATE</span></div>
-    <div class="pb">
-      <p>キャラクターに固有の名前（例：「Aria」）を与え、<strong>不変の身体的特徴を定義した DNA 記述</strong>を作成。毎回のプロンプトに一字一句変えずに挿入します：</p>
-      <div class="prompt-box">
-        <span class="label">DNA アンカー記述例</span>
-        Aria, a 30-year-old woman with a scar on her left cheek, emerald green eyes, messy ginger hair tied with a blue ribbon, wearing a red leather jacket with silver zippers.
-      </div>
-    </div>
-  </div>
-  <div class="play">
-    <div class="ph"><span class="pic">🔢</span><b>戦略3：Seed 値の固定</b><span class="pt">SEED LOCK</span></div>
-    <div class="pb">
-      <p>理想的な出力が得られたら、GPT に「この画像の seed 値と gen_id を教えてください」と質問します。次回の生成時に「seed [番号] を使用し、全く同じキャラクター設定で…」と指示します。</p>
-    </div>
-  </div>
-  <div class="play">
-    <div class="ph"><span class="pic">🤖</span><b>戦略4：Custom GPT による固定化</b><span class="pt">CUSTOM GPT</span></div>
-    <div class="pb">
-      <p>プロジェクト専用の Custom GPT を作成し、システムの基本指示（Instructions）にキャラクター設定と画風の制約を書き込みます。これにより、毎回のプロンプト入力時に自動で制約が適用されます。</p>
-    </div>
-  </div>
-</div>
-
-<h3>スタイル一貫性：JSON スタイルブループリント法</h3>
-<ol class="steps">
-  <li>基準となる画像をアップロードし、ChatGPT に「この画像の視覚スタイル、カラーパレット、質感、ライティングを分析し、JSON 形式のスタイル設計図として出力してください」と指示します。</li>
-  <li>以降の生成プロンプトの末尾に、出力された JSON コードを「厳密なスタイル制約」として毎回添付します。</li>
-  <li>「SF風」のような曖昧な言葉は避け、<code>cyberpunk, deep navy and magenta neon contrast, wet asphalt reflections, 35mm grain</code> のように具体的な属性で固定します。</li>
-</ol>
-</section>
+<section id="consistency"><h2>人物とスタイルの一貫性</h2><p>参照画像を選び、顔、服装、色、構図の保持要素を指定します。seed や gen_id を捏造させず、各結果を基準と比較します。</p></section>
 
 <div class="divider"></div>
 
@@ -845,155 +735,17 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <!-- ================= SECTION 9: エキスパート裏技 ================= -->
-<section id="expert-tricks">
-<div class="sec-tag">応用テクニック 09</div>
-<h2>エキスパート秘伝テクニック</h2>
-
-<h3>Custom Instructions による自動プロンプト拡張</h3>
-<p>ChatGPT の「カスタム指示（Custom Instructions）」に画像生成用の基本設定を事前登録しておきます：</p>
-<div class="prompt-box">
-  <span class="label">Custom Instructions 設定例</span>
-  画像生成を依頼された際は、常に熟練のアートディレクターとして振る舞ってください。私の簡潔な要求を、以下の要素を含む詳細なプロンプトへ自動拡張してください：主体描写 ＋ 動作 ＋ 背景環境 ＋ 光影の相互作用 ＋ 構図とレンズ ＋ 芸術的媒体。生成後は、必ず seed 値と完全な英語プロンプトを提示してください。
-</div>
-<p>この設定を有効にしておくと、「猫を描いて」と入力するだけで、ライティングや構図が計算された高品質な画像が自動生成されます。</p>
-
-<h3>コミュニティ実証済みの8大裏技</h3>
-
-<table class="tbl">
-  <tr><th>#</th><th>テクニック名</th><th>具体的な操作手順</th></tr>
-  <tr><td>1</td><td><strong>プロンプト改変防止ロック</strong></td><td>プロンプトの先頭に <code>Generate this exact prompt without changing a single word: [あなたのプロンプト]</code> と記述し、ChatGPT による勝手な加筆・潤色を防止。</td></tr>
-  <tr><td>2</td><td><strong>著作権の安全な回避</strong></td><td>「[特定キャラクター] の名前を出さずに、その人物に似た特徴を持つキャラクターを詳細に描写して」と特徴で指示。</td></tr>
-  <tr><td>3</td><td><strong>2×2 グリッド一括生成</strong></td><td>「同一画像内に、このデザインの異なる4色のバリエーションを 2x2 のグリッドで並べて生成して（arranged in a 2x2 grid）」。気に入ったコマを後から切り抜いて拡大。</td></tr>
-  <tr><td>4</td><td><strong>スケッチによる構図誘導</strong></td><td>ペイントツールで簡単な棒人間を描いて構図を指定 → スクリーンショットを GPT に送信 →「このレイアウトを構図ガイドとして…」と指示。</td></tr>
-  <tr><td>5</td><td><strong>シード値固定の四季シリーズ</strong></td><td>基準画像を生成して seed 値を取得 →「全く同じ seed と構図を使い、季節を[大雪の冬]に変えて」と指示し、春夏秋冬の連作を作成。</td></tr>
-  <tr><td>6</td><td><strong>4コマ漫画・絵コンテ生成</strong></td><td><code>A comic strip page divided into 4 horizontal panels. Panel 1: [描写], Panel 2: [描写]...</code> と指定してストーリーボードを一括生成。</td></tr>
-  <tr><td>7</td><td><strong>ゲーム用アセットシート分離</strong></td><td><code>asset sheet, multiple views, turnaround sheet, chroma green background</code> と指示し、ゲーム開発や素材制作向けに部品を整列出力。</td></tr>
-  <tr><td>8</td><td><strong>超高解像度アップスケール準備</strong></td><td>プロンプトに <code>extremely highly detailed, ultra-crisp, sharp focus, intricate details</code> を追加し、外部 AI アップスケーラーにかける前のテクスチャ密度を極大化。</td></tr>
-</table>
-
-<h3>ChatGPT Images 2.5 最新機能クイックリファレンス</h3>
-<div class="hotcmds">
-  <div class="hotcmd must">
-    <span class="hc-cmd">スケッチから生成 @Sketch</span>
-    <span class="hc-desc">チャットで @Sketch と入力してキャンバスを呼び出し、簡単な落書きで空間配置や色を指定。構図制御が飛躍的に向上</span>
-  </div>
-  <div class="hotcmd must">
-    <span class="hc-cmd">テンプレートシステム Templates</span>
-    <span class="hc-desc">ポスター、チラシ、白抜き商品写真など実務向けのプリセットレイアウトをワンクリックで適用可能</span>
-  </div>
-  <div class="hotcmd must">
-    <span class="hc-cmd">コメント注記による編集</span>
-    <span class="hc-desc">画像上の修正したい箇所を囲んでコメントを入力するだけで、全体の破綻なく外科的な部分修正を実行</span>
-  </div>
-  <div class="hotcmd">
-    <span class="hc-cmd">複数画像リファレンス合成</span>
-    <span class="hc-desc">最大10枚の画像をアップロードし、アンカープロンプトを用いてスタイルや色彩、モチーフを自在にブレンド</span>
-  </div>
-  <div class="hotcmd">
-    <span class="hc-cmd">線画からの清書・レンダリング</span>
-    <span class="hc-desc">手描きのラフスケッチやワイヤーフレームをアップロードし、高精細な3Dレンダリングや完成イラストへ昇華</span>
-  </div>
-</div>
-</section>
+<section id="expert-tricks"><h2>制御しやすくする方法</h2><p>元画像、指示、各結果を保存し、保持要素と編集範囲を指定します。未公開 seed や完全一致の保証には頼らず、重要な文字は組版します。</p><p class="src"><a href="https://developers.openai.com/api/docs/guides/image-generation" target="_blank" rel="noopener">developers.openai.com · image-generation</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 10: 競合比較 ================= -->
-<section id="comparison">
-<div class="sec-tag">比較と選定 10</div>
-<h2>競合ツール比較と選定ガイド</h2>
-
-<table class="tbl">
-  <tr><th>評価軸</th><th>ChatGPT (GPT-4o)</th><th>Midjourney v7</th><th>Stable Diffusion 3 / Flux</th><th>Adobe Firefly</th></tr>
-  <tr><td><strong>コアポジション</strong></td><td>対話型クリエイティブ相棒</td><td>芸術的美の最高峰</td><td>絶対的な制御性（オープンソース）</td><td>商用安全性 ＋ CC 連携</td></tr>
-  <tr><td><strong>プロンプト遵守度</strong></td><td><span class="pill a">極めて強力</span></td><td>中程度</td><td>強力（専門設定が必要）</td><td>中程度</td></tr>
-  <tr><td><strong>文字レンダリング</strong></td><td><span class="pill a">業界最強</span></td><td>弱い</td><td>普通（Flux は強力）</td><td>普通</td></tr>
-  <tr><td><strong>芸術的クオリティ</strong></td><td>優秀</td><td><span class="pill a">圧倒的頂点</span></td><td>LoRA 調節次第で自在</td><td>良好</td></tr>
-  <tr><td><strong>人体・解剖の正確性</strong></td><td>良好</td><td>優秀</td><td><span class="pill a">Flux が最高峰</span></td><td>良好</td></tr>
-  <tr><td><strong>学習コスト</strong></td><td><span class="pill a">最も低い（自然言語）</span></td><td>中程度（Discord 操作）</td><td>高い（UI や設定の知識要）</td><td>低い（Adobe UI に統合）</td></tr>
-  <tr><td><strong>キャラ一貫性</strong></td><td>工夫が必要（中程度）</td><td>中程度</td><td><span class="pill a">極めて強力（ControlNet等）</span></td><td>中程度</td></tr>
-  <tr><td><strong>著作権・商用補償</strong></td><td>Copyright Shield あり</td><td>商用ライセンス付与</td><td>モデル・チェックポイントに依存</td><td><span class="pill a">最強（完全な知財免責補償）</span></td></tr>
-  <tr><td><strong>対話型反復編集</strong></td><td><span class="pill a">業界最強（チャット完結）</span></td><td>弱い</td><td>中程度（Inpainting）</td><td>強力（Photoshop レイヤー連携）</td></tr>
-</table>
-
-<h3>どのような場合に ChatGPT を選ぶべきか？</h3>
-<div class="callout tip">
-  <b class="t">✅ ChatGPT 画像生成ならではの絶対的な強み</b>
-  <ul>
-    <li><strong>対話による段階的なブラッシュアップ</strong>：アートディレクターに伝えるように「背景を夜にして」と言うだけで修正可能。プロンプトをゼロから書き直す必要がありません。</li>
-    <li><strong>制作プロセスの一気通貫</strong>：同じチャット内で「記事執筆 → 挿絵生成 → SNS 用告知文の作成」をシームレスに完結できます。</li>
-    <li><strong>正確な文字レンダリング</strong>：ポスターや看板、UI に正確な文字を埋め込みたい場合、現時点で最も信頼できる選択肢です。</li>
-    <li><strong>ノーコード・学習コストゼロ</strong>：CFG Scale やステップ数、サンプラーなどの複雑な技術パラメータを覚える必要がありません。</li>
-  </ul>
-</div>
-
-<h3>ChatGPT の弱点と留意すべき点</h3>
-<div class="callout warn">
-  <b class="t">⚠️ あらかじめ理解しておくべき課題</b>
-  <ul>
-    <li><strong>キャラクター完全固定の難しさ</strong>：厳密なプロンプト設計を行わない限り、複数枚で同一人物の顔立ちを保つのは困難です。</li>
-    <li><strong>ピクセル単位の精密制御の欠如</strong>：画面内のわずか数ピクセルのノイズをピンポイントで修正することはできません。</li>
-    <li><strong>過敏なセーフティガードレール</strong>：コンテンツモデレーションが厳しく、健全な表現であっても誤検知でブロックされる場合があります。</li>
-    <li><strong>典型的な AI 質感の残存</strong>：ライティングを細かく指定しないと、ツルツルした過彩色の「AI っぽい絵柄文字」になりがちです。</li>
-  </ul>
-</div>
-</section>
+<section id="comparison"><h2>同じ課題でツールを比較</h2><p>同じ参照画像、文言、制約で、文字の誤り、編集のずれ、一貫性、時間、費用を比較します。版と結果を残し、利用条件も確認します。</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 11: 規約と著作権 ================= -->
-<section id="safety-copyright">
-<div class="sec-tag">法規とコンプライアンス 11</div>
-<h2>セーフティポリシー、著作権と企業導入 FAQ</h2>
-
-<h3>コンテンツポリシー早見表：生成可能な領域と禁止事項</h3>
-<table class="tbl">
-  <tr><th>カテゴリ</th><th>生成ステータス</th><th>規約の解説と指針</th></tr>
-  <tr><td>暴力・残酷描写</td><td><span class="pill d">厳格に禁止</span></td><td>肉体的暴力、自傷行為、過激な流血表現</td></tr>
-  <tr><td>成人向け / 性的表現</td><td><span class="pill d">厳格に禁止</span></td><td>ヌード、性行為、露骨な性的暗示</td></tr>
-  <tr><td>ヘイト・差別表現</td><td><span class="pill d">厳格に禁止</span></td><td>人種、宗教、性別、性的指向等に対する攻撃や差別</td></tr>
-  <tr><td>実在の政治指導者</td><td><span class="pill d">厳格に禁止</span></td><td>ディープフェイクや政治的プロパガンダの防止</td></tr>
-  <tr><td>実在の著名人・有名人</td><td><span class="pill d">厳格に禁止</span></td><td>肖像権保護およびなりすまし・偽情報の防止</td></tr>
-  <tr><td>現役特定アーティスト風</td><td><span class="pill b">制限あり</span></td><td>システムにより自動的に一般的な芸術流派の表現に置換</td></tr>
-  <tr><td>著作権保護キャラクター</td><td><span class="pill b">制限あり</span></td><td>ディズニーやマーベル等（特徴の言語描写で類似表現は可能だが留意要）</td></tr>
-  <tr><td>商用プロダクト・パッケージ</td><td><span class="pill a">生成可能</span></td><td>商用目的のブランディングやモックアップに自由に利用可能</td></tr>
-  <tr><td>オリジナル創作アート</td><td><span class="pill a">生成可能</span></td><td>大半の自由な創作活動やデザイン制作は完全に自由</td></tr>
-</table>
-
-<h3>著作権：生成された画像の帰属と法的ステータス</h3>
-<div class="callout note">
-  <b class="t">📋 著作権に関する法的ポイント</b>
-  <ul>
-    <li><strong>商用利用権</strong>：ユーザーは生成された画像に対して完全な利用権を保持し、商用（販売、印刷、商品化）が認められています。</li>
-    <li><strong>著作権保護の限界</strong>：米国著作権局の判例および各国の法的見解に基づき、純粋な AI 生成画像には人間の創作的寄与（Human Authorship）が存在しないため、<strong>著作権は発生しません</strong>。競合が同じ画像を複製しても差し止めることは法的に困難です。</li>
-    <li><strong>企業実務への推奨策</strong>：商標登録や知的財産保護を目的とする場合、AI 画像をベースにしつつ、Photoshop や Figma 等で<strong>人間による実質的な創作的加工</strong>を施す必要があります。</li>
-    <li><strong>Copyright Shield（著作権補償）</strong>：Enterprise および API 契約ユーザーに対し、第三者からの著作権侵害請求が発生した場合の訴訟費用を OpenAI が補償する制度が提供されています。</li>
-  </ul>
-</div>
-
-<h3>C2PA 電子透かし・出所情報メタデータ</h3>
-<p>OpenAI は生成されるすべての画像ファイルに <strong>C2PA (Coalition for Content Provenance and Authenticity)</strong> メタデータを暗号学的に埋め込んでおり、AI による生成物であることを証明可能です。Content Credentials などの検証ツールで確認できます。なお、スクリーンショットや一部の SNS へのアップロード時の再圧縮により、このメタデータが除去される場合があります。</p>
-
-<h3>よくある生成エラー・拒絶理由とその解決策</h3>
-<table class="tbl">
-  <tr><th>拒絶・エラーの要因</th><th>実戦的な解決策</th></tr>
-  <tr><td>実在人物の固有名詞</td><td>一般的な属性で表現：「トム・クルーズ」ではなく「スーツを着た精悍なアクション映画のスパイ」に変更</td></tr>
-  <tr><td>暴力系キーワードの誤検知</td><td>多義語を避ける：「shoot（撮影・撃つ）」を「photograph」に、「blood red」を「crimson」に変更</td></tr>
-  <tr><td>特定アーティスト名</td><td>流派の視覚的特徴で描写：「壮大なファンタジーデジタルアート、明暗差の激しいドラマチックな光影」</td></tr>
-  <tr><td>版権キャラクター名</td><td>キャラクターの視覚的特徴を抽象化して指定（例：「黄色い稲妻の尾を持つ電気ネズミ」）</td></tr>
-  <tr><td>生成タイムアウト・エラー</td><td>ページをリロード → 別ウィンドウで再試行 → プロンプトを短縮（4,000文字以内に抑制）</td></tr>
-</table>
-
-<h3>企業実務導入チェックリスト</h3>
-<ul>
-  <li>✅ <strong>ChatGPT Enterprise または Team</strong> プランを導入（企業データがモデル学習に利用されない設定を確保）</li>
-  <li>✅ 社内に <strong>プロンプト資産ライブラリ</strong> を構築し、検証済みのシード値やテンプレートを蓄積</li>
-  <li>✅ 公開前に <strong>法務チェック</strong> を行い、他社商標や既存意匠の偶発的な混入がないか検証</li>
-  <li>✅ AI 生成画像をそのまま商標にせず、デザイナーによる <strong>実質的な加筆加工</strong> を行って知財性を担保</li>
-  <li>⛔ プロンプト内に有名ブランド名や版権キャラクター名を直接記載しない（コンプライアンス遵守）</li>
-  <li>⛔ 権利保護が不確実な純粋 AI 出力をコア商標として出願しない</li>
-</ul>
-</section>
+<section id="safety-copyright"><h2>納品前の確認</h2><p>文字、数値、図を確認し、人物、ブランド、素材の利用条件と機密情報の扱いを確認します。生成成功は利用許諾を意味しません。</p></section>
 
 <div class="divider"></div>
 
@@ -1003,7 +755,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h2>リソース索引と推奨文献</h2>
 
 <table class="tbl">
-  <tr><th>リソース種別</th><th>リンク / アクセス先</th><th>実務的価値</th></tr>
+  <tbody><tr><th>リソース種別</th><th>リンク / アクセス先</th><th>実務的価値</th></tr>
   <tr><td><strong>OpenAI 公式画像生成ガイド</strong></td><td><a href="https://platform.openai.com/docs/guides/images" target="_blank">platform.openai.com/docs/guides/images</a></td><td>一次情報源：API パラメータと公式ベストプラクティス</td></tr>
   <tr><td><strong>OpenAI Cookbook</strong></td><td><a href="https://github.com/openai/openai-cookbook" target="_blank">github.com/openai/openai-cookbook</a></td><td>公式コードレシピとマルチモーダル実装例</td></tr>
   <tr><td><strong>OpenAI 利用ポリシー</strong></td><td><a href="https://openai.com/policies/usage-policies" target="_blank">openai.com/policies/usage-policies</a></td><td>コンテンツコンプライアンスと商用利用規約</td></tr>
@@ -1011,9 +763,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td><strong>PromptHero</strong></td><td><a href="https://prompthero.com" target="_blank">prompthero.com</a></td><td>高品質プロンプトのライブラリと作例集</td></tr>
   <tr><td><strong>Reddit r/ChatGPT</strong></td><td><a href="https://reddit.com/r/ChatGPT" target="_blank">reddit.com/r/ChatGPT</a></td><td>コミュニティの最新裏技とリアルタイム検証事例</td></tr>
   <tr><td><strong>当ナレッジベース関連記事</strong></td><td><a href="codex-guide.ja.html">Codex 実戦ガイド</a> · <a href="prompt-context-engineering.ja.html">プロンプト工学</a> · <a href="ai-leverage-guide.ja.html">AI レバレッジガイド</a></td><td>エンジニアリング視点での AI 総合実践知識</td></tr>
-</table>
+</tbody></table>
 
-<h3>100+ の調査文献の内訳分類</h3>
+<h3>画像生成と編集：手順、例、公式資料。</h3>
 <p>本ハンドブックは、以下のカテゴリにわたる 100本以上の高品質な技術文献およびコミュニティの知見を体系的に集約したものです：</p>
 <ul>
   <li><strong>公式ドキュメント群 (15+)</strong>：OpenAI API ドキュメント、Cookbook、System Card、利用規約、公式リリースノート。</li>
@@ -1037,7 +789,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

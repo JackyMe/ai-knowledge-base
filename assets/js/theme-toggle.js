@@ -1,30 +1,11 @@
-// Theme toggle script
+// One theme preference across home and all reading pages. Storage is optional.
 (() => {
-  const THEME_KEY = "theme";
-  const html = document.documentElement;
-  const toggle = document.getElementById("themeToggle");
-
-  const applyTheme = (theme) => {
-    if (theme === "dark") {
-      html.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-    }
-    localStorage.setItem(THEME_KEY, theme);
-  };
-
-  // Initialize from storage or system preference
-  const stored = localStorage.getItem(THEME_KEY);
-  if (stored) {
-    applyTheme(stored);
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme("dark");
-  }
-
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      const isDark = html.classList.contains("dark");
-      applyTheme(isDark ? "light" : "dark");
-    });
-  }
+  const html=document.documentElement;
+  const toggle=document.getElementById('themeToggle');
+  const system=window.matchMedia?.('(prefers-color-scheme: dark)');
+  let stored=null;try{stored=localStorage.getItem('theme')}catch{}
+  function apply(dark){html.classList.toggle('dark',dark);toggle?.setAttribute('aria-pressed',String(dark));}
+  apply(stored?stored==='dark':!!system?.matches);
+  if(toggle){if(toggle.tagName!=='BUTTON'){toggle.setAttribute('role','button');toggle.tabIndex=0;toggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle.click();}});}toggle.addEventListener('click',()=>{const dark=!html.classList.contains('dark');apply(dark);stored=dark?'dark':'light';try{localStorage.setItem('theme',stored)}catch{}});}
+  system?.addEventListener('change',e=>{if(!stored)apply(e.matches);});
 })();

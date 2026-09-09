@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>21. 궁극의 경량화: 멀티 스테이지 빌드 - Docker 35단계 완벽 마스터</title>
@@ -283,6 +281,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -325,7 +324,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 제2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 문제 해결 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 설치 및 설정 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 설치 및 설정 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정으로 다운로드 가속화</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 마법의 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -356,7 +355,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이사: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 제6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 제6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐구: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 입력과의 작별</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요한가?</span></a>
@@ -365,7 +364,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>실전 배틀(하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 제7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 제7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>성벽 방어: .env를 통한 비밀 정보 보호</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 대청소: system prune</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 절대 원칙: Root 실행 금지</span></a>
@@ -403,18 +402,17 @@ myapp       latest      a1b2c3d4e5f6   About a minute ago   <span class="bash-ar
   <p>멀티 스테이지 빌드(Multi-stage Build)는 건축 과정과 완성된 건물을 분리하는 기술입니다. 1단계(공사 현장 Builder)에서 코드를 컴파일하고, 2단계(입주 단계 Production)에서는 컴파일된 바이너리 실행 파일만 가져오고 나머지 도구는 모두 버립니다.</p>
 
   <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
+<pre class="mermaid">flowchart LR
     subgraph S1 ["1단계: 건축 현장 Builder"]
-        A["베이스 이미지 golang:1.20"] --> B["소스코드 복사"]
-        B --> C["go build 실행"]
-        C -.-> D{"바이너리 실행파일 생성"}
+        A["베이스 이미지 golang:1.20"] --&gt; B["소스코드 복사"]
+        B --&gt; C["go build 실행"]
+        C -.-&gt; D{"바이너리 실행파일 생성"}
     end
     
     subgraph S2 ["2단계: 인테리어 완료 Production"]
-        E["초경량 베이스 alpine"] --> F["1단계에서 바이너리만 복사"]
-        D ==> F
-        F --> G["최종 이미지: 단 20MB!"]
+        E["초경량 베이스 alpine"] --&gt; F["1단계에서 바이너리만 복사"]
+        D ==&gt; F
+        F --&gt; G["최종 이미지: 단 20MB!"]
     end
 </pre>
   </div>
@@ -606,5 +604,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

@@ -1,147 +1,51 @@
-<div align="center">
+# AI 知识库
 
-# 📚 AI 知识库
+聚合 AI 使用方法、编程工具、设计创作和工程基础的静态知识网站，提供中文、英文、日文、韩文四种语言。
 
-**Claude Code · Codex · pen.dev 中文实战手册 —— 官方文档 + 全网精华,一站查完**
+[在线网站](https://aidoc-zq.netlify.app) · [English](README.en.md)
 
-[![在线访问](https://img.shields.io/website?url=https%3A%2F%2Faidoc-zq.netlify.app&up_message=在线访问&down_message=离线&style=flat-square&label=网站)](https://aidoc-zq.netlify.app)
-[![Last Commit](https://img.shields.io/github/last-commit/JackyMe/ai-knowledge-base?style=flat-square&label=最近更新)](https://github.com/JackyMe/ai-knowledge-base/commits/main)
-![零依赖](https://img.shields.io/badge/构建-零依赖-brightgreen?style=flat-square)
-![语言](https://img.shields.io/badge/语言-中文-red?style=flat-square)
-[![License](https://img.shields.io/badge/代码许可-MIT-blue?style=flat-square)](LICENSE)
+## 内容与使用
 
-**[🌐 在线访问 aidoc-zq.netlify.app](https://aidoc-zq.netlify.app)**(主站) · [GitHub Pages 镜像](https://jackyme.github.io/ai-knowledge-base/) ·  [View in English »](README.en.md)
+6 类目录、17 个主题、每种语言 259 个章节入口，其中 Docker 包含 35 课。首页支持主题筛选、章节展开、全文搜索、快捷键与继续阅读；文章提供目录、分页、深色模式和可滚动表格。
 
-</div>
+| 分类 | 主题 |
+| --- | --- |
+| AI 入门与方法 | AI 入门、提示词与上下文、能力拓展 |
+| 编程工具与模型 | Claude Code、Codex、Google AI、Antigravity、Grok |
+| 设计与创作 | Pencil 文档、Pencil × Claude Code、UI 协作、GPT 图像 |
+| 问题排查 | 环境与登录、Android Crash / ANR |
+| 工程基础 | 服务器与网络、Docker |
+| 更新日志 | 官方更新入口、参数变化、升级检查 |
 
----
-
-## 这是什么
-
-一句话:把 **Claude Code、Codex、pen.dev** 等 AI 编程工具的官方文档,和全网实测出来的最佳实践,揉成一个随时能查的中文知识库网站。
-
-不是又一个"AI 生成的资料合集"——每条结论都标了来源链接(官方文档 / GitHub / 一手实测),争议点标出分歧,没查到证据的地方直接写"没查到",不瞎编。
-
-**技术上刻意做减法**:没有 React、没有打包工具、没有 node_modules 黑洞。一个 `index.html` + 若干独立 HTML 页面就是全部,`git clone` 下来双击就能看,扔进任何静态托管平台就能上线。
-
-<div align="center">
-
-**15 个主题 · 170+ 章节 · Docker 35 讲通关 · 全站正文内容可搜索(含拼写容错)**
-
-</div>
-
-## 目录一览
-
-| 主题 | 讲什么 | 亮点 |
-|---|---|---|
-| ⛏️ [Claude Code 使用指南](topics/claude-code-guide.html) | 干货版实战手册 | 100+ 命令速查(含高频核心命令墙)、8 大场景 Playbook、5 套开箱模板 |
-| 🟢 [Codex 使用指南](topics/codex-guide.html) | CLI × IDE × Cloud 全形态 | 沙箱 × 审批 3×3 详解、AGENTS.md、与 Claude Code 双代理协同 |
-| 🎯 [提示词与上下文工程](topics/prompt-context-engineering.html) | 从技法到心法的地基学科 | 7 大技法对照、12 式逐字模板、6 个原创案例、模型路由现状核查(如实标注"领域不成熟",不瞎编) |
-| 🚑 [环境与登录急救手册](topics/env-auth-clinic.html) | 报错 30 秒对症自救 | 五层诊断法、一键体检脚本、共用电脑/换电脑/CI 三大剧本、三级万能重置 |
-| 📘 [pen.dev 官方文档中文版](topics/pencil-docs-zh.html) | docs.pencil.dev 全 16 页 | 含官方视频、逐节附原文链接 |
-| ⚡ [pen.dev × Claude Code 实践](topics/pencil-claude-code-best-practices.html) | 设计到代码的完整流水线 | 9+ 来源聚合、16 张实测截图 |
-| 🎨 [AI × UI 设计协同全景(新)](topics/ai-ui-design-collab.html) | Figma + pen.dev + Material 3 + 视觉回归 | 工具地图、MCP 三通道、Android 五步端到端、Paparazzi/Roborazzi 双回归、双向同步、iOS/Web 附录、三端对比速查、6 张 Paparazzi 实拍样图、6 式逐字提示词 |
-| ⚡ [Android Crash & ANR 排查根治](topics/android-crash-anr.html) | 稳定性问题从识别到根治 | 20+ 崩溃类型图鉴、ANR 深度解剖、原创 AI 分诊 Skill |
-| 🧭 [AI 提效全景与心法](topics/ai-leverage-guide.html) | AI 到底能帮普通人干什么 | 8 大场景收益矩阵、7 条有出处的通用心法 |
-| 🧗 [AI 能力边界扩展指南](topics/ai-capability-expansion.html) | 用 AI 扩展技术能力边界的通用方法论 | 五步扩展引擎、跨域映射技法、全栈跨端 / 独立开发两条端到端案例 |
-| 🌐 [Google AI 生态深度实战(新)](topics/google-ai-ecosystem.html) | 从模型到 Agentic IDE 全栈 | Antigravity (CLI/2.0/IDE/SDK/Customizations/Sandbox) 深度解构 + NotebookLM 零幻觉研究 + AI Studio 2M 窗口 + 5 步超级流水线 |
-| 🛸 [Antigravity 深度使用指南(新)](topics/antigravity-usage.html) | Agentic 编程基座实战 | CLI 子命令速查 + .agents 定制体系 + Subagents 深度编排 + 沙箱安全最佳实践 |
-| 𝕏 [xAI & Grok 全生态实战指南(新)](topics/grok-ecosystem-guide.html) | 超算、Grok Build 到智能体工程 | Memphis Colossus 200k 超算 + Grok 3/4 推理矩阵 + Grok Build 云沙箱 + 实时 X Grounding + 10 套 Prompt 模板 |
-| 🛠️ [服务器 · 运维 · 部署 · 网络扫盲(新)](topics/ops-basics.html) | 只用过 SaaS 托管,从 0 跨过 DevOps 这堵墙 | 5 阶段路线 + Linux/网络/部署 3 模块 24 节 + 5 类故障 30 秒对症表 |
-| 🐳 [Docker 零基础实战闯关指南(新)](topics/docker/01-intro.html) | 35 节保姆级通关专栏 | 概念破冰、三剑客、多阶段构建、Volume/网络探秘、Compose 编排与 CI/CD 实战 |
-| 📅 [工具版本追踪 · 变了什么](topics/toolchain-changelog.html) | 升级必看与破坏性变更 | 按月归档跟踪 Claude Code / Codex / Antigravity 最新特性与弃用迁移 |
-
-## 亮点功能
-
-- **全站搜索能搜到正文里**——不只是标题和章节名,连段落内容都能命中,离线预生成索引,不依赖任何后端
-- **模糊匹配兜底**——拼错字、漏字也能大概率搜到,同时做了跨度限制,避免长文本里瞎凑巧合命中
-- **四条学习路径**——首页把 15 个主题串成"新手起步 / 工具精通 / 运维基座 / 全栈生态与进阶"四条课程表,不知道从哪看就跟着走
-- **阅读记忆**——基于 `localStorage`,回到首页自动出现"继续上次阅读"
-- **证据分级**——官方确认 / 实测强共识 / 存在分歧三档标签,读者一眼知道这条结论有多可信
-
-## 目录结构
-
-```
-ai-knowledge-base/
-├── index.html                  # 主题中心(入口):全站搜索 / 标签筛选 / 继续阅读 / 主题卡片
-├── index.en.html               # 英文主题中心入口
-├── topics/                     # 各主题页(每页自包含主题样式与全站交互)
-│   ├── claude-code-guide.html
-│   ├── codex-guide.html
-│   ├── prompt-context-engineering.html
-│   ├── env-auth-clinic.html    # 环境与登录急救手册(Claude Code × Codex)
-│   ├── pencil-docs-zh.html
-│   ├── pencil-claude-code-best-practices.html
-│   ├── ai-ui-design-collab.html # AI × UI 设计协同全景(Figma+pen.dev+Material 3)
-│   ├── android-crash-anr.html
-│   ├── ai-leverage-guide.html  # AI 提效全景与心法
-│   ├── ai-capability-expansion.html # AI 能力边界扩展指南
-│   ├── google-ai-ecosystem.html # Google AI 生态深度实战
-│   ├── antigravity-usage.html  # Antigravity 深度使用指南
-│   ├── grok-ecosystem-guide.html # xAI & Grok 全生态实战指南
-│   ├── ops-basics.html         # 服务器 · 运维 · 部署 · 网络 扫盲(独立开发者基座)
-│   ├── toolchain-changelog.html # 工具链版本追踪
-│   └── docker/                 # Docker 35 讲通关专栏
-│       ├── 01-intro.html
-│       └── ... 35-cicd-concept.html
-├── assets/
-│   ├── css/site.css            # 全站共享交互样式(进度条/筛选/复制/灯箱/跳转面板)
-│   └── js/
-│       ├── site.js             # 全站共享交互脚本(所有主题页引用同一份)
-│       ├── topics.js           # 中文主题注册表
-│       ├── topics.en.js        # 英文主题注册表
-│       ├── search-index.js     # 中文正文搜索索引(自动生成)
-│       └── search-index-en.js  # 英文正文搜索索引(自动生成)
-├── scripts/
-│   └── build-search-index.py   # 扫描 topics/ 生成双语 search-index.js
-├── package.json                # 本地预览脚本
-└── README.md
-```
+内容包括官方资料摘要和方法示例。产品版本、费用与账号权限应以相应官方页面和实际环境为准；不能把示例视为所有环境都已实测。
 
 ## 本地运行
 
-```bash
-git clone git@github.com:JackyMe/ai-knowledge-base.git
-cd ai-knowledge-base
-npm run dev        # 等价于 npx serve .,打开 http://localhost:3000
+无需构建。使用 HTTP 静态服务器预览：
+
+```sh
+npm run dev -- --listen 4173
 ```
 
-或者任何静态服务器都行:`python3 -m http.server 8000`。不需要安装依赖、不需要构建。
+此命令通过 `npx serve` 启动服务器，首次运行可能下载开发工具。站点运行时不依赖前端框架。
 
-## 想扩展自己的主题?(三步)
+## 维护与验证
 
-1. 新主题 HTML 放进 `topics/`,并在 `</style>` 后和 `</body>` 前分别加入:
-   ```html
-   <link rel="stylesheet" href="../assets/css/site.css">
-   <script src="../assets/js/site.js"></script>
-   ```
-   页面需包含:`.topbar`(内含 `.right`)、`#sidebar`(内含 `#sideFilter` 筛选框)、
-   `#prog` 进度条、`#topBtn` 回顶按钮、`section[id]` + `h2/h3` 结构——参考现有主题页即可。
-2. 在 `assets/js/topics.js` 的 `TOPICS` 数组追加一条(标题/图标/颜色/章节列表;可选 `keywords` 字段写口语化搜索别名)。若某章节是"速查手册"型高频入口,给它加 `quick:true` + `quickLabel:"展示文案"`,首页「⚡ 常用速查」快链会自动收录。
-3. 重新生成搜索索引(新增/修改了任意 `topics/*.html` 正文都要跑一次):
-   ```bash
-   python3 scripts/build-search-index.py
-   ```
-4. 完成。首页卡片、标签筛选、章节快链、全站搜索自动生效,不用改 `index.html`。
+- `index*.html`：四语言首页及界面文案。
+- `assets/js/topics*.js`：主题、章节、学习路线和资源注册表。
+- `assets/js/home.js`、`assets/css/home.css`：共享首页交互与样式。
+- `assets/js/site.js`、`reading.js`、`assets/css/reading.css`：共享阅读体验。
+- `topics/`：专题正文；`topics/docker/`：35 课；`topics/_backup/` 不参与当前索引。
 
-## 部署到你自己的域名
+修改正文或章节后，同步四语言注册表，并重建搜索索引：
 
-**方式 A · Netlify Drop(最简,约 1 分钟)**
-把整个文件夹拖进 [app.netlify.com/drop](https://app.netlify.com/drop),即得公网地址。
+```sh
+python3 scripts/build-search-index.py
+python3 scripts/check_content_structure.py
+python3 scripts/check_static_links.py
+git diff --check
+```
 
-**方式 B · GitHub Pages**
-Fork 本仓库 → 仓库 Settings → Pages → Source 选 `main` 分支根目录,即得
-`https://<你的用户名>.github.io/ai-knowledge-base/`,之后每次 push 自动更新。
+结构检查需要 Node.js；其余脚本使用 Python 标准库。合并章节时保留旧锚点，避免历史链接失效。新增时效性结论应链接到对应官方来源，并区分发布日期、适用版本和核对日期。
 
-**方式 C · Cloudflare Pages / Vercel**
-两者均支持"导入 Git 仓库",构建命令留空、输出目录填 `/` 即可。
-
-> 本仓库自己线上的那份(aidoc-zq.netlify.app)用的是 `sync.sh` + `.git/hooks/post-commit`:配置好 Netlify token 后,`git commit` 会自动触发部署,细节见 `sync.sh` 源码注释。
-
-## 说明
-
-- 内容为个人整理的学习资料,大量参考官方文档与社区一手实践,**每页正文与文末均附来源链接**——有分歧的地方标出分歧,没查到证据的地方不硬编。如需转载请遵循原始来源的版权条款。
-- 「继续阅读」与阅读位置基于浏览器 `localStorage`,不上传任何数据,不需要账号。
-- AI 工具迭代很快,内容尽量标了核对日期,但请始终以官方文档为准。
-- 代码与站点框架按 [MIT](LICENSE) 开源,`topics/*.html` 正文内容不在此授权范围内,详见 LICENSE 文件说明。
-
+[2026-09-09 重构与内容检视记录](docs/content-review-2026-09-09.md)。代码许可见 [LICENSE](LICENSE)。

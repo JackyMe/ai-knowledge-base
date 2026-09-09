@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>10. Mastering Life and Death (State Machine) - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,14 +331,14 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passkey</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passkey</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Mirror Acceleration: Faster Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secret of the First Line of Magic</span></a>
   </div>
   <div class="nav-group">
     <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
     <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Run an Nginx Site in Detached</span></a>
-    <a class="nav-item on" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life & Death (State Machine)</span></a>
+    <a class="nav-item on" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life &amp; Death (State Machine)</span></a>
     <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Breaking In: Stepping Inside Container</span></a>
     <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: How to Inspect Logs</span></a>
     <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Shackles: Prevent OOM Crashes</span></a>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Named Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
-    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup & Restore</span></a>
+    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup &amp; Restore</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Quest: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Goodbye IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>The Ultimate Battle 2: Microservices</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>System Cleanup: Freeing Space</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Graduation Red Line: Never Root</span></a>
@@ -390,21 +389,21 @@ pre:hover .copy-btn { opacity: 1; }
 
 <div class="mermaid-box">
 <pre><code class="language-mermaid">stateDiagram-v2
-    [*] --> Created: docker create (Created)
-    Created --> Running: docker start (Running)
-    [*] --> Running: docker run (Created + Running)
+    [*] --&gt; Created: docker create (Created)
+    Created --&gt; Running: docker start (Running)
+    [*] --&gt; Running: docker run (Created + Running)
     
-    Running --> Paused: docker pause (Frozen)
-    Paused --> Running: docker unpause (Unfrozen)
+    Running --&gt; Paused: docker pause (Frozen)
+    Paused --&gt; Running: docker unpause (Unfrozen)
     
-    Running --> Stopped: docker stop (Graceful Shutdown)
-    Running --> Stopped: docker kill (Hard Power Cut)
+    Running --&gt; Stopped: docker stop (Graceful Shutdown)
+    Running --&gt; Stopped: docker kill (Hard Power Cut)
     
-    Stopped --> Running: docker start (Power Back On)
-    Running --> Running: docker restart (Restart)
+    Stopped --&gt; Running: docker start (Power Back On)
+    Running --&gt; Running: docker restart (Restart)
     
-    Stopped --> [*]: docker rm (Destroyed)
-    Running --> [*]: docker rm -f (Force Destroyed)
+    Stopped --&gt; [*]: docker rm (Destroyed)
+    Running --&gt; [*]: docker rm -f (Force Destroyed)
 </code></pre>
 </div>
 
@@ -420,7 +419,7 @@ pre:hover .copy-btn { opacity: 1; }
 <pre><code><span class="bash-cmd">docker</span> <span class="bash-arg">kill</span> my-web</code></pre>
 <p>In contrast to <code>stop</code>, <code>kill</code> represents pulling the power cord immediately. It dispatches a <code>SIGKILL</code> signal without giving the process any cleanup window. Avoid using this in non-emergency situations (such as when a container is completely deadlocked), as it risks uncommitted database writes and corrupted cache states.</p>
 
-<h3>Form 3: Resurrect & Restart <code>start</code> / <code>restart</code></h3>
+<h3>Form 3: Resurrect &amp; Restart <code>start</code> / <code>restart</code></h3>
 <pre><code><span class="bash-cmd">docker</span> <span class="bash-arg">start</span> my-web
 <span class="bash-cmd">docker</span> <span class="bash-arg">restart</span> my-web</code></pre>
 <p><code>start</code> boots an existing container from the <code>Exited</code> state. Meanwhile, <code>restart</code> acts as a shortcut executing <code>stop</code> followed immediately by <code>start</code>, commonly used after modifying configuration files.</p>
@@ -430,7 +429,7 @@ pre:hover .copy-btn { opacity: 1; }
 <span class="bash-comment"># Use docker unpause my-web to thaw</span></code></pre>
 <p>When you execute <code>pause</code>, the container does not terminate (its port bindings remain allocated), but the Linux kernel cgroups suspend its CPU scheduling entirely—just like pressing "Pause" in a video game. This is invaluable when creating instantaneous host snapshots, conducting live debugging, or isolating noisy neighbors.</p>
 
-<h3>Form 5: Disposal & Cleanup <code>rm</code></h3>
+<h3>Form 5: Disposal &amp; Cleanup <code>rm</code></h3>
 <pre><code><span class="bash-cmd">docker</span> <span class="bash-arg">rm</span> my-web</code></pre>
 <p>Important distinction: <strong>Stopping (stop) does NOT equal Deleting (rm)</strong>. When a container stops, its layered disk writes, logs, and state remain quietly on the host disk, which is why accumulated dead containers consume significant storage. <code>rm</code> permanently destroys the container metadata and writable layer. By default, Docker prohibits deleting an actively running container. To force deletion, append the <code>-f</code> (force) flag: <code>docker rm -f my-web</code>.</p>
 
@@ -451,7 +450,7 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 
 <div class="trouble-box">
-  <div class="trouble-title">🚑 Pitfall Rescue Room: Ghost Containers & Conflicts</div>
+  <div class="trouble-title">🚑 Pitfall Rescue Room: Ghost Containers &amp; Conflicts</div>
   <div class="trouble-item">
     <div class="q">Q1: I want to run a new version with the same name docker run --name my-web nginx:latest, but got "The container name is already in use"!</div>
     <div class="a">A: Because the previous container was merely stopped (stop), but not removed (rm). The Docker daemon enforces that an assigned container name must remain globally unique among existing entities. <strong>Solution:</strong> Run <code>docker rm my-web</code> first, then run your new container.</div>
@@ -585,5 +584,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

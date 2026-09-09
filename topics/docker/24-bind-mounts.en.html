@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>24. Dev Superpower: Bind Mounts - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -331,16 +330,16 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
-  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup & Pitfall Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Guide</span></a>
+  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup &amp; Pitfall Guide</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Guide</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Magic Behind "Hello World"</span></a>
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
   <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Running an Nginx Site in Background</span></a>
-  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle & State Machine</span></a>
-  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec & Debugging</span></a>
+  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle &amp; State Machine</span></a>
+  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec &amp; Debugging</span></a>
   <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: Inspecting Logs</span></a>
   <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Limits: Preventing OOM</span></a>
   <a class="nav-item" href="14-healthcheck.en.html"><span class="n">14.</span><span>Healthcheck: Container Self-Pulse</span></a>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Docker Volumes</span></a>
   <a class="nav-item on" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Vault Migration: Volume Backups</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Networking: Say Bye to IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (II): Microservice Mesh</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Moat: Securing Secrets with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Cleanup: System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -395,17 +394,16 @@ pre:hover .copy-btn { opacity: 1; }
 <p>Bind Mounts map <strong>any absolute directory or file on your host machine</strong> directly into a specific path inside your container. Think of it as an instant, bi-directional portal ("Anywhere Door") connecting your host workspace to the container filesystem. The moment you save an edit in VS Code on your desktop, the container sees the updated code <strong>instantaneously</strong>.</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
+<pre class="mermaid">flowchart LR
     subgraph Host Machine (Your Computer)
-        A[D:\projects\my-web<br/>Editing with VS Code]:::host
+        A[D:\projects\my-web<br>Editing with VS Code]:::host
     end
     
     subgraph Docker Container
-        B[Mount point: /app<br/>Node.js running]:::container
+        B[Mount point: /app<br>Node.js running]:::container
     end
     
-    A <==>|Anywhere Door: Bi-directional Live Sync| B
+    A &lt;==&gt;|Anywhere Door: Bi-directional Live Sync| B
     
     classDef host fill:#e0f2fe,stroke:#0284c7;
     classDef container fill:#fef3c7,stroke:#d97706;
@@ -416,7 +414,7 @@ flowchart LR
 <p>The syntax is virtually identical to Volumes, with one crucial distinction: the left side of the colon <code>:</code> is an <strong>absolute filesystem path</strong> on your host machine.</p>
 
 <pre><code><span class="bash-comment"># Mount current directory $(pwd) into container's /app</span>
-<span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> $(pwd):/app nginx</code></pre>
+<span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> "$(pwd):/app" nginx</code></pre>
 <p><em>Note: Windows cmd users should replace <code>$(pwd)</code> with <code>%cd%</code>; PowerShell users should use <code>${PWD}</code>.</em></p>
 
 <h2>Hands-on Practice: Node.js Hot Reloading Development</h2>
@@ -429,15 +427,15 @@ flowchart LR
 <pre><code><span class="bash-comment"># Run nodemon to automatically restart server upon file changes</span>
 <span class="bash-cmd">docker</span> run <span class="bash-arg">-it</span> <span class="bash-arg">--rm</span> \
   <span class="bash-arg">-p</span> 3000:3000 \
-  <span class="bash-arg">-v</span> $(pwd):/app \
+  <span class="bash-arg">-v</span> "$(pwd):/app" \
   <span class="bash-arg">-w</span> /app \
-  node:18-alpine \
+  node:24-alpine \
   npx nodemon server.js</code></pre>
   
 <p><strong>Parameter Breakdown:</strong></p>
 <ul>
   <li><code>--rm</code>: Automatically cleanup the container on exit.</li>
-  <li><code>-v $(pwd):/app</code>: <strong>The Magic Touch!</strong> Maps your current host code folder directly into <code>/app</code> inside the container.</li>
+  <li><code>-v "$(pwd):/app"</code>: <strong>The Magic Touch!</strong> Maps your current host code folder directly into <code>/app</code> inside the container.</li>
   <li><code>-w /app</code>: Sets the container working directory to <code>/app</code>.</li>
   <li><code>npx nodemon ...</code>: Runs nodemon inside the container to watch <code>/app</code> for file changes. Because of bind mounting, it watches your live host files in real time!</li>
 </ul>
@@ -448,9 +446,9 @@ flowchart LR
 <p>The Node.js setup above sounds great, until you run <code>npm install</code> on your local host (generating Mac/Windows native compiled binaries like node-sass or sharp) and bind mount the whole folder into a Linux container... Crash! The container fails because native binary modules are OS-specific.</p>
 
 <p><strong>The Fix: Anonymous Volume Shadowing</strong></p>
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> $(pwd):/app <span class="bash-arg">-v</span> /app/node_modules node:18 npm start</code></pre>
+<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> "$(pwd):/app" <span class="bash-arg">-v</span> /app/node_modules node:24 npm start</code></pre>
 <p>Understand the magic here? We provide two <code>-v</code> flags:<br>
-1. <code>-v $(pwd):/app</code> mounts your host codebase into <code>/app</code>.<br>
+1. <code>-v "$(pwd):/app"</code> mounts your host codebase into <code>/app</code>.<br>
 2. <code>-v /app/node_modules</code> (Anonymous volume) mounts over the subfolder.<br>
 Because <strong>longer specific mount paths override shorter parent paths</strong>, the anonymous volume "masks" the host's <code>node_modules</code>. The container will utilize its own isolated, Linux-compatible dependencies!</p>
 
@@ -586,5 +584,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

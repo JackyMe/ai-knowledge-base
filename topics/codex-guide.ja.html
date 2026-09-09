@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="OpenAI コーディングエージェント実践ガイド: 20以上のサブコマンドと40以上のスラッシュコマンド早見表、3×3サンドボックス＆承認マトリクス、4つの目的別学習ロードマップ、選定プリズム、長大タスクの4段階分権フロー、タスク終了時の記憶ループ、ブラウザE2E検証、IssueからPRまでの自動化、Skills/MCP、およびClaude Codeとの協調開発。">
@@ -179,6 +177,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -229,11 +228,11 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">実践シナリオと高度な活用</div>
-    <a href="#best-practices"><span class="no">応用</span>Codex ベストプラクティスと実践例</a>
-    <a href="#subscription-quotas"><span class="no">応用</span>ChatGPT Plus/Pro 会員価値の最大化</a>
-    <a href="#image-guide"><span class="no">応用</span>Image 2.0/2.5 ビジュアルエンジニアリング</a>
+    <a href="#best-practices">依頼と検証のテンプレート</a>
+    <a href="#subscription-quotas">プラン・API・コンテキスト</a>
+    <a href="#image-guide">画像作業の専門ガイド</a>
     <a href="#playbook"><span class="no">10</span>シナリオとGitHub自動化</a>
-    <a href="#hidden-config"><span class="no">11</span>内部構造とデュアルエージェント</a>
+    <a href="#hidden-config">ローカル環境の機能確認</a>
     <a href="#resources"><span class="no">12</span>関連リソース</a>
   </div>
 </nav>
@@ -264,27 +263,27 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>Codex は OpenAI が提供するエージェント型（Agentic）スマートコーディングツール体系です。単に「コードを書くチャットボット」にとどまらず、<strong>プロジェクト構造の理解、ツール呼び出し、OSレベルのサンドボックス分離、コード修正・検証、クロスプラットフォーム実行能力</strong>を備えた自律型エンジニアリングパートナーです。Codex を使いこなす第一歩は、明確な選定のメンタルモデルを確立することです。</p>
 
-<h3 data-reveal>一、5つの形態、ひとつのアカウントで共通利用</h3>
+<h3 data-reveal="">一、5つの形態、ひとつのアカウントで共通利用</h3>
 <table class="tbl">
-  <tr><th>形態</th><th>主なエントリーポイント</th><th>最適な利用シーン</th><th>主要機能と特権メカニズム</th></tr>
+  <tbody><tr><th>形態</th><th>主なエントリーポイント</th><th>最適な利用シーン</th><th>主要機能と特権メカニズム</th></tr>
   <tr><td><strong>対話型 CLI (TUI)</strong></td><td>ターミナルで <code>codex</code> を実行</td><td>日常のメイン開発、アーキテクチャ探索、迅速なリファクタリング</td><td>没入型ターミナルUI、豊富なショートカット、リアルタイムな差分（diff）レビュー</td></tr>
   <tr><td><strong>非対話モード (exec)</strong></td><td><code>codex exec</code> / <code>codex e</code></td><td>CI/CD自動化パイプライン、シェルスクリプト、一括ファイル処理</td><td>標準出力またはJSONLへのストリーミング出力、<code>--json</code> による機械可読解析に対応</td></tr>
   <tr><td><strong>IDE 拡張機能</strong></td><td>VS Code / Cursor / JetBrains</td><td>現在開いているファイルのコンテキスト内での微調整、インライン編集</td><td>エディタで開いているファイルや選択範囲のコンテキストを直接再利用、CLIのログイン状態を共有</td></tr>
   <tr><td><strong>Codex Cloud</strong></td><td><code>codex cloud</code> / Web版</td><td>長大タスクのバックグラウンド実行、非同期の分離ビルド、best-of-N の並列試行</td><td>独立したクラウドサンドボックス実行、1〜4回の並列試行に対応、ローカルへの <code>codex apply</code> 反映</td></tr>
   <tr><td><strong>デスクトップ App / GitHub</strong></td><td><code>codex app</code>；PRコメント <code>@codex review</code></td><td>独立したワークスペース、視覚的なタスク管理、コードレビュー自動化</td><td>ブラウザやアプリ連携機能を内蔵、GitHub PR でのインライン自動コードレビュー</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>二、選定プリズム ①：ChatGPT (Chat) vs ChatGPT Work vs Codex</h3>
+<h3 data-reveal="">二、選定プリズム ①：ChatGPT (Chat) vs ChatGPT Work vs Codex</h3>
 <p>多くの初心者が「すでに ChatGPT を使っているが、どのタイミングで Codex に切り替えるべきか？」と疑問を持ちます。<strong>成果物の形態と実行権限</strong>によって以下のように切り分けられます：</p>
 <table class="tbl">
-  <tr><th>評価軸</th><th>ChatGPT チャット (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
+  <tbody><tr><th>評価軸</th><th>ChatGPT チャット (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
   <tr><td><strong>主な成果物</strong></td><td>テキスト回答、コードスニペット、概念解説</td><td>Word/Excel/Notion 形式の共有ドキュメント、ナレッジベース</td><td><strong>実際のファイルツリー変更、Git Diff、実行可能なコード</strong></td></tr>
   <tr><td><strong>実行と検証</strong></td><td>クラウドサンドボックス内でのシンプルな Python 実行のみ</td><td>オフィスアプリのデータ連携、共同編集</td><td><strong>ローカル/コンテナのフル機能シェル、テスト実行、コンパイル・ビルド、E2E検証</strong></td></tr>
   <tr><td><strong>コンテキスト管理</strong></td><td>単一会話の履歴ベース（会話が長くなると忘却しやすい）</td><td>プロジェクトワークスペースのファイルインデックス</td><td><strong>リポジトリ全体のインデックス、AGENTS.md、セッション分岐と永続メモリ</strong></td></tr>
   <tr><td><strong>適したフェーズ</strong></td><td>アイデア出し、アルゴリズムの疑似コード作成、エラー原因の初期調査</td><td>PRD作成、要件定義書の整理、チームナレッジ蓄積</td><td><strong>機能実装、根本的なバグ修正、テスト拡充から PR 作成までの一連のフロー</strong></td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、選定プリズム ②：App / CLI / IDE / Cloud の効果的な組み合わせ</h3>
+<h3 data-reveal="">三、選定プリズム ②：App / CLI / IDE / Cloud の効果的な組み合わせ</h3>
 <div class="duo">
   <div class="good">
     <b>✅ 推奨されるゴールデンコンビネーション（現場のベストプラクティス）</b>
@@ -381,8 +380,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="callout warn"><b class="t">🚑 環境構築やログインでお困りですか？</b>ポート1455のコールバック失敗、プロキシ遮断、ヘッドレス環境の認証、複数アカウントの競合などは、専用ガイドをご覧ください：<a href="env-auth-clinic.ja.html">環境・ログイン緊急レスキューマニュアル</a>。</div>
 
-<h3 data-reveal>一、各プラットフォーム共通のインストールコマンド</h3>
-<pre><code><span class="c"># 方法 1: npm グローバルインストール (クロスプラットフォーム対応、Node >= 18 推奨)</span>
+<h3 data-reveal="">一、各プラットフォーム共通のインストールコマンド</h3>
+<pre><code><span class="c"># 方法 1: npm グローバルインストール (クロスプラットフォーム対応、Node &gt;= 18 推奨)</span>
 npm install -g @openai/codex
 
 <span class="c"># 方法 2: Homebrew (macOS)</span>
@@ -392,16 +391,16 @@ brew install codex
 codex
 codex update</code></pre>
 
-<h3 data-reveal>二、Windows & WSL2 向けの詳細なトラブルシュートと最適化</h3>
+<h3 data-reveal="">二、Windows &amp; WSL2 向けの詳細なトラブルシュートと最適化</h3>
 <table class="tbl">
-  <tr><th>重大な課題</th><th>重大な落とし穴 / 症状</th><th>公式推奨の解決策と最適化方針</th></tr>
+  <tbody><tr><th>重大な課題</th><th>重大な落とし穴 / 症状</th><th>公式推奨の解決策と最適化方針</th></tr>
   <tr><td><strong>ファイルシステム跨ぎの I/O 遅延</strong></td><td>Windows ドライブパス（<code>/mnt/c/Users/...</code> など）で Codex を実行すると、ファイルの読み書きが極端に遅くなり、Node/Rust 等のビルドがタイムアウトする</td><td><strong>必ず WSL ネイティブの Linux ファイルシステム（<code>~/projects/...</code> など）配下にリポジトリをクローンして実行する</strong>（速度が5〜10倍向上！）</td></tr>
   <tr><td><strong>文字コードと改行コードの競合</strong></td><td>Windows 標準の CMD/PowerShell での文字化けや、Git の CRLF/LF 競合が発生する</td><td><strong>Windows Terminal</strong> の使用を推奨。<code>chcp 65001</code> (UTF-8) を設定し、Git の <code>core.autocrlf = input</code> を有効化する</td></tr>
-  <tr><td><strong>npm グローバル権限のエラー</strong></td><td>WSL 環境で <code>npm install -g</code> を実行した際に <code>EACCES</code> 権限エラーが発生する</td><td>ユーザー領域の npm prefix を設定：<code>mkdir ~/.npm-global && npm config set prefix '~/.npm-global'</code> を実行し <code>PATH</code> に追加</td></tr>
+  <tr><td><strong>npm グローバル権限のエラー</strong></td><td>WSL 環境で <code>npm install -g</code> を実行した際に <code>EACCES</code> 権限エラーが発生する</td><td>ユーザー領域の npm prefix を設定：<code>mkdir ~/.npm-global &amp;&amp; npm config set prefix '~/.npm-global'</code> を実行し <code>PATH</code> に追加</td></tr>
   <tr><td><strong>ショートカットキーの競合</strong></td><td><kbd>Ctrl+W</kbd> によるタブ誤終了や、コピー＆ペーストの動作乱れ</td><td>Windows Terminal の設定で Codex プロファイルの <kbd>Ctrl+W</kbd> 割り当てを解除し、ターミナル標準のキー操作を維持</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、新規プロジェクト開始時の標準4ステップ</h3>
+<h3 data-reveal="">三、新規プロジェクト開始時の標準4ステップ</h3>
 <ol class="steps">
   <li><code>/init</code> —— リポジトリを自動解析し、ビルド・テスト・設計規約をまとめた簡潔な <code>AGENTS.md</code> を生成；</li>
   <li><code>/model</code> —— モデルと推論強度を選択（デフォルト: <strong>GPT-5.6 Sol</strong>、または Terra / Luna）。<code>/status</code> でセッション設定を確認；</li>
@@ -419,7 +418,7 @@ codex update</code></pre>
 
 <div class="callout note"><b class="t">本ページの確認ステータス</b>最終確認日 <strong>2026-08-25</strong> · 情報源: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 公式 Changelog</a>。本セクションでは使い勝手や操作性に直接影響する変更のみを抜粋しています。完全な履歴は <a href="toolchain-changelog.ja.html">ツールチェイン更新履歴</a> を参照してください。</div>
 
-<h3 data-reveal>🆕 0.148.0 最新機能 (2026-08-18)</h3>
+<h3 data-reveal="">🆕 0.148.0 最新機能 (2026-08-18)</h3>
 <ul>
   <li><strong>Markdown エクスポート</strong>：<code>/export</code> コマンドが追加され、TUI の対話ログ全体を Markdown 形式で出力可能に。</li>
   <li><strong>ヘッドレス環境でのセッション分岐 (Session Forking)</strong>：<code>codex exec fork</code> によるセッション分岐を導入。セッションのアーカイブ (archive) と復元 (restore) にも対応。</li>
@@ -427,7 +426,7 @@ codex update</code></pre>
   <li><strong>インフラ連携の拡張</strong>：組み込み推論バックエンドとして Amazon Bedrock Runtime をサポート。フック (hooks) による非同期コマンド実行や MCP ツール呼び出しに対応。</li>
 </ul>
 
-<h3 data-reveal>🚨 重要な破壊的変更とモデル移行</h3>
+<h3 data-reveal="">🚨 重要な破壊的変更とモデル移行</h3>
 <ul>
   <li><strong>GPT-5.4 シリーズの提供終了</strong>：OpenAI は <strong>GPT-5.4</strong> および <strong>mini</strong> を 2026-08-31 に完全退役させることを発表。<code>config.toml</code> を確認し、<code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code>、または <code>gpt-5.6-luna</code> への移行を行ってください。</li>
   <li><strong><code>codex exec --full-auto</code> の廃止</strong>：バージョン 0.147.0 で <code>--full-auto</code> 引数が廃止されました。スクリプト内では <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code> に書き換えてください。無人実行での全自動承認が必要な場合は新オプション <code>--approve-for-me</code> を使用します。</li>
@@ -444,7 +443,7 @@ codex update</code></pre>
 <h2>コマンド早見表</h2>
 <p>日常的に多用する8大コアコマンド、ターミナルサブコマンド、起動オプション、およびシーン別40以上のスラッシュコマンドを網羅。</p>
 
-<h3 data-reveal>⚡ 高頻度コアコマンド（マッスルメモリ）</h3>
+<h3 data-reveal="">⚡ 高頻度コアコマンド（マッスルメモリ）</h3>
 <div class="hotcmds">
   <div class="hotcmd must"><span class="hc-cmd">codex ["タスクの説明"]</span><span class="hc-desc">対話型 TUI を起動。初期プロンプトや -i 画像の指定が可能</span></div>
   <div class="hotcmd must"><span class="hc-cmd">codex exec (e)</span><span class="hc-desc">非対話形式で実行。自動化や CI/CD スクリプトの基盤</span></div>
@@ -456,9 +455,9 @@ codex update</code></pre>
   <div class="hotcmd"><span class="hc-cmd">/side (/btw)</span><span class="hc-desc">一時的なサイド会話を開き、本筋を汚さずに詳細を調査</span></div>
 </div>
 
-<h3 data-reveal>一、ターミナルサブコマンド</h3>
+<h3 data-reveal="">一、ターミナルサブコマンド</h3>
 <table class="tbl">
-  <tr><th>サブコマンド</th><th>構文例</th><th>機能と適用シーン</th></tr>
+  <tbody><tr><th>サブコマンド</th><th>構文例</th><th>機能と適用シーン</th></tr>
   <tr><td><code>codex</code></td><td><code>codex "authモジュールのリファクタリング"</code></td><td>対話型 TUI を起動。プロンプトや画像の添付に対応</td></tr>
   <tr><td><code>codex exec</code> (<code>e</code>)</td><td><code>codex exec "テストを実行してlintエラーを解消"</code></td><td>非対話実行。標準出力または <code>--json</code> による機械可読ストリーム出力</td></tr>
   <tr><td><code>codex resume</code></td><td><code>codex resume &lt;SESSION_ID&gt;</code></td><td>ID を指定して過去のセッションを再開。<code>--last</code> で直前のセッションを即座に復元</td></tr>
@@ -469,11 +468,11 @@ codex update</code></pre>
   <tr><td><code>codex mcp-server</code></td><td><code>codex mcp-server</code></td><td>Codex 自身を MCP サーバ（stdio）として外部ツールに公開</td></tr>
   <tr><td><code>codex sandbox</code></td><td><code>codex sandbox -- &lt;cmd&gt;</code></td><td>Codex 同等の OS サンドボックス内でコマンドを手動実行し権限をテスト</td></tr>
   <tr><td><code>codex features</code></td><td><code>codex features list / enable / disable</code></td><td>内部の Rust 機能フラグの一覧表示および有効化・無効化の切り替え</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>二、主な起動オプション</h3>
+<h3 data-reveal="">二、主な起動オプション</h3>
 <table class="tbl">
-  <tr><th>オプション</th><th>短縮形</th><th>機能説明</th></tr>
+  <tbody><tr><th>オプション</th><th>短縮形</th><th>機能説明</th></tr>
   <tr><td><code>--model &lt;name&gt;</code></td><td><code>-m</code></td><td>使用モデルの明示的な指定（例: <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>）</td></tr>
   <tr><td><code>--sandbox &lt;mode&gt;</code></td><td><code>-s</code></td><td>サンドボックス安全レベル: <code>read-only</code> | <code>workspace-write</code> | <code>danger-full-access</code></td></tr>
   <tr><td><code>--ask-for-approval &lt;policy&gt;</code></td><td><code>-a</code></td><td>承認ポリシー: <code>untrusted</code> | <code>on-request</code> | <code>never</code></td></tr>
@@ -484,11 +483,11 @@ codex update</code></pre>
   <tr><td><code>--oss</code></td><td>-</td><td>ローカルの Ollama オープンソースモデルに直接接続して実行</td></tr>
   <tr><td><code>-c key=value</code></td><td>-</td><td><code>config.toml</code> 内の階層設定を単一実行で上書き（値は JSON として解析）</td></tr>
   <tr><td><code>--profile &lt;name&gt;</code></td><td><code>-p</code></td><td>指定したプロファイル設定（例: <code>ci.config.toml</code>）を読み込み</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、セッション内スラッシュコマンド（カテゴリ別解説）</h3>
+<h3 data-reveal="">三、セッション内スラッシュコマンド（カテゴリ別解説）</h3>
 <table class="tbl">
-  <tr><th>カテゴリ</th><th>コマンド</th><th>機能・用途</th></tr>
+  <tbody><tr><th>カテゴリ</th><th>コマンド</th><th>機能・用途</th></tr>
   <tr><td rowspan="4"><strong>セッションとコンテキスト</strong></td><td><code>/new</code> · <code>/clear</code></td><td>新規セッションを開始してコンテキストをリセット / 画面とコンテキストをクリア（<kbd>Ctrl+L</kbd> は画面クリアのみでリセットされない）</td></tr>
   <tr><td><code>/compact</code></td><td>対話履歴を要約・圧縮し、コンテキストウィンドウを大幅に解放</td></tr>
   <tr><td><code>/side</code> (<code>/btw</code>)</td><td>一時的なサブセッションを開始して派生トピックを調査後、本筋を汚さずに復帰</td></tr>
@@ -502,7 +501,7 @@ codex update</code></pre>
   <tr><td rowspan="3"><strong>拡張機能と設定</strong></td><td><code>/init</code></td><td>リポジトリ用の <code>AGENTS.md</code> テンプレートを初期化生成</td></tr>
   <tr><td><code>/skills</code> · <code>/plugins</code> · <code>/mcp</code></td><td>現在ロードされているスキル、プラグイン、MCP ツールの一覧表示と呼び出し</td></tr>
   <tr><td><code>/import</code></td><td><strong>Claude Code の設定、プロジェクト規約、対話履歴をワンクリックでインポート</strong></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -514,7 +513,7 @@ codex update</code></pre>
 <p>Codex のセキュリティ制御は、<strong>2つの直交する設定軸</strong>によって決定されます：<strong>サンドボックス（何にアクセスできるか）</strong>と<strong>承認ポリシー（どのタイミングでユーザーに確認するか）</strong>。この 3×3 の 9 つの挙動パターンを把握することが、「安全性と高い生産性」を両立させる鍵となります。</p>
 
 <table class="tbl">
-  <tr><th>サンドボックス ＼ 承認</th><th><code>untrusted</code><br><span class="src">ホワイトリスト外は常に確認</span></th><th><code>on-request</code> <span class="pill a">推奨デフォルト</span><br><span class="src">権限拡大時のみ確認</span></th><th><code>never</code><br><span class="src">確認ダイアログなし・即座に失敗</span></th></tr>
+  <tbody><tr><th>サンドボックス ＼ 承認</th><th><code>untrusted</code><br><span class="src">ホワイトリスト外は常に確認</span></th><th><code>on-request</code> <span class="pill a">推奨デフォルト</span><br><span class="src">権限拡大時のみ確認</span></th><th><code>never</code><br><span class="src">確認ダイアログなし・即座に失敗</span></th></tr>
   <tr>
     <td><code>read-only</code><br><span class="src">読み取り専用・変更とネット遮断</span></td>
     <td><strong>超慎重な監査モード</strong>：ファイルの読み取りすら承認が必要。出所不明なコードの初期調査にのみ適する。<br><span class="src">注意点: 確認が頻発しストレス過多</span></td>
@@ -533,7 +532,7 @@ codex update</code></pre>
     <td><strong>コンテナ内でのフルアクセス開発</strong>：Docker 等の使い捨てコンテナ内でシステム依存関係をデバッグしつつ、高リスク操作のみ確認。</td>
     <td><strong>= <code>--yolo</code> ⚠️</strong>：全権限を開放し確認も一切行わない。機密情報のない使い捨ての隔離コンテナ内限定で使用すること！</td>
   </tr>
-</table>
+</tbody></table>
 
 <div class="callout tip"><b class="t">選択基準</b>日常の対話型開発では <code>workspace-write</code> + <code>on-request</code>（安全で快適な標準領域）を選択すれば間違いありません。左上に進むほど「防御重視」、右下に進むほど「自動化・権限委譲重視」となります。</div>
 </section>
@@ -545,7 +544,7 @@ codex update</code></pre>
 <div class="sec-tag">心法 05</div>
 <h2>コア方法論と初心者が陥りやすい落とし穴</h2>
 
-<h3 data-reveal>一、実践タスクにおける4要素の法則（Goal-Context-Constraints-Done）</h3>
+<h3 data-reveal="">一、実践タスクにおける4要素の法則（Goal-Context-Constraints-Done）</h3>
 <p>タスクが制御不能になる原因の9割は、最初のプロンプトが曖昧であることに起因します。質の高いプロンプトには次の4つのアンカーを含める必要があります：</p>
 <ul>
   <li><strong>Goal（目標）</strong>：「このモジュールを見ておいて」ではなく、納品すべき具体的な結果を1文で明確に定義する；</li>
@@ -554,9 +553,9 @@ codex update</code></pre>
   <li><strong>Done-when（完了条件）</strong>：客観的かつ定量的に検証可能な合格基準を提示する（例: 特定の単体テストが全件グリーン、特定の JSON レスポンスが返るなど）。</li>
 </ul>
 
-<h3 data-reveal>二、初心者が陥りがちな8大アンチパターン</h3>
+<h3 data-reveal="">二、初心者が陥りがちな8大アンチパターン</h3>
 <table class="tbl">
-  <tr><th>誤解・番号</th><th>典型的な誤ったやり方</th><th>発生する悪影響</th><th>正しいアプローチと防護策</th></tr>
+  <tbody><tr><th>誤解・番号</th><th>典型的な誤ったやり方</th><th>発生する悪影響</th><th>正しいアプローチと防護策</th></tr>
   <tr><td><strong>落とし穴 01</strong></td><td>計画を立てずにいきなりコードを書かせる</td><td>無関係なファイルまで広範囲に変更され、既存設計が破壊される</td><td>複雑なタスクでは必ず <code>/plan</code> を実行し、影響範囲を事前に確認する</td></tr>
   <tr><td><strong>落とし穴 02</strong></td><td>未コミットの変更が残った汚れたブランチで開始する</td><td>Codex の変更と手動の変更が混ざり、安全にロールバックできなくなる</td><td>開始前に必ず <code>git stash</code> を実行するか、クリーンな <code>feat/xxx</code> ブランチを切る</td></tr>
   <tr><td><strong>落とし穴 03</strong></td><td><kbd>Ctrl+L</kbd> を新規セッションと勘違いする</td><td>画面がクリアされただけでコンテキストが残り、過去のノイズから重大なハルシネーションが発生する</td><td>完全に初期化する場合は必ず <code>/new</code> または <code>/clear</code> を使用する</td></tr>
@@ -565,7 +564,7 @@ codex update</code></pre>
   <tr><td><strong>落とし穴 06</strong></td><td>口頭での「完了しました」を鵜呑みにし、Diff を確認しない</td><td>予期しないロジックの空回りや構文の潜在バグが見逃される</td><td>コミット前に必ず <code>/diff</code> を実行し、変更内容を行単位で精査する</td></tr>
   <tr><td><strong>落とし穴 07</strong></td><td>バグ修正をモデルの「勘」に頼って適当に直させる</td><td>try-catch でエラーをもみ消すなど、根本原因を隠蔽する対症療法に陥る</td><td><strong>必ず TDD を徹底する</strong>：まず再現テストを書いて失敗させ、それをパスするように修正させる</td></tr>
   <tr><td><strong>落とし穴 08</strong></td><td>手軽さから普段使いのPCでいきなり <code>--yolo</code> を使用する</td><td>システム設定の誤削除や、個人の SSH/API Key 等の機密資産が流出するリスク</td><td>ローカル環境での <code>--yolo</code> は厳禁。高リスク操作は使い捨ての Docker コンテナ内のみに限定する</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -577,15 +576,15 @@ codex update</code></pre>
 
 <p>30分以上かかる大規模リファクタリングや複雑なモジュール開発において、単一セッションですべてをこなそうとすると、コンテキストの肥大化により注意力が散漫になりハルシネーションを招きます。Codex の高度なプラクティスは、<strong>「4段階の分権（Separation of Concerns）」とセッションの適切な分離</strong>です。</p>
 
-<h3 data-reveal>一、長大タスクの「4段階分権」ワークフロー</h3>
+<h3 data-reveal="">一、長大タスクの「4段階分権」ワークフロー</h3>
 <ol class="steps">
   <li><strong>検討・計画フェーズ (Discuss / Plan)</strong>：<code>read-only</code> サンドボックス下で <code>/plan</code> を実行し、リポジトリを安全に分析。詳細な改修計画、対象ファイル一覧、リスク評価を出力させる（コードは一切書かせない）。</li>
   <li><strong>隔離実行フェーズ (Execute)</strong>：新規セッションまたは子スレッドを開き、合意した Plan を読み込ませる。<code>workspace-write</code> 権限を与え、モジュールごとに段階的に実装を進め、各ステップで最小限のテスト検証を義務付ける。</li>
   <li><strong>独立査読フェーズ (Review)</strong>：まったく新しいセッションを立ち上げるか <code>/review</code> を実行し、「実装に関与していない第三者」の客観的な視点から堅牢性・境界条件・セキュリティを精査させる。</li>
-  <li><strong>完了・引き継ぎフェーズ (Closeout & Handover)</strong>：テストの実行ログやスクリーンショット等のエビデンスを回収し、<code>DECISIONS.md</code> や <code>AGENTS.md</code> を更新して、構造化された PR 説明文を生成する。</li>
+  <li><strong>完了・引き継ぎフェーズ (Closeout &amp; Handover)</strong>：テストの実行ログやスクリーンショット等のエビデンスを回収し、<code>DECISIONS.md</code> や <code>AGENTS.md</code> を更新して、構造化された PR 説明文を生成する。</li>
 </ol>
 
-<h3 data-reveal>二、マルチセッション分散と協調ツールキット</h3>
+<h3 data-reveal="">二、マルチセッション分散と協調ツールキット</h3>
 <ul>
   <li><strong>一時的なサイド会話 <code>/side</code> (<code>/btw</code>)</strong>：疑問点（例：「なぜこのライブラリのバージョンが 2.1 に固定されているのか」など）が生じた際にサブ会話を開き、調査完了後に結論だけを持って本筋に復帰。<strong>メインセッションのコンテキストを無駄な調査ログで汚さない</strong>。</li>
   <li><strong>セッション分岐 <code>codex fork</code></strong>：1つの複雑な課題に対して A案（リファクタリング）と B案（ホットフィックス）を比較したい場合、メインセッションから2つの独立スレッドに分岐させて並行検証が可能。</li>
@@ -602,19 +601,19 @@ codex update</code></pre>
 
 <p>「タスクが終わるたびに、次回またゼロから説明し直さなければならない」というのは開発チームにとって最大の損失です。Codex は洗練されたタスク完了処理とナレッジ定着の仕組みを備えています。</p>
 
-<h3 data-reveal>一、タスク完了時の「3ステップ終了プロトコル」</h3>
+<h3 data-reveal="">一、タスク完了時の「3ステップ終了プロトコル」</h3>
 <ol class="steps">
   <li><strong>客観的な検証エビデンスの収集</strong>：テストスイートを実行して通過ログを出力し、UIやフロントエンドに関わる変更の場合は E2E レンダリング結果のスクリーンショットを取得する（納品実績として保存）。</li>
   <li><strong>設計判断と事実の記録 (Decision Log)</strong>：リポジトリ内に <code>DECISIONS.md</code> を作成・更新し、技術選定の理由、回避した落とし穴、制約事項を記録して後進の車輪の再発明を防ぐ。</li>
   <li><strong><code>AGENTS.md</code> の増分メンテナンス</strong>：今回のタスクでプロジェクトの新しい起動手順や環境依存性が判明した場合は、即座に <code>AGENTS.md</code> に追記して次回以降のコンテキストに反映させる。</li>
 </ol>
 
-<h3 data-reveal>二、AGENTS.md の極小標準テンプレート（各種ツール共通）</h3>
+<h3 data-reveal="">二、AGENTS.md の極小標準テンプレート（各種ツール共通）</h3>
 <pre><code><span class="c"># AGENTS.md · 共通最小構成テンプレート (Codex / Cursor / Claude Code 共通)</span>
 ## ビルドとテスト
 - 依存関係インストール: pnpm install --frozen-lockfile
 - ビルド: pnpm build   テスト: pnpm test -- --run
-- PR作成前の必須検証: pnpm typecheck && pnpm lint
+- PR作成前の必須検証: pnpm typecheck &amp;&amp; pnpm lint
 
 ## アーキテクチャと主要な設計規約
 - ルーティングは src/router/index.ts に集約し、遅延ロード（Lazy loading）を使用
@@ -632,7 +631,7 @@ codex update</code></pre>
 <div class="sec-tag">拡張 08</div>
 <h2>Skills、MCP、およびブラウザ検証エンジニアリング</h2>
 
-<h3 data-reveal>一、Codex Skill の開発規約</h3>
+<h3 data-reveal="">一、Codex Skill の開発規約</h3>
 <p>Skill はオープン標準に準拠した機能パッケージであり、コア構成は以下の通りです：</p>
 <pre><code>my-custom-skill/
 ├── SKILL.md            <span class="c"># 必須: YAML frontmatter (name, description) と操作手順</span>
@@ -641,15 +640,15 @@ codex update</code></pre>
 └── assets/             <span class="c"># 任意: 画像、テンプレートファイル</span></code></pre>
 <div class="callout tip"><b class="t">Skill 作成の黄金律</b><code>description</code> フィールドはモデルのルーティング制御の要です。「どのような具体的な状況・キーワードでこのスキルを呼び出すべきか」を明確に記述することで、必要時にのみ <code>SKILL.md</code> 全文が読み込まれ、グローバルコンテキストを節約できます！</div>
 
-<h3 data-reveal>二、ブラウザ操作と端対端（E2E）ビジュアル検証</h3>
+<h3 data-reveal="">二、ブラウザ操作と端対端（E2E）ビジュアル検証</h3>
 <table class="tbl">
-  <tr><th>ブラウザ連携形態</th><th>技術的仕組み</th><th>ログイン状態 (Cookie/Session) の管理</th><th>適した利用シーンと安全境界</th></tr>
+  <tbody><tr><th>ブラウザ連携形態</th><th>技術的仕組み</th><th>ログイン状態 (Cookie/Session) の管理</th><th>適した利用シーンと安全境界</th></tr>
   <tr><td><strong>内蔵ブラウザ (In-App)</strong></td><td>Codex 内蔵のヘッドレス/軽量ブラウザによるレンダリング</td><td>独立した隔離セッション（公開ページの表示確認に適する）</td><td>静的ページのレイアウト確認、SSR成果物の表示リグレッション検証、外部リンクの到達性テスト</td></tr>
   <tr><td><strong>外部ブラウザ (CDPブリッジ)</strong></td><td>Chrome DevTools Protocol (CDP) 経由での接続</td><td><strong>開発者ローカルの実際のログイン状態をそのまま再利用可能</strong></td><td>ログインが必要な管理画面、フォーム送信フロー、ユーザーデータ連携の E2E 検証</td></tr>
   <tr><td><strong>Computer Use (デスクトップ操作)</strong></td><td>OSレベルの画面キャプチャとキーボード/マウスイベント駆動</td><td>現在のデスクトップ環境の権限を完全に継承</td><td>デスクトップアプリ間の連携操作、Webインターフェースを持たない複雑な GUI の受け入れテスト</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、MCP プロトコルの双方向連携</h3>
+<h3 data-reveal="">三、MCP プロトコルの双方向連携</h3>
 <ul>
   <li><strong>Codex による外部ツールの利用</strong>：<code>codex mcp add &lt;name&gt; -- &lt;cmd&gt;</code> により、PostgreSQL、Sentry、Figma、Pencil デザインキャンバス等を接続；</li>
   <li><strong>Codex 自身のエージェントへの公開</strong>：<code>codex mcp-server</code> を実行することで、Claude Code や他のオーケストレータから Codex を MCP ツールとして呼び出し、複雑なコーディング作業を委譲可能。</li>
@@ -663,371 +662,38 @@ codex update</code></pre>
 <div class="sec-tag">設定 09</div>
 <h2>設定とアカウント体系の完全解説</h2>
 
-<h3 data-reveal>一、CODEX_HOME ディレクトリ構成マップ</h3>
+<h3 data-reveal="">一、CODEX_HOME ディレクトリ構成マップ</h3>
 <table class="tbl">
-  <tr><th>ファイル / パス</th><th>役割と格納内容</th><th>セキュリティとバージョン管理方針</th></tr>
+  <tbody><tr><th>ファイル / パス</th><th>役割と格納内容</th><th>セキュリティとバージョン管理方針</th></tr>
   <tr><td><code>~/.codex/config.toml</code></td><td>グローバルコア設定（デフォルトモデル、サンドボックス、承認ポリシー、MCPサーバ等）</td><td>✅ 個人の Dotfiles に含めてバックアップ管理を推奨</td></tr>
   <tr><td><code>.codex/config.toml</code></td><td>プロジェクト個別設定（グローバル設定を上書き、ただし機密プロバイダ設定等は制限）</td><td>✅ リポジトリにコミットしてチームで共有</td></tr>
   <tr><td><code>~/.codex/auth.json</code></td><td><strong>ユーザー認証トークンキャッシュ（平文 Token）</strong></td><td>❌ <strong>Git へのコミットやチケットへの貼り付けは厳禁</strong></td></tr>
   <tr><td><code>~/.codex/sessions/</code></td><td>ローカルの過去セッション履歴（<code>resume</code> や <code>fork</code> で使用）</td><td>ローカルアセット（端末間での同期対象外）</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>二、設定階層の上書き優先順位</h3>
+<h3 data-reveal="">二、設定階層の上書き優先順位</h3>
 <p>優先度の高い順：<strong>企業ポリシー（Requirements）</strong> ➔ <strong>コマンド引数での個別上書き <code>-c key=value</code></strong> ➔ <strong>プロファイル指定 <code>--profile &lt;name&gt;</code></strong> ➔ <strong>プロジェクト設定 <code>.codex/config.toml</code></strong> ➔ <strong>ユーザー設定 <code>~/.codex/config.toml</code></strong> ➔ <strong>組み込みデフォルト値</strong>。</p>
 </section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION BEST-PRACTICES ================= -->
-<section id="best-practices">
-<div class="sec-tag">応用 09</div>
-<h2>Codex ベストプラクティスと実践例 (Best Practices & Optimal Examples)</h2>
-<p>Codex の能力を最大限に引き出すため、開発者コミュニティで検証・確立されたベストプラクティス、推奨コマンドの組み合わせ、および最も失敗の少ないプロンプトテンプレートを整理しました。そのままコピーして活用できます。</p>
-
-<h3 data-reveal>一、最強の Prompt テンプレート：TDD ゼロ幻覚フォーマット</h3>
-<p>企業の実プロジェクトで最も成功率の高いタスク指示テンプレートです。明確な制約条件と検収基準を課すことで、モデルの勝手な推測や「暴走」を徹底的に防止します：</p>
-<pre><code>&gt; 【目標】src/auth/jwt.ts に Refresh Token のスライディングウィンドウ更新ロジックを追加してください。
-  【コンテキスト】docs/auth-flow.md と現在の jwt.ts を確認してください。
-  【制約事項】
-  1. 変更可能なファイルは jwt.ts と対応するテストファイルのみ。routes モジュールには手を触れないこと。
-  2. 既存の HMAC-SHA256 署名アルゴリズムを維持し、新しい npm パッケージは追加しないこと。
-  3. 並行処理時のロック機構に注意し、同一トークンの多重更新を防止すること。
-  【検収基準】
-  まず tests/auth/jwt.test.ts に3つのテストケース（並行更新テストを含む）を作成すること。
-  テストを実行し、すべてのテストがグリーンになるまで自己修正を繰り返すこと。最後に /diff で差分を提示すること。</code></pre>
-
-<h3 data-reveal>二、4大アドバンスドシナリオと強力なコマンド組み合わせ</h3>
-<table class="tbl">
-  <tr><th>シナリオ</th><th>推奨コマンドチェーンと操作手順</th><th>なぜ最適なのか？</th></tr>
-  <tr>
-    <td><strong>1. 大規模リファクタリング前の「セーフティスナップショット」</strong></td>
-    <td><code>git add . && git commit -m "WIP" && codex exec fork</code></td>
-    <td>0.148.0 のヘッドレス分岐機能を活用。メインセッションを安全なアンカーとして保持し、危険なリファクタリング用に新しいセッションを分岐。失敗時はブランチセッションを破棄するだけで、メイン環境は一切汚染されません。</td>
-  </tr>
-  <tr>
-    <td><strong>2. CI/CD 無人自動化運用</strong></td>
-    <td><code>codex exec --sandbox workspace-write --approve-for-me ".github/ISSUE_TEMPLATE に従って lint エラーを修正"</code></td>
-    <td>完全に対話を自動化。<code>--approve-for-me</code> により、設定されたサンドボックス境界内で安全なコマンドを自動承認し、人間がターミナルに張り付いて Enter を押し続ける手間を排除します。</td>
-  </tr>
-  <tr>
-    <td><strong>3. 長大なログやエラーの処理</strong></td>
-    <td><code>npm run build > build-error.log</code> <br> その後 Codex で入力：<code>build-error.log を読み込んでビルドエラーを修正して</code></td>
-    <td><strong>数万行のエラーログをターミナルに直接貼り付けてはいけません！</strong> コンテキストの Token を瞬時に食いつぶし、モデルの忘却を引き起こします。ファイルにリダイレクトして読み込ませることで、低コストかつ高精度に対処できます。</td>
-  </tr>
-  <tr>
-    <td><strong>4. ナレッジ蓄積とチーム共有</strong></td>
-    <td>タスク完了後に入力：<code>/export</code></td>
-    <td>直前の一連のデバッグや推論プロセスを綺麗な Markdown ファイルとしてワンクリックで書き出し。Notion や社内 Wiki にそのまま配置可能なチーム資産となります。</td>
-  </tr>
-</table>
-
-<h3 data-reveal>三、コードベース「コールドスタート」最適フロー (Onboarding)</h3>
-<p>既存の巨大プロジェクトや初めて触るレガシーコードを引き継いだ際、以下のコンボを使用することで、Codex が迅速に全体構造を把握・インデックス化します：</p>
-<ol class="steps">
-  <li><strong>全体スキャンと構造マップ生成</strong>：<code>src/ ディレクトリ全体を分析し、アーキテクチャパターンを要約した ARCHITECTURE.md を作成して</code> と入力。</li>
-  <li><strong>防衛的ガードレールの確立</strong>：続けて <code>分析結果に基づき、今後の AI セッションが遵守すべき厳格な AGENTS.md（プロジェクトの禁止事項、特定のコーディング規約を含む）を生成して</code> と指示。</li>
-  <li><strong>ワンクリックでノイズ除去</strong>：<code>/compact</code> を実行。これまでの長大なコード読み込み履歴を要約メモリに圧縮し、次の本格的な機能開発のためのコンテキスト容量を確保します。</li>
-</ol>
-</section>
+<section id="best-practices"><h2>依頼と検証のテンプレート</h2><p>目的、範囲、制約、完了基準を示します。テストは実際のリスクを対象にし、すべての文言変更に TDD を要求しません。</p><pre><code>目的：
+関連ファイル：
+変更範囲：
+維持する動作：
+検証方法：
+変更、結果、未検証事項を報告してください。</code></pre></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION SUBSCRIPTION-QUOTAS ================= -->
-<section id="subscription-quotas">
-<div class="sec-tag">応用実践ガイド</div>
-<h2>ChatGPT Plus/Pro 会員価値の最大化とマルチ端末連携マニュアル</h2>
-
-<p>多くの開発者や技術者が毎月 $20（Plus）あるいは $200（Pro）のサブスクリプション料金を支払っていますが、日常業務では単なる Web チャットやコード補完ツールとしてしか活用できず、「利用制限に達しました。5時間後に再試行してください」という壁に頻繁にぶつかっています。現在の OpenAI は、複数端末・マルチモーダルが統合された包括的な生産性プラットフォームへと進化しています。本マニュアルは、トップエンジニアやパワーユーザーの実戦知見を結集し、各機能を余すところなく活用して最高のアウトプットを引き出すエンドツーエンドのワークフローを体系化しました。</p>
-
-<h3 data-reveal>🧭 一、 サブスクリプション資産全景とレートリミットの計算メカニズム</h3>
-<p>会員権限を使いこなすには、利用可能な「計算リソースポートフォリオ」と、システムの裏側でどのような消費計算が行われているかを把握する必要があります：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>機能モジュール</th>
-        <th>主要シナリオと資産特性</th>
-        <th>消費特性と内部メカニズム</th>
-        <th>推奨ベストプラクティス</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Codex ターミナル / IDE エージェント</strong></td>
-        <td>ローカルコード修正、複数ファイルの一括リファクタリング、CLI および Git 自動化</td>
-        <td><strong>高消費領域</strong>。やり取りのたびにプロジェクト構造とコンテキストを読み込むため、ファイル数が多いほど消費が激しく、5時間のローリング制限に達しやすい。</td>
-        <td>実際にコードを変更・検証する段階でのみ呼び出す。一般的な技術調査や漫然とした相談はターミナル外で行う。</td>
-      </tr>
-      <tr>
-        <td><strong>Web 版 Deep Research</strong></td>
-        <td>マルチステップの自律型 Web 調査、長大ドキュメントの統合、技術選定の比較分析</td>
-        <td><strong>独立した月次クォータ枠</strong>（Plus: 月約20〜25回、Pro: 月250回以上）。日常対話の5時間制限枠を消費しない。</td>
-        <td>新規技術スタックの検証や業界動向の調査に活用。構造化された設計書を出力させてからターミナルに渡す。</td>
-      </tr>
-      <tr>
-        <td><strong>Canvas 協調編集キャンバス</strong></td>
-        <td>長文ドキュメント推敲、局所的なコードリファクタリング、リアルタイム実行と単体テスト</td>
-        <td><strong>消費を大幅に節約可能</strong>。コードの一部をハイライトして局所修正できるため、変更のない数百行を毎回再生成する必要がない。</td>
-        <td>コアアルゴリズムや特定コンポーネントの手術的修正に活用し、全量再出力によるコンテキスト肥大化を防ぐ。</td>
-      </tr>
-      <tr>
-        <td><strong>高度な音声モード (Advanced Voice)</strong></td>
-        <td>アーキテクチャ設計の口頭壁打ち、要件ブレインストーミング、コードレビューの振り返り</td>
-        <td>独立した音声利用枠が割り当てられ、テキストクォータの急速な消費を防げる。</td>
-        <td>実装前の設計段階で、音声を用いてロジックの盲点やエッジケースを高速に洗い出す。</td>
-      </tr>
-      <tr>
-        <td><strong>マルチモーダルビジュアル (Vision / Image)</strong></td>
-        <td>UI デザインカンプの再現、手描き構成図のコード化、製品プロトタイプ生成</td>
-        <td>画像生成（Image 2.0/2.5）には独立した生成レート制限あり。Vision 画像認識は標準トークンとして計上。</td>
-        <td>UI 実装前にまず画像でビジュアル標準を固め、そこから CSS/Tailwind トークンを抽出する。</td>
-      </tr>
-      <tr>
-        <td><strong>Projects / Memory ナレッジベース</strong></td>
-        <td>チーム開発規約、コア API 仕様書、プロジェクト固有のドメイン用語</td>
-        <td><strong>ネイティブ Prompt Caching</strong> 機構により、長期的に安定した前提知識は大幅な読み込み割引が適用される。</td>
-        <td>プロジェクト規約や依存定義を一度 Project に登録し、質問のたびに長大な背景を再送する手間を省く。</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="callout note"><b class="t">本質的理解：5時間ローリングウィンドウの仕組み</b>
-OpenAI のレートリミットは単に「何回発言したか」ではなく、<strong>「リクエストの複雑度 × コンテキスト長 × 推論思考の深さ」</strong>によって動的に算出されます。20個のファイルを読み込んだターミナルセッションでの1回のプロンプトは、短文チャット50回分以上の計算量を消費することがあります。</div>
-
-<h3 data-reveal>🚀 二、 黄金の4段階連携パラダイム：構想から実装完了までの SOP</h3>
-<p>成果を最大化するアプローチは<strong>「関心の分離・動的試行と静的実行の切り分け」</strong>です。試行錯誤はコストが低く視野の広い Web/音声で行い、確定した実装のみをローカルターミナルに任せます：</p>
-
-<h4>第 1 段階：構想策定とアーキテクチャ壁打ち（Voice + Deep Research）</h4>
-<p>新しい機能の追加や未知のライブラリ導入を検討する際、いきなりターミナルでコードを書き始めてはいけません：</p>
-<ul>
-  <li><strong>音声によるブレインストーミング</strong>：高度な音声モードを起動し、5分間で構想を AI に伝えます：「既存の Next.js アプリに Stripe 決済フローを組み込みたい。考慮すべきエッジケースと DB 設計案を挙げて」。口頭対話でロジックの抜け漏れを素早く特定します。</li>
-  <li><strong>Deep Research による技術検証</strong>：新規のライブラリや規約について、Web 版で詳細な調査を実行させます：</li>
-</ul>
-<div class="callout tip"><b class="t">構造化リサーチ Prompt テンプレート</b>
-<code>詳細リサーチを開始し、最新の公式ドキュメントおよびベストプラクティスを網羅的に調査した上で、【対象技術スタック】の導入ガイドを出力してください。必須項目：1. コアアーキテクチャとデータフロー図；2. 破壊的変更 (Breaking Changes) リスト；3. JSON Schema に準拠したデータモデル定義。余計な挨拶は省き、技術的要点のみを出力すること。</code></div>
-
-<h4>第 2 段階：ビジュアル＆UI デザインの確定（Image / Vision to Code）</h4>
-<p>フロントエンド開発ではスタイルの微調整で膨大なトークン枠を浪費しがちです。ビジュアル決定とコード生成を切り離します：</p>
-<ol>
-  <li>Web 版の画像生成機能で UI コンセプト画像を 2〜3 パターン出力し、最適な 1 枚を選定します。</li>
-  <li>選んだ UI 画像を Vision 機能に読み込ませ、デザインシステム仕様を出力させます：<code>"この画面からカラーパレット（16進数）、グリッド間隔、フォント階層、Flex/Grid 構造を抽出し、Tailwind CSS 設定として出力して"</code></li>
-  <li>確定したデザイン仕様をテキストとして取得してからコーディングに移ることで、手戻りを最小限に抑えられます。</li>
-</ol>
-
-<h4>第 3 段階：局所推敲とサンドボックス検証（Canvas 協調）</h4>
-<p>重要なアルゴリズムやビジネスロジックを作成する際は、ChatGPT の <strong>Canvas モード</strong> を活用します：</p>
-<ul>
-  <li><strong>局所的なピンポイント修正</strong>：修正したいコード箇所（10行程度）をハイライトし、「この処理にリトライロジックとエラーログを追加して」と指示。Canvas は選択範囲のみを更新するため、ファイル全体の再出力による無駄なトークン消費を 80% 以上削減できます。</li>
-  <li><strong>組み込みレビューツール</strong>：「コードレビュー」や「ログ追加」ショートカットを活用し、その場で品質を底上げします。</li>
-</ul>
-
-<h4>第 4 段階：ローカルターミナルでの確実な落とし込み（Codex ターミナル）</h4>
-<p>最後にローカルターミナルへ戻り、Codex を実行します：</p>
-<ul>
-  <li>すでに前段階で<strong>明確な設計仕様、Tailwind 設定、検証済みのアルゴリズムコード</strong>が手元に揃っています。</li>
-  <li>ターミナルで簡潔に指示：<code>"設計仕様に従い、src/modules/ にファイルを作成してローカルテストを実行して"</code></li>
-  <li>入力が極めて明確なため、1回の実行でテストが通り Git Commit まで完了。ターミナル枠の消費を最小限に抑えられます。</li>
-</ul>
-
-<h3 data-reveal>🛡️ 三、 クォータ節約とコンテキスト管理の鉄則</h3>
-<p>実務で実証された、利用枠を延命させるための基本ルール：</p>
-
-<h4>1. 「新規返信」ではなく「直前メッセージの編集」を活用する</h4>
-<p>多くのユーザーが見落としているテクニックです。AI の回答が期待とずれていた場合、<strong>新しいメッセージで指示を重ねてはいけません</strong>。追加質問をするたびに過去の失敗履歴がすべて再送されます。直前のプロンプトの「編集」ボタンを押し、指示を修正して再送信すれば、過去の誤答コンテキストが累積することはありません。</p>
-
-<h4>2. 明確な Custom Instructions（カスタム指示）を設定する</h4>
-<p>毎回「TypeScript で書いて」「挨拶は不要」と入力する手間を省くため、設定内の<strong>カスタム指示</strong>やプロジェクト直下の <code>SKILL.md</code> にあらかじめ記述しておきます。</p>
-<div class="callout note"><b class="t">推奨カスタム指示テンプレート (設定 -> ChatGPT をカスタマイズ)</b>
-<code>- 役割：シニアフルスタックアーキテクト。
-- 出力スタイル：簡潔、厳格、エンジニアリング重視。前置きや結びの挨拶（「承知しました」など）は一切不要。
-- コード規則：変更箇所のみを出力（未変更部分は // ... existing code ... と表記）。TypeScript 型定義を必須とする。
-- 音声モード制約：要点のみを簡潔に回答し、「他にお手伝いできることはありますか？」などの定型句は省くこと。</code></div>
-
-<h4>3. モデルの使い分け：用途に応じた適材適所</h4>
-<ul>
-  <li><strong>Reasoning / 思考モデル (o3 / 深度思考)</strong>：複雑な競合状態の解消、アルゴリズムの証明、アーキテクチャの全面再設計など高難度タスクに限定。</li>
-  <li><strong>Fast / Mini モデル</strong>：正規表現の作成、JSON/YAML 変換、Git コミットメッセージ生成、軽微な修正などに活用。圧倒的に高速で枠の消費もごくわずかです。</li>
-</ul>
-
-<h3 data-reveal>❓ 四、 よくあるトラブルと対策</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">質問を数回しただけで制限に達してしまうのはなぜか？</div>
-    <div class="card-desc">同一の長いスレッド内で巨大な PDF や高解像度画像を複数アップロードし、かつ会話が30ターンを超えているケースが典型です。1回質問するごとに過去の巨大データがすべて再計算されます。解決策：タスクのマイルストーンごとに新しいクリーンなスレッドを開始してください。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Web 版、デスクトップ版、モバイル版の利用枠は別々か？</div>
-    <div class="card-desc"><strong>別々ではありません。全プラットフォームで共通のアカウント計算枠を共有しています。</strong> 独立枠を持つのは Deep Research と高度な音声通話時間のみです。デスクトップで制限に達すると Web 版でも制限されるため、端末ごとの役割分担を意識して運用しましょう。</div>
-  </div>
-</div>
-</section>
+<section id="subscription-quotas"><h2>プラン・API・コンテキスト</h2><p>契約の割当、API 課金、累積トークン、現在のコンテキストは別の指標です。認証方式、使用量、リセット時刻を確認します。</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION IMAGE-GUIDE ================= -->
-<section id="image-guide">
-<div class="sec-tag">画像・視覚技術</div>
-<h2>Image 2.0/2.5 ビジュアルエンジニアリングと実践的開発フロー</h2>
-
-<p>従来の開発では、「手動でコーディング → ブラウザをリロード → 目視確認 → CSS の微調整」という反復作業に多大な時間を奪われてきました。OpenAI の画像生成技術は、初期の DALL-E から <strong>GPT-4o ネイティブ拡散マルチモーダル</strong>、そして最新の <strong>Image 2.0 / 2.5 視覚エンジン</strong> へと進化し、単なるイラスト生成を超えて、アジャイル開発に不可欠な「プロトタイプ仕様生成エンジン」へと変貌を遂げました。本章では、フロントエンド開発や UI/UX デザインの現場で実証された、Image 2.0/2.5 を用いた効率的な開発サイクルを解説します。</p>
-
-<h3 data-reveal>🧬 一、 技術進化の全景：DALL-E から Image 2.5 への変遷</h3>
-<p>世代ごとの特性を把握することが、適切なモデル選定と的確なプロンプト設計の基礎となります：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>技術世代</th>
-        <th>アーキテクチャと技術的特長</th>
-        <th>文字描画とディテール精度</th>
-        <th>開発・コーディングにおける位置づけ</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>DALL-E 3</strong></td>
-        <td>独立したテキスト-画像拡散モデル。LLM による暗黙的なプロンプト書き換えに依存。</td>
-        <td>英単語のスペルミスが多発。オブジェクトの輪郭が曖昧になりやすく、幾何学的比率の制御が困難。</td>
-        <td>初期のコンセプト出しやインスピレーション獲得用。精密な UI やアイコン生成には不向き。</td>
-      </tr>
-      <tr>
-        <td><strong>GPT-4o ネイティブ画像</strong></td>
-        <td>ネイティブ全モーダル設計。視覚 Token とテキスト Token が深く整合し、文脈追従性が大幅向上。</td>
-        <td>短い英単語を正確に描画可能。現実の光影や物理的オクルージョンの理解が向上。</td>
-        <td>製品プロトタイプの迅速な作成、アーキテクチャ草図の描画、簡易なプレースホルダー作成。</td>
-      </tr>
-      <tr>
-        <td><strong>Image 2.0 / 2.5</strong></td>
-        <td>Sora の物理時空間エンジンと高精度ベクター事前分布を統合。高精度な局所再描画と形状固定に対応。</td>
-        <td><strong>テキスト描画精度が 95% 以上に向上</strong>。ピクセルグリッド整合、UI コンポーネント階層の明瞭化、歪みのない質感を実現。</td>
-        <td><strong>プロダクション品質のデザインアセット生成</strong>：高品質な UI モックアップ、規格準拠の App アイコン、空状態ベクターイラストの生成と Tailwind Tokens の直接抽出。</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 data-reveal>🚀 二、 3大エンジニアリング活用パラダイム：ビジュアルとコードの連携</h3>
-
-<h4>パラダイム 1：UI プロトタイプのリバースエンジニアリング (Visual-First Design to Code)</h4>
-<p>要件定義テキストから直接コードを起こすと、完成後に認識齟齬による手戻りが生じがちです。<br>
-<strong>推奨 SOP：</strong></p>
-<ol>
-  <li><strong>ビジュアル基準の生成</strong>：ChatGPT Web 版で構造化プロンプトを入力し、Image 2.5 に高精度な UI モックアップを 2〜3 パターン生成させます（例: ダークモードの Web3 ダッシュボード）。</li>
-  <li><strong>マルチモーダル Token 抽出</strong>：最も優れた案を選択し、GPT-4o Vision モデルに渡して設計システムのリバースエンジニアリングを実行させます：
-    <div class="callout tip"><b class="t">デザインシステム抽出 Prompt</b>
-    <code>シニアフロントエンドアーキテクトとしてこのデザインカンプを分析してください：1. カラーパレット（Primary, Secondary, Background, Border の16進数値）；2. グリッドと間隔システム（4px/8px グリッド規約）；3. 対応する Tailwind CSS 設定 (tailwind.config.js) スニペットとベース HTML 構造を出力してください。</code></div>
-  </li>
-  <li><strong>ターミナルでの実装</strong>：生成された Tailwind 設定とスケルトンコードをローカルの Codex ターミナルに渡し、実コンポーネントの実装とデータ連携を行います。UI 構築速度が大幅に向上し、検収時の手戻りが激減します。</li>
-</ol>
-
-<h4>パラダイム 2：アプリアセットの自動生成ライン (App Icon & Empty States)</h4>
-<p>個人開発や少数精鋭チームにおいて、アイコンや空状態イラストの外注はコストと時間を要します：</p>
-<ul>
-  <li><strong>標準アプリアイコン</strong>：Image 2.5 のフラット幾何プロンプトを活用し、Apple HIG や Google Material Design 規格に準拠した角丸アイコンを即座に生成。</li>
-  <li><strong>空状態（Empty State）ベクター風イラスト</strong>：404 画面やデータ未登録画面向けのモダンなイラストを生成し、ベクター化ツールで SVG に変換して配置。</li>
-</ul>
-
-<h4>パラダイム 3：双方向ビジュアルリグレッションテスト (Visual Regression Loop)</h4>
-<p>Codex に Playwright / Puppeteer テストスクリプトを作成させ、ヘッドレスブラウザで撮影した実際の画面キャプチャとデザイン基準画像を視覚モデルに比較させます：</p>
-<div class="callout note"><b class="t">ビジュアル差分検証 Prompt</b>
-<code>【画像1：デザイン基準カンプ】 vs 【画像2：Playwright 実画面キャプチャ】
-2枚の画像の差異を厳密に比較し、以下を報告してください：1. ボタンの余白（Margin/Padding）のズレ；2. フォントサイズとウェイトの階層差；3. 境界線の色とドロップシャドウの不一致。これらを解消するための具体的な CSS 修正パッチを出力してください。</code></div>
-
-<h3 data-reveal>🎨 三、 プロンプトエンジニアリングと品質調整 (Prompt Tuning Guide)</h3>
-<p>Image 2.0 / 2.5 にエンジニアリング品質のアセットを生成させるための6要素フレームワーク：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>要素</th>
-        <th>不十分な指定例（NG）</th>
-        <th>エンジニアリング指定（推奨）</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>1. 主体と機能</strong></td>
-        <td>"綺麗な会計システムの画面"</td>
-        <td><code>SaaS analytics dashboard interface, high-density data visualization, financial charts, transaction table</code></td>
-      </tr>
-      <tr>
-        <td><strong>2. デザイン様式</strong></td>
-        <td>"モダンで高級感のある感じ"</td>
-        <td><code>Clean modern UI design, Swiss typographic style, Apple Human Interface Guidelines aesthetic, 8px grid system</code></td>
-      </tr>
-      <tr>
-        <td><strong>3. カラーシステム</strong></td>
-        <td>"かっこいいダークカラー"</td>
-        <td><code>Dark mode palette: deep slate #0B0F17 background, vibrant emerald #10B981 accents, subtle border #1F2937</code></td>
-      </tr>
-      <tr>
-        <td><strong>4. 質感と陰影</strong></td>
-        <td>"リアルな 8K レンダリング"</td>
-        <td><code>Matte texture, soft ambient occlusion, crisp 1px borders, subtle glassmorphism card elevation, zero glossy glare</code></td>
-      </tr>
-      <tr>
-        <td><strong>5. タイポグラフィ</strong></td>
-        <td>"数字が表示されている"</td>
-        <td><code>Exact typography: with crisp white text "$124,580.00" displayed prominently, and "Total Revenue" above in gray</code></td>
-      </tr>
-      <tr>
-        <td><strong>6. ネガティブプロンプト</strong></td>
-        <td>未指定</td>
-        <td><code>--no 3d clay style, no realistic human faces, no blurry gradients, no misspelled pseudo-latin text</code></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h4>品質向上のテクニック：</h4>
-<ul>
-  <li><strong>AI 特有の過剰な演出を抑える</strong>："ultra-detailed" や "photorealistic" といった曖昧な修飾語は不要なテカリや雑音を生みます。代わりに <code>minimalist</code>, <code>clean lines</code>, <code>matte finish</code>, <code>subtle contrast</code> などの専門用語を用います。</li>
-  <li><strong>確実なテキスト描画</strong>：UI 内に英字タイトルやボタン文字を描画させる際は、<strong>対象テキストを二重引用符で厳格に囲みます</strong>（例: <code>a button with text "GET STARTED" in bold sans-serif</code>）。1回に指定する単語数は4単語以内に抑えます。</li>
-  <li><strong>インペイント（局所再描画）の活用</strong>：生成されたダッシュボードの特定グラフのみを変更したい場合は、画像を全体再生成せず、Web 版のブラシツールで該当部分を選択して「この領域を折れ線グラフに差し替え、背景色とグリッドは完全に維持して」と指示します。</li>
-</ul>
-
-<h3 data-reveal>📋 四、 本番グレード実践 Prompt テンプレート集</h3>
-
-<h4>テンプレート 1：モダンダーク系 SaaS 分析ダッシュボード（Tailwind 抽出対応）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt テンプレート · SaaS Dashboard UI</span><button class="copy-btn">コピー</button></div>
-  <pre><code>A high-fidelity modern SaaS web application dashboard interface for server monitoring. Dark mode theme with deep obsidian background (#0A0E1A). The layout features a clean left sidebar navigation, top header with user profile, and a central grid of 4 metric cards (CPU, Memory, Bandwidth, Uptime) with emerald green glowing sparkline charts. Crisp 1px borders (#1E293B), minimalist sans-serif typography, subtle dark card elevation. Professional Figma screenshot aesthetic, pixel-perfect alignment, no clutter.</code></pre>
-</div>
-
-<h4>テンプレート 2：モバイル向け極小金融資産カード（React Native / Flutter 視覚基準）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt テンプレート · Fintech Mobile Card</span><button class="copy-btn">コピー</button></div>
-  <pre><code>Mobile UI component for a premium debit card widget on iOS screen. Sleek frosted dark glass design with subtle holographic rim lighting. Prominent embossed white text "8492" and "VISA" logo in top corner. Clean balance display "$34,250.80" with minimalist typography. Below the card, two circular action buttons labeled "Send" and "Top Up". Clean solid background (#121212), Apple HIG design guidelines, modern Dribbble showcase style.</code></pre>
-</div>
-
-<h4>テンプレート 3：個人開発者向けミニマル App アイコン（App Store 規格準拠）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt テンプレート · Minimalist App Icon</span><button class="copy-btn">コピー</button></div>
-  <pre><code>App icon design for a developer code intelligence tool. A smooth rounded squircle container on pure black background. In the center, a minimalist geometric logo combining an abstract bracket '{' and a sparkling cyan star. Premium matte texture, subtle radial gradient, smooth beveled edges, modern iOS icon aesthetic. High resolution, centered composition, zero text, vector emblem clarity.</code></pre>
-</div>
-
-<h4>テンプレート 4：404 エラー画面用ベクターイラスト（SVG トレース対応）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt テンプレート · Empty State Vector</span><button class="copy-btn">コピー</button></div>
-  <pre><code>Clean vector empty state illustration for a '404 Page Not Found' error screen. A cute, minimalist floating astronaut robot looking puzzled at a disconnected glowing cable. Flat 2D vector art style, clean outline strokes, limited modern color palette (indigo, mint green, and soft gray). Isolated on a solid pure white (#FFFFFF) background. Modern tech startup illustration aesthetic, zero realistic shading, ready for SVG tracing.</code></pre>
-</div>
-
-<h3 data-reveal>🛡️ 五、 実運用時の留意点とライセンス・コンプライアンス</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">アプリ内で複数枚のイラストのトーン＆マナーを統一するには？</div>
-    <div class="card-desc"><strong>「共通のスタイル修飾句」とパレットを固定します。</strong> すべてのプロンプト末尾に同一のスタイル定義（例: <code>--style: flat geometric 2D vector, mint and slate palette, soft outlines, pure white background</code>）を付与し、Web 版の同一スレッド内で連続生成することで、画風とキャラクターの一貫性を維持できます。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">生成画像の商用利用における注意点は？</div>
-    <div class="card-desc">OpenAI の利用規約により、<strong>有料サブスクリプションユーザーは生成した画像の商用利用権を完全に保有します</strong>。ただし、著名なキャラクターや商標ロゴの直接的な名称指定は避け、「抽象的な幾何学スタイル」「モダンなフラットテックデザイン」など一般的なデザイン表現を用いることで、安全に商用利用を行えます。</div>
-  </div>
-</div>
-</section>
+<section id="image-guide"><h2>画像作業の専門ガイド</h2><p>開発はコード、設計制約、検証を中心に進めます。画像生成と編集は専門ガイドに集約します。</p><p><a href="gpt-image-guide.ja.html">GPT Image →</a></p></section>
 
 <div class="divider"></div>
 
@@ -1064,7 +730,7 @@ OpenAI のレートリミットは単に「何回発言したか」ではなく�
     <div class="ph"><span class="pic">🐛</span><b>実践シナリオ ③：TDD 駆動による難関バグの根本治療</b><span class="pt">PLAYBOOK · TDD DEBUG</span></div>
     <div class="pb">
       <pre><code>&gt; 不具合現象: 高並行なリトライリクエストが発生した際、src/auth/token.ts のリフレッシュロックで競合が発生し、401エラーが透過してしまう。
-  要件: 
+  要件:
   1. まず tests/auth/race.test.ts に競合失敗を確実に再現する並行テストを作成してください;
   2. token.ts のミューテックスロック機構を修正してください;
   3. テストが完全にグリーンになるまで実行し、テスト実行結果のエビデンスを提示してください。</code></pre>
@@ -1088,29 +754,9 @@ OpenAI のレートリミットは単に「何回発言したか」ではなく�
 <div class="divider"></div>
 
 <!-- ================= SECTION 11 ================= -->
-<section id="hidden-config">
-<div class="sec-tag">高度 11</div>
-<h2>内部構造の解析と隠し機能</h2>
-
-<p>実機テストおよび Codex コアの Rust ネイティブバイナリの解析に基づき、100以上の内部機能フラグと隠しデバッグインターフェースを解き明かします：</p>
-
-<h3 data-reveal>一、<code>codex features</code> 主要フラグ解析</h3>
-<table class="tbl">
-  <tr><th>内部機能フラグ</th><th>実測ステータス</th><th>機能解説と活用シーン</th></tr>
-  <tr><td><code>guardian_approval</code></td><td><span class="pill a">stable (デフォルト有効)</span></td><td>安全保護承認レイヤー。インジェクション攻撃や破壊的な高リスクコマンドを自動検知</td></tr>
-  <tr><td><code>browser_use_full_cdp_access</code></td><td><span class="pill a">stable (デフォルト有効)</span></td><td>下層の Chrome DevTools Protocol (CDP) 完全操作権限を開放</td></tr>
-  <tr><td><code>multi_agent_v2</code></td><td><span class="pill b">under development</span></td><td>次世代マルチエージェント並列協調スケジューラ（手動で enable にして先行試用可能）</td></tr>
-  <tr><td><code>concurrent_reasoning_summaries</code></td><td><span class="pill b">under development</span></td><td>並行推論要約生成。ディープシンキングモデルの長文コンテキスト処理を高速化</td></tr>
-  <tr><td><code>token_budget</code></td><td><span class="pill b">under development</span></td><td>スレッド単位・ターン単位のトークン予算サーキットブレーカー。長大タスクの想定外なクォータ枯渇を防止</td></tr>
-</table>
-
-<h3 data-reveal>二、価値の高い隠しデバッグコマンド</h3>
-<ul>
-  <li><code>codex debug prompt-input</code> —— 大規模言語モデルに送信される直前の生の Prompt JSON を出力。Codex が実際に認識しているコンテキストの全体像を精密に把握可能；</li>
-  <li><code>codex debug models</code> —— 公式モデルリポジトリの未加工メタデータを取得し、非公開・テスト中のモデルコードネームを確認；</li>
-  <li><code>codex sandbox -- &lt;cmd&gt;</code> —— エージェントセッションを介さず、Codex OS サンドボックス内で直接指定コマンドを実行して権限問題を切り分け。</li>
-</ul>
-</section>
+<section id="hidden-config"><h2>ローカル環境の機能確認</h2><p>設定変更前に版とヘルプを確認します。実験フラグは安定した契約ではなく、記録なしに実機検証済みとは言えません。</p><pre><code>codex --version
+codex --help
+codex exec --help</code></pre><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -1120,12 +766,12 @@ OpenAI のレートリミットは単に「何回発言したか」ではなく�
 <h2>関連リソースと発展資料</h2>
 
 <table class="tbl">
-  <tr><th>主要リソース</th><th>アクセスURL / リンク</th><th>位置づけと価値</th></tr>
+  <tbody><tr><th>主要リソース</th><th>アクセスURL / リンク</th><th>位置づけと価値</th></tr>
   <tr><td><strong>公式ドキュメント総合ポータル</strong></td><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>一次情報源：CLI、IDE、Cloud、設定リファレンス全般</td></tr>
   <tr><td><strong>CodexGuide プラットフォーム</strong></td><td><a href="https://codexguide.io/paths" target="_blank">codexguide.io/paths</a></td><td>実践チュートリアル、マルチシーン別事例集、導入ガイド</td></tr>
   <tr><td><strong>AGENTS.md 仕様</strong></td><td><a href="https://agents.md" target="_blank">agents.md オープン標準</a></td><td>ツール間で共通利用可能なプロジェクト記憶の標準仕様</td></tr>
   <tr><td><strong>当ナレッジベースの関連トピック</strong></td><td><a href="claude-code-guide.ja.html">Claude Code 実践ガイド</a> · <a href="env-auth-clinic.ja.html">環境・認証レスキュー</a> · <a href="prompt-context-engineering.ja.html">プロンプト＆コンテキスト工学</a></td><td>AI エージェント型開発のエンジニアリング基礎力を総合強化</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -1139,7 +785,10 @@ OpenAI のレートリミットは単に「何回発言したか」ではなく�
 
 <button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

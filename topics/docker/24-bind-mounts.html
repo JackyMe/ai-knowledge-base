@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>24. 开发神技：绑定挂载 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -395,17 +394,16 @@ pre:hover .copy-btn { opacity: 1; }
 <p>Bind Mounts 允许你将宿主机上的<strong>任何绝对路径</strong>，强行映射到容器内部的某个路径上。就像是在宿主机的文件夹和容器的文件夹之间，开通了一个双向的“任意门”。你在外面用 VS Code 修改了文件，容器里面会<strong>瞬间</strong>同步看到变化。</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
+<pre class="mermaid">flowchart LR
     subgraph 宿主机 (你的电脑)
-        A[D:\projects\my-web<br/>你正在用 VS Code 编辑]:::host
+        A[D:\projects\my-web<br>你正在用 VS Code 编辑]:::host
     end
     
     subgraph Docker 容器
-        B[挂载点 /app<br/>Node.js 正在运行]:::container
+        B[挂载点 /app<br>Node.js 正在运行]:::container
     end
     
-    A <==>|任意门：双向实时同步| B
+    A &lt;==&gt;|任意门：双向实时同步| B
     
     classDef host fill:#e0f2fe,stroke:#0284c7;
     classDef container fill:#fef3c7,stroke:#d97706;
@@ -416,7 +414,7 @@ flowchart LR
 <p>用法和 Volume 几乎一模一样，只不过冒号 <code>:</code> 左边换成了宿主机的<strong>绝对路径</strong>。</p>
 
 <pre><code><span class="bash-comment"># 将当前目录 $(pwd) 挂载到容器的 /app 目录</span>
-<span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> $(pwd):/app nginx</code></pre>
+<span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> "$(pwd):/app" nginx</code></pre>
 <p><em>注意：Windows 用户如果在 cmd 里，<code>$(pwd)</code> 要换成 <code>%cd%</code>；如果在 PowerShell 里，换成 <code>${PWD}</code>。</em></p>
 
 <h2>实战演练：Node.js 热重载开发</h2>
@@ -427,12 +425,12 @@ flowchart LR
   <div class="step-body">
 <p>假设你在当前目录下有一个简单的 <code>server.js</code> 和 <code>package.json</code>。</p>
 <pre><code><span class="bash-comment"># 我们使用 nodemon 这个工具来实现代码变动自动重启。</span>
-<span class="bash-cmd">docker</span> run <span class="bash-arg">-it</span> <span class="bash-arg">--rm</span>   <span class="bash-arg">-p</span> 3000:3000   <span class="bash-arg">-v</span> $(pwd):/app   <span class="bash-arg">-w</span> /app   node:18-alpine   npx nodemon server.js</code></pre>
+<span class="bash-cmd">docker</span> run <span class="bash-arg">-it</span> <span class="bash-arg">--rm</span>   <span class="bash-arg">-p</span> 3000:3000   <span class="bash-arg">-v</span> "$(pwd):/app"   <span class="bash-arg">-w</span> /app   node:24-alpine   npx nodemon server.js</code></pre>
   
 <p><strong>参数解析：</strong></p>
 <ul>
   <li><code>--rm</code>: 容器退出后自动销毁（保持干净）</li>
-  <li><code>-v $(pwd):/app</code>: <strong>神来之笔！</strong> 把你当前电脑的代码目录，映射到容器里的 <code>/app</code></li>
+  <li><code>-v "$(pwd):/app"</code>: <strong>神来之笔！</strong> 把你当前电脑的代码目录，映射到容器里的 <code>/app</code></li>
   <li><code>-w /app</code>: 设置容器的工作目录为 <code>/app</code></li>
   <li><code>npx nodemon ...</code>: 运行命令。nodemon 会监听 <code>/app</code> 里的文件变化，一有变化就重启。由于映射关系，它监听的其实就是你宿主机上的文件！</li>
 </ul>
@@ -443,9 +441,9 @@ flowchart LR
 <p>上面那个 Node.js 例子看似完美，但如果你在本地电脑上执行了 <code>npm install</code>（生成了 Windows/Mac 版本的依赖库），然后用 Bind Mount 把整个目录挂载进 Linux 容器中…… 轰隆！容器里的程序崩溃了。因为 C++ 编译的底层依赖库（比如 node-sass）是区分操作系统的！</p>
 
 <p><strong>解决黑科技：匿名卷覆盖</strong></p>
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> $(pwd):/app <span class="bash-arg">-v</span> /app/node_modules node:18 npm start</code></pre>
+<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">-v</span> "$(pwd):/app" <span class="bash-arg">-v</span> /app/node_modules node:24 npm start</code></pre>
 <p>你看懂这段魔法了吗？我们用了两个 <code>-v</code>：<br>
-1. <code>-v $(pwd):/app</code> 把外面的目录挂载进去。<br>
+1. <code>-v "$(pwd):/app"</code> 把外面的目录挂载进去。<br>
 2. <code>-v /app/node_modules</code> (匿名卷) 挂载到容器的 node_modules 上。<br>
 由于<strong>长路径优先级高于短路径</strong>，这个匿名卷会“遮蔽”掉外面的 node_modules 目录。这样容器就会使用它自己内部干净的、Linux 版本的依赖库了！</p>
 
@@ -581,5 +579,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

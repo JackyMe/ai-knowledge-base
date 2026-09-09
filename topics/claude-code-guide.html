@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="五条黄金法则、100+ 命令速查、六大扩展选型、八大场景实战手册、权限安全与开箱模板库。">
@@ -178,6 +176,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
   <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -220,8 +219,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">实战</div>
-    <a href="#subscription-quotas"><span class="no">进阶</span>Pro/Team 额度机制</a>
-    <a href="#vision-artifacts-guide"><span class="no">进阶</span>Artifacts 沙盒与 Computer Use 实战</a>
+    <a href="#subscription-quotas">订阅、API 与上下文的区别</a>
+    <a href="#vision-artifacts-guide">Artifacts 与电脑操作的边界</a>
     <a href="#playbook"><span class="no">07</span>八大场景实战手册</a>
     <a href="#context"><span class="no">08</span>上下文管理进阶</a>
     <a href="#permissions"><span class="no">09</span>权限与安全</a>
@@ -232,7 +231,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <a href="#ecosystem"><span class="no">11</span>生态精选:方法论与组合拳</a>
     <a href="#pitfalls"><span class="no">12</span>避坑清单</a>
     <a href="#templates"><span class="no">13</span>开箱即用模板库</a>
-    <a href="#hidden-config"><span class="no">14</span>隐藏能力与彩蛋配置</a>
+    <a href="#hidden-config">用官方帮助核对能力</a>
     <a href="#resources"><span class="no">15</span>资源索引</a>
   </div>
 </nav>
@@ -273,25 +272,25 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li>为什么"纠正两次就重开" → 失败尝试也留在上下文里,会把模型往同一个坑里带。</li>
 </ul>
 
-<h3 data-reveal>五种形态,同一个引擎</h3>
+<h3 data-reveal="">五种形态,同一个引擎</h3>
 <p>Claude Code 不只活在终端里。关键在于:<strong>所有形态共用同一引擎,CLAUDE.md、settings、MCP 配一次处处生效</strong>。</p>
 <table class="tbl">
-  <tr><th>形态</th><th>入口</th><th>适合</th></tr>
+  <tbody><tr><th>形态</th><th>入口</th><th>适合</th></tr>
   <tr><td><strong>终端 CLI</strong></td><td><code>claude</code></td><td>功能最全,本指南的默认视角</td></tr>
   <tr><td>IDE 扩展</td><td>VS Code / Cursor / JetBrains 插件</td><td>编辑器内联看 diff</td></tr>
   <tr><td>桌面 App</td><td><code>/desktop</code> 一键接力</td><td>可视化多会话并行</td></tr>
   <tr><td>网页 / 手机</td><td>claude.ai/code、iOS App;<code>--cloud</code> 派发、<code>/teleport</code> 拉回本地</td><td>云端长任务、移动端盯进度</td></tr>
   <tr><td>GitHub</td><td><code>/install-github-app</code> 后在 PR 中 @claude</td><td>评审与自动修复</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>当前版本与模型(截至 2026-08-05)</h3>
+<h3 data-reveal="">当前版本与模型(截至 2026-08-05)</h3>
 <table class="tbl">
-  <tr><th>模型别名</th><th>说明</th><th>适用</th></tr>
+  <tbody><tr><th>模型别名</th><th>说明</th><th>适用</th></tr>
   <tr><td><code>sonnet</code></td><td>Sonnet 5,当前默认模型,原生 1M 上下文</td><td>日常开发的主力,速度与能力平衡</td></tr>
   <tr><td><code>opus</code></td><td><strong>Opus 5</strong>(2026-07-24 起成为默认 Opus),1M 上下文;支持 <code>/effort</code> 档位(low → ultracode)</td><td>复杂架构、难题攻坚</td></tr>
   <tr><td><code>haiku</code></td><td>Haiku 4.5,最快最省</td><td>批量简单任务、fan-out 脚本</td></tr>
   <tr><td><code>fable</code></td><td>Fable 5,始终开启扩展思考</td><td>深度推理场景</td></tr>
-</table>
+</tbody></table>
 <p><code>/fast</code> 快速档目前适用于 Opus 5 与 Opus 4.8(Opus 4.7 已于 2026-07-24 移出快速档)。</p>
 <p class="src">工具迭代极快,版本相关表述以 <code>/release-notes</code> 与<a href="https://code.claude.com/docs" target="_blank">官方文档</a>为准。</p>
 </section>
@@ -303,7 +302,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h2>五条黄金法则</h2>
 <p>官方 Best Practices 数千字,可以浓缩为五条。每一条都值得贴在显示器边上。</p>
 
-<h3 data-reveal>法则一:给 Claude 一个能自己跑的验证</h3>
+<h3 data-reveal="">法则一:给 Claude 一个能自己跑的验证</h3>
 <p>Claude 在"看起来完成"时就会停手。没有可运行的检查,你就是那个验证环节——每个错误都要等你发现。给它一个能产出 pass/fail 的信号(测试套件、构建退出码、linter、对照截图),循环就自动闭合:干活 → 跑检查 → 读结果 → 迭代到通过。</p>
 <div class="duo">
   <div class="bad"><b>❌ 弱</b>"实现一个校验邮箱的函数" / "构建挂了,修一下"</div>
@@ -311,22 +310,22 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </div>
 <p>验证的四个强度档位,按无人值守程度递进:同一条提示里要求"跑检查并迭代" → 用 <code>/goal</code> 设定条件让评估器每回合复查 → 用 <strong>Stop hook</strong> 把检查做成硬门禁(不通过就不许结束回合) → 让<strong>验证子代理</strong>用全新上下文给出第二意见。另外:要求 Claude <strong>出示证据</strong>(测试输出、命令返回、截图),而不是口头宣布成功。</p>
 
-<h3 data-reveal>法则二:先探索、再计划、后写码</h3>
+<h3 data-reveal="">法则二:先探索、再计划、后写码</h3>
 <p>直接开写,很容易解决了一个错误的问题。推荐四段式:<strong>Explore</strong>(计划模式下读文件、问问题,不改代码)→ <strong>Plan</strong>(产出实施计划,<kbd>Ctrl+G</kbd> 可在编辑器里直接改计划)→ <strong>Implement</strong>(退出计划模式实现,对照计划自验)→ <strong>Commit</strong>(写清晰的提交信息、开 PR)。</p>
 <div class="callout tip"><b class="t">别把计划当教条</b>范围明确的小改动(改错字、加日志、重命名)直接让它干。官方的判断标准:<strong>如果一句话能说清 diff 长什么样,就跳过计划</strong>。计划最值钱的时机:方案不确定、涉及多文件、你对这块代码不熟。</div>
 
-<h3 data-reveal>法则三:提示要具体,上下文要够料</h3>
+<h3 data-reveal="">法则三:提示要具体,上下文要够料</h3>
 <p>Claude 能推断意图,但不能读心。指名文件、说明约束、指向既有范式:</p>
 <table class="tbl">
-  <tr><th>策略</th><th>弱提示</th><th>强提示</th></tr>
+  <tbody><tr><th>策略</th><th>弱提示</th><th>强提示</th></tr>
   <tr><td>圈定范围</td><td>"给 foo.py 加测试"</td><td>"为 foo.py 写测试,覆盖用户已登出的边界情况,不要用 mock"</td></tr>
   <tr><td>指向信源</td><td>"这 API 怎么这么怪?"</td><td>"翻 ExecutionFactory 的 git 历史,总结这个 API 是怎么演化成现在这样的"</td></tr>
   <tr><td>引用范式</td><td>"加个日历组件"</td><td>"参考首页现有 widget 的实现模式(HotDogWidget.php 是好例子),照此实现日历组件……不引入代码库之外的新依赖"</td></tr>
   <tr><td>描述症状</td><td>"修登录 bug"</td><td>"用户反馈会话超时后登录失败。查 src/auth/ 的认证流,重点看 token 刷新。先写一个能复现的失败测试,再修"</td></tr>
-</table>
+</tbody></table>
 <p>喂料的五种姿势:<code>@文件</code> 引用(Claude 会先读再答)、直接<strong>粘贴图片</strong>(<kbd>Ctrl+V</kbd>)、给 <strong>URL</strong>(配合 <code>/permissions</code> 放行常用域名)、<strong>管道</strong>灌入(<code>cat error.log | claude</code>)、或者让它自己去取(跑命令 / MCP / 读文件)。</p>
 
-<h3 data-reveal>法则四:小步纠偏,勤清上下文</h3>
+<h3 data-reveal="">法则四:小步纠偏,勤清上下文</h3>
 <ul>
   <li><kbd>Esc</kbd> 随时打断,上下文保留,可立即改方向;</li>
   <li><kbd>Esc Esc</kbd> / <code>/rewind</code> 打开回滚菜单:恢复对话、恢复代码、或两者都恢复;</li>
@@ -334,7 +333,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><code>/clear</code> 在不相关任务之间必用;<strong>同一问题纠正两次仍错,别恋战</strong>——/clear 后用吸收了教训的更好提示重来,几乎总是赢过一个塞满失败尝试的长会话。</li>
 </ul>
 
-<h3 data-reveal>法则五:让它先采访你(大功能必备)</h3>
+<h3 data-reveal="">法则五:让它先采访你(大功能必备)</h3>
 <p>大功能别急着下指令,先让 Claude 用 AskUserQuestion 工具反过来采访你:</p>
 <pre><code>我想做[简要描述]。用 AskUserQuestion 工具详细采访我:
 技术实现、UI/UX、边界情况、顾虑与取舍。别问显而易见的问题,
@@ -351,9 +350,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-09-09</strong> · 对照 Claude Code <strong>v2.1.266</strong>(2026-09 发布)· 数据源:<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化,不做流水账;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
-<h3 data-reveal>🔴 破坏性变更:老习惯会失效</h3>
+<h3 data-reveal="">🔴 破坏性变更:老习惯会失效</h3>
 <table class="tbl">
-  <tr><th>时间</th><th>变化</th><th>你要怎么改</th></tr>
+  <tbody><tr><th>时间</th><th>变化</th><th>你要怎么改</th></tr>
   <tr><td>08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> 命令<strong>被移除</strong></td><td>任何脚本、SOP、笔记里出现 <code>/ultraplan</code> 都要删。改用 <code>/plan</code> + 远程评审,或 <code>/workflows</code> 看进度</td></tr>
   <tr><td>08-04<br><span class="src">v2.1.222</span></td><td>Remote Control 自动开启:<strong>仓库本地 <code>.claude/settings.json</code> 不再能开</strong>(仍可关)</td><td>想在仓库里给团队默认开 Remote Control,必须配到<strong>用户级</strong> <code>/config</code>。repo-local 只能关不能开,这是防供应链风险的明确收紧</td></tr>
   <tr><td>08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> 行为再加一层:<strong>fork 出去的会话自带新 git worktree</strong></td><td>原"在主 checkout 上接着改"的工作流,改用 <code>/subtask</code>;<code>/fork</code> 现在等于"复制 + 独立 worktree",适合并行实验</td></tr>
@@ -362,9 +361,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code> 语义变更</td><td>原"派生子代理"功能改名 <code>/subtask</code>;<code>/fork</code> 现在是把会话<strong>复制</strong>到新后台会话。脚本、笔记、团队文档里的 <code>/fork</code> 要逐个确认是哪个意思</td></tr>
   <tr><td>07-03<br><span class="src">v2.1.200</span></td><td>默认权限模式改名 <strong>Manual</strong>;<code>AskUserQuestion</code> 对话框不再自动继续</td><td><code>--permission-mode manual</code>、<code>"defaultMode": "manual"</code>。想恢复超时自动继续要在 <code>/config</code> 里显式打开</td></tr>
   <tr><td>06-22<br><span class="src">v2.1.186</span></td><td><code>!</code> bash 命令现在会<strong>触发 Claude 回应</strong></td><td>以前 <code>!cmd</code> 只是把结果塞进上下文、不打扰 Claude。想保持旧行为设 <code>"respondToBashCommands": false</code></td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>🔄 行为变化:同样的操作,结果不同了</h3>
+<h3 data-reveal="">🔄 行为变化:同样的操作,结果不同了</h3>
 <ul>
   <li><strong>终端输出上限大幅放宽</strong>(09-04,v2.1.261)—— 新增 <code>bashOutputMaxChars</code> 与 <code>taskOutputMaxChars</code> 配置，最高支持 128K 字符直读，不再轻易触发截断。</li>
   <li><strong>子代理默认后台运行</strong>(07-01,v2.1.198)—— 最影响手感的一条。派出子代理后 Claude 会继续干自己的活,不再干等结果回来。想要同步等待得显式要求。</li>
@@ -379,9 +378,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong><code>claude agents</code> 增加工作区信任弹窗</strong>(08-08,v2.1.225)—— 在未信任目录执行时需二次确认(与 <code>claude</code> 保持一致)</li>
 </ul>
 
-<h3 data-reveal>🆕 新增能力:值得马上试的</h3>
+<h3 data-reveal="">🆕 新增能力:值得马上试的</h3>
 <table class="tbl">
-  <tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
+  <tbody><tr><th>时间</th><th>新东西</th><th>怎么用</th></tr>
   <tr><td>09-04</td><td><strong><code>/skill-doctor</code> 诊断</strong></td><td>运行以一键诊断未使用的冗余技能及其上下文开销，轻松清理运行环境。</td></tr>
   <tr><td>09-04</td><td><strong>巨型 Prompt 文件直传</strong></td><td>使用 <code>--append-subagent-system-prompt-file</code> 将超长的系统提示词通过文件传递给子代理。</td></tr>
   <tr><td>08-28</td><td><strong>生命周期 Hooks</strong></td><td>新增 <code>PreModelSwitch</code> 和 <code>PostModelSwitch</code> hooks，在切换模型前后执行自动化逻辑。</td></tr>
@@ -413,7 +412,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>06-23 起</td><td>三个新沙箱开关</td><td><code>sandbox.credentials</code>(禁止沙箱命令读凭证文件与密钥环境变量)、<code>sandbox.filesystem.disabled</code>(只保留网络管控、跳过文件隔离)、<code>sandbox.network.strictAllowlist</code>(非白名单主机直接拒绝、不再询问)</td></tr>
   <tr><td>07-24</td><td><code>DirectoryAdded</code> hook</td><td>会话中途 <code>/add-dir</code> 新增工作目录时触发</td></tr>
   <tr><td>07-01</td><td>Claude in Chrome 正式发布</td><td>从预览转 GA</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout warn"><b class="t">这份清单会过期</b>Claude Code 大约每 1-2 天发一个版本。本节覆盖 2026-06 至 2026-07 的关键变化,<strong>看到本页核对日期距今超过一个月,就该以 <code>/release-notes</code> 和<a href="https://code.claude.com/docs/en/changelog" target="_blank">官方 changelog</a> 为准</strong>,别把这里当唯一真相。</div>
 </section>
@@ -425,7 +424,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h2>安装与首次配置</h2>
 <div class="callout warn"><b class="t">🚑 装不上 / 登录报错 / 换电脑?</b>安装登录环节的一切疑难(凭证打架、共用电脑、SSH/CI、万能重置)在独立专题:<a href="env-auth-clinic.html">环境与登录急救手册</a>,按症状 30 秒直达修复。</div>
 
-<h3 data-reveal>安装与登录</h3>
+<h3 data-reveal="">安装与登录</h3>
 <pre><code><span class="c"># 安装(npm 方式)</span>
 npm install -g @anthropic-ai/claude-code
 
@@ -437,7 +436,7 @@ claude auth status        <span class="c"># 查看登录状态(JSON;--text 人�
 claude update             <span class="c"># 升级到最新版</span>
 claude doctor             <span class="c"># 安装与配置诊断(只读,不进会话)</span></code></pre>
 
-<h3 data-reveal>进入新仓库的标准五步</h3>
+<h3 data-reveal="">进入新仓库的标准五步</h3>
 <ol class="steps">
   <li><code>/init</code> —— 分析代码库(构建系统、测试框架、代码模式)生成 CLAUDE.md 初稿,之后用 <code>/memory</code> 持续打磨</li>
   <li><code>/permissions</code> —— 配好 allow/ask/deny 规则,把 <code>npm run lint</code>、<code>git diff</code> 这类安全命令放进白名单(或直接跑 <code>/fewer-permission-prompts</code> 让它根据你的历史自动生成白名单)</li>
@@ -455,7 +454,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <h2>命令速查手册</h2>
 <p>按使用场景分组,只收高频与高价值命令。会话内键入 <code>/</code> 可浏览你环境里的全部命令;标注 <span class="pill c">Skill</span> 的是"捆绑技能"——由提示驱动、可被同名自定义技能覆盖。</p>
 
-<h3 data-reveal>⚡ 高频核心命令(先记这 8 个)</h3>
+<h3 data-reveal="">⚡ 高频核心命令(先记这 8 个)</h3>
 <p>下面完整表格收录 100+ 条,但日常 90% 的场景只靠这几个打底;标 <b>★ 必会</b> 的三个建议练到肌肉记忆。</p>
 <div class="hotcmds">
   <div class="hotcmd must"><span class="hc-cmd">claude -p "任务"</span><span class="hc-desc">非交互执行,退出即返回结果——脚本 / CI / 自动化流水线的基石</span></div>
@@ -468,9 +467,9 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <div class="hotcmd"><span class="hc-cmd">/usage</span><span class="hc-desc">本会话花费与套餐额度一目了然,超支前先知道</span></div>
 </div>
 
-<h3 data-reveal>终端命令(会话外)</h3>
+<h3 data-reveal="">终端命令(会话外)</h3>
 <table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
+  <tbody><tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>claude</code> / <code>claude "任务"</code></td><td>启动交互会话 / 带初始提示启动</td></tr>
   <tr><td><code>claude -p "任务"</code></td><td>非交互执行后退出,自动化的基石(见场景⑥)</td></tr>
   <tr><td><code>claude -c</code> / <code>claude -r 名称</code></td><td>续上最近会话 / 按名称或 ID 恢复指定会话</td></tr>
@@ -481,11 +480,11 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>claude plugin</code></td><td>插件管理(安装/启用/禁用)</td></tr>
   <tr><td><code>claude setup-token</code></td><td>为 CI/脚本生成长期 OAuth token</td></tr>
   <tr><td><code>claude project purge</code></td><td>清空某项目的全部本地状态(转录、历史、日志)</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>高价值启动参数</h3>
+<h3 data-reveal="">高价值启动参数</h3>
 <table class="tbl">
-  <tr><th>参数</th><th>作用</th></tr>
+  <tbody><tr><th>参数</th><th>作用</th></tr>
   <tr><td><code>--model</code> / <code>--effort</code></td><td>指定模型(sonnet/opus/haiku/fable)/ 推理力度(low→ultracode)</td></tr>
   <tr><td><code>--permission-mode</code></td><td>起始权限模式:manual(原 default)/ acceptEdits / plan / auto / dontAsk / bypassPermissions</td></tr>
   <tr><td><code>--allowedTools</code> / <code>--disallowedTools</code></td><td>白名单免审批 / 黑名单(裸工具名直接从模型上下文移除)</td></tr>
@@ -498,12 +497,12 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>--safe-mode</code> / <code>--bare</code></td><td>排障:禁用全部自定义配置启动 / 跳过所有自动发现,脚本调用更快更稳</td></tr>
   <tr><td><code>--from-pr 编号</code></td><td>恢复与某 PR 关联的会话</td></tr>
   <tr><td><code>--cloud</code> / <code>--teleport</code></td><td>把任务发到 claude.ai 云端跑 / 把云端会话拉回本地终端</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>会话内命令 · 按场景分组</h3>
+<h3 data-reveal="">会话内命令 · 按场景分组</h3>
 <h4>① 会话与上下文</h4>
 <table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
+  <tbody><tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>/clear [名称]</code></td><td>清空上下文开新对话(旧对话保留在 /resume 里);别名 /new /reset</td></tr>
   <tr><td><code>/compact [指令]</code></td><td>摘要压缩上下文,可带保留策略,如 <code>/compact 保留 API 变更与测试命令</code></td></tr>
   <tr><td><code>/context</code></td><td>彩色网格可视化上下文占用,附优化建议——排查"上下文都被什么吃了"</td></tr>
@@ -511,26 +510,26 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>/btw 问题</code></td><td>侧问:基于当前上下文快答,<strong>不进对话历史</strong>;按 f 可分叉成新会话</td></tr>
   <tr><td><code>/rename</code> / <code>/resume</code> / <code>/branch</code></td><td>会话命名 / 恢复(含后台会话)/ 对话分叉出新方向</td></tr>
   <tr><td><code>/export</code> / <code>/recap</code> / <code>/focus</code></td><td>导出对话文本 / 一句话总结本会话 / 极简视图</td></tr>
-</table>
+</tbody></table>
 <h4>② 模型与消耗</h4>
 <table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
+  <tbody><tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>/model</code> / <code>/effort</code> / <code>/fast</code></td><td>切模型(存为默认)/ 调推理力度 / 快速模式开关</td></tr>
   <tr><td><code>/usage</code>(/cost /stats)</td><td>本会话花费、套餐额度、按技能/子代理/插件的用量拆解</td></tr>
   <tr><td><code>/advisor [模型]</code></td><td>让第二个模型在关键节点提供顾问意见</td></tr>
-</table>
+</tbody></table>
 <h4>③ 配置与扩展</h4>
 <table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
+  <tbody><tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>/init</code> / <code>/memory</code></td><td>生成 CLAUDE.md / 编辑记忆文件与自动记忆</td></tr>
   <tr><td><code>/permissions</code> / <code>/hooks</code> / <code>/mcp</code> / <code>/plugin</code></td><td>四大扩展入口:权限规则 / 钩子 / MCP 服务器 / 插件市场</td></tr>
   <tr><td><code>/skills</code> / <code>/reload-skills</code></td><td>技能列表(可按 token 排序、切换可见性)/ 重扫技能目录</td></tr>
   <tr><td><code>/config</code> / <code>/statusline</code> / <code>/theme</code> / <code>/terminal-setup</code></td><td>设置界面 / 状态栏 / 主题 / 终端快捷键(Shift+Enter 等)</td></tr>
   <tr><td><code>/doctor</code> <span class="pill c">Skill</span></td><td>安装体检,能诊断也能修</td></tr>
-</table>
+</tbody></table>
 <h4>④ 工作流技能(生产力主力)</h4>
 <table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
+  <tbody><tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>/plan [任务]</code></td><td>直接进入计划模式,可带任务描述</td></tr>
   <tr><td><code>/goal 条件</code></td><td>设定回合级验证条件,评估器每回合复查直到达成</td></tr>
   <tr><td><code>/code-review [力度] [--fix]</code> <span class="pill c">Skill</span></td><td>评审当前 diff 找正确性 bug;--fix 直接修,--comment 发 PR 行评,ultra 走云端深评</td></tr>
@@ -544,10 +543,10 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>/deep-research 问题</code></td><td>扇出网络搜索、交叉核对信源、产出带引用的报告</td></tr>
   <tr><td><code>/fewer-permission-prompts</code> <span class="pill c">Skill</span></td><td>扫描你的历史,自动生成只读命令白名单写入项目设置</td></tr>
   <tr><td><code>/insights</code> / <code>/team-onboarding</code></td><td>分析你的使用模式与摩擦点 / 从 30 天使用史生成团队上手指南</td></tr>
-</table>
+</tbody></table>
 <h4>⑤ 并行与云端</h4>
 <table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
+  <tbody><tr><th>命令</th><th>作用</th></tr>
   <tr><td><code>/background</code>(/bg)</td><td>当前会话转后台继续跑,腾出终端;<code>claude agents</code> 监控</td></tr>
   <tr><td><code>/subtask 指令</code> <span class="pill a">2026-07 更名</span></td><td>派生子代理:继承完整对话去办事,结果回传,你继续干活。<strong>这是原 <code>/fork</code> 的功能</strong>,2026-07-17 起改叫 <code>/subtask</code></td></tr>
   <tr><td><code>/fork</code></td><td><strong>语义已变两次</strong>:2.1.212 起不再是派生子代理(改 <code>/subtask</code>),是<strong>把当前会话复制到一个新后台会话</strong>;2.1.221 起复制出来的会话<strong>自带独立 git worktree</strong>。原 checkout 上接着改用 <code>/subtask</code>;想"复制 + 隔离分支并行"用 <code>/fork</code></td></tr>
@@ -555,7 +554,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><code>/autofix-pr</code></td><td>云端会话盯当前 PR:CI 挂了、评审提意见,自动推修复</td></tr>
   <tr><td><code>/schedule 描述</code></td><td>创建定时任务(云端执行),对话式配置</td></tr>
   <tr><td><code>/workflows</code></td><td>动态工作流进度视图:暂停/恢复/保存</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -564,9 +563,9 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <div class="sec-tag">速查 04</div>
 <h2>快捷键与输入技巧</h2>
 
-<h3 data-reveal>必背快捷键(收益排序)</h3>
+<h3 data-reveal="">必背快捷键(收益排序)</h3>
 <table class="tbl">
-  <tr><th>快捷键</th><th>作用</th><th>为什么值得背</th></tr>
+  <tbody><tr><th>快捷键</th><th>作用</th><th>为什么值得背</th></tr>
   <tr><td><kbd>Esc</kbd></td><td>打断当前回合</td><td>纠偏的第一反应,已完成的工作保留</td></tr>
   <tr><td><kbd>Esc Esc</kbd></td><td>回滚菜单(输入为空时)</td><td>对话/代码独立回滚,大胆试错的底气</td></tr>
   <tr><td><kbd>Shift+Tab</kbd></td><td>循环权限模式</td><td>manual(原 default)→ acceptEdits → plan →(auto)一键切换</td></tr>
@@ -577,15 +576,15 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
   <tr><td><kbd>Ctrl+T</kbd></td><td>显示/隐藏任务清单</td><td>多步任务的进度一目了然</td></tr>
   <tr><td><kbd>Ctrl+V</kbd></td><td>粘贴剪贴板图片</td><td>截图直接进提示,UI 对齐神器</td></tr>
   <tr><td><kbd>Option/Alt+P</kbd> / <kbd>+T</kbd></td><td>切模型 / 切扩展思考</td><td>不清空输入就能换脑子</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三个前缀,三种模式</h3>
+<h3 data-reveal="">三个前缀,三种模式</h3>
 <table class="tbl">
-  <tr><th>前缀</th><th>模式</th><th>说明</th></tr>
+  <tbody><tr><th>前缀</th><th>模式</th><th>说明</th></tr>
   <tr><td><code>/</code></td><td>命令 / 技能</td><td>可链式:<code>/skill-a /skill-b 干活</code> 同时加载多个技能(最多 6 个)</td></tr>
   <tr><td><code>!</code></td><td>Shell 直通</td><td>命令直接执行、输出入上下文、Claude 自动响应结果(如 <code>! npm test</code> 跑完直接得到失败解读);支持历史与路径补全</td></tr>
   <tr><td><code>@</code></td><td>文件引用</td><td>路径自动补全,Claude 回答前先读文件</td></tr>
-</table>
+</tbody></table>
 <div class="callout tip"><b class="t">多行输入</b><kbd>\</kbd>+<kbd>Enter</kbd> 任何终端可用;iTerm2/WezTerm/Ghostty/Kitty/Warp/Windows Terminal 原生支持 <kbd>Shift+Enter</kbd>;VS Code/Cursor 等运行 <code>/terminal-setup</code> 安装绑定。macOS 想用 Alt 系快捷键,需在终端把 Option 设为 Meta。</div>
 </section>
 
@@ -597,14 +596,14 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <p>Claude Code 的扩展面有六层。选错层是新手最大的内耗来源——把该进 Hook 的规则写进 CLAUDE.md 祈祷它遵守,或把偶尔才用的领域知识塞满每个会话。一张决策表说清:</p>
 
 <table class="tbl">
-  <tr><th>你的需求</th><th>用哪层</th><th>核心理由</th></tr>
+  <tbody><tr><th>你的需求</th><th>用哪层</th><th>核心理由</th></tr>
   <tr><td>每个会话都必须知道的简短事实(构建命令、代码约定)</td><td><span class="pill a">CLAUDE.md</span></td><td>每会话自动加载——所以必须短</td></tr>
   <tr><td>特定场景才用的领域知识 / 重复的多步流程</td><td><span class="pill b">Skills</span></td><td>按需加载,不用不占上下文;可 <code>/名称</code> 手动调用</td></tr>
   <tr><td><strong>必须 100% 发生</strong>的规则(强制 lint、禁写敏感文件)</td><td><span class="pill c">Hooks</span></td><td>确定性执行。提示词是"请求",Hook 是"保证"</td></tr>
   <tr><td>大量读文件的调研 / 需要独立视角的评审</td><td><span class="pill d">子代理</span></td><td>独立上下文窗口,探索不污染主对话</td></tr>
   <tr><td>连接外部系统(数据库、Figma、Slack、监控)</td><td><span class="pill e">MCP</span></td><td>标准协议接工具,一次配置处处可用</td></tr>
   <tr><td>打包分发以上一切给团队</td><td><span class="pill f">插件</span></td><td>skills+hooks+子代理+MCP 一键安装;/plugin 逛市场</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout note"><b class="t">一句话记忆法(社区共识)</b>要<strong>强制</strong>,用 Hooks 或权限规则;是<strong>知识</strong>,用 Skills;要<strong>隔离</strong>,用子代理;要<strong>常驻</strong>,精简后进 CLAUDE.md;要<strong>连外部</strong>,用 MCP;要<strong>分发</strong>,打成插件。</div>
 <p class="src">参考:<a href="https://code.claude.com/docs/en/features-overview" target="_blank">官方 Extend Claude Code</a> · <a href="https://smartscope.blog/en/generative-ai/claude/claude-code-best-practices-advanced-2026/" target="_blank">SmartScope 2026 Surface Map</a></p>
@@ -616,18 +615,18 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <div class="sec-tag">扩展体系 06</div>
 <h2>Skills / Hooks / MCP / 子代理:深入四件套</h2>
 
-<h3 data-reveal>Skills:按需加载的专家技能包</h3>
+<h3 data-reveal="">Skills:按需加载的专家技能包</h3>
 <p>一个技能 = 一个目录 + 一个 <code>SKILL.md</code>(可附模板、示例、脚本)。Claude 匹配到场景自动加载,或你 <code>/技能名</code> 手动调用。判断该建技能的信号:<strong>你在反复粘贴同一段说明/清单/流程</strong>,或 CLAUDE.md 里某段已经从"事实"长成了"流程"。</p>
 <pre><code>.claude/skills/my-skill/
 ├── SKILL.md        <span class="c"># 必需:frontmatter + 指令正文</span>
 ├── examples/       <span class="c"># 可选:期望输出示例</span>
 └── scripts/        <span class="c"># 可选:可执行脚本</span></code></pre>
 <table class="tbl">
-  <tr><th>存放位置</th><th>生效范围</th></tr>
+  <tbody><tr><th>存放位置</th><th>生效范围</th></tr>
   <tr><td><code>~/.claude/skills/</code></td><td>个人,所有项目</td></tr>
   <tr><td><code>.claude/skills/</code>(项目)</td><td>本项目(进 git 即团队共享);monorepo 子目录也会按需发现</td></tr>
   <tr><td>插件内 <code>skills/</code></td><td>插件启用处,命名空间 <code>插件名:技能名</code></td></tr>
-</table>
+</tbody></table>
 <p>三个高级机关:</p>
 <ul>
   <li><strong>动态上下文注入</strong>:正文里写 <code>!`git diff HEAD`</code>,加载技能前先执行命令、把输出内联进指令——技能天生"知道现场";</li>
@@ -636,17 +635,17 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 </ul>
 <div class="callout tip"><b class="t">写好技能的社区套路</b>description 像路由规则一样写清"何时用我";确定性的工作交给附带脚本而不是靠模型发挥;SKILL.md 保持精瘦、细节推到按需加载的附属文件;一个技能只干一件事;给具体的正反示例而不是抽象规则堆。</div>
 
-<h3 data-reveal>Hooks:确定性的护栏</h3>
+<h3 data-reveal="">Hooks:确定性的护栏</h3>
 <p>CLAUDE.md 和技能里的指令是<strong>建议</strong>;必须发生的事,属于 Hook。Hook 在生命周期事件上运行脚本,以退出码 2 即可阻断动作。常用事件:</p>
 <table class="tbl">
-  <tr><th>事件</th><th>时机</th><th>典型用法</th></tr>
+  <tbody><tr><th>事件</th><th>时机</th><th>典型用法</th></tr>
   <tr><td><code>PreToolUse</code></td><td>工具调用前(可阻断)</td><td>禁写 .env/密钥文件、拦下危险命令</td></tr>
   <tr><td><code>PostToolUse</code></td><td>工具调用成功后</td><td>每次编辑后自动跑 prettier/eslint</td></tr>
   <tr><td><code>Stop</code></td><td>Claude 准备结束回合</td><td>跑测试,不过就不许收工(连续阻断 8 次后放行)</td></tr>
   <tr><td><code>UserPromptSubmit</code></td><td>你提交提示后、Claude 处理前</td><td>注入环境信息、敏感词检查</td></tr>
   <tr><td><code>SessionStart</code> / <code>SessionEnd</code></td><td>会话起止</td><td>初始化环境 / 清理与上报</td></tr>
   <tr><td><code>PostToolUseFailure</code> / <code>PreCompact</code> / <code>SubagentStop</code> / <code>FileChanged</code>…</td><td>更细粒度事件</td><td>失败告警、压缩前存档、监听文件变化等(30+ 事件见官方 Hooks 参考)</td></tr>
-</table>
+</tbody></table>
 <pre><code><span class="c">// .claude/settings.json —— 每次编辑后自动格式化</span>
 {
   "hooks": {
@@ -659,7 +658,7 @@ claude doctor             <span class="c"># 安装与配置诊断(只读,不进�
 <div class="callout tip"><b class="t">偷懒的正确方式</b>Hook 可以让 Claude 替你写:"写一个 hook,每次文件编辑后跑 eslint"、"写一个 hook,阻止对 migrations 目录的写入"。<code>/hooks</code> 查看已配置项。</div>
 <div class="callout warn"><b class="t">比 Hook 更安全的做法</b>敏感文件防读,权限规则优于 Hook:<code>deny</code> 规则(如 <code>Read(./.env)</code>、<code>Read(./secrets/**)</code>)让文件对 Claude 直接"不可见"。权限评估顺序:<strong>deny → ask → allow</strong>。</div>
 
-<h3 data-reveal>子代理(Subagents):独立上下文的分身</h3>
+<h3 data-reveal="">子代理(Subagents):独立上下文的分身</h3>
 <p>定义在 <code>.claude/agents/*.md</code>,拥有自己的上下文窗口、工具集与系统提示。两大用途:</p>
 <ul>
   <li><strong>调研隔离</strong>:"用子代理调查认证系统如何处理 token 刷新"——它读几十个文件,你的主上下文只收到一份结论摘要;</li>
@@ -678,7 +677,7 @@ model: opus
 <div class="callout note"><b class="t">/btw 与子代理互为镜像</b>/btw 看得见全部对话但没有工具(问"已知的事");子代理有全部工具但从空上下文出发(去"查新的事")。选对方向,省一半上下文。</div>
 <div class="callout warn"><b class="t">评审代理的通病</b>被要求找问题的评审者总能"找到"问题——哪怕工作没毛病。追着每条发现改,结局是过度设计。给评审者立规矩:只报影响正确性或既定需求的缺口,其余当可选项。</div>
 
-<h3 data-reveal>MCP:连接外部世界</h3>
+<h3 data-reveal="">MCP:连接外部世界</h3>
 <p>MCP(Model Context Protocol)让 Claude Code 直连数据库、Figma、Slack、Sentry 等外部系统。<strong>配置不在 settings.json 里</strong>——这是最常见的迷路点。</p>
 <h4>添加与管理</h4>
 <pre><code><span class="c"># 添加本地 stdio 服务器</span>
@@ -693,11 +692,11 @@ claude mcp login api-tool
 <span class="c"># 会话内:/mcp 查看状态、认证、启停某个服务器</span></code></pre>
 <h4>三种作用域(--scope)</h4>
 <table class="tbl">
-  <tr><th>作用域</th><th>存放位置</th><th>适用</th></tr>
+  <tbody><tr><th>作用域</th><th>存放位置</th><th>适用</th></tr>
   <tr><td><code>local</code>(默认)</td><td><code>~/.claude.json</code> 的当前项目条目</td><td>只有你、只在本项目用</td></tr>
   <tr><td><code>project</code></td><td>仓库根 <code>.mcp.json</code>,进 git</td><td>团队共享——项目必备工具写这里</td></tr>
   <tr><td><code>user</code></td><td><code>~/.claude.json</code></td><td>你的所有项目通用(如浏览器、笔记工具)</td></tr>
-</table>
+</tbody></table>
 <h4>三条实用纪律</h4>
 <ul>
   <li><strong>工具也占上下文</strong>:每个 MCP 服务器的工具定义都会进窗口,接得越多越挤——<code>/context</code> 查占用,不用的服务器在 <code>/mcp</code> 里禁用;</li>
@@ -708,266 +707,11 @@ claude mcp login api-tool
 
 <div class="divider"></div>
 
-<section id="subscription-quotas">
-<div class="sec-tag">进阶实战指南</div>
-<h2>Claude 订阅资产效能变现与 Claude Code 高阶协同手册</h2>
-
-<p>Anthropic 为 Claude Pro（$20/月）与 Team 用户提供了业内公认最顶尖的代码推理能力与上下文理解力。然而，很多用户在接入 Claude Code 终端命令行或高频使用网页端时，常常在一个小时内就收到了“已触碰限流阈值，将在 X 小时后重置”的提示。本手册汇集全网 Claude 深度开发者与工程师社区的实战总结，系统拆解如何利用 Prompt Caching、Projects 知识库与精准的终端工程化纪律，将您的会员使用效率提升数倍。</p>
-
-<h3 data-reveal>🧭 一、 揭开 Claude 双层限流与算力计量的底层逻辑</h3>
-<p>与其他平台不同，Claude 的额度控制逻辑具有极强的“上下文敏感性”：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>计费与限制机制</th>
-        <th>底层运转原理</th>
-        <th>典型踩坑诱因</th>
-        <th>应对与避坑准则</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>5 小时短期滚动窗口 (Burst Limit)</strong></td>
-        <td>系统监控您在过去 5 小时内的瞬时并发与 Token 吞吐。窗口随时间平滑向前滚动释放。</td>
-        <td>在同一个对话中连续发送 30+ 轮交互，或者一次性在终端挂载整个庞大工程的代码。</td>
-        <td>控制交互轮次，每完成一个小目标及时开新会话；终端只挂载当前任务强相关的模块。</td>
-      </tr>
-      <tr>
-        <td><strong>每周持续使用上限 (Sustained Cap)</strong></td>
-        <td>针对高强度用户的全局防护网，防止账号被脚本 7x24 小时不间断自动化调用。</td>
-        <td>长时间运行无人值守的自动化爬虫或死循环式的自动化代码重构代理。</td>
-        <td>重要自动化任务设置步数上限；合理规划工作节奏（如每日 2-3 个核心冲刺时段）。</td>
-      </tr>
-      <tr>
-        <td><strong>长上下文的复利惩罚</strong></td>
-        <td>每次发送新指令，模型必须<strong>从头重新读取</strong>该对话历史中的所有过往提问、系统提示与代码输出。</td>
-        <td>第 1 轮提问消耗 1K Token，到第 40 轮时单次提问可能在静默中消耗 80K Token！</td>
-        <td>养成“微任务（Micro-Tasks）”习惯，单会话保持在 4-6 轮高密度交互内即归档。</td>
-      </tr>
-      <tr>
-        <td><strong>Prompt Caching (原生缓存)</strong></td>
-        <td>当请求的前缀（Prefix）与系统缓存完全一致时，读取该前缀享有<strong>高达 90% 的算力折扣与近乎零延迟</strong>。</td>
-        <td>在静态文档的前面动态插入时间戳、随机会话 ID，导致缓存前缀全盘失效。</td>
-        <td>将不变的团队规范和接口定义固定在最顶部，确保逐字匹配，长期触发缓存红利。</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 data-reveal>🚀 二、 四大价值支柱：构建超长续航的 Claude 开发闭环</h3>
-<p>要想真正榨干 Pro 会员的价值，必须掌握以下四套协同工具的组合打法：</p>
-
-<h4>支柱 1：Projects (项目工作区) 架构化持久知识库</h4>
-<p>在 Claude 网页版中，<strong>Projects（项目）</strong>是最高效的资产沉淀中心：</p>
-<ul>
-  <li><strong>一次上传，全员缓存</strong>：将团队的《代码风格规范》、《全量数据库 Schema》、《核心 API 字典》统一上传至 Project Knowledge。Anthropic 会在底层自动对这些项目文件建立全局缓存，后续在项目内开启的数十个对话窗口，均以极低开销瞬间共享这套庞大记忆。</li>
-  <li><strong>文件格式优选</strong>：实践证明，结构良好的 Markdown（<code>.md</code>）和 TypeScript 接口文件（<code>.d.ts</code>）的解析效率与召回准确度显著优于复杂的 PDF 或 Word 排版文档。</li>
-</ul>
-
-<h4>支柱 2：Artifacts 交互沙盒（前端与原型的无损试验场）</h4>
-<p>Web 端的 <strong>Artifacts（右侧预览面板）</strong> 是前端开发与数据可视化的神器：</p>
-<ol>
-  <li><strong>所见即所得调试</strong>：在网页端下达指令生成 React 组件、SVG 图标、HTML 原型或 Mermaid 流程图，直接在右侧实时交互操作。</li>
-  <li><strong>零终端开销试错</strong>：将“颜色不好看”、“按钮间距不对”等频繁的细碎修改留在网页版 Artifacts 中微调。等视觉和交互打磨至 100% 满意后，再将定稿代码复制至本地。</li>
-  <li><strong>彻底杜绝终端盲猜</strong>：如果在本地终端让 Claude Code 反复修改前端样式，不仅极其消耗额度，且因为终端缺乏视觉反馈，极易产生“改了这里坏了那里”的代码回退。</li>
-</ol>
-
-<h4>支柱 3：Claude Code CLI 终端工程化军规</h4>
-<p>在本地使用 Claude Code 命令行代理时，严格遵守以下工程规范：</p>
-<ul>
-  <li><strong>精简 `CLAUDE.md` 契约（保持在 80 行以内）</strong>：`CLAUDE.md` 是 Claude Code 的入场行为准则。切忌把成千上万行的整本手册塞进去，这会导致每敲一次回车都在浪费输入额度。遵循三原则：
-    <ul>
-      <li><strong>WHAT</strong>：当前项目的技术栈与模块职责简述。</li>
-      <li><strong>WHY</strong>：核心约定的背书（例如：“使用 pnpm 而非 npm，因依赖锁已严格校验”）。</li>
-      <li><strong>HOW</strong>：标准的构建命令、测试命令与代码检查规范。</li>
-    </ul>
-  </li>
-  <li><strong>推行“正面引导”而非负面罗列</strong>：尽量使用“优先使用函数式组件与 Tailwind 类名”等正向指令，避免堆砌数十条“不要这样不要那样”的否定句。</li>
-  <li><strong>Plan-Inspect-Edit（计划-审查-执行）循环</strong>：在下达复杂任务前，强制其先输出计划：“不要直接修改文件，先列出你打算调整的 3 个核心步骤与受影响文件”。确认计划无误后，再敲击确认执行。</li>
-</ul>
-
-<h4>支柱 4：上下文卫生学与常用控制指令</h4>
-<ul>
-  <li><strong>善用 `/compact`（上下文脱水）</strong>：当一个长任务排查完毕、但你仍需要在当前终端会话继续工作时，输入 <code>/compact</code>。Claude Code 会将过往漫长的报错堆栈凝练为数行关键上下文，瞬间释放对话内存。</li>
-  <li><strong>善用 `/clear`（重置会话）</strong>：在切换功能模块或开始新的 Issue 时，毫不犹豫地输入 <code>/clear</code>。正如社区名言所说：“AI 的上下文就像鲜牛奶，越新鲜越香醇。”</li>
-  <li><strong>随时监控配额状态</strong>：输入 <code>/usage</code> 查看当前会话的上下文消耗百分比，或者在 macOS 状态栏安装社区开源的 <code>Usagebar</code>，在配额达到 75% 和 90% 时获得前置提醒，从容调整开发节奏。</li>
-</ul>
-
-<h3 data-reveal>🛡️ 三、 生产级实战 SOP 与 Prompt 模板库</h3>
-
-<h4>场景 1：无痛修复历史代码库的隐蔽并发 Bug</h4>
-<div class="callout tip"><b class="t">高能排查 Prompt</b>
-<code>请以资深系统架构师身份，审查附带的【订单状态机模块】。
-1. 仅关注潜在的竞态条件 (Race Conditions) 与事务死锁隐患；
-2. 按照“隐患代码行 -> 触发时序图 (Mermaid) -> 推荐原子化重构方案”的三段式结构输出；
-3. 先输出分析方案并等待我的审查确认，严禁直接全量覆写源码文件。</code></div>
-
-<h4>场景 2：基于 Git Worktrees 的多 Agent 并行开发</h4>
-<p>高阶工程师会在本地利用 <code>git worktree add ../feature-b</code> 创建平行的独立代码工作区，在不同的终端窗口中并行启动 Claude Code。一个代理负责跑测试修 Bug，另一个代理负责写新功能文档，互不干扰，极大摊薄会员的时间成本。</p>
-
-<h3 data-reveal>❓ 四、 常见高频疑问与实用建议</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">为什么我刚在终端跑了半小时就被限流了？</div>
-    <div class="card-desc">常见诱因是未配置 <code>.claudeignore</code> 或 <code>CLAUDE.md</code> 过于庞大，导致 Claude Code 默默读取了 <code>node_modules</code>、<code>build</code> 产物或庞大的日志文件。在项目根目录下配置严格的忽略规则，禁止代理读取非源码目录。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">高强度编码场景下，选 API 按量还是买双 Pro 账号？</div>
-    <div class="card-desc">社区实测表明：对于每天持续编码 6 小时以上的重度开发者，<strong>维持两个 Pro 订阅（交替使用 5 小时重置窗口）在成本上往往远低于直接调用 API</strong>。因为全量读取代码库的 API Token 消耗极其昂贵，而包月订阅提供了可预期的固定开销与高额度的安全感。</div>
-  </div>
-</div>
-</section>
+<section id="subscription-quotas"><h2>订阅、API 与上下文的区别</h2><p>订阅额度、API 计费、累计 Token 与当前上下文占用是不同指标。先确认当前登录方式，再查看用量面板和重置时间；不能用一个百分比推断另一个指标。根据任务选择模型与上下文长度，不承诺切换入口或重复登录可以增加额度。</p><p>Claude Code 的 /usage 用于查看用量信息，/context 用于查看当前上下文占用。二者不能互换解释。</p><p class="src"><a href="https://code.claude.com/docs/en/commands" target="_blank" rel="noopener">code.claude.com · commands</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
-<section id="vision-artifacts-guide">
-<div class="sec-tag">Anthropic 独家核武</div>
-<h2>Artifacts 实时执行沙盒与 Computer Use 桌面自主接管实战</h2>
-
-<p>与单纯生成位图图片的模型不同，Anthropic 在视觉领域贯彻了极具辨识度的<strong>“代码即视觉”与“纯粹多模态理解”</strong>哲学。Claude 不直接吐出不可控的 PNG/JPEG 像素，而是通过强大的多模态视觉理解能力解析设计图，并直接输出<strong>语义化的 React 组件、响应式 SVG 矢量资产与可交互的 HTML/Canvas 画布</strong>。这种将视觉完全转化为纯代码的范式，在前端工程化、架构拓扑绘制与资产轻量化上展现出压倒性的工程优势。本章深度解析如何借助 Claude 的视觉与 Artifacts 体系，打造零像素失真、高度工程化的视觉资产管线。</p>
-
-<h3 data-reveal>🧬 一、 技术定位全景：代码级渲染与位图的本质分野</h3>
-<p>在严肃的企业级软件开发中，为什么代码级视觉生成往往优于普通的生图模型？</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>对比维度</th>
-        <th>传统位图生成 (PNG/JPEG/WebP)</th>
-        <th>Claude 代码级渲染 (SVG/React/Artifacts)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>分辨率与缩放</strong></td>
-        <td>固定分辨率（如 1024x1024），高分屏或放大查看时边缘模糊失真。</td>
-        <td><strong>数学矢量无级缩放</strong>，在 4K/Retina 视网膜屏幕上边缘永远极致锐利。</td>
-      </tr>
-      <tr>
-        <td><strong>体积与加载性能</strong></td>
-        <td>图片单张动辄数百 KB 至数 MB，影响网页首屏与移动端加载速度。</td>
-        <td>纯文本代码格式，Gzip 压缩后通常<strong>仅几 KB</strong>，加载毫秒级响应。</td>
-      </tr>
-      <tr>
-        <td><strong>可维护性与交互</strong></td>
-        <td>黑盒像素，无法通过代码修改文案、更改局部颜色或添加点击事件。</td>
-        <td><strong>100% 可编程</strong>：支持 CSS 类名控制、Tailwind 动态样式、DOM 事件监听与 CSS 动画。</td>
-      </tr>
-      <tr>
-        <td><strong>SEO 与可访问性 (a11y)</strong></td>
-        <td>搜索引擎无法直接读取图内文字，读屏软件只能依赖 alt 标签。</td>
-        <td>包含原生文本与语义化标签（<code>&lt;text&gt;</code>、<code>&lt;title&gt;</code>），具备天生的 SEO 与无障碍支持。</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 data-reveal>🚀 二、 三大核心工程范式：打通视觉与业务代码</h3>
-
-<h4>范式 1：像素级 UI/设计稿逆向工程 (Screenshot-to-Clean-Code)</h4>
-<p>当产品或设计团队发来一张复杂的 Figma 原型图或竞品参考截图时，传统开发需要花费数小时手写布局。<br>
-<strong>最佳落地 SOP：</strong></p>
-<ol>
-  <li><strong>上传高分辨率截图</strong>：在 Claude 网页端直接粘贴截图，附带专业结构化提示词：
-    <div class="callout tip"><b class="t">像素级 UI 逆向 Prompt</b>
-    <code>请作为资深前端架构师，像素级复刻此界面截图：
-1. 技术栈：React 19 + Tailwind CSS + Lucide Icons；
-2. 严格对齐：精准还原图中的负空间（Padding/Margin）、圆角梯度（rounded-xl/2xl）、字体层级与毛玻璃阴影；
-3. 响应式与组件化：将主要列表项、状态徽标与卡片抽象为独立可复用的子组件；
-4. 保证在 Artifacts 中可直接完整交互运行，严禁使用虚构占位符。</code></div>
-  </li>
-  <li><strong>在 Artifacts 中即时交互校验</strong>：右侧面板会瞬间渲染出活生生的 Web 界面，直接点击测试按钮状态、悬浮高亮效果与暗色适配。</li>
-  <li><strong>零成本微调</strong>：对右侧渲染不满意的地方直接发指令：“将卡片阴影稍微调淡，右上角的标签改为绿色渐变”。完全在网页端打磨完美后，直接导出代码至本地。</li>
-</ol>
-
-<h4>范式 2：代码级矢量资产流水线 (Code-Native SVG & Canvas)</h4>
-<p>架构师需要绘制高密度的系统拓扑图，或者前端需要精美的主题插画时，切忌去图库到处找不合规的位图：</p>
-<ul>
-  <li><strong>复杂系统拓扑图</strong>：要求 Claude 直接生成包含动画流动虚线（<code>stroke-dasharray</code> 动效）的交互式 SVG 拓扑图，节点包含微服务状态指示，直接嵌入文档或运维看板。</li>
-  <li><strong>数据可视化小组件</strong>：让 Claude 利用 HTML5 Canvas 或 SVG 直接手写轻量级折线图与雷达图，无需引入数十 MB 沉重的第三方图表库。</li>
-</ul>
-
-<h4>范式 3：自动化视觉回归与布局审查 (Headless Visual QA)</h4>
-<p>在本地终端通过 Claude Code 配合 Playwright 运行端到端测试并截图，随后调用视觉接口让 Claude 审查自身代码的渲染结果：</p>
-<div class="callout note"><b class="t">自动化布局对齐审查指令</b>
-<code>【输入：设计图稿 vs 本地 Playwright 截图】
-请对比两张界面的布局偏差：重点检查 1. 移动端断点下的换行折叠表现；2. 国际化超长文本是否产生溢出；3. 按钮点击态对比度是否符合 WCAG AA 标准。输出修复所需的 CSS 补丁代码。</code></div>
-
-<h3 data-reveal>🎨 三、 提示词工程与矢量视觉调教心法</h3>
-<p>为了让 Claude 输出优雅、无冗余的视觉代码，请牢记以下工程原则：</p>
-<ul>
-  <li><strong>强制指定 `viewBox` 与自适应容器</strong>：提示词中明确要求 <code>"Ensure SVG root uses responsive viewBox='0 0 800 600' with preserveAspectRatio='xMidYMid meet', and width='100%' for fluid scaling"</code>，防止图标在移动端显示被截断。</li>
-  <li><strong>语义化色板控制</strong>：要求其使用 CSS 变量绑定主题色彩（如 <code>fill="currentColor"</code> 或 <code>var(--primary-color)</code>），确保视觉资产能够随系统的浅色/深色主题无缝自动切换。</li>
-  <li><strong>渐变与滤镜规范</strong>：指定 <code>&lt;defs&gt;</code> 区域内的渐变定义使用语义化 ID，避免在大型页面中由于重复 ID 导致渐变失效。</li>
-</ul>
-
-<h3 data-reveal>🤖 四、 Computer Use（桌面与浏览器自主接管）实战指南</h3>
-<p><span class="tag-badge tag-official">业界独创功能</span> 2026 年 Anthropic 最令人震撼的独家护城河，莫过于 <strong>Computer Use（计算机自主控制）</strong>。它彻底颠覆了“AI 只能在对话框里打字”的局限，让 Claude 能够直接<strong>看懂屏幕截图、移动鼠标光标、点击按钮、输入文本、快捷键组合并自主操控真实的桌面软件与浏览器</strong>。</p>
-
-<h4>1. 核心应用场景与工程价值</h4>
-<ul>
-  <li><strong>端到端 E2E 自动化验收测试</strong>：传统编写 Cypress / Playwright 脚本需要花费数天时间定位 DOM 选择器。使用 Computer Use，只需一句话指令：“打开本地运行的电商网站，完成注册、将第一件商品加入购物车、进入结算页面并验证折扣码是否生效”。Claude 会像真实人类用户一样点击并截图验证。</li>
-  <li><strong>遗留无 API 系统的数据搬运</strong>：面对完全没有开放 REST API 的老旧政企系统或桌面客户端，让 Claude 自主登录界面，逐步点击翻页并将数据复制导出为 CSV。</li>
-</ul>
-
-<h4>2. 生产级沙箱防护与防跑偏军规</h4>
-<div class="callout warn"><b class="t">安全铁律：务必关进 Docker 沙箱或虚拟桌面</b>
-切勿直接给 Computer Use 授权你日常办公的个人 macOS/Windows 主桌面！最佳实践：
-1. <strong>环境隔离</strong>：将其运行在一个独立的轻量级 Docker（带 X11 / noVNC 虚拟屏幕的容器）或独立虚拟机中；
-2. <strong>步数上限约束</strong>：每次自主执行任务必须在客户端设置 <code>max_steps=25</code> 强制熔断机制，防止模型在遇到未知弹窗时陷入死循环点击；
-3. <strong>敏感操作二次人工审批</strong>：对于涉及“点击支付”、“删除数据库”或“提交工单”的关键动作，配置必须弹出 <code>[Approve / Reject]</code> 交互模态框。</div>
-
-<h3 data-reveal>📋 五、 生产级实战 Prompt 模板库</h3>
-
-<h4>模板 1：企业级微服务系统交互式拓扑图（带动效的纯 SVG）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · Interactive Architecture SVG</span><button class="copy-btn">复制</button></div>
-  <pre><code>Generate a responsive, highly detailed SVG architecture diagram illustrating an Enterprise Microservices System.
-Specifications:
-1. Dimensions: viewBox="0 0 1200 800", dark tech aesthetic (background #0B0F19).
-2. Layout: Left-to-right flow with 4 distinct zones: [API Gateway & Auth], [Event Bus (Kafka)], [Core Services (Order, Payment, Inventory)], [Data Layer (PostgreSQL, Redis)].
-3. Visuals: Smooth rounded rectangular service cards with 1px border (#1E293B), glowing emerald connection lines with animated dashed strokes representing active data streams.
-4. Clean typography using system-ui fonts, clear legend, and subtle drop shadows.
-Output pure, self-contained SVG code ready to be rendered in browser.</code></pre>
-</div>
-
-<h4>模板 2：现代暗黑毛玻璃产品特性卡片（React + Tailwind）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · Glassmorphic Feature Card</span><button class="copy-btn">复制</button></div>
-  <pre><code>Create a modern, responsive feature showcase component in React with Tailwind CSS.
-Design details:
-1. 3-column grid featuring frosted glass cards (backdrop-blur-xl, bg-white/5, border border-white/10).
-2. Each card has a glowing radial gradient header icon, a crisp title in inter font, a short feature description, and an interactive 'Learn more' link with subtle arrow hover animation.
-3. Dark futuristic background (#030712) with subtle ambient purple and blue blurred background orbs.
-Ensure fully functional React code using Lucide-react icons, rendered live in Artifacts.</code></pre>
-</div>
-
-<h4>模板 3：仪表盘实时指标圆环进度图（轻量矢量组件）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · Circular Progress Gauge</span><button class="copy-btn">复制</button></div>
-  <pre><code>Generate a pure SVG modern circular progress dashboard gauge component.
-Requirements:
-1. Center shows large bold percentage '78%' with label 'Server Capacity' below in subtle gray.
-2. Circular stroke uses smooth gradient (cyan to violet) with rounded caps (stroke-linecap='round').
-3. Outer ring features subtle dashed tick marks for 0-100 scale.
-4. Fully responsive, clean code, no external JavaScript dependencies, easily styled via CSS variables.</code></pre>
-</div>
-
-<h3 data-reveal>🛡️ 六、 工程避坑与 MCP 扩展生态</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">如果我的项目确实需要生成写实位图照片怎么办？</div>
-    <div class="card-desc"><strong>通过 Model Context Protocol (MCP) 桥接外部图像引擎。</strong> 在 Claude Code 终端中配置本地的 ComfyUI、Stable Diffusion 或 DALL-E 3 MCP 服务插件。您可以在与 Claude 编码的同时，直接通过指令调用本地显卡或云端 API 生图，并自动将生成的位图文件写入工程的 <code>/public/assets</code> 目录。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">如何防止 Claude 在复刻 UI 时写出庞大的死循环代码？</div>
-    <div class="card-desc">在 Prompt 中明确增加约束：<strong>“严禁在 useEffect 中直接无条件修改 state；针对长列表必须使用虚拟滚动或分页；避免内联大型 SVG 路径，将其抽离为独立的 Icon 组件。”</strong> 这能确保产出的代码直接符合生产级架构规范。</div>
-  </div>
-</div>
-</section>
+<section id="vision-artifacts-guide"><h2>Artifacts 与电脑操作的边界</h2><p>Artifacts 适合展示文档、代码与可交互结果；不同 Claude 产品和计划的创建、发布及共享权限不同。Computer use 是另一项能力，不能从能生成页面推断已经获得桌面控制权限。连接工具或共享内容前确认实际访问范围。</p><p class="src"><a href="https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" target="_blank" rel="noopener">support.claude.com · 9487310-what-are-artifacts-and-how-do-i-use-them</a> · 2026-09-09</p></section>
 
 <section id="playbook">
 <div class="sec-tag">实战 07</div>
@@ -1055,38 +799,38 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <div class="sec-tag">实战 08</div>
 <h2>上下文管理进阶</h2>
 
-<h3 data-reveal>1M 上下文时代,这套还成立吗</h3>
+<h3 data-reveal="">1M 上下文时代,这套还成立吗</h3>
 <p>本页开篇的核心约束写于"上下文很容易装不下"的年代,而模型表里 Sonnet 5 / Opus 5 已经是原生 <strong>1M</strong> 上下文——这两处看着矛盾,但结论没变,只是支撑它的理由换了。</p>
 <div class="callout note"><b class="t">立场:依然成立,但从"装不下"变成"划不来"</b>过去的问题是物理限度:200K 窗口很快被文件和命令输出填满,不压缩就没法继续。1M 窗口把这条物理限度往后推了 5 倍,但没有消掉另外两条一直都在、只是过去被"装不下"盖住的账:<strong>①每一轮消息都要把当前的全部历史重新发一遍</strong>——官方 costs 文档原话"Claude Code sends your full conversation with every message",窗口越大、历史攒得越多,一句话追问也要为整段历史付费,账单随对话长度线性上涨;<strong>②压缩本身会丢细节</strong>——早期没写进 CLAUDE.md 的具体指令,压缩后大概率保不住(官方原话"instructions from early in the conversation can get lost",下文有完整展开)。1M 买到的是"不会突然断供"的余量,不是"可以放着不管"的许可。</div>
 <p>能放松的只有一条:<strong>短会话、当天能收尾的任务,不用再像 200K 时代那样一读大文件就紧张兮兮地手动 <code>/compact</code></strong>——大概率整场任务都碰不到自动压缩的阈值(下文有具体数字)。但凡是跨天恢复、需要长期跑、或你在乎每条消息成本的场景(CI 管道、无人值守的后台代理),下面四种手段依旧是正解,没有一条可以跳过。1M 目前只在 Sonnet 5 / Opus 5 / Fable 5 等模型上原生生效,别不看模型就假设自己已经在 1M 窗口里,以 <code>/context</code> 实际显示为准。<strong>v2.1.223 行为变化</strong>:原生 1M 窗口的 Claude 模型默认都会通过 auto-compaction 限制到 200K(以前只对固定列表生效),用 <code>CLAUDE_CODE_DISABLE_1M_CONTEXT</code> 仍可恢复旧行为。</p>
 
-<h3 data-reveal>诊断:先看清再动手</h3>
+<h3 data-reveal="">诊断:先看清再动手</h3>
 <p><code>/context</code> 用彩色网格告诉你窗口被什么占着(哪个工具重、记忆文件是否臃肿、还剩多少容量),配上 <code>/statusline</code> 的常显用量,做到心里有数。</p>
 
-<h3 data-reveal>四种腾地方的手段(由轻到重)</h3>
+<h3 data-reveal="">四种腾地方的手段(由轻到重)</h3>
 <table class="tbl">
-  <tr><th>手段</th><th>动作</th><th>适用时机</th><th>什么时候动手(量化触发条件)</th></tr>
+  <tbody><tr><th>手段</th><th>动作</th><th>适用时机</th><th>什么时候动手(量化触发条件)</th></tr>
   <tr><td>侧问</td><td><code>/btw 问题</code></td><td>只想快速确认一个细节,答案不需要留在历史里</td><td>任何时候,不占"腾地方"的预算,与 <code>/context</code> 用量无关</td></tr>
   <tr><td>定向压缩</td><td><code>/compact 保留 API 变更与测试命令</code></td><td>会话要继续,但历史太重——你来定摘要策略</td><td>抢在自动压缩前手动接管:<code>/context</code> 显示的用量逼近自动阈值时(Sonnet 5 默认约 <strong>96.7%</strong>≈967K/1M token;未开 1M 扩展上下文的标准模型在逼近 <strong>200K</strong> 边界时;两者都可用 <code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code> 调低阈值提前介入,但不能调高)</td></tr>
   <tr><td>局部摘要</td><td><kbd>Esc Esc</kbd> 选中某条消息 → Summarize from here / up to here</td><td>只压前半段或后半段,保住关键区间的完整细节</td><td>官方未给量化阈值——按"这段之后还有用 / 这段已经用不上"判断,不是看百分比</td></tr>
   <tr><td>彻底重开</td><td><code>/clear</code></td><td>切换到不相关任务,或同一问题已纠正两次未果</td><td>和容量无关,是任务相关性判断:换任务就清,不必等用量涨上去</td></tr>
-</table>
+</tbody></table>
 <div class="callout tip"><b class="t">让压缩听你的话</b>在 CLAUDE.md 写下压缩策略,自动压缩时也会遵守,例如:"压缩时始终保留完整的已修改文件列表和测试命令"。</div>
 
-<h3 data-reveal>自动压缩:它什么时候动手、动完丢了什么</h3>
+<h3 data-reveal="">自动压缩:它什么时候动手、动完丢了什么</h3>
 <p><code>DISABLE_AUTO_COMPACT</code> 在本页「隐藏能力与彩蛋配置」章目前只是孤零零一行——它其实是 <code>settings.json</code> 里 <code>autoCompactEnabled</code>(默认 <code>true</code>)的环境变量开关,关掉后 Claude 不会再自动摘要,上下文写满就直接报错中止,只适合你自己会盯紧 <code>/context</code> 手动 <code>/compact</code> 的场景。</p>
 <p><strong>触发阈值</strong>(核对自官方 <code>env-vars</code> / <code>model-config</code> 文档):</p>
 <table class="tbl">
-  <tr><th>模型 / 场景</th><th>触发点</th></tr>
+  <tbody><tr><th>模型 / 场景</th><th>触发点</th></tr>
   <tr><td>Sonnet 5(原生 1M,无 200K 变体)</td><td>默认约 <strong>96.7%</strong>,即约 <strong>967K / 1M</strong> token,由 <code>CLAUDE_CODE_AUTO_COMPACT_WINDOW</code> 控制阈值本身</td></tr>
   <tr><td>未开 1M 扩展上下文的标准模型(如 Sonnet 4.6 / Opus 4.6)</td><td>逼近 / 到达 <strong>200K</strong> 边界</td></tr>
   <tr><td>其他本地会话(如本地跑 Opus 4.8)</td><td>对话逼近模型自身上下文上限时触发,官方未给固定百分比</td></tr>
-</table>
+</tbody></table>
 <p><code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code>(取值 1–100)可以把这个百分比调低、让压缩提前动手,但不能调高——想确认自己此刻的真实占比,直接跑 <code>/context</code>,不要凭感觉猜"快满了"。</p>
 <p><strong>动手时到底做了什么</strong>:官方原话是它"先清理旧的工具输出,不够再对整段对话做摘要"("clears older tool outputs first, then summarizes the conversation if needed")——自动压缩其实是两级火箭:第一级只丢已经读过的大文件内容、旧命令输出这类"看过一眼就不再需要原文"的东西,不动你的指令历史;只有第一级腾出的空间还不够,才会触发第二级——把整段对话历史压成一份结构化摘要。你有时候会看到用量突然掉一截、却没弹出"Conversation compacted"提示,大概率只是走了第一级。</p>
 <p><strong>第二级摘要之后,留下什么、丢了什么</strong>:</p>
 <table class="tbl">
-  <tr><th>机制</th><th>压缩后</th></tr>
+  <tbody><tr><th>机制</th><th>压缩后</th></tr>
   <tr><td>系统提示词与输出风格</td><td>不受影响,本来就不在对话历史里</td></tr>
   <tr><td>项目根 CLAUDE.md 与未限定路径的规则</td><td>从磁盘重新加载</td></tr>
   <tr><td>Auto memory(<code>MEMORY.md</code>)</td><td>从磁盘重新加载</td></tr>
@@ -1094,11 +838,11 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <tr><td>子目录里的嵌套 CLAUDE.md</td><td>丢失,直到再次读到该子目录下的文件</td></tr>
   <tr><td>已调用过的 Skill 正文</td><td>重新注入,但每个 Skill 上限 5000 token、总预算上限 25000 token,超出部分先丢最早调用的</td></tr>
   <tr><td>Hooks</td><td>不适用——hooks 是代码,不占上下文</td></tr>
-</table>
+</tbody></table>
 <div class="callout warn"><b class="t">"压完变笨了"不是错觉</b>官方原话:"Your requests and key code snippets are preserved; detailed instructions from early in the conversation may be lost."——摘要保住的是"你要什么"和关键代码片段,保不住你早先细致强调过的边界条件,除非那条规则写进了 CLAUDE.md(见上表,会重新加载)。解法不是抱怨压缩笨,是把真正重要的约束从"对话里说过一次"搬进 CLAUDE.md,或者压缩前自己用 <code>/compact 聚焦指令</code> 定摘要策略,别让自动压缩替你猜。</div>
 <p>还有一种边界情况:如果某个单个文件或工具输出大到"每次摘完立刻又把上下文塞满",Claude Code 会在尝试几次后直接停止自动压缩并报错,而不是死循环重压——官方文档称之为 thrashing 报错。遇到时别指望再点一次压缩解决,该用子代理或 hook 把那个超大输出先摘掉。</p>
 
-<h3 data-reveal>用文件当外部记忆</h3>
+<h3 data-reveal="">用文件当外部记忆</h3>
 <p>「实战场景」章的 Ralph 循环提过一句"用文件系统而非对话历史当记忆",但没展开怎么写。逻辑其实很朴素:对话历史会被自动压缩摘要、会在 <code>/clear</code> 时清空、换一个新会话更是从零开始(会话之间互不共享历史)——但磁盘上的文件不会。把状态显式写进文件,等于在上下文窗口之外单独开一份不受压缩影响的"真相源",需要的时候随时 <code>Read</code> 回来,而不是指望它一直悬在对话里。</p>
 <p>三种常用写法:</p>
 <ul>
@@ -1109,10 +853,10 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <p>三者的共同点:都不依赖"这句话还留在上下文里",依赖的是"这个文件我随时能重新读到"。</p>
 <p class="src">本节结论核对自:<a href="https://code.claude.com/docs/en/context-window" target="_blank">官方 Explore the context window</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works" target="_blank">官方 How Claude Code works</a> · <a href="https://code.claude.com/docs/en/model-config" target="_blank">官方 Model configuration</a> · <a href="https://code.claude.com/docs/en/env-vars" target="_blank">官方 Environment variables</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings</a> · <a href="https://code.claude.com/docs/en/costs" target="_blank">官方 Manage costs</a></p>
 
-<h3 data-reveal>检查点:大胆试错的安全网</h3>
+<h3 data-reveal="">检查点:大胆试错的安全网</h3>
 <p>每发一条提示自动建一个检查点,文件改动先快照。<kbd>Esc Esc</kbd> / <code>/rewind</code> 可以只回滚对话(实现满意但想换个说法)、只回滚代码(讨论有价值但想换实现)、或全回滚。检查点随会话持久化——关掉终端明天回来照样能回滚。<strong>局限</strong>:只追踪 Claude 编辑工具做的改动,Bash 命令和外部进程的变更不在内,它不是 git 的替代品。</p>
 
-<h3 data-reveal>会话即资产</h3>
+<h3 data-reveal="">会话即资产</h3>
 <p>对话全部本地留存:<code>claude -c</code> 续最近、<code>claude -r 名称</code> 精确恢复、<code>/rename</code> 起个像分支名的名字(如 <code>oauth-migration</code>)、<code>/branch</code> 原地分叉试新方向、<code>--fork-session</code> 恢复时另起炉灶不污染原会话。每条工作流一个命名会话,像管理 git 分支一样管理上下文。</p>
 </section>
 
@@ -1122,19 +866,19 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <div class="sec-tag">实战 09</div>
 <h2>权限与安全</h2>
 
-<h3 data-reveal>六种权限模式</h3>
+<h3 data-reveal="">六种权限模式</h3>
 <table class="tbl">
-  <tr><th>模式</th><th>行为</th><th>适用</th></tr>
+  <tbody><tr><th>模式</th><th>行为</th><th>适用</th></tr>
   <tr><td><code>manual</code> <span class="pill a">原 default</span></td><td>敏感操作逐一询问</td><td>默认模式;不熟悉的任务。2026-07-03 起在 CLI / VS Code / JetBrains 中统一显示为 <strong>Manual</strong>,<code>--permission-mode manual</code> 与 <code>"defaultMode": "manual"</code> 均受支持</td></tr>
   <tr><td><code>acceptEdits</code></td><td>文件编辑自动放行,命令仍询问</td><td>信任度中等的重构</td></tr>
   <tr><td><code>plan</code></td><td>只读:能看能想,不能改</td><td>探索、规划、评审</td></tr>
   <tr><td><code>auto</code></td><td>分类器模型代替你审批,只拦可疑动作(越权扩散、未知基础设施、被恶意内容驱动的行为)</td><td>方向已定、不想逐条点头的任务</td></tr>
   <tr><td><code>dontAsk</code></td><td>不询问,不放行的直接跳过</td><td>特定自动化管道</td></tr>
   <tr><td><code>bypassPermissions</code></td><td>全部放行,零门禁</td><td>⚠️ 仅限无网络隔离环境</td></tr>
-</table>
+</tbody></table>
 <p><kbd>Shift+Tab</kbd> 在模式间循环;<code>--permission-mode</code> 指定启动模式。</p>
 
-<h3 data-reveal>规则三层:deny → ask → allow</h3>
+<h3 data-reveal="">规则三层:deny → ask → allow</h3>
 <pre><code><span class="c">// .claude/settings.json —— 一份务实的起步配置</span>
 {
   "permissions": {
@@ -1155,10 +899,10 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <li><code>--dangerously-skip-permissions</code> 只该出现在<strong>无网络、无敏感数据的封闭环境</strong>(如容器里跑 lint 修复);企业可用 <code>disableBypassPermissionsMode</code> 全组织禁用。</li>
 </ul>
 
-<h3 data-reveal>语法速查:每一种写法到底匹配什么</h3>
+<h3 data-reveal="">语法速查:每一种写法到底匹配什么</h3>
 <p>上面配置里的 <code>Bash(npm run lint:*)</code>、<code>Read(./.env.*)</code>、<code>Read(./secrets/**)</code> 全是能抄的正确写法,但 <code>:*</code>、<code>./</code>、<code>**</code> 各自什么语义不解释清楚,读者只能靠猜。逐条对照:</p>
 <table class="tbl">
-  <tr><th>写法</th><th>匹配什么(对)</th><th>别当成什么(错)</th></tr>
+  <tbody><tr><th>写法</th><th>匹配什么(对)</th><th>别当成什么(错)</th></tr>
   <tr><td><code>Read</code> / <code>Edit</code> / <code>Bash</code><br>裸工具名,不带括号</td><td>匹配这个工具的<strong>每一次</strong>调用,无论对象是什么</td><td>别当成"没写规则等于不生效"——裸工具名本身就是一条全放行 / 全询问 / 全拒绝规则</td></tr>
   <tr><td><code>Read(./.env)</code></td><td>具体路径,相对<strong>当前工作目录</strong>(cwd,即启动 <code>claude</code> 时所在目录),精确匹配这一个文件</td><td>别当成相对项目根目录——单斜杠开头的 <code>/path</code> 才是相对配置文件所在层级(下面第 7 行)</td></tr>
   <tr><td><code>Bash(npm run lint:*)</code><br><code>Bash(git diff:*)</code></td><td><code>:*</code> 是"末尾加空格再加 <code>*</code>"的等价简写,做<strong>前缀匹配</strong>:命令以 <code>npm run lint </code> 开头就放行</td><td>别当成冒号是字段选择器——<code>Bash(command:rm *)</code> 这种写法官方直接判定无效并在启动时警告</td></tr>
@@ -1167,7 +911,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <tr><td><code>Edit(**/src/**)</code></td><td>显式任意深度写法,allow / deny / ask 下都匹配树上任意位置的 <code>src</code></td><td>别再纠结单段 <code>src/**</code> 够不够——想要"哪里都算"直接这样写,不必猜规则类型</td></tr>
   <tr><td><code>Edit(/src/**)</code><br>单个前导斜杠</td><td>相对<strong>配置文件所在层级</strong>(项目设置里就是项目根,即 <code>&lt;project root&gt;/src</code>),不是 cwd</td><td>别和第 2 行的 <code>./path</code> 混用——worktree 里这个"项目根"其实是该 worktree 自己的根,不是主仓库根目录</td></tr>
   <tr><td><code>Read(//Users/alice/secrets/**)</code><br>双斜杠开头</td><td><strong>绝对路径</strong>,从文件系统根算起,与 cwd / 项目根都无关</td><td>别在团队共享的项目设置里写死自己的用户名路径——这种写法几乎总该留在个人 <code>settings.local.json</code></td></tr>
-</table>
+</tbody></table>
 <div class="callout warn"><b class="t">本页配置示例本身没过期,但换个写法就会踩坑</b>上面 <code>deny</code> 里的 <code>Read(./secrets/**)</code> 是单段目录写法,但因为它是 <strong>deny</strong> 规则,2026-07-18 的收紧不影响它——依然拦得住任意深度的 <code>secrets</code> 目录。真正被收紧的是<strong>同样写法用在 allow 规则上</strong>(比如把某个目录整体放行时写 <code>Edit(src/**)</code>):现在只放行 <code>&lt;cwd&gt;/src</code>,不会顺带放行嵌套更深处的同名目录。要在 allow 规则里覆盖任意深度,必须显式写 <code>**/dir/**</code>。</div>
 <p class="src">语法核对自:<a href="https://code.claude.com/docs/en/permissions" target="_blank">官方 Permissions 文档</a></p>
 </section>
@@ -1180,10 +924,10 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 <p>"配置到底写在哪、登录方式怎么换、换台电脑怎么办"——这一章把散落在官方文档各处的配置与账号知识汇总成一张完整地图,按"是什么 → 在哪里 → 怎么改 → 出问题怎么查"组织。</p>
 <div class="callout note"><b class="t">遇到登录报错 / 环境翻车?</b>本库有一整个专题深挖这类问题:<a href="env-auth-clinic.html">环境与登录急救手册</a>——五层诊断法、一键体检脚本、共用电脑与换机剧本、三级万能重置方案,Claude Code 与 Codex 双工具对照。</div>
 
-<h3 data-reveal>一、配置载体全景图</h3>
+<h3 data-reveal="">一、配置载体全景图</h3>
 <p>Claude Code 的所有配置就分布在这几个地方(Windows 上 <code>~/.claude</code> 对应 <code>%USERPROFILE%\.claude</code>):</p>
 <table class="tbl">
-  <tr><th>载体</th><th>位置</th><th>管什么 / 谁用</th></tr>
+  <tbody><tr><th>载体</th><th>位置</th><th>管什么 / 谁用</th></tr>
   <tr><td>企业管控设置</td><td>系统级 <code>managed-settings.json</code> / macOS 描述文件 / Windows 注册表 / 服务端下发</td><td>IT 强制策略,个人无法覆盖</td></tr>
   <tr><td><strong>用户设置</strong></td><td><code>~/.claude/settings.json</code></td><td>你的全局偏好:权限规则、hooks、env、模型默认</td></tr>
   <tr><td><strong>项目设置</strong></td><td><code>.claude/settings.json</code></td><td>进 git,团队共享</td></tr>
@@ -1191,21 +935,21 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <tr><td>MCP 服务器</td><td>全局 <code>~/.claude.json</code>;项目 <code>.mcp.json</code></td><td>注意:MCP 不在 settings.json 里!</td></tr>
   <tr><td>记忆文件</td><td><code>~/.claude/CLAUDE.md</code> → 项目 <code>CLAUDE.md</code> → <code>CLAUDE.local.md</code>(私人,手动 gitignore)</td><td>指令类知识</td></tr>
   <tr><td>技能 / 子代理 / 插件</td><td><code>~/.claude/skills|agents|plugins</code>(全局)与 <code>.claude/skills|agents</code>(项目)</td><td>目录即配置,文件即生效</td></tr>
-</table>
+</tbody></table>
 <div class="callout tip"><b class="t">整个 ~/.claude 都可以搬家</b>设置 <code>CLAUDE_CONFIG_DIR</code> 环境变量后,所有 <code>~/.claude</code> 路径都改用该目录——把配置放进同步盘/仓库的正规姿势。</div>
 
-<h3 data-reveal>二、~/.claude 目录里到底有什么</h3>
+<h3 data-reveal="">二、~/.claude 目录里到底有什么</h3>
 <table class="tbl">
-  <tr><th>路径</th><th>内容</th><th>要不要备份</th></tr>
+  <tbody><tr><th>路径</th><th>内容</th><th>要不要备份</th></tr>
   <tr><td><code>settings.json</code> / <code>CLAUDE.md</code> / <code>skills/</code> / <code>agents/</code></td><td>你亲手写的配置——核心资产</td><td>✅ 建议进 dotfiles 仓库</td></tr>
   <tr><td><code>plugins/</code></td><td>已装插件、市场克隆、插件数据(含部分插件认证)</td><td>可不备份,新机重装即可</td></tr>
   <tr><td><code>projects/</code></td><td>每个项目的<strong>会话转录(明文 JSONL)</strong></td><td>❌ 含敏感输出,别同步别共享</td></tr>
   <tr><td><code>history.jsonl</code></td><td>你敲过的每条提示(↑ 键历史)</td><td>❌ 同上</td></tr>
   <tr><td><code>stats-cache.json</code> / <code>backups/</code> / <code>shell-snapshots/</code></td><td>用量统计 / <code>~/.claude.json</code> 迁移前备份 / Bash 环境快照</td><td>自动维护,无需管</td></tr>
-</table>
+</tbody></table>
 <div class="callout warn"><b class="t">明文存储警告(官方)</b>转录与历史<strong>不加密</strong>,仅靠文件权限保护。如果某条命令打印了密钥,它就躺在 <code>projects/&lt;项目&gt;/&lt;会话&gt;.jsonl</code> 里。默认 30 天自动清理(<code>cleanupPeriodDays</code> 可调);<code>claude project purge</code> 可一键清空某项目全部本地状态。</div>
 
-<h3 data-reveal>三、优先级与"为什么没生效"</h3>
+<h3 data-reveal="">三、优先级与"为什么没生效"</h3>
 <p>同一个键冲突时:<strong>企业管控 &gt; 命令行参数 &gt; .claude/settings.local.json &gt; .claude/settings.json &gt; ~/.claude/settings.json</strong>。三件事最常造成"改了没反应":</p>
 <ul>
   <li><strong>改错了层</strong>:项目层悄悄覆盖了你的用户层 → <code>/config</code> 看当前生效值,或用 <code>--setting-sources user</code> 只加载指定层排除干扰;</li>
@@ -1213,9 +957,9 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <li><strong>配置本身坏了</strong>:<code>claude doctor</code>(终端体检)/ <code>/doctor</code>(会话内)会报 schema 错误;settings.json 顶部加 <code>"$schema": "https://json.schemastore.org/claude-code-settings.json"</code> 编辑器直接标红。怀疑自定义配置搞坏一切时,<code>claude --safe-mode</code> 全裸启动逐项排除。</li>
 </ul>
 
-<h3 data-reveal>四、登录方式全解与切换</h3>
+<h3 data-reveal="">四、登录方式全解与切换</h3>
 <table class="tbl">
-  <tr><th>方式</th><th>怎么用</th><th>计费 / 适用</th></tr>
+  <tbody><tr><th>方式</th><th>怎么用</th><th>计费 / 适用</th></tr>
   <tr><td><strong>订阅 OAuth(推荐)</strong></td><td><code>claude</code> 或 <code>/login</code> → 浏览器登录 claude.ai 账号</td><td>Pro/Max 订阅额度;日常首选</td></tr>
   <tr><td>Console OAuth</td><td>同上,登录时选 Console(API 计费)账号</td><td>按量 API 计费的团队</td></tr>
   <tr><td>API Key 环境变量</td><td><code>export ANTHROPIC_API_KEY=sk-ant-…</code></td><td>脚本/CI;⚠️ 会覆盖 OAuth,是冲突之王</td></tr>
@@ -1223,7 +967,7 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
   <tr><td>网关 / 中转</td><td><code>ANTHROPIC_BASE_URL</code> + <code>ANTHROPIC_AUTH_TOKEN</code>(Bearer)</td><td>企业 LLM 网关、代理服务</td></tr>
   <tr><td>动态密钥脚本</td><td>settings.json 里配 <code>apiKeyHelper</code> 指向一个输出密钥的脚本</td><td>密钥轮换/从密管系统取密钥</td></tr>
   <tr><td>云厂商直连</td><td><code>CLAUDE_CODE_USE_BEDROCK=1</code> + <code>/setup-bedrock</code> 向导;Vertex 同理 <code>/setup-vertex</code></td><td>走 AWS/GCP 账单与合规,不经 Anthropic 认证</td></tr>
-</table>
+</tbody></table>
 <h4>切换账号 / 切换方式的正确操作</h4>
 <ol class="steps">
   <li><strong>换账号</strong>:<code>/login</code> 重新走浏览器流程选新账号即可(或 <code>claude auth logout</code> 后重登);<code>claude auth status</code> 随时确认当前身份。</li>
@@ -1232,45 +976,45 @@ claude --permission-mode auto -p "修掉所有 lint 报错"</code></pre>
 </ol>
 <div class="callout note"><b class="t">认证冲突症状速查</b>"Invalid API key"、"Please run /login"、CLI 好着 Pencil/IDE 却说未登录——九成是<strong>多种凭证并存</strong>:环境变量 + OAuth + 自定义网关互相打架。排查顺序:<code>env | grep -i anthropic</code> 清掉不要的 → <code>claude auth status</code> → 重新干净登录一次。</div>
 
-<h3 data-reveal>五、换电脑 / 多机使用</h3>
+<h3 data-reveal="">五、换电脑 / 多机使用</h3>
 <table class="tbl">
-  <tr><th>东西</th><th>怎么带走</th></tr>
+  <tbody><tr><th>东西</th><th>怎么带走</th></tr>
   <tr><td>全局配置(settings.json、CLAUDE.md、skills/、agents/)</td><td>放 dotfiles 仓库或同步盘;或干脆 <code>CLAUDE_CONFIG_DIR</code> 指向同步目录</td></tr>
   <tr><td>项目配置(.claude/、.mcp.json、CLAUDE.md)</td><td>本来就在 git 里,clone 即得</td></tr>
   <tr><td>凭证</td><td><strong>不要拷贝</strong>——新机 <code>claude</code> 重新登录一次(30 秒);CI/无浏览器环境用 <code>setup-token</code> 的长期 token</td></tr>
   <tr><td>会话历史</td><td>本地资产不随机器走;真需要续某个会话,用 <code>--teleport</code> / 云端会话做跨机接力</td></tr>
-</table>
+</tbody></table>
 <pre><code><span class="c"># 新机三步(装好 Node 后)</span>
 npm install -g @anthropic-ai/claude-code
 claude          <span class="c"># 浏览器登录</span>
-git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或设置 CLAUDE_CONFIG_DIR</span></code></pre>
+git clone 你的dotfiles &amp;&amp; ln -s …/claude ~/.claude   <span class="c"># 或设置 CLAUDE_CONFIG_DIR</span></code></pre>
 
-<h3 data-reveal>六、常用环境变量速查</h3>
+<h3 data-reveal="">六、常用环境变量速查</h3>
 <table class="tbl">
-  <tr><th>变量</th><th>作用</th></tr>
+  <tbody><tr><th>变量</th><th>作用</th></tr>
   <tr><td><code>ANTHROPIC_API_KEY</code></td><td>API Key 认证(优先于 OAuth——冲突之源,慎设)</td></tr>
   <tr><td><code>ANTHROPIC_AUTH_TOKEN</code> + <code>ANTHROPIC_BASE_URL</code></td><td>自定义网关/中转的 Bearer 令牌与地址</td></tr>
   <tr><td><code>CLAUDE_CODE_USE_BEDROCK</code> / <code>CLAUDE_CODE_USE_VERTEX</code></td><td>切换到 AWS Bedrock / GCP Vertex 通道</td></tr>
   <tr><td><code>CLAUDE_CONFIG_DIR</code></td><td>整体搬迁 <code>~/.claude</code> 目录位置</td></tr>
   <tr><td><code>DISABLE_AUTOUPDATER=1</code></td><td>关闭自动更新(配合 <code>claude install 版本号</code> 钉版本)</td></tr>
   <tr><td><code>CLAUDE_CODE_SKIP_PROMPT_HISTORY</code></td><td>完全不写入转录/历史(敏感环境)</td></tr>
-</table>
+</tbody></table>
 <p class="src">更多变量见 <a href="https://code.claude.com/docs/en/env-vars" target="_blank">官方 env-vars 全表</a>;环境变量也可写进 settings.json 的 <code>env</code> 块随作用域分发。</p>
 
-<h3 data-reveal>七、额度与成本管理(会员必修)</h3>
+<h3 data-reveal="">七、额度与成本管理(会员必修)</h3>
 <p>订阅额度是双层水池:<strong>滚动窗口额度</strong>(约 5 小时一档,用尽等窗口滑动)+ <strong>每周上限</strong>(重度使用才会碰到)。具体数值随套餐与官方策略演进,一切以 <code>/usage</code> 面板显示为准。</p>
 <table class="tbl">
-  <tr><th>动作</th><th>怎么做</th></tr>
+  <tbody><tr><th>动作</th><th>怎么做</th></tr>
   <tr><td>看余量</td><td><code>/usage</code>:套餐额度、窗口重置时间、按技能/子代理/插件的用量拆解;API 计费用户看 <code>/cost</code></td></tr>
   <tr><td>省额度 · 模型档位</td><td>任务和档位匹配:硬仗才上高档模型,机械活 <code>/model</code> 降档跑;Auto 模式让系统按任务自动路由,通常比手动全程高档省得多</td></tr>
   <tr><td>省额度 · 上下文即成本</td><td>上下文越大每轮越贵:不相关任务 <code>/clear</code>、长会话及时 <code>/compact</code>、大范围只读摸底交给子代理(隔离上下文,主会话只收结论)、MCP 只装用得上的(工具定义也占上下文)</td></tr>
   <tr><td>省额度 · 减少无效轮次</td><td>先 Plan Mode 审计划再放行执行;两次纠错不成就 /clear 重来——反复拉锯是最贵的用法</td></tr>
   <tr><td>超限了怎么办</td><td>四选一:等窗口重置 / <code>/model</code> 降档继续干 / 临时切 API 计费(设 <code>ANTHROPIC_API_KEY</code> + /config 开关,注意按量计费)/ 升级套餐。<strong>"usage limit reached"不是故障,重装重登毫无作用</strong>——排错去<a href="env-auth-clinic.html#claude-er">急救手册 · 计费与额度类</a></td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>八、高频问题急救表</h3>
+<h3 data-reveal="">八、高频问题急救表</h3>
 <table class="tbl">
-  <tr><th>症状</th><th>原因 / 解法</th></tr>
+  <tbody><tr><th>症状</th><th>原因 / 解法</th></tr>
   <tr><td>Invalid API key / 反复要求 /login</td><td>凭证冲突:清 <code>ANTHROPIC_*</code> 环境变量 → 重新登录</td></tr>
   <tr><td>改了 settings.json 不生效</td><td>被更高层覆盖(/config 查生效值);或该键需重启会话</td></tr>
   <tr><td>MCP 配置找不到写哪</td><td>MCP 不在 settings.json:全局 <code>~/.claude.json</code>,项目 <code>.mcp.json</code>,用 <code>claude mcp add</code> 别手写</td></tr>
@@ -1281,7 +1025,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
   <tr><td>CI 里怎么登录</td><td>不要拷凭证文件:<code>claude setup-token</code> 生成长期 token 存 CI Secret</td></tr>
   <tr><td>想固定版本 / 关自动更新</td><td><code>claude install 2.1.x</code> 钉版本;settings 的 env 里设 <code>DISABLE_AUTOUPDATER=1</code></td></tr>
   <tr><td>彻底重置</td><td>备份 <code>~/.claude</code> 后删除 + <code>claude project purge</code> 清项目态,重新登录</td></tr>
-</table>
+</tbody></table>
 <p class="src">本节依据:<a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings</a> · <a href="https://code.claude.com/docs/en/claude-directory" target="_blank">官方 ~/.claude 目录详解</a> · <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">官方 CLI Reference</a>(2026-07 版)</p>
 </section>
 
@@ -1292,43 +1036,43 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 <h2>生态精选:方法论、工具与组合拳</h2>
 <p>社区两年沉淀下来,真正经受住检验的东西不多。这一章只收"多榜共识 + 有明确出处"的硬货:三套方法论、一份 MCP 装机单、几套组合拳配方。</p>
 
-<h3 data-reveal>三套值得学的硬核方法论</h3>
+<h3 data-reveal="">三套值得学的硬核方法论</h3>
 <table class="tbl">
-  <tr><th>方法论</th><th>核心思想</th><th>怎么落地</th></tr>
+  <tbody><tr><th>方法论</th><th>核心思想</th><th>怎么落地</th></tr>
   <tr><td><strong>Spec 驱动开发</strong></td><td>把模糊想法先固化为结构化规格,再逐任务执行、<strong>每个任务全新上下文</strong></td><td>"加用户认证"先展开成 research → requirements → design → tasks 四份文档,然后逐项实现;本指南法则五(采访出 SPEC)是它的轻量版;插件化方案见 <a href="https://github.com/tzachbon/smart-ralph" target="_blank">smart-ralph</a></td></tr>
   <tr><td><strong>Ralph 循环</strong></td><td>让代理在自动循环中反复读同一份提示文件、改盘上代码,<strong>用文件系统而非对话历史当记忆</strong>,直到规格全部满足(Geoffrey Huntley 2025 年首创)</td><td>官方 <code>/loop</code> 就是内置形态;关键洞见与法则一同源——<strong>写循环容易,循环里的验证器才是难点</strong>:没有 pass/fail 信号的循环只是原地打转;每轮只动一小块,复利大于豪赌</td></tr>
   <tr><td><strong>复利工程</strong></td><td>知识跨会话复利:每次干完活,把学到的沉淀为可复用上下文</td><td>Every.to 的 <a href="https://github.com/EveryInc/compound-engineering-plugin" target="_blank">compound-engineering 插件</a>:/ce-brainstorm → /ce-plan → /ce-work → /ce-review → <strong>/ce-compound</strong>(写回经验)——"同一个坑,一个月后不再踩第二次";不装插件也能学思想:每次修完疑难杂症让 Claude 把根因写进 CLAUDE.md 或技能</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>MCP 装机单(多榜共识版)</h3>
+<h3 data-reveal="">MCP 装机单(多榜共识版)</h3>
 <table class="tbl">
-  <tr><th>装什么</th><th>为什么</th></tr>
+  <tbody><tr><th>装什么</th><th>为什么</th></tr>
   <tr><td><strong>GitHub MCP</strong></td><td>各评测榜公认影响力最高:issue/PR/CI 全链路直连(轻量替代:直接用 <code>gh</code> CLI,零上下文成本)</td></tr>
   <tr><td><strong>Context7</strong></td><td>实时查库的最新 API 签名,显著减少"凭记忆写错接口"——工具少、上下文开销低</td></tr>
   <tr><td><strong>Playwright(微软官方)</strong></td><td>让代理驱动真浏览器自验 UI 改动;走可访问性树而非截图,上下文占用小——前端必装</td></tr>
   <tr><td><strong>Pencil</strong></td><td>设计画布直连代码,见本库 <a href="pencil-claude-code-best-practices.html">Pencil × Claude Code 主题</a></td></tr>
   <tr><td>按需:Sentry / Postgres / Figma / Notion…</td><td>接你真实工作流里的系统,而不是为装而装</td></tr>
-</table>
+</tbody></table>
 <div class="callout warn"><b class="t">反共识提醒(评测验证)</b>两个"热门推荐"其实别装:<strong>Filesystem MCP</strong>——Claude Code 内置文件工具 + 权限体系全面优于它;<strong>Sequential Thinking</strong>——模型自带推理,叠加只是烧上下文。每装一个 MCP 都吃窗口,定期 <code>/context</code> 复查、<code>/mcp</code> 里禁用闲置项。</div>
 
-<h3 data-reveal>Skills 与插件精选</h3>
+<h3 data-reveal="">Skills 与插件精选</h3>
 <ul>
   <li><strong>先榨干官方捆绑技能</strong>:/code-review、/batch、/run + /verify、/simplify——多数人还没用到三成;</li>
   <li><strong>skill-creator</strong>:用技能造技能,把你的重复流程半自动固化;</li>
   <li><strong>找现成的</strong>:<a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">awesome-claude-code</a>(社区最全清单)、<a href="https://www.developersdigest.tech/blog/best-claude-code-skills-2026" target="_blank">Developers Digest 精选目录</a>、<a href="https://www.firecrawl.dev/blog/best-claude-code-skills" target="_blank">Firecrawl 评测</a>;<code>/plugin</code> 直接逛官方市场。</li>
 </ul>
 
-<h3 data-reveal>组合拳配方</h3>
+<h3 data-reveal="">组合拳配方</h3>
 <table class="tbl">
-  <tr><th>场景</th><th>配方</th><th>效果</th></tr>
+  <tbody><tr><th>场景</th><th>配方</th><th>效果</th></tr>
   <tr><td>UI 开发全闭环</td><td>Pencil MCP(设计)+ 实现 + Playwright MCP / <code>/verify</code>(真浏览器自验)</td><td>设计 → 代码 → 视觉验证,零人工截图比对</td></tr>
   <tr><td>陌生框架开发</td><td>Context7(查签名)+ <code>/goal 测试全绿</code></td><td>不再凭旧记忆写新 API</td></tr>
   <tr><td>PR 全自动流</td><td><code>gh</code> CLI + <code>/install-github-app</code> + <code>/autofix-pr</code></td><td>CI 挂了、评审来了,云端自动修</td></tr>
   <tr><td>双代理互检</td><td>Claude Code × Codex 互为 MCP(见 <a href="codex-guide.html#skills-mcp">Codex 主题</a>)</td><td>不同模型视角交叉暴露盲区</td></tr>
   <tr><td>大规模迁移</td><td>SPEC 文档 + <code>/batch</code>(或 Ralph 循环)+ Stop hook 跑测试</td><td>拆解-并行-验证一条龙</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>中文学习资源推荐</h3>
+<h3 data-reveal="">中文学习资源推荐</h3>
 <p>本指南是"干货速查"定位;如果你想要<strong>手把手的系统教程</strong>,推荐 stormzhang 的开源中文指南 <a href="https://coding.stormzhang.ai/" target="_blank">AI 编程指南</a>(Claude Code 53 篇 + Codex 39 篇,小白友好,GitHub 持续维护)——覆盖了本指南刻意从简的入门细节:逐平台安装、国内网络与第三方模型接入、JetBrains/桌面端形态、术语表等。两者互补:入门跟它走,日常查这里。</p>
 <p class="src">本节来源:<a href="https://nimbalyst.com/blog/best-claude-code-mcp-servers/" target="_blank">Nimbalyst MCP 评测</a> · <a href="https://www.totalum.app/blog/best-mcp-servers-2026" target="_blank">Totalum 2026 榜单</a> · <a href="https://awesomeclaude.ai/ralph-wiggum" target="_blank">Ralph Wiggum 技法指南</a> · <a href="https://blog.logrocket.com/ralph-claude-code/" target="_blank">LogRocket: Ralph 实测</a> · <a href="https://jingles.dev/articles/claude-spec-plan-loop" target="_blank">Spec 驱动三步框架</a> · <a href="https://www.developersdigest.tech/blog/loop-engineering-definitive-guide" target="_blank">Loop Engineering 权威指南</a></p>
 </section>
@@ -1340,7 +1084,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 <h2>避坑清单</h2>
 <p>官方点名的五大失败模式 + 社区高频踩坑,对号入座。环境与登录类的坑(凭证冲突、配置不生效、换机翻车)不在此表——请查<a href="env-auth-clinic.html">环境与登录急救手册</a>。</p>
 <table class="tbl">
-  <tr><th>坑</th><th>症状</th><th>解法</th></tr>
+  <tbody><tr><th>坑</th><th>症状</th><th>解法</th></tr>
   <tr><td><strong>大杂烩会话</strong></td><td>任务 A 聊一半插任务 B 再回 A,上下文全是无关信息</td><td>不相关任务之间 <code>/clear</code>,没有例外</td></tr>
   <tr><td><strong>无限纠正循环</strong></td><td>错→纠正→还错→再纠正,失败尝试把模型往同一坑里带</td><td>两次未果就 /clear,用吸收教训的新提示重来</td></tr>
   <tr><td><strong>CLAUDE.md 过载</strong></td><td>规则写了一堆,Claude 偏偏无视关键那条</td><td>无情删减;能转 Hook 的转 Hook,场景化的转 Skill</td></tr>
@@ -1351,7 +1095,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
   <tr><td><strong>把检查点当 git</strong></td><td>以为 /rewind 能恢复一切,结果 Bash 改的文件回不去</td><td>检查点只管 Claude 的编辑工具;大节点照常 git commit</td></tr>
   <tr><td><strong>评审代理的"必然发现"</strong></td><td>追着评审报告改,代码越改越防御、越抽象</td><td>规定只报影响正确性的缺口;其余当可选建议</td></tr>
   <tr><td><strong>-p 模式裸奔</strong></td><td>无人值守脚本花超预算 / 死循环</td><td><code>--max-turns</code> + <code>--max-budget-usd</code> + <code>--allowedTools</code> 三件套</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -1360,7 +1104,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 <div class="sec-tag">沉淀 13</div>
 <h2>开箱即用模板库</h2>
 
-<h3 data-reveal>① CLAUDE.md 精瘦模板</h3>
+<h3 data-reveal="">① CLAUDE.md 精瘦模板</h3>
 <pre><code># 构建与测试
 - 构建: pnpm build   测试: pnpm test -- --run(优先跑单测,别跑全量)
 - 改完一批代码必须跑 pnpm typecheck
@@ -1379,7 +1123,7 @@ git clone 你的dotfiles && ln -s …/claude ~/.claude   <span class="c"># 或�
 # 压缩策略
 - 压缩对话时,始终保留已修改文件清单与测试命令</code></pre>
 
-<h3 data-reveal>② 技能模板(带动态注入 + 手动触发)</h3>
+<h3 data-reveal="">② 技能模板(带动态注入 + 手动触发)</h3>
 <pre><code><span class="c"># .claude/skills/release-notes/SKILL.md</span>
 ---
 name: release-notes
@@ -1396,13 +1140,13 @@ description: 生成版本发布说明。当用户要求写 changelog、release n
 <span class="c"># 危险流程加一行 frontmatter 即禁止自动触发:</span>
 <span class="c"># disable-model-invocation: true</span></code></pre>
 
-<h3 data-reveal>③ Hook 模板(拦截敏感写入)</h3>
+<h3 data-reveal="">③ Hook 模板(拦截敏感写入)</h3>
 <pre><code><span class="c">#!/bin/bash  # .claude/scripts/block-sensitive.sh</span>
 set -euo pipefail
 INPUT="$(cat)"
 FILE="$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')"
 if echo "$FILE" | grep -qE '\.(env|pem|key)$'; then
-  echo "禁止写入敏感文件: $FILE" >&2
+  echo "禁止写入敏感文件: $FILE" &gt;&amp;2
   exit 2   <span class="c"># 退出码 2 = 阻断该次工具调用</span>
 fi
 exit 0
@@ -1413,7 +1157,7 @@ exit 0
     "hooks": [{ "type": "command", "command": ".claude/scripts/block-sensitive.sh" }] }
 ] } }</code></pre>
 
-<h3 data-reveal>④ 子代理模板(评审员)</h3>
+<h3 data-reveal="">④ 子代理模板(评审员)</h3>
 <pre><code><span class="c"># .claude/agents/spec-checker.md</span>
 ---
 name: spec-checker
@@ -1425,7 +1169,7 @@ model: sonnet
 列出的边界情况是否有测试、是否有超出任务范围的改动。
 只报告影响正确性的缺口,不报风格偏好。</code></pre>
 
-<h3 data-reveal>⑤ 无人值守脚本骨架</h3>
+<h3 data-reveal="">⑤ 无人值守脚本骨架</h3>
 <pre><code><span class="c"># 批量任务的安全姿势</span>
 claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   --allowedTools "Read,Edit,Bash(npm run test:*)" \
@@ -1437,64 +1181,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 
 <div class="divider"></div>
 
-<section id="hidden-config">
-<div class="sec-tag">沉淀 14</div>
-<h2>隐藏能力与彩蛋配置</h2>
-<p>这一章的素材来源和前面 14 章不一样——不是查文档,而是直接对本机已安装的 <code>claude.exe</code> 做 <code>--help</code> 全遍历 + 字符串反查,再逐条回官方文档交叉核对。三类证据分开标注,别混着信:</p>
-<p><span class="pill c">官方确认</span> 文档写了但极少人翻到 &nbsp; <span class="pill a">反查证实</span> 二进制里真实存在、行为可从代码逻辑推断,官网未写 &nbsp; <span class="pill b">存在未验证</span> 变量确认存在,但具体行为没有可靠依据,别当日常功能用</p>
-<div class="callout warn"><b class="t">版本水印</b>本节全部结论实测于 <strong>Claude Code v2.1.222(2026-08-04)</strong>。这类内部实现细节随版本演进很快,几个月后可能整批改名或下线——命令与参数的最终判据永远是你自己那台机器的 <code>claude --help</code> 与 <code>/release-notes</code>,不是这张表。</div>
-
-<h3 data-reveal>一、官方写了但很少人翻到的参数 <span class="pill c">官方确认</span></h3>
-<table class="tbl">
-  <tr><th>参数</th><th>作用</th></tr>
-  <tr><td><code>--effort ultracode</code></td><td>xhigh 之上的第 6 档 effort,<code>--help</code> 本身不列(官方文档原话:"help 不列全部参数,不在 help 里不代表不存在"),v2.1.203+ 才有</td></tr>
-  <tr><td><code>claude auto-mode critique</code></td><td>让 AI 反过来审查你自己写的 auto-mode 自定义规则有没有漏洞——审查审查者</td></tr>
-  <tr><td><code>claude agents --json</code></td><td>脚本化拿到全部会话列表(交互+后台),配合 <code>--cwd</code> 过滤,适合自建监控面板</td></tr>
-  <tr><td><code>claude plugin eval</code></td><td>对插件跑 eval 用例并打分,自动追加一组"不装插件"的基线对照</td></tr>
-  <tr><td><code>--exclude-dynamic-system-prompt-sections</code></td><td>把 cwd/git 状态等每机器不同的内容挪到首条用户消息,提升跨用户 prompt cache 命中率</td></tr>
-  <tr><td><code>--fallback-model a,b,c</code></td><td><code>-p</code> 模式下主模型不可用时按序自动切换,每个新 turn 重试一次主模型</td></tr>
-</table>
-
-<h3 data-reveal>二、<code>/model</code> 别名全家桶与 opusplan 揭秘</h3>
-<p>源码里的模型别名数组是:<code>sonnet / opus / haiku / fable / best / opusplan / sonnet[1m] / opus[1m] / fable[1m]</code>。<code>best</code> 按账号计划自动解析为当前最强可用模型;<code>[1m]</code> 后缀对应 1M 长上下文变体。</p>
-<div class="callout note"><b class="t">🥚 opusplan 是目前挖到的最硬核彩蛋 <span class="pill a">反查证实</span></b>选它之后,Plan 阶段会<strong>自动升级用 Opus 想清楚</strong>,退出计划模式开始干活后则用你选的常规执行模型(比如 Sonnet)——一次设置,规划用最强模型、执行用性价比模型。整个机制<strong>官方 CLI 文档只字未提</strong>,连 <code>--help</code> 里都不列。会话里直接 <code>/model opusplan</code> 就能开。</div>
-
-<h3 data-reveal>三、隐藏子命令 <span class="pill c">官方确认</span></h3>
-<table class="tbl">
-  <tr><th>命令</th><th>作用</th></tr>
-  <tr><td><code>claude auto-mode defaults</code></td><td>打印 auto 模式分类器的完整内置规则(允许/软拒绝/硬拒绝),想知道"AI 到底按什么标准替我批"就看这个</td></tr>
-  <tr><td><code>claude mcp login &lt;name&gt;</code></td><td>给 HTTP/SSE/claude.ai connector 类 MCP 服务器单独走 OAuth,不用手填 token</td></tr>
-  <tr><td><code>claude gateway</code></td><td>企业级 auth/telemetry 网关,自建代理转发用</td></tr>
-  <tr><td><code>claude ultrareview [PR号]</code></td><td>云端多智能体审查当前分支或指定 PR,<code>--json</code> 拿原始 bugs.json</td></tr>
-</table>
-
-<h3 data-reveal>四、环境变量:官方确认 vs 反查未验证,别混着用</h3>
-<p><span class="pill c">官方确认</span> ——长期放心用,来自 <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings 文档</a>:</p>
-<table class="tbl">
-  <tr><th>变量</th><th>作用</th></tr>
-  <tr><td><code>CLAUDE_CODE_DISABLE_AGENT_VIEW</code></td><td>关掉后台代理管理面板</td></tr>
-  <tr><td><code>CLAUDE_CODE_DISABLE_REMOTE_CONTROL</code></td><td>关闭 Remote Control 远程遥控功能</td></tr>
-  <tr><td><code>CLAUDE_CODE_ENABLE_AWAY_SUMMARY</code></td><td>回到终端时给一段"你不在时发生了什么"摘要</td></tr>
-  <tr><td><code>CLAUDE_CODE_USE_POWERSHELL_TOOL</code></td><td>非 Windows 上也能用 PowerShell 工具</td></tr>
-  <tr><td><code>DISABLE_AUTO_COMPACT</code> / <code>DISABLE_AUTOUPDATER</code></td><td>关自动压缩上下文 / 关自动更新(配合 <code>claude install 版本号</code> 钉版本)</td></tr>
-  <tr><td><code>MAX_THINKING_TOKENS=0</code></td><td>彻底关闭扩展思考</td></tr>
-  <tr><td><code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> / <code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code></td><td>每会话子代理派生数 / WebSearch 次数上限(07-17 起为官方硬性配额,见本页「近期重要变化」),长时间无人值守任务要留意</td></tr>
-</table>
-<p><span class="pill a">反查证实</span> ——二进制里真实存在、官网未写、按命名可以大胆试,风险可控:</p>
-<table class="tbl">
-  <tr><th>变量</th><th>推断作用</th></tr>
-  <tr><td><code>CLAUDE_CODE_SUBAGENT_MODEL</code> / <code>CLAUDE_CODE_BG_CLASSIFIER_MODEL</code> / <code>CLAUDE_CODE_AUTO_MODE_MODEL</code></td><td>给子代理 / 后台分类器 / auto-mode 分别指定更便宜的模型,直接对应第七章"额度与成本管理"</td></tr>
-  <tr><td><code>CLAUDE_CODE_PLAN_V2_AGENT_COUNT</code></td><td>控制 Plan 模式并行探索用几个 agent——最接近"多智能体并行"的真实旋钮</td></tr>
-  <tr><td><code>CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY</code> / <code>CLAUDE_CODE_MAX_TURNS</code></td><td>硬性上限,CI/自动化脚本里防失控好用</td></tr>
-  <tr><td><code>CLAUDE_CODE_HTTP_PROXY</code> / <code>CLAUDE_CODE_HTTPS_PROXY</code> / <code>CLAUDE_CODE_PROXY_URL</code></td><td>公司代理环境专用,可配合<a href="env-auth-clinic.html">环境急救手册</a>排查代理相关登录失败</td></tr>
-  <tr><td><code>CLAUDE_CODE_OVERRIDE_DATE</code></td><td>让助手以为现在是别的日期,测试日期相关行为用,日常别开</td></tr>
-</table>
-
-<h3 data-reveal>五、神秘代号开关:存在,但别当真用 <span class="pill b">存在未验证</span></h3>
-<p>二进制里还挖到一批命名模式完全不同的变量——<code>CLAUDE_CODE_BASALT_COVE</code>、<code>MARL_CORMORANT</code>、<code>GAULT_KESTREL</code>、<code>NANKEEN_KESTREL</code>、<code>LANTERN_PRISM</code>、<code>PEWTER_OWL</code>、<code>THISTLE_GREBE</code>、<code>WALNUT_SPIRE</code>。代码逻辑显示它们是"环境变量覆盖一个随机代号命名的远程灰度开关"——专门起不相关的随机词组,就是为了不让人一眼看出控制什么、防止被扒。</p>
-<div class="callout warn"><b class="t">确认存在 ≠ 建议使用</b>这批变量的具体效果没有任何可靠依据,下个版本随时可能改名或消失。同理,<code>CLAUDE_CODE_COORDINATOR_MODE</code> 虽然真实存在、也确实控制着后台代理的"协调者↔工作会话"桥接架构(<code>WORKER_EPOCH</code>、<code>bridge:session</code> 等配套机制都能在代码里对上),但它是<strong>程序自动管理的内部状态</strong>(恢复会话时自动切换),不是设计给用户手动开关的功能开关——手动设置没有文档支持,行为不保证稳定。</div>
-<p class="src">本节方法论:对本机安装的 <code>@anthropic-ai/claude-code</code> 包(bin/claude.exe)做 <code>strings</code> 字符串反查提取命令与变量名,逐条与 <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">官方 CLI Reference</a> · <a href="https://code.claude.com/docs/en/settings" target="_blank">官方 Settings</a> 交叉核对区分"官方确认"与"反查未验证"。不基于任何未经验证的网络传言。</p>
-</section>
+<section id="hidden-config"><h2>用官方帮助核对能力</h2><p>先确认 claude --version，再查看 claude --help 和会话内命令列表。未公开环境变量、内部旗标与旧版本反查结果不能当作稳定配置接口。本页不再提供缺少本地输出证据的“隐藏能力实测表”。</p><p class="src"><a href="https://code.claude.com/docs/en/cli-reference" target="_blank" rel="noopener">code.claude.com · cli-reference</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -1502,19 +1189,19 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 <div class="sec-tag">沉淀 15</div>
 <h2>资源索引</h2>
 
-<h3 data-reveal>官方(第一信源)</h3>
+<h3 data-reveal="">官方(第一信源)</h3>
 <table class="tbl">
-  <tr><th>资源</th><th>说明</th></tr>
+  <tbody><tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Best practices</a></td><td>本指南心法部分的母本,值得原文精读</td></tr>
   <tr><td><a href="https://code.claude.com/docs/en/commands" target="_blank">Commands</a> / <a href="https://code.claude.com/docs/en/cli-reference" target="_blank">CLI reference</a> / <a href="https://code.claude.com/docs/en/interactive-mode" target="_blank">Interactive mode</a></td><td>命令、参数、快捷键的完整权威表</td></tr>
   <tr><td><a href="https://code.claude.com/docs/en/skills" target="_blank">Skills</a> / <a href="https://code.claude.com/docs/en/hooks" target="_blank">Hooks</a> / <a href="https://code.claude.com/docs/en/sub-agents" target="_blank">Subagents</a> / <a href="https://code.claude.com/docs/en/mcp" target="_blank">MCP</a> / <a href="https://code.claude.com/docs/en/plugins" target="_blank">Plugins</a></td><td>六层扩展的各自参考页</td></tr>
   <tr><td><a href="https://code.claude.com/docs/en/common-workflows" target="_blank">Common workflows</a> / <a href="https://code.claude.com/docs/en/agent-teams" target="_blank">Agent teams</a> / <a href="https://code.claude.com/docs/en/headless" target="_blank">Headless</a></td><td>场景菜谱、多代理协作、非交互模式</td></tr>
   <tr><td><code>/powerup</code> · <code>/release-notes</code> · <a href="https://code.claude.com/docs/llms.txt" target="_blank">llms.txt</a></td><td>应用内互动教程、更新日志、给 AI 用的全文档索引</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>社区精华(本指南参考)</h3>
+<h3 data-reveal="">社区精华(本指南参考)</h3>
 <table class="tbl">
-  <tr><th>主题</th><th>来源</th></tr>
+  <tbody><tr><th>主题</th><th>来源</th></tr>
   <tr><td>11 个进阶技巧(层级选型)</td><td><a href="https://smartscope.blog/en/generative-ai/claude/claude-code-best-practices-advanced-2026/" target="_blank">SmartScope: Advanced Best Practices 2026</a></td></tr>
   <tr><td>25 个功能横评</td><td><a href="https://www.marktechpost.com/2026/06/14/claude-code-guide-2026-25-features-with-examples-demo/" target="_blank">MarkTechPost: Claude Code Guide 2026</a></td></tr>
   <tr><td>Hooks/MCP/Skills 完整通关</td><td><a href="https://blakecrosley.com/guides/claude-code" target="_blank">Blake Crosley: The Complete Guide</a></td></tr>
@@ -1522,7 +1209,7 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
   <tr><td>工程化工作流</td><td><a href="https://dev.to/galian/claude-code-workflow-best-practices-that-ship-code-na" target="_blank">DEV: Best Practices That Ship Code</a> · <a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">GitHub: claude-code-best-practice</a></td></tr>
   <tr><td>中文社区</td><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang:AI 编程指南(92 篇系统教程)</a> · <a href="https://zhuanlan.zhihu.com/p/2009744974980331332" target="_blank">知乎:Claude Code 最佳实践指南</a> · <a href="https://www.cnblogs.com/knqiufan/p/19449849" target="_blank">博客园:完全指南</a> · <a href="https://www.cnblogs.com/leadingcode/p/19064358" target="_blank">博客园:官方内部团队最佳实践</a></td></tr>
   <tr><td>本知识库相关主题</td><td><a href="codex-guide.html">Codex 使用指南</a>(双代理协同)· <a href="pencil-claude-code-best-practices.html">Pencil × Claude Code 最佳实践</a>(设计-代码闭环)· <a href="env-auth-clinic.html">环境与登录急救手册</a>(出问题查它)· <a href="ai-leverage-guide.html">AI 提效全景与心法</a>(方法论内功)· <a href="prompt-context-engineering.html">提示词与上下文工程</a>(怎么说怎么喂的系统课)· <a href="ai-capability-expansion.html">AI 能力边界扩展指南</a>(用 CC 实战全栈跨端与独立开发)</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout note"><b class="t">一句话带走</b>Claude Code 的上限不取决于你记住多少命令,而取决于三件事:<strong>上下文是否干净、验证是否闭环、该系统兜底的是否交给了系统</strong>(Hook 管强制、Skill 管知识、子代理管隔离)。命令表会过时,这三件事不会。</div>
 </section>
@@ -1538,7 +1225,10 @@ claude -p "任务描述,完成输出 OK,失败输出 FAIL" \
 
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header></body></html>

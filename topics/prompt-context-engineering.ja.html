@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="AI活用を支える基盤技術：7大基本技法（❌/✅対比）、マルチモーダル＆RAG向け入力設計、3大フロンティアモデルのプロンプト差分、モデルルーティング、プロンプトインジェクション防御、Token経済学とコスト管理、6大書き換え事例、12の実践テンプレート、Claude Code / Codex への設定配置まで網羅。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="プロンプト & コンテキストエンジニアリング · 技法から思考法まで · 2026.07">
+<meta property="og:title" content="プロンプト &amp; コンテキストエンジニアリング · 技法から思考法まで · 2026.07">
 <meta property="og:description" content="AI活用を支える基盤技術：7大基本技法（❌/✅対比）、マルチモーダル＆RAG向け入力設計、3大フロンティアモデルのプロンプト差分、モデルルーティング、プロンプトインジェクション防御、Token経済学とコスト管理、6大書き換え事例、12の実践テンプレートまで網羅。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/prompt-context-engineering.ja.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>プロンプト & コンテキストエンジニアリング · 技法から思考法まで · 2026.07</title>
+<title>プロンプト &amp; コンテキストエンジニアリング · 技法から思考法まで · 2026.07</title>
 <style>
 :root{
   --accent:#0891b2; --accent-2:#22d3ee; --accent-soft:#e6f7fb;
@@ -172,12 +170,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn">☰</button>
-  <div class="logo"><span class="mark">🎯</span>プロンプト & コンテキストエンジニアリング<span class="sub">基盤技術</span></div>
+  <div class="logo"><span class="mark">🎯</span>プロンプト &amp; コンテキストエンジニアリング<span class="sub">基盤技術</span></div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
       <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
@@ -202,12 +201,12 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">技法</div>
     <a href="#basics"><span class="no">01</span>7大基本技法（❌/✅ 対比）</a>
-    <a href="#structured"><span class="no">02</span>構造化出力 & フォーマット制御</a>
+    <a href="#structured"><span class="no">02</span>構造化出力 &amp; フォーマット制御</a>
     <a href="#multimodal"><span class="no">03</span>マルチモーダルプロンプト</a>
   </div>
   <div class="nav-group">
-    <div class="gt">ユースケース & モデル比較</div>
-    <a href="#models"><span class="no">04</span>主要大モデルのプロンプト特性差分</a>
+    <div class="gt">ユースケース &amp; モデル比較</div>
+    <a href="#models">モデル別の指示調整</a>
     <a href="#rag"><span class="no">05</span>RAG シナリオにおけるプロンプト設計</a>
   </div>
   <div class="nav-group">
@@ -215,8 +214,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <a href="#context"><span class="no">06</span>コンテキストエンジニアリングの核心</a>
     <a href="#agentic"><span class="no">07</span>Agentic Context（長期タスク）</a>
     <a href="#cost"><span class="no">08</span>Token 経済学とコスト管理</a>
-    <a href="#routing"><span class="no">09</span>モデルルーティング & 自動切替</a>
-    <a href="#security"><span class="no">10</span>Prompt インジェクション & セキュリティ防御</a>
+    <a href="#routing">モデルルーティングは評価から</a>
+    <a href="#security"><span class="no">10</span>Prompt インジェクション &amp; セキュリティ防御</a>
   </div>
   <div class="nav-group">
     <div class="gt">実践</div>
@@ -228,7 +227,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">実装</div>
     <a href="#tools"><span class="no">15</span>CC / Codex における設定階層</a>
-    <a href="#resources"><span class="no">16</span>リソース & 出典索引</a>
+    <a href="#resources"><span class="no">16</span>リソース &amp; 出典索引</a>
   </div>
 </nav>
 
@@ -237,7 +236,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="hero" id="top">
   <div class="badge">🎯 AI活用を支える基盤技術 · 2026年公式ドキュメント検証</div>
-  <h1>プロンプト & コンテキストエンジニアリング<br><span class="grad">技法から思考法まで</span></h1>
+  <h1>プロンプト &amp; コンテキストエンジニアリング<br><span class="grad">技法から思考法まで</span></h1>
   <p class="lead">「コンテキストは最大の資産」「プロンプトは具体的に」——本ドキュメントでは散らばりがちなノウハウを体系化。7つの基本技法（❌/✅対比）、マルチモーダル＆RAG向け入力設計、3大フロンティアモデルの特性比較、インジェクション防御、Tokenコスト最適化、6つの書き換え実例、12の実践テンプレートまで網羅します。</p>
   <div class="meta">
     <span>7大技法対比</span><span>12本番テンプレート</span><span>6完全事例</span><span>3大モデル比較</span><span>セキュリティ・コスト・RAG</span><span>CC × Codex 実装</span>
@@ -258,14 +257,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>2023年に広く語られた「プロンプトエンジニアリング（どう問いかけるか）」は、2026年には <strong>コンテキストエンジニアリング（モデルに見せるすべての情報をどう設計・管理するか）</strong> へと進化しました。単発の質問への回答から「自律的なタスク遂行」へとAIの役割が変化したためです。</p>
 
 <table class="tbl">
-  <tr><th>項目</th><th>プロンプトエンジニアリング（単発型）</th><th>コンテキストエンジニアリング（エージェント時代）</th></tr>
+  <tbody><tr><th>項目</th><th>プロンプトエンジニアリング（単発型）</th><th>コンテキストエンジニアリング（エージェント時代）</th></tr>
   <tr><td>最適化対象</td><td>単一の指示文の表現</td><td>コンテキストウィンドウ全体に何を・いつ投入し・いつ破棄するか</td></tr>
   <tr><td>主要制約</td><td>指示の明確さ</td><td><strong>Attention（注意）予算の有限性</strong>：トークン過多による注意散漫</td></tr>
   <tr><td>代表的アクション</td><td>例文の追加、フォーマットの指定</td><td>システムプロンプトの階層化、ツールセットの絞り込み、要約・圧縮</td></tr>
   <tr><td>公式定義</td><td colspan="2"><strong>最小限の高シグナルトークンセットによって、目的の成果物が得られる確率を最大化する</strong>（Anthropic Context Engineering 論文より）</td></tr>
-</table>
+</tbody></table>
 
-<div class="callout note"><b class="t">マインドセットとエンジニアリングの役割分担</b><a href="ai-leverage-guide.ja.html">AI 活用効率マップ & マインドセット</a> が「AIで何ができるか・どう向き合うか（原則）」を扱うのに対し、本ページは「具体的にどう記述し・どう情報を渡すか（実装）」を解説する実践マニュアルです。</div>
+<div class="callout note"><b class="t">マインドセットとエンジニアリングの役割分担</b><a href="ai-leverage-guide.ja.html">AI 活用効率マップ &amp; マインドセット</a> が「AIで何ができるか・どう向き合うか（原則）」を扱うのに対し、本ページは「具体的にどう記述し・どう情報を渡すか（実装）」を解説する実践マニュアルです。</div>
 </section>
 
 <div class="divider"></div>
@@ -274,43 +273,43 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">技法 01</div>
 <h2>7大基本技法（❌/✅ 対比）</h2>
 
-<h3 data-reveal>1. 明確性と具体性 (Be Clear & Direct)</h3>
+<h3 data-reveal="">1. 明確性と具体性 (Be Clear &amp; Direct)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 曖昧な指示</b>「コードをリファクタリングして綺麗にして」</div>
   <div class="good"><b>✅ 具体的指示</b>「`calculateTotal` 関数内の多重ネストされた if 文を早期リターン（ガード節）に書き換え、計算ロジックを純粋関数として抽出してください」</div>
 </div>
 
-<h3 data-reveal>2. Few-shot（具体例の提示）</h3>
+<h3 data-reveal="">2. Few-shot（具体例の提示）</h3>
 <div class="duo">
   <div class="bad"><b>❌ 抽象的なルール指示のみ</b>「ユーザーのフィードバックを感情分析してポジティブ/ネガティブに分類して」</div>
   <div class="good"><b>✅ 2〜3件の入出力例を併記</b>「入力: '動作は軽快だがUIが分かりにくい' → 出力: `{"sentiment": "mixed", "aspects": {"performance": "+", "ui": "-"}}` のように形式を例示」</div>
 </div>
 
-<h3 data-reveal>3. 思考プロセスの明示 (Chain of Thought / CoT)</h3>
+<h3 data-reveal="">3. 思考プロセスの明示 (Chain of Thought / CoT)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 即座に答えを求める</b>「このアルゴリズムの計算量を求めて」</div>
   <div class="good"><b>✅ 思考ステップを指定</b>「まず各ループの実行回数を数式化し、次に最悪ケースを特定した上で、最終的なビッグオー記法を導出してください」</div>
 </div>
 
-<h3 data-reveal>4. 構造化タグによるコンテキスト分離 (XML/Markdown Tags)</h3>
+<h3 data-reveal="">4. 構造化タグによるコンテキスト分離 (XML/Markdown Tags)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 指示と参考文書の混在</b>「次の記事を要約して。記事内容：...」</div>
   <div class="good"><b>✅ タグで領域を明確化</b>「`&lt;document&gt;...&lt;/document&gt;` 内の資料に基づき、`&lt;instructions&gt;...&lt;/instructions&gt;` に従って要約してください」</div>
 </div>
 
-<h3 data-reveal>5. 役割とトーンの定義 (Role & Persona)</h3>
+<h3 data-reveal="">5. 役割とトーンの定義 (Role &amp; Persona)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 一般論としての回答</b>「このセキュリティ設計を評価して」</div>
   <div class="good"><b>✅ 専門家の視点を付与</b>「あなたは金融系システムのシニアセキュリティアーキテクトです。OAuth 2.0 PKCE フローのトークン漏洩リスクに焦点を当ててレビューしてください」</div>
 </div>
 
-<h3 data-reveal>6. ネガティブ制約（禁止事項の明確化）</h3>
+<h3 data-reveal="">6. ネガティブ制約（禁止事項の明確化）</h3>
 <div class="duo">
   <div class="bad"><b>❌ ポジティブ指示のみ</b>「React コンポーネントを書いて」</div>
   <div class="good"><b>✅ 禁止事項を併記</b>「外部ライブラリは新規追加せず、CSS-in-JS は使用せず、必ず CSS Modules を用いてください」</div>
 </div>
 
-<h3 data-reveal>7. 出力フォーマットの厳格指定</h3>
+<h3 data-reveal="">7. 出力フォーマットの厳格指定</h3>
 <div class="duo">
   <div class="bad"><b>❌ 自然言語のまま出力</b>「変更点の一覧を出して」</div>
   <div class="good"><b>✅ スキーマやマークダウン表を指定</b>「`ファイルパス | 変更種別 | 変更理由` の3列 Markdown テーブル形式で出力してください」</div>
@@ -321,7 +320,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <section id="structured">
 <div class="sec-tag">技法 02</div>
-<h2>構造化出力 & フォーマット制御</h2>
+<h2>構造化出力 &amp; フォーマット制御</h2>
 <p>プログラムによる自動処理を行う場合、JSON Mode や Structured Outputs（Pydantic スキーマ等）を活用し、パースエラーの発生率を物理的にゼロに近づけます。</p>
 <pre><code><span class="c"># Pydantic スキーマによる確実な構造化出力</span>
 class CodeAuditResult(BaseModel):
@@ -345,21 +344,12 @@ class CodeAuditResult(BaseModel):
 
 <div class="divider"></div>
 
-<section id="models">
-<div class="sec-tag">ユースケース & モデル比較 04</div>
-<h2>主要大モデルのプロンプト特性差分</h2>
-<table class="tbl">
-<tr><th>モデル</th><th>プロンプト特性</th><th>最適な指示スタイル</th></tr>
-<tr><td><strong>Claude (Anthropic)</strong></td><td>XML タグ（<code>&lt;context&gt;</code> 等）の認識に極めて優れ、指示への忠実度が高い。</td><td>長文ドキュメントをタグで構造化し、詳細な制約を与える。</td></tr>
-<tr><td><strong>OpenAI (GPT-4o / o3)</strong></td><td>System プロンプトへの感度が高く、JSON Mode や Tool Calling の統合が堅牢。</td><td>システムロールで前提を固定し、関数スキーマを厳格定義。</td></tr>
-<tr><td><strong>Gemini (Google)</strong></td><td>超長大コンテキスト（2M）の横断推論と Context Caching が得意。</td><td>大量のドキュメントを一括投入し、キャッシュを効かせて質問。</td></tr>
-</table>
-</section>
+<section id="models"><h2>モデル別の指示調整</h2><p>推論、ツール、構造化出力、複数モダリティの公式説明を確認します。古いモデルのコツを一般化せず、条件をそろえて比較します。</p><p class="src"><a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" rel="noopener">developers.openai.com · prompt-engineering</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <section id="rag">
-<div class="sec-tag">ユースケース & モデル比較 05</div>
+<div class="sec-tag">ユースケース &amp; モデル比較 05</div>
 <h2>RAG シナリオにおけるプロンプト設計</h2>
 <p>RAG（検索拡張生成）では、検索されたコンテキストをモデルが「事実」として優先するようプロンプトで制御します：</p>
 <pre><code>&lt;system&gt;
@@ -413,17 +403,13 @@ class CodeAuditResult(BaseModel):
 
 <div class="divider"></div>
 
-<section id="routing">
-<div class="sec-tag">エンジニアリング 09</div>
-<h2>モデルルーティングと自動切り替え</h2>
-<p>タスクの複雑度に応じて、軽量モデル（判定・分類）から最強推論モデル（アーキテクチャ設計・難解バグ）へ動的に処理を振り分けるアーキテクチャを構築します。</p>
-</section>
+<section id="routing"><h2>モデルルーティングは評価から</h2><p>品質による選択、負荷分散、障害時切替を区別し、代表課題で評価します。古い issue や検索結果の不足で機能の不存在を断定しません。</p></section>
 
 <div class="divider"></div>
 
 <section id="security">
 <div class="sec-tag">エンジニアリング 10</div>
-<h2>Prompt インジェクション & セキュリティ防御</h2>
+<h2>Prompt インジェクション &amp; セキュリティ防御</h2>
 <ul>
 <li><strong>間接的インジェクション対策:</strong> 外部 Web ページやユーザー入力テキストを処理する際、プロンプト指示とデータ領域を明確に分離。</li>
 <li><strong>実行権限のガードレール:</strong> コマンド実行やファイル削除を行う前に、インターセプターミドルウェアで危険なパターンを検知・遮断。</li>
@@ -490,17 +476,17 @@ class CodeAuditResult(BaseModel):
 <div class="sec-tag">実装 15</div>
 <h2>Claude Code / Codex における設定階層</h2>
 <table class="tbl">
-<tr><th>ツール</th><th>グローバル設定</th><th>プロジェクト設定</th><th>実行時コンテキスト</th></tr>
+<tbody><tr><th>ツール</th><th>グローバル設定</th><th>プロジェクト設定</th><th>実行時コンテキスト</th></tr>
 <tr><td><strong>Claude Code</strong></td><td><code>~/.claude/config.json</code></td><td><code>CLAUDE.md</code> / <code>.claude/skills/</code></td><td>ターミナル引数 / <code>/mcp</code></td></tr>
 <tr><td><strong>Antigravity / Codex</strong></td><td><code>~/.antigravity/config</code></td><td><code>AGENTS.md</code> / <code>implementation_plan.md</code></td><td>Workspace 状態 / サンドボックス</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
 
 <section id="resources">
 <div class="sec-tag">実装 16</div>
-<h2>リソース & 出典索引</h2>
+<h2>リソース &amp; 出典索引</h2>
 <ul>
 <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">Anthropic 公式 Prompt Engineering ガイド</a></li>
 <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">OpenAI 公式 Prompt Engineering ガイド</a></li>
@@ -511,7 +497,7 @@ class CodeAuditResult(BaseModel):
 <div class="divider"></div>
 
 <div class="footer">
-  <p>プロンプト & コンテキストエンジニアリング · 技法から思考法まで · 2026年7月改訂</p>
+  <p>プロンプト &amp; コンテキストエンジニアリング · 技法から思考法まで · 2026年7月改訂</p>
 </div>
 
 </div>
@@ -519,6 +505,9 @@ class CodeAuditResult(BaseModel):
 
 <button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

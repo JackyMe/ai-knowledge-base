@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Claude Code and Codex Version Changes Summary: Only includes updates that change actual usage habits, breaking changes indexed separately, archived by month, with official sources and self-check commands.">
+<meta name="description" content="Check official changes, then validate your installed version and workflow.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tool Version Tracker · Claude Code × Codex Changelog">
-<meta property="og:description" content="Claude Code and Codex Version Changes Summary: Only includes updates that change actual usage habits, breaking changes indexed separately, archived by month, with official sources and self-check commands.">
+<meta property="og:title" content="AI tool updates and upgrades · AI Knowledge Base">
+<meta property="og:description" content="Check official changes, then validate your installed version and workflow.">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/toolchain-changelog.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>Tool Version Tracker · Claude Code × Codex Changelog</title>
+<title>AI tool updates and upgrades · AI Knowledge Base</title>
 <style>
 :root{
   --accent:#b45309; --accent-2:#f59e0b; --accent-soft:#fef6e7;
@@ -161,12 +159,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
   <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn">☰</button>
-  <div class="logo"><span class="mark">📅</span>Tool Version Tracker<span class="sub">Changelog</span></div>
+  <div class="logo"><span class="mark">📅</span>Tool Version Tracker<span class="sub">2026-09-09</span></div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
       <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
@@ -175,374 +174,31 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.en.html">◂ Topic Hub</a>
-    
+
       <span>Verified until 2026-09-09</span>
-   
- 
+
+
  <div class="progress" id="prog"></div>
- 
- <nav class="sidebar" id="sidebar">
-   <div class="side-filter"><input id="sideFilter" placeholder="Filter versions..."><span class="fk">/</span></div>
-   <div class="nav-group">
-     <div class="gt">User Guide</div>
-     <a href="#how-to-read"><span class="no">00</span>How to read this page</a>
-   </div>
-   <div class="nav-group">
-     <div class="gt">Must Read</div>
-     <a href="#breaking"><span class="no">⚠</span>Breaking Changes Index</a>
-   </div>
-   <div class="nav-group">
-     <div class="gt">Monthly Archives</div>
-     <a href="#m2026-09"><span class="no">09</span>September 2026</a>
-     <a href="#m2026-08"><span class="no">08</span>August 2026</a>
-     <a href="#m2026-07"><span class="no">07</span>July 2026</a>
-     <a href="#m2026-06"><span class="no">06</span>June 2026</a>
-   </div>
-   <div class="nav-group">
-     <div class="gt">Maintenance</div>
-     <a href="#method"><span class="no">99</span>How this page is maintained</a>
-   </div>
- </nav>
- 
+
+ <nav class="sidebar" id="sidebar"><div class="side-filter"><input id="sideFilter" placeholder="Filter chapters" aria-label="Filter chapters"></div><div class="nav-group"><a href="#how-to-read"><span class="no">01</span>How to use release notes</a><a href="#breaking"><span class="no">02</span>Verified Codex flag behavior</a><a href="#m2026-09"><span class="no">03</span>Official release sources</a><a href="#method"><span class="no">04</span>Upgrade and rollback checks</a></div></nav>
+
  <main class="main">
- <div class="wrap">
- 
- <div class="hero" id="top">
-   <div class="badge">📅 Claude Code × Codex · Archived by month · Verified until 2026-09-09</div>
-  <h1>Tool Version Tracker<br><span class="grad">What changed · Should you change your habits</span></h1>
-  <p class="lead">AI programming tools iterate too fast, and official changelogs are long and trivial. This page does only one thing: filters the version changes of Claude Code and Codex to <strong>"those relevant to you"</strong>, clearly marking which ones will invalidate your old habits and which ones are worth trying right away.</p>
-  <div class="meta">
-    <span>Only includes impactful changes</span><span>Breaking changes indexed separately</span><span>Each entry includes time and version number</span><span>Archived monthly</span>
-  </div>
-</div>
-
-<div class="stats">
-  <div class="stat"><b>🔴 Breaking</b><span>Old syntax/habits will fail, must-read before upgrading</span></div>
-  <div class="stat"><b>🔄 Behavior Change</b><span>Same operation yields different results, usable without changes but good to know</span></div>
-  <div class="stat"><b>🆕 New</b><span>New commands, new configurations, new models</span></div>
-</div>
-
-<section id="how-to-read">
-<div class="sec-tag">Usage 00</div>
-<h2>How to use this page</h2>
-
-<p>This page is <strong>not a translation of the official changelog</strong>. Official changelogs have dozens of entries per version, mostly internal fixes, and reading them all is a waste of time. What we do here is filtering and translation: only keeping <strong>changes that affect your actual operations</strong>, and explicitly stating "what you need to change".</p>
-
-<h3 data-reveal>Meaning of the three tags</h3>
-<table class="tbl">
-  <tr><th>Tag</th><th>Meaning</th><th>What you should do</th></tr>
-  <tr><td>🔴 <strong>Breaking Change</strong></td><td>Old syntax, commands, or configs will fail or have reversed behavior</td><td><strong>Must-read</strong>. If something "mysteriously stops working" after an upgrade, check here first</td></tr>
-  <tr><td>🔄 <strong>Behavior Change</strong></td><td>Commands and parameters are still there, but results or timing have changed</td><td>Just know about it, usually no need to change configs, but affects your expectations of the tool</td></tr>
-  <tr><td>🆕 <strong>New Capability</strong></td><td>New commands, configs, models</td><td>Try what's useful to you, no need to learn everything</td></tr>
-</table>
-
-<h3 data-reveal>What is not included</h3>
-<ul>
-  <li>Pure internal refactoring, performance optimization (unless it affects perceptible user experience)</li>
-  <li>Fixes for extremely niche scenarios on specific platforms (unless it's a common trap, like Windows path issues)</li>
-  <li>Preview/experimental features (will be included when GA, to avoid changes right after writing)</li>
-</ul>
-
-<div class="callout warn"><b class="t">Timeliness Declaration</b>Claude Code releases a version about every 1-2 days, and Codex updates weekly. <strong>If the verification date on this page is more than a month ago, you should rely on official sources</strong>, don't treat this as the sole truth. For official sources, see the <a href="#method">How to maintain this page</a> section.</div>
-</section>
-
-<div class="divider"></div>
-
-<section id="breaking">
-<div class="sec-tag">Must-read for upgrades</div>
-<h2>Breaking changes index</h2>
-
-<p>Aggregated across months, <strong>in reverse chronological order</strong>. If you encounter "what used to work doesn't anymore" after an upgrade, scan this table first.</p>
-
-<h3 data-reveal>Claude Code</h3>
-<table class="tbl">
-  <tr><th>Time / Version</th><th>Change</th><th>How to adapt</th></tr>
-  <tr><td>2026-08-06<br><span class="src">v2.1.223</span></td><td><code>/review</code> is now an <strong>alias</strong> for <code>/code-review</code>, and reuses the last effort level when omitted</td><td>Rewrite all <code>/review &lt;PR#&gt;</code> to <code>/code-review &lt;PR#&gt;</code> in scripts; use <code>/code-review ultra &lt;PR#&gt;</code> for deep review</td></tr>
-  <tr><td>2026-08-07<br><span class="src">Codex 0.147.0</span></td><td><strong><code>codex exec --full-auto</code> has been removed</strong></td><td>Change all <code>--full-auto</code> in CI/scripts to <code>--sandbox workspace-write</code> (a safer default tier)</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> command has been <strong>removed</strong> (feature retired)</td><td>Delete any mention of <code>/ultraplan</code> in scripts/notes/SOPs; use <code>/plan</code> + remote review, or <code>/workflows</code> to check progress instead</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> behavior gets another layer: <strong>forked sessions come with a new worktree</strong>, no longer working on the original checkout</td><td>Workflows that "continue modifying" on the original checkout must switch to <code>/subtask</code>; <code>/fork</code> now equals "copy + independent worktree", suitable for parallel experiments</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td>Remote Control auto-enable: <strong>no longer able to be enabled via repo-local <code>.claude/settings.json</code></strong> (can still be disabled)</td><td>To enable Remote Control for teammates by default in a repo, it must be placed in user-level <code>/config</code>. Repo-local can only disable, to prevent supply chain risks</td></tr>
-  <tr><td>2026-07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code> and <code>/code-review</code> are no longer triggered automatically</td><td>Must be invoked explicitly. Workflows relying on "Claude will verify on its own" need explicit commands added</td></tr>
-  <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td>Single segment <code>dir/**</code> permission rule only matches <code>&lt;cwd&gt;/dir</code></td><td><code>Edit(src/**)</code> no longer matches <code>src</code> anywhere in the tree; write <code>**/dir/**</code> for any depth. Same for <code>if:</code> conditions in hooks</td></tr>
-  <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td><code>file</code> command's <code>-m</code>/<code>--magic-file</code>, <code>-f</code>/<code>--files-from</code> require authorization</td><td>Previously auto-allowed, now prompts for permission confirmation</td></tr>
-  <tr><td>2026-07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code> semantics reversed</td><td>Former "spawn subagent" renamed to <code>/subtask</code>; <code>/fork</code> becomes "copy session to a new background session". All scripts and docs mentioning <code>/fork</code> must check semantics</td></tr>
-  <tr><td>2026-07-17<br><span class="src">v2.1.212</span></td><td>Task tool's <code>mode</code> parameter deprecated</td><td>Parameter is now ignored, no longer throws error but has no effect</td></tr>
-  <tr><td>2026-07-11<br><span class="src">v2.1.207</span></td><td>In plugin hooks / monitors / MCP headersHelper, <code>${user_config.*}</code> in shell-style commands is rejected</td><td>Use exec style or environment variables. Plugin option values are also no longer read from project-level <code>.claude/settings.json</code></td></tr>
-  <tr><td>2026-07-03<br><span class="src">v2.1.200</span></td><td>Default permission mode renamed to <strong>Manual</strong>; <code>AskUserQuestion</code> no longer auto-continues</td><td><code>--permission-mode manual</code> / <code>"defaultMode": "manual"</code>; to restore auto-continue on timeout, explicitly enable it in <code>/config</code></td></tr>
-  <tr><td>2026-06-29<br><span class="src">v2.1.196</span></td><td>When <code>ANTHROPIC_BASE_URL</code> points to a non-Anthropic host, Remote Control is disabled</td><td>Self-hosted gateway users should note that Remote Control will be unavailable</td></tr>
-  <tr><td>2026-06-22<br><span class="src">v2.1.186</span></td><td><code>!</code> bash commands will trigger a response from Claude</td><td>To keep the old "insert context only without disturbing" behavior, set <code>"respondToBashCommands": false</code></td></tr>
-</table>
-
-<h3 data-reveal>Codex</h3>
-<table class="tbl">
-  <tr><th>Time</th><th>Change</th><th>How to adapt</th></tr>
-  <tr><td>2026-08-31</td><td><strong>GPT-5.4 and 5.4 mini officially retire</strong></td><td>Any hardcoded <code>gpt-5.4</code> or <code>gpt-5.4-mini</code> in config must be updated to <code>gpt-5.6-terra</code> or <code>gpt-5.6-luna</code> before August 31.</td></tr>
-  <tr><td>2026-07-23</td><td>Multi-folder projects: Configurations are only discovered from the <strong>main folder</strong></td><td><code>AGENTS.md</code>, skills, <code>config.toml</code> won't take effect if placed in secondary folders. Confirm which is the main folder before mounting multiple folders</td></tr>
-  <tr><td>2026-07-09</td><td>Default model generation shift to GPT-5.6 Sol</td><td>Update hardcoded <code>gpt-5.4</code> in configs; built-in selections have automatically migrated to the 5.6 equivalent tier, but explicit configs won't auto-update</td></tr>
-</table>
-
-<div class="callout note"><b class="t">How to self-check quickly</b>For Claude Code, use <code>/release-notes</code> to see changes between your current version and the latest; for Codex, use <code>codex debug models</code> to verify actual available models, and <code>/debug-config</code> to check "why this config key isn't working".</div>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-09">
-<div class="sec-tag">Archive 09</div>
-<h2>September 2026</h2>
-
-<h3 data-reveal>Claude Code: Performance Tuning & Diagnostics</h3>
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>Includes general improvements and bug fixes.</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> Diagnostic</strong>: New command to find and prune unused skills that consume context overhead.</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>Massive Terminal Output</strong>: Added <code>bashOutputMaxChars</code> and <code>taskOutputMaxChars</code> (up to 128K characters).</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>External System Prompt File</strong>: Added <code>--append-subagent-system-prompt-file</code> to inject extremely long prompts into subagents.</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>Fixed bugs where resumed sessions lost Hook outputs and parallel tool context; resolved TLS proxy hangs in the Bedrock setup wizard.</td></tr>
-</table>
-
-<h3 data-reveal>Codex: Astra Model & UX Enhancements</h3>
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Native Astra Integration</strong>: The built-in picker now supports setting GPT-6 Astra as the default model; optimized async Guidance error handling.</td></tr>
-  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim Mode Enhanced & Plugin CLI</strong>: Undo (`u`) / Redo (`Ctrl+R`) natively preserve attachments and drafts; added <code>plugin</code> subcommand for remote marketplace management.</td></tr>
-  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool disabled by default, requires opt-in via configuration.</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-08">
-<div class="sec-tag">Archive 08</div>
-<h2>August 2026</h2>
-
-<h3 data-reveal>Claude Code: Stability focused, two behavior changes worth noting</h3>
-<p>The main theme this month is stability and convergence of permissions/workflows: <strong><code>/ultraplan</code> retired</strong>, <strong><code>/fork</code> semantics get another layer</strong>, and <strong>Remote Control auto-enable locked out by repo-local</strong>. The rest are mostly bug fixes and internal improvements.</p>
-
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>08-28</td><td>v2.1.251</td><td>🆕</td><td><strong>Lifecycle Hooks & Remote Streaming</strong>: Added <code>PreModelSwitch</code> and <code>PostModelSwitch</code>, live streaming of remote subagent tools, and improved quota tracking in <code>/usage</code>.</td></tr>
-  <tr><td>08-24</td><td>v2.1.243</td><td>🆕</td><td><strong>Size Reduction & Console Sign-in</strong>: Binary compressed to ~75MB via zstd. Added keyless Anthropic Console login, <code>modelPicker</code> config, and Loops cost tracking.</td></tr>
-  <tr><td>08-17</td><td></td><td>🆕</td><td><strong><code>/design</code> Skill (Preview)</strong>: Generate editable design artboards directly in the terminal from ideas or screenshots.</td></tr>
-  <tr><td>Late-08</td><td></td><td>🆕</td><td><strong>Concise Output Style</strong>: Configure <code>"outputStyle": "Concise"</code> to enable minimal output, stripping redundant thinking steps and pleasantries.</td></tr>
-  <tr><td>Late-08</td><td></td><td>🔄</td><td><strong>Auto-Continue</strong>: Sessions blocked by usage limits can now automatically resume execution once the quota resets.</td></tr>
-  <tr><td>Late-08</td><td></td><td>🆕</td><td><strong>GitLab MR Badge</strong>: Repositories with <code>glab</code> permission now show MR status badges in the status bar.</td></tr>
-  <tr><td>08-14</td><td>v2.1.228</td><td>🔄</td><td><strong>Auto Mode Default</strong>: New sessions on Pro, Max, Team plans default to Auto mode, replacing single-step manual confirmations with a risk-assessment classifier</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td><strong><code>/ultraplan</code> command removed</strong>: This feature has been retired entirely, any mention of <code>/ultraplan</code> in scripts/SOPs must be deleted</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td><strong>Remote Control auto-enable locked out by repo-local</strong>: <code>.claude/settings.json</code> can no longer enable it (only disable). To default-enable for teammates in a repo, it must be put in user-level <code>/config</code></td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td>Auto-mode security hardening: cross-session <code>SendMessage</code> must pass the permission classifier before dispatch</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td><code>/usage</code> no longer attributes the entire turn to any invoked MCP, but amortizes it based on "the number of requests actually consuming the tool's result"</td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td><strong><code>/fork</code> now <em>copies + independent worktree</em></strong>: forked sessions come with a new git worktree, no longer working on the original checkout. For "continue modifying on original checkout" use <code>/subtask</code></td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td>New default wrap-up mode for background sessions: commit+push to save work when done, open draft PR if needed, follow git directives in CLAUDE.md, and finally report where the work landed</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td><strong>Focus view</strong> (VSCode): Toggle with <kbd>Ctrl+Alt+F</kbd>, folding tool activities into expandable per-turn summaries + live execution indicators</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td>Sandbox credential <code>mode: "mask"</code> (Linux/WSL): Sandbox commands read a masked copy (full text or snippet matched by <code>extract</code> regex), replaced by the agent with real values upon exit; macOS temporarily falls back to <code>deny</code></td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td><code>claude-api</code> skill adds <code>prompt-audit</code> subcommand: Audits prompts and tool descriptions for patterns written for old models</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td><code>claude plugin validate</code> emits a warning when marketplace/plugin-name will be rejected by Claude Desktop managed sync</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🔄</td><td>Fixed Bash tool permission bypass vulnerability: hidden commands in zsh <code>[[ ]]</code> regex conditions now correctly trigger permission confirmation</td></tr>
-  <tr><td>08-08</td><td>v2.1.225</td><td>🆕</td><td>Enhanced gateway usage warnings: displays gateway quota, reset time, and admin messages when hitting limits</td></tr>
-  <tr><td>08-08</td><td>v2.1.225</td><td>🔄</td><td><code>claude agents</code> adds workspace trust prompt: requires secondary confirmation when executed in untrusted directories (consistent with <code>claude</code>)</td></tr>
-  <tr><td>08-08</td><td>v2.1.225</td><td>🔧</td><td>SendMessage: Remote Control recipients on the same machine that have already confirmed permissions are no longer unexpectedly replaced</td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔧</td><td>Fixed a batch of painful production bugs: <code>/usage</code> miscalculating MCP usage, <code>SendMessage</code> rejecting long summaries over character limits, MCP tool calls treated as literal text in print mode, <code>EndConversation</code> misuse, authentication failure on Bedrock + Windows + abnormal <code>HOME</code> variable, etc.</td></tr>
-</table>
-
-<h3 data-reveal>Codex: 0.150.0 Cross-Tool Integration & Infrastructure</h3>
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>08-31</td><td></td><td>🔴</td><td><strong>GPT-5.4 & 5.4 mini officially retired</strong>: Ensure you have migrated to gpt-5.6-terra or gpt-5.6-luna.</td></tr>
-  <tr><td>08-26</td><td>0.150.0</td><td>🆕</td><td><strong>UI & Security Policy</strong>: Added iOS-style inline visualizations, retired the ambiguous "untrusted" approval policy, and tightened security rules for high-risk commands.</td></tr>
-  <tr><td>08-20</td><td>0.149.0</td><td>🆕</td><td><strong>Agents Dashboard & `/import`</strong>: Introduced a unified task management dashboard; supports importing history and configs from Claude Code and Cursor.</td></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Markdown Export & Headless Forking</strong>: Added <code>/export</code> command for TUI conversations, and <code>codex exec fork</code> supports headless forking and archiving.</td></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Cost Estimation & Bedrock Runtime</strong>: Supports token-based cost estimation, introduces Bedrock Runtime as a built-in provider, and supports async hooks & MCP extensions.</td></tr>
-  <tr><td>08-11</td><td></td><td>🆕</td><td><strong>Linux Desktop Preview</strong>: ChatGPT Desktop App (with Codex integration) is now available for Linux (Ubuntu, Debian, Fedora)</td></tr>
-  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>Security model's auto code review policy tightened: stricter confirmation defaults enabled for high-risk models, explaining permission changes in the terminal UI</td></tr>
-</table>
-
-<h3 data-reveal>Codex: 0.146.0 is a stable release with "high feature density"</h3>
-<p>The 0.146.0 release on 07-29 has no breaking changes, but brings a batch of features directly changing workflows: sessions can be named / pinned, temporary forks, plugin support for Bedrock and Claude Code marketplace, app-server connecting to remote Code Mode hosts via WebSocket, custom model providers can independently enable web search, discovering and securely reading skills resources provided by executors.</p>
-
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>Session naming + Pinning</strong>: Name new sessions with <code>/new</code> and <code>/clear</code>, pin important sessions, and switch between multiple parallel sessions in the sidebar without closing them</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>Agent Plugins manifest + Workspace publishing</strong>: Supports additional marketplaces for Bedrock and Claude Code; workspace plugins can be published and discovered by members</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>Forking with paginated history support</strong>, including <strong>temporary forks</strong> (leaves no trace in session list, ideal for one-off experimental branches)</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>app-server connects to remote Code Mode hosts via <strong>WebSocket</strong></td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>Compatible custom model providers can independently enable <strong>web search</strong></td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>Discovers executor-provided skills and securely reads their associated resources (including explicitly selected ones by the user)</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🔧</td><td>Proxy settings uniformly take effect across auth / plugin downloads / MCP authentication / remote execution / WebSocket / redirects / LM Studio connections; multi-platform fixes for Windows navigation keys, TUI rendering, and <kbd>Ctrl+Z</kbd> restoration</td></tr>
-</table>
-
-<h3 data-reveal>Claude Code: Three actionable changes in 2.1.223 / 2.1.224</h3>
-<p>The focus of these two versions this week: 1M context defaults to auto-compaction capped at 200K, <code>/review</code> renamed to an alias of <code>/code-review</code>, and fixes for Bash permission bypass + subagent <code>bypassPermissions</code> vulnerabilities. The rest are mostly feature/UI enhancements.</p>
-
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td><code>claude self-hosted-runner</code>: Register your machine/container as a Team/Enterprise session execution environment for web/mobile/desktop</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td><code>archive</code> plugin source: Install plugins via HTTPS zip, supporting SHA-256 pin verification (safer supply chain)</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td>Cross-session <code>SendMessage</code> + <code>ListAgents</code>: Claude Code sessions can communicate with each other across machines (macOS/Linux)</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔄</td><td>Removed the 200 subagent spawn limit per session; concurrency and depth limits still apply (default depth remains 3)</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔴</td><td>Sandbox <code>denyRead: "~/.aws/"</code> trailing slash could be bypassed on Linux/macOS — Fixed; re-verify your deny rules</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔴</td><td>Sandbox violation details never appeared in Bash tool results — Fixed; you can now see exactly why it was blocked in the tool output</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔧</td><td><code>SendMessage</code> false success reports ("Message sent" but not actually written) are now reported as errors</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td><code>/review</code> is now an alias for <code>/code-review</code>; <code>/code-review &lt;level&gt; &lt;pr#&gt;</code> without effort reuses the last level</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔄</td><td><strong>1M context unified to auto-compaction capped at 200K</strong>: <code>CLAUDE_CODE_DISABLE_1M_CONTEXT</code> now applies to all native 1M models (formerly just a fixed list); <code>CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT=1</code> restores old behavior</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td><strong>Bash permission bypass</strong>: Carefully crafted commands could hide parts of themselves to bypass permission checks (zsh <code>[[ ]]</code> + tab/invisible Unicode padding) — Fixed</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td>Subagent <code>bypassPermissions</code> mode ignored the organization's bypass-permissions disable policy — Fixed</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td>Workflow script <code>import()</code> could execute code outside the workflow sandbox — Fixed</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🆕</td><td>Marketplace owner wildcard entries: <code>"owner/*"</code> supports <code>strictKnownMarketplaces</code> and <code>blockedMarketplaces</code></td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🆕</td><td>Explicit warning when a requested subagent model is restricted by the organization for workflow agents / forked skills / slash commands / restored background agents</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔧</td><td>Linux sandbox failed to start due to <code>sandbox.filesystem.denyWrite</code> overwriting the working directory — Fixed</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td>Worktree isolated sessions and their subagents could execute destructive git commands on the main checkout — Now isolates file edits and Bash for all session types</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td>PreToolUse auto-allow hook bypassed tool restrictions for background agent tasks — Fixed</td></tr>
-</table>
-
-<h3 data-reveal>Codex: 0.147.0 is the first stable release of the 0.147 series</h3>
-<p>The theme of 0.147.0 is <strong>shaping the plugin ecosystem + tightened auto-approval policies</strong>: portable plugin directory persistence, Cursor/Claude skill imports, and MCP 2026-07-28 protocol support; meanwhile, the <code>--full-auto</code> flag is removed, requiring explicit trust for local projects. 0.146.1 incidentally tightened the auto-approval defaults for cyber capability models.</p>
-
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>Agent Plugins System</strong>: Supports portable plugin installation, searchable across local/personal/workspace/remote directories</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>Persistent, manually sorted session partitioning: Browse long conversations incrementally, no longer filling up the sidebar all at once</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>New CLI parameter <code>--approve-for-me</code>: One-time enable auto-approval mode (ideal for CI)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>Import managed skills from Cursor</strong>; synchronizes imported Claude/Cursor sessions to avoid duplication</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>MCP protocol upgrade: Supports <strong>2026-07-28</strong> protocol (paginated discovery/multi-turn requests/non-blocking server startup), opt-in</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>Bedrock enhancements: Caches Web search results + remote session compression (Amazon Bedrock provider)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔴</td><td><strong><code>codex exec --full-auto</code> has been removed</strong> → Use <code>--sandbox workspace-write</code> instead</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔄</td><td>Local projects require <strong>explicit trust</strong>: Unfamiliar local projects will prompt for trust confirmation (prevents supply chain risks)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔄</td><td>Credential usage will be blocked when unmanaged authentication is restricted (stricter multi-account/SSO flows)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔧</td><td><strong>Redacts</strong> keys and bearer tokens from displayed commands and replay history (prevents leaks to logs)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔧</td><td>macOS release signing switches to Azure Key Vault, no longer exporting private keys (safer supply chain)</td></tr>
-  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>Models with cyber capabilities apply <strong>safer auto-approval defaults</strong>, terminal UI explains permission changes (affects cyber model users)</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-07">
-<div class="sec-tag">Archive 07</div>
-<h2>July 2026</h2>
-
-<h3 data-reveal>Claude Code: Model generational shift + Subagent system refactor</h3>
-<p>Two main threads this month: <strong>Opus 5 takes over</strong>, and <strong>subagents completely shift from "foreground blocking" to "background concurrent"</strong>. The latter is the one that most impacts daily usage feel.</p>
-
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Change</th></tr>
-  <tr><td>07-25</td><td>v2.1.220</td><td>🔧</td><td>Fixes and stability</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><strong>Opus 5 becomes the default Opus model</strong>, native 1M context; fast tier priced at $10/$50 per Mtok</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🔄</td><td>Subagents can be spawned in a nested manner, default depth <strong>3</strong> (formerly 1); can be disabled with <code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1</code></td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><code>sandbox.network.strictAllowlist</code>: Non-allowlisted hosts are directly rejected, no longer prompting</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><code>DirectoryAdded</code> hook: Triggered when adding a new working directory via <code>/add-dir</code> mid-session</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🔄</td><td><code>/fast</code> removes support for Opus 4.7, now applies to Opus 5 and 4.8</td></tr>
-  <tr><td>07-22</td><td>v2.1.218</td><td>🔄</td><td><code>/code-review</code> changed to background subagent execution, cleaner conversation history</td></tr>
-  <tr><td>07-21</td><td>v2.1.217</td><td>🆕</td><td>Input box emoji shortcode completion (<code>:heart:</code> → ❤️), can be disabled with <code>emojiCompletionEnabled</code></td></tr>
-  <tr><td>07-20</td><td>v2.1.216</td><td>🆕</td><td><code>sandbox.filesystem.disabled</code>: Skips filesystem isolation but retains network egress controls</td></tr>
-  <tr><td>07-19</td><td>v2.1.215</td><td>🔴</td><td><code>/verify</code> and <code>/code-review</code> no longer trigger automatically, must be invoked explicitly</td></tr>
-  <tr><td>07-18</td><td>v2.1.214</td><td>🔴</td><td>Single segment <code>dir/**</code> permission rule tightened to only match <code>&lt;cwd&gt;/dir</code></td></tr>
-  <tr><td>07-18</td><td>v2.1.214</td><td>🆕</td><td><code>EndConversation</code> tool: Claude can actively terminate sessions with severe abuse/jailbreak attempts</td></tr>
-  <tr><td>07-17</td><td>v2.1.212</td><td>🔴</td><td><code>/subtask</code> replaces the former subagent function of <code>/fork</code>; <code>/fork</code> changed to copying the session to a new background session</td></tr>
-  <tr><td>07-17</td><td>v2.1.212</td><td>🔄</td><td>Per-session quotas: WebSearch 200 times, subagents 200; MCP calls exceeding 2 minutes auto-shift to background</td></tr>
-  <tr><td>07-15</td><td>v2.1.211</td><td>🆕</td><td><code>--forward-subagent-text</code>: Merges subagent text and thoughts into stream-json output</td></tr>
-  <tr><td>07-14</td><td>v2.1.208</td><td>🆕</td><td><strong>Screen reader mode</strong>: <code>claude --ax-screen-reader</code> or <code>"axScreenReader": true</code></td></tr>
-  <tr><td>07-11</td><td>v2.1.207</td><td>🔄</td><td>Auto mode is enabled by default in Bedrock / Vertex / Foundry, no longer requiring opt-in; can be disabled with <code>disableAutoMode</code></td></tr>
-  <tr><td>07-08</td><td>v2.1.205</td><td>🔄</td><td>Auto mode adds protections: prevents tampering with session record files; prompts before executing <code>rm -rf</code> on unresolvable variables</td></tr>
-  <tr><td>07-06</td><td>v2.1.202</td><td>🔄</td><td><code>/review &lt;pr&gt;</code> reverts to single-pass fast review; multi-agent review switches to <code>/code-review &lt;level&gt; &lt;pr#&gt;</code></td></tr>
-  <tr><td>07-03</td><td>v2.1.200</td><td>🔴</td><td>Default permission mode renamed to Manual; <code>AskUserQuestion</code> no longer auto-continues</td></tr>
-  <tr><td>07-01</td><td>v2.1.198</td><td>🔄</td><td><strong>Subagents run in background by default</strong>, Claude continues advancing the main thread while subagents work</td></tr>
-  <tr><td>07-01</td><td>v2.1.198</td><td>🆕</td><td><code>/dataviz</code> command; Claude in Chrome officially GA</td></tr>
-</table>
-
-<h3 data-reveal>Codex: Merged into ChatGPT desktop + Multi-folder projects</h3>
-<table class="tbl">
-  <tr><th>Date</th><th>Type</th><th>Change</th></tr>
-  <tr><td>07-23</td><td>🔴</td><td><strong>Multi-folder local projects</strong>: Can mount multiple related folders, but <code>AGENTS.md</code>, skills, <code>config.toml</code> are only discovered from the <strong>main folder</strong></td></tr>
-  <tr><td>07-23</td><td>🆕</td><td>ChatGPT Voice (Powered by GPT-Live): Coordinate tasks with voice in Chat / Work / Codex</td></tr>
-  <tr><td>07-09</td><td>🔄</td><td><strong>GPT-5.6 Sol GA and becomes default model</strong>; alongside Terra (balanced) and Luna (fast & cheap) variants</td></tr>
-  <tr><td>07-09</td><td>🆕</td><td>Codex merged into <strong>ChatGPT Desktop App</strong> (macOS / Windows); added PR Chat (reviews GitHub PRs with inline feedback), Sites custom domains</td></tr>
-  <tr><td>Within July</td><td>🆕</td><td>Rollout token budget: Tracks usage across agent threads, remainder alerts, exhausts abort turns</td></tr>
-  <tr><td>Within July</td><td>🆕</td><td>Multi-agent delegation toggle: Disabled / explicit request only / active, configurable at thread and turn levels</td></tr>
-  <tr><td>Within July</td><td>🆕</td><td>Indexed web search mode: Allows real-time search, but direct page access is limited to server-approved URLs</td></tr>
-  <tr><td>Within July</td><td>🆕</td><td><code>/plugins</code> grouped into OpenAI Curated / Workspace / Shared with me; can be recommended and installed mid-turn</td></tr>
-  <tr><td>Within July</td><td>🔧</td><td>Windows: <code>codex doctor</code> correctly identifies npm installations; MSVC binaries no longer depend on standalone VC++ runtimes. Linux: Fixed TUI rendering upon <code>fg</code> restore after <kbd>Ctrl+Z</kbd> suspend</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-06">
-<div class="sec-tag">Archive 06</div>
-<h2>June 2026</h2>
-
-<h3 data-reveal>Claude Code: Sonnet 5 Arrives + Sandbox and Auto Mode Hardening</h3>
-<table class="tbl">
-  <tr><th>Date</th><th>Version</th><th>Type</th><th>Changes</th></tr>
-  <tr><td>06-30</td><td>v2.1.197</td><td>🆕</td><td><strong>Sonnet 5 becomes default model</strong>, native 1M context</td></tr>
-  <tr><td>06-29</td><td>v2.1.196</td><td>🔴</td><td><code>ANTHROPIC_BASE_URL</code> disables remote control when pointing to non-Anthropic host</td></tr>
-  <tr><td>06-29</td><td>v2.1.196</td><td>🆕</td><td>Org default model ("Org default"/"Role default" shown in <code>/model</code>); clickable file attachments in chat</td></tr>
-  <tr><td>06-29</td><td>v2.1.196</td><td>🔄</td><td><code>claude mcp list/get</code> no longer starts <code>.mcp.json</code> servers self-approved via committed <code>.claude/settings.json</code></td></tr>
-  <tr><td>06-26</td><td>v2.1.195</td><td>🔧</td><td>Fix hyphenated hook matchers (like <code>code-reviewer</code>) matching as substrings; changed to exact match</td></tr>
-  <tr><td>06-25</td><td>v2.1.193</td><td>🆕</td><td><code>autoMode.classifyAllShell</code>: All Bash/PowerShell commands pass through auto mode classifier</td></tr>
-  <tr><td>06-24</td><td>v2.1.191</td><td>🆕</td><td><strong><code>/rewind</code></strong>: Restore session to state before <code>/clear</code></td></tr>
-  <tr><td>06-24</td><td>v2.1.191</td><td>🔄</td><td>Sandbox network auth improvements: Remembers hosts you allowed in current session</td></tr>
-  <tr><td>06-23</td><td>v2.1.187</td><td>🆕</td><td><code>sandbox.credentials</code>: Forbid sandbox commands from reading credential files and secret environment variables</td></tr>
-  <tr><td>06-22</td><td>v2.1.186</td><td>🔴</td><td><code>!</code> bash commands now trigger Claude response; <code>"respondToBashCommands": false</code> restores old behavior</td></tr>
-  <tr><td>06-22</td><td>v2.1.186</td><td>🆕</td><td><code>claude mcp login/logout &lt;name&gt;</code> non-interactive MCP auth; SSH environment adds <code>--no-browser</code></td></tr>
-  <tr><td>06-19</td><td>v2.1.183</td><td>🔄</td><td>Auto mode security hardening: Unprompted <code>git reset --hard</code>, <code>git clean -fd</code>, <code>git stash drop</code>, terraform/pulumi/cdk destroy are blocked</td></tr>
-  <tr><td>06-17</td><td>v2.1.181</td><td>🆕</td><td><strong><code>/config key=value</code></strong>: Change settings directly in prompt, e.g., <code>/config thinking=false</code></td></tr>
-</table>
-
-<h3 data-reveal>Codex: Remote graduates to GA + Sites and Recordable Skill</h3>
-<table class="tbl">
-  <tr><th>Date</th><th>Type</th><th>Changes</th></tr>
-  <tr><td>06-25</td><td>🆕</td><td><strong>Codex Remote goes GA</strong>: iOS/Android 1:1 QR pairing with host; DigitalOcean plugin can spawn Droplet as remote workspace</td></tr>
-  <tr><td>06-18</td><td>🆕</td><td><strong>Record &amp; Replay</strong> (macOS): Turn demonstrated workflows into reusable skills; automated run history supports bulk operations; threads handoff between local and remote hosts</td></tr>
-  <tr><td>06-11</td><td>🆕</td><td><code>/init</code> generates project description; Browser developer mode (connects to Chrome DevTools Protocol); Plus/Pro limit reset savings</td></tr>
-  <tr><td>06-02</td><td>🆕</td><td><strong>Sites plugin</strong> preview: Create, deploy, and manage websites and Web apps</td></tr>
-  <tr><td>06-01</td><td>🆕</td><td>Support <strong>Amazon Bedrock</strong> as model provider, using AWS managed auth and account control</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="method">
-<div class="sec-tag">Maintenance 99</div>
-<h2>How to maintain this page</h2>
-
-<p>The value of this page lies entirely in its "freshness". Left unattended, three months later it will be worse than nothing—because readers will take it as truth. Therefore, the maintenance process itself is included here.</p>
-
-<h3 data-reveal>Data sources (sorted by reliability)</h3>
-<table class="tbl">
-  <tr><th>Tool</th><th>Primary Source</th><th>Local Self-check Commands</th></tr>
-  <tr><td>Claude Code</td><td><a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com/docs/en/changelog</a></td><td><code>/release-notes</code> (to see diff from your current version to latest)</td></tr>
-  <tr><td>Codex</td><td><a href="https://learn.chatgpt.com/docs/changelog" target="_blank">learn.chatgpt.com/docs/changelog</a></td><td><code>codex debug models</code> (actual available models), <code>/debug-config</code> (why config isn't taking effect)</td></tr>
-</table>
-
-<div class="callout warn"><b class="t">Don't use secondary sources as the sole basis</b>There are many third-party changelog aggregator sites online, updating quickly but often missing "breaking" annotations, and sometimes listing preview features as released. <strong>Anything going into the "Breaking changes" table must be verified against official sources</strong>—this rule is the difference between this knowledge base and "AI-generated collections".</div>
-
-<h3 data-reveal>Update workflow</h3>
-<p>The repository has already solidified this workflow into a reusable skill (<code>.claude/skills/refresh-toolchain/</code>). Just tell Claude Code to "run a toolchain version check" to trigger it. The process itself is:</p>
-<ol>
-  <li><strong>Confirm current date</strong>—this step cannot be skipped, otherwise it's easy to judge what's "new" based on outdated cognition</li>
-  <li><strong>Pull two official changelogs</strong>, scope is "last verification date → today"</li>
-  <li><strong>Three-category filtering</strong>: Breaking / Behavior Change / New. Internal refactors, niche platform fixes, and preview features are uniformly excluded</li>
-  <li><strong>Write back to four locations</strong>: This page's monthly archive, this page's breaking index, Claude Code guide's "Recent Important Changes", Codex guide's "Recent Important Changes"</li>
-  <li><strong>Check if old content is invalidated</strong>—this step is easiest to miss. A new version might make a description in the guide text outright wrong (e.g., command renamed, default value changed); must backtrack from changes to the main text</li>
-  <li><strong>Update date markers in three places</strong>: The top bar and hero badge of the two guides, and this page's top bar</li>
-  <li><strong>Re-run search index</strong> <code>python3 scripts/build-search-index.py</code>, then commit</li>
-</ol>
-
-<div class="callout tip"><b class="t">Reminder Mechanism</b>The repository is configured with a GitHub Action that automatically opens an issue on the 1st of every month reminding it's time to check, attached with the last check date and a link to this page. No need to memorize dates.</div>
-</section>
-
-<div class="divider"></div>
-
-<div class="footer">
-  <p><strong>Note</strong>: This page is a personally curated summary of version changes, <strong>not an official release channel</strong>. The inclusion criterion is "whether it affects actual usage", thus deliberately omitting a large number of internal fixes and niche scenario changes. When any item conflicts with the official changelog, <strong>the official one prevails</strong>. If you find errors or omissions, please open an issue in the <a href="https://github.com/JackyMe/ai-knowledge-base" target="_blank">GitHub repository</a>.</p>
-</div>
-
-</div>
+ <div class="wrap"><div class="hero"><div class="badge">2026-09-09</div><h1>AI tool updates and upgrades</h1><p class="lead">Check official changes, then validate your installed version and workflow.</p></div><section id="how-to-read"><div class="sec-tag">01</div><h2>How to use release notes</h2><p>Historical notes do not replace current help. Record versions, configuration, and symptoms before upgrading. Unsupported monthly summaries have been removed; project Git history retains previous text.</p></section>
+<section id="breaking"><div class="sec-tag">02</div><h2>Verified Codex flag behavior</h2><p>Current CLI documentation still lists untrusted approval mode. codex exec --full-auto is a deprecated compatibility flag that warns, not a removed option. Migrate using installed-version help and configure approval and sandbox separately.</p><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
+<section id="m2026-09"><span id="m2026-08"></span><span id="m2026-07"></span><span id="m2026-06"></span><div class="sec-tag">03</div><h2>Official release sources</h2><p>Read original releases and check dates, surfaces, and versions. Distinguish previews, staged rollouts, and general availability.</p><p class="src"><a href="https://learn.chatgpt.com/docs/changelog" target="_blank" rel="noopener">learn.chatgpt.com · changelog</a> · 2026-09-09</p><p class="src"><a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener">github.com · CHANGELOG.md</a> · 2026-09-09</p><p class="src"><a href="https://www.antigravity.google/docs/cli/reference/" target="_blank" rel="noopener">www.antigravity.google · reference</a> · 2026-09-09</p></section>
+<section id="method"><div class="sec-tag">04</div><h2>Upgrade and rollback checks</h2><p>Keep version and recoverable configuration records. Read breaking changes, test authentication, permissions, tool connections, and outputs on a small task, then adopt. Preserve logs and revert identified changes on failure.</p><pre><code>codex --version
+codex exec --help
+claude --version
+claude --help</code></pre></section><footer class="footer">Based on the linked official sources. Validate examples in your environment.</footer></div>
 </main>
 
 <button class="top-btn" id="topBtn" title="Back to top">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header>
+</body></html>

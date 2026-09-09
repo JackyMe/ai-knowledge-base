@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>31. 终极之战(下)：微服务网络 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -394,12 +393,11 @@ pre:hover .copy-btn { opacity: 1; }
 <p>在我们动手写代码之前，先看看我们将要搭建的架构：</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
-    User([用户]) --&gt;|访问端口 8080| Web[Web App<br/>(Node.js/Python)]
+<pre class="mermaid">flowchart LR
+    User([用户]) --&gt;|访问端口 8080| Web[Web App<br>(Node.js/Python)]
     Web --&gt;|读写缓存 端口 6379| Redis[(Redis)]
     Web --&gt;|持久化数据 端口 5432| DB[(PostgreSQL)]
-    DB -.挂载.- Volume[(Docker Volume<br/>数据卷)]
+    DB -.挂载.- Volume[(Docker Volume<br>数据卷)]
     
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
     classDef app fill:#e1f5fe,stroke:#0288d1;
@@ -490,9 +488,9 @@ $ <span class="bash-cmd">docker compose</span> ps
 <pre><code>NAME                IMAGE                  COMMAND                  SERVICE   CREATED          STATUS                    PORTS
 myapp-db-1          postgres:14-alpine     "docker-entrypoint.s…"   db        2 minutes ago    Up 2 minutes (healthy)    5432/tcp
 myapp-redis-1       redis:alpine           "docker-entrypoint.s…"   redis     2 minutes ago    Up 2 minutes              6379/tcp
-myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080->80/tcp
-myapp-web-2         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8081->80/tcp
-myapp-web-3         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8082->80/tcp
+myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080-&gt;80/tcp
+myapp-web-2         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8081-&gt;80/tcp
+myapp-web-3         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8082-&gt;80/tcp
 </code></pre>
 
 <p>看，<code>STATUS</code> 那一列，数据库清清楚楚写着 <code>(healthy)</code>，强迫症狂喜。</p>
@@ -645,5 +643,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

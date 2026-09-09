@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>25. Vault Migration: Volume Backups - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -331,16 +330,16 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
-  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup & Pitfall Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Guide</span></a>
+  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup &amp; Pitfall Guide</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Guide</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Magic Behind "Hello World"</span></a>
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
   <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Running an Nginx Site in Background</span></a>
-  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle & State Machine</span></a>
-  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec & Debugging</span></a>
+  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle &amp; State Machine</span></a>
+  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec &amp; Debugging</span></a>
   <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: Inspecting Logs</span></a>
   <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Limits: Preventing OOM</span></a>
   <a class="nav-item" href="14-healthcheck.en.html"><span class="n">14.</span><span>Healthcheck: Container Self-Pulse</span></a>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item on" href="25-volume-backup.en.html"><span class="n">25.</span><span>Vault Migration: Volume Backups</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Networking: Say Bye to IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (II): Microservice Mesh</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Moat: Securing Secrets with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Cleanup: System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -393,8 +392,7 @@ pre:hover .copy-btn { opacity: 1; }
 <p>The core concept is elegant: rather than directly manipulating complex OS filesystem permissions in Docker's internal directories, we <strong>spin up a temporary disposable container</strong>. We attach both the source Volume and the host's current directory (via Bind Mount) to this helper container, run <code>tar</code> to archive the data into a compressed package, and output the archive onto the host.</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart TD
+<pre class="mermaid">flowchart TD
     subgraph Host Machine
         A[Volume to Backup: db-data]
         B[Current Directory pwd]
@@ -407,12 +405,12 @@ flowchart TD
         E((Execute tar command))
     end
     
-    A -.->|Mount 1| C
-    B -.->|Mount 2| D
+    A -.-&gt;|Mount 1| C
+    B -.-&gt;|Mount 2| D
     
-    C -->|Read Data| E
-    E -->|Write Archive| D
-    D ===> F
+    C --&gt;|Read Data| E
+    E --&gt;|Write Archive| D
+    D ===&gt; F
 </pre>
 </div>
 
@@ -420,9 +418,9 @@ flowchart TD
 
 <p>Suppose we have a volume named <code>db-data</code> containing MySQL production data. We will archive it into <code>backup.tar.gz</code> in our current host directory.</p>
 
-<pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span> \
+<p class="callout warn">Backup prerequisite: the tar example requires a quiesced volume. For a running database use a database-native consistent backup. Test restoration and version compatibility; restore into a new empty volume.</p><pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span> \
   <span class="bash-arg">-v</span> db-data:/volume-data \
-  <span class="bash-arg">-v</span> $(pwd):/backup \
+  <span class="bash-arg">-v</span> "$(pwd):/backup" \
   ubuntu \
   <span class="bash-cmd">tar</span> cvzf /backup/backup.tar.gz -C /volume-data .</code></pre>
 
@@ -430,7 +428,7 @@ flowchart TD
 <ul>
   <li><code>--rm</code>: Destroys the helper container immediately upon completion, leaving no leftover clutter.</li>
   <li><code>-v db-data:/volume-data</code>: Mounts our target volume to <code>/volume-data</code> inside the helper.</li>
-  <li><code>-v $(pwd):/backup</code>: Bind mounts our host current directory into <code>/backup</code> inside the container.</li>
+  <li><code>-v "$(pwd):/backup"</code>: Bind mounts our host current directory into <code>/backup</code> inside the container.</li>
   <li><code>tar cvzf ...</code>: The workload. Compresses all files from <code>/volume-data</code> into <code>/backup/backup.tar.gz</code>. Because <code>/backup</code> is mapped to your host current working directory, the archive file lands right on your host!</li>
 </ul>
 
@@ -450,7 +448,7 @@ flowchart TD
 <p>2. Launch a helper container to decompress (notice <code>-xvzf</code> for extraction):</p>
 <pre><code><span class="bash-cmd">docker</span> run <span class="bash-arg">--rm</span> \
   <span class="bash-arg">-v</span> new-db-data:/volume-data \
-  <span class="bash-arg">-v</span> $(pwd):/backup \
+  <span class="bash-arg">-v</span> "$(pwd):/backup" \
   ubuntu \
   <span class="bash-cmd">tar</span> xvzf /backup/backup.tar.gz -C /volume-data</code></pre>
   
@@ -463,7 +461,7 @@ flowchart TD
   <div class="ic">💡</div>
   <div><span class="tt">Pro-Tip: Native Logical Backups for Databases</span>
   While raw volume archiving via <code>tar</code> is universal, the cleanest approach for relational databases (MySQL, PostgreSQL) is using native logical export utilities (e.g. <code>mysqldump</code> or <code>pg_dump</code>).<br>
-  For example: <code>docker exec my-mysql mysqldump -uroot -p123456 my_db > backup.sql</code><br>
+  For example: <code>docker exec my-mysql mysqldump -uroot -p123456 my_db &gt; backup.sql</code><br>
   Logical dumps can be executed while the database is live without filesystem locking, and offer superior forward compatibility across major version upgrades.</div>
 </div>
 
@@ -483,7 +481,7 @@ flowchart TD
   
 <div class="page-nav">
   <a href="24-bind-mounts.en.html" class="page-nav-link prev"><span class="dir">← Previous Lesson</span><span class="title">24. Dev Superpower: Bind Mounts</span></a>
-  <a href="26-network-types.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">26. Network Deep Dive: Bridge & Host</span></a>
+  <a href="26-network-types.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">26. Network Deep Dive: Bridge &amp; Host</span></a>
 </div>
 
   <div class="keyboard-hints">
@@ -592,5 +590,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

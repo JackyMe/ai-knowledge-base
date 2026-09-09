@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>31. 실전 배틀(하): 마이크로서비스 네트워크 - Docker 35단계 완벽 마스터</title>
@@ -283,6 +281,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -325,7 +324,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 제2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 문제 해결 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 설치 및 설정 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 설치 및 설정 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정으로 다운로드 가속화</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 마법의 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -356,7 +355,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이사: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 제6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 제6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐구: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 입력과의 작별</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요한가?</span></a>
@@ -365,7 +364,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item on" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>실전 배틀(하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 제7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 제7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>성벽 방어: .env를 통한 비밀 정보 보호</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 대청소: system prune</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 절대 원칙: Root 실행 금지</span></a>
@@ -374,7 +373,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 단계: 네트워크 & 오케스트레이션 · 제 31 / 35 레슨</div>
+  <div class="chapter-badge">🐳 단계: 네트워크 &amp; 오케스트레이션 · 제 31 / 35 레슨</div>
   <h1>제31레슨: 실전 배틀(하): 마이크로서비스 3계층(Web + Cache + DB) 완벽 오케스트레이션</h1>
 
   <p>이전 레슨에서 우리는 Docker Compose를 이용해 Web과 Redis를 멋지게 연동했습니다. 하지만 현실의 엔터프라이즈 서비스에는 가장 핵심적인 요소가 빠져 있습니다. 바로 <strong>관계형 데이터베이스(RDBMS)</strong>입니다!</p>
@@ -385,12 +384,11 @@ pre:hover .copy-btn { opacity: 1; }
   <p>실제 코드를 작성하기 전에 구축할 전체 시스템의 서비스 토폴로지를 확인해 봅니다:</p>
 
   <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
-    User([외부 사용자]) -->|호스트 포트 8080 접속| Web["Web App<br/>(Node.js / Python API)"]
-    Web -->|캐시 읽기/쓰기 6379| Redis[("Redis 캐시")]
-    Web -->|영속 데이터 SQL 5432| DB[("PostgreSQL")]
-    DB -.볼륨 마운트.- Volume[("Docker Volume<br/>pgdata")]
+<pre class="mermaid">flowchart LR
+    User([외부 사용자]) --&gt;|호스트 포트 8080 접속| Web["Web App<br>(Node.js / Python API)"]
+    Web --&gt;|캐시 읽기/쓰기 6379| Redis[("Redis 캐시")]
+    Web --&gt;|영속 데이터 SQL 5432| DB[("PostgreSQL")]
+    DB -.볼륨 마운트.- Volume[("Docker Volume<br>pgdata")]
     
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
     classDef app fill:#e1f5fe,stroke:#0288d1;
@@ -477,7 +475,7 @@ $ <span class="bash-cmd">docker compose</span> ps
 <pre><code>NAME                IMAGE                  COMMAND                  SERVICE   CREATED          STATUS                    PORTS
 myapp-db-1          postgres:14-alpine     "docker-entrypoint.s…"   db        2 minutes ago    Up 2 minutes (healthy)    5432/tcp
 myapp-redis-1       redis:alpine           "docker-entrypoint.s…"   redis     2 minutes ago    Up 2 minutes              6379/tcp
-myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080->80/tcp
+myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080-&gt;80/tcp
 </code></pre>
 
   <p><code>STATUS</code> 열에 데이터베이스가 명확하게 <code>(healthy)</code>로 표시된 것을 볼 수 있습니다.</p>
@@ -628,5 +626,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

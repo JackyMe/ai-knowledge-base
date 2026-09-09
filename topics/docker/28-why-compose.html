@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>28. 为什么需要 Compose？ - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -415,14 +414,13 @@ pre:hover .copy-btn { opacity: 1; }
 <p>你可以把那个长长的 shell 脚本，变成一个优雅优雅极其优雅的文本文件：<code>docker-compose.yml</code>。</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
-    File[docker-compose.yml<br/>(声明式配置)] -->|docker compose up| Engine{Docker Engine}
-    Engine --> C1[Web 容器]
-    Engine --> C2[API 容器]
-    Engine --> C3[DB 容器]
-    Engine --> Net[专用网络]
-    Engine --> Vol[数据卷]
+<pre class="mermaid">flowchart LR
+    File[docker-compose.yml<br>(声明式配置)] --&gt;|docker compose up| Engine{Docker Engine}
+    Engine --&gt; C1[Web 容器]
+    Engine --&gt; C2[API 容器]
+    Engine --&gt; C3[DB 容器]
+    Engine --&gt; Net[专用网络]
+    Engine --&gt; Vol[数据卷]
 </pre>
 </div>
 
@@ -587,5 +585,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

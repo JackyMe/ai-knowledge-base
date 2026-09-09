@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>16. 语法大扫盲 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -398,7 +397,7 @@ pre:hover .copy-btn { opacity: 1; }
       <li><strong>版本锁定：</strong>千万别写 <code>FROM ubuntu:latest</code>！这等同于每次买锅底都买“最新款”，哪天配方变了你都不知道。写具体版本，如 <code>FROM ubuntu:22.04</code>。</li>
     </ul>
 <pre><span class="bash-comment"># 推荐写法</span>
-<span class="bash-cmd">FROM</span> node:18-alpine</pre>
+<span class="bash-cmd">FROM</span> node:24-alpine</pre>
   </div>
 </div>
 
@@ -437,8 +436,8 @@ pre:hover .copy-btn { opacity: 1; }
         <span class="tt">常见反面教材</span>
         不要为了看着整齐写一堆 RUN，这会让镜像多出很多层（我们会在缓存那集细说）。
         <br>❌ 错误：<br><code>RUN apt-get update</code><br><code>RUN apt-get install -y vim</code>
-        <br>✅ 正确：用 <code>&&</code> 连起来，并在最后清理垃圾<br>
-        <code>RUN apt-get update && apt-get install -y vim && rm -rf /var/lib/apt/lists/*</code>
+        <br>✅ 正确：用 <code>&amp;&amp;</code> 连起来，并在最后清理垃圾<br>
+        <code>RUN apt-get update &amp;&amp; apt-get install -y vim &amp;&amp; rm -rf /var/lib/apt/lists/*</code>
       </div>
     </div>
   </div>
@@ -474,7 +473,7 @@ pre:hover .copy-btn { opacity: 1; }
 <h2>2. 实战：一行行拆解真实的 Dockerfile</h2>
 <p>我们来看一个标准、优雅的 Node.js 生产环境 Dockerfile：</p>
 <pre><span class="bash-comment"># 1. 选锅底：使用官方推荐的小体积镜像，并锁定具体版本</span>
-<span class="bash-cmd">FROM</span> node:18-alpine
+<span class="bash-cmd">FROM</span> node:24-alpine
 
 <span class="bash-comment"># 2. 贴标签：方便别人知道是谁搞的</span>
 <span class="bash-cmd">LABEL</span> maintainer="xiaoming@xiaoming.com"
@@ -636,5 +635,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

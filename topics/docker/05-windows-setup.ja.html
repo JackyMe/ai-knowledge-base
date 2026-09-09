@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>05. Windows環境の落とし穴回避ガイド - Docker 35段階完全マスター</title>
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item on" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
     <div>
       <span class="tt">事前ヘルスチェック：PCの準備はできていますか？</span>
       <p>1. <strong>OSバージョン</strong>：<strong>Windows 10（64bit バージョン2004 / ビルド19041以上）または Windows 11</strong> が必須です。Windows 7などの古いOSの場合は先にOSを更新してください。<br>
-      2. <strong>ハードウェア仮想化支援機能</strong>：マザーボードのBIOSでCPUの仮想化支援機能（Intel VT-x / AMD-V）が<strong>「有効（Enabled）」</strong>になっている必要があります。<code>Ctrl+Shift+Esc</code> でタスクマネージャーを開き &rarr;「パフォーマンス」タブ &rarr; 右下の「仮想化」が「有効」になっているか確認してください。「無効」の場合はPC再起動時にBIOS画面に入り有効化してください。</p>
+      2. <strong>ハードウェア仮想化支援機能</strong>：マザーボードのBIOSでCPUの仮想化支援機能（Intel VT-x / AMD-V）が<strong>「有効（Enabled）」</strong>になっている必要があります。<code>Ctrl+Shift+Esc</code> でタスクマネージャーを開き →「パフォーマンス」タブ → 右下の「仮想化」が「有効」になっているか確認してください。「無効」の場合はPC再起動時にBIOS画面に入り有効化してください。</p>
     </div>
   </div>
 
@@ -445,13 +444,13 @@ processors=2 # 使用CPUコア数を2つに制限</code></pre>
     
     <div class="trouble-item">
       <div class="q">Q3: CMDで docker と入力すると「'docker' は内部コマンドまたは外部コマンドとして認識されていません」と出る</div>
-      <div class="a">A: インストーラーによるシステム環境変数の追加が失敗している可能性があります。Windowsの「システムの詳細設定」&rarr;「環境変数」を開き、システム環境変数 PATH に <code>C:\Program Files\Docker\Docker\resources\bin</code> を手動で追加してターミナルを再起動してください。</div>
+      <div class="a">A: インストーラーによるシステム環境変数の追加が失敗している可能性があります。Windowsの「システムの詳細設定」→「環境変数」を開き、システム環境変数 PATH に <code>C:\Program Files\Docker\Docker\resources\bin</code> を手動で追加してターミナルを再起動してください。</div>
     </div>
   </div>
   
   <div class="page-nav">
     <a href="04-core-components.ja.html" class="page-nav-link prev"><span class="dir">← 前のレッスン</span><span class="title">04. 図解：コア3要素のアーキテクチャ</span></a>
-    <a href="06-mac-linux-setup.ja.html" class="page-nav-link next"><span class="dir">次のレッスン →</span><span class="title">06. Mac & Linux 環境構築プレイブック</span></a>
+    <a href="06-mac-linux-setup.ja.html" class="page-nav-link next"><span class="dir">次のレッスン →</span><span class="title">06. Mac &amp; Linux 環境構築プレイブック</span></a>
   </div>
 
   <div class="keyboard-hints">
@@ -560,5 +559,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

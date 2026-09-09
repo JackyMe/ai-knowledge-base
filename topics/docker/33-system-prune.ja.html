@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>33. ディスク大掃除：system prune - Docker 35段階完全マスター</title>
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linuxセットアップの極意</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
   </div>
@@ -438,7 +437,7 @@ $ <span class="bash-cmd">docker system</span> prune -a
 
 <p>Mac や Windows の Docker Desktop 環境では、ターミナルで <code>prune</code> を実行して数GB削減したはずなのに、ホスト OS 側の空き容量が増えない現象に遭遇することがあります。</p>
 <p><strong>原因：</strong> Docker Desktop はホスト上に仮想ディスクファイル（<code>Docker.raw</code> や <code>vhdx</code>）を確保して動作しています。このファイルは自動的に拡張されますが、内部でファイルを消してもホスト側ファイルサイズは自動縮小されにくい特性（風船のように膨らんだまま）を持っています。</p>
-<p><strong>対処法：</strong> Docker Desktop の設定画面 -> 右上の 🐛 アイコン（Troubleshoot） -> <strong>Clean / Purge data</strong> を開き、Disk image を初期化します（※ローカルイメージの再取得が必要になります）。</p>
+<p><strong>対処法：</strong> Docker Desktop の設定画面 -&gt; 右上の 🐛 アイコン（Troubleshoot） -&gt; <strong>Clean / Purge data</strong> を開き、Disk image を初期化します（※ローカルイメージの再取得が必要になります）。</p>
 
 <div class="trouble-box">
   <div class="trouble-title">🚨 トラブルシューティング救急室</div>
@@ -448,7 +447,7 @@ $ <span class="bash-cmd">docker system</span> prune -a
   </div>
   <div class="trouble-item">
     <div class="q">Q2: コンテナのログファイルが肥大化してディスクを埋め尽くしています。</div>
-    <div class="a">A: ホスト深部のログファイルを直接削除すると Docker の内部整合性が崩れる恐れがあります。<code>docker-compose.yml</code> 側でログローテーション制限を設定するのが恒久対策です：<br/><code>logging: { driver: "json-file", options: { "max-size": "10m", "max-file": "3" } }</code></div>
+    <div class="a">A: ホスト深部のログファイルを直接削除すると Docker の内部整合性が崩れる恐れがあります。<code>docker-compose.yml</code> 側でログローテーション制限を設定するのが恒久対策です：<br><code>logging: { driver: "json-file", options: { "max-size": "10m", "max-file": "3" } }</code></div>
   </div>
 </div>
 
@@ -565,5 +564,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

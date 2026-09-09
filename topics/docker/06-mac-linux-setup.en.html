@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>06. Mac & Linux Setup Playbook - Docker 35-Stage Mastery Column</title>
+<title>06. Mac &amp; Linux Setup Playbook - Docker 35-Stage Mastery Column</title>
 <style>
 :root {
   --accent: #0284c7;
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item on" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Playbook</span></a>
+    <a class="nav-item on" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Playbook</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
   </div>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Disappearing Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Disappearing Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifeline: Data Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
     <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Data Backup</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (Part 2): Microservices Network</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Defense Moat: .env Secrets</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Space Spring Cleaning</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Red Line: Never Run as Root</span></a>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
 
 <main class="main-wrap">
   <div class="chapter-badge">🐳 Phase: Environment Setup · Lesson 06 / 35</div>
-  <h1>06. Mac & Linux Setup Playbook</h1>
+  <h1>06. Mac &amp; Linux Setup Playbook</h1>
 
   <p>In the previous lesson, we covered the Windows setup guide. Today, let's explore how to elegantly configure Docker on macOS and Linux—the two primary operating systems favored by software engineers. While both share Unix heritage (Linux being the native host of containerization), there are still crucial nuances and traps to avoid.</p>
 
@@ -397,7 +396,7 @@ pre:hover .copy-btn { opacity: 1; }
         <li>For Apple Silicon machines (M1, M2, M3, M4, etc.), choose <strong>Mac with Apple silicon</strong>.</li>
         <li>For older Intel-based Macs, choose <strong>Mac with Intel chip</strong>.</li>
       </ul>
-      <p><em>Selecting the wrong architecture causes extreme CPU emulation overhead or startup crashes! If unsure, click the Apple logo in the top-left menu &rarr; "About This Mac" to verify your Chip/Processor.</em></p>
+      <p><em>Selecting the wrong architecture causes extreme CPU emulation overhead or startup crashes! If unsure, click the Apple logo in the top-left menu → "About This Mac" to verify your Chip/Processor.</em></p>
       <p>2. Open the downloaded <code>.dmg</code> file and drag the Docker icon into your Applications folder.</p>
       <p>3. Launch Docker from Launchpad, accept the license agreement, and look for the whale icon in your macOS top menu bar. Once the whale stops animating and shows "Docker Desktop is running" in green, you're all set!</p>
     </div>
@@ -416,7 +415,7 @@ pre:hover .copy-btn { opacity: 1; }
     <span class="ic">💡</span>
     <div>
       <span class="tt">Pro-Tip: Mac Performance Optimization</span>
-      Docker Desktop's default resource allocations may need tuning for demanding workloads. Click the top-bar whale icon &rarr; Settings &rarr; Resources:
+      Docker Desktop's default resource allocations may need tuning for demanding workloads. Click the top-bar whale icon → Settings → Resources:
       <br>1. <strong>Memory</strong>: Recommended 4GB–8GB. Too little RAM causes container compile jobs to freeze or OOM.
       <br>2. <strong>Virtual Disk Limit</strong>: Defaults to 60GB. Shrink if local SSD storage is constrained, or redirect <code>Disk image location</code> to an external Thunderbolt drive.
       <br>3. <strong>VirtioFS</strong>: Under General Settings, make sure <code>VirtioFS</code> is enabled. This dramatically accelerates disk I/O performance for bind mounts between macOS and Linux containers!
@@ -435,7 +434,7 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
 
   <div class="step-panel">
-    <div class="step-header">🔥 Recommended: Official Convenience Script (Clean & Fast)</div>
+    <div class="step-header">🔥 Recommended: Official Convenience Script (Clean &amp; Fast)</div>
     <div class="step-body">
       <p>Whether you're running Ubuntu, Debian, or CentOS/RHEL, Docker provides an automated installer script that configures official upstream repositories:</p>
       <pre><code><span class="bash-comment"># 1. Download official setup script</span>
@@ -444,7 +443,7 @@ pre:hover .copy-btn { opacity: 1; }
 <span class="bash-cmd">sudo</span> <span class="bash-cmd">sh</span> get-docker.sh</code></pre>
       <p>Wait 1–2 minutes, and you will see output confirming Docker Engine installation:</p>
       <pre><code># Executing docker install script, commit: 7cae5f34...
-+ sh -c apt-get update -qq >/dev/null
++ sh -c apt-get update -qq &gt;/dev/null
 + sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ...
 ...
 Client: Docker Engine - Community
@@ -601,5 +600,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

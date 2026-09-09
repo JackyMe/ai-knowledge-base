@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>04. 图解三剑客架构 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -397,7 +396,7 @@ flowchart LR
     subgraph 1. 客户端 (Client)
         C[Docker CLI 命令界面]
         C -- "发送 REST API 请求
-(比如 docker run)" --> D
+(比如 docker run)" --&gt; D
     end
     
     subgraph 2. 宿主机 (Docker Host)
@@ -414,16 +413,16 @@ flowchart LR
             Img2[MySQL 镜像文件]
         end
         
-        D --> Cont1
-        D --> Cont2
-        D -. "加载/运行" .-> Img1
-        D -. "加载/运行" .-> Img2
+        D --&gt; Cont1
+        D --&gt; Cont2
+        D -. "加载/运行" .-&gt; Img1
+        D -. "加载/运行" .-&gt; Img2
     end
     
     subgraph 3. 远端仓库 (Registry)
         R[(Docker Hub 公共仓库)]
         D -- "如果本地没有，去远端下载
-(docker pull)" --> R
+(docker pull)" --&gt; R
     end
     
     style C fill:#f8fafc,stroke:#cbd5e1
@@ -591,5 +590,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

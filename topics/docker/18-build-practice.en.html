@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>18. Hands-on: Packaging a Web App - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -331,16 +330,16 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
-  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup & Pitfall Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Guide</span></a>
+  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup &amp; Pitfall Guide</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Guide</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Magic Behind "Hello World"</span></a>
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
   <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Running an Nginx Site in Background</span></a>
-  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle & State Machine</span></a>
-  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec & Debugging</span></a>
+  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle &amp; State Machine</span></a>
+  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec &amp; Debugging</span></a>
   <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: Inspecting Logs</span></a>
   <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Limits: Preventing OOM</span></a>
   <a class="nav-item" href="14-healthcheck.en.html"><span class="n">14.</span><span>Healthcheck: Container Self-Pulse</span></a>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Vault Migration: Volume Backups</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Networking: Say Bye to IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (II): Microservice Mesh</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Moat: Securing Secrets with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Cleanup: System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -409,11 +408,11 @@ pre:hover .copy-btn { opacity: 1; }
 const app = express();
 const PORT = 3000;
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) =&gt; {
   res.send('Hello Docker World! Version 1');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, () =&gt; {
   console.log(`Server is running on port ${PORT}`);
 });</pre>
   </div>
@@ -430,7 +429,7 @@ npm-debug.log</pre>
 <div class="step-panel">
   <div class="step-header">📄 4. Dockerfile</div>
   <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 COPY package.json ./
 RUN npm install --production
@@ -445,27 +444,26 @@ CMD ["node", "server.js"]</pre>
 <pre><span class="bash-cmd">docker</span> <span class="bash-arg">build</span> -t my-web-api:v1 .</pre>
 
 <p>You will see line-by-line output in the terminal similar to this, where <strong>each step represents Docker executing a layer instruction</strong>:</p>
-<pre>
-Sending build context to Docker daemon  4.096kB
-Step 1/7 : FROM node:18-alpine
- ---> 44c118671404
+<pre>Sending build context to Docker daemon  4.096kB
+Step 1/7 : FROM node:24-alpine
+ ---&gt; 44c118671404
 Step 2/7 : WORKDIR /app
- ---> Running in f6b92a34241d
- ---> 55f9a9152b11
+ ---&gt; Running in f6b92a34241d
+ ---&gt; 55f9a9152b11
 Step 3/7 : COPY package.json ./
- ---> c8341999a48d
+ ---&gt; c8341999a48d
 Step 4/7 : RUN npm install --production
- ---> Running in a34b4c3e89bb
+ ---&gt; Running in a34b4c3e89bb
 added 62 packages in 2s
- ---> 2f4b009f4b32
+ ---&gt; 2f4b009f4b32
 Step 5/7 : COPY . .
- ---> 1d24a9e320f7
+ ---&gt; 1d24a9e320f7
 Step 6/7 : EXPOSE 3000
- ---> Running in 21f8a7e0231b
- ---> 53c8a9142f1a
+ ---&gt; Running in 21f8a7e0231b
+ ---&gt; 53c8a9142f1a
 Step 7/7 : CMD ["node", "server.js"]
- ---> Running in b14a938f8f11
- ---> f98a834245cc
+ ---&gt; Running in b14a938f8f11
+ ---&gt; f98a834245cc
 Successfully built f98a834245cc
 Successfully tagged my-web-api:v1
 </pre>
@@ -515,7 +513,7 @@ Successfully tagged my-web-api:v1
   <div class="trouble-title">🚨 Pitfall Rescue Room</div>
   <div class="trouble-item">
     <div class="q">Q1: What should I do if the build gets stuck on npm install with network timeout errors?</div>
-    <div class="a">A: By default, the container cannot access host-level proxies. You can temporarily switch to a local npm mirror prior to installation:<br><code>RUN npm config set registry https://registry.npmmirror.com && npm install --production</code></div>
+    <div class="a">A: By default, the container cannot access host-level proxies. You can temporarily switch to a local npm mirror prior to installation:<br><code>RUN npm config set registry https://registry.npmmirror.com &amp;&amp; npm install --production</code></div>
   </div>
 </div>
   
@@ -630,5 +628,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

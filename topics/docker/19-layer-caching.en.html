@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>19. Illustrated: Layer Caching Magic - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -331,16 +330,16 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
-  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup & Pitfall Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Guide</span></a>
+  <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Setup &amp; Pitfall Guide</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Guide</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Magic Behind "Hello World"</span></a>
 </div>
 <div class="nav-group">
   <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
   <a class="nav-item" href="09-run-detached.en.html"><span class="n">09.</span><span>Running an Nginx Site in Background</span></a>
-  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle & State Machine</span></a>
-  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec & Debugging</span></a>
+  <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Lifecycle &amp; State Machine</span></a>
+  <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Diving Inside: exec &amp; Debugging</span></a>
   <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: Inspecting Logs</span></a>
   <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Limits: Preventing OOM</span></a>
   <a class="nav-item" href="14-healthcheck.en.html"><span class="n">14.</span><span>Healthcheck: Container Self-Pulse</span></a>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Vault Migration: Volume Backups</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Networking: Say Bye to IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (II): Microservice Mesh</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Moat: Securing Secrets with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Cleanup: System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -393,11 +392,11 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="mermaid-box">
 <pre><code class="language-mermaid">
 graph TD
-    A[FROM node:18-alpine] --> B[WORKDIR /app]
-    B --> C[COPY package.json .]
-    C --> D["RUN npm install"]
-    D --> E[COPY . .]
-    E --> F["CMD ['node', 'server.js']"]
+    A[FROM node:24-alpine] --&gt; B[WORKDIR /app]
+    B --&gt; C[COPY package.json .]
+    C --&gt; D["RUN npm install"]
+    D --&gt; E[COPY . .]
+    E --&gt; F["CMD ['node', 'server.js']"]
     style A fill:#bfdbfe,stroke:#2563eb
     style C fill:#bbf7d0,stroke:#16a34a
     style D fill:#fef08a,stroke:#ca8a04
@@ -414,7 +413,7 @@ graph TD
 <div class="step-panel">
   <div class="step-header">❌ Bad Practice: Common Beginner Mistake</div>
   <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 <span class="bash-comment"># Copying all source code and package.json all at once</span>
 COPY . .
@@ -428,7 +427,7 @@ CMD ["node", "server.js"]</pre>
 <div class="step-panel">
   <div class="step-header">✅ Best Practice: Two-Stage Copy Strategy</div>
   <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 <span class="bash-comment"># Step 1: Copy ONLY dependency manifests</span>
 COPY package.json .
@@ -445,25 +444,25 @@ CMD ["node", "server.js"]</pre>
 <pre><code class="language-mermaid">
 flowchart LR
     subgraph "Bad Practice"
-        A1(COPY . .) --> B1("Code changed!<br>Re-upload code") --> C1("RUN npm install<br>Cache invalidated!<br>Painful re-install")
+        A1(COPY . .) --&gt; B1("Code changed!<br>Re-upload code") --&gt; C1("RUN npm install<br>Cache invalidated!<br>Painful re-install")
     end
     subgraph "Best Practice"
-        A2(COPY package.json .) --> B2("Unchanged! Use cache") --> C2("RUN npm install<br>Use cache! Instant") --> D2("COPY . .<br>Upload code")
+        A2(COPY package.json .) --&gt; B2("Unchanged! Use cache") --&gt; C2("RUN npm install<br>Use cache! Instant") --&gt; D2("COPY . .<br>Upload code")
     end
 </code></pre>
 </div>
 
 <h2>4. Minimizing Layers: The Art of Chaining RUN Commands</h2>
-<p>As mentioned, each <code>RUN</code> statement adds a new layer, increasing the overall image size. When installing system packages, chain commands with <code>&&</code> and clean up package manager caches in the same layer. If you remove files with <code>rm</code> in a separate subsequent layer, the image size will NOT decrease (just like Git commit history, deleted data remains trapped in parent layers).</p>
+<p>As mentioned, each <code>RUN</code> statement adds a new layer, increasing the overall image size. When installing system packages, chain commands with <code>&amp;&amp;</code> and clean up package manager caches in the same layer. If you remove files with <code>rm</code> in a separate subsequent layer, the image size will NOT decrease (just like Git commit history, deleted data remains trapped in parent layers).</p>
 <pre><span class="bash-comment"># Clean, single-layer package installation</span>
 <span class="bash-cmd">RUN</span> apt-get update \
-    && apt-get install -y vim curl net-tools \
-    && rm -rf /var/lib/apt/lists/*</pre>
+    &amp;&amp; apt-get install -y vim curl net-tools \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*</pre>
 
 <div class="alert tip">
   <span class="ic">💡</span>
   <div>
-    <span class="tt">Pro-Tip: BuildKit & Cache Mounts</span>
+    <span class="tt">Pro-Tip: BuildKit &amp; Cache Mounts</span>
     <p>For package managers like npm, pip, or maven, building on a new CI runner traditionally triggers a cold download. Docker's BuildKit engine supports advanced cache mounts: <code>RUN --mount=type=cache,target=/root/.npm npm install</code>. Downloaded package caches persist across builds in a dedicated secure cache area, boosting build speeds dramatically!</p>
   </div>
 </div>
@@ -587,5 +586,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>09. Running an Nginx Website in the Background - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,14 +331,14 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passkey</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passkey</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Mirror Acceleration: Faster Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secret of the First Line of Magic</span></a>
   </div>
   <div class="nav-group">
     <div class="nav-group-title">🚀 Phase 3: Container Operations</div>
     <a class="nav-item on" href="09-run-detached.en.html"><span class="n">09.</span><span>Run an Nginx Site in Detached</span></a>
-    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life & Death (State Machine)</span></a>
+    <a class="nav-item" href="10-lifecycle-cmds.en.html"><span class="n">10.</span><span>Mastering Life &amp; Death (State Machine)</span></a>
     <a class="nav-item" href="11-exec-into.en.html"><span class="n">11.</span><span>Breaking In: Stepping Inside Container</span></a>
     <a class="nav-item" href="12-logs-detective.en.html"><span class="n">12.</span><span>Detective View: How to Inspect Logs</span></a>
     <a class="nav-item" href="13-resource-limits.en.html"><span class="n">13.</span><span>Resource Shackles: Prevent OOM Crashes</span></a>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Ultimate Lifesaver: Named Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
-    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup & Restore</span></a>
+    <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Backup &amp; Restore</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Quest: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Goodbye IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>The Ultimate Battle 2: Microservices</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>System Cleanup: Freeing Space</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Graduation Red Line: Never Root</span></a>
@@ -411,10 +410,10 @@ pre:hover .copy-btn { opacity: 1; }
 
 <div class="mermaid-box">
 <pre><code class="language-mermaid">graph LR
-    User[User Browser] -->|Access http://localhost:8080| Host[Host Machine]
+    User[User Browser] --&gt;|Access http://localhost:8080| Host[Host Machine]
     subgraph Docker
-        Host -->|Port 8080 mapped to 80| PortMapping((Gateway / NAT))
-        PortMapping -->|Port 80| Container[Nginx Container]
+        Host --&gt;|Port 8080 mapped to 80| PortMapping((Gateway / NAT))
+        PortMapping --&gt;|Port 80| Container[Nginx Container]
     end
     style User fill:#f9f,stroke:#333,stroke-width:2px
     style Container fill:#bbf,stroke:#333,stroke-width:2px
@@ -434,8 +433,8 @@ pre:hover .copy-btn { opacity: 1; }
     <pre><code><span class="bash-cmd">docker</span> <span class="bash-arg">ps</span></code></pre>
     <p>Sample output:</p>
     <pre><code>CONTAINER ID   IMAGE   COMMAND                  CREATED         STATUS         PORTS                  NAMES
-f9a2b3c4d5e6   nginx   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0.0.0.0:8080->80/tcp   my-web</code></pre>
-    <p>Pay close attention to the <strong>PORTS</strong> column: <code>0.0.0.0:8080->80/tcp</code>. This clearly illustrates how traffic arriving at host port 8080 from any network interface (0.0.0.0) is routed directly into container port 80.</p>
+f9a2b3c4d5e6   nginx   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0.0.0.0:8080-&gt;80/tcp   my-web</code></pre>
+    <p>Pay close attention to the <strong>PORTS</strong> column: <code>0.0.0.0:8080-&gt;80/tcp</code>. This clearly illustrates how traffic arriving at host port 8080 from any network interface (0.0.0.0) is routed directly into container port 80.</p>
   </div>
 </div>
 
@@ -454,7 +453,7 @@ f9a2b3c4d5e6   nginx   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes  
 <div class="alert tip">
   <span class="ic">🌟</span>
   <div>
-    <span class="tt">Pro Tips: Ephemeral Containers (--rm) & Random Port Mapping (-P)</span>
+    <span class="tt">Pro Tips: Ephemeral Containers (--rm) &amp; Random Port Mapping (-P)</span>
     1. <strong>Ephemeral Containers <code>--rm</code></strong>: When doing quick tests, manually cleaning up dead containers with <code>docker rm</code> can get tedious. By adding the <code>--rm</code> flag (e.g., <code>docker run --rm nginx</code>), Docker will automatically clean up the container and its filesystem the moment it stops, leaving zero clutter behind!<br>
     2. <strong>Random Port Mapping <code>-P</code> (Uppercase)</strong>: If you don't want to think about available host ports, use uppercase <code>-P</code> (e.g., <code>docker run -d -P nginx</code>). Docker will automatically pick an unused high-range port on the host (like 32768) and map it to all exposed container ports. Check <code>docker ps</code> to see which port was assigned.
   </div>
@@ -462,7 +461,7 @@ f9a2b3c4d5e6   nginx   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes  
   
 <div class="page-nav">
   <a href="08-hello-world.en.html" class="page-nav-link prev"><span class="dir">← Previous Lesson</span><span class="title">08. Secret of the First Line of Magic</span></a>
-  <a href="10-lifecycle-cmds.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">10. Mastering Life & Death (State Machine)</span></a>
+  <a href="10-lifecycle-cmds.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">10. Mastering Life &amp; Death (State Machine)</span></a>
 </div>
 
 <div class="keyboard-hints">
@@ -571,5 +570,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

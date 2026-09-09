@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>31. Ultimate Battle (Part 2): Microservice Networks - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Stage 2: Environment Setup</div>
   <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passcode</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passcode</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Snail-Speed No More</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
 </div>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Stage 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Volume Backup</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Stage 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Stage 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to Hardcoded IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item on" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Ultimate Battle (Part 2): Microservice Networks</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Stage 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Stage 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Space Cleanup: Docker System Prune</span></a>
   <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 Stage: Networking & Orchestration · Lesson 31 / 35</div>
+  <div class="chapter-badge">🐳 Stage: Networking &amp; Orchestration · Lesson 31 / 35</div>
   <h1>31. Ultimate Battle (Part 2): Microservice Networks</h1>
 
 <p>In the previous lesson, we ran Web + Redis with Docker Compose. But we were still missing the most central component in modern architectures—<strong>the Database</strong>! Almost all real-world web applications rely on a persistent relational database.</p>
@@ -394,12 +393,11 @@ pre:hover .copy-btn { opacity: 1; }
 <p>Before writing the code, let's examine our architectural topology:</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-flowchart LR
-    User([End User]) -->|Port 8080| Web[Web App<br/>(Node.js/Python)]
-    Web -->|Cache Reads/Writes: Port 6379| Redis[(Redis Cache)]
-    Web -->|Data Persistence: Port 5432| DB[(PostgreSQL)]
-    DB -.Mounts.-> Volume[(Docker Volume<br/>pgdata)]
+<pre class="mermaid">flowchart LR
+    User([End User]) --&gt;|Port 8080| Web[Web App<br>(Node.js/Python)]
+    Web --&gt;|Cache Reads/Writes: Port 6379| Redis[(Redis Cache)]
+    Web --&gt;|Data Persistence: Port 5432| DB[(PostgreSQL)]
+    DB -.Mounts.-&gt; Volume[(Docker Volume<br>pgdata)]
     
     classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
     classDef app fill:#e1f5fe,stroke:#0288d1;
@@ -473,7 +471,7 @@ flowchart LR
   </div>
 </div>
 
-<h2>3. Deployment & Operational Verification</h2>
+<h2>3. Deployment &amp; Operational Verification</h2>
 
 <p>With our configuration ready, launch the entire stack in detached mode:</p>
 
@@ -488,7 +486,7 @@ $ <span class="bash-cmd">docker compose</span> ps
 <pre><code>NAME                IMAGE                  COMMAND                  SERVICE   CREATED          STATUS                    PORTS
 myapp-db-1          postgres:14-alpine     "docker-entrypoint.s…"   db        2 minutes ago    Up 2 minutes (healthy)    5432/tcp
 myapp-redis-1       redis:alpine           "docker-entrypoint.s…"   redis     2 minutes ago    Up 2 minutes              6379/tcp
-myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080->80/tcp
+myapp-web-1         myapp-web              "node index.js"          web       2 minutes ago    Up 2 minutes              0.0.0.0:8080-&gt;80/tcp
 </code></pre>
 
 <p>Notice the <code>(healthy)</code> indicator in the DB status column! You can also execute queries directly inside the database container with <code>docker compose exec db psql -U myuser -d myapp_db</code>.</p>
@@ -641,5 +639,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

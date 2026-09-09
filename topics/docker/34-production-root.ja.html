@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>34. 本番の鉄則：root実行の絶対禁止 - Docker 35段階完全マスター</title>
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linuxセットアップの極意</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
   </div>
@@ -387,10 +386,10 @@ pre:hover .copy-btn { opacity: 1; }
 <p>Dockerfile 内で <code>USER</code> 命令を使用し、一般ユーザーを作成して実行権限を切り替えます。Node.js アプリケーションにおけるベストプラクティスです：</p>
 
 <pre><code><span class="bash-comment"># 標準的な権限降格 Dockerfile</span>
-FROM node:18-alpine
+FROM node:24-alpine
 
 <span class="bash-comment"># 1. 一般ユーザーグループとユーザーを作成</span>
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -424,9 +423,9 @@ CMD [<span class="bash-str">"node"</span>, <span class="bash-str">"server.js"</s
   <div class="step-header">🔒 権限エラーのパターンと対処法</div>
   <div class="step-body">
     <ol>
-      <li><strong>特権ポートのバインド失敗：</strong> Linux では 1024 未満のポート（80, 443 等）は root のみバインド可能です。<br/><em>解決策：</em> アプリは 8080 や 3000 番などの高位ポートをリッスンさせ、手前のリバースプロキシ（Nginx）や Docker のポートフォワーディングで 80 番から転送します。</li>
-      <li><strong>ログ・一時ファイル書き込みエラー：</strong> <code>/var/log</code> 等への書き込み権限が不足します。<br/><em>解決策：</em> <code>USER appuser</code> より前の root 段階で、<code>RUN mkdir -p /var/log/app && chown appuser:appgroup /var/log/app</code> を実行してあらかじめディレクトリ所有権を付与しておきます。</li>
-      <li><strong>グローバルパッケージのインストール失敗：</strong> <code>npm install -g</code> などは失敗します。<br/><em>解決策：</em> すべてのビルド・パッケージインストール処理は <code>USER appuser</code> より<strong>上部</strong>に記述します。</li>
+      <li><strong>特権ポートのバインド失敗：</strong> Linux では 1024 未満のポート（80, 443 等）は root のみバインド可能です。<br><em>解決策：</em> アプリは 8080 や 3000 番などの高位ポートをリッスンさせ、手前のリバースプロキシ（Nginx）や Docker のポートフォワーディングで 80 番から転送します。</li>
+      <li><strong>ログ・一時ファイル書き込みエラー：</strong> <code>/var/log</code> 等への書き込み権限が不足します。<br><em>解決策：</em> <code>USER appuser</code> より前の root 段階で、<code>RUN mkdir -p /var/log/app &amp;&amp; chown appuser:appgroup /var/log/app</code> を実行してあらかじめディレクトリ所有権を付与しておきます。</li>
+      <li><strong>グローバルパッケージのインストール失敗：</strong> <code>npm install -g</code> などは失敗します。<br><em>解決策：</em> すべてのビルド・パッケージインストール処理は <code>USER appuser</code> より<strong>上部</strong>に記述します。</li>
     </ol>
   </div>
 </div>
@@ -573,5 +572,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

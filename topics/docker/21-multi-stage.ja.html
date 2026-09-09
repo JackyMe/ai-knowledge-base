@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>21. 究極の軽量化：マルチステージビルド - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linuxセットアップの極意</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
   </div>
@@ -413,15 +412,15 @@ myapp       latest      a1b2c3d4e5f6   About a minute ago   <span class="bash-ar
 <pre><code class="language-mermaid">
 flowchart LR
     subgraph S1 ["ステージ 1: ビルド環境 Builder"]
-        A["ベースイメージ golang:1.20"] --> B["ソースコードをコピー"]
-        B --> C["go build を実行"]
-        C -.-> D{"バイナリファイルの生成"}
+        A["ベースイメージ golang:1.20"] --&gt; B["ソースコードをコピー"]
+        B --&gt; C["go build を実行"]
+        C -.-&gt; D{"バイナリファイルの生成"}
     end
     
     subgraph S2 ["ステージ 2: 本番実行環境 Production"]
-        E["極小イメージ alpine"] --> F["ステージ 1 からバイナリのみコピー"]
-        D ==> F
-        F --> G["最終イメージ: わずか 20MB"]
+        E["極小イメージ alpine"] --&gt; F["ステージ 1 からバイナリのみコピー"]
+        D ==&gt; F
+        F --&gt; G["最終イメージ: わずか 20MB"]
     end
 </code></pre>
 </div>
@@ -613,5 +612,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

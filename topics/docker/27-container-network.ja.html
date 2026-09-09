@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>27. コンテナ間通信：IP直打ちからの脱却 - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linuxセットアップの極意</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
   </div>
@@ -417,9 +416,9 @@ sequenceDiagram
     participant DNS as Docker DNS (127.0.0.11)
     participant DB as DB (mysql-server)
     
-    Web->>DNS: "mysql-server" の IP アドレスは？
-    DNS-->>Web: 応答: 172.18.0.3
-    Web->>DB: 正しい IP を使って DB 接続を確立
+    Web-&gt;&gt;DNS: "mysql-server" の IP アドレスは？
+    DNS--&gt;&gt;Web: 応答: 172.18.0.3
+    Web-&gt;&gt;DB: 正しい IP を使って DB 接続を確立
 </code></pre>
 </div>
 
@@ -473,7 +472,7 @@ sequenceDiagram
   <span class="ic">🎯</span>
   <div>
     <span class="tt">プロの知恵：ネットワークエイリアス (Network Aliases)</span>
-    <code>--name</code> だけでなく、ネットワークエイリアスを付与することも可能です。例えば 3 台のバックエンドコンテナを起動し、すべてに <code>--network-alias backend-api</code> を設定します。<br/>
+    <code>--name</code> だけでなく、ネットワークエイリアスを付与することも可能です。例えば 3 台のバックエンドコンテナを起動し、すべてに <code>--network-alias backend-api</code> を設定します。<br>
     内部ネットワークから <code>backend-api</code> を呼び出すと、Docker DNS が 3 台の IP をラウンドロビンで返却します。手軽な内蔵ロードバランシングとして活用できます！
   </div>
 </div>
@@ -601,5 +600,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

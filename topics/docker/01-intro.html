@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>01. 楔子：小明的世纪难题 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -429,16 +428,16 @@ OSError: cannot load library 'libcairo.so.2': error 0x7e
 <pre><code class="language-mermaid">
 flowchart TD
     subgraph 小明的Mac
-        A[完美的运行环境] --> |打包代码| B(Source Code)
+        A[完美的运行环境] --&gt; |打包代码| B(Source Code)
     end
     subgraph 老王的Windows
-        B --> |缺少依赖| C{报错: ModuleNotFound}
+        B --&gt; |缺少依赖| C{报错: ModuleNotFound}
     end
     subgraph 测试环境CentOS
-        B --> |底层C库太老| D{报错: 编译失败}
+        B --&gt; |底层C库太老| D{报错: 编译失败}
     end
-    C -.-> E[小明: 在我电脑上是好的啊!]
-    D -.-> E
+    C -.-&gt; E[小明: 在我电脑上是好的啊!]
+    D -.-&gt; E
     style E fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
 </code></pre>
 </div>
@@ -472,7 +471,7 @@ flowchart TD
 
 <p>准备好迎接技术生涯的第一次降维打击了吗？下一节，我们将用一个生活中最通俗的例子，彻底讲透 Docker 究竟是个什么神奇魔法。</p>
 <a href="02-what-is-docker.html" class="next"><span class="dir">下一节</span><span class="title">02. 用“搬家”讲透 Docker</span></a>
-</div>
+
   
   <div class="page-nav">
   <div></div>
@@ -585,5 +584,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

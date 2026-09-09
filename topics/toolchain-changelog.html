@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Claude Code 与 Codex 的版本变化摘要:只收录会改变实际使用习惯的更新,破坏性变更单独索引,按月归档,附官方源与自查命令。">
+<meta name="description" content="从官方变更记录确认影响，再验证本地版本与工作流。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="工具版本追踪 · Claude Code × Codex 变化日志">
-<meta property="og:description" content="Claude Code 与 Codex 的版本变化摘要:只收录会改变实际使用习惯的更新,破坏性变更单独索引,按月归档,附官方源与自查命令。">
+<meta property="og:title" content="AI 工具更新与升级检查 · AI 知识库">
+<meta property="og:description" content="从官方变更记录确认影响，再验证本地版本与工作流。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/toolchain-changelog.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>工具版本追踪 · Claude Code × Codex 变化日志</title>
+<title>AI 工具更新与升级检查 · AI 知识库</title>
 <style>
 :root{
   --accent:#b45309; --accent-2:#f59e0b; --accent-soft:#fef6e7;
@@ -161,12 +159,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
   <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn">☰</button>
-  <div class="logo"><span class="mark">📅</span>工具版本追踪<span class="sub">变化日志</span></div>
+  <div class="logo"><span class="mark">📅</span>工具版本追踪<span class="sub">2026-09-09</span></div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
       <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
@@ -175,374 +174,31 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.html">◂ 主题中心</a>
-    
+
       <span>核对至 2026-09-09</span>
-   
+
 
 <div class="progress" id="prog"></div>
 
-<nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
-  <div class="nav-group">
-    <div class="gt">使用说明</div>
-    <a href="#how-to-read"><span class="no">00</span>怎么用这一页</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">升级必看</div>
-    <a href="#breaking"><span class="no">⚠</span>破坏性变更总索引</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">按月归档</div>
-    <a href="#m2026-09"><span class="no">09</span>2026 年 9 月</a>
-    <a href="#m2026-08"><span class="no">08</span>2026 年 8 月</a>
-    <a href="#m2026-07"><span class="no">07</span>2026 年 7 月</a>
-    <a href="#m2026-06"><span class="no">06</span>2026 年 6 月</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">维护说明</div>
-    <a href="#method"><span class="no">99</span>本页怎么维护</a>
-  </div>
-</nav>
+<nav class="sidebar" id="sidebar"><div class="side-filter"><input id="sideFilter" placeholder="筛选章节" aria-label="筛选章节"></div><div class="nav-group"><a href="#how-to-read"><span class="no">01</span>如何使用更新记录</a><a href="#breaking"><span class="no">02</span>已核对的 Codex 参数变化</a><a href="#m2026-09"><span class="no">03</span>官方更新入口</a><a href="#method"><span class="no">04</span>升级与回退检查</a></div></nav>
 
 <main class="main">
-<div class="wrap">
-
-<div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 按月归档 · 核对至 2026-09-09</div>
-  <h1>工具版本追踪<br><span class="grad">变了什么 · 要不要改习惯</span></h1>
-  <p class="lead">AI 编程工具迭代太快,官方 changelog 又长又琐碎。这一页只做一件事:把 Claude Code 与 Codex 的版本变化<strong>筛成"跟你有关的"</strong>,标清楚哪些会让你的老习惯失效,哪些值得马上试。</p>
-  <div class="meta">
-    <span>只收录有影响的</span><span>破坏性变更单独索引</span><span>每条附时间与版本号</span><span>逐月归档</span>
-  </div>
-</div>
-
-<div class="stats">
-  <div class="stat"><b>🔴 破坏性</b><span>老写法/老习惯会失效,升级前必看</span></div>
-  <div class="stat"><b>🔄 行为变化</b><span>同样操作结果不同,不改也能用但要知道</span></div>
-  <div class="stat"><b>🆕 新增</b><span>新命令、新配置、新模型</span></div>
-</div>
-
-<section id="how-to-read">
-<div class="sec-tag">用法 00</div>
-<h2>怎么用这一页</h2>
-
-<p>这一页<strong>不是官方 changelog 的翻译</strong>。官方 changelog 每个版本几十条,大部分是内部修复,读完只会浪费时间。这里做的是筛选和翻译:只留<strong>会改变你实际操作的</strong>,并且明确写出"你要怎么改"。</p>
-
-<h3 data-reveal>三种标记的含义</h3>
-<table class="tbl">
-  <tr><th>标记</th><th>含义</th><th>你该做什么</th></tr>
-  <tr><td>🔴 <strong>破坏性变更</strong></td><td>老写法、老命令、老配置会失效或行为反转</td><td><strong>必看</strong>。升级后如果有东西"莫名其妙不好使了",先来这里查</td></tr>
-  <tr><td>🔄 <strong>行为变化</strong></td><td>命令还在、参数还在,但结果或时机变了</td><td>知道就行,通常不用改配置,但会影响你对工具的预期</td></tr>
-  <tr><td>🆕 <strong>新增能力</strong></td><td>新命令、新配置项、新模型</td><td>挑对自己有用的试,没必要全学</td></tr>
-</table>
-
-<h3 data-reveal>不收录什么</h3>
-<ul>
-  <li>纯内部重构、性能优化(除非影响到可感知的使用体验)</li>
-  <li>只影响特定平台极小众场景的修复(除非是很多人会踩的,比如 Windows 路径问题)</li>
-  <li>预览版/实验特性(等 GA 再收录,避免写完就变)</li>
-</ul>
-
-<div class="callout warn"><b class="t">时效声明</b>Claude Code 大约每 1-2 天发一个版本,Codex 每周都有更新。<strong>本页核对日期距今超过一个月,就该以官方源为准</strong>,别把这里当唯一真相。官方源见<a href="#method">本页怎么维护</a>一节。</div>
-</section>
-
-<div class="divider"></div>
-
-<section id="breaking">
-<div class="sec-tag">升级必看</div>
-<h2>破坏性变更总索引</h2>
-
-<p>跨月份汇总,<strong>时间倒序</strong>。升级后遇到"以前能用的现在不行了",先扫这张表。</p>
-
-<h3 data-reveal>Claude Code</h3>
-<table class="tbl">
-  <tr><th>时间 / 版本</th><th>变化</th><th>怎么改</th></tr>
-  <tr><td>2026-08-06<br><span class="src">v2.1.223</span></td><td><code>/review</code> 现为 <code>/code-review</code> 的<strong>别名</strong>,且不带 <code>effort</code> 级别时复用上次级别</td><td>脚本里所有 <code>/review &lt;PR#&gt;</code> 改写为 <code>/code-review &lt;PR#&gt;</code>;深度云审查用 <code>/code-review ultra &lt;PR#&gt;</code></td></tr>
-  <tr><td>2026-08-07<br><span class="src">Codex 0.147.0</span></td><td><strong><code>codex exec --full-auto</code> 被移除</strong></td><td>所有 CI/脚本里的 <code>--full-auto</code> 改用 <code>--sandbox workspace-write</code>(默认更安全档位)</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> 命令被<strong>移除</strong>(功能下线)</td><td>任何脚本/笔记/SOP 里出现 <code>/ultraplan</code> 的都要删;改用 <code>/plan</code> + 远程评审,或 <code>/workflows</code> 看进度</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> 行为再加一层:<strong>fork 出去的会话自带新 worktree</strong>,不再在原 checkout 上干活</td><td>原 checkout 上"接着改"的工作流要改用 <code>/subtask</code>;<code>/fork</code> 现在等于"复制+独立 worktree",适合并行实验</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td>Remote Control 自动开启:<strong>仓库本地 <code>.claude/settings.json</code> 不再能开</strong>(仍可关)</td><td>想在仓库里默认给队友开 Remote Control,必须放到用户级 <code>/config</code>。repo-local 只能关不能开,防供应链风险</td></tr>
-  <tr><td>2026-07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code>、<code>/code-review</code> 不再自动触发</td><td>必须显式调用。以前靠"Claude 会自己验"的工作流要加上明确指令</td></tr>
-  <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td>单段 <code>dir/**</code> 权限规则只匹配 <code>&lt;cwd&gt;/dir</code></td><td><code>Edit(src/**)</code> 不再匹配树中任意位置的 <code>src</code>;要任意深度写 <code>**/dir/**</code>。hook 的 <code>if:</code> 条件同理</td></tr>
-  <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td><code>file</code> 命令的 <code>-m</code>/<code>--magic-file</code>、<code>-f</code>/<code>--files-from</code> 需要授权</td><td>原本自动放行,现在会弹权限确认</td></tr>
-  <tr><td>2026-07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code> 语义反转</td><td>原"派生子代理"改名 <code>/subtask</code>;<code>/fork</code> 变成"复制会话到新后台会话"。所有脚本与文档里的 <code>/fork</code> 都要确认语义</td></tr>
-  <tr><td>2026-07-17<br><span class="src">v2.1.212</span></td><td>Task 工具的 <code>mode</code> 参数弃用</td><td>参数现在会被忽略,不再报错但也不生效</td></tr>
-  <tr><td>2026-07-11<br><span class="src">v2.1.207</span></td><td>插件 hooks / monitors / MCP headersHelper 里,shell 形式命令中的 <code>${user_config.*}</code> 被拒绝</td><td>改用 exec 形式或环境变量。插件选项值也不再从项目级 <code>.claude/settings.json</code> 读取</td></tr>
-  <tr><td>2026-07-03<br><span class="src">v2.1.200</span></td><td>默认权限模式改名 <strong>Manual</strong>;<code>AskUserQuestion</code> 不再自动继续</td><td><code>--permission-mode manual</code> / <code>"defaultMode": "manual"</code>;想恢复超时自动继续要在 <code>/config</code> 显式开</td></tr>
-  <tr><td>2026-06-29<br><span class="src">v2.1.196</span></td><td><code>ANTHROPIC_BASE_URL</code> 指向非 Anthropic 主机时,远程控制被禁用</td><td>自建网关用户要注意远程控制不可用</td></tr>
-  <tr><td>2026-06-22<br><span class="src">v2.1.186</span></td><td><code>!</code> bash 命令会触发 Claude 回应</td><td>想保持"只塞上下文不打扰"的旧行为,设 <code>"respondToBashCommands": false</code></td></tr>
-</table>
-
-<h3 data-reveal>Codex</h3>
-<table class="tbl">
-  <tr><th>时间</th><th>变化</th><th>怎么改</th></tr>
-  <tr><td>2026-08-31</td><td><strong>GPT-5.4 与 5.4 mini 正式退役</strong></td><td>配置里写死 <code>gpt-5.4</code> 或 <code>gpt-5.4-mini</code> 的必须在 8 月 31 日前更新为 <code>gpt-5.6-terra</code> 或 <code>gpt-5.6-luna</code>。</td></tr>
-  <tr><td>2026-07-23</td><td>多文件夹项目:配置只从<strong>主文件夹</strong>发现</td><td><code>AGENTS.md</code>、skills、<code>config.toml</code> 放在副文件夹里不生效。挂多文件夹前先确认哪个是主文件夹</td></tr>
-  <tr><td>2026-07-09</td><td>默认模型换代到 GPT-5.6 Sol</td><td>配置里写死 <code>gpt-5.4</code> 的要更新;内置选择已自动迁到 5.6 对应档,但显式配置不会自动改</td></tr>
-</table>
-
-<div class="callout note"><b class="t">怎么快速自查</b>Claude Code 用 <code>/release-notes</code> 看你当前版本到最新之间的变化;Codex 用 <code>codex debug models</code> 确认实际可用型号,用 <code>/debug-config</code> 查"为什么这个配置键不生效"。</div>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-09">
-<div class="sec-tag">归档 09</div>
-<h2>2026 年 9 月</h2>
-
-<h3 data-reveal>Claude Code: 性能调优与环境诊断</h3>
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>包含大量一般性改进与 Bug 修复。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> 诊断</strong>: 新增指令自动寻找并清理长期未使用但占据 Context 成本的 Skills。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>解禁极长终端输出</strong>: 新增 <code>bashOutputMaxChars</code> 与 <code>taskOutputMaxChars</code> (最高支持 128K)。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>外挂系统 Prompt</strong>: 增加 <code>--append-subagent-system-prompt-file</code> 应对超长子代理注入提示词。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>修复了从会话恢复时丢失 Hook 输出与并行工具调用上下文的缺陷；修复了 TLS 代理下 Bedrock 向导卡死问题。</td></tr>
-</table>
-
-<h3 data-reveal>Codex: Astra 模型与体验强化</h3>
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Astra 原生集成</strong>: 内置选择器支持直接将 GPT-6 Astra 设置为默认模型；优化异步 Guidance 防错。</td></tr>
-  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim Mode 增强与插件系统</strong>: Undo (`u`) / Redo (`Ctrl+R`) 原生保留所有附件与草稿；新增 <code>plugin</code> 子命令支持远程市场管理。</td></tr>
-  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool 默认关闭，如需使用需在配置中重新开启。</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-08">
-<div class="sec-tag">归档 08</div>
-<h2>2026 年 8 月</h2>
-
-<h3 data-reveal>Claude Code:稳定为主,两条行为变化值得注意</h3>
-<p>本月主线是稳定性与权限/工作流收敛:<strong><code>/ultraplan</code> 下线</strong>、<strong><code>/fork</code> 语义再加一层</strong>、<strong>Remote Control 自动开启被 repo-local 锁死</strong>。其余多数为 bug 修复与内部改进。</p>
-
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>08-28</td><td>v2.1.251</td><td>🆕</td><td><strong>生命周期 Hooks 与远程流式输出</strong>:新增 <code>PreModelSwitch</code> 和 <code>PostModelSwitch</code>，支持远程客户端对子代理工具调用的流式输出，加强 <code>/usage</code> 的配额追踪显示。</td></tr>
-  <tr><td>08-24</td><td>v2.1.243</td><td>🆕</td><td><strong>瘦身与无密钥登录</strong>:通过 zstd 压缩将体积缩减至 ~75MB。新增 Anthropic Console 账号系统直接登录。支持 <code>modelPicker</code> 配置以及 Loops 开销追踪。</td></tr>
-  <tr><td>08-17</td><td></td><td>🆕</td><td><strong><code>/design</code> Skill (预览版)</strong>:允许在终端将想法或截图直接生成可编辑的设计画板 (Artboards)。</td></tr>
-  <tr><td>08-下旬</td><td></td><td>🆕</td><td><strong>Concise 输出风格</strong>:配置 <code>"outputStyle": "Concise"</code> 启用极简输出，剥离冗余的思考过程和客套话。</td></tr>
-  <tr><td>08-下旬</td><td></td><td>🔄</td><td><strong>自动继续 (Auto-Continue)</strong>:会话因用量耗尽阻塞时，现在可在额度刷新后自动恢复执行。</td></tr>
-  <tr><td>08-下旬</td><td></td><td>🆕</td><td><strong>GitLab 状态标识</strong>:有 <code>glab</code> 权限的仓库，底部栏新增 MR 状态徽章。</td></tr>
-  <tr><td>08-14</td><td>v2.1.228</td><td>🔄</td><td><strong>Auto Mode 默认开启</strong>:Pro, Max, Team 计划新会话默认使用自动模式，以风险评估器替代单步手动确认</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td><strong><code>/ultraplan</code> 命令移除</strong>:该功能整体下线,任何脚本/SOP 里的 <code>/ultraplan</code> 都要删</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td><strong>Remote Control 自动开启被 repo-local 锁死</strong>:<code>.claude/settings.json</code> 不再能开(只能关)。想在仓库里默认给队友开,必须放到用户级 <code>/config</code></td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td>auto-mode 安全加固:跨会话 <code>SendMessage</code> 在派发前先过权限分类器</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔄</td><td><code>/usage</code> 不再把整回合算到任一调过的 MCP 上,而是按"实际消费该工具结果的请求数"分摊</td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td><strong><code>/fork</code> 现在会<em>复制 + 独立 worktree</em></strong>:fork 出去的会话自带新 git worktree,不再在原 checkout 上干活。想"原 checkout 接着改"用 <code>/subtask</code></td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td>后台会话的新默认收尾模式:有工作时 commit+push 保住成果、需要时再开 draft PR、遵循 CLAUDE.md 的 git 指令、最后汇报工作落在哪</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td><strong>Focus view</strong>(VSCode):<kbd>Ctrl+Alt+F</kbd> 切换,把工具活动折叠成可展开的逐回合摘要 + 实时运行指示器</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td>沙箱凭证 <code>mode: "mask"</code>(Linux/WSL):沙箱命令读到的是哨兵拷贝(全文或 <code>extract</code> 正则截取的片段),出口时由代理替换为真实值;macOS 暂 fallback 为 <code>deny</code></td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td><code>claude-api</code> skill 新增 <code>prompt-audit</code> 子命令:审计提示词与工具描述里为旧模型写的模式</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🆕</td><td><code>claude plugin validate</code> 在 marketplace/插件名会被 Claude Desktop 托管同步拒绝时给出告警</td></tr>
-  <tr><td>08-11</td><td>v2.1.226</td><td>🔄</td><td>修复 Bash 工具权限校验绕过漏洞:zsh 的 <code>[[ ]]</code> 正则条件中隐藏的命令现在会正确触发权限确认</td></tr>
-  <tr><td>08-08</td><td>v2.1.225</td><td>🆕</td><td>网关用量警告增强:触达上限时显示网关额度、重置时间与管理员留言</td></tr>
-  <tr><td>08-08</td><td>v2.1.225</td><td>🔄</td><td><code>claude agents</code> 增加工作区信任弹窗:在未信任目录执行时需二次确认(与 <code>claude</code> 保持一致)</td></tr>
-  <tr><td>08-08</td><td>v2.1.225</td><td>🔧</td><td>SendMessage:同机器上已确认过权限的 Remote Control 接收方不再被意外替换</td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔧</td><td>修了一批生产环境很痛的 bug:<code>/usage</code> 对 MCP 用量错算、<code>SendMessage</code> 长摘要字符上限拒收、print mode 下 MCP 工具调用被当成字面文本、<code>EndConversation</code> 误用、Bedrock + Windows + 异常 <code>HOME</code> 变量认证失败等</td></tr>
-</table>
-
-<h3 data-reveal>Codex: 0.150.0 跨工具联动与基础设施升级</h3>
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>08-31</td><td></td><td>🔴</td><td><strong>GPT-5.4 及其 mini 正式全面退役</strong>:请确保已迁移至 gpt-5.6-terra 或 gpt-5.6-luna。</td></tr>
-  <tr><td>08-26</td><td>0.150.0</td><td>🆕</td><td><strong>界面与策略</strong>:行内可视化新增 iOS 风格，废弃模糊的 "untrusted" 权限策略，全面收紧高危命令放行逻辑。</td></tr>
-  <tr><td>08-20</td><td>0.149.0</td><td>🆕</td><td><strong>Agents Dashboard 与 `/import`</strong>:加入任务管理大盘；支持从 Claude Code 和 Cursor 导入上下文与配置。</td></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Markdown 导出与无头 Fork</strong>:新增 <code>/export</code> 导出对话，<code>codex exec fork</code> 支持无头存档/恢复。</td></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>成本预估与 Bedrock</strong>:支持 Token 级别花费预估，引入 Bedrock Runtime 作为内建提供方。</td></tr>
-  <tr><td>08-11</td><td></td><td>🆕</td><td><strong>Linux 桌面版预览</strong>:集成了 Codex 的 ChatGPT 桌面应用现支持 Ubuntu、Debian、Fedora。</td></tr>
-  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>安全模型自动审查策略收紧:针对高危模型启用更严格的默认确认，并在终端 UI 解释权限变更</td></tr>
-</table>
-
-<h3 data-reveal>Codex: 0.146.0 是一次"特性密度很高"的稳定版</h3>
-<p>07-29 发的 0.146.0 没有破坏性变更,但带来一批直接改变工作流的特性:会话可命名 / 钉选、临时 fork、插件支持 Bedrock 与 Claude Code 市场、app-server 通过 WebSocket 接远程 Code Mode 主机、自定义模型提供方可独立启用 web 搜索、发现并安全读取 executor 提供的 skills 资源。</p>
-
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>会话可命名 + 钉选</strong>:<code>/new</code> 与 <code>/clear</code> 命名新会话、置顶重要会话,在不关闭的前提下侧栏切换多个并行会话</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>Agent Plugins 清单 + 工作区发布</strong>:支持 Bedrock 与 Claude Code 额外 marketplace;workspace 插件可发布并被成员发现</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td><strong>支持分页历史的 fork</strong>,含<strong>临时 fork</strong>(不在会话列表里留痕,适合一次性实验分支)</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>app-server 通过 <strong>WebSocket</strong> 连接远程 Code Mode 主机</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>兼容的自定义模型提供方可独立启用<strong>web 搜索</strong></td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🆕</td><td>发现 executor 提供的 skills 并安全读取其关联资源(含用户显式选中的)</td></tr>
-  <tr><td>07-29</td><td>0.146.0</td><td>🔧</td><td>代理配置在 auth / 插件下载 / MCP 鉴权 / 远程执行 / WebSocket / 重定向 / LM Studio 连接等链路统一生效;Windows 导航键、TUI 渲染与 <kbd>Ctrl+Z</kbd> 恢复等多平台修复</td></tr>
-</table>
-
-<h3 data-reveal>Claude Code:2.1.223 / 2.1.224 三条值得动手的改动</h3>
-<p>本周两步版本重点:1M 上下文默认走 auto-compaction 限到 200K、<code>/review</code> 改名为 <code>/code-review</code> 别名、Bash 权限绕过 + 子代理 <code>bypassPermissions</code> 漏洞修复。其余多为功能/UI 增强。</p>
-
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td><code>claude self-hosted-runner</code>:把你的机器/容器注册成 Team/Enterprise 的 web/mobile/desktop 会话运行地</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td><code>archive</code> 插件源:用 HTTPS zip 装插件,支持 SHA-256 pin 校验(供应链更安全)</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🆕</td><td>跨会话 <code>SendMessage</code> + <code>ListAgents</code>:Claude Code 会话可跨机器互相通信(macOS/Linux)</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔄</td><td>移除每会话 200 子代理 spawn 上限;并发与深度限制仍生效(深度默认仍 3)</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔴</td><td>沙箱 <code>denyRead: "~/.aws/"</code> 尾斜杠在 Linux/macOS 可被绕过 —— 已修复;复测下你的 deny 规则</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔴</td><td>沙箱违规详情从未出现在 Bash tool 结果中 —— 已修复;现在能在工具输出里直接看到为什么被拦</td></tr>
-  <tr><td>08-07</td><td>v2.1.224</td><td>🔧</td><td><code>SendMessage</code> 假报成功("Message sent" 但实际未写入)现已报为错误</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td><code>/review</code> 现为 <code>/code-review</code> 的别名;<code>/code-review &lt;level&gt; &lt;pr#&gt;</code> 不带 effort 时复用上次级别</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔄</td><td><strong>1M 上下文统一走 auto-compaction 限到 200K</strong>:<code>CLAUDE_CODE_DISABLE_1M_CONTEXT</code> 现在对所有原生 1M 模型生效(原只固定列表);<code>CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT=1</code> 可恢复旧行为</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td><strong>Bash 权限绕过</strong>:精心构造的命令可隐藏自身部分内容绕过权限检查(zsh <code>[[ ]]</code> + tab/不可见 Unicode 填充) —— 已修复</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td>子代理 <code>bypassPermissions</code> 模式忽略组织的 bypass-permissions disable 策略 —— 已修复</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔴</td><td>工作流脚本 <code>import()</code> 可在工作流沙箱外执行代码 —— 已修复</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🆕</td><td>市场 owner 通配条目:<code>"owner/*"</code> 支持 <code>strictKnownMarketplaces</code> 与 <code>blockedMarketplaces</code></td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🆕</td><td>工作流 agent / forked skill / slash command / 恢复的后台 agent 在请求的子代理模型被组织限制时显式警告</td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔧</td><td>Linux 沙箱因 <code>sandbox.filesystem.denyWrite</code> 覆盖工作目录导致启动失败 —— 已修复</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td>Worktree 隔离会话及其子代理可对主 checkout 执行破坏性 git 命令 —— 现已隔离所有会话类型的文件编辑和 Bash</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td>PreToolUse auto-allow hook 绕过后台 agent 任务的工具限制 —— 已修复</td></tr>
-</table>
-
-<h3 data-reveal>Codex:0.147.0 是首次用上 0.147 系列稳定版</h3>
-<p>0.147.0 主题是<strong>插件化生态成型 + 自动审批策略收紧</strong>:便携插件目录持久化、Cursor/Claude 技能导入、MCP 2026-07-28 协议支持;同时移除 <code>--full-auto</code> 标志,本地项目需显式信任。0.146.1 顺带把 cyber 能力模型的自动审批默认值收紧。</p>
-
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>Agent Plugins 体系</strong>:支持便携式插件安装,可在本地/个人/工作区/远程四个目录搜索</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>持久化、手动排序的会话分区:增量浏览长对话,不再一次塞满侧栏</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>新增 CLI 参数 <code>--approve-for-me</code>:一次性启用自动审批模式(适合 CI)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>从 Cursor 导入托管技能</strong>;同步已导入的 Claude/Cursor 会话,避免重复</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>MCP 协议升级:支持 <strong>2026-07-28</strong> 协议(分页发现/多轮请求/非阻塞服务启动),opt-in</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td>Bedrock 增强:缓存 Web 搜索结果 + 远程会话压缩(Amazon Bedrock 提供方)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔴</td><td><strong><code>codex exec --full-auto</code> 被移除</strong> → 改用 <code>--sandbox workspace-write</code></td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔄</td><td>本地项目需<strong>显式信任</strong>:未熟悉的本地项目会弹信任确认(防供应链风险)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔄</td><td>未托管认证受限时将阻断凭证使用(更严格的多账户/SSO 流程)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔧</td><td>从显示命令和重放历史中<strong>编辑脱敏</strong>密钥和 bearer token(防泄漏到日志)</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔧</td><td>macOS 发布签名改用 Azure Key Vault,不再导出私钥(供应链更安全)</td></tr>
-  <tr><td>08-05</td><td>0.146.1</td><td>🔄</td><td>具备 cyber 能力的模型应用<strong>更安全的自动审批默认值</strong>,终端 UI 解释权限变更(影响 cyber 模型用户)</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-07">
-<div class="sec-tag">归档 07</div>
-<h2>2026 年 7 月</h2>
-
-<h3 data-reveal>Claude Code:模型换代 + 子代理体系重构</h3>
-<p>这个月两条主线:<strong>Opus 5 上位</strong>,以及<strong>子代理从"前台阻塞"彻底转向"后台并发"</strong>。后者是影响日常手感最大的一条。</p>
-
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>07-25</td><td>v2.1.220</td><td>🔧</td><td>修复与稳定性</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><strong>Opus 5 成为默认 Opus 模型</strong>,1M 上下文;快速档定价 $10/$50 每 Mtok</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🔄</td><td>子代理可嵌套派生,默认深度 <strong>3</strong>(原为 1);<code>CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1</code> 可关</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><code>sandbox.network.strictAllowlist</code>:非白名单主机直接拒绝,不再弹窗询问</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><code>DirectoryAdded</code> hook:会话中途 <code>/add-dir</code> 新增工作目录时触发</td></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🔄</td><td><code>/fast</code> 移除 Opus 4.7 支持,现适用于 Opus 5 与 4.8</td></tr>
-  <tr><td>07-22</td><td>v2.1.218</td><td>🔄</td><td><code>/code-review</code> 改为后台子代理执行,对话记录更干净</td></tr>
-  <tr><td>07-21</td><td>v2.1.217</td><td>🆕</td><td>输入框 emoji 简码补全(<code>:heart:</code> → ❤️),<code>emojiCompletionEnabled</code> 可关</td></tr>
-  <tr><td>07-20</td><td>v2.1.216</td><td>🆕</td><td><code>sandbox.filesystem.disabled</code>:跳过文件隔离但保留网络出口管控</td></tr>
-  <tr><td>07-19</td><td>v2.1.215</td><td>🔴</td><td><code>/verify</code>、<code>/code-review</code> 不再自动触发,必须显式调用</td></tr>
-  <tr><td>07-18</td><td>v2.1.214</td><td>🔴</td><td>单段 <code>dir/**</code> 权限规则收紧为只匹配 <code>&lt;cwd&gt;/dir</code></td></tr>
-  <tr><td>07-18</td><td>v2.1.214</td><td>🆕</td><td><code>EndConversation</code> 工具:Claude 可主动结束严重滥用/越狱尝试的会话</td></tr>
-  <tr><td>07-17</td><td>v2.1.212</td><td>🔴</td><td><code>/subtask</code> 取代原 <code>/fork</code> 的子代理功能;<code>/fork</code> 改为复制会话到新后台会话</td></tr>
-  <tr><td>07-17</td><td>v2.1.212</td><td>🔄</td><td>每会话配额:WebSearch 200 次、子代理 200 个;MCP 调用超 2 分钟自动转后台</td></tr>
-  <tr><td>07-15</td><td>v2.1.211</td><td>🆕</td><td><code>--forward-subagent-text</code>:把子代理的文本与思考并入 stream-json 输出</td></tr>
-  <tr><td>07-14</td><td>v2.1.208</td><td>🆕</td><td><strong>屏幕阅读器模式</strong>:<code>claude --ax-screen-reader</code> 或 <code>"axScreenReader": true</code></td></tr>
-  <tr><td>07-11</td><td>v2.1.207</td><td>🔄</td><td>自动模式在 Bedrock / Vertex / Foundry 默认可用,不再需要 opt-in;<code>disableAutoMode</code> 可关</td></tr>
-  <tr><td>07-08</td><td>v2.1.205</td><td>🔄</td><td>自动模式新增防护:阻止篡改会话记录文件;对无法解析的变量执行 <code>rm -rf</code> 前会先问</td></tr>
-  <tr><td>07-06</td><td>v2.1.202</td><td>🔄</td><td><code>/review &lt;pr&gt;</code> 回归单遍快速评审;多代理评审改用 <code>/code-review &lt;level&gt; &lt;pr#&gt;</code></td></tr>
-  <tr><td>07-03</td><td>v2.1.200</td><td>🔴</td><td>默认权限模式改名 Manual;<code>AskUserQuestion</code> 不再自动继续</td></tr>
-  <tr><td>07-01</td><td>v2.1.198</td><td>🔄</td><td><strong>子代理默认后台运行</strong>,Claude 在子代理干活时继续推进主线</td></tr>
-  <tr><td>07-01</td><td>v2.1.198</td><td>🆕</td><td><code>/dataviz</code> 命令;Claude in Chrome 正式 GA</td></tr>
-</table>
-
-<h3 data-reveal>Codex:并入 ChatGPT 桌面端 + 多文件夹项目</h3>
-<table class="tbl">
-  <tr><th>日期</th><th>类型</th><th>变化</th></tr>
-  <tr><td>07-23</td><td>🔴</td><td><strong>多文件夹本地项目</strong>:可挂多个相关文件夹,但 <code>AGENTS.md</code>、skills、<code>config.toml</code> 只从<strong>主文件夹</strong>发现</td></tr>
-  <tr><td>07-23</td><td>🆕</td><td>ChatGPT Voice(GPT-Live 驱动):在 Chat / Work / Codex 用语音协调任务</td></tr>
-  <tr><td>07-09</td><td>🔄</td><td><strong>GPT-5.6 Sol GA 并成为默认模型</strong>;同期有 Terra(均衡)、Luna(快省)两个变体</td></tr>
-  <tr><td>07-09</td><td>🆕</td><td>Codex 并入 <strong>ChatGPT 桌面 App</strong>(macOS / Windows);新增 PR Chat(评审 GitHub PR 并内联反馈)、Sites 自定义域名</td></tr>
-  <tr><td>07 月内</td><td>🆕</td><td>rollout token 预算:跨 agent 线程统计用量、剩余提醒、耗尽中止回合</td></tr>
-  <tr><td>07 月内</td><td>🆕</td><td>多代理委派开关:禁用 / 仅显式请求 / 主动,可在线程级与回合级配置</td></tr>
-  <tr><td>07 月内</td><td>🆕</td><td>索引化 web 搜索模式:允许实时搜索,但直接访问页面限于服务端批准的 URL</td></tr>
-  <tr><td>07 月内</td><td>🆕</td><td><code>/plugins</code> 分组为 OpenAI Curated / Workspace / Shared with me;回合中可推荐并安装</td></tr>
-  <tr><td>07 月内</td><td>🔧</td><td>Windows:<code>codex doctor</code> 正确识别 npm 安装;MSVC 二进制不再依赖单独的 VC++ 运行时。Linux:修复 <kbd>Ctrl+Z</kbd> 挂起后 <code>fg</code> 恢复的 TUI 渲染</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-06">
-<div class="sec-tag">归档 06</div>
-<h2>2026 年 6 月</h2>
-
-<h3 data-reveal>Claude Code:Sonnet 5 登场 + 沙箱与自动模式加固</h3>
-<table class="tbl">
-  <tr><th>日期</th><th>版本</th><th>类型</th><th>变化</th></tr>
-  <tr><td>06-30</td><td>v2.1.197</td><td>🆕</td><td><strong>Sonnet 5 成为默认模型</strong>,原生 1M 上下文</td></tr>
-  <tr><td>06-29</td><td>v2.1.196</td><td>🔴</td><td><code>ANTHROPIC_BASE_URL</code> 指向非 Anthropic 主机时禁用远程控制</td></tr>
-  <tr><td>06-29</td><td>v2.1.196</td><td>🆕</td><td>组织默认模型(<code>/model</code> 里显示"Org default"/"Role default");聊天中文件附件可点击</td></tr>
-  <tr><td>06-29</td><td>v2.1.196</td><td>🔄</td><td><code>claude mcp list/get</code> 不再启动经committed <code>.claude/settings.json</code> 自我批准的 <code>.mcp.json</code> 服务器</td></tr>
-  <tr><td>06-26</td><td>v2.1.195</td><td>🔧</td><td>修复带连字符的 hook matcher(如 <code>code-reviewer</code>)被当子串匹配,改为精确匹配</td></tr>
-  <tr><td>06-25</td><td>v2.1.193</td><td>🆕</td><td><code>autoMode.classifyAllShell</code>:所有 Bash/PowerShell 命令都过自动模式分类器</td></tr>
-  <tr><td>06-24</td><td>v2.1.191</td><td>🆕</td><td><strong><code>/rewind</code></strong>:把会话恢复到 <code>/clear</code> 之前</td></tr>
-  <tr><td>06-24</td><td>v2.1.191</td><td>🔄</td><td>沙箱网络授权改进:本次会话内记住你放行过的主机</td></tr>
-  <tr><td>06-23</td><td>v2.1.187</td><td>🆕</td><td><code>sandbox.credentials</code>:禁止沙箱命令读取凭证文件与密钥环境变量</td></tr>
-  <tr><td>06-22</td><td>v2.1.186</td><td>🔴</td><td><code>!</code> bash 命令现在会触发 Claude 回应;<code>"respondToBashCommands": false</code> 可恢复旧行为</td></tr>
-  <tr><td>06-22</td><td>v2.1.186</td><td>🆕</td><td><code>claude mcp login/logout &lt;name&gt;</code> 非交互认证 MCP,SSH 环境加 <code>--no-browser</code></td></tr>
-  <tr><td>06-19</td><td>v2.1.183</td><td>🔄</td><td>自动模式安全加固:未经要求的 <code>git reset --hard</code>、<code>git clean -fd</code>、<code>git stash drop</code>、terraform/pulumi/cdk destroy 一律拦截</td></tr>
-  <tr><td>06-17</td><td>v2.1.181</td><td>🆕</td><td><strong><code>/config key=value</code></strong>:直接在提示里改设置,如 <code>/config thinking=false</code></td></tr>
-</table>
-
-<h3 data-reveal>Codex:Remote 转正 + Sites 与录制式 Skill</h3>
-<table class="tbl">
-  <tr><th>日期</th><th>类型</th><th>变化</th></tr>
-  <tr><td>06-25</td><td>🆕</td><td><strong>Codex Remote 转 GA</strong>:iOS/Android 与主机一对一 QR 配对;DigitalOcean 插件可开 Droplet 当远程工作区</td></tr>
-  <tr><td>06-18</td><td>🆕</td><td><strong>Record &amp; Replay</strong>(macOS):把演示过一遍的流程转成可复用 skill;自动化运行历史支持批量操作;本地与远程主机之间可交接线程</td></tr>
-  <tr><td>06-11</td><td>🆕</td><td><code>/init</code> 生成项目说明;Browser 开发者模式(接 Chrome DevTools Protocol);Plus/Pro 限额重置储蓄</td></tr>
-  <tr><td>06-02</td><td>🆕</td><td><strong>Sites 插件</strong>预览版:创建、部署、管理网站与 Web 应用</td></tr>
-  <tr><td>06-01</td><td>🆕</td><td>支持 <strong>Amazon Bedrock</strong> 作为模型提供方,走 AWS 托管认证与账号管控</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="method">
-<div class="sec-tag">维护 99</div>
-<h2>本页怎么维护</h2>
-
-<p>这一页的价值全在"新鲜度"。放着不管,三个月后它比没有还糟——因为读者会当真。所以维护流程本身也写进来。</p>
-
-<h3 data-reveal>数据源(按可信度排序)</h3>
-<table class="tbl">
-  <tr><th>工具</th><th>一手源</th><th>本地自查命令</th></tr>
-  <tr><td>Claude Code</td><td><a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com/docs/en/changelog</a></td><td><code>/release-notes</code>(看你当前版本到最新的差异)</td></tr>
-  <tr><td>Codex</td><td><a href="https://learn.chatgpt.com/docs/changelog" target="_blank">learn.chatgpt.com/docs/changelog</a></td><td><code>codex debug models</code>(实际可用型号)、<code>/debug-config</code>(配置为什么不生效)</td></tr>
-</table>
-
-<div class="callout warn"><b class="t">别用二手源当唯一依据</b>网上有不少第三方 changelog 聚合站,更新快但经常漏掉"破坏性"的标注,也有把预览特性写成已发布的。<strong>凡是要写进"破坏性变更"表的,必须在官方源核对过</strong>——这一条是这个知识库和"AI 生成的资料合集"的区别所在。</div>
-
-<h3 data-reveal>更新作业流程</h3>
-<p>仓库里已经把这套流程固化成了可复用的 skill(<code>.claude/skills/refresh-toolchain/</code>),在 Claude Code 里说"跑一次工具版本核对"即可触发。流程本身是:</p>
-<ol>
-  <li><strong>确认当前日期</strong>——这一步不能跳,否则容易基于过时认知判断"新不新"</li>
-  <li><strong>拉两个官方 changelog</strong>,范围是"上次核对日期 → 今天"</li>
-  <li><strong>三分类筛选</strong>:破坏性 / 行为变化 / 新增。内部重构、极小众平台修复、预览特性一律不收</li>
-  <li><strong>回写四个位置</strong>:本页对应月份归档、本页破坏性总索引、Claude Code 指南的「近期重要变化」、Codex 指南的「近期重要变化」</li>
-  <li><strong>核对旧内容是否被推翻</strong>——这步最容易漏。新版本可能让指南正文里某段描述直接变错(比如命令改名、默认值变更),要顺着变化反查正文</li>
-  <li><strong>更新三处日期标记</strong>:两份指南的顶栏与 hero 徽章、本页顶栏</li>
-  <li><strong>重跑搜索索引</strong> <code>python3 scripts/build-search-index.py</code>,然后提交</li>
-</ol>
-
-<div class="callout tip"><b class="t">提醒机制</b>仓库配了一个 GitHub Action,每月 1 号自动开一个 issue 提醒该核对了,附带上次核对日期与本页链接。不用记日子。</div>
-</section>
-
-<div class="divider"></div>
-
-<div class="footer">
-  <p><strong>说明</strong>:本页为个人整理的版本变化摘要,<strong>非官方发布渠道</strong>。收录标准是"是否影响实际使用",因此刻意省略了大量内部修复与小众场景改动。任何一条与官方 changelog 冲突时,<strong>以官方为准</strong>。发现错漏欢迎在 <a href="https://github.com/JackyMe/ai-knowledge-base" target="_blank">GitHub 仓库</a>提 issue。</p>
-</div>
-
-</div>
+<div class="wrap"><div class="hero"><div class="badge">2026-09-09</div><h1>AI 工具更新与升级检查</h1><p class="lead">从官方变更记录确认影响，再验证本地版本与工作流。</p></div><section id="how-to-read"><div class="sec-tag">01</div><h2>如何使用更新记录</h2><p>历史记录不能替代当前帮助。先记录工具版本、配置与遇到的问题，再按实际需要升级。旧版月度摘要中缺少可靠出处的细节已移除，完整历史仍可从项目 Git 记录查阅。</p></section>
+<section id="breaking"><div class="sec-tag">02</div><h2>已核对的 Codex 参数变化</h2><p>截至本次核对，CLI 文档仍列出 untrusted 审批模式；不能把它标为已移除。codex exec --full-auto 被标记为已弃用的兼容参数，会发出警告，并非不存在。自动化脚本应按所安装版本的帮助迁移，分别配置审批和沙箱。</p><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
+<section id="m2026-09"><span id="m2026-08"></span><span id="m2026-07"></span><span id="m2026-06"></span><div class="sec-tag">03</div><h2>官方更新入口</h2><p>按产品查看原始发布记录，核对发布时间、适用界面和版本；预览、分批开放和正式发布要分别判断。</p><p class="src"><a href="https://learn.chatgpt.com/docs/changelog" target="_blank" rel="noopener">learn.chatgpt.com · changelog</a> · 2026-09-09</p><p class="src"><a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener">github.com · CHANGELOG.md</a> · 2026-09-09</p><p class="src"><a href="https://www.antigravity.google/docs/cli/reference/" target="_blank" rel="noopener">www.antigravity.google · reference</a> · 2026-09-09</p></section>
+<section id="method"><div class="sec-tag">04</div><h2>升级与回退检查</h2><p>保存当前版本和完整可恢复配置；阅读不兼容变更；在小任务中验证登录、权限、工具连接与输出；通过后再用于重要任务。失败时保留日志并恢复已确认的变更，避免盲目清空配置。</p><pre><code>codex --version
+codex exec --help
+claude --version
+claude --help</code></pre></section><footer class="footer">基于所列官方来源整理；示例需在实际环境验证。</footer></div>
 </main>
 
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header>
+</body></html>

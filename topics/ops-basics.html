@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="独立开发者运维基座:5 阶段路线 + 服务器 × 网络 × 部署 3 模块 + 5 类故障 30 秒对症表。零起点也能从 SaaS 托管升级到自托管。">
@@ -157,6 +155,7 @@ pre .c{color:#7c8d92}
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
   <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -171,7 +170,7 @@ pre .c{color:#7c8d92}
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.html">◂ 主题中心</a>
-    
+
       <span>核对至 2026-08-17</span>
   
 
@@ -264,20 +263,20 @@ pre .c{color:#7c8d92}
 <p>你大概率经历过这样的场景:Vercel 部署的个人项目突然被 DDoS,联系客服要走工单;Cloudflare Pages 部署到一半发现中国大陆访问巨慢,配置改动被锁在企业版;Supabase 项目某个深夜数据库连接被打满,你只能干瞪眼看着 Stripe 钱照扣。</p>
 <p>SaaS 托管很爽——<strong>直到它的边界开始挡住你</strong>。而当你准备跨越这道边界时,迎面扑来的运维黑话(SSH / systemd / 反向代理 / DNS 解析 / TLS 握手 / 防火墙入站规则……)会让你觉得自己从一个文明世界掉进了中世纪。</p>
 <div class="callout note"><b class="t">这份文档能给你什么,不能给你什么</b><strong>能给的</strong>:5 阶段路线 + 服务器/网络/部署 3 模块的<strong>最小必要知识</strong>,加上 5 类故障的 30 秒对症表。读完并完成动手项目,你能独立负责一个中小项目的服务器。<strong>不能给的</strong>:k8s 集群运维 / GPU 推理部署 / 高可用架构 / 性能调优到极致——这些是另一个量级的工种,留给未来的专题。</div>
-<h3 data-reveal>读者画像</h3>
+<h3 data-reveal="">读者画像</h3>
 <ul>
 <li>做过 Next.js / Node / Python / Go 全栈项目,部署主要靠 Vercel / Netlify / Cloudflare Pages / Supabase / Railway;</li>
 <li>最多买过域名,不知道 DNS 解析到底发生了什么;</li>
 <li>被"上线后出问题只能到处求人"困扰过至少一次;</li>
 <li>愿意花 1-2 周学完,但不打算成为 SRE。</li>
 </ul>
-<h3 data-reveal>证据三档(全站统一)</h3>
+<h3 data-reveal="">证据三档(全站统一)</h3>
 <table class="tbl">
-<tr><th>标记</th><th>含义</th><th>示例</th></tr>
+<tbody><tr><th>标记</th><th>含义</th><th>示例</th></tr>
 <tr><td><span class="pill a">✅ 官方</span></td><td>来自官方文档,逐字核对过</td><td>"systemd 是 Linux 系统与服务管理器"——<a href="https://systemd.io/" target="_blank">systemd.io</a></td></tr>
 <tr><td><span class="pill c">⚡ 实测</span></td><td>社区高共识,有大量一手实测</td><td>"certbot --nginx 三命令跑通 HTTPS"——多篇博客一致</td></tr>
 <tr><td><span class="pill b">⚠️ 分歧</span></td><td>存在不同意见或时效性敏感</td><td>"中国是否需要 ICP 备案"——以工信部官网为准</td></tr>
-</table>
+</tbody></table>
 <p class="src">文档任何标"没查到"的地方都是诚实声明,绝不瞎编。</p>
 </section>
 
@@ -288,13 +287,13 @@ pre .c{color:#7c8d92}
 <h2>五阶段路线图</h2>
 <p>把整个学习过程切成 5 个阶段。每个阶段都有<strong>可验证的产出</strong>——完成一个,打勾一个,不会"学完不知道学到哪了"。</p>
 <table class="tbl">
-<tr><th>阶段</th><th>目标</th><th>动手产出</th><th>验证标准</th><th>预计耗时</th></tr>
+<tbody><tr><th>阶段</th><th>目标</th><th>动手产出</th><th>验证标准</th><th>预计耗时</th></tr>
 <tr><td><strong>R1 现状盘点</strong></td><td>看清你现在在哪</td><td>一张「我的项目部署清单」</td><td>能列出每个项目用什么 SaaS、花多少钱、卡在哪</td><td>1 小时</td></tr>
 <tr><td><strong>R2 Linux 基座</strong></td><td>能 SSH 到陌生 VPS 看一眼 top</td><td>一台装好 Nginx 的 VPS</td><td><code>systemctl status nginx</code> 显示 active</td><td>半天</td></tr>
 <tr><td><strong>R3 网络骨干</strong></td><td>域名 → DNS → SSL → 反代全跑通</td><td>一个 <code>yourdomain.dev</code> + HTTPS</td><td>浏览器看绿锁</td><td>半天</td></tr>
 <tr><td><strong>R4 部署链路</strong></td><td>git push 自动部署</td><td>一个 Node 应用 + GitHub Actions</td><td>改一行代码 → push → 30 秒后线上生效</td><td>1 天</td></tr>
 <tr><td><strong>R5 故障排查</strong></td><td>5 类故障自助止血</td><td>附录 A 5 类故障实操一遍</td><td>制造 5 个故障,逐一自助修复</td><td>1 天</td></tr>
-</table>
+</tbody></table>
 <p>总投入约 <strong>3-4 个周末</strong>。如果哪个阶段卡住,跳到附录 A 查症状或回到对应模块第 N 节深读。</p>
 </section>
 
@@ -304,7 +303,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">路线 R1</div>
 <h2>R1 · 现状盘点</h2>
 <p>不要急着买 VPS——先把你现在所有项目的部署方式列出来。这一步看似浪费时间,实际上能让你看清"SaaS 托管真的贵吗"和"自托管真的省吗"。</p>
-<h3 data-reveal>动手:一张部署清单</h3>
+<h3 data-reveal="">动手:一张部署清单</h3>
 <p>打开记事本,给每个在跑的项目写 4 行:</p>
 <ol>
 <li><strong>在哪跑</strong>:Vercel / Netlify / Cloudflare Pages / Supabase / 自建 / 其它</li>
@@ -321,12 +320,12 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">路线 R2</div>
 <h2>R2 · Linux 基座</h2>
 <p>挑一个下午,买一台 1核1G 的 VPS(20-30 元/月),装 Ubuntu 24.04 LTS,SSH 上去装好 Nginx。这一步结束,你就拥有了一台真·自己的服务器——后面对着它随便造。</p>
-<h3 data-reveal>动手步骤</h3>
+<h3 data-reveal="">动手步骤</h3>
 <ol class="steps">
 <li><strong>选 VPS</strong>:DigitalOcean / Vultr / 阿里云 / 腾讯云 / 搬瓦工。挑离你用户最近的机房,系统选 <strong>Ubuntu 24.04 LTS</strong>(新手友好、社区最旺)。</li>
 <li><strong>本地生成 SSH 密钥</strong>:<code>ssh-keygen -t ed25519 -C "your@email"</code>。把 <code>~/.ssh/id_ed25519.pub</code> 内容贴到 VPS 控制台的"SSH 公钥"框里。</li>
 <li><strong>登录 VPS</strong>:<code>ssh root@你的VPS_IP</code>。第一次会问 fingerprint,输入 yes。</li>
-<li><strong>装 Nginx</strong>:<code>apt update && apt install -y nginx</code>,然后 <code>systemctl status nginx</code>——看到 <code>active (running)</code> 就成了。</li>
+<li><strong>装 Nginx</strong>:<code>apt update &amp;&amp; apt install -y nginx</code>,然后 <code>systemctl status nginx</code>——看到 <code>active (running)</code> 就成了。</li>
 <li><strong>浏览器访问 <code>http://你的VPS_IP</code></strong>:看到 Nginx 欢迎页 = R2 收工。</li>
 </ol>
 <p>详细知识展开见模块 1。</p>
@@ -338,7 +337,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">路线 R3</div>
 <h2>R3 · 网络骨干</h2>
 <p>让 Nginx 欢迎页变成你的 <code>yourdomain.dev</code>,并且浏览器看绿锁。这一步涵盖独立开发者最常踩的 80% 网络坑:域名、DNS、HTTPS、反向代理。</p>
-<h3 data-reveal>动手步骤</h3>
+<h3 data-reveal="">动手步骤</h3>
 <ol class="steps">
 <li><strong>注册域名</strong>:Cloudflare Registrar / Namecheap / Porkbun / 阿里云(国内)。后缀选 <code>.dev</code> 强制 HTTPS,或 <code>.com</code> 通用。</li>
 <li><strong>DNS 解析</strong>:在域名商后台,把 <code>yourdomain.dev</code> 的 A 记录指向你的 VPS IP。<code>dig yourdomain.dev</code> 验证解析生效。</li>
@@ -355,7 +354,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">路线 R4</div>
 <h2>R4 · 部署链路</h2>
 <p>告别 FTP 拖文件、SSH 上手改代码。让 <code>git push</code> 自动触发部署,30 秒后线上生效。这一步是独立开发者"看起来像团队"的最短路径。</p>
-<h3 data-reveal>动手步骤</h3>
+<h3 data-reveal="">动手步骤</h3>
 <ol class="steps">
 <li><strong>应用加 systemd 单元</strong>:写一个 <code>/etc/systemd/system/myapp.service</code>,让 <code>node server.js</code> 作为后台进程托管,关 SSH 也不死。</li>
 <li><strong>写 GitHub Actions workflow</strong>:在 <code>.github/workflows/deploy.yml</code> 配 SSH key + rsync,实现 <code>git push main</code> → 自动登录 VPS → 拉代码 → 重启 systemd。</li>
@@ -371,7 +370,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">路线 R5</div>
 <h2>R5 · 故障排查</h2>
 <p>第一次部署上线后 24 小时内,你大概率会遇到至少 2 个故障。R5 的目标不是"不出问题",而是"出问题能在 30 秒内定位到表"。</p>
-<h3 data-reveal>动手:制造 5 类故障并逐一修复</h3>
+<h3 data-reveal="">动手:制造 5 类故障并逐一修复</h3>
 <ol class="steps">
 <li><strong>502 Bad Gateway</strong>:把 systemd 服务停掉(<code>systemctl stop myapp</code>),看 Nginx 返回什么——再恢复。</li>
 <li><strong>SSH 连不上</strong>:改一下 <code>/etc/ssh/sshd_config</code> 配错端口(或临时关防火墙),看 <code>ssh root@IP</code> 怎么报错。</li>
@@ -390,15 +389,15 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">模块 1 · Linux</div>
 <h2>1.1 什么是"服务器"</h2>
 <p>不要被"服务器"这个词吓住。<strong>它就是一台 24 小时开机的电脑</strong>——和你笔记本几乎一样的硬件,只是装了个 Linux,扔在机房里接了根网线,没有显示器,没有键鼠,你通过 SSH 在自己电脑上"远程"操作它。</p>
-<h3 data-reveal>从你的笔记本到云上,发生了什么变化</h3>
+<h3 data-reveal="">从你的笔记本到云上,发生了什么变化</h3>
 <table class="tbl">
-<tr><th>维度</th><th>你的笔记本</th><th>云服务器</th></th></tr>
+<tbody><tr><th>维度</th><th>你的笔记本</th><th>云服务器</th></tr>
 <tr><td>操作系统</td><td>macOS / Windows</td><td>Ubuntu / Debian / CentOS(几乎只有 Linux)</td></tr>
 <tr><td>交互方式</td><td>屏幕 + 键鼠</td><td>SSH 命令行(没显示器)</td></tr>
 <tr><td>运行时间</td><td>你用的时候开</td><td>24×7 不关机</td></tr>
 <tr><td>公网 IP</td><td>通常没有</td><td>有一个公网 IP</td></tr>
 <tr><td>你在意什么</td><td>美观、流畅</td><td>稳定、能跑、不挂</td></tr>
-</table>
+</tbody></table>
 <div class="callout note"><b class="t">为什么必须是 Linux?</b>绝大多数服务器软件(nginx、Node、Python、Docker、systemd)都是 Linux 优先;macOS 内核虽是 BSD 系但和 Linux 命令 95% 兼容,Windows 完全两套生态,这就是为什么"做后端"几乎等于"用 Linux"。</div>
 </section>
 
@@ -408,14 +407,14 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">模块 1 · Linux</div>
 <h2>1.2 三大抽级概念:文件系统、进程、端口</h2>
 <p>把一台 Linux 服务器想成一座"公寓楼",住客是进程,门牌号是端口,房本归用户。<strong>运维 80% 的操作都围绕这三个东西</strong>:查谁在住(进程)、门牌号被谁占用(端口)、哪个房本归你(权限)。</p>
-<h3 data-reveal>文件系统:一切皆文件</h3>
+<h3 data-reveal="">文件系统:一切皆文件</h3>
 <p>Linux 的核心哲学:磁盘是文件、网卡是文件、鼠标是文件、进程信息也是文件。这听起来抽象,但用起来非常一致——所有东西都在 <code>/</code> 下面,都能用 <code>ls</code> <code>cat</code> <code>cd</code> 操作。</p>
 <pre><code>ls /                  <span class="c"># 根目录</span>
 ls /home              <span class="c"># 用户的家</span>
 ls /etc/nginx/         <span class="c"># nginx 配置</span>
 ls /var/log/           <span class="c"># 日志</span>
 cat /proc/cpuinfo      <span class="c"># CPU 信息(在内存里,不是真文件)</span></code></pre>
-<h3 data-reveal>进程:正在运行的程序</h3>
+<h3 data-reveal="">进程:正在运行的程序</h3>
 <p>你 <code>node server.js</code> 一下,就生成了一个 Node 进程,进程有 PID(身份证号)。运维最常用的几个命令:</p>
 <pre><code>ps aux | grep node     <span class="c"># 看所有 node 进程</span>
 top                    <span class="c"># 实时看 CPU/内存占用(q 退出)</span>
@@ -423,21 +422,21 @@ htop                   <span class="c"># top 的美化版(需 apt install htop)<
 kill 1234              <span class="c"># 杀 PID 1234</span>
 pkill -f "node server" <span class="c"># 按名字杀</span>
 systemctl status myapp <span class="c"># 看 systemd 托管的服务</span></code></pre>
-<h3 data-reveal>端口:窗口编号(0-65535)</h3>
+<h3 data-reveal="">端口:窗口编号(0-65535)</h3>
 <p>一台服务器可以同时跑很多服务,客户端靠"端口号"区分——就像公寓楼里每户的"门牌号"。常见约定:</p>
 <table class="tbl">
-<tr><th>端口</th><th>谁在用</th></tr>
+<tbody><tr><th>端口</th><th>谁在用</th></tr>
 <tr><td>22</td><td>SSH(远程登录)</td></tr>
 <tr><td>80</td><td>HTTP</td></tr>
 <tr><td>443</td><td>HTTPS</td></tr>
 <tr><td>3000 / 8080</td><td>开发者自己起服务(Node/Python 常用)</td></tr>
 <tr><td>3306 / 5432</td><td>MySQL / PostgreSQL</td></tr>
 <tr><td>6379</td><td>Redis</td></tr>
-</table>
+</tbody></table>
 <pre><code>ss -tlnp               <span class="c"># 看哪些端口在监听</span>
 netstat -tlnp          <span class="c"># 旧命令,功能类似</span>
 lsof -i :3000           <span class="c"># 看 3000 端口被谁占了</span></code></pre>
-<div class="callout warn"><b class="t">端口冲突</b>"Address already in use" 是 90% 新手的第一次挫败。必杀技:<code>lsof -i :你的端口</code> 查谁占了,然后杀掉或换端口。</div>
+<div class="callout warn">常见原因：先检查证据再处理，不要直接终止未知进程。</div>
 <p class="src">来源:<a href="https://tldr.sh/" target="_blank">TLDR Pages</a>(命令速查) · <a href="https://www.linux.com/training-tutorials/intro-to-linux/" target="_blank">Linux.com Intro</a> · 核对 2026-08-05</p>
 </section>
 
@@ -447,7 +446,7 @@ lsof -i :3000           <span class="c"># 看 3000 端口被谁占了</span></co
 <div class="sec-tag">模块 1 · Linux</div>
 <h2>1.3 SSH 不只是"远程登录"</h2>
 <p>SSH = Secure Shell。表面上是"远程登录",实际上它能做所有加密的网络连接——端口转发、文件传输(SFTP)、跑 Git。</p>
-<h3 data-reveal>密钥登录:别再用密码</h3>
+<h3 data-reveal="">密钥登录:别再用密码</h3>
 <p>密码登录有两个问题:(1) 慢且烦;(2) 服务器暴露 22 端口,全世界都在暴力破解。改用密钥登录后,服务器只接受持有"私钥"的机器,暴力破解直接无效。</p>
 <pre><code><span class="c"># 本地生成密钥对</span>
 ssh-keygen -t ed25519 -C "you@example.com"
@@ -460,7 +459,7 @@ ssh-copy-id root@你的VPS_IP
 <span class="c"># 登录</span>
 ssh root@你的VPS_IP</code></pre>
 <div class="callout warn"><b class="t">私钥权限必须是 600</b>如果 <code>~/.ssh/id_ed25519</code> 权限是 644,SSH 会拒绝使用(防别人读你的私钥)。<code>chmod 600 ~/.ssh/id_ed25519</code>。</div>
-<h3 data-reveal>配置文件:给常用服务器起别名</h3>
+<h3 data-reveal="">配置文件:给常用服务器起别名</h3>
 <p>不要每次都 <code>ssh root@123.45.67.89</code>。写 <code>~/.ssh/config</code>:</p>
 <pre><code>Host my-vps
   HostName 123.45.67.89
@@ -470,7 +469,7 @@ ssh root@你的VPS_IP</code></pre>
 
 <span class="c"># 之后只用</span>
 ssh my-vps</code></pre>
-<h3 data-reveal>端口转发和跳板</h3>
+<h3 data-reveal="">端口转发和跳板</h3>
 <p>假设你的数据库在"内网"机器 <code>10.0.0.5:5432</code>,你只能通过跳板机 <code>vpn.example.com</code> 进去。本地命令 <code>psql</code> 想要直连,SSH 可以帮你"打洞":</p>
 <pre><code>ssh -L 5432:10.0.0.5:5432 vpn.example.com
 <span class="c"># 之后本地 psql -h 127.0.0.1 -p 5432 就会通过 ssh 隧道转发到内网</span></code></pre>
@@ -485,12 +484,12 @@ ssh my-vps</code></pre>
 <h2>1.4 包管理器速查</h2>
 <p>包管理器 = 应用商店的命令行版。Linux 发行版不同,包管理器不同——Ubuntu/Debian 系用 <code>apt</code>,CentOS/RHEL 新版用 <code>dnf</code>,老版本用 <code>yum</code>,Alpine 用 <code>apk</code>。</p>
 <table class="tbl">
-<tr><th>系统</th><th>装包</th><th>删包</th><th>更新索引</th><th>升级全部</th></tr>
+<tbody><tr><th>系统</th><th>装包</th><th>删包</th><th>更新索引</th><th>升级全部</th></tr>
 <tr><td>Ubuntu / Debian</td><td><code>apt install nginx</code></td><td><code>apt remove nginx</code></td><td><code>apt update</code></td><td><code>apt upgrade</code></td></tr>
 <tr><td>CentOS / RHEL (新版)</td><td><code>dnf install nginx</code></td><td><code>dnf remove nginx</code></td><td><code>dnf check-update</code></td><td><code>dnf upgrade</code></td></tr>
 <tr><td>Alpine</td><td><code>apk add nginx</code></td><td><code>apk del nginx</code></td><td><code>apk update</code></td><td><code>apk upgrade</code></td></tr>
 <tr><td>macOS(参考)</td><td><code>brew install nginx</code></td><td><code>brew uninstall nginx</code></td><td><code>brew update</code></td><td><code>brew upgrade</code></td></tr>
-</table>
+</tbody></table>
 <div class="callout tip"><b class="t">装软件的两条铁律</b>(1) <strong>先 update 再 install</strong>——索引没更新会装到过时的版本;(2) <strong>不混用发行版源</strong>——Ubuntu 的 deb 包不能装到 CentOS 上,反之亦然。</div>
 </section>
 
@@ -500,21 +499,21 @@ ssh my-vps</code></pre>
 <div class="sec-tag">模块 1 · Linux</div>
 <h2>1.5 权限与用户</h2>
 <p>Linux 是多用户系统。每个文件都有"谁能读 / 谁能写 / 谁能执行"三组权限,分别给"自己 / 同组 / 别人"。</p>
-<h3 data-reveal>看权限:<code>ls -l</code></h3>
+<h3 data-reveal="">看权限:<code>ls -l</code></h3>
 <pre><code>-rw-r--r-- 1 root root  1234 Aug  5 10:00 myapp.conf
 drwxr-xr-x 2 root root  4096 Aug  5 09:00 nginx/
 
 <span class="c"># 第 1 位:d = 目录,- = 文件</span>
 <span class="c"># 接下来 9 位:三组 rwx(自己/组/别人)</span>
 <span class="c"># r=读(4) w=写(2) x=执行(1)</span></code></pre>
-<h3 data-reveal>改权限:chmod vs chown</h3>
+<h3 data-reveal="">改权限:chmod vs chown</h3>
 <table class="tbl">
-<tr><th>命令</th><th>干什么</th><th>例子</th></tr>
+<tbody><tr><th>命令</th><th>干什么</th><th>例子</th></tr>
 <tr><td><code>chmod 600 mykey</code></td><td>改权限(数字 = 自己的+组+别人)</td><td><code>600</code> = 自己可读写,别人啥都不能</td></tr>
 <tr><td><code>chmod +x script.sh</code></td><td>加执行权限</td><td>脚本第一次跑前必做</td></tr>
 <tr><td><code>chown user:group file</code></td><td>改归属</td><td><code>chown www-data:www-data /var/www</code></td></tr>
-</table>
-<h3 data-reveal>sudo:临时当 root</h3>
+</tbody></table>
+<h3 data-reveal="">sudo:临时当 root</h3>
 <p>root 是 Linux 的"上帝账号",什么都能改。日常用普通用户登录,要装包/改系统配置时 <code>sudo</code> 临时提权。</p>
 <pre><code>sudo apt install nginx      <span class="c"># 提权装包</span>
 sudo systemctl restart nginx <span class="c"># 提权重启服务</span>
@@ -532,7 +531,7 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>你点开网址的 1 秒里,你的请求过了 4 道关,经历 4 层"信封"包装。你只要搞清楚这四层谁负责啥,就能听懂所有网络黑话。</div>
 
-<h3 data-reveal>它到底是个啥</h3>
+<h3 data-reveal="">它到底是个啥</h3>
 <p>你打开浏览器输入 <code>aidoc-zq.netlify.app</code>,大概 1 秒后看到页面。这 1 秒里,你的请求从浏览器出发,经过了 4 道关:</p>
 <ol>
 <li><strong>应用层 HTTP</strong>——你写的 <code>GET /index.html</code>,意思是"我要这个文件"</li>
@@ -541,11 +540,11 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 <li><strong>链路层 网卡</strong>——把包变成电信号/光信号发出去,就是真正跑的车</li>
 </ol>
 
-<h3 data-reveal>四层协议栈(ASCII 图)</h3>
+<h3 data-reveal="">四层协议栈(ASCII 图)</h3>
 <pre><code>   你发的请求(下行)               你看到的响应(上行)
    ────────────────               ────────────────
    ┌──────────────┐               ┌──────────────┐
-   │ HTTP  GET /  │               │ 200 OK <html> │
+   │ HTTP  GET /  │               │ 200 OK  │
    ├──────────────┤               ├──────────────┤
    │ TCP  SYN/ACK │               │ TCP  FIN/ACK │
    ├──────────────┤               ├──────────────┤
@@ -555,7 +554,7 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
    └──────────────┘               └──────────────┘
    ▲ 层层包装(从下往上)          ▲ 层层拆包(从下往上)</code></pre>
 
-<h3 data-reveal>怎么用:看一次实际握手</h3>
+<h3 data-reveal="">怎么用:看一次实际握手</h3>
 <p>跑 <code>curl -v https://example.com</code>,你能看到 TCP 的"三次握手四次挥手"全过程,这就是 TCP 的核心:</p>
 <pre><code>curl -v https://example.com
 # * Trying 93.184.216.34:443...        ← TCP 开始:发 SYN
@@ -564,14 +563,14 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 # &lt; HTTP/1.1 200 OK                   ← HTTP 响应回来
 # * Connection #0 to host example.com left intact</code></pre>
 
-<h3 data-reveal>实战:真抓一次包</h3>
+<h3 data-reveal="">实战:真抓一次包</h3>
 <p>想看真正的 IP 包长啥样?<code>tcpdump</code> 抓给你看(不需要 root 也能抓自己发的):</p>
 <pre><code>tcpdump -i any -n port 80 -c 5
 # 抓 80 端口的前 5 个包
 # 看到 src=192.168.1.5.dst=93.184.216.34.80 之类
 # 这就是 IP+TCP+HTTP 三层在同一条线上的样子</code></pre>
 
-<h3 data-reveal>🚧 小剧场:OSI 七层是哪七层?</h3>
+<h3 data-reveal="">🚧 小剧场:OSI 七层是哪七层?</h3>
 <p>OSI 是 1984 年的老古董,现实只活四层。OSI 七层里我们实际用到的:物理层 → 数据链路层 → 网络层 → 传输层 → 应用层(下面四层就够了,中间三层的"会话/表示"两兄弟基本没人实现)。</p>
 
 <div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>H 写啥、T 怎么送、I 给地址、网卡跑腿</strong>"——四层各管一摊,互不干扰。</div>
@@ -585,12 +584,12 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 <div class="sec-tag">模块 2 · 网络</div>
 <h2>2.2 DNS 完整图景:114 查号台是怎么工作的</h2>
 
-<div class="callout note"><b class="t">📌 30 秒结论</b>DNS 就是互联网的"通讯录",输入域名 → 查到 IP。改完 DNS 不是立刻生效,全球最多 48 小时才完全同步,这是独立开发者最常踩的坑。</div>
+<div class="callout note">DNS 变更的可见时间取决于旧记录的 TTL、递归解析器与本机缓存等因素，不能保证全球统一在 48 小时内同步。排障时分别查询权威服务器和实际使用的解析器。</div>
 
-<h3 data-reveal>它到底是个啥</h3>
+<h3 data-reveal="">它到底是个啥</h3>
 <p>你输入 <code>aidoc-zq.netlify.app</code> 这串字母,计算机只懂 <code>75.2.60.5</code> 这种数字。DNS(Domain Name System)负责把字母翻译成数字,就像 114 查号台 —— 你说"肯德基在哪",它告诉你具体地址。</p>
 
-<h3 data-reveal>完整查询流程(递归 + 迭代)</h3>
+<h3 data-reveal="">完整查询流程(递归 + 迭代)</h3>
 <pre><code>你的电脑                                根.  → .com. → netlify.app → 返回 75.2.60.5
    │                                       │       │          │
    │ 问本地 DNS(运营商给的)               │       │          │
@@ -609,19 +608,19 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 浏览器拿 IP,开始 HTTP 请求</code></pre>
 <p>全球共 13 组根 DNS 服务器,管理整个域名系统的"总目录"。</p>
 
-<h3 data-reveal>公共 DNS 列表(2026.8 核对)</h3>
+<h3 data-reveal="">公共 DNS 列表(2026.8 核对)</h3>
 <table class="tbl">
-<tr><th>服务商</th><th>IPv4</th><th>特点</th></tr>
+<tbody><tr><th>服务商</th><th>IPv4</th><th>特点</th></tr>
 <tr><td>Google</td><td><code>8.8.8.8</code> / <code>8.8.4.4</code></td><td>国际通用,响应快</td></tr>
 <tr><td>Cloudflare</td><td><code>1.1.1.1</code> / <code>1.0.0.1</code></td><td>号称最快,隐私承诺最强</td></tr>
 <tr><td>国内 114</td><td><code>114.114.114.114</code></td><td>国内老牌,无污染但有广告过滤</td></tr>
 <tr><td>DNSPod</td><td><code>119.29.29.29</code></td><td>腾讯旗下,国内访问快</td></tr>
 <tr><td>阿里 AliDNS</td><td><code>223.5.5.5</code> / <code>223.6.6.6</code></td><td>阿里旗下,稳定</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>记录类型速查</h3>
+<h3 data-reveal="">记录类型速查</h3>
 <table class="tbl">
-<tr><th>类型</th><th>作用</th><th>例子</th></tr>
+<tbody><tr><th>类型</th><th>作用</th><th>例子</th></tr>
 <tr><td><code>A</code></td><td>域名 → IPv4 地址</td><td><code>example.com → 93.184.216.34</code></td></tr>
 <tr><td><code>AAAA</code></td><td>域名 → IPv6 地址</td><td><code>example.com → 2606:2800:220:1::1</code></td></tr>
 <tr><td><code>CNAME</code></td><td>域名 → 另一个域名(别名)</td><td><code>www.example.com → example.com</code></td></tr>
@@ -629,13 +628,13 @@ sudo !!                     <span class="c"># 把上一条命令加 sudo 重跑(
 <tr><td><code>TXT</code></td><td>任意文本(SPF/DKIM/域名验证)</td><td>Google 站点验证 <code>google-site-verification=...</code></td></tr>
 <tr><td><code>NS</code></td><td>权威 DNS 服务器</td><td>把这个域名的"通讯录"交给谁管</td></tr>
 <tr><td><code>CAA</code></td><td>限制可签发的 CA</td><td>只让 Let's Encrypt 签证书</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>DoH / DoT(2026.8 现状)</h3>
+<h3 data-reveal="">DoH / DoT(2026.8 现状)</h3>
 <p><strong>DNS over HTTPS(DoH)</strong>:把 DNS 查询塞进 HTTPS 流量,运营商看不到你查了啥。Firefox / Chrome / Edge 已支持,但是否默认启用随版本/区域不同(详细矩阵本节未逐字核对,2026.8 现状以浏览器官方文档为准)。<br>
 <strong>DNS over TLS(DoT)</strong>:类似 DoH,改用 TLS 端口 853。Android 9+ 默认启用"私人 DNS"功能就是它。</p>
 
-<h3 data-reveal>🚧 小剧场:"改完 DNS 半天不生效"</h3>
+<h3 data-reveal="">🚧 小剧场:"改完 DNS 半天不生效"</h3>
 <p>改了 DNS 记录,本地立刻生效,但用户那边可能 24 小时后才生效 —— 因为 DNS 全球有缓存。想立刻知道真实情况,跳过缓存直接问:</p>
 <pre><code>dig @8.8.8.8 yourdomain.com      <span class="c"># 跳过缓存问 Google</span>
 dig @1.1.1.1 yourdomain.com      <span class="c"># 跳过缓存问 Cloudflare</span>
@@ -656,11 +655,11 @@ nslookup yourdomain.com 8.8.8.8  <span class="c"># nslookup 版本</span></code>
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>HTTP 是明信片——咖啡店抓包能偷看。HTTPS = 挂号信,只有你和收件人能拆。Let's Encrypt 让免费 SSL 证书 + 自动续期成为现实,2026 年全网主流。</div>
 
-<h3 data-reveal>它到底是个啥:HTTP vs HTTPS</h3>
+<h3 data-reveal="">它到底是个啥:HTTP vs HTTPS</h3>
 <p>HTTP(超文本传输协议)是明文——你在咖啡店连 Wi-Fi 输"账号/密码",隔壁桌抓包能看到。</p>
 <p>HTTPS = HTTP + TLS 加密层,让传输内容变成密文,只有你和服务器能解开。地址栏的小锁图标就是这个意思。</p>
 
-<h3 data-reveal>TLS 1.3 握手(1-RTT,ASCII 图)</h3>
+<h3 data-reveal="">TLS 1.3 握手(1-RTT,ASCII 图)</h3>
 <pre><code>客户端                                服务器
   │                                      │
   │── ClientHello(支持的算法) ─────────►│
@@ -673,27 +672,27 @@ nslookup yourdomain.com 8.8.8.8  <span class="c"># nslookup 版本</span></code>
   │▼ 应用数据加密传输(双方都有密钥)      │</code></pre>
 <p>比 TLS 1.2 少一次往返,延迟更低。2026 年主流浏览器 + 服务器默认 TLS 1.3。</p>
 
-<h3 data-reveal>SNI:一个 IP 多域名怎么办</h3>
+<h3 data-reveal="">SNI:一个 IP 多域名怎么办</h3>
 <p>早期 HTTPS 一个 IP 只能挂一个证书,但你一台服务器要服务 a.com / b.com / c.com 怎么办? <strong>SNI(Server Name Indication)</strong> 让客户端在握手时就把域名告诉服务器,服务器挑对应证书。</p>
 <div class="callout note"><b class="t">理解 SNI</b>就像酒店前台,客人进门前先说"我找 302 房的张三",前台直接对应房间,不用挨个房间敲门问。</div>
 
-<h3 data-reveal>Let's Encrypt + certbot(2026.8 已核对)</h3>
+<h3 data-reveal="">Let's Encrypt + certbot(2026.8 已核对)</h3>
 <pre><code>apt install -y certbot python3-certbot-nginx
 certbot --nginx -d yourdomain.dev -d www.yourdomain.dev
 certbot renew --dry-run    <span class="c"># 测试自动续期</span></code></pre>
 <p>certbot 会自动加 systemd timer 或 cron,每 60 天跑一次续期,90 天有效期内始终保持。</p>
 
-<h3 data-reveal>2026.8 Let's Encrypt 速率限制(已核对官方文档)</h3>
+<h3 data-reveal="">2026.8 Let's Encrypt 速率限制(已核对官方文档)</h3>
 <table class="tbl">
-<tr><th>限制项</th><th>数值</th><th>周期</th></tr>
+<tbody><tr><th>限制项</th><th>数值</th><th>周期</th></tr>
 <tr><td>每注册域名新证书</td><td><strong>50 张</strong></td><td>每 7 天</td></tr>
 <tr><td>每账号新订单(V1)</td><td>300 单</td><td>每 3 小时</td></tr>
 <tr><td>同一标识符集重复证书</td><td>5 张</td><td>每 7 天</td></tr>
 <tr><td>ARI 续费</td><td><strong>豁免所有限制</strong></td><td>—</td></tr>
-</table>
+</tbody></table>
 <p>好消息:正常续费不受速率限制。坏消息:测试改域时容易撞 50 张/周的限额。</p>
 
-<h3 data-reveal>🚧 小剧场:"证书过期全站打不开"</h3>
+<h3 data-reveal="">🚧 小剧场:"证书过期全站打不开"</h3>
 <p>Let's Encrypt 证书 90 天有效期,过期前 30 天 certbot 自动续。但如果你把机器关了一个月,或 cron 任务跑挂了,证书可能过期 —— 用户浏览器会拦"不安全"。 第一时间:</p>
 <pre><code>certbot certificates               <span class="c"># 看所有证书和到期时间</span>
 systemctl status certbot.timer     <span class="c"># 看定时器是否在跑</span>
@@ -712,7 +711,7 @@ certbot renew --force-renewal      <span class="c"># 强制立即重签</span></
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>反向代理就是"大楼前台"——你只管说"找张三",前台帮你定位到具体办公室。用户访问 yourdomain.dev,其实是 Nginx 在替你分配到后端的多个 Node 服务。</div>
 
-<h3 data-reveal>它到底是个啥:正向 vs 反向</h3>
+<h3 data-reveal="">它到底是个啥:正向 vs 反向</h3>
 <p>很多人把"代理"和"反向代理"搞混,其实方向不同:</p>
 <pre><code>【正向代理】 客户端 ←→ 代理 ←→ 互联网
   替客户端出头,典型场景:企业统一翻墙
@@ -722,7 +721,7 @@ certbot renew --force-renewal      <span class="c"># 强制立即重签</span></
   替服务端接活,典型场景:Nginx 配 Node
   客户端不知道后面有几个服务器</code></pre>
 
-<h3 data-reveal>请求流转步骤(ASCII 图)</h3>
+<h3 data-reveal="">请求流转步骤(ASCII 图)</h3>
 <pre><code>用户浏览器        Nginx 反代              后端服务器
    │                  │                       │
    │ GET /api/users   │                       │
@@ -737,7 +736,7 @@ certbot renew --force-renewal      <span class="c"># 强制立即重签</span></
    │                  │ 直接返回磁盘上的文件   │
    │◄────── 200 OK ───┤  (没经过 Node,省 CPU)│</code></pre>
 
-<h3 data-reveal>Nginx 的 5 个关键作用</h3>
+<h3 data-reveal="">Nginx 的 5 个关键作用</h3>
 <ul>
 <li><strong>HTTPS 终结</strong>——Nginx 负责 SSL,Node 跑明文 HTTP(省 CPU)</li>
 <li><strong>多应用共用 80/443</strong>——根据域名分发到不同 Node 服务</li>
@@ -746,7 +745,7 @@ certbot renew --force-renewal      <span class="c"># 强制立即重签</span></
 <li><strong>缓存/压缩/Gzip</strong>——Nginx 一行配置搞定</li>
 </ul>
 
-<h3 data-reveal>Nginx 为什么是"瑞士军刀"</h3>
+<h3 data-reveal="">Nginx 为什么是"瑞士军刀"</h3>
 <p>Nginx 是事实标准的反向代理服务器——开源、稳定、配置简单、内存占用低。Netcraft / W3Techs 等机构长期统计显示,Nginx 在全球 Web 服务器市场份额稳居前 2(另一家是 Apache),新兴部署以 Nginx 为主流。(2026.8 具体百分比本节未逐字核对,以 w3techs.com 最新报告为准)</p>
 
 <div class="callout note"><b class="t">📌 配置样板见 3.3</b>完整可用的 nginx.conf 在模块 3.3,直接抄走。</div>
@@ -764,20 +763,20 @@ certbot renew --force-renewal      <span class="c"># 强制立即重签</span></
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>独立开发者 50% 的"连不上"故障是防火墙干的——而且不是一层,是<strong>两层<u>以上</u></strong>。本机放行了,云厂商不一定放行;同样本地服务跑了,也不代表外网能进。</div>
 
-<h3 data-reveal>两层防火墙(独立开发者必踩)</h3>
+<h3 data-reveal="">两层防火墙(独立开发者必踩)</h3>
 <pre><code>你的电脑 ←───→ [云厂商安全组] ←───→ [本机 ufw/iptables] ←───→ 服务
    全国大门                          楼层大门                      房间门
 
 两个门都开,才能进。任何一个门锁着,外面就连不上。</code></pre>
 
-<h3 data-reveal>第一层:服务器本机防火墙 (iptables / ufw)</h3>
+<h3 data-reveal="">第一层:服务器本机防火墙 (iptables / ufw)</h3>
 <p>Ubuntu 默认没装 ufw,但很多人会装:<code>ufw allow 22</code>、<code>ufw allow 80</code>、<code>ufw allow 443</code>、<code>ufw enable</code>。装好后忘了 allow 80/443,Nginx 跑着也访问不了。</p>
 <pre><code>ufw status                <span class="c"># 看规则</span>
 ufw allow 80/tcp          <span class="c"># 放行 HTTP</span>
 ufw allow 443/tcp         <span class="c"># 放行 HTTPS</span>
 ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</span></code></pre>
 
-<h3 data-reveal>第二层:云厂商安全组</h3>
+<h3 data-reveal="">第二层:云厂商安全组</h3>
 <p>阿里云 / 腾讯云 / AWS / 华为云 在"控制台 → 安全组"里维护另一套防火墙规则。<strong>本机 ufw 放行了 80,但安全组没放行,外面还是连不上</strong> — 这是新手最常踩的"双重防火墙"陷阱。</p>
 <div class="callout warn"><b class="t">故障排查顺序(4 步)</b>连不上某端口时,按这个顺序检查:</div>
 <ol>
@@ -787,7 +786,7 @@ ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</sp
 <li><strong>公网 IP 对吗</strong> → <code>curl ifconfig.me</code></li>
 </ol>
 
-<h3 data-reveal>🚧 小剧场:"80 通了但 3000 不通"</h3>
+<h3 data-reveal="">🚧 小剧场:"80 通了但 3000 不通"</h3>
 <p>你跑 Node 监听 3000 端口,本机 <code>curl localhost:3000</code> 正常,但外网访问不到。原因:3000 端口既没在云厂商安全组放行,你也忘了让 Nginx 反代到 3000。解决:</p>
 <pre><code>ufw allow 3000/tcp       <span class="c"># 1. 本机放行(或用 Nginx 反代)</span>
 # 2. 云厂商控制台:安全组 → 入站规则 → 3000
@@ -806,9 +805,9 @@ ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</sp
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>独立开发者的项目被攻击,99% 是被自动化扫描脚本"顺手"打的,不是有人专门针对你。学会这几条能挡住绝大多数。</div>
 
-<h3 data-reveal>7 类攻击速查</h3>
+<h3 data-reveal="">7 类攻击速查</h3>
 <table class="tbl">
-<tr><th>攻击</th><th>原理(简化)</th><th>防御</th></tr>
+<tbody><tr><th>攻击</th><th>原理(简化)</th><th>防御</th></tr>
 <tr><td><strong>暴力 SSH</strong></td><td>脚本扫 22 端口,试常见密码<br>→ 一天试几万次</td><td>关密码登录(只允许密钥)+ fail2ban</td></tr>
 <tr><td><strong>SQL 注入</strong></td><td>用户输入被拼到 SQL 里<br>→ <code>' OR 1=1 --</code></td><td>参数化查询 / ORM</td></tr>
 <tr><td><strong>XSS</strong></td><td>用户输入被当 HTML 渲染<br>→ <code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td><td>React/Vue 默认转义;外部输入用 DOMPurify</td></tr>
@@ -816,9 +815,9 @@ ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</sp
 <tr><td><strong>DDoS</strong></td><td>海量请求打满带宽<br>→ 像 100 万人挤 1 个门</td><td>Cloudflare 代理 + 限流</td></tr>
 <tr><td><strong>依赖漏洞</strong></td><td><code>npm install</code> 装到带漏洞的包</td><td><code>npm audit</code> + Dependabot 自动 PR</td></tr>
 <tr><td><strong>敏感信息泄露</strong></td><td>.env / 密钥 commit 到 GitHub</td><td><code>git-secrets</code> 预检查 + GitHub 密钥扫描</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三条立竿见影的硬化(1 小时内搞定)</h3>
+<h3 data-reveal="">三条立竿见影的硬化(1 小时内搞定)</h3>
 <ol>
 <li><strong>SSH 改密钥登录、禁密码</strong> — 改 <code>/etc/ssh/sshd_config</code> 的 <code>PasswordAuthentication no</code></li>
 <li><strong>.env 加进 .gitignore</strong> — 防止密钥泄露</li>
@@ -839,21 +838,21 @@ ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</sp
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>端口号就是小区门牌号,IP 是小区地址。0-65535 共 6 万多户,1023 以下是"著名商户"专属(SSH、HTTP、HTTPS),49152 以上是临时租户(浏览器每次开新标签都分一个)。</div>
 
-<h3 data-reveal>它到底是个啥</h3>
+<h3 data-reveal="">它到底是个啥</h3>
 <p>想象一栋小区:IP 地址是小区地址(全国唯一),端口号是楼栋门牌号。同一台机器上,可以跑 6 万多个服务,各占一个门牌号,互不干扰。</p>
 
-<h3 data-reveal>三段划分(为什么是 0-65535)</h3>
+<h3 data-reveal="">三段划分(为什么是 0-65535)</h3>
 <table class="tbl">
-<tr><th>范围</th><th>名称</th><th>谁能用</th></tr>
+<tbody><tr><th>范围</th><th>名称</th><th>谁能用</th></tr>
 <tr><td>0-1023</td><td>知名端口(Well-known)</td><td>需要 root 权限才能监听</td></tr>
 <tr><td>1024-49151</td><td>注册端口(Registered)</td><td>普通用户可监听,向 IANA 注册避免冲突</td></tr>
 <tr><td>49152-65535</td><td>动态/临时端口(Ephemeral)</td><td>客户端临时连接用,系统自动分配</td></tr>
-</table>
+</tbody></table>
 <p>数字上限 65535 = 2^16,因为 TCP/UDP 包头里端口号字段是 16 位。</p>
 
-<h3 data-reveal>15+ 常见端口速查</h3>
+<h3 data-reveal="">15+ 常见端口速查</h3>
 <table class="tbl">
-<tr><th>端口</th><th>服务</th><th>用途</th></tr>
+<tbody><tr><th>端口</th><th>服务</th><th>用途</th></tr>
 <tr><td><code>22</code></td><td>SSH</td><td>远程登录,改密钥登录后禁密码</td></tr>
 <tr><td><code>80</code></td><td>HTTP</td><td>明文网页,建议跳到 443</td></tr>
 <tr><td><code>443</code></td><td>HTTPS</td><td>加密网页,主流</td></tr>
@@ -869,15 +868,15 @@ ufw allow from 1.2.3.4 to any port 22  <span class="c"># 只允许某 IP SSH</sp
 <tr><td><code>3389</code></td><td>RDP</td><td>Windows 远程桌面</td></tr>
 <tr><td><code>5900</code></td><td>VNC</td><td>跨平台远程桌面</td></tr>
 <tr><td><code>11211</code></td><td>Memcached</td><td>缓存服务器</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>端口冲突排查四步法</h3>
+<h3 data-reveal="">端口冲突排查四步法</h3>
 <pre><code>ss -tlnp | grep 8080            <span class="c"># 1. 谁在听 8080?(推荐,新派)</span>
 lsof -i :8080                   <span class="c"># 2. 哪个进程占用?</span>
 netstat -anp | grep 8080        <span class="c"># 3. 备用命令(老派)</span>
 fuser -k 8080/tcp               <span class="c"># 4. 强制杀掉占用进程</span></code></pre>
 
-<h3 data-reveal>🚧 小剧场:"两个 Node 都想用 3000"</h3>
+<h3 data-reveal="">🚧 小剧场:"两个 Node 都想用 3000"</h3>
 <p>你开了两个 Node 项目,都默认监听 3000。第二个 <code>node server.js</code> 报错 <code>EADDRINUSE</code>。三选一:</p>
 <pre><code>PORT=3001 node server.js        <span class="c"># 改第二个项目的端口</span>
 kill $(lsof -ti:3000)           <span class="c"># 杀掉占用 3000 的进程</span>
@@ -896,7 +895,7 @@ pm2 start server.js -n app1     <span class="c"># 用 pm2 同时管多个实例<
 
 <div class="callout note"><b class="t">📌 30 秒结论</b><code>localhost</code> = "你跟自己说话",家里喊一声全家都听不见。Node 监听 <code>127.0.0.1</code> 只接本机请求,监听 <code>0.0.0.0</code> 才对外接受所有网卡访问。想让本地服务被外网访问?用内网穿透 3 方案之一。</div>
 
-<h3 data-reveal>它到底是个啥:三个特殊地址的区别</h3>
+<h3 data-reveal="">它到底是个啥:三个特殊地址的区别</h3>
 <pre><code>【127.0.0.1】  loopback 网卡上的 IP
   → 只走本机,网卡都不发出去
   → 隔壁电脑 ping 不通你
@@ -909,7 +908,7 @@ pm2 start server.js -n app1     <span class="c"># 用 pm2 同时管多个实例<
   → 接受任何接口的访问(本机 + 公网)
   → 真正"对外开放"的服务应该监听这个</code></pre>
 
-<h3 data-reveal>Node 监听实例</h3>
+<h3 data-reveal="">Node 监听实例</h3>
 <pre><code>// 只接本机(默认)
 app.listen(3000, '127.0.0.1', () =&gt; {
   console.log('只在 localhost:3000 能访问');
@@ -923,22 +922,22 @@ app.listen(3000, '0.0.0.0', () =&gt; {
 // 默认(通常 = 0.0.0.0,但有些版本不同)
 app.listen(3000, () =&gt; console.log('默认监听'));</code></pre>
 
-<h3 data-reveal>内网穿透 3 方案(本地服务被外网访问)</h3>
+<h3 data-reveal="">内网穿透 3 方案(本地服务被外网访问)</h3>
 <table class="tbl">
-<tr><th>方案</th><th>原理</th><th>适合谁</th></tr>
+<tbody><tr><th>方案</th><th>原理</th><th>适合谁</th></tr>
 <tr><td><strong>frp</strong></td><td>开源,自建 frp 服务器,需一台公网机器</td><td>愿意折腾、对成本敏感</td></tr>
 <tr><td><strong>Cloudflare Tunnel</strong></td><td>跑 <code>cloudflared</code> 守护进程,<strong>出站</strong>连 Cloudflare</td><td>不想买公网机器,小项目</td></tr>
 <tr><td><strong>Tailscale</strong></td><td>基于 WireGuard,零配置,设备组网</td><td>多设备互联,安全组网</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>Cloudflare Tunnel(2026.8 已核对原理)</h3>
+<h3 data-reveal="">Cloudflare Tunnel(2026.8 已核对原理)</h3>
 <p><code>cloudflared</code> 守护进程运行在你的服务器上,<strong>主动向 Cloudflare 发起出站连接</strong>(outbound-only),不需要公网 IP,不需要在防火墙开放入站。隧道用 UUID 标识,流量双向通行,但防火墙只需放行出站。</p>
 <div class="callout note"><b class="t">没核对到</b>Free 套餐下 Cloudflare Tunnel 的带宽限制、是否需要域名等条款 2026.8 状态本节未逐字核对,以 Cloudflare 官网最新条款为准。</div>
 
-<h3 data-reveal>Tailscale 2026 状态(已核对定价)</h3>
+<h3 data-reveal="">Tailscale 2026 状态(已核对定价)</h3>
 <p>Tailscale 基于 WireGuard,免费版 Personal 永久可用 —— <strong>最多 6 个用户、无限个人设备</strong>。超过 6 人升级到 Standard($8/用户/月)。典型场景:homelab、个人 VPN、Raspberry Pi、SSH 内网穿透。</p>
 
-<h3 data-reveal>SSH 端口转发(最快的小工具)</h3>
+<h3 data-reveal="">SSH 端口转发(最快的小工具)</h3>
 <pre><code># 本地转发:把 remote 的 80 映射到本地 8080
 ssh -L 8080:localhost:80 user@remote
 
@@ -948,7 +947,7 @@ ssh -R 8080:localhost:3000 user@remote
 # 动态转发:把 SSH 变成 SOCKS 代理
 ssh -D 1080 user@remote</code></pre>
 
-<h3 data-reveal>🚧 小剧场:"我本地跑的服务怎么让同事访问?"</h3>
+<h3 data-reveal="">🚧 小剧场:"我本地跑的服务怎么让同事访问?"</h3>
 <p>三种解决方案,选最适合的:</p>
 <ol>
 <li><strong>最简:用 Tailscale</strong> — 同事也装,组个虚拟局域网</li>
@@ -969,7 +968,7 @@ ssh -D 1080 user@remote</code></pre>
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>VPN、正向代理、反向代理、应用层代理四者经常被搞混,其实各管一层。VPN 是"在网络层拉条专线",反代是"在应用层替服务端接活",正代是"在应用层替客户端出头"。</div>
 
-<h3 data-reveal>它到底是个啥:四个场景引入</h3>
+<h3 data-reveal="">它到底是个啥:四个场景引入</h3>
 <ul>
 <li><strong>公司 VPN</strong> — 你在家能访问公司内网 Git,OS 以为你坐在公司工位</li>
 <li><strong>企业正向代理</strong> — 公司统一从代理出公网,所有员工走同一出口</li>
@@ -977,7 +976,7 @@ ssh -D 1080 user@remote</code></pre>
 <li><strong>应用层代理</strong> — 浏览器设 SOCKS5/HTTP Proxy 插件出公网</li>
 </ul>
 
-<h3 data-reveal>四者对比 ASCII 图</h3>
+<h3 data-reveal="">四者对比 ASCII 图</h3>
 <pre><code>【正向代理】                          【反向代理】
    客户端 ─→ 代理 ─→ 互联网             互联网 ─→ 反代 ─→ 后端服务器
    替客户端出头                         替服务端接活
@@ -986,23 +985,23 @@ ssh -D 1080 user@remote</code></pre>
    客户端 ─→ VPN ─→ 目标网络           客户端 ─→ SOCKS5/HTTP Proxy ─→ 互联网
    拉专线,OS 视角下虚拟网卡             应用层代转,SOCKS5 看上层协议</code></pre>
 
-<h3 data-reveal>作用层一览</h3>
+<h3 data-reveal="">作用层一览</h3>
 <table class="tbl">
-<tr><th>类型</th><th>作用层</th><th>典型场景</th></tr>
+<tbody><tr><th>类型</th><th>作用层</th><th>典型场景</th></tr>
 <tr><td><strong>VPN</strong></td><td>L3 网络层</td><td>整条虚拟专线,OS 路由表视角</td></tr>
 <tr><td><strong>反向代理</strong></td><td>L7 应用层(HTTP)</td><td>Nginx 替你接 HTTP 流量</td></tr>
 <tr><td><strong>正向代理</strong></td><td>L7 应用层(HTTP)</td><td>浏览器设代理出公网</td></tr>
 <tr><td><strong>SOCKS5 代理</strong></td><td>L5 会话层</td><td>任意 TCP/UDP 流量转发</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>VPN 协议三档</h3>
+<h3 data-reveal="">VPN 协议三档</h3>
 <ul>
 <li><strong>IPsec</strong> — 企业级老牌,1980s 起的协议族,配置复杂但稳定</li>
 <li><strong>SSL VPN</strong> — 轻量,装客户端即可(Cisco AnyConnect 等)</li>
 <li><strong>WireGuard</strong> — 新锐,代码 4000 行,<strong>Linux 5.6(2020-03-29) 起合并入主线</strong></li>
 </ul>
 
-<h3 data-reveal>WireGuard 的核心优势</h3>
+<h3 data-reveal="">WireGuard 的核心优势</h3>
 <ul>
 <li>配置像 SSH — 交换公钥即可建立连接</li>
 <li>代码量小 — 约 4000 行,易审计</li>
@@ -1011,10 +1010,10 @@ ssh -D 1080 user@remote</code></pre>
 <li>内置漫游 — 切换网络不重连(类似 Mosh)</li>
 </ul>
 
-<h3 data-reveal><code>ssh -D 1080</code> 是什么</h3>
+<h3 data-reveal=""><code>ssh -D 1080</code> 是什么</h3>
 <p>SSH 自带的动态 SOCKS 代理。把 SSH 当 SOCKS5 服务器用,所有走 1080 端口的应用流量都会被 SSH 转发出去。</p>
 
-<h3 data-reveal>🚧 小剧场:"公司 VPN 能访问内网是为什么"</h3>
+<h3 data-reveal="">🚧 小剧场:"公司 VPN 能访问内网是为什么"</h3>
 <p>VPN 客户端拨号时,OS 收到一组"路由表变更指令":通往 <code>10.0.0.0/8</code> 的包走 <code>utun0</code>(虚拟网卡),其他走原默认网卡。从你的 OS 视角看,这就是坐在公司工位的网络栈。</p>
 
 <div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>VPN 拉专线,反代替服务端,正代替客户端</strong>"——看"替谁出头"。</div>
@@ -1030,19 +1029,19 @@ ssh -D 1080 user@remote</code></pre>
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>公网 IP 是你家门牌号(全国唯一),私网 IP 是小区内单元号(小区内可重复)。整个小区共用一个公网 IP,小区传达室(NAT)负责把外面的快递按"门牌号"分发回各户 —— 这就是 NAT 在干的事。</div>
 
-<h3 data-reveal>它到底是个啥</h3>
+<h3 data-reveal="">它到底是个啥</h3>
 <p>如果每台设备都要一个公网 IP,IPv4(43 亿个)早就不够用。NAT(Network Address Translation)让一个小区可以共用一个公网 IP —— 内部的私网 IP 由路由器"翻译"。</p>
 
-<h3 data-reveal>三类私网段(RFC 1918)</h3>
+<h3 data-reveal="">三类私网段(RFC 1918)</h3>
 <table class="tbl">
-<tr><th>段</th><th>地址范围</th><th>数量</th><th>典型场景</th></tr>
+<tbody><tr><th>段</th><th>地址范围</th><th>数量</th><th>典型场景</th></tr>
 <tr><td><code>10.0.0.0/8</code></td><td><code>10.0.0.0</code> - <code>10.255.255.255</code></td><td>1677 万</td><td>大型企业 / 云厂商内网</td></tr>
 <tr><td><code>172.16.0.0/12</code></td><td><code>172.16.0.0</code> - <code>172.31.255.255</code></td><td>104 万</td><td>中型网络</td></tr>
 <tr><td><code>192.168.0.0/16</code></td><td><code>192.168.0.0</code> - <code>192.168.255.255</code></td><td>6.5 万</td><td>家用路由器(最常见)</td></tr>
-</table>
+</tbody></table>
 <p>你在家里 Wi-Fi 看到的 <code>192.168.1.x</code>,公司内网可能是 <code>10.0.0.x</code>。</p>
 
-<h3 data-reveal>NAT 原理 ASCII 图</h3>
+<h3 data-reveal="">NAT 原理 ASCII 图</h3>
 <pre><code>你的电脑 192.168.1.100:5000 ─→ 小区路由器 ─→ 公网 1.2.3.4:40001 ─→ baidu.com
                                   ▲
                                   │ NAT 翻译表:
@@ -1052,14 +1051,14 @@ ssh -D 1080 user@remote</code></pre>
 
 百度回复到 1.2.3.4:40001 → 路由器查表 → 转给 192.168.1.100:5000</code></pre>
 
-<h3 data-reveal>端口映射 = 路由器做的"反向代理"</h3>
+<h3 data-reveal="">端口映射 = 路由器做的"反向代理"</h3>
 <p>家里的 NAS 想被外网访问?在路由器上做"端口映射":把公网的某个端口(如 <code>8081</code>)映射到 NAS 内网 IP 的 <code>5000</code> 端口。外网访问 <code>你的公网 IP:8081</code> = 访问 NAS 的 <code>5000</code>。</p>
 <div class="callout note"><b class="t">类比</b>小区传达室替你收快递,快递单只写"传达室收"。传达室记住每件快递是 18 楼哪户的,你来取时再分发。端口映射就是"给某户固定留个柜子"。</div>
 
-<h3 data-reveal>IPv4 耗尽历史 + IPv6 出场</h3>
+<h3 data-reveal="">IPv4 耗尽历史 + IPv6 出场</h3>
 <p><strong>2019 年 11 月</strong>,IANA 分配完最后 5 个 /8 段,IPv4 正式"分完"。NAT 是 IPv4 续命的权宜之计。IPv6(2.13 详述)有 128 位地址,理论上每粒沙子都能分到 IP,不再需要 NAT。</p>
 
-<h3 data-reveal>🚧 小剧场:"为什么我家 IP 跟邻居一样都是 192.168.1.100"</h3>
+<h3 data-reveal="">🚧 小剧场:"为什么我家 IP 跟邻居一样都是 192.168.1.100"</h3>
 <p>所有家用路由器默认用 <code>192.168.1.x</code> 段。你的 <code>192.168.1.100</code> 和邻居的 <code>192.168.1.100</code> 在各自小区里互不干扰 —— 因为它们都在 NAT 后面,公网上看到的只是小区公网 IP。</p>
 
 <div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>公网全国唯一,私网小区内用,出门靠 NAT</strong>"——家里几百台设备的 IP 可以重复,因为公网只看小区大门。</div>
@@ -1075,9 +1074,9 @@ ssh -D 1080 user@remote</code></pre>
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>这是你排障的工具箱,按场景查。不通先 <code>ping</code>,慢就 <code>mtr</code>,HTTP 用 <code>curl</code>,看端口用 <code>ss</code>。背不下来没关系,知道"啥场景该用啥命令"就够。</div>
 
-<h3 data-reveal>命令分类速查表</h3>
+<h3 data-reveal="">命令分类速查表</h3>
 <table class="tbl">
-<tr><th>分类</th><th>命令</th><th>用途</th></tr>
+<tbody><tr><th>分类</th><th>命令</th><th>用途</th></tr>
 <tr><td rowspan="3">连通性</td><td><code>ping</code></td><td>测 IP 层是否通(用 ICMP)</td></tr>
 <tr><td><code>traceroute</code></td><td>看包从你到目标过了几跳</td></tr>
 <tr><td><code>mtr</code></td><td>traceroute + ping 合并版,实时</td></tr>
@@ -1091,9 +1090,9 @@ ssh -D 1080 user@remote</code></pre>
 <tr><td>抓包</td><td><code>tcpdump</code> / <code>Wireshark</code></td><td>看实际网络包内容</td></tr>
 <tr><td rowspan="2">网络配置</td><td><code>ip addr</code> / <code>ip a</code></td><td>看本机 IP(替代 ifconfig)</td></tr>
 <tr><td><code>ip route</code></td><td>看路由表(替代 route)</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>5 个实战排查场景</h3>
+<h3 data-reveal="">5 个实战排查场景</h3>
 <p><strong>场景 1 · 上不了网</strong></p>
 <pre><code>ping 8.8.8.8        <span class="c"># 测 IP 层通不通</span>
 ping baidu.com      <span class="c"># 测 DNS 通不通</span>
@@ -1123,10 +1122,10 @@ ufw status                   <span class="c"># 看防火墙</span></code></pre>
 # -d:发请求体
 # -H:加请求头</code></pre>
 
-<h3 data-reveal><code>ss</code> vs <code>netstat</code>:新派 vs 老派</h3>
-<p>功能几乎一样,但 <code>ss</code> 直接读内核,速度快 10 倍以上。<code>netstat</code> 已被标记 deprecated,新部署默认装 <code>iproute2</code>(含 <code>ss</code>/<code>ip</code>),不再装 <code>net-tools</code>(含 <code>netstat</code>/<code>ifconfig</code>)。</p>
+<h3 data-reveal=""><code>ss</code> vs <code>netstat</code>:新派 vs 老派</h3>
+<p>ss 是现代 Linux 的套接字诊断工具，通常由 iproute2 提供；netstat 常由 net-tools 提供。按系统实际安装情况选择，不对所有环境承诺固定性能倍数。</p>
 
-<h3 data-reveal>🚧 小剧场:"用户报网页打不开,但我这边正常"</h3>
+<h3 data-reveal="">🚧 小剧场:"用户报网页打不开,但我这边正常"</h3>
 <p>先用 <a href="https://www.downforeveryoneorjustme.com/" target="_blank">downforeveryoneorjustme.com</a> 看是不是普遍问题。然后用 <code>curl -v</code> + <code>mtr</code> 看哪一跳卡。最后让用户跑 <code>tracert</code>(Windows) 或 <code>traceroute</code>(Mac/Linux) 给你看路径。</p>
 
 <div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>不通先 ping,慢就 mtr,HTTP 用 curl</strong>"——三类工具对应三类问题。</div>
@@ -1142,30 +1141,30 @@ ufw status                   <span class="c"># 看防火墙</span></code></pre>
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>HTTP/2 解决"一个 TCP 连接一个请求"的浪费,多路复用让一个连接并发多个请求。HTTP/3 更进一步,直接放弃 TCP 用 QUIC(UDP 之上的"类 TCP"),干掉 TCP 队头阻塞。2026 年 Cloudflare 等主流 CDN 已默认启用 HTTP/3。</div>
 
-<h3 data-reveal>它到底是个啥:HTTP/1.1 哪里痛</h3>
-<p>HTTP/1.1 时代,浏览器对同一个域名最多开 6 个 TCP 连接(IE 时代),后改到无限制但每个连接只能串行处理一个请求(队头阻塞)。一个页面 100 个资源,要排很久。</p>
+<h3 data-reveal="">它到底是个啥:HTTP/1.1 哪里痛</h3>
+<p>HTTP/1.1 下，浏览器通常限制每个源的并发连接数，常见值为 6，具体由客户端实现决定；不是后来统一改成无限连接。HTTP/2 的多路复用减少了对多条连接的依赖。</p>
 
-<h3 data-reveal>HTTP/2 三大招</h3>
+<h3 data-reveal="">HTTP/2 三大招</h3>
 <ul>
 <li><strong>多路复用</strong>——一个 TCP 连接并发多个请求,资源并行到达</li>
 <li><strong>头部压缩(HPACK)</strong>——重复的 Header 不重传,省带宽</li>
 <li><strong>二进制分帧</strong>——不再用文本,改二进制传输,解析更快</li>
 </ul>
 
-<h3 data-reveal>HTTP/3 革命:基于 QUIC</h3>
+<h3 data-reveal="">HTTP/3 革命:基于 QUIC</h3>
 <p>HTTP/2 解决不了 TCP 本身的队头阻塞 —— 一个包丢了,后续包都要等。<strong>HTTP/3 直接放弃 TCP,改用 QUIC(基于 UDP)</strong>:</p>
 <pre><code>HTTP/1.1: 多个请求排队 → TCP 阻塞 → 全队等
 HTTP/2:   多路复用    → TCP 仍可能阻塞 → 部分解决
 HTTP/3:   QUIC(UDP)  → 丢包不影响其他流 → 彻底解决</code></pre>
 
-<h3 data-reveal>HTTP/3 额外优势</h3>
+<h3 data-reveal="">HTTP/3 额外优势</h3>
 <ul>
 <li><strong>0-RTT 握手</strong>——第二次访问几乎瞬开(QUIC 内置加密)</li>
 <li><strong>连接迁移</strong>——手机 WiFi 切 4G 不重连</li>
 <li><strong>内置加密</strong>——默认 TLS 1.3,无法明文</li>
 </ul>
 
-<h3 data-reveal>2026.8 部署现状(部分待核对)</h3>
+<h3 data-reveal="">2026.8 部署现状(部分待核对)</h3>
 <ul>
 <li>Cloudflare:默认开启 HTTP/3(自 2019 年起)</li>
 <li>Google:全站默认 HTTP/3</li>
@@ -1173,13 +1172,13 @@ HTTP/3:   QUIC(UDP)  → 丢包不影响其他流 → 彻底解决</code></pre>
 <li>全球 HTTP/3 启用比例:本节未逐字核对 Cloudflare Radar 最新数据,以 2026.8 官方报告为准</li>
 </ul>
 
-<h3 data-reveal>"为什么我还在用 HTTP/1.1 也行"</h3>
+<h3 data-reveal="">"为什么我还在用 HTTP/1.1 也行"</h3>
 <p>对中小项目,HTTP/1.1 + 静态资源 CDN 已经足够。升级到 HTTP/2/HTTP/3 的成本是 Nginx/Node 服务升级,收益主要在"高并发 + 全球用户"场景。独立开发者 v1 项目不必追新。</p>
 
 <div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>H2 多路复用,H3 干掉 TCP</strong>"——两代协议各解决一类问题。</div>
 
 <p class="src">来源:<a href="https://developers.cloudflare.com/http3/" target="_blank">Cloudflare · HTTP/3</a> · <a href="https://datatracker.ietf.org/doc/html/rfc9000" target="_blank">RFC 9000 · QUIC</a> · <a href="https://web.dev/articles/performance-http2" target="_blank">web.dev · HTTP/2</a> · 核对 2026-08-07</p>
-</section>
+<p class="src"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x" target="_blank" rel="noopener">developer.mozilla.org · Connection_management_in_HTTP_1.x</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -1189,10 +1188,10 @@ HTTP/3:   QUIC(UDP)  → 丢包不影响其他流 → 彻底解决</code></pre>
 
 <div class="callout note"><b class="t">📌 30 秒结论</b>IPv6 用 128 位地址,理论上够给地球每粒沙子分一个 IP。最大优势是端到端可达,不需要 NAT。2026.8 全球部署率持续提升(具体百分比本节未逐字核对,以 Google / APNIC 最新数据为准),国内三大运营商大部分已支持,但出口流量仍多走 v4。</div>
 
-<h3 data-reveal>它到底是个啥:为什么 IPv4 不够</h3>
-<p>IPv4 地址 32 位 = 43 亿个。2019 年 11 月 IANA 分配完最后 5 个 /8 段后,新地址只能从回收的存量里挤。NAT 续命了十几年,IPv6 是根本解。</p>
+<h3 data-reveal="">它到底是个啥:为什么 IPv4 不够</h3>
+<p>IPv4 使用 32 位地址。全球中央地址池与各区域注册机构的耗尽时间不同，不应混成单一日期。IPv6 使用 128 位地址；迁移仍需考虑双栈、DNS、防火墙与服务兼容性。</p>
 
-<h3 data-reveal>地址格式</h3>
+<h3 data-reveal="">地址格式</h3>
 <pre><code>IPv4: 192.168.1.100                  (4 段,每段 0-255)
 IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
       ┗──── 8 段,每段 4 个十六进制位(0-ffff) ────┛
@@ -1202,14 +1201,14 @@ IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
   → 连续 0 段可合并:2001:db8:85a3::8a2e:370:7334
   → 但 :: 只能出现一次</code></pre>
 
-<h3 data-reveal>三大优势</h3>
+<h3 data-reveal="">三大优势</h3>
 <ul>
 <li><strong>海量地址</strong>——128 位,2^128 ≈ 3.4 × 10^38 个</li>
 <li><strong>端到端可达</strong>——不再需要 NAT,每台设备公网 IP</li>
 <li><strong>内置 IPsec</strong>——协议栈自带加密选项</li>
 </ul>
 
-<h3 data-reveal>2026.8 部署现状(部分待核对)</h3>
+<h3 data-reveal="">2026.8 部署现状(部分待核对)</h3>
 <ul>
 <li>Google IPv6 Statistics:全球部署率持续提升,具体百分比以 <a href="https://www.google.com/intl/en/ipv6/statistics.html" target="_blank">google.com/intl/en/ipv6/statistics.html</a> 2026-08 最新数据为准</li>
 <li>APNIC 测量:可访问 <a href="https://stats.labs.apnic.net/ipv6/" target="_blank">stats.labs.apnic.net/ipv6</a> 看各国部署率</li>
@@ -1217,7 +1216,7 @@ IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
 </ul>
 <div class="callout warn"><b class="t">没核对到的数据</b>2026.8 全球 / 中国 IPv6 部署率具体百分比本节未逐字核对(Google / APNIC 页面 2026-08-07 当前返回受限),以官方最新统计为准。</div>
 
-<h3 data-reveal>要不要上 IPv6</h3>
+<h3 data-reveal="">要不要上 IPv6</h3>
 <p>看目标用户:</p>
 <ul>
 <li>国内用户为主 → 大部分已可用,但 CDN 仍以 v4 为主,可暂缓</li>
@@ -1225,11 +1224,11 @@ IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
 <li>面向未来 → 早用早享受,v4/v6 双栈已成本接近零</li>
 </ul>
 
-<h3 data-reveal>启用检测</h3>
+<h3 data-reveal="">启用检测</h3>
 <pre><code>curl -6 ifconfig.co          <span class="c"># 看自己有没有 v6 IP</span>
 curl -6 https://test-ipv6.com <span class="c"># 全面 v6 连通性测试</span></code></pre>
 
-<h3 data-reveal>🚧 小剧场:"为什么我开了 v6 服务但还是 IPv4 优先"</h3>
+<h3 data-reveal="">🚧 小剧场:"为什么我开了 v6 服务但还是 IPv4 优先"</h3>
 <p>很多客户端默认走 v4(因为 v4 网络成熟,丢包/防火墙都少),v6 协商失败后才回退 v4。想强制 v6,客户端需要显式配置。</p>
 
 <div class="callout tip"><b class="t">💡 记忆口诀</b>"<strong>IPv4 32 位不够分,IPv6 128 位随便用</strong>"——数量级的差距。</div>
@@ -1263,7 +1262,7 @@ curl -6 https://test-ipv6.com <span class="c"># 全面 v6 连通性测试</span>
 <div class="sec-tag">模块 3 · 部署</div>
 <h2>3.2 systemd 进程托管:让 Node 不再"关 SSH 就挂"</h2>
 <p>直接 <code>ssh my-vps &amp;&amp; node server.js &amp;</code> 有两个致命问题:(1) SSH 断开 = 进程被杀;(2) 服务器重启 = 服务没了。<strong>systemd 是 Linux 自带的"进程管家"</strong>,帮你解决这两个问题。</p>
-<h3 data-reveal>完整 service 文件模板(可直接用)</h3>
+<h3 data-reveal="">完整 service 文件模板(可直接用)</h3>
 <p>在 <code>/etc/systemd/system/myapp.service</code> 写入:</p>
 <pre><code>[Unit]
 Description=My Node App
@@ -1282,7 +1281,7 @@ StandardError=journal
 
 [Install]
 WantedBy=multi-user.target</code></pre>
-<h3 data-reveal>使用命令</h3>
+<h3 data-reveal="">使用命令</h3>
 <pre><code>systemctl daemon-reload                 <span class="c"># 重载配置</span>
 systemctl enable myapp                  <span class="c"># 开机自启</span>
 systemctl start myapp                   <span class="c"># 启动</span>
@@ -1328,7 +1327,7 @@ server {
         expires 30d;
     }
 }</code></pre>
-<h3 data-reveal>启用配置</h3>
+<h3 data-reveal="">启用配置</h3>
 <pre><code>ln -s /etc/nginx/sites-available/yourdomain.dev /etc/nginx/sites-enabled/
 nginx -t                  <span class="c"># 测配置语法</span>
 systemctl reload nginx    <span class="c"># 重载(不中断服务)</span></code></pre>
@@ -1340,15 +1339,15 @@ systemctl reload nginx    <span class="c"># 重载(不中断服务)</span></code
 <div class="sec-tag">模块 3 · 部署</div>
 <h2>3.4 Docker 最小必要集</h2>
 <p>Docker 解决的是<strong>"在我机器上能跑"</strong>这个老问题——把应用 + 依赖打包成镜像,任何装了 Docker 的机器都能跑出一致结果。</p>
-<h3 data-reveal>为什么独立开发者需要 Docker</h3>
+<h3 data-reveal="">为什么独立开发者需要 Docker</h3>
 <ul>
 <li>本机开发用的是 macOS,线上是 Ubuntu——Docker 让两边一致</li>
 <li>升级 Node 主版本时不用动系统,只换镜像</li>
 <li>多项目时不同 Node 版本不打架</li>
 </ul>
-<h3 data-reveal>为什么你不用现在就上 k8s</h3>
+<h3 data-reveal="">为什么你不用现在就上 k8s</h3>
 <p>k8s(也写 Kubernetes)是 Docker 的"集群调度器",适合成百上千个容器协同工作。独立开发者的 1-3 个应用,<strong>直接 systemd + Nginx 完全够用</strong>。k8s 的运维成本远超收益,别提前上。</p>
-<h3 data-reveal>Dockerfile 模板(Node)</h3>
+<h3 data-reveal="">Dockerfile 模板(Node)</h3>
 <pre><code>FROM node:22-alpine
 WORKDIR /app
 COPY package*.json ./
@@ -1383,7 +1382,7 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Install & Build
+      - name: Install &amp; Build
         run: |
           npm ci
           npm run build
@@ -1401,7 +1400,7 @@ jobs:
             systemctl restart myapp
             sleep 3
             systemctl status myapp</code></pre>
-<h3 data-reveal>GitHub Secrets 配置</h3>
+<h3 data-reveal="">GitHub Secrets 配置</h3>
 <p>仓库 → Settings → Secrets and variables → Actions → New repository secret:</p>
 <ul>
 <li><code>VPS_HOST</code>:VPS 公网 IP</li>
@@ -1417,16 +1416,16 @@ jobs:
 <div class="sec-tag">模块 3 · 部署</div>
 <h2>3.6 环境变量 / 密钥管理 / .env 的正确打开方式</h2>
 <p>代码里<strong>绝不</strong>出现密钥。密钥只活在两个地方:(1) 本地 <code>.env</code> 文件;(2) GitHub Secrets / CI 环境变量。</p>
-<h3 data-reveal>Node 读 .env</h3>
+<h3 data-reveal="">Node 读 .env</h3>
 <pre><code><span class="c"># npm install dotenv</span>
 require('dotenv').config()
 const dbUrl = process.env.DATABASE_URL</code></pre>
-<h3 data-reveal>.gitignore 必须有 .env</h3>
+<h3 data-reveal="">.gitignore 必须有 .env</h3>
 <pre><code><span class="c"># .gitignore</span>
 .env
 .env.local
 node_modules/</code></pre>
-<h3 data-reveal>线上 .env 的安全做法</h3>
+<h3 data-reveal="">线上 .env 的安全做法</h3>
 <ol>
 <li>VPS 上 <code>vim /var/www/myapp/.env</code>,填好密钥</li>
 <li><code>chmod 600 .env</code>(只有自己能读)</li>
@@ -1443,40 +1442,40 @@ node_modules/</code></pre>
 <section id="appA">
 <div class="sec-tag">附录 A</div>
 <h2>5 类故障 30 秒对症表</h2>
-<p>故障发生时不要慌。先看"症状",再跑"30 秒命令",然后按"根因"修。90% 的故障是这 5 类的变种。</p>
+<p>故障发生时不要慌。先看"症状",再跑"30 秒命令",然后按"根因"修。 的故障是这 5 类的变种。</p>
 
 <div class="callout warn">
   <b class="t">症状 1 · 502 Bad Gateway</b>
   <p><strong>30 秒命令</strong>:<code>systemctl status myapp &amp;&amp; journalctl -u myapp -n 50</code></p>
-  <p><strong>根因 90%</strong>:(a) 应用进程挂了 → 看 journalctl 报错重启;(b) 反代 upstream 端口不对 → 查 <code>proxy_pass http://127.0.0.1:3000</code> 的端口</p>
+  <p><strong>常见原因：先检查证据再处理，不要直接终止未知进程。</strong>:(a) 应用进程挂了 → 看 journalctl 报错重启;(b) 反代 upstream 端口不对 → 查 <code>proxy_pass http://127.0.0.1:3000</code> 的端口</p>
   <p><strong>深入</strong>:§3.2、§3.3</p>
 </div>
 
 <div class="callout warn">
   <b class="t">症状 2 · SSH 连不上</b>
   <p><strong>30 秒命令</strong>:本机 <code>ssh -v root@IP</code> 看详细日志,VPS 控制台 VNC/串口控制台进</p>
-  <p><strong>根因 90%</strong>:(a) 端口被墙(国内云厂商默认 22 经常被墙,改 22222);(b) 密钥权限 600 没设;(c) 云厂商安全组没放行 22</p>
+  <p><strong>常见原因：先检查证据再处理，不要直接终止未知进程。</strong>:(a) 端口被墙(国内云厂商默认 22 经常被墙,改 22222);(b) 密钥权限 600 没设;(c) 云厂商安全组没放行 22</p>
   <p><strong>救命</strong>:VPS 控制台 → 实例 → "VNC 登录"或"救援模式",绕过 SSH 直接进系统</p>
 </div>
 
 <div class="callout warn">
   <b class="t">症状 3 · 磁盘写满</b>
   <p><strong>30 秒命令</strong>:<code>df -h &amp;&amp; du -sh /* | sort -h | tail -10</code></p>
-  <p><strong>根因 90%</strong>:(a) 日志没轮转(/var/log/nginx 几十 GB);(b) 临时文件没清(/tmp);(c) 数据库爆了</p>
+  <p><strong>常见原因：先检查证据再处理，不要直接终止未知进程。</strong>:(a) 日志没轮转(/var/log/nginx 几十 GB);(b) 临时文件没清(/tmp);(c) 数据库爆了</p>
   <p><strong>处置</strong>:<code>journalctl --vacuum-size=500M</code> 砍日志;<code>find /var/log -type f -size +100M</code> 找大文件</p>
 </div>
 
 <div class="callout warn">
   <b class="t">症状 4 · 服务内存泄漏 OOM</b>
   <p><strong>30 秒命令</strong>:<code>dmesg | grep -i "out of memory" | tail -5</code>(看 OOM Killer 记录)</p>
-  <p><strong>根因 90%</strong>:(a) 应用代码泄漏(全局 Map/Array 一直 push);(b) 配置缓存过大;(c) 突发流量</p>
+  <p><strong>常见原因：先检查证据再处理，不要直接终止未知进程。</strong>:(a) 应用代码泄漏(全局 Map/Array 一直 push);(b) 配置缓存过大;(c) 突发流量</p>
   <p><strong>临时</strong>:加 swap <code>fallocate -l 2G /swapfile &amp;&amp; chmod 600 /swapfile &amp;&amp; mkswap /swapfile &amp;&amp; swapon /swapfile</code>;<strong>根治</strong>:重启服务 + 排查内存泄漏代码</p>
 </div>
 
 <div class="callout warn">
   <b class="t">症状 5 · SSL 证书过期</b>
   <p><strong>30 秒命令</strong>:<code>certbot certificates &amp;&amp; certbot renew --dry-run</code></p>
-  <p><strong>根因 90%</strong>:(a) certbot 自动续期 cron/timer 挂了;<strong>立刻续期</strong>:<code>certbot renew --force-renewal</code> + <code>systemctl reload nginx</code></p>
+  <p><strong>常见原因：先检查证据再处理，不要直接终止未知进程。</strong>:(a) certbot 自动续期 cron/timer 挂了;<strong>立刻续期</strong>:<code>certbot renew --force-renewal</code> + <code>systemctl reload nginx</code></p>
   <p><strong>预防</strong>:<code>systemctl list-timers | grep certbot</code> 确认 timer 在跑</p>
 </div>
 </section>
@@ -1486,7 +1485,7 @@ node_modules/</code></pre>
 <section id="appB">
 <div class="sec-tag">附录 B</div>
 <h2>推荐资源</h2>
-<h3 data-reveal>官方文档(必查)</h3>
+<h3 data-reveal="">官方文档(必查)</h3>
 <ul>
 <li><a href="https://nginx.org/en/docs/" target="_blank">Nginx 官方文档</a> · 反代配置标准答案</li>
 <li><a href="https://systemd.io/" target="_blank">systemd 官方手册</a> · 进程托管唯一来源</li>
@@ -1495,20 +1494,20 @@ node_modules/</code></pre>
 <li><a href="https://www.openssh.com/manual.html" target="_blank">OpenSSH 手册</a> · SSH 配置/密钥/隧道</li>
 <li><a href="https://wiki.ubuntu.com/" target="_blank">Ubuntu Wiki</a> · 系统级问题排查</li>
 </ul>
-<h3 data-reveal>经典实战教程(免费)</h3>
+<h3 data-reveal="">经典实战教程(免费)</h3>
 <ul>
 <li><a href="https://www.digitalocean.com/community/tutorials" target="_blank">DigitalOcean Tutorials</a> · 单主题一篇,照抄能跑</li>
 <li><a href="https://linode.com/docs/" target="_blank">Linode Docs</a> · 类似 DigitalOcean,部分教程更细</li>
 <li><a href="https://crontab.guru/" target="_blank">crontab.guru</a> · cron 表达式可视化</li>
 </ul>
-<h3 data-reveal>经典书</h3>
+<h3 data-reveal="">经典书</h3>
 <ul>
 <li><strong>《鸟哥的 Linux 私房菜》</strong>(繁体/简体)· 中文世界最友好的 Linux 入门</li>
 <li><strong>《Linux 命令行与 shell 脚本编程大全》</strong>· 命令行工具书</li>
 <li><strong>《TCP/IP 详解 卷一》</strong>· 想理解网络协议再读,非急用</li>
 <li><strong>《Site Reliability Engineering》</strong>(Google 出品,免费在线)· 企业级做法,了解思路即可</li>
 </ul>
-<h3 data-reveal>速查表</h3>
+<h3 data-reveal="">速查表</h3>
 <ul>
 <li><a href="https://tldr.sh/" target="_blank">TLDR Pages</a> · 命令示例速查(比 <code>man</code> 友好)</li>
 <li><a href="https://explainshell.com/" target="_blank">ExplainShell</a> · 粘贴长命令,逐段解释</li>
@@ -1522,7 +1521,7 @@ node_modules/</code></pre>
 <div class="sec-tag">附录 C</div>
 <h2>术语速查表</h2>
 <table class="tbl">
-<tr><th>术语</th><th>一句话</th></tr>
+<tbody><tr><th>术语</th><th>一句话</th></tr>
 <tr><td>SSH</td><td>加密的远程登录协议</td></tr>
 <tr><td>systemd</td><td>现代 Linux 的"服务管家",管理进程的启动/自启/日志</td></tr>
 <tr><td>Nginx</td><td>事实标准的反向代理 + Web 服务器</td></tr>
@@ -1548,7 +1547,7 @@ node_modules/</code></pre>
 <tr><td>CNAME</td><td>DNS 别名,域名 → 另一个域名</td></tr>
 <tr><td>LTS</td><td>Long Term Support,长期支持版本(更稳定)</td></tr>
 <tr><td>VPS</td><td>Virtual Private Server,虚拟专用服务器(就是云上的一台 Linux)</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -1563,6 +1562,8 @@ node_modules/</code></pre>
 
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+</div></header></body></html>

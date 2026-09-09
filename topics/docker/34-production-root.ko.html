@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>34. 프로덕션 절대 원칙: Root 실행 금지 - Docker 35단계 완벽 마스터</title>
@@ -279,6 +277,7 @@ pre:hover .copy-btn { opacity: 1; }
 }
 </style>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -321,7 +320,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 제2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 문제 해결 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 설치 및 설정 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 설치 및 설정 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정으로 다운로드 가속화</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 마법의 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -352,7 +351,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이사: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 제6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 제6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐구: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 입력과의 작별</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요한가?</span></a>
@@ -361,7 +360,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>실전 배틀(하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 제7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 제7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>성벽 방어: .env를 통한 비밀 정보 보호</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 대청소: system prune</span></a>
     <a class="nav-item on" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 절대 원칙: Root 실행 금지</span></a>
@@ -370,7 +369,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 단계: 보안 & 프로덕션 운영 · 제 34 / 35 레슨</div>
+  <div class="chapter-badge">🐳 단계: 보안 &amp; 프로덕션 운영 · 제 34 / 35 레슨</div>
   <h1>제34레슨: 프로덕션 절대 원칙: Root 권한으로 애플리케이션을 실행하지 말 것</h1>
 
   <p>이제 Dockerfile도 능숙하게 작성하고 Compose로 멀티 컨테이너도 띄울 줄 알게 되면서 프로덕션 배포에 자신감이 생겼을 것입니다.</p>
@@ -385,10 +384,10 @@ pre:hover .copy-btn { opacity: 1; }
   <p>Dockerfile에 <code>USER</code> 지시자를 추가하여 일반 사용자를 생성하고 실행 권한을 전환합니다:</p>
 
 <pre><code><span class="bash-comment"># 표준 비특권 계정 적용 Dockerfile</span>
-FROM node:18-alpine
+FROM node:24-alpine
 
 <span class="bash-comment"># 1. 비특권 일반 사용자 그룹 및 사용자 생성</span>
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -421,9 +420,9 @@ CMD [<span class="bash-str">"node"</span>, <span class="bash-str">"server.js"</s
     <div class="step-header">🔒 대표적인 권한 이슈 3가지와 해결 가이드</div>
     <div class="step-body">
       <ol>
-        <li><strong>포트 바인딩 실패 (1024 미만 포트):</strong> Linux 커널 보안 정책상 1024 미만의 Well-known 포트(80, 443 등)는 오직 Root만 바인딩할 수 있습니다.<br/><em>해결책:</em> 애플리케이션은 내부에서 8080, 3000 등 1024 이상의 포트를 리슨하게 하고, 외부에서 Nginx나 Docker 포트 포워딩(<code>-p 80:8080</code>)으로 연결합니다.</li>
-        <li><strong>로그 디렉토리 쓰기 실패:</strong> <code>appuser</code>가 <code>/var/log</code> 등 시스템 경로에 파일을 쓸 수 없습니다.<br/><em>해결책:</em> <code>USER appuser</code>로 전환하기 전의 Root 단계에서 <code>RUN mkdir -p /var/log/app && chown appuser:appgroup /var/log/app</code>으로 필요한 디렉토리를 미리 만들고 소유권을 부여합니다.</li>
-        <li><strong>빌드 도구 설치 실패:</strong> <code>npm install -g</code> 등 전역 설치 명령어는 일반 사용자 권한에서 실패합니다.<br/><em>해결책:</em> 모든 의존성 설치 및 빌드 명령은 반드시 <code>USER appuser</code> 지시자 <strong>위쪽(Root 권한 상태)</strong>에서 완료해야 합니다.</li>
+        <li><strong>포트 바인딩 실패 (1024 미만 포트):</strong> Linux 커널 보안 정책상 1024 미만의 Well-known 포트(80, 443 등)는 오직 Root만 바인딩할 수 있습니다.<br><em>해결책:</em> 애플리케이션은 내부에서 8080, 3000 등 1024 이상의 포트를 리슨하게 하고, 외부에서 Nginx나 Docker 포트 포워딩(<code>-p 80:8080</code>)으로 연결합니다.</li>
+        <li><strong>로그 디렉토리 쓰기 실패:</strong> <code>appuser</code>가 <code>/var/log</code> 등 시스템 경로에 파일을 쓸 수 없습니다.<br><em>해결책:</em> <code>USER appuser</code>로 전환하기 전의 Root 단계에서 <code>RUN mkdir -p /var/log/app &amp;&amp; chown appuser:appgroup /var/log/app</code>으로 필요한 디렉토리를 미리 만들고 소유권을 부여합니다.</li>
+        <li><strong>빌드 도구 설치 실패:</strong> <code>npm install -g</code> 등 전역 설치 명령어는 일반 사용자 권한에서 실패합니다.<br><em>해결책:</em> 모든 의존성 설치 및 빌드 명령은 반드시 <code>USER appuser</code> 지시자 <strong>위쪽(Root 권한 상태)</strong>에서 완료해야 합니다.</li>
       </ol>
     </div>
   </div>
@@ -569,5 +568,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

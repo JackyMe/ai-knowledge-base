@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="全网调研聚合:能力边界一张表、8 大场景收益矩阵、编程/写作/调研/数据自动化/生活五套范式、三大工具选型、7 条有出处的通用心法、可复刻实例集与普通人学习路径。">
@@ -161,6 +159,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
   <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -198,7 +197,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">选型</div>
-    <a href="#tools"><span class="no">07</span>三大工具怎么选</a>
+    <a href="#tools">按任务和环境选工具</a>
   </div>
   <div class="nav-group">
     <div class="gt">内功</div>
@@ -238,7 +237,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>先建立一个诚实的能力边界认知,再谈提效。2026 年年中的通用大模型(Claude / GPT / Gemini)在下面这张表里的左列已经"稳定可用",右列则仍需人类兜底——把任务放错列,是一切失望的来源。</p>
 
 <table class="tbl">
-  <tr><th>✅ 擅长(放心交给它)</th><th>⚠️ 不擅长(必须人把关)</th></tr>
+  <tbody><tr><th>✅ 擅长(放心交给它)</th><th>⚠️ 不擅长(必须人把关)</th></tr>
   <tr><td>初稿生成:文章、代码、方案、邮件——从 0 到 60 分极快</td><td>最后 20 分:观点、品味、取舍,仍是人的活</td></tr>
   <tr><td>格式转换与结构化:乱笔记→表格、录音稿→纪要、需求→代码骨架</td><td>事实精确性:会一本正经地编造(幻觉),重要事实必须核验</td></tr>
   <tr><td>总结压缩:长文档、论文、会议记录提炼要点</td><td>时效信息:训练截止后的事,不联网检索就不可信</td></tr>
@@ -246,9 +245,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>头脑风暴:一次给 10 个方案,人来挑</td><td>精确计算与计数:让它写代码算,别让它口算</td></tr>
   <tr><td>跨领域入门讲解:任何学科的"耐心私教"</td><td>责任与决策:医疗/法律/投资等高风险决定,AI 只能当参谋</td></tr>
   <tr><td>代码:写脚本、修 bug、解释报错——有编译器和测试天然兜底</td><td>"帮我做完全部":越模糊的全权委托,翻车率越高</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三个反直觉的数据</h3>
+<h3 data-reveal="">三个反直觉的数据</h3>
 <ul>
   <li><strong>编程仍是第一大用途,但个人生活用途在猛涨。</strong>Anthropic 经济指数显示,与"计算机与数学"职业相关的任务约占 Claude 对话的 35%,居各类之首;同时个人用途占比从 35% 升至 42%(2025-11 → 2026-02)。</li>
   <li><strong>过半任务是"协作"而非"自动"。</strong>57% 的任务是人机迭代协作,43% 是委托自动完成——说明当前最佳姿势仍是"AI 干活、人指挥和验收"。</li>
@@ -268,7 +267,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>八大场景按"提效潜力"排序。潜力大小不由技术炫酷程度决定,而由三个问题决定:<strong>有没有验证方法?错了代价多大?重复频率高不高?</strong>验证越容易、容错越高、重复越多的场景,越值得马上上 AI。</p>
 
 <table class="tbl">
-  <tr><th>场景</th><th>提效潜力</th><th>为什么</th><th>今天就能做的起步动作</th></tr>
+  <tbody><tr><th>场景</th><th>提效潜力</th><th>为什么</th><th>今天就能做的起步动作</th></tr>
   <tr><td><strong>编程 / 脚本</strong></td><td>★★★★★</td><td>编译器、测试、报错信息构成天然验证闭环;初稿→可用的距离最短</td><td>让 AI 写一个你手工做过 3 次以上的小脚本(如批量重命名文件)</td></tr>
   <tr><td><strong>写作 / 文档</strong></td><td>★★★★★</td><td>初稿成本归零;结构、润色、多版本尝试全部提速;人只管观点与事实</td><td>丢一堆素材给 AI,要它先出 3 版不同侧重的大纲</td></tr>
   <tr><td><strong>调研 / 决策辅助</strong></td><td>★★★★☆</td><td>Deep Research 类功能 10-30 分钟产出带引用的调研报告,顶人肉半天</td><td>选一个正纠结的购买/选型决策,跑一次深度调研并点开来源核验</td></tr>
@@ -277,7 +276,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td><strong>自动化办公</strong></td><td>★★★☆☆</td><td>收益极高但需先手动跑通流程;无验证的自动化是事故制造机</td><td>把一个每周重复的流程写成清单,先让 AI 半自动跑一次</td></tr>
   <tr><td><strong>生活事务</strong></td><td>★★★☆☆</td><td>行程规划、饮食方案、礼物点子、合同解读——低风险高频小决策</td><td>下次做饭前:报上冰箱现有食材,要 3 个菜谱 + 采购补货清单</td></tr>
   <tr><td><strong>情感陪伴 / 自我梳理</strong></td><td>★★★☆☆</td><td>HBR 百大用途榜 2025 年第一名;但注意它不是执业心理咨询师</td><td>用"帮我把这团乱麻的想法整理成 3 个待决策问题"开始</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout note"><b class="t">别只盯着编程</b>HBR 对全网真实用途的年度盘点显示,2025 年起排名前三的用途是<strong>心理疏导/陪伴、生活组织、寻找目标感</strong>——全是非技术场景。工程师圈子的声量让"AI = 写代码"成了错觉;对普通人,写作、调研、学习、生活侧的复利可能更大。</div>
 <p class="src">来源:<a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR:Top 10 Gen AI Use Cases(Marc Zao-Sanders,2025-04)</a> · <a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index</a></p>
@@ -291,7 +290,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>两家官方最佳实践 2026 年已高度趋同,可总结为一套四段式工作流 + 五个核心习惯。细节操作见本库 <a href="claude-code-guide.html">Claude Code 指南</a> 与 <a href="codex-guide.html">Codex 指南</a>,这里只讲"范式"。</p>
 
-<h3 data-reveal>官方共识:四段式工作流</h3>
+<h3 data-reveal="">官方共识:四段式工作流</h3>
 <ol class="steps">
   <li><strong>探索(Explore)</strong>——进入计划模式(Claude Code 的 plan mode / Codex 的 <code>/plan</code>),让 AI 先读代码、回答问题,不动手改</li>
   <li><strong>计划(Plan)</strong>——要求产出具体实现计划:改哪些文件、什么顺序、怎么验证;人审计划比人审代码便宜 10 倍</li>
@@ -299,22 +298,22 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>提交(Commit)</strong>——审 diff、跑完整验证、写清楚提交信息;AI 的活也要过人这一关</li>
 </ol>
 
-<h3 data-reveal>五个核心习惯</h3>
+<h3 data-reveal="">五个核心习惯</h3>
 <table class="tbl">
-  <tr><th>习惯</th><th>做法</th></tr>
+  <tbody><tr><th>习惯</th><th>做法</th></tr>
   <tr><td><strong>给 AI 可运行的验证</strong></td><td>官方原话:给它一个能跑出 pass/fail 的检查(测试、构建、脚本、截图对比),闭环就自动转起来;没有验证,"看起来做完了"就是唯一信号,你就成了人肉验收员</td></tr>
   <tr><td><strong>说清完成标准</strong></td><td>Codex 官方推荐的任务结构:<strong>Goal(目标)+ Context(相关文件/文档)+ Constraints(约束)+ Done when(完成判据)</strong>——四要素齐了,返工率断崖式下降</td></tr>
   <tr><td><strong>小步迭代、尽早纠偏</strong></td><td>发现跑偏立刻 <kbd>Esc</kbd> 打断;同一个问题纠正两次还不对,别再纠了——<code>/clear</code> 重开,用学到的信息写个更好的初始提示</td></tr>
   <tr><td><strong>管好上下文</strong></td><td>上下文窗口是第一资源:无关任务间 <code>/clear</code>;大范围搜索交给子代理,别让主对话被文件内容灌满</td></tr>
   <tr><td><strong>沉淀项目记忆</strong></td><td>重复交代的规则写进 <code>CLAUDE.md</code> / <code>AGENTS.md</code>,并保持精简——判据是"删了这行 AI 就会犯错"才留</td></tr>
-</table>
+</tbody></table>
 
 <div class="duo">
   <div class="bad"><b>✗ 模糊委托</b>"修一下登录的 bug"<br><br>AI 只能猜:哪个登录?什么症状?修到什么程度算好?</div>
   <div class="good"><b>✓ 带验证的委托</b>"用户反馈会话超时后登录失败。查 src/auth/ 里的 token 刷新逻辑。先写一个能复现问题的失败测试,再修复,最后跑整个 auth 测试套件确认全绿。"</div>
 </div>
 
-<h3 data-reveal>非程序员也能上桌:vibe coding</h3>
+<h3 data-reveal="">非程序员也能上桌:vibe coding</h3>
 <p>用自然语言描述、让 AI 全程写码调试的"vibe coding"(Karpathy 2025 年 2 月造词,Collins 词典 2025 年度词),已让大量零基础用户做出了自用的记账 App、习惯打卡器、下料计算器等个人工具。社区统计称此类工具用户中过半从未写过代码(具体比例各家口径不一)。边界也要认清:<strong>自用小工具随便造;要对外收钱、存别人数据的产品,安全与运维仍需专业把关。</strong></p>
 <p class="src">来源:<a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code 官方 Best Practices</a> · <a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex 官方 Best Practices</a> · <a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier:Vibe coding examples</a></p>
 </section>
@@ -327,19 +326,19 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>核心分工一句话:<strong>AI 出初稿与结构,人出观点与事实。</strong>把 AI 当"永不疲倦的初稿机 + 结构编辑",而不是代笔。</p>
 
-<h3 data-reveal>提示词四要素(MIT Sloan 教学共识)</h3>
+<h3 data-reveal="">提示词四要素(MIT Sloan 教学共识)</h3>
 <p>有效写作提示 = <strong>角色/背景</strong>(你是谁、写给谁)+ <strong>任务与格式</strong>(产出什么、什么结构)+ <strong>语气与受众</strong> + <strong>约束</strong>(字数、必须包含/避免的点)。四样都给,一次到位率最高;然后靠对话式迭代打磨:"更短""第二段展开""换成给老板看的语气"。</p>
 
-<h3 data-reveal>被验证的高收益用法</h3>
+<h3 data-reveal="">被验证的高收益用法</h3>
 <table class="tbl">
-  <tr><th>用法</th><th>怎么做</th></tr>
+  <tbody><tr><th>用法</th><th>怎么做</th></tr>
   <tr><td><strong>三版大纲法</strong></td><td>丢素材,要 3 版不同侧重的大纲 → 人挑一版(或拼贴)→ 再逐节展开。比直接要全文的质量高得多</td></tr>
   <tr><td><strong>会议录音 → 纪要</strong></td><td>转写稿全文丢给 AI:"提炼决策、行动项(负责人+期限)、遗留问题三张清单"</td></tr>
   <tr><td><strong>长文压缩</strong></td><td>"压成 200 字摘要 + 10 条要点,保留所有数字和结论"——读文档前先读摘要,决定要不要精读</td></tr>
   <tr><td><strong>反向提纲</strong></td><td>把自己写的初稿丢回给 AI:"给这篇文章列反向提纲,指出逻辑断层和重复"——比"帮我润色"有效</td></tr>
   <tr><td><strong>去 AI 味</strong></td><td>给它 2-3 段你自己的旧文当风格样本;明令禁用陈词滥调("在当今快速发展的时代…");要求短句、具体名词、有数字</td></tr>
   <tr><td><strong>多语言润色</strong></td><td>中文思路 → 英文邮件/文档,注明场合与对象关系,产出接近母语水平</td></tr>
-</table>
+</tbody></table>
 
 <ol class="steps">
   <li>把原始素材(笔记/数据/链接)一次性全给 AI,先要大纲不要全文</li>
@@ -359,7 +358,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">场景范式 04</div>
 <h2>调研与学习场景范式</h2>
 
-<h3 data-reveal>调研:Deep Research 四步法</h3>
+<h3 data-reveal="">调研:Deep Research 四步法</h3>
 <ol class="steps">
   <li><strong>先写清问题边界</strong>——研究什么、不研究什么、判断标准、期望产出格式;边界越清,报告越有用</li>
   <li><strong>跑深度调研</strong>——ChatGPT / Gemini / Claude 的 Deep Research 类功能会自主检索、交叉阅读,10-30 分钟产出带引用的报告</li>
@@ -367,19 +366,19 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>交叉验证</strong>——重要决策用第二个模型再跑一遍同题,对比分歧点;分歧处往往是需要人工深挖的地方</li>
 </ol>
 
-<h3 data-reveal>学习:把 AI 当私教,不当答案机</h3>
+<h3 data-reveal="">学习:把 AI 当私教,不当答案机</h3>
 <table class="tbl">
-  <tr><th>范式</th><th>提示词模板</th></tr>
+  <tbody><tr><th>范式</th><th>提示词模板</th></tr>
   <tr><td><strong>摸底定制</strong></td><td>"我想学 X。先出 5 道题摸底我的水平,再按结果给我定 4 周学习计划"</td></tr>
   <tr><td><strong>苏格拉底式</strong></td><td>"别直接给答案,用提问引导我自己推出来"——对抗"看懂了错觉"</td></tr>
   <tr><td><strong>费曼检验</strong></td><td>"我用自己的话讲一遍 X,你指出我哪里理解错了、哪里含糊"</td></tr>
   <tr><td><strong>难度调档</strong></td><td>"先讲给 12 岁孩子听,再讲专业版,再给我一个能上手的最小练习"</td></tr>
   <tr><td><strong>刻意练习</strong></td><td>"每天出 3 道递进难度的题,我答完你批改并讲解错因"</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout tip"><b class="t">研究背书:会用是练出来的</b>Anthropic「Learning curves」报告(2026-03)发现:熟手用户任务成功率比新手高约 10%,且熟手<strong>更多采用迭代协作而非一次性全权委托</strong>,更善于把模型能力和任务难度匹配。学习 AI 的最好方式就是高频使用 + 复盘哪种问法有效。</div>
 
-<h3 data-reveal>学术场景工具速览</h3>
+<h3 data-reveal="">学术场景工具速览</h3>
 <p>文献发现:Elicit、Consensus、Semantic Scholar;论文精读与问答:NotebookLM、Claude(长文档);综述比对:Elicit 的跨研究提取表。原则不变:<strong>发现和摘要交给 AI,结论与批判留给自己。</strong></p>
 <p class="src">来源:<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic:Learning curves(2026-03)</a> · <a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify:Best AI Tools for Academic Research 2026</a> · <a href="https://lumivero.com/resources/blog/ai-tools-for-academic-research/" target="_blank">Lumivero 学术工具盘点</a></p>
 </section>
@@ -390,16 +389,16 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">场景范式 05</div>
 <h2>数据与自动化场景范式</h2>
 
-<h3 data-reveal>数据分析:三个层级</h3>
+<h3 data-reveal="">数据分析:三个层级</h3>
 <table class="tbl">
-  <tr><th>层级</th><th>做法</th><th>适合</th></tr>
+  <tbody><tr><th>层级</th><th>做法</th><th>适合</th></tr>
   <tr><td><strong>L1 自然语言问表格</strong></td><td>Excel/CSV 直接丢给对话模型(或 Julius 等专用工具),中文提问、要图表</td><td>零基础;快速探索一份陌生数据</td></tr>
   <tr><td><strong>L2 AI 写分析代码</strong></td><td>让 AI 写 Python/SQL 脚本跑分析——代码可审可复跑,结果可验证,幻觉空间小</td><td>要复用、要精确、数据大</td></tr>
   <tr><td><strong>L3 编码代理全流程</strong></td><td>Claude Code / Codex 直接读文件、清洗、分析、出报告,人验收结论</td><td>多文件、多步骤的分析任务</td></tr>
-</table>
+</tbody></table>
 <div class="callout tip"><b class="t">为什么优先让 AI"写代码算"而不是"直接答"</b>模型口算数字不可靠,但它写的代码是确定性执行的——这把"信 AI"换成了"信代码",而代码你可以审。这是数据场景最重要的一个观念转换。</div>
 
-<h3 data-reveal>自动化:五级阶梯,逐级上</h3>
+<h3 data-reveal="">自动化:五级阶梯,逐级上</h3>
 <ol class="steps">
   <li><strong>手动对话</strong>——每次把重复任务丢给 AI 做,人盯全程</li>
   <li><strong>提示词模板</strong>——把跑通的问法存成模板/技能,一键复用</li>
@@ -420,37 +419,37 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>01 节矩阵把"生活事务"和"情感陪伴/自我梳理"排进了收益榜,HBR 的年度盘点甚至把它们排在编程前面——但前面 02-05 节全是技术/知识工作范式,矩阵里论证最该做的两类反而没有对应打法。这一节补上三块:生活决策的提问骨架、自我梳理的做法与边界,以及矩阵里完全没提到的一个入口——拍照 / 截图 / 语音。</p>
 
-<h3 data-reveal>生活决策类:行程 / 饮食 / 采购 / 合同解读</h3>
+<h3 data-reveal="">生活决策类:行程 / 饮食 / 采购 / 合同解读</h3>
 <p>这类场景的共性是<strong>低风险、高频率、有明确约束条件</strong>——正好是 AI 最擅长的那种任务。骨架都一样:把约束条件一次性说全,再要求给多个方案而不是一个"标准答案"。</p>
 
 <table class="tbl">
-  <tr><th>子场景</th><th>提示词骨架(可直接抄)</th><th>输出要求</th></tr>
+  <tbody><tr><th>子场景</th><th>提示词骨架(可直接抄)</th><th>输出要求</th></tr>
   <tr><td><strong>行程规划</strong></td><td>"我们 [人数+关系],[日期范围] 去 [目的地],预算 [金额],偏好 [细节]。排一份逐日行程,标注每天的交通方式和缓冲时间。"</td><td>要求给 2 个不同侧重的备选方案,别只要一个</td></tr>
   <tr><td><strong>饮食方案</strong></td><td>"冰箱现有:[清单]。忌口:[列表]。排一周晚餐,30 分钟内能做完,产出菜单表 + 按超市动线排序的采购清单。"</td><td>要每餐给关键步骤而不是一句话菜名,方便直接照做</td></tr>
   <tr><td><strong>采购比价</strong></td><td>"预算 [金额] 买 [品类]。核心需求:[3 条以内]。对比在售的 3-5 款,给差评集中点 + 来源链接。"</td><td>逐条点开来源核验,别信 AI 汇总出的"综合评分"</td></tr>
   <tr><td><strong>合同 / 说明书解读</strong></td><td>"这是一份 [合同/说明书类型]。用大白话逐条解释:哪些条款对我不利、哪些是行业惯例、我该重点问对方哪 3 个问题。"</td><td>只当"帮你看懂",不当"帮你决定签不签"——重要合同仍需人或律师复核</td></tr>
-</table>
+</tbody></table>
 
 <div class="duo">
   <div class="bad"><b>✗ 模糊委托</b>"帮我规划一下国庆行程"<br><br>AI 只能给一份放之四海皆准的攻略,人数、预算、偏好全靠猜</div>
   <div class="good"><b>✓ 带约束的委托</b>"两大一小(孩子 6 岁),10.1-10.5 去成都,预算 8000 元不含机票,孩子怕辣、需要午休。给 2 版行程:一版景点密集,一版节奏宽松,标注每天交通方式和缓冲时间。"</div>
 </div>
 
-<h3 data-reveal>自我梳理类:从"一团乱麻"到"可决策清单"</h3>
+<h3 data-reveal="">自我梳理类:从"一团乱麻"到"可决策清单"</h3>
 <p>这类用法在 HBR 的年度盘点里长期排名靠前(见 01 节矩阵的 callout),但社区讨论常把它和"心理咨询"混为一谈——这里先划清边界,再给可抄的骨架。</p>
 <p><strong>提示词骨架:</strong>"我脑子里有一堆关于 [主题] 的想法,乱糟糟理不清。请帮我:① 提炼成 3-5 个可以回答'是/否'或'选 A / 选 B'的具体问题;② 每个问题列出我目前能看到的选项和各自的代价;③ 指出哪个问题最影响其他问题,建议我先想哪个。不要替我做决定,只帮我看清问题。"</p>
 
 <div class="callout warn"><b class="t">边界声明,先读这条</b>"自我梳理"提示词的作用,是把杂乱的情绪和想法转成一份可执行的问题清单,<strong>它不是心理咨询,AI 也不是执业心理咨询师</strong>。如果你正经历自伤念头、自杀意念,或长期、严重的抑郁/焦虑等精神健康困扰,<strong>请立即联系精神科医生、心理咨询师,或拨打当地的心理援助/危机干预热线,不要把这类问题只交给 AI 处理</strong>。AI 能帮你理清"要不要换工作""这段关系要不要继续"这类决策型困惑,但处理不了需要专业诊断和干预的心理健康问题。</div>
 
-<h3 data-reveal>多模态入口:拍照问 / 截图问 / 语音转写</h3>
+<h3 data-reveal="">多模态入口:拍照问 / 截图问 / 语音转写</h3>
 <p>本页前面所有范式默认的都是"打字提问",但这是 8 大场景矩阵里完全缺席的一块:很多人第一次觉得 AI 有用,恰恰是从拍一张照片开始的。主流对话 App(ChatGPT / Gemini / Claude 官方客户端)都支持图片上传和语音输入,具体交互入口以各家当前版本 UI 为准,这里不细描界面。</p>
 
 <table class="tbl">
-  <tr><th>入口</th><th>怎么用(可直接抄的话术)</th><th>适合场景</th></tr>
+  <tbody><tr><th>入口</th><th>怎么用(可直接抄的话术)</th><th>适合场景</th></tr>
   <tr><td><strong>拍照问</strong></td><td>拍照 + 配文:"这是 [说明书/体检单/白板/菜谱],用大白话讲清楚重点,我不懂 [专业领域] 术语。"</td><td>家电说明书、体检报告里看不懂的指标、白板讨论速记、菜谱换算</td></tr>
   <tr><td><strong>截图问</strong></td><td>截图 + 配文:"这是什么意思?我该怎么办?"</td><td>App/系统报错、看不懂的表格网页、聊天记录里没跟上的一段讨论</td></tr>
   <tr><td><strong>语音转写</strong></td><td>对着手机说 2-3 分钟零散想法,配文:"转成文字,再帮我理成 [大纲/待办清单/结构化笔记]。"</td><td>开车/走路时的灵感、会议现场速记、懒得打字的长吐槽</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout note"><b class="t">什么时候别用</b>身份证、银行卡、病历原件、合同原件这类含敏感信息的照片,不要传公共免费版服务——传之前先想清楚"这张图丢了会怎样"。另外,拍照识别数字、日期、金额有误读风险,凡是要用来做决策的数字,肉眼再核一遍。</div>
 
@@ -459,42 +458,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="divider"></div>
 
-<section id="tools">
-<div class="sec-tag">选型 07</div>
-<h2>三大工具选型:Claude Code vs Codex vs Gemini</h2>
-
-<div class="callout warn"><b class="t">⚠️ 2026-06 重大变更:Gemini CLI 已谢幕</b>Google 在 2026-05-19 I/O 宣布、并于 <strong>2026-06-18 起停止</strong>为免费档与 AI Pro/Ultra 订阅用户提供 Gemini CLI 服务,转向闭源 Go 重写的 <strong>Antigravity CLI</strong>(命令 <code>agy</code>);免费额度从约 1000 次/天骤降至约 20 次/天。仅企业版 Gemini Code Assist 许可与付费 API 不受影响。个人用户实际上已退出"三选一",以官方公告为准。</div>
-
-<h3 data-reveal>选型对照表(2026-07)</h3>
-<table class="tbl">
-  <tr><th>维度</th><th>Claude Code</th><th>Codex</th><th>Gemini 系(Antigravity CLI)</th></tr>
-  <tr><td>定位标签</td><td><span class="pill a">质量与生态</span></td><td><span class="pill b">沙箱与性价比</span></td><td><span class="pill c">检索与企业</span></td></tr>
-  <tr><td>公认强项</td><td>复杂多文件重构的输出质量;Skills/Hooks/子代理生态最厚</td><td>OS 级沙箱默认开启;Cloud 任务矩阵;开源</td><td>联网检索融合最好;Google 生态整合</td></tr>
-  <tr><td>付费直觉</td><td>无免费档,重度使用买订阅最划算</td><td>随 ChatGPT 订阅附带,已付费者"等于白送"</td><td>个人免费红利已结束,现为企业向选择</td></tr>
-  <tr><td>形态</td><td>CLI / 桌面 / Web / IDE 扩展</td><td>CLI / IDE / Cloud / 桌面 / GitHub 评审</td><td>Antigravity 平台 + <code>agy</code> CLI</td></tr>
-  <tr><td>项目记忆</td><td>CLAUDE.md(兼容 AGENTS.md)</td><td>AGENTS.md(开放标准)</td><td>随 Antigravity 平台演进,以官方为准</td></tr>
-</table>
-
-<h3 data-reveal>互补组合打法</h3>
-<ul>
-  <li><strong>双开不冲突:</strong>Claude Code 与 Codex 各自独立认证、独立进程,常见组合是"日常用订阅内含的那个,难啃的重构换另一个";<code>AGENTS.md</code> 与 Agent Skills 是开放标准,项目知识沉淀在标准层,换代理零成本(Codex 还有 <code>/import</code> 直接吃 Claude Code 配置)。</li>
-  <li><strong>通用对话模型分工(社区高频打法):</strong>时效检索与深度调研用 Gemini / ChatGPT 的 Deep Research;长文档精读、写作与代码用 Claude;把各模型当"各有所长的同事"而非单选题。</li>
-</ul>
-<p class="src">来源:<a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">google-gemini/gemini-cli 官方公告 #27274</a> · <a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ 三工具对比(2026)</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs 对比</a> · <a href="https://www.tomsguide.com/ai/how-i-use-claude-for-strategy-gemini-for-research-and-chatgpt-for-the-grind" target="_blank">Tom's Guide:多模型分工实践</a></p>
-
-<h3 data-reveal>通用对话模型怎么选</h3>
-<p>上面对比的是"写代码的编码代理 CLI"。如果你不写代码,日常用的是网页/App 里的 ChatGPT、Claude、Gemini 对话产品,选型逻辑完全不同——看的是长文档能力、联网检索质量、Deep Research 配额这几件事。以下信息核对自三家官方帮助中心(2026-07):</p>
-<table class="tbl">
-  <tr><th>维度</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th></tr>
-  <tr><td>适合什么题型</td><td>通用写作、多模态(图像/语音)、开放性调研报告;模型改款频繁,新模型上线快</td><td>长文档精读、复杂写作与代码场景是公认强项(见上方选型表);Research 模式擅长把网页检索与内部知识库/Workspace 整合成综合报告</td><td>需要边聊边查最新信息、多模态(图片/视频)、与 Gmail/Drive/Workspace 深度联动的场景</td></tr>
-  <tr><td>长文档能力</td><td>随模型和订阅档位分层明显:官方帮助中心显示 GPT-5.6 Luna/Terra 上下文窗口 <strong>128K token</strong>,GPT-5.6 Sol 为 <strong>272K token</strong>;具体以账号内可选模型为准</td><td>官方支持文章列出 Opus 5 / Sonnet 5 在<strong>所有付费档位</strong>提供 <strong>100 万 token</strong> 上下文;Opus 4.6-4.8、Sonnet 4.6 为 <strong>50 万 token</strong>;其余型号为 <strong>20 万 token</strong>(约 500 页文本)。Free 档上限官方该文未列出</td><td>官方分级表最直白:未开通订阅 <strong>3.2 万 token</strong>,AI Plus <strong>12.8 万 token</strong>,AI Pro/AI Ultra <strong>100 万 token</strong>(约 1500 页文本)。免费与付费档差距是三家里最悬殊的</td></tr>
-  <tr><td>联网检索质量</td><td>内置网页搜索,可指定信源范围(网站/已上传文件/已连接 App),先出调研计划、可人工调整后再执行</td><td>Web Search 需手动打开开关,开启后才能与 Research 模式联动、自动检索并内联引用来源;2026-02 起 Research 模式可连接任意 MCP 服务器接入企业数据源</td><td>默认把 Google 搜索作为信源,可增减信源(接入 Gmail、Drive、NotebookLM 笔记本等)。三家均未公布可比的"检索质量"评分,只能定性判断,具体效果建议按 <a href="#research">调研与学习场景范式</a> 的四步法交叉验证</td></tr>
-  <tr><td>Deep Research 的配额与耗时</td><td>官方原话:深度研究"比常规检索需要更多时间读取和分析多个来源";<strong>具体次数配额官方页面未给出固定数字</strong>,而是"因订阅档位而异,账号内用量计数器实时显示剩余次数",有固定月配额的档位按"首次使用起 30 天"滚动重置</td><td>官方称"几分钟内交付详尽答案";<strong>不设独立配额</strong>——沿用标准对话消息额度,只是单次检索多个来源会更快耗尽;仅 Pro/Max/Team/Enterprise 付费档可用,<strong>Free 不支持</strong></td><td>官方称典型报告耗时"约 5-10 分钟,复杂报告更久";次数配额官方原文为"每日研究请求次数、以及可同时运行的研究请求数量均有限制,AI Pro/Ultra 限制更高",<strong>未公布具体数字</strong>。需年满 18 岁且登录后才能使用</td></tr>
-  <tr><td>已知短板</td><td>官方注明"可用性取决于订阅档位与所在国家/地区";深度研究仅能对已连接 App 执行"只读"操作,不能代为提交/发送</td><td>不会自动判断"这个问题该不该用 Research"——官方建议显式下指令(如"请使用 research 工具"),且必须先手动打开网页搜索开关,否则 Research 无法工作</td><td>免费层官方明确:"需求高峰期,Deep Research 等高算力功能可能不可用";若信源包含 Gmail/Drive 等 Workspace 服务,部分可视化报告功能(图表等)不可用</td></tr>
-</table>
-<div class="callout note"><b class="t">配额数字会变,认准两个地方</b>三家官方都把 Deep Research 的具体次数配额放在"账号内用量计数器"里实时显示,而不是写死在帮助文档中——这意味着<strong>任何第三方文章列出的具体数字(如"每月 X 次")都可能已经过期</strong>。真要对比,直接登录三家账号看当前用量面板,或以官网当前说明为准。</div>
-<p class="src">来源:<a href="https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt" target="_blank">OpenAI Help Center:Deep research in ChatGPT</a> · <a href="https://help.openai.com/en/articles/12003714-chatgpt-business-models-limits" target="_blank">OpenAI Help Center:ChatGPT Business - Models & Limits</a> · <a href="https://support.claude.com/en/articles/11088861-use-research-on-claude" target="_blank">Claude Help Center:Use research on Claude</a> · <a href="https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans" target="_blank">Claude Help Center:context window on paid plans</a> · <a href="https://support.google.com/gemini/answer/15719111" target="_blank">Gemini Apps Help:Use Deep Research</a> · <a href="https://support.google.com/gemini/answer/16275805" target="_blank">Gemini Apps Help:limits & upgrades for Google AI subscribers</a></p>
-</section>
+<section id="tools"><h2>按任务和环境选工具</h2><p>先看项目所在环境、需要的文件和工具访问、交付类型及预算，再选编码代理或对话产品。用一次小任务检验理解、修改与验证能力；不要只按品牌排名、最大上下文数字或演示效果决定。具体型号与权限说明统一查看对应工具专题。</p></section>
 
 <div class="divider"></div>
 
@@ -506,7 +470,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="callout note"><b class="t">🎯 心法的技术展开</b>心法讲"为什么",具体"怎么说、怎么喂"有一整个姊妹专题:<a href="prompt-context-engineering.html">提示词与上下文工程</a>——七技法 ❌/✅ 对照、9 式逐字模板、注意力预算与长任务三板斧、反模式图鉴。</div>
 
 <table class="tbl">
-  <tr><th>#</th><th>心法</th><th>一句话展开</th><th>出处</th></tr>
+  <tbody><tr><th>#</th><th>心法</th><th>一句话展开</th><th>出处</th></tr>
   <tr><td>1</td><td><strong>上下文是第一资源</strong></td><td>给足相关材料、砍掉无关噪音;上下文塞满后模型性能会退化,"喂什么"比"怎么问"更重要</td><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic 上下文工程</a></td></tr>
   <tr><td>2</td><td><strong>计划先行,再动手</strong></td><td>复杂任务先要计划、人审计划再执行;审计划比审成品便宜一个数量级</td><td>Claude Code / Codex 官方共识</td></tr>
   <tr><td>3</td><td><strong>给 AI 可验证的闭环</strong></td><td>测试、样例、检查清单、对照样本——有 pass/fail 信号,AI 才能自我纠错;没有验证就别放手</td><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code Best Practices</a></td></tr>
@@ -514,7 +478,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>5</td><td><strong>小步迭代,两次纠错就重开</strong></td><td>首答只是起点;跑偏立刻打断;同一问题纠正两次无效,就带着教训清空重来</td><td>官方最佳实践 + Learning curves(熟手更多迭代协作)</td></tr>
   <tr><td>6</td><td><strong>人管品味与事实,AI 管体力</strong></td><td>观点、取舍、事实核验、最终责任永远在人;把 AI 输出当"初稿"而非"答案"</td><td>METR / HBR / 多方共识</td></tr>
   <tr><td>7</td><td><strong>把重复沉淀为资产</strong></td><td>跑通的问法存成模板,项目规则写进 CLAUDE.md / AGENTS.md,流程做成技能——个人提示词库是复利</td><td>两家官方文档(Skills / 记忆文件)</td></tr>
-</table>
+</tbody></table>
 
 <div class="callout note"><b class="t">一句话总纲</b>把 AI 当成一个<strong>能力极强、毫无背景、过目就忘的新同事</strong>:给足上下文(1)、先对齐计划(2)、定好验收标准(3、4)、勤反馈(5)、关键决定自己拍板(6)、好的协作方式写进员工手册(7)。七条心法就是这一句话。</div>
 </section>
@@ -597,7 +561,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>研究结论先行:AI 熟练度是<strong>练出来的使用直觉</strong>,不是学出来的理论——熟手成功率高约 10%,差异主要来自"会不会迭代、会不会给上下文、会不会挑任务"。所以路径设计只有一个原则:<strong>永远围绕自己的真实任务练,不上抽象课。</strong></p>
 <div class="callout note"><b class="t">🧗 深化版:能力边界扩展方法论</b>如果你想借 AI 把技术能力扩展到全栈跨端(移动/Web/后端)或做技术型独立开发,本页方法论有一份深化姊妹篇:<a href="ai-capability-expansion.html">AI 能力边界扩展指南</a>——五步扩展引擎、跨域映射技法,配两条端到端实战案例。</div>
 
-<h3 data-reveal>四阶阶梯</h3>
+<h3 data-reveal="">四阶阶梯</h3>
 <ol class="steps">
   <li><strong>第 1-2 周 · 建立手感:</strong>每天用对话模型解决 1 个真实小事(改邮件、解读体检单、做菜谱)。只练一件事:不满意就追问和补充信息,而不是放弃。目标:体感"首答只是起点"。</li>
   <li><strong>第 3-4 周 · 学会喂上下文:</strong>练习把背景材料一次给全(文件、截图、旧例子);对比"干问"和"带材料问"的质量差距。目标:内化心法 1 和 4(上下文 + 完成标准)。</li>
@@ -605,9 +569,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>第 3 个月起 · 上代理与自动化:</strong>装一个编码代理(Claude Code 或 Codex),从"写一个自动化小脚本"起步,按 05 节阶梯逐级上;开始用深度调研做大决策。目标:从"聊天"进化到"委托带验证的任务"。</li>
 </ol>
 
-<h3 data-reveal>常见误区对照表</h3>
+<h3 data-reveal="">常见误区对照表</h3>
 <table class="tbl">
-  <tr><th>误区</th><th>纠正</th></tr>
+  <tbody><tr><th>误区</th><th>纠正</th></tr>
   <tr><td>期待一次成型,首答不满意就说"AI 不行"</td><td>AI 是迭代式工具:追问、给反馈、补材料——熟手和新手的差距主要在这里</td></tr>
   <tr><td>把 AI 当搜索引擎,只丢关键词</td><td>给完整任务:背景 + 要求 + 完成标准;它是执行者不是索引</td></tr>
   <tr><td>盲信输出,直接转发/提交</td><td>事实、数字、引用必须核验;高风险内容(法律/医疗/财务)只当参考</td></tr>
@@ -615,7 +579,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td>囤教程、追新工具,不落地</td><td>工具换得再勤,不如一个场景练 5 遍;先场景后工具</td></tr>
   <tr><td>抽象学 AI(啃原理、背提示词大全)</td><td>挑一个两周内要交付的真实产出,围绕它练;原理可以以后补</td></tr>
   <tr><td>敏感信息随手粘贴</td><td>个人隐私、客户数据、公司机密不进公共服务;用企业版或脱敏后再问</td></tr>
-</table>
+</tbody></table>
 <p class="src">来源:<a href="https://www.anthropic.com/research/economic-index-march-2026-report" target="_blank">Anthropic:Learning curves(2026-03)</a> · <a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan:Effective Prompts</a> · 误区部分综合多篇 2026 年入门指南的高频共识</p>
 </section>
 
@@ -625,33 +589,33 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">上手 11</div>
 <h2>资源索引(按可信度排序)</h2>
 
-<h3 data-reveal>第一梯队 · 官方文档与工程博客</h3>
+<h3 data-reveal="">第一梯队 · 官方文档与工程博客</h3>
 <table class="tbl">
-  <tr><th>资源</th><th>说明</th></tr>
+  <tbody><tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://code.claude.com/docs/en/best-practices" target="_blank">Claude Code 官方 Best Practices</a></td><td>验证闭环、计划先行、上下文管理、并行扩展——本页 02/05/07 节的主要底本</td></tr>
   <tr><td><a href="https://developers.openai.com/codex/learn/best-practices" target="_blank">Codex 官方 Best Practices</a></td><td>Goal/Context/Constraints/Done-when 任务结构、AGENTS.md、技能化、定时任务</td></tr>
   <tr><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank">Anthropic:Effective Context Engineering</a></td><td>"上下文是第一资源"的系统论述(2025-09)</td></tr>
   <tr><td><a href="https://github.com/google-gemini/gemini-cli/discussions/27274" target="_blank">Gemini CLI → Antigravity CLI 官方公告</a></td><td>2026-06-18 变更的第一信源</td></tr>
   <tr><td><a href="https://mitsloanedtech.mit.edu/ai/basics/effective-prompts/" target="_blank">MIT Sloan:Effective Prompts for AI</a></td><td>提示词四要素的教学级表述</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>第二梯队 · 研究与数据报告</h3>
+<h3 data-reveal="">第二梯队 · 研究与数据报告</h3>
 <table class="tbl">
-  <tr><th>资源</th><th>说明</th></tr>
+  <tbody><tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index(系列)</a></td><td>全球真实用途分布、协作/自动化比例、Learning curves 学习曲线报告</td></tr>
   <tr><td><a href="https://arxiv.org/pdf/2507.09089" target="_blank">METR 随机对照试验(2025)</a></td><td>"实测慢 19%、自感快 20%"——提效认知纠偏的必读文献</td></tr>
   <tr><td><a href="https://hbr.org/data-visuals/2025/04/top-10-gen-al-use-cases" target="_blank">HBR:Top Gen AI Use Cases(2025)</a></td><td>全网真实用途百强榜,非技术场景的量级证据</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>第三梯队 · 高质量社区沉淀</h3>
+<h3 data-reveal="">第三梯队 · 高质量社区沉淀</h3>
 <table class="tbl">
-  <tr><th>资源</th><th>说明</th></tr>
+  <tbody><tr><th>资源</th><th>说明</th></tr>
   <tr><td><a href="https://coding.stormzhang.ai/" target="_blank">stormzhang:AI 编程指南(中文)</a></td><td>92 篇小白友好系统教程,编程场景入门首选</td></tr>
   <tr><td><a href="https://zapier.com/blog/vibe-coding-examples/" target="_blank">Zapier:Vibe coding examples</a></td><td>非开发者真实项目实例集</td></tr>
   <tr><td><a href="https://www.deployhq.com/blog/comparing-claude-code-openai-codex-and-google-gemini-cli-which-ai-coding-assistant-is-right-for-your-deployment-workflow" target="_blank">DeployHQ</a> · <a href="https://intuitionlabs.ai/articles/claude-code-vs-codex-vs-gemini-cli-comparison" target="_blank">IntuitionLabs</a> · <a href="https://colombani.ai/en/blog/cli-agents-comparison-2026/" target="_blank">colombani.ai</a></td><td>2026 年三工具对比,多方交叉可信度尚可</td></tr>
   <tr><td><a href="https://www.thesify.ai/blog/best-ai-tools-academic-research" target="_blank">Thesify 学术工具盘点</a></td><td>学术调研工具选型</td></tr>
   <tr><td>本知识库</td><td><a href="claude-code-guide.html">Claude Code 使用指南</a> · <a href="codex-guide.html">Codex 使用指南</a> · <a href="env-auth-clinic.html">环境与登录急救手册</a></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -665,7 +629,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header></body></html>

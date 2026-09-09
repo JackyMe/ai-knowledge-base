@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>35. エピローグ：CI/CD自動化パイプライン - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windowsユーザーの落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linuxセットアップの極意</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linuxセットアップの極意</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー変更でPullを爆速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初の1行の魔法の裏側</span></a>
   </div>
@@ -397,21 +396,21 @@ pre:hover .copy-btn { opacity: 1; }
 sequenceDiagram
     participant Dev as 開発者
     participant Git as GitHub / GitLab
-    participant CI as CI Runner<br/>(ビルドサーバー)
-    participant Reg as Docker Registry<br/>(イメージレジストリ)
+    participant CI as CI Runner<br>(ビルドサーバー)
+    participant Reg as Docker Registry<br>(イメージレジストリ)
     participant Prod as 本番サーバー
 
-    Dev->>Git: 1. git push (コードのコミット)
-    Git-->>CI: 2. Webhook をトリガー
+    Dev-&gt;&gt;Git: 1. git push (コードのコミット)
+    Git--&gt;&gt;CI: 2. Webhook をトリガー
     activate CI
-    CI->>CI: 3. 自動単体テストを実行
-    CI->>CI: 4. docker build (イメージ作成)
-    CI->>Reg: 5. docker push (イメージ登録)
+    CI-&gt;&gt;CI: 3. 自動単体テストを実行
+    CI-&gt;&gt;CI: 4. docker build (イメージ作成)
+    CI-&gt;&gt;Reg: 5. docker push (イメージ登録)
     deactivate CI
-    CI-->>Prod: 6. サーバーへデプロイ通知
+    CI--&gt;&gt;Prod: 6. サーバーへデプロイ通知
     activate Prod
-    Prod->>Reg: 7. docker pull (新イメージ取得)
-    Prod->>Prod: 8. docker compose up (サービス再起動)
+    Prod-&gt;&gt;Reg: 7. docker pull (新イメージ取得)
+    Prod-&gt;&gt;Prod: 8. docker compose up (サービス再起動)
     deactivate Prod
 </code></pre>
 </div>
@@ -420,34 +419,34 @@ sequenceDiagram
 <p>CI (Continuous Integration) の本質は、<strong>「コミットが Push されるたびに、テストとビルドを全自動で実行し、不具合を即座に検知する」</strong>ことです。</p>
 <p>デファクトスタンダードである GitHub Actions を用いた設定例（<code>.github/workflows/docker-build.yml</code>）：</p>
 
-<pre><code><span class="bash-comment"># GitHub Actions サンプルワークフロー</span>
+<pre><code># GitHub Actions サンプルワークフロー
 name: CI to Docker Hub
 
 on:
   push:
-    branches: [ <span class="bash-str">"main"</span> ] <span class="bash-comment"># main ブランチへの Push 時にトリガー</span>
+    branches: [ "main" ] # main ブランチへの Push 時にトリガー
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
-          <span class="bash-comment"># タグ付けのベストプラクティス！</span>
+          # タグ付けのベストプラクティス！
           tags: myname/myapp:latest, myname/myapp:${{ github.sha }}
-</code></pre>
+</code></pre><p><a href="https://github.com/docker/build-push-action" target="_blank" rel="noopener">Docker · GitHub Actions</a> — 2026-09-09 時点の例です。Runner 互換性を確認し、本番では確認済み SHA に固定します。</p>
 
 <div class="step-panel">
   <div class="step-header">🏷️ イメージタグ管理の重要作法</div>
@@ -460,10 +459,8 @@ jobs:
 <h2>3. CD：ダウンタイムのない自動デプロイ (継続的デプロイ)</h2>
 
 <p>CD (Continuous Deployment) は、レジストリに登録された最新イメージを本番環境へ安全かつ自動的に反映させる仕組みです。</p>
-<p>スタンドアロンサーバーのシンプルな構成では、<strong>Watchtower</strong> などの自動デプロイツールがよく使われます。Watchtower 自体もコンテナとして動作し、Docker レジストリを常時監視して新しいイメージが公開されると自動で Pull してコンテナをリスタートします。</p>
-<pre><code><span class="bash-comment"># 自動更新ツール Watchtower の起動例</span>
-$ <span class="bash-cmd">docker run</span> -d --name watchtower -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
-</code></pre>
+<p>テスト済みの版またはダイジェストを使い、復元先を記録します。設定と移行を確認して更新し、正常性を検証します。docker.sock 経由の全面自動更新を既定にしません。</p>
+
 
 <h2>4. その先へ：Kubernetes (K8s) が拓く大規模分散の世界</h2>
 
@@ -483,8 +480,8 @@ $ <span class="bash-cmd">docker run</span> -d --name watchtower -v /var/run/dock
   <div class="ic">🎓</div>
   <div>
     <span class="tt">旅の終わり、そして新たな始まり</span>
-    第1レッスンで「環境構築が動かない」と頭を抱えていた小明から、35のステップを経て、マルチステージビルドを操り、堅牢なマイクロサービスを構成し、CI/CD の自動化を見据えるエンジニアへと成長しました。<br/><br/>
-    ターミナルはあなたのキャンバスであり、コンテナはあなたの絵の具です。どのようなインフラ環境であっても、あなたの作ったアプリケーションが確実に、美しく動作することを心より応援しています。<br/><br/>
+    第1レッスンで「環境構築が動かない」と頭を抱えていた小明から、35のステップを経て、マルチステージビルドを操り、堅牢なマイクロサービスを構成し、CI/CD の自動化を見据えるエンジニアへと成長しました。<br><br>
+    ターミナルはあなたのキャンバスであり、コンテナはあなたの絵の具です。どのようなインフラ環境であっても、あなたの作ったアプリケーションが確実に、美しく動作することを心より応援しています。<br><br>
     <strong>May your containers run forever smoothly! 🎉</strong>
   </div>
 </div>
@@ -600,5 +597,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

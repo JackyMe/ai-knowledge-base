@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 활용을 지탱하는 기반 기술: 7대 기본 기법 (❌/✅ 대조), 멀티모달 & RAG 입력 설계, 3대 프론티어 모델 특성 비교, 모델 라우팅, 프롬프트 인젝션 방어, Token 경제학과 비용 관리, 6개 실전 수정 사례, 12개 실무 템플릿, CC / Codex 설정 계층까지 총망라.">
+<meta name="description" content="AI 활용을 지탱하는 기반 기술: 7대 기본 기법 (❌/✅ 대조), 멀티모달 &amp; RAG 입력 설계, 3대 프론티어 모델 특성 비교, 모델 라우팅, 프롬프트 인젝션 방어, Token 경제학과 비용 관리, 6개 실전 수정 사례, 12개 실무 템플릿, CC / Codex 설정 계층까지 총망라.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="프롬프트 & 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026.07">
-<meta property="og:description" content="AI 활용의 핵심 기반: 7대 기본 기법 (❌/✅ 대조), 멀티모달 & RAG 입력 설계, 3대 모델 차이, 모델 라우팅, 보안 방어, Token 비용 최적화, 6개 상세 사례, 12개 템플릿 완벽 정리.">
+<meta property="og:title" content="프롬프트 &amp; 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026.07">
+<meta property="og:description" content="AI 활용의 핵심 기반: 7대 기본 기법 (❌/✅ 대조), 멀티모달 &amp; RAG 입력 설계, 3대 모델 차이, 모델 라우팅, 보안 방어, Token 비용 최적화, 6개 상세 사례, 12개 템플릿 완벽 정리.">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/prompt-context-engineering.ko.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>프롬프트 & 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026.07</title>
+<title>프롬프트 &amp; 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026.07</title>
 <link rel="stylesheet" href="../assets/css/site.css">
 <style>
 :root{
@@ -173,12 +171,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn">☰</button>
-  <div class="logo"><span class="mark">🎯</span>프롬프트 & 컨텍스트 엔지니어링<span class="sub">기반 기술</span></div>
+  <div class="logo"><span class="mark">🎯</span>프롬프트 &amp; 컨텍스트 엔지니어링<span class="sub">기반 기술</span></div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
       <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
@@ -195,7 +194,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="progress" id="prog"></div>
 
 <nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…" /><span class="fk">/</span></div>
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…"><span class="fk">/</span></div>
   <div class="nav-group">
     <div class="gt">개념</div>
     <a href="#overview"><span class="no">00</span>전체상: 프롬프트에서 컨텍스트로</a>
@@ -203,12 +202,12 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">기법</div>
     <a href="#basics"><span class="no">01</span>7대 기본 기법 (❌/✅ 대조)</a>
-    <a href="#structured"><span class="no">02</span>구조화 출력 & 포맷 제어</a>
+    <a href="#structured"><span class="no">02</span>구조화 출력 &amp; 포맷 제어</a>
     <a href="#multimodal"><span class="no">03</span>멀티모달 프롬프트</a>
   </div>
   <div class="nav-group">
-    <div class="gt">사용 사례 & 모델 비교</div>
-    <a href="#models"><span class="no">04</span>주요 대형 모델 프롬프트 특성 비교</a>
+    <div class="gt">사용 사례 &amp; 모델 비교</div>
+    <a href="#models">모델별 프롬프트 조정</a>
     <a href="#rag"><span class="no">05</span>RAG 시나리오 프롬프트 설계</a>
   </div>
   <div class="nav-group">
@@ -216,8 +215,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <a href="#context"><span class="no">06</span>컨텍스트 엔지니어링 핵심</a>
     <a href="#agentic"><span class="no">07</span>에이전트 컨텍스트 (장기 작업)</a>
     <a href="#cost"><span class="no">08</span>Token 경제학과 비용 관리</a>
-    <a href="#routing"><span class="no">09</span>모델 라우팅 & 자동 전환</a>
-    <a href="#security"><span class="no">10</span>Prompt 인젝션 & 보안 방어</a>
+    <a href="#routing">모델 라우팅: 평가부터</a>
+    <a href="#security"><span class="no">10</span>Prompt 인젝션 &amp; 보안 방어</a>
   </div>
   <div class="nav-group">
     <div class="gt">실전</div>
@@ -229,7 +228,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">구현</div>
     <a href="#tools"><span class="no">15</span>CC / Codex 설정 계층</a>
-    <a href="#resources"><span class="no">16</span>리소스 & 출처 인덱스</a>
+    <a href="#resources"><span class="no">16</span>리소스 &amp; 출처 인덱스</a>
   </div>
 </nav>
 
@@ -238,8 +237,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="hero" id="top">
   <div class="badge">🎯 AI 활용을 지탱하는 기반 기술 · 2026년 공식 문서 검증</div>
-  <h1>프롬프트 & 컨텍스트 엔지니어링<br><span class="grad">기법에서 사고방식까지</span></h1>
-  <p class="lead">"컨텍스트는 최고의 자산", "프롬프트는 구체적으로"——본 문서에서는 흩어져 있던 노하우를 체계화합니다. 7가지 기본 기법 (❌/✅ 대조), 멀티모달 & RAG 입력 설계, 3대 프론티어 모델의 특성 차이, 인젝션 방어, Token 비용 최적화, 6가지 실전 수정 사례, 12가지 실무 템플릿까지 완벽히 다룹니다.</p>
+  <h1>프롬프트 &amp; 컨텍스트 엔지니어링<br><span class="grad">기법에서 사고방식까지</span></h1>
+  <p class="lead">"컨텍스트는 최고의 자산", "프롬프트는 구체적으로"——본 문서에서는 흩어져 있던 노하우를 체계화합니다. 7가지 기본 기법 (❌/✅ 대조), 멀티모달 &amp; RAG 입력 설계, 3대 프론티어 모델의 특성 차이, 인젝션 방어, Token 비용 최적화, 6가지 실전 수정 사례, 12가지 실무 템플릿까지 완벽히 다룹니다.</p>
   <div class="meta">
     <span>7대 기법 대조</span><span>12개 실무 템플릿</span><span>6개 완전 사례</span><span>3대 모델 비교</span><span>보안·비용·RAG</span><span>CC × Codex 구현</span>
   </div>
@@ -259,14 +258,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>2023년에 널리 회자된 '프롬프트 엔지니어링(어떻게 질문할 것인가)'은 2026년 현재 <strong>컨텍스트 엔지니어링(모델에 노출되는 모든 정보를 어떻게 설계하고 관리할 것인가)</strong>으로 진화했습니다. 단발성 질의응답에서 '자율적인 작업 완수'로 AI의 역할이 전환되었기 때문입니다.</p>
 
 <table class="tbl">
-  <tr><th>항목</th><th>프롬프트 엔지니어링 (단발형)</th><th>컨텍스트 엔지니어링 (에이전트 시대)</th></tr>
+  <tbody><tr><th>항목</th><th>프롬프트 엔지니어링 (단발형)</th><th>컨텍스트 엔지니어링 (에이전트 시대)</th></tr>
   <tr><td>최적화 대상</td><td>단일 지시문의 표현</td><td>컨텍스트 윈도우 전체에 무엇을, 언제 넣고 언제 비울 것인가</td></tr>
   <tr><td>주요 제약</td><td>지시의 명확성</td><td><strong>Attention(주의 집중) 예산의 유한성</strong>: 과도한 토큰으로 인한 주의 분산</td></tr>
   <tr><td>대표적 액션</td><td>예시 추가, 출력 포맷 지정</td><td>시스템 프롬프트 계층화, 도구 세트 최소화, 압축 및 메모리 분리</td></tr>
   <tr><td>공식 정의</td><td colspan="2"><strong>최소한의 고신호 토큰 세트를 통해 목적하는 결과물을 얻을 확률을 극대화한다</strong> (Anthropic Context Engineering 논문 발췌)</td></tr>
-</table>
+</tbody></table>
 
-<div class="callout note"><b class="t">마인드셋과 엔지니어링의 역할 분담</b><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 & 마인드셋</a>이 "AI로 무엇을 할 수 있는가·어떻게 접근할 것인가(원칙)"를 다룬다면, 본 문서는 "구체적으로 어떻게 작성하고 정보를 전달할 것인가(구현)"를 다루는 실무 매뉴얼입니다.</div>
+<div class="callout note"><b class="t">마인드셋과 엔지니어링의 역할 분담</b><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 &amp; 마인드셋</a>이 "AI로 무엇을 할 수 있는가·어떻게 접근할 것인가(원칙)"를 다룬다면, 본 문서는 "구체적으로 어떻게 작성하고 정보를 전달할 것인가(구현)"를 다루는 실무 매뉴얼입니다.</div>
 </section>
 
 <div class="divider"></div>
@@ -275,43 +274,43 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="sec-tag">기법 01</div>
 <h2>7대 기본 기법 (❌/✅ 대조)</h2>
 
-<h3 data-reveal>1. 명확성과 구체성 (Be Clear & Direct)</h3>
+<h3 data-reveal="">1. 명확성과 구체성 (Be Clear &amp; Direct)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 모호한 지시</b>"코드 좀 리팩토링해서 깔끔하게 만들어 줘"</div>
   <div class="good"><b>✅ 구체적 지시</b>"`calculateTotal` 함수 내부의 다중 중첩 if 문을 가드 절(Early Return)로 변경하고, 계산 로직을 순수 함수로 추출해 주세요"</div>
 </div>
 
-<h3 data-reveal>2. Few-shot (구체적 입출력 예시 제시)</h3>
+<h3 data-reveal="">2. Few-shot (구체적 입출력 예시 제시)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 추상적 규칙 지시만 제공</b>"사용자 피드백을 감성 분석해서 긍정/부정으로 분류해 줘"</div>
   <div class="good"><b>✅ 2~3건의 입출력 예시 병기</b>"입력: '동작은 빠른데 UI가 복잡함' → 출력: `{"sentiment": "mixed", "aspects": {"performance": "+", "ui": "-"}}`와 같은 포맷으로 출력"</div>
 </div>
 
-<h3 data-reveal>3. 사고 과정 명시 (Chain of Thought / CoT)</h3>
+<h3 data-reveal="">3. 사고 과정 명시 (Chain of Thought / CoT)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 즉시 정답 요구</b>"이 알고리즘의 시간 복잡도를 구해 줘"</div>
   <div class="good"><b>✅ 사고 단계 지정</b>"먼저 각 루프의 실행 횟수를 수식화하고, 최악의 시나리오를 특정한 뒤, 최종 Big-O 표기법을 도출해 주세요"</div>
 </div>
 
-<h3 data-reveal>4. 구조화 태그를 통한 컨텍스트 분리 (XML/Markdown Tags)</h3>
+<h3 data-reveal="">4. 구조화 태그를 통한 컨텍스트 분리 (XML/Markdown Tags)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 지시와 참고 자료 혼재</b>"다음 기사 요약해 줘. 기사 내용: ..."</div>
   <div class="good"><b>✅ 태그로 영역 구분</b>"`&lt;document&gt;...&lt;/document&gt;` 내부 자료를 기반으로, `&lt;instructions&gt;...&lt;/instructions&gt;`에 따라 요약해 주세요"</div>
 </div>
 
-<h3 data-reveal>5. 역할과 페르소나 정의 (Role & Persona)</h3>
+<h3 data-reveal="">5. 역할과 페르소나 정의 (Role &amp; Persona)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 일반론적 답변 유도</b>"이 보안 아키텍처를 평가해 줘"</div>
   <div class="good"><b>✅ 전문적 관점 부여</b>"당신은 금융권 시스템의 수석 보안 아키텍트입니다. OAuth 2.0 PKCE 플로우의 토큰 탈취 위험성에 초점을 맞춰 리뷰해 주세요"</div>
 </div>
 
-<h3 data-reveal>6. 네거티브 제약 (금지 사항의 명확화)</h3>
+<h3 data-reveal="">6. 네거티브 제약 (금지 사항의 명확화)</h3>
 <div class="duo">
   <div class="bad"><b>❌ 긍정 지시만 제공</b>"React 컴포넌트를 작성해 줘"</div>
   <div class="good"><b>✅ 금지 사항 병기</b>"외부 라이브러리를 새로 설치하지 말고, CSS-in-JS 대신 반드시 CSS Modules를 사용해 주세요"</div>
 </div>
 
-<h3 data-reveal>7. 출력 포맷 엄격 지정</h3>
+<h3 data-reveal="">7. 출력 포맷 엄격 지정</h3>
 <div class="duo">
   <div class="bad"><b>❌ 자연어 줄글 출력</b>"변경 사항 목록을 알려줘"</div>
   <div class="good"><b>✅ 스키마나 Markdown 테이블 지정</b>"`파일 경로 | 변경 종류 | 변경 이유` 3개 열의 Markdown 테이블 형식으로 출력해 주세요"</div>
@@ -322,7 +321,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <section id="structured">
 <div class="sec-tag">기법 02</div>
-<h2>구조화 출력 & 포맷 제어</h2>
+<h2>구조화 출력 &amp; 포맷 제어</h2>
 <p>프로그램에 의한 자동 처리를 구현할 때 JSON Mode나 Structured Outputs(Pydantic 스키마 등)를 활용하면 파싱 에러 발생률을 물리적으로 0에 가깝게 낮출 수 있습니다.</p>
 <pre><code><span class="c"># Pydantic 스키마를 활용한 안전한 구조화 출력</span>
 class CodeAuditResult(BaseModel):
@@ -346,21 +345,12 @@ class CodeAuditResult(BaseModel):
 
 <div class="divider"></div>
 
-<section id="models">
-<div class="sec-tag">사용 사례 & 모델 비교 04</div>
-<h2>주요 대형 모델 프롬프트 특성 비교</h2>
-<table class="tbl">
-<tr><th>모델</th><th>프롬프트 특성</th><th>최적의 지시 스타일</th></tr>
-<tr><td><strong>Claude (Anthropic)</strong></td><td>XML 태그(<code>&lt;context&gt;</code> 등) 인식력이 매우 우수하며 지시 준수율이 뛰어남.</td><td>긴 문서를 태그로 구조화하고 세부 제약 사항을 명확히 전달.</td></tr>
-<tr><td><strong>OpenAI (GPT-4o / o3)</strong></td><td>System 프롬프트 민감도가 높고 JSON Mode 및 Tool Calling 연동이 견고함.</td><td>시스템 롤에서 전제를 확정하고 함수 스키마를 엄격히 정의.</td></tr>
-<tr><td><strong>Gemini (Google)</strong></td><td>초대형 컨텍스트(2M) 횡단 추론 및 Context Caching에 강점.</td><td>방대한 문서를 한 번에 주입하고 캐시를 활용하여 질의.</td></tr>
-</table>
-</section>
+<section id="models"><h2>모델별 프롬프트 조정</h2><p>추론, 도구, 구조화 출력, 멀티모달 입력의 공식 안내를 확인하세요. 과거 모델의 요령을 일반화하지 말고 조건을 고정해 비교하세요.</p><p class="src"><a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" rel="noopener">developers.openai.com · prompt-engineering</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <section id="rag">
-<div class="sec-tag">사용 사례 & 모델 비교 05</div>
+<div class="sec-tag">사용 사례 &amp; 모델 비교 05</div>
 <h2>RAG 시나리오 프롬프트 설계</h2>
 <p>RAG(검색 증강 생성)에서는 검색된 컨텍스트를 모델이 '절대적 사실'로 우선하도록 프롬프트로 제어합니다:</p>
 <pre><code>&lt;system&gt;
@@ -414,17 +404,13 @@ class CodeAuditResult(BaseModel):
 
 <div class="divider"></div>
 
-<section id="routing">
-<div class="sec-tag">엔지니어링 09</div>
-<h2>모델 라우팅 & 자동 전환</h2>
-<p>작업의 난이도에 따라 경량 모델(판정·분류)에서 최고 성능 추론 모델(아키텍처 설계·심층 디버깅)로 동적 분기하는 아키텍처를 구축합니다.</p>
-</section>
+<section id="routing"><h2>모델 라우팅: 평가부터</h2><p>품질 라우팅, 부하 분산, 실패 대체를 구분하고 대표 과제로 평가하세요. 과거 issue나 검색 결과 부족으로 기능이 없다고 단정하지 마세요.</p></section>
 
 <div class="divider"></div>
 
 <section id="security">
 <div class="sec-tag">엔지니어링 10</div>
-<h2>Prompt 인젝션 & 보안 방어</h2>
+<h2>Prompt 인젝션 &amp; 보안 방어</h2>
 <ul>
 <li><strong>간접 인젝션 방어:</strong> 외부 웹페이지나 사용자 입력 텍스트를 읽을 때 프롬프트 지시 영역과 데이터 영역을 엄격히 격리.</li>
 <li><strong>실행 권한 가드레일:</strong> 명령어 실행이나 파일 삭제 전, 미들웨어 단계에서 위험 패턴을 감지하고 차단.</li>
@@ -626,14 +612,14 @@ Done-when: npm test 통과 및 신규 로직에 대한 단위 테스트 작성.
 <div class="sec-tag">실전 14</div>
 <h2>안티패턴 도감</h2>
 <table class="tbl er">
-  <tr><th>안티패턴</th><th>문제 원인 및 올바른 대안</th></tr>
+  <tbody><tr><th>안티패턴</th><th>문제 원인 및 올바른 대안</th></tr>
   <tr><td>프롬프트 비대화</td><td>오류가 날 때마다 규칙을 무한정 추가하여 지시가 상호 충돌함. 정기적인 가지치기 필수.</td></tr>
   <tr><td>과도한 수식어구</td><td>"당신은 세계 최고의 천재 전문가입니다"는 토큰 낭비. 구체적인 직무와 관점(Persona)을 명시.</td></tr>
   <tr><td>협박 및 팁 미신</td><td>"틀리면 처벌한다", "팁 100달러 줄게"는 실효성 없음. 명확한 Done-when 기준 제시에 집중.</td></tr>
   <tr><td>단일 세션 쓰레기통화</td><td>번역, 코딩, 주간 보고서를 한 세션에서 계속 처리하여 컨텍스트 오염. 주제별 세션 분리.</td></tr>
   <tr><td>대화로 수치 수정 시도</td><td>틀린 계산을 다시 세어보라고 말로 다그침. Python 코드를 실행하여 연산하도록 지시.</td></tr>
   <tr><td>금지문만 나열</td><td>"하지 마라"만 가득하고 정작 무엇을 해야 하는지 누락. 금지 사항마다 올바른 대안을 함께 제공.</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -642,22 +628,22 @@ Done-when: npm test 통과 및 신규 로직에 대한 단위 테스트 작성.
 <div class="sec-tag">구현 15</div>
 <h2>Claude Code / Codex 설정 계층</h2>
 <table class="tbl">
-<tr><th>도구</th><th>글로벌 설정</th><th>프로젝트 설정</th><th>런타임 컨텍스트</th></tr>
+<tbody><tr><th>도구</th><th>글로벌 설정</th><th>프로젝트 설정</th><th>런타임 컨텍스트</th></tr>
 <tr><td><strong>Claude Code</strong></td><td><code>~/.claude/config.json</code></td><td><code>CLAUDE.md</code> / <code>.claude/skills/</code></td><td>터미널 인자 / <code>/mcp</code></td></tr>
 <tr><td><strong>Antigravity / Codex</strong></td><td><code>~/.antigravity/config</code></td><td><code>AGENTS.md</code> / <code>implementation_plan.md</code></td><td>Workspace 상태 / 샌드박스</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
 
 <section id="resources">
 <div class="sec-tag">구현 16</div>
-<h2>리소스 & 출처 인덱스</h2>
+<h2>리소스 &amp; 출처 인덱스</h2>
 <ul>
 <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">Anthropic 공식 Prompt Engineering 가이드</a></li>
 <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">OpenAI 공식 Prompt Engineering 가이드</a></li>
 <li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank">Google AI 공식 프롬프팅 전략</a></li>
-<li><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 & 마인드셋</a></li>
+<li><a href="ai-leverage-guide.ko.html">AI 활용 효율 맵 &amp; 마인드셋</a></li>
 <li><a href="claude-code-guide.ko.html">Claude Code 실전 가이드</a></li>
 <li><a href="codex-guide.ko.html">Codex 가이드</a></li>
 </ul>
@@ -666,7 +652,7 @@ Done-when: npm test 통과 및 신규 로직에 대한 단위 테스트 작성.
 <div class="divider"></div>
 
 <div class="footer">
-  <p>프롬프트 & 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026년 7월 개정</p>
+  <p>프롬프트 &amp; 컨텍스트 엔지니어링 · 기법에서 사고방식까지 · 2026년 7월 개정</p>
 </div>
 
 </div>
@@ -674,6 +660,9 @@ Done-when: npm test 통과 및 신규 로직에 대한 단위 테스트 작성.
 
 <button class="top-btn" id="topBtn" title="맨 위로 이동">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

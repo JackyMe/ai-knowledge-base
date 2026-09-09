@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>27. 容器相亲记：告别 IP - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -412,15 +411,14 @@ pre:hover .copy-btn { opacity: 1; }
 <p>在自定义网络中，Docker 引擎内置了一个基于 CoreDNS 的服务发现机制。只要容器连接在同一个自定义网络下，它们就可以直接把<strong>容器名字</strong>当作域名来互相访问！</p>
 
 <div class="mermaid-box">
-<pre class="mermaid">
-sequenceDiagram
+<pre class="mermaid">sequenceDiagram
     participant Web as Web (app-server)
     participant DNS as Docker DNS (127.0.0.11)
     participant DB as DB (mysql-server)
     
-    Web->>DNS: 查询 "mysql-server" 的 IP 是多少？
-    DNS-->>Web: 答复: 172.18.0.3
-    Web->>DB: 带着正确的 IP 发起数据库连接
+    Web-&gt;&gt;DNS: 查询 "mysql-server" 的 IP 是多少？
+    DNS--&gt;&gt;Web: 答复: 172.18.0.3
+    Web-&gt;&gt;DB: 带着正确的 IP 发起数据库连接
 </pre>
 </div>
 
@@ -474,7 +472,7 @@ sequenceDiagram
   <span class="ic">🎯</span>
   <div>
     <span class="tt">老鸟技巧：网络别名 (Network Aliases)</span>
-    除了用 <code>--name</code> 作为 DNS 名称，你还可以用别名！比如你启了 3 个后端的容器，你给它们加上 <code>--network-alias backend-api</code>。<br/>
+    除了用 <code>--name</code> 作为 DNS 名称，你还可以用别名！比如你启了 3 个后端的容器，你给它们加上 <code>--network-alias backend-api</code>。<br>
     神奇的事情会发生：当你内部网络 PING <code>backend-api</code> 时，Docker 的 DNS 会在结果里随机返回这 3 个容器的 IP 之一。这就是极其轻量级的内部负载均衡 (Round-Robin DNS)！
   </div>
 </div>
@@ -602,5 +600,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

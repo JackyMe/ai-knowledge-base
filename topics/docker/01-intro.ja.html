@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>01. プロローグ：エンジニアの世紀の難題 - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -428,16 +427,16 @@ OSError: cannot load library 'libcairo.so.2': error 0x7e
 <pre><code class="language-mermaid">
 flowchart TD
     subgraph DevMac["開発者のMac"]
-        A[完璧な実行環境] --> |コードを送信| B(ソースコード)
+        A[完璧な実行環境] --&gt; |コードを送信| B(ソースコード)
     end
     subgraph ColleagueWin["同僚のWindows"]
-        B --> |依存パッケージ不足| C{エラー: ModuleNotFound}
+        B --&gt; |依存パッケージ不足| C{エラー: ModuleNotFound}
     end
     subgraph StagingCentOS["検証環境 CentOS"]
-        B --> |古いCライブラリ| D{エラー: ビルド失敗}
+        B --&gt; |古いCライブラリ| D{エラー: ビルド失敗}
     end
-    C -.-> E["エンジニア: 私のPCでは動くのに!"]
-    D -.-> E
+    C -.-&gt; E["エンジニア: 私のPCでは動くのに!"]
+    D -.-&gt; E
     style E fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
 </code></pre>
   </div>
@@ -582,5 +581,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

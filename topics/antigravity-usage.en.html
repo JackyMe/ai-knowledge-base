@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Google Antigravity (AGY) 2.0 Complete In-Depth Practical Guide: agy CLI agent, Agentic IDE, Python SDK, MCP protocols, Subagents state-machine orchestration, and OS-level sandbox defense.">
+<meta name="description" content="Choose the desktop, CLI, IDE, or SDK for your task, then review permissions and results.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Antigravity Practical Guide · Tips & Architecture (2026.08)">
+<meta property="og:title" content="Antigravity guide · AI Knowledge Base">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/antigravity-usage.en.html">
-<title>Antigravity Complete Guide · CLI × IDE × SDK (2026.08)</title>
+<title>Antigravity guide · AI Knowledge Base</title>
 <link rel="stylesheet" href="../assets/css/site.css">
 <style>
 :root{
@@ -131,6 +129,7 @@ pre code{background:none;color:inherit;padding:0}
 }
 </style>
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 <div id="prog"></div>
@@ -140,7 +139,7 @@ pre code{background:none;color:inherit;padding:0}
   <div class="logo">
     <div class="mark">🛸</div>
     <span>Antigravity Guide</span>
-    <span class="sub">CLI × IDE × SDK Practical Handbook</span>
+    <span class="sub">2026-09-09</span>
   </div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
@@ -150,287 +149,30 @@ pre code{background:none;color:inherit;padding:0}
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.en.html">◂ Topic Hub</a>
-    
+
       <span>Verified 2026-08-17</span>
   
 
-<nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="Filter sections…"><span class="fk">/</span></div>
-  <div class="nav-group">
-    <div class="gt">Core Foundations</div>
-    <a href="#sec1"><span class="no">01</span>Mental Model & Core Concepts</a>
-    <a href="#sec2"><span class="no">02</span>Installation & Setup Diagnostics</a>
-    <a href="#sec3"><span class="no">03</span>CLI Subcommands & Keybindings</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">Customizations</div>
-    <a href="#sec4"><span class="no">04</span>Customizations Architecture</a>
-    <a href="#sec5"><span class="no">05</span>Subagents Deep Orchestration</a>
-    <a href="#sec6"><span class="no">06</span>Advanced Toolchain & Automation</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">Engineering Governance</div>
-    <a href="#sec7"><span class="no">07</span>Performance & Sandbox Security</a>
-    <a href="#sec8"><span class="no">08</span>Common Pitfalls & 30s Fixes</a>
-    <a href="#sec9"><span class="no">09</span>End-to-End Practical Workflow</a>
-    <a href="#sec10"><span class="no">10</span>Quick Reference Cheat Sheet</a>
-  </div>
-</nav>
+<nav class="sidebar" id="sidebar"><div class="side-filter"><input id="sideFilter" placeholder="Filter chapters" aria-label="Filter chapters"></div><div class="nav-group"><a href="#sec1"><span class="no">01</span>Choose a surface</a><a href="#sec2"><span class="no">02</span>Install and sign in</a><a href="#sec3"><span class="no">03</span>Everyday CLI operations</a><a href="#sec4"><span class="no">04</span>Settings and extensions</a><a href="#sec5"><span class="no">05</span>Background and headless work</a><a href="#sec7"><span class="no">06</span>Permissions, sandbox, and usage</a><a href="#sec8"><span class="no">07</span>Troubleshoot by symptom</a><a href="#sec9"><span class="no">08</span>A verifiable task workflow</a></div></nav>
 
 <main class="main">
-  <div class="wrap">
-    
-    <div class="hero" id="top">
-      <div class="badge">🛸 Google Antigravity 2.0 · Agentic Full-Stack · Verified August 17, 2026</div>
-      <h1>Antigravity Complete Guide<br><span class="grad">Tips · Practical Skills · Architecture</span></h1>
-      <p class="lead">A complete handbook covering Antigravity (AGY) 2.0: agy CLI agent, Agentic IDE, Python SDK, MCP tool protocols, Subagents state-machine orchestration, and OS-level sandbox defense. Zero fluff, 100% production-ready.</p>
-      <div class="meta">
-        <span>4 Interaction Forms</span><span>2-Tier Sandbox</span><span>Subagent Isolation</span><span>MCP Dynamic Registry</span><span>Planning Mode Discipline</span>
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><b>4 Forms</b><span>CLI / IDE / Python SDK / Sidecars Unified Protocol</span></div>
-      <div class="stat"><b>2-Tier Sandbox</b><span>Standard Isolation vs Explicit Bypass Approval</span></div>
-      <div class="stat"><b>Zero-Hallucination</b><span>Planning Mode architecture design before execution</span></div>
-      <div class="stat"><b>Subagents</b><span>Parallel multi-agent execution with isolated worktrees</span></div>
-    </div>
-
-    <!-- 01 Concepts -->
-    <section id="sec1">
-      <div class="sec-tag">Foundations 01</div>
-      <h2>1️⃣ Antigravity Core Concepts & Mental Model</h2>
-      <p><span class="tag-badge tag-official">Official Standard Alignment</span> Google Antigravity (code name <strong>AGY</strong>) is Google's next-generation full-stack infrastructure for the Agentic AI software engineering era. Moving beyond traditional chat completion, it integrates <strong>OS-level sandboxing, multi-agent orchestration, MCP (Modular Command Protocol) tool routing, AST semantic code understanding, and context lifecycle governance</strong> into a unified foundation.</p>
-
-      <h3 data-reveal>Comparative Matrix: Antigravity vs Claude Code vs Codex</h3>
-      <table class="tbl">
-        <tr><th>Core Dimension</th><th>Google Antigravity 2.0</th><th>Claude Code (Anthropic)</th><th>OpenAI Codex</th></tr>
-        <tr><td><strong>Flagship Models</strong></td><td>Gemini 2.5 Pro / Flash & 3.0 Ultra (2M+ window)</td><td>Claude 3.7 Sonnet / Opus 5 (200k window)</td><td>GPT-5.6 / o3-mini (128k-200k window)</td></tr>
-        <tr><td><strong>Sandbox Isolation</strong></td><td>OS-level lightweight container + ptrace/seccomp filtering</td><td>Permission modes (Manual / Auto-Approve)</td><td>3×3 Mode matrix (Auto / Prompt / Strict)</td></tr>
-        <tr><td><strong>Multi-Agent Orchestration</strong></td><td>Native Subagents (inherit / branch / share workspace modes)</td><td><code>/subtask</code> and <code>/fork</code> session branching</td><td>Codex Cloud dispatch</td></tr>
-        <tr><td><strong>Extension Protocols</strong></td><td>Native MCP (Eager/Lazy) + <code>.agents</code> custom hierarchy</td><td>MCP Client + CLAUDE.md</td><td>MCP Plugins + AGENTS.md</td></tr>
-        <tr><td><strong>Deliverable Governance</strong></td><td>Session-bound persistent Artifacts (Markdown, Diff, Mockup)</td><td>Local file writes</td><td>Cloud branches & PRs</td></tr>
-      </table>
-
-      <h3 data-reveal>6 Pillars of the Antigravity Architecture</h3>
-      <ul>
-        <li><strong>agy CLI</strong>: Unified command-line interface driving workspace diagnostics, search, code edits, and subagent dispatch.</li>
-        <li><strong>Agentic IDE</strong>: Seamless visual workbench integrating code editors, Planning Mode review panels, live diff checkers, and artifact renderers.</li>
-        <li><strong>Customizations Hub</strong>: Cascading configuration hierarchy under <code>.agents/</code> and <code>~/.gemini/antigravity/</code> for Skills, Rules, Plugins, and MCP servers.</li>
-        <li><strong>Subagents Network</strong>: Autonomous background agents with distinct conversation IDs, model budgets, and workspace isolation modes.</li>
-        <li><strong>Artifacts Engine</strong>: Persistent documentation and deliverable framework preventing messy chat dump and ensuring traceability.</li>
-        <li><strong>Reactive Wakeup</strong>: Event-driven asynchronous execution model where parent agents are automatically resumed upon child completion without polling.</li>
-      </ul>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 02 Setup -->
-    <section id="sec2">
-      <div class="sec-tag">Foundations 02</div>
-      <h2>2️⃣ Installation & Setup Diagnostics (macOS / Linux / WSL2)</h2>
-      <pre><code class="language-bash"># macOS (Homebrew Official Tap)
-brew tap agy/agy && brew install antigravity
-
-# Linux (Debian / Ubuntu / RHEL install script)
-curl -fsSL https://antigravity.google.com/install.sh | bash
-
-# Verify installed release
+  <div class="wrap"><div class="hero"><div class="badge">2026-09-09</div><h1>Antigravity guide</h1><p class="lead">Choose the desktop, CLI, IDE, or SDK for your task, then review permissions and results.</p></div><section id="sec1"><div class="sec-tag">01</div><h2>Choose a surface</h2><p>Use desktop for projects, CLI for terminal work, IDE integrations for editing, and SDK for programmatic agents. Settings and shortcuts differ.</p><p class="src"><a href="https://www.antigravity.google/docs/home/" target="_blank" rel="noopener">www.antigravity.google · home</a> · 2026-09-09</p></section>
+<section id="sec2"><div class="sec-tag">02</div><h2>Install and sign in</h2><p>Use the official native installer on macOS/Linux. Start agy to authenticate; SSH users can finish authorization in a local browser. Check the binary and version.</p><pre><code>curl -fsSL https://antigravity.google/cli/install.sh | bash
+command -v agy
 agy --version
-# Output: antigravity v2.0.18-rel (x86_64-apple-darwin / 2026-08-17)
-
-# Run full health diagnostics
-agy doctor --verbose</code></pre>
-
-      <h3 data-reveal><code>agy doctor</code> Diagnostics Checklist</h3>
-      <table class="tbl">
-        <tr><th>Diagnostic Check</th><th>Healthy Standard</th><th>Failure Symptoms & 30s Fix</th></tr>
-        <tr><td><strong>Sandbox Layer</strong></td><td><code>cgroups v2 + seccomp filter active</code></td><td>If sandbox fails, check OS kernel (Linux 5.10+ or macOS 14+); in WSL2 ensure virtualization flags are enabled.</td></tr>
-        <tr><td><strong>MCP Daemon</strong></td><td><code>socket alive (/var/run/agy/mcp.sock)</code></td><td>If daemon is inactive, run <code>agy mcp daemon --restart</code>.</td></tr>
-        <tr><td><strong>Token & Keychain</strong></td><td><code>GCP SecretStore validated</code></td><td>If credentials expire, run <code>agy auth login --refresh</code> to perform OAuth2 re-authentication.</td></tr>
-        <tr><td><strong>Worktree Engine</strong></td><td><code>git worktree support enabled</code></td><td>Required for branch subagents; requires Git 2.34+.</td></tr>
-      </table>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 03 CLI -->
-    <section id="sec3">
-      <div class="sec-tag">Foundations 03</div>
-      <h2>3️⃣ CLI Subcommands & IDE Keybindings</h2>
-      <table class="tbl">
-        <tr><th>Subcommand</th><th>Syntax</th><th>Key Arguments</th><th>Core Purpose</th></tr>
-        <tr><td><code>agy view</code></td><td><code>agy view src/main.rs --line 1-120</code></td><td><code>--line</code>, <code>--offset</code></td><td>Read-only code viewing with syntax highlighting without touching edit history</td></tr>
-        <tr><td><code>agy edit</code></td><td><code>agy edit src/api.py --range 40-75</code></td><td><code>--range</code>, <code>--atomic</code></td><td>Precise atomic block editing with hash verification preventing file stomping</td></tr>
-        <tr><td><code>agy grep</code></td><td><code>agy grep "class AuthService" --type ts</code></td><td><code>--regex</code>, <code>--case</code></td><td>Ripgrep-powered ultra-fast symbol and function matching</td></tr>
-        <tr><td><code>agy subagent</code></td><td><code>agy subagent invoke research --model flash</code></td><td><code>--model</code>, <code>--workspace</code></td><td>Dispatch background research or test subagents</td></tr>
-        <tr><td><code>agy run</code></td><td><code>agy run "pytest tests/" --wait 5000</code></td><td><code>--wait</code>, <code>--bypass</code></td><td>Execute commands inside sandbox, auto-backgrounding if long-running</td></tr>
-        <tr><td><code>agy schedule</code></td><td><code>agy schedule --cron "*/10 * * * *" --prompt "Check build"</code></td><td><code>--cron</code>, <code>--condition</code></td><td>Register cron tasks or timers with early cancellation triggers</td></tr>
-      </table>
-
-      <h3 data-reveal>Antigravity IDE Shortcuts</h3>
-      <ul>
-        <li><kbd>Cmd+L</kbd> / <kbd>Ctrl+L</kbd> —— Focus agent chat panel, injecting active file and cursor lines as prompt context.</li>
-        <li><kbd>Cmd+Shift+P</kbd> —— Open command palette for <code>/goal</code>, <code>/schedule</code>, <code>/grill-me</code>.</li>
-        <li><kbd>Ctrl+Alt+R</kbd> —— Execute sandbox automated test suite on the current module.</li>
-        <li><kbd>Ctrl+Alt+S</kbd> —— Split-screen preview of live generated Artifacts (Markdown / HTML / Mockup).</li>
-      </ul>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 04 Customizations -->
-    <section id="sec4">
-      <div class="sec-tag">Customizations 04</div>
-      <h2>4️⃣ Customizations Architecture: Skills · Rules · MCP · Plugins</h2>
-      <p>Antigravity utilizes a 3-tier cascading configuration hierarchy: <strong>Project <code>.agents/</code> (Highest) &gt; User Global <code>~/.gemini/antigravity/</code> &gt; Built-in Defaults</strong>. All rules hot-reload without restarting.</p>
-
-      <h3 data-reveal>4.1 Writing a Production Skill</h3>
-      <p>Declare your skill in <code>.agents/skills/security-guard/SKILL.md</code>:</p>
-      <pre><code class="language-markdown">---
-name: security-guard
-description: "Production security auditor for API secret leakage and SQL injection"
----
-# Security Standards
-1. Never hardcode API keys, JWT secrets, or DB credentials in source code.
-2. Ensure all external inputs are strictly schema-validated before deserialization.
-3. Enforce parameterized prepared queries for all database interactions.
-4. Mandate timeout budgets and exponential backoff on all outbound HTTP calls.</code></pre>
-
-      <h3 data-reveal>4.2 Writing Global Interception Rules</h3>
-      <pre><code class="language-yaml"># .agents/rules/safe-terminal.yml
----
-severity: critical
-description: "Sandbox Guard: Block high-risk commands and unapproved secret exports"
-enforce:
-  - tool: run_command
-    condition: "BypassSandbox == false && CommandLine matches '(rm\\s+-rf\\s+/|mkfs|dd\\s+if=)' => reject"
-  - tool: replace_file_content
-    condition: "TargetFile matches '\\.(env|pem|key)$' => require_user_approval"</code></pre>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 05 Subagents -->
-    <section id="sec5">
-      <div class="sec-tag">Customizations 05</div>
-      <h2>5️⃣ Subagents Deep Orchestration & State Machine</h2>
-      <table class="tbl">
-        <tr><th>Subagent (TypeName)</th><th>Workspace Mode</th><th>Model Inheritance</th><th>Production Use Case</th></tr>
-        <tr><td><code>research</code></td><td><code>inherit</code> (Read-only)</td><td><code>flash</code> / <code>flash_lite</code></td><td>Fast log analysis, docs reading, codebase exploration</td></tr>
-        <tr><td><code>self</code></td><td><code>branch</code> (Isolated Git Worktree)</td><td><code>inherit</code> (Full parent capability)</td><td>High-risk refactoring, destructive experiments</td></tr>
-        <tr><td><code>pipeline-worker</code></td><td><code>share</code> (Shared directory)</td><td><code>pro</code> (High reasoning budget)</td><td>Concurrent build pipelines, multi-environment testing</td></tr>
-      </table>
-
-      <h3 data-reveal>Subagent Lifecycle Flow</h3>
-      <pre><code>[invoke_subagent] ───→ (running) ───┬───→ [Waiting for Input] ───→ (waiting_for_input)
-                                    │
-                                    ├───→ [Blocked by Dependents] → (waiting_for_dependents)
-                                    │
-                                    ├───→ [Execution Complete] ──→ (done) ──→ [Reactive Wakeup Parent]
-                                    │
-                                    └───→ [Runtime Error] ───────→ (errored) → [Emit Diagnostic Logs]</code></pre>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 06 Toolchain -->
-    <section id="sec6">
-      <div class="sec-tag">Customizations 06</div>
-      <h2>6️⃣ Advanced Toolchain & Automation</h2>
-      <div class="hotcmds">
-        <div class="hotcmd">
-          <span class="hc-cmd">multi_replace_file_content</span>
-          <span class="hc-desc">Perform non-contiguous edits in a single atomic tool call, eliminating line drift.</span>
-        </div>
-        <div class="hotcmd">
-          <span class="hc-cmd">schedule</span>
-          <span class="hc-desc">Register one-shot timers or Cron recurring jobs with message-based early cancellation.</span>
-        </div>
-        <div class="hotcmd">
-          <span class="hc-cmd">manage_task</span>
-          <span class="hc-desc">Monitor long-running background tasks (servers, test watchers) and send stdin.</span>
-        </div>
-        <div class="hotcmd">
-          <span class="hc-cmd">generate_image</span>
-          <span class="hc-desc">Generate UI mockups, architecture diagrams, and image assets from text prompts.</span>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 07 Security -->
-    <section id="sec7">
-      <div class="sec-tag">Governance 07</div>
-      <h2>7️⃣ Performance & Sandbox Security Best Practices</h2>
-      <ol>
-        <li><strong>Standard Sandbox First</strong>: Commands execute in an isolated sandbox with no internet access by default. Explicitly set <code>BypassSandbox: true</code> only when downloading packages or accessing approved endpoints.</li>
-        <li><strong>Planning Mode Discipline</strong>: For multi-file architectural changes, write an <code>implementation_plan.md</code> artifact and obtain user sign-off before modifying source code.</li>
-        <li><strong>Incremental Block Edits</strong>: Avoid full-file overwrites on large codebases; use <code>replace_file_content</code> to conserve context tokens and maintain clean git history.</li>
-      </ol>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 08 Pitfalls -->
-    <section id="sec8">
-      <div class="sec-tag">Governance 08</div>
-      <h2>8️⃣ Common Pitfalls & 30-Second Fixes</h2>
-      <table class="tbl">
-        <tr><th>Symptom</th><th>Root Cause</th><th>30-Second Fix</th></tr>
-        <tr><td><code>TargetContent not found</code></td><td>Whitespace, indentation, or newline (CRLF/LF) mismatch in target chunk</td><td>Run <code>view_file</code> to inspect exact line numbers and indentation before editing.</td></tr>
-        <tr><td><code>Subagent in waiting_for_input</code></td><td>Subagent prompt triggered an interactive confirmation</td><td>Run <code>manage_subagents list</code> and resume execution via <code>send_message</code>.</td></tr>
-        <tr><td><code>Sandbox Network Blocked</code></td><td>Executed <code>curl</code>, <code>npm install</code>, or <code>git pull</code> in sandbox</td><td>Declare <code>BypassSandbox: true</code> after verifying network target security.</td></tr>
-        <tr><td><code>Context Token Overflow</code></td><td>Dumped large logs or JSON directly into chat</td><td>Use <code>/clear</code> to reset or delegate log analysis to a <code>research</code> subagent.</td></tr>
-      </table>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 09 Case -->
-    <section id="sec9">
-      <div class="sec-tag">Governance 09</div>
-      <h2>9️⃣ Practical Case: End-to-End Workflow</h2>
-      <p>A full loop demonstrating subagent research, plan generation, incremental edits, and sandbox regression testing:</p>
-      <pre><code class="language-bash"># 1. Dispatch research subagent to audit codebase
-agy subagent invoke research --prompt "Audit legacy session bottleneck in src/auth/"
-
-# 2. Write structured implementation plan artifact
-agy write_to_file --TargetFile .gemini/antigravity/brain/implementation_plan.md \
-  --CodeContent "# OAuth2 + PKCE Migration Plan..."
-
-# 3. Perform atomic code edits after user approval
-agy edit src/auth/oauth2.py --range 15-60
-
-# 4. Run automated test suite inside isolated sandbox
-agy run "pytest tests/test_oauth2.py -v" --wait 5000</code></pre>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 10 Cheat Sheet -->
-    <section id="sec10">
-      <div class="sec-tag">Governance 10</div>
-      <h2>🔟 Quick Reference & Slash Commands</h2>
-      <ul>
-        <li><code>/goal</code> – For long-running overnight autonomous tasks until objective completion.</li>
-        <li><code>/schedule</code> – Quick interface for timers and cron notifications.</li>
-        <li><code>/browser</code> – Headless browser automation for live page rendering and regression tests.</li>
-        <li><code>/grill-me</code> – Interactive interview mode where the agent drills into edge cases.</li>
-        <li><code>/teamwork-preview</code> – Orchestrate multi-agent autonomous teams for large refactors.</li>
-        <li><code>/learn</code> – Persist workflows and learned patterns into workspace permanent memory.</li>
-      </ul>
-    </section>
-
-    <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-      <span>© 2026 AI Knowledge Base · Google Antigravity 2.0 Complete Guide</span>
-      <span>Verified August 17, 2026</span>
-    </div>
-
-  </div>
+agy</code></pre><p class="src"><a href="https://www.antigravity.google/docs/cli/install/" target="_blank" rel="noopener">www.antigravity.google · install</a> · 2026-09-09</p></section>
+<section id="sec3"><span id="sec10"></span><div class="sec-tag">03</div><h2>Everyday CLI operations</h2><p>Type / to inspect available session commands: /help, /diff, /resume, /permissions, /context, and /usage. Internal agent tools are not shell subcommands.</p><p class="src"><a href="https://www.antigravity.google/docs/cli/reference/" target="_blank" rel="noopener">www.antigravity.google · reference</a> · 2026-09-09</p></section>
+<section id="sec4"><div class="sec-tag">04</div><h2>Settings and extensions</h2><p>Inspect CLI settings with /config and connections with /mcp. Rules, skills, hooks, and plugins have different roles; follow each surface’s documented schema.</p><p class="src"><a href="https://www.antigravity.google/docs/cli/settings/" target="_blank" rel="noopener">www.antigravity.google · settings</a> · 2026-09-09</p></section>
+<section id="sec5"><span id="sec6"></span><div class="sec-tag">05</div><h2>Background and headless work</h2><p>Specify outputs, writable paths, and acceptance checks. Monitor with /agents and /tasks. For scripts, use -p; internal state names are not CLI APIs.</p><pre><code>agy -p "Summarize this repository without changing files" --output-format json</code></pre><p class="src"><a href="https://www.antigravity.google/docs/cli/headless/" target="_blank" rel="noopener">www.antigravity.google · headless</a> · 2026-09-09</p></section>
+<section id="sec7"><div class="sec-tag">06</div><h2>Permissions, sandbox, and usage</h2><p>Check enabled sandbox and tool permissions; do not assume networking is disabled by default. Prompt rules do not replace enforcement. /usage and /context measure different limits.</p><p class="src"><a href="https://www.antigravity.google/docs/cli/permissions/" target="_blank" rel="noopener">www.antigravity.google · permissions</a> · 2026-09-09</p></section>
+<section id="sec8"><div class="sec-tag">07</div><h2>Troubleshoot by symptom</h2><p>Check PATH for missing commands, account/network/time for sign-in errors, and permission explanations for denied tools. Preserve evidence and narrow unreliable tasks before resetting configuration.</p><p class="src"><a href="https://www.antigravity.google/docs/cli/troubleshooting/" target="_blank" rel="noopener">www.antigravity.google · troubleshooting</a> · 2026-09-09</p></section>
+<section id="sec9"><div class="sec-tag">08</div><h2>A verifiable task workflow</h2><p>Example: inspect authentication code, identify changes and risks, implement the scoped work, run existing tests, and review the diff. Obtain specific authorization for publishing, spending, or messaging others.</p></section><footer class="footer">Based on the linked official sources. Validate examples in your environment.</footer></div>
 </main>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header>
+</body></html>

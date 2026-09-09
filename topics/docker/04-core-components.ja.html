@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>04. 図解：コア3要素のアーキテクチャ - Docker 35段階完全マスター</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 第2フェーズ：環境構築</div>
     <a class="nav-item" href="05-windows-setup.ja.html"><span class="n">05.</span><span>Windows環境の落とし穴回避ガイド</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac & Linux 環境構築プレイブック</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ja.html"><span class="n">06.</span><span>Mac &amp; Linux 環境構築プレイブック</span></a>
     <a class="nav-item" href="07-registry-mirror.ja.html"><span class="n">07.</span><span>ミラー設定：ダウンロードの高速化</span></a>
     <a class="nav-item" href="08-hello-world.ja.html"><span class="n">08.</span><span>最初のコマンドに隠された仕組み</span></a>
   </div>
@@ -396,7 +395,7 @@ flowchart LR
     subgraph Client["1. クライアント (Docker CLI)"]
         C["Docker CLI コマンドライン"]
         C -- "REST API リクエストを送信
-(例: docker run)" --> D
+(例: docker run)" --&gt; D
     end
     
     subgraph Host["2. Docker ホスト"]
@@ -413,16 +412,16 @@ flowchart LR
             Img2["MySQL イメージファイル"]
         end
         
-        D --> Cont1
-        D --> Cont2
-        D -. "ロード / 実行" .-> Img1
-        D -. "ロード / 実行" .-> Img2
+        D --&gt; Cont1
+        D --&gt; Cont2
+        D -. "ロード / 実行" .-&gt; Img1
+        D -. "ロード / 実行" .-&gt; Img2
     end
     
     subgraph Reg["3. リモートレジストリ"]
         R[("Docker Hub パブリックレジストリ")]
         D -- "ローカルにない場合取得
-(docker pull)" --> R
+(docker pull)" --&gt; R
     end
     
     style C fill:#f8fafc,stroke:#cbd5e1
@@ -590,5 +589,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

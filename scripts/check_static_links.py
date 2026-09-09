@@ -82,4 +82,6 @@ for r, t, res, reason in cross_lang_links:
     print(f"  [{r}] -> '{t}' ({reason})")
 
 if not broken_links and not cross_lang_links:
-    print("\n✅ All 208 HTML files have 100% valid links, zero broken assets, and zero cross-language leaks!")
+    print(f"\nPASS: {len(all_html)} HTML files; no missing local files or cross-language leaks.")
+else:
+    raise SystemExit(1)

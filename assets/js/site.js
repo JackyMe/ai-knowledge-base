@@ -75,8 +75,8 @@ function updatePager(){
   nx.style.visibility=n?'visible':'hidden';
   const pvLabel = isKo ? '← 이전 장' : (isJa ? '← 前の章' : (isEn ? '← Previous' : '← 上一章'));
   const nxLabel = isKo ? '다음 장 →' : (isJa ? '次の章 →' : (isEn ? 'Next →' : '下一章 →'));
-  if(p){pv.innerHTML='<span>'+pvLabel+'</span><b>'+labelOf(p)+'</b>';pv.onclick=()=>showPage(p)}
-  if(n){nx.innerHTML='<span>'+nxLabel+'</span><b>'+labelOf(n)+'</b>';nx.onclick=()=>showPage(n)}
+  if(p){pv.innerHTML='<span>'+pvLabel+'</span><b>'+labelOf(p)+'</b>';pv.href='#'+p;pv.onclick=e=>{e.preventDefault();showPage(p)}}
+  if(n){nx.innerHTML='<span>'+nxLabel+'</span><b>'+labelOf(n)+'</b>';nx.href='#'+n;nx.onclick=e=>{e.preventDefault();showPage(n)}}
 }
 
 function showPage(id,anchor){
@@ -87,7 +87,7 @@ function showPage(id,anchor){
       els.forEach(el=>el.classList.toggle('page-hidden',pid!==id)));
     curPage=id;
     pages[id].forEach(el=>{el.classList.remove('pg-anim');void el.offsetWidth;el.classList.add('pg-anim')});
-    links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));
+    links.forEach(a=>{const active=a.getAttribute('href')==='#'+id;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     updatePager();
     try{localStorage.setItem('pkb-last',JSON.stringify({
       page:location.pathname.split('/').pop(),anchor:id,label:labelOf(id),

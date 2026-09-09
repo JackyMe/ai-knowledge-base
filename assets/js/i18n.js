@@ -4,6 +4,11 @@
  * and the [ 中 | EN | JA | KO ] segmented language switcher.
  */
 (function() {
+  // Explicit document URLs take precedence; storage is an optional preference.
+  const storage = {
+    get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+    set(key, value) { try { localStorage.setItem(key, value); } catch {} }
+  };
   function getCurrentPageLang() {
     const path = window.location.pathname;
     if (path.endsWith('.ko.html')) return 'ko';
@@ -34,7 +39,7 @@
   }
 
   function getPreferredLang() {
-    let savedLang = localStorage.getItem('site_lang');
+    let savedLang = storage.get('site_lang');
     if (savedLang === 'en' || savedLang === 'zh' || savedLang === 'ja' || savedLang === 'ko') return savedLang;
     
     // Auto-detect based on browser language
@@ -46,6 +51,7 @@
   }
 
   function applyLanguageRedirect() {
+    if (window.location.pathname.endsWith('.html')) return;
     const currentLang = getCurrentPageLang();
     const targetLang = getPreferredLang();
     
@@ -68,6 +74,7 @@
       const lang = btn.dataset.lang;
       const isActive = lang === currentLang;
       btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
       // Remove hardcoded inline styles so CSS theme handles active state
       btn.style.background = '';
       btn.style.color = '';
@@ -76,7 +83,7 @@
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         if (lang === currentLang) return;
-        localStorage.setItem('site_lang', lang);
+        storage.set('site_lang', lang);
         const targetPath = getPathForLang(lang);
         window.location.href = targetPath + window.location.search + window.location.hash;
       });
@@ -92,7 +99,7 @@
       }
       toggleCb.addEventListener('change', () => {
         const newLang = toggleCb.checked ? 'en' : 'zh';
-        localStorage.setItem('site_lang', newLang);
+        storage.set('site_lang', newLang);
         window.location.href = getPathForLang(newLang) + window.location.search + window.location.hash;
       });
     }

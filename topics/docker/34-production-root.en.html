@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>34. Production Redline: Never Run as Root - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ Stage 2: Environment Setup</div>
   <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Passcode</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Passcode</span></a>
   <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Snail-Speed No More</span></a>
   <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
 </div>
@@ -357,14 +356,14 @@ pre:hover .copy-btn { opacity: 1; }
 </div>
 <div class="nav-group">
   <div class="nav-group-title">💾 Stage 5: Data Persistence</div>
-  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Lost Data</span></a>
+  <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Lost Data</span></a>
   <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifesaver: Docker Volumes</span></a>
   <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
   <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Volume Backup</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🌐 Stage 6: Networking & Orchestration</div>
-  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge & Host</span></a>
+  <div class="nav-group-title">🌐 Stage 6: Networking &amp; Orchestration</div>
+  <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge &amp; Host</span></a>
   <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to Hardcoded IPs</span></a>
   <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
   <a class="nav-item" href="29-yaml-syntax.en.html"><span class="n">29.</span><span>YAML Syntax Crash Course</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
   <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Ultimate Battle (Part 2): Microservice Networks</span></a>
 </div>
 <div class="nav-group">
-  <div class="nav-group-title">🛡️ Stage 7: Security & Production</div>
+  <div class="nav-group-title">🛡️ Stage 7: Security &amp; Production</div>
   <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>The Moat: Protecting Passwords with .env</span></a>
   <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Space Cleanup: Docker System Prune</span></a>
   <a class="nav-item on" href="34-production-root.en.html"><span class="n">34.</span><span>Production Redline: Never Run as Root</span></a>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
 </aside>
 
 <main class="main-wrap">
-  <div class="chapter-badge">🐳 Stage: Security & Production · Lesson 34 / 35</div>
+  <div class="chapter-badge">🐳 Stage: Security &amp; Production · Lesson 34 / 35</div>
   <h1>34. Production Redline: Never Run as Root in Production</h1>
 
 <p>You have mastered writing Dockerfiles and orchestrating multi-container stacks with Compose. You might feel ready to deploy to production and conquer the world.</p>
@@ -399,10 +398,10 @@ pre:hover .copy-btn { opacity: 1; }
 <p>Inside our <code>Dockerfile</code>, we use the <code>USER</code> instruction to create a dedicated, non-privileged user and switch execution context. Here is a standard non-root pattern for Node.js:</p>
 
 <pre><code><span class="bash-comment"># Hardened Non-Root Dockerfile</span>
-FROM node:18-alpine
+FROM node:24-alpine
 
 <span class="bash-comment"># 1. Create a dedicated unprivileged group and user</span>
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -428,17 +427,17 @@ CMD [<span class="bash-str">"node"</span>, <span class="bash-str">"server.js"</s
   </div>
 </div>
 
-<h2>3. Common Growing Pains & Practical Solutions</h2>
+<h2>3. Common Growing Pains &amp; Practical Solutions</h2>
 
 <p>When switching to non-root users, you may encounter initial <code>Permission denied</code> errors. Security always requires explicit permission management.</p>
 
 <div class="step-panel">
-  <div class="step-header">🔒 Common Permission Pitfalls & Remedies</div>
+  <div class="step-header">🔒 Common Permission Pitfalls &amp; Remedies</div>
   <div class="step-body">
     <ol>
-      <li><strong>Low-Port Binding Failures:</strong> In Linux, only root can bind to privileged ports below 1024 (e.g. 80, 443).<br/><em>Solution:</em> Have your application listen on high ports like 8080 or 3000, and map host port 80 to container port 8080 via Docker/Compose.</li>
-      <li><strong>Log / File Write Errors:</strong> Switched to <code>appuser</code>, only to find the app cannot write to <code>/var/log/app</code>.<br/><em>Solution:</em> Pre-create the directory during the build while still root: <code>RUN mkdir -p /var/log/app && chown appuser:appgroup /var/log/app</code>.</li>
-      <li><strong>Global Tool Installation Failures:</strong> Commands like <code>npm install -g</code> require root permissions.<br/><em>Solution:</em> Perform all package installations <strong>before</strong> the <code>USER appuser</code> declaration in your Dockerfile.</li>
+      <li><strong>Low-Port Binding Failures:</strong> In Linux, only root can bind to privileged ports below 1024 (e.g. 80, 443).<br><em>Solution:</em> Have your application listen on high ports like 8080 or 3000, and map host port 80 to container port 8080 via Docker/Compose.</li>
+      <li><strong>Log / File Write Errors:</strong> Switched to <code>appuser</code>, only to find the app cannot write to <code>/var/log/app</code>.<br><em>Solution:</em> Pre-create the directory during the build while still root: <code>RUN mkdir -p /var/log/app &amp;&amp; chown appuser:appgroup /var/log/app</code>.</li>
+      <li><strong>Global Tool Installation Failures:</strong> Commands like <code>npm install -g</code> require root permissions.<br><em>Solution:</em> Perform all package installations <strong>before</strong> the <code>USER appuser</code> declaration in your Dockerfile.</li>
     </ol>
   </div>
 </div>
@@ -586,5 +585,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

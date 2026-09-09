@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>10. 掌控生杀大权 (状态机) - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -391,21 +390,21 @@ pre:hover .copy-btn { opacity: 1; }
 
 <div class="mermaid-box">
 <pre><code class="language-mermaid">stateDiagram-v2
-    [*] --> Created: docker create (诞生)
-    Created --> Running: docker start (运行)
-    [*] --> Running: docker run (诞生+运行)
+    [*] --&gt; Created: docker create (诞生)
+    Created --&gt; Running: docker start (运行)
+    [*] --&gt; Running: docker run (诞生+运行)
     
-    Running --> Paused: docker pause (冻结)
-    Paused --> Running: docker unpause (解冻)
+    Running --&gt; Paused: docker pause (冻结)
+    Paused --&gt; Running: docker unpause (解冻)
     
-    Running --> Stopped: docker stop (温和关机)
-    Running --> Stopped: docker kill (拔电源)
+    Running --&gt; Stopped: docker stop (温和关机)
+    Running --&gt; Stopped: docker kill (拔电源)
     
-    Stopped --> Running: docker start (重新开机)
-    Running --> Running: docker restart (重启)
+    Stopped --&gt; Running: docker start (重新开机)
+    Running --&gt; Running: docker restart (重启)
     
-    Stopped --> [*]: docker rm (火化销毁)
-    Running --> [*]: docker rm -f (强制火化)
+    Stopped --&gt; [*]: docker rm (火化销毁)
+    Running --&gt; [*]: docker rm -f (强制火化)
 </code></pre>
 </div>
 
@@ -586,5 +585,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

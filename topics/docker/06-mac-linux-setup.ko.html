@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>06. Mac & Linux 환경 구축 가이드 - Docker 35단계 완벽 마스터</title>
+<title>06. Mac &amp; Linux 환경 구축 가이드 - Docker 35단계 완벽 마스터</title>
 <style>
 :root {
   --accent: #0284c7;
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 함정 탈출 가이드</span></a>
-    <a class="nav-item on" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 환경 구축 가이드</span></a>
+    <a class="nav-item on" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 환경 구축 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정: 느린 다운로드 속도 탈출</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -363,7 +362,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이전: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐색: Bridge와 Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 지정 탈출</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요할까?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>최종 실전 (하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>보안 방벽: .env로 비밀번호 보호하기</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 공간 대청소</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 철칙: Root 계정 사용 금지</span></a>
@@ -382,7 +381,7 @@ pre:hover .copy-btn { opacity: 1; }
 
 <main class="main-wrap">
   <div class="chapter-badge">🛠️ 2단계: 환경 구축 · 제 06 / 35 강</div>
-  <h1>06. Mac & Linux 환경 구축 가이드</h1>
+  <h1>06. Mac &amp; Linux 환경 구축 가이드</h1>
 
   <p>이전 레슨에서는 Windows 사용자를 위한 설치 가이드를 살펴보았습니다. 이번에는 실무 개발자들이 가장 많이 사용하는 양대 운영체제인 macOS와 Linux에서 Docker를 우아하게 구축하는 방법을 알아봅니다. 두 운영체제는 Docker와 태생적으로 친숙하지만(특히 Linux는 Docker의 홈그라운드입니다), 여전히 주의해야 할 함정들이 존재합니다.</p>
 
@@ -397,7 +396,7 @@ pre:hover .copy-btn { opacity: 1; }
         <li>M1/M2/M3/M4 등 Apple 실리콘 탑재 Mac: <strong>Mac with Apple silicon</strong> 선택.</li>
         <li>구형 Intel CPU 탑재 Mac: <strong>Mac with Intel chip</strong> 선택.</li>
       </ul>
-      <p><em>주의: 칩셋을 잘못 선택하면 Rosetta 에뮬레이션으로 인해 CPU 점유율이 비정상적으로 치솟거나 구동되지 않습니다. Mac 화면 좌측 상단 애플 마크 -> '이 Mac에 관하여'에서 칩 종류를 확인하세요.</em></p>
+      <p><em>주의: 칩셋을 잘못 선택하면 Rosetta 에뮬레이션으로 인해 CPU 점유율이 비정상적으로 치솟거나 구동되지 않습니다. Mac 화면 좌측 상단 애플 마크 -&gt; '이 Mac에 관하여'에서 칩 종류를 확인하세요.</em></p>
       <p>2. 다운로드된 <code>.dmg</code> 파일을 열고, Docker 아이콘을 Applications(응용 프로그램) 폴더로 드래그 앤 드롭합니다.</p>
       <p>3. 런치패드에서 Docker를 실행하고 사용권 계약에 동의합니다. 상단 메뉴바에 고래 아이콘이 나타나고 애니메이션이 멈추며 초록색 "Docker Desktop is running" 상태가 되면 완료됩니다.</p>
     </div>
@@ -416,7 +415,7 @@ pre:hover .copy-btn { opacity: 1; }
     <span class="ic">💡</span>
     <div>
       <span class="tt">실무 팁: Mac 성능 최적화 핵심 설정</span>
-      상단 메뉴바의 고래 아이콘 -> Settings(설정) -> Resources(리소스) 메뉴에서 다음을 조정하세요.<br>
+      상단 메뉴바의 고래 아이콘 -&gt; Settings(설정) -&gt; Resources(리소스) 메뉴에서 다음을 조정하세요.<br>
       1. <strong>Memory (메모리)</strong>: 기본 2GB에서 4GB~8GB 정도로 넉넉히 할당하여 대규모 빌드 시 멈춤 현상을 방지합니다.<br>
       2. <strong>Virtual disk limit (가상 디스크 크기)</strong>: Mac 본체 저장공간 여유에 맞춰 60GB~120GB 수준으로 설정합니다.<br>
       3. <strong>VirtioFS 활성화</strong>: General 설정에서 파일 공유 메커니즘을 <code>VirtioFS</code>로 선택하면 호스트-컨테이너 간 파일 입출력(I/O) 성능이 획기적으로 향상됩니다.
@@ -594,5 +593,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

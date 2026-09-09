@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Complete Practical Guide to GPT Image Generation: The full evolution from DALL-E to GPT-4o native images and Image 2.5, Six-Element Prompt Framework, 15+ scenario prompt templates, visual vocabulary, image editing workflows, typography rendering strategies, competitor comparisons, and enterprise compliance practices.">
@@ -180,6 +178,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -203,9 +202,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <nav class="sidebar" id="sidebar">
   <div class="side-filter"><input id="sideFilter" placeholder="Filter sections..."><span class="fk">/</span></div>
   <div class="nav-group">
-    <div class="gt">Cognition & Evolution</div>
-    <a href="#evolution"><span class="no">00</span>Tech Evolution Panorama</a>
-    <a href="#subscription"><span class="no">01</span>Subscription Tiers & Quotas</a>
+    <div class="gt">Cognition &amp; Evolution</div>
+    <a href="#evolution">Image models and interfaces</a>
+    <a href="#subscription">Check usage and cost</a>
   </div>
   <div class="nav-group">
     <div class="gt">Prompt Engineering</div>
@@ -213,24 +212,24 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     <a href="#prompt-advanced"><span class="no">03</span>Advanced Prompting Techniques</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Style & Control</div>
-    <a href="#style-control"><span class="no">04</span>Style Control & Lexicon</a>
-    <a href="#text-rendering"><span class="no">05</span>Typography & Text Rendering</a>
+    <div class="gt">Style &amp; Control</div>
+    <a href="#style-control"><span class="no">04</span>Style Control &amp; Lexicon</a>
+    <a href="#text-rendering"><span class="no">05</span>Typography &amp; Text Rendering</a>
   </div>
   <div class="nav-group">
     <div class="gt">Image Editing</div>
-    <a href="#image-editing"><span class="no">06</span>Image Editing & Iteration</a>
-    <a href="#consistency"><span class="no">07</span>Character & Style Consistency</a>
+    <a href="#image-editing"><span class="no">06</span>Image Editing &amp; Iteration</a>
+    <a href="#consistency">Character and style consistency</a>
   </div>
   <div class="nav-group">
     <div class="gt">Production Scenarios</div>
     <a href="#scenarios"><span class="no">08</span>15+ Scenario Templates</a>
-    <a href="#expert-tricks"><span class="no">09</span>Expert-Level Hidden Tricks</a>
+    <a href="#expert-tricks">Practical control techniques</a>
   </div>
   <div class="nav-group">
-    <div class="gt">Comparison & Compliance</div>
-    <a href="#comparison"><span class="no">10</span>Competitor Matrix & Selection</a>
-    <a href="#safety-copyright"><span class="no">11</span>Safety Policy & Copyright</a>
+    <div class="gt">Comparison &amp; Compliance</div>
+    <a href="#comparison">Compare tools on the same task</a>
+    <a href="#safety-copyright">Check before delivery</a>
     <a href="#resources"><span class="no">12</span>Resource Index</a>
   </div>
 </nav>
@@ -239,9 +238,9 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">🎨 GPT Image Generation · Curated from 100+ High-Impact Articles · Verified 2026-09-09</div>
+  <div class="badge">Image generation and editing: methods, examples, and official references.</div>
   <h1>GPT Image Generation<br><span class="grad">From Novice to Master · Complete Handbook</span></h1>
-  <p class="lead">The definitive image generation handbook for ChatGPT Plus / Pro / Team / Enterprise subscribers. Synthesized from <strong>100+ authoritative technical articles</strong>, covering the full evolution from DALL-E to native GPT-4o and Image 2.5, the <strong>Six-Element Prompt Framework</strong>, <strong>15+ production-ready scenario templates</strong>, visual vocabulary, iterative editing workflows, typography & text rendering strategies, competitor comparisons, and enterprise-grade compliance practices.</p>
+  <p class="lead">Image generation and editing: methods, examples, and official references.</p>
   <div class="meta">
     <span>Tech Evolution</span><span>Six-Element Framework</span><span>15+ Scenarios</span><span>Visual Lexicon</span><span>Typography Guide</span><span>Competitor Matrix</span><span>Enterprise Compliance</span>
   </div>
@@ -251,82 +250,18 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="stat"><b>4 Generations</b><span>DALL-E 2 → DALL-E 3 → Native GPT-4o → Image 2.5</span></div>
   <div class="stat"><b>Six-Element Framework</b><span>Subject · Action · Environment · Style · Technical · Vibe</span></div>
   <div class="stat"><b>15+ Scenarios</b><span>E-Commerce · Social · Logos · UI · Ghibli · Pixel Art · Infographics</span></div>
-  <div class="stat"><b>100+ Sources</b><span>Official Docs · Community Gems · Expert Blogs · Real-World Cases</span></div>
+  <div class="stat">Image generation and editing: methods, examples, and official references.</div>
 </div>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 0: Tech Evolution ================= -->
-<section id="evolution">
-<div class="sec-tag">COGNITION 00</div>
-<h2>Tech Evolution Panorama: From DALL-E to Image 2.5</h2>
-
-<p>Understanding the evolutionary trajectory of OpenAI's image generation models is essential for mastering them in practice. Here are the key milestones:</p>
-
-<table class="tbl">
-  <tr><th>Timeline</th><th>Milestone</th><th>Core Paradigm Shift</th></tr>
-  <tr><td>2022</td><td>DALL-E 2</td><td>Diffusion model architecture; first practical text-to-image implementation, but text rendering was gibberish and spatial reasoning was unreliable.</td></tr>
-  <tr><td>2023.10</td><td>DALL-E 3</td><td>ChatGPT automatically expands user prompts before passing to DALL-E; prompt adherence improved dramatically, with initial support for simple English text.</td></tr>
-  <tr><td>2025.03</td><td>GPT-4o Native Images</td><td><strong>A paradigm shift</strong>: Replaced external diffusion pipelines with an autoregressive native multimodal architecture. Text rendering accuracy soared, supporting complex Chinese, English, and multilingual text.</td></tr>
-  <tr><td>2025.04</td><td>gpt-image-1 API</td><td>Packaged native multimodal imaging capabilities into standalone APIs for developers.</td></tr>
-  <tr><td>2025.12</td><td>gpt-image-1.5</td><td>Significantly reduced generation latency and improved consistency during multi-turn inpainting.</td></tr>
-  <tr><td>2026.04</td><td>GPT Image 2.0</td><td>Introduced a "Visual Reasoning Layer": deliberates over composition, physics, and lighting before rendering pixels, mastering text typography and strict prompt adherence.</td></tr>
-  <tr><td>2026.09</td><td><span class="pill a">GPT Image 2.5</span></td><td>Introduced sketch-guided generation (@Sketch), commercial template workflows, comment-based localized editing, and cut latency by 50%.</td></tr>
-</table>
-
-<h3>Architectural Paradigm Shift: From "Translator" to "Creator"</h3>
-
-<div class="duo">
-  <div class="bad">
-    <b>❌ Legacy Architecture (DALL-E 3 Era)</b>
-    User prompt → ChatGPT expands/translates → Passes to external DALL-E model → Returns image.<br>
-    <em>Drawbacks: High semantic drift, context disconnection, and poor fine-grained control.</em>
-  </div>
-  <div class="good">
-    <b>✅ Native Architecture (GPT-4o Era)</b>
-    The model intrinsically reasons across text and pixels simultaneously → End-to-end native generation.<br>
-    <em>Advantages: Zero semantic loss, unified multi-turn conversational context, flawless text rendering.</em>
-  </div>
-</div>
-
-<h3>Version Feature Comparison Matrix</h3>
-
-<table class="tbl">
-  <tr><th>Feature</th><th>DALL-E 3</th><th>GPT-4o Native / Image 1.x</th><th>Image 2.0 / 2.5</th></tr>
-  <tr><td><strong>Text Rendering</strong></td><td>Frequent typos and broken layouts</td><td>Exceptionally high accuracy; handles complex CJK & Latin text</td><td>Commercial typographic grade; complex fonts, multi-line, 3D text</td></tr>
-  <tr><td><strong>Editing Capabilities</strong></td><td>Near zero; required full regeneration</td><td>Conversational localized editing (Inpainting)</td><td>Multi-turn lossless edits, sketch guidance, comment-driven annotations</td></tr>
-  <tr><td><strong>Style Control</strong></td><td>Skewed toward artistic/cartoonish; stylized</td><td>Enhanced photorealism; accurate real-world physics</td><td>Professional camera optics, template constraints, indistinguishable realism</td></tr>
-  <tr><td><strong>Resolution</strong></td><td>Fixed (e.g. 1024×1024)</td><td>Flexible multi-aspect ratios</td><td>Ultra-high resolution with crisp micro-textures</td></tr>
-  <tr><td><strong>Prompt Adherence</strong></td><td>Moderate; complex prompts prone to drift</td><td>Excellent; vastly superior spatial and relational reasoning</td><td>Industry-leading; reasons through geometry before rendering</td></tr>
-</table>
-
-<div class="callout note">
-  <b class="t">💡 Community Terminology: Image 2.0 / 2.5 / 3.0</b>
-  These are not OpenAI official SKUs, but milestones coined by the AI creator community. <strong>Image 2.0</strong> marked the transition from "novelty art toy" to "serious productivity tool" (text rendering breakthrough); <strong>Image 2.5</strong> represents current state-of-the-art with sketch guidance, templates, and comment-based edits; <strong>Image 3.0</strong> forecasts the next frontier—where models act as "visual thinking partners" that reason out layouts and light transport prior to pixel synthesis.
-</div>
-</section>
+<section id="evolution"><h2>Image models and interfaces</h2><p>Separate ChatGPT image features from developer APIs. The current catalog lists GPT-Image-2.5 Sunburst and Flare. Check each model’s ID, edit inputs, dimensions, quality, and transparency support.</p><p class="src"><a href="https://developers.openai.com/api/docs/models" target="_blank" rel="noopener">developers.openai.com · models</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 1: Subscription & Quotas ================= -->
-<section id="subscription">
-<div class="sec-tag">COGNITION 01</div>
-<h2>Subscription Tiers & Quota Reference</h2>
-
-<table class="tbl">
-  <tr><th>Subscription Tier</th><th>Image Generation Access</th><th>Core Characteristics</th></tr>
-  <tr><td><strong>Free</strong></td><td>Severely restricted; single-digit daily quota</td><td>Limited to preview tests; no high-res or multi-turn editing.</td></tr>
-  <tr><td><strong>Plus (Individual)</strong></td><td>Dynamic high quota (dozens to 100+ per day)</td><td>Sufficient for standard creators; subject to cooldown during peak hours.</td></tr>
-  <tr><td><strong>Pro (Power User)</strong></td><td>Highest priority and quota ceilings on consumer tiers</td><td>Built for heavy creators and designers; immune to performance throttling.</td></tr>
-  <tr><td><strong>Team</strong></td><td>Higher allocation than Plus with pooled team quotas</td><td>Ideal for boutique studios and collaborative workflows.</td></tr>
-  <tr><td><strong>Enterprise</strong></td><td>Credit-based billing based on contracted compute</td><td>Dedicated server clusters, enterprise SLA, zero data training, full privacy.</td></tr>
-</table>
-
-<div class="callout warn">
-  <b class="t">⚠️ Dynamic Quota Policies</b>
-  Image generation consumes significantly more compute than plain text. OpenAI enforces a <strong>dynamic quota system</strong> based on real-time server load and rolling 3–5 hour windows. There is no guaranteed "unlimited daily" tier. <strong>Avoid North American peak business hours</strong> (morning to late afternoon EST) for faster turnaround and fewer cooldowns.
-</div>
-</section>
+<section id="subscription"><h2>Check usage and cost</h2><p>Check ChatGPT entitlements and API billing separately. Read your account’s current limits and estimate API costs for the chosen model and settings. Old fixed daily counts are not guarantees.</p><p class="src"><a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">developers.openai.com · pricing</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -377,7 +312,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <em>→ Result: Establishes context, but visual style remains random.</em>
 </div>
 <div class="prompt-box">
-  <span class="label">Lv3 Add Style & Lighting</span>
+  <span class="label">Lv3 Add Style &amp; Lighting</span>
   A photorealistic image of a fluffy white cat sitting on a wooden windowsill looking at the sunset, warm sunlight casting long shadows.<br>
   <em>→ Result: Evokes emotion, depth, and aesthetic polish.</em>
 </div>
@@ -391,7 +326,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <b class="t">💡 Core Prompting Principles</b>
   <ul>
     <li><strong>Use Natural Narrative Prose</strong>: Unlike Midjourney's comma-separated tag soup, ChatGPT excels when given structured, coherent prose.</li>
-    <li><strong>Restraint & Focus</strong>: Maintain 5–7 core descriptive anchors to prevent prompt bloat and "feature leakage".</li>
+    <li><strong>Restraint &amp; Focus</strong>: Maintain 5–7 core descriptive anchors to prevent prompt bloat and "feature leakage".</li>
     <li><strong>Positive Affirmation Over Negation</strong>: Never say "no glasses"; specify "clear, unobscured eyes with natural facial expression".</li>
     <li><strong>English for Technical Descriptors</strong>: Even if framing subjects in another language, use English for technical terms like <code>85mm lens</code>, <code>f/1.8</code>, <code>Unreal Engine 5</code>.</li>
   </ul>
@@ -409,13 +344,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <p>By incorporating real-world cinematic and optical parameters, you can generate studio-caliber photorealistic imagery:</p>
 
 <table class="tbl">
-  <tr><th>Parameter Dimension</th><th>Keywords</th><th>Visual Effect</th></tr>
+  <tbody><tr><th>Parameter Dimension</th><th>Keywords</th><th>Visual Effect</th></tr>
   <tr><td><strong>Lens Type</strong></td><td><code>35mm</code> / <code>85mm</code> / <code>macro</code> / <code>fisheye</code></td><td>Street documentary / Portrait / Extreme close-up / Ultra-wide distortion</td></tr>
   <tr><td><strong>Aperture</strong></td><td><code>f/1.2</code> / <code>f/1.8</code> / <code>f/8</code></td><td>Creamy bokeh / Shallow depth of field / Deep focus edge-to-edge</td></tr>
-  <tr><td><strong>Shutter Speed</strong></td><td><code>1/1000s</code> / <code>2s exposure</code></td><td>Freeze high-speed motion / Dynamic motion blur & light trails</td></tr>
+  <tr><td><strong>Shutter Speed</strong></td><td><code>1/1000s</code> / <code>2s exposure</code></td><td>Freeze high-speed motion / Dynamic motion blur &amp; light trails</td></tr>
   <tr><td><strong>Lighting Setup</strong></td><td><code>Golden hour</code> / <code>Rembrandt</code> / <code>Cinematic</code></td><td>Warm low-angle glow / Classic triangular cheek shadow / High-contrast dramatic tone</td></tr>
   <tr><td><strong>Film Stock</strong></td><td><code>Kodak Portra 400</code> / <code>Fuji Superia</code></td><td>Warm natural skin tones / Cool vintage cinematic tones</td></tr>
-</table>
+</tbody></table>
 
 <div class="prompt-box">
   <span class="label">📸 Master Photorealistic Formula</span>
@@ -466,13 +401,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <!-- ================= SECTION 4: Style Control ================= -->
 <section id="style-control">
 <div class="sec-tag">CORE 04</div>
-<h2>Style Control & Visual Lexicon</h2>
+<h2>Style Control &amp; Visual Lexicon</h2>
 
 <h3>Five Core Production Style Templates</h3>
 
 <div class="plays">
   <div class="play">
-    <div class="ph"><span class="pic">📷</span><b>Photography & Photorealism</b><span class="pt">PHOTOREALISTIC</span></div>
+    <div class="ph"><span class="pic">📷</span><b>Photography &amp; Photorealism</b><span class="pt">PHOTOREALISTIC</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Template</span>
@@ -508,7 +443,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
     </div>
   </div>
   <div class="play">
-    <div class="ph"><span class="pic">✨</span><b>Logo & Brand Identity</b><span class="pt">BRAND</span></div>
+    <div class="ph"><span class="pic">✨</span><b>Logo &amp; Brand Identity</b><span class="pt">BRAND</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Template</span>
@@ -521,13 +456,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <h3>Visual Lexicon Reference Table</h3>
 
 <table class="tbl">
-  <tr><th>Dimension</th><th>Key Vocabulary Bank</th></tr>
-  <tr><td><strong>Texture & Material</strong></td><td><code>visible pores</code> · <code>gritty</code> · <code>cross-hatching</code> · <code>matte</code> · <code>glossy</code> · <code>iridescent</code> · <code>translucent</code> · <code>corroded metal</code> · <code>smooth porcelain</code></td></tr>
-  <tr><td><strong>Lighting & Optics</strong></td><td><code>volumetric fog</code> · <code>cinematic moody lighting</code> · <code>bioluminescent</code> · <code>golden hour</code> · <code>neon reflections</code> · <code>rim light</code> · <code>split lighting</code></td></tr>
+  <tbody><tr><th>Dimension</th><th>Key Vocabulary Bank</th></tr>
+  <tr><td><strong>Texture &amp; Material</strong></td><td><code>visible pores</code> · <code>gritty</code> · <code>cross-hatching</code> · <code>matte</code> · <code>glossy</code> · <code>iridescent</code> · <code>translucent</code> · <code>corroded metal</code> · <code>smooth porcelain</code></td></tr>
+  <tr><td><strong>Lighting &amp; Optics</strong></td><td><code>volumetric fog</code> · <code>cinematic moody lighting</code> · <code>bioluminescent</code> · <code>golden hour</code> · <code>neon reflections</code> · <code>rim light</code> · <code>split lighting</code></td></tr>
   <tr><td><strong>Color Palette</strong></td><td><code>pastel colors</code> · <code>earth tones</code> · <code>monochromatic</code> · <code>duotone</code> · <code>high contrast vivid</code> · <code>60-30-10 color rule</code></td></tr>
-  <tr><td><strong>Composition & Framing</strong></td><td><code>rule of thirds</code> · <code>bird's-eye view</code> · <code>Dutch angle</code> · <code>low-angle</code> · <code>isometric</code> · <code>macro shot</code> · <code>medium shot</code></td></tr>
-  <tr><td><strong>Emotion & Vibe</strong></td><td><code>nostalgic</code> · <code>epic</code> · <code>serene</code> · <code>whimsical</code> · <code>tense</code> · <code>cozy</code></td></tr>
-</table>
+  <tr><td><strong>Composition &amp; Framing</strong></td><td><code>rule of thirds</code> · <code>bird's-eye view</code> · <code>Dutch angle</code> · <code>low-angle</code> · <code>isometric</code> · <code>macro shot</code> · <code>medium shot</code></td></tr>
+  <tr><td><strong>Emotion &amp; Vibe</strong></td><td><code>nostalgic</code> · <code>epic</code> · <code>serene</code> · <code>whimsical</code> · <code>tense</code> · <code>cozy</code></td></tr>
+</tbody></table>
 
 <h3>Studio Ghibli Aesthetic Without Triggering Filters</h3>
 <div class="callout tip">
@@ -542,7 +477,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <!-- ================= SECTION 5: Typography & Text ================= -->
 <section id="text-rendering">
 <div class="sec-tag">CORE 05</div>
-<h2>Typography & Text Rendering Strategy</h2>
+<h2>Typography &amp; Text Rendering Strategy</h2>
 
 <p>Text rendering was historically the greatest limitation of AI image generation. The native multimodal architecture of GPT-4o has fundamentally solved this challenge:</p>
 
@@ -555,7 +490,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <li><strong>In-Place Iterative Correction</strong>: If a typo occurs, never regenerate from scratch! Instruct: "Keep the entire image identical, only change the sign text to 'HELLO'".</li>
 </ul>
 
-<h3>Multilingual Text Rendering (CJK & More)</h3>
+<h3>Multilingual Text Rendering (CJK &amp; More)</h3>
 <div class="callout note">
   <b class="t">🌐 2025–2026 Multilingual Breakthrough</b>
   Modern GPT image models render CJK (Chinese, Japanese, Korean) and Arabic characters with unprecedented fidelity. Specify your exact characters in quotes: <code>A neon sign that reads "你好未来"</code> or <code>"未来への扉"</code>, and the model embeds it naturally into poster typography or calligraphy.
@@ -563,14 +498,14 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <h3>Font Style Vocabulary Table</h3>
 <table class="tbl">
-  <tr><th>Font Style</th><th>English Keywords</th></tr>
+  <tbody><tr><th>Font Style</th><th>English Keywords</th></tr>
   <tr><td>Serif</td><td><code>elegant thin-stroke serif font</code> · <code>classic newspaper typography</code></td></tr>
   <tr><td>Sans-Serif</td><td><code>modern minimalist sans-serif</code> · <code>bold geometric font</code> · <code>clean Swiss design</code></td></tr>
   <tr><td>Script / Calligraphy</td><td><code>messy handwritten script</code> · <code>vintage calligraphy</code> · <code>brush stroke lettering</code></td></tr>
   <tr><td>Display / Decorative</td><td><code>3D bubble letters</code> · <code>retro neon glow text</code> · <code>gothic blackletter</code></td></tr>
-</table>
+</tbody></table>
 
-<h3>Data Charts & Infographics: Recommended Workflows</h3>
+<h3>Data Charts &amp; Infographics: Recommended Workflows</h3>
 <div class="duo">
   <div class="bad">
     <b>❌ Anti-Pattern: Generating Exact Charts via Image AI</b>
@@ -591,7 +526,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <!-- ================= SECTION 6: Image Editing ================= -->
 <section id="image-editing">
 <div class="sec-tag">PRACTICE 06</div>
-<h2>Image Editing & Iteration Workflows</h2>
+<h2>Image Editing &amp; Iteration Workflows</h2>
 
 <h3>Three Primary Image Editing Workflows</h3>
 <ol class="steps">
@@ -620,7 +555,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <ul>
     <li>If an iteration fails 3 times consecutively, the chat context becomes polluted. <strong>Open a fresh chat</strong> using the best-refined prompt.</li>
     <li>When making incremental modifications, always emphasize <strong>"Keep [X, Y, Z] completely unchanged"</strong> to prevent compositional drift.</li>
-    <li>When satisfied with a result, immediately ask GPT for the full revised prompt and seed for future reproducibility.</li>
+    <li>Save prompts, references, and outputs for comparison; do not ask for invented seeds.</li>
   </ul>
 </div>
 
@@ -636,52 +571,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <!-- ================= SECTION 7: Consistency ================= -->
-<section id="consistency">
-<div class="sec-tag">PRACTICE 07</div>
-<h2>Character & Style Consistency</h2>
-
-<p>Character consistency and visual style persistence represent the greatest hurdles in multi-image projects. Here are community-validated advanced strategies:</p>
-
-<h3>Four Character Consistency Strategies</h3>
-
-<div class="plays">
-  <div class="play">
-    <div class="ph"><span class="pic">📋</span><b>Strategy 1: Character Sheet</b><span class="pt">CHARACTER SHEET</span></div>
-    <div class="pb">
-      <p>In your initial generation, instruct the model to produce a turnaround character sheet featuring <strong>front, side, and 3/4 views plus multiple facial expressions</strong>. Upload this sheet as reference for all subsequent generations.</p>
-    </div>
-  </div>
-  <div class="play">
-    <div class="ph"><span class="pic">🧬</span><b>Strategy 2: Textual DNA Anchor</b><span class="pt">DNA TEMPLATE</span></div>
-    <div class="pb">
-      <p>Assign an explicit name ("Aria") and encode immutable physical traits repeated verbatim across prompts:</p>
-      <div class="prompt-box">
-        <span class="label">DNA Anchor Example</span>
-        Aria, a 30-year-old woman with a scar on her left cheek, emerald green eyes, messy ginger hair tied with a blue ribbon, wearing a red leather jacket with silver zippers.
-      </div>
-    </div>
-  </div>
-  <div class="play">
-    <div class="ph"><span class="pic">🔢</span><b>Strategy 3: Seed Locking</b><span class="pt">SEED LOCK</span></div>
-    <div class="pb">
-      <p>When an image meets your standard, ask GPT: "Provide the seed value and gen_id for this image." Re-invoke with <code>Use seed [number]</code> alongside the identical character description.</p>
-    </div>
-  </div>
-  <div class="play">
-    <div class="ph"><span class="pic">🤖</span><b>Strategy 4: Custom GPT Encapsulation</b><span class="pt">CUSTOM GPT</span></div>
-    <div class="pb">
-      <p>Build a dedicated Custom GPT with character DNA and art guidelines locked into System Instructions, ensuring the model automatically injects these constraints behind every prompt.</p>
-    </div>
-  </div>
-</div>
-
-<h3>Style Consistency: JSON Style Blueprint Method</h3>
-<ol class="steps">
-  <li>Upload a benchmark style image and ask ChatGPT: "Analyze the visual style, color harmony, lighting, and texture of this image; output a structured JSON style blueprint."</li>
-  <li>Append this JSON snippet to every subsequent generation prompt as a strict stylistic constraint.</li>
-  <li>Avoid vague descriptors like "sci-fi"; specify concrete attributes: <code>cyberpunk, deep navy and magenta neon contrast, wet asphalt reflections, 35mm grain</code>.</li>
-</ol>
-</section>
+<section id="consistency"><h2>Character and style consistency</h2><p>Choose a reference and specify preserved face, clothing, colors, and composition. Compare each edit against it. Do not ask the model to invent seeds or gen_ids; saying “same seed” does not guarantee reproducibility.</p></section>
 
 <div class="divider"></div>
 
@@ -723,7 +613,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">🏷️</span><b>Logos & Brand Identity</b><span class="pt">BRANDING</span></div>
+    <div class="ph"><span class="pic">🏷️</span><b>Logos &amp; Brand Identity</b><span class="pt">BRANDING</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Minimalist Tech Logo</span>
@@ -734,7 +624,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">📊</span><b>Keynote & Presentation Backgrounds</b><span class="pt">PRESENTATION</span></div>
+    <div class="ph"><span class="pic">📊</span><b>Keynote &amp; Presentation Backgrounds</b><span class="pt">PRESENTATION</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Presentation Background</span>
@@ -748,7 +638,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="plays">
   <div class="play">
-    <div class="ph"><span class="pic">🏯</span><b>Anime Aesthetics: Ghibli & Shinkai Styles</b><span class="pt">ANIME</span></div>
+    <div class="ph"><span class="pic">🏯</span><b>Anime Aesthetics: Ghibli &amp; Shinkai Styles</b><span class="pt">ANIME</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Studio Ghibli Style (Safety-Optimized)</span>
@@ -762,7 +652,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">🕹️</span><b>Pixel Art & Retro Gaming</b><span class="pt">PIXEL ART</span></div>
+    <div class="ph"><span class="pic">🕹️</span><b>Pixel Art &amp; Retro Gaming</b><span class="pt">PIXEL ART</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Classic 16-Bit Pixel Art</span>
@@ -772,7 +662,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">⚙️</span><b>Cyberpunk & Sci-Fi</b><span class="pt">CYBERPUNK</span></div>
+    <div class="ph"><span class="pic">⚙️</span><b>Cyberpunk &amp; Sci-Fi</b><span class="pt">CYBERPUNK</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Cyberpunk Cityscape</span>
@@ -782,7 +672,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">🖼️</span><b>Fine Art: Watercolor & Oil Painting</b><span class="pt">FINE ART</span></div>
+    <div class="ph"><span class="pic">🖼️</span><b>Fine Art: Watercolor &amp; Oil Painting</b><span class="pt">FINE ART</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Watercolor Painting</span>
@@ -800,7 +690,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="plays">
   <div class="play">
-    <div class="ph"><span class="pic">📐</span><b>UI/UX Mockups & Prototyping</b><span class="pt">UI DESIGN</span></div>
+    <div class="ph"><span class="pic">📐</span><b>UI/UX Mockups &amp; Prototyping</b><span class="pt">UI DESIGN</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Mobile App Dashboard</span>
@@ -810,7 +700,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">😃</span><b>Stickers & Emojis</b><span class="pt">STICKER</span></div>
+    <div class="ph"><span class="pic">😃</span><b>Stickers &amp; Emojis</b><span class="pt">STICKER</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Die-Cut Sticker Preset</span>
@@ -830,7 +720,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
 
   <div class="play">
-    <div class="ph"><span class="pic">🏠</span><b>Architectural & Interior Visualization</b><span class="pt">ARCHITECTURE</span></div>
+    <div class="ph"><span class="pic">🏠</span><b>Architectural &amp; Interior Visualization</b><span class="pt">ARCHITECTURE</span></div>
     <div class="pb">
       <div class="prompt-box">
         <span class="label">Scandinavian Interior Design</span>
@@ -844,165 +734,27 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <!-- ================= SECTION 9: Expert Tricks ================= -->
-<section id="expert-tricks">
-<div class="sec-tag">ADVANCED 09</div>
-<h2>Expert-Level Hidden Tricks</h2>
-
-<h3>Custom Instructions Prompt Upscaling</h3>
-<p>Pre-configure an image generation framework in ChatGPT's personalization settings:</p>
-<div class="prompt-box">
-  <span class="label">Custom Instructions Sample</span>
-  Whenever I request an image, act as a master Art Director. Automatically expand my brief request into a comprehensive prompt covering: Subject Description + Dynamic Action + Environmental Backdrop + Lighting Interaction + Optical Framing + Artistic Medium. After rendering, always report the seed value and full English prompt.
-</div>
-<p>Once configured, even entering a simple prompt like "draw a cat" results in an editorial-grade image with professional lighting and composition.</p>
-
-<h3>Eight Community-Proven Hidden Tricks</h3>
-
-<table class="tbl">
-  <tr><th>#</th><th>Technique Name</th><th>Actionable Procedure</th></tr>
-  <tr><td>1</td><td><strong>Anti-Hallucination Lock</strong></td><td>Prefix prompt with: <code>Generate this exact prompt without changing a single word: [Your Prompt]</code>, forcing ChatGPT to bypass automatic prompt rewriting.</td></tr>
-  <tr><td>2</td><td><strong>Copyright Bypass</strong></td><td>"Describe a character who looks like [Character], but do not mention their name" — describe distinct visual markers rather than trademarked names.</td></tr>
-  <tr><td>3</td><td><strong>Side-by-Side Grid Variations</strong></td><td>"Generate 4 distinct color variants of this design arranged in a 2x2 grid." Choose the best quadrant, then crop and upscale.</td></tr>
-  <tr><td>4</td><td><strong>Sketch-Guided Composition</strong></td><td>Doodle a rough stick-figure layout in Paint → upload screenshot to GPT → "Using this layout as the structural composition guide, generate..."</td></tr>
-  <tr><td>5</td><td><strong>Seasonal Series</strong></td><td>Generate baseline image and record seed → "Using the exact same seed and composition, shift the season to [heavy winter snowfall]" to produce four-season visual assets.</td></tr>
-  <tr><td>6</td><td><strong>Comic Strip / Storyboard</strong></td><td><code>A comic strip page divided into 4 horizontal panels. Panel 1: [desc], Panel 2: [desc]...</code></td></tr>
-  <tr><td>7</td><td><strong>Asset Sheet Separation</strong></td><td>Request <code>asset sheet, multiple views, turnaround sheet, chroma green background</code> for streamlined post-processing in game pipelines.</td></tr>
-  <tr><td>8</td><td><strong>Print-Grade High-Res Prep</strong></td><td>Append <code>extremely highly detailed, ultra-crisp, sharp focus, intricate details</code> to establish dense textural information before applying external AI upscalers.</td></tr>
-</table>
-
-<h3>ChatGPT Images 2.5 Feature Quick Reference</h3>
-<div class="hotcmds">
-  <div class="hotcmd must">
-    <span class="hc-cmd">Sketch-to-Image @Sketch</span>
-    <span class="hc-desc">Type @Sketch to summon the canvas; doodle rough spatial and color cues for strict composition control</span>
-  </div>
-  <div class="hotcmd must">
-    <span class="hc-cmd">Templates System</span>
-    <span class="hc-desc">Built-in professional layout templates for commercial posters, flyers, and white-background product shots</span>
-  </div>
-  <div class="hotcmd must">
-    <span class="hc-cmd">Comment-Driven Inpainting</span>
-    <span class="hc-desc">Circle regions directly on the canvas and attach feedback notes; the model applies surgical localized modifications</span>
-  </div>
-  <div class="hotcmd">
-    <span class="hc-cmd">Multi-Image Reference Blending</span>
-    <span class="hc-desc">Upload up to 10 reference images to blend styles, palettes, and character motifs with anchor prompts</span>
-  </div>
-  <div class="hotcmd">
-    <span class="hc-cmd">Line Art to Render</span>
-    <span class="hc-desc">Upload hand-drawn linework or sketches and transform them into hyper-detailed 3D renders or illustrations</span>
-  </div>
-</div>
-</section>
+<section id="expert-tricks"><h2>Practical control techniques</h2><p>Save references, prompts, and iterations. Define preserved elements and edit regions; use sketches for composition. Do not rely on undocumented seeds, rights-bypass tricks, or pixel-perfect promises. Typeset critical text deterministically.</p><p class="src"><a href="https://developers.openai.com/api/docs/guides/image-generation" target="_blank" rel="noopener">developers.openai.com · image-generation</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 10: Competitor Comparison ================= -->
-<section id="comparison">
-<div class="sec-tag">COMPARISON 10</div>
-<h2>Competitor Matrix & Selection Guide</h2>
-
-<table class="tbl">
-  <tr><th>Dimension</th><th>ChatGPT (GPT-4o)</th><th>Midjourney v7</th><th>Stable Diffusion 3 / Flux</th><th>Adobe Firefly</th></tr>
-  <tr><td><strong>Core Positioning</strong></td><td>Conversational Creative Copilot</td><td>Pinnacle of Artistic Aesthetics</td><td>Total Control & Customization (Open Source)</td><td>Commercial Safety & Creative Cloud Integration</td></tr>
-  <tr><td><strong>Prompt Adherence</strong></td><td><span class="pill a">Very Strong</span></td><td>Moderate</td><td>Strong (Requires Tuning)</td><td>Moderate</td></tr>
-  <tr><td><strong>Text Rendering</strong></td><td><span class="pill a">Industry Best</span></td><td>Weak</td><td>Moderate (Flux Strong)</td><td>Moderate</td></tr>
-  <tr><td><strong>Aesthetic Quality</strong></td><td>Excellent</td><td><span class="pill a">Supreme</span></td><td>Highly Controllable with LoRA</td><td>Good</td></tr>
-  <tr><td><strong>Human Anatomy</strong></td><td>Good</td><td>Excellent</td><td><span class="pill a">Flux Best</span></td><td>Good</td></tr>
-  <tr><td><strong>Learning Curve</strong></td><td><span class="pill a">Lowest (Natural Language)</span></td><td>Moderate (Discord Commands)</td><td>Steep (Node Graphs / WebUI)</td><td>Low (Native Adobe UI)</td></tr>
-  <tr><td><strong>Character Consistency</strong></td><td>Moderate (Requires Framing)</td><td>Moderate</td><td><span class="pill a">Strong (ControlNet+LoRA)</span></td><td>Moderate</td></tr>
-  <tr><td><strong>Copyright Protection</strong></td><td>Copyright Shield Included</td><td>Commercial License</td><td>Depends on Checkpoint</td><td><span class="pill a">Best (Full IP Indemnification)</span></td></tr>
-  <tr><td><strong>Multi-Turn Editing</strong></td><td><span class="pill a">Industry Best (Conversational)</span></td><td>Weak</td><td>Moderate (Inpainting)</td><td>Strong (Photoshop Layer Integration)</td></tr>
-</table>
-
-<h3>When Should You Choose ChatGPT?</h3>
-<div class="callout tip">
-  <b class="t">✅ Unique Superpowers of ChatGPT Image Generation</b>
-  <ul>
-    <li><strong>Multimodal Conversational Iteration</strong>: Direct revisions like talking to an art director ("change background to night") without re-crafting prompts.</li>
-    <li><strong>End-to-End Workflow Integration</strong>: Draft copy → generate visuals → create social captions in a single continuous thread.</li>
-    <li><strong>Flawless Typography Rendering</strong>: The undisputed leader when accurate text must be embedded in posters, UI, or signs.</li>
-    <li><strong>Zero Learning Curve</strong>: No need to tune CFG scales, sampling steps, or latent denoisers.</li>
-  </ul>
-</div>
-
-<h3>Known Limitations of ChatGPT</h3>
-<div class="callout warn">
-  <b class="t">⚠️ Weaknesses to Keep in Mind</b>
-  <ul>
-    <li><strong>Character Consistency Hurdles</strong>: Difficult to preserve an exact facial identity across extended narratives without strict anchoring.</li>
-    <li><strong>Lack of Pixel-Level Precision</strong>: Cannot manually repaint a single 10×10 artifact or configure specific seed weights.</li>
-    <li><strong>Oversensitive Safety Guardrails</strong>: Strict moderation filters frequently misidentify benign creative requests.</li>
-    <li><strong>"Plastic AI Sheen"</strong>: Prone to overly smooth, oversaturated default aesthetics if lighting parameters are omitted.</li>
-  </ul>
-</div>
-</section>
+<section id="comparison"><h2>Compare tools on the same task</h2><p>Compare tools using identical references, text, and constraints. Measure text errors, edit drift, consistency, latency, and cost. Record versions and outputs instead of universal rankings. Review licenses separately.</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 11: Safety & Copyright ================= -->
-<section id="safety-copyright">
-<div class="sec-tag">COMPLIANCE 11</div>
-<h2>Safety Policy, Copyright & Enterprise FAQ</h2>
-
-<h3>Content Policy Matrix: What Can and Cannot Be Generated</h3>
-<table class="tbl">
-  <tr><th>Category</th><th>Status</th><th>Guidelines & Explanations</th></tr>
-  <tr><td>Violence & Gore</td><td><span class="pill d">Prohibited</span></td><td>Physical violence, self-harm, gratuitous gore and bloodshed</td></tr>
-  <tr><td>Adult / NSFW Content</td><td><span class="pill d">Prohibited</span></td><td>Nudity, sexual activity, explicit depictions</td></tr>
-  <tr><td>Hate & Harassment</td><td><span class="pill d">Prohibited</span></td><td>Attacks targeting race, religion, gender, or sexual orientation</td></tr>
-  <tr><td>Real Political Figures</td><td><span class="pill d">Prohibited</span></td><td>Deepfake prevention and political campaign neutrality</td></tr>
-  <tr><td>Real Public Figures</td><td><span class="pill d">Prohibited</span></td><td>Right of publicity protection and impersonation prevention</td></tr>
-  <tr><td>Specific Living Artists</td><td><span class="pill b">Restricted</span></td><td>Automatically remapped to generic stylistic descriptors</td></tr>
-  <tr><td>Copyrighted Characters</td><td><span class="pill b">Restricted</span></td><td>Disney, Marvel, etc. (Can be approximated via descriptive traits)</td></tr>
-  <tr><td>Commercial Product Concepts</td><td><span class="pill a">Permitted</span></td><td>Fully permissible for commercial branding, packaging, and mockups</td></tr>
-  <tr><td>Creative & Fine Art</td><td><span class="pill a">Permitted</span></td><td>Vast majority of original imaginative concepts are unrestricted</td></tr>
-</table>
-
-<h3>Copyright: Who Owns the Generated Images?</h3>
-<div class="callout note">
-  <b class="t">📋 Copyright Fundamentals</b>
-  <ul>
-    <li><strong>Usage Rights</strong>: You own full commercial rights to output images, allowing free monetization (reprints, merchandise, advertising).</li>
-    <li><strong>Copyright Limitations</strong>: Per US Copyright Office rulings, raw AI-generated works lack human authorship and <strong>cannot be copyrighted</strong>; you cannot prevent competitors from copying raw outputs.</li>
-    <li><strong>Enterprise Recommendation</strong>: Incorporate <strong>substantial human creative modification</strong> in design tools (Photoshop/Figma) to establish copyright eligibility.</li>
-    <li><strong>Copyright Shield</strong>: OpenAI defends Enterprise and API customers against third-party IP infringement claims.</li>
-  </ul>
-</div>
-
-<h3>C2PA Provenance Metadata</h3>
-<p>OpenAI embeds <strong>C2PA (Coalition for Content Provenance and Authenticity)</strong> metadata into all exported files, cryptographically proving AI provenance. This can be verified via Content Credentials tools. Note: Taking screenshots or compressing images on certain social platforms strips this metadata.</p>
-
-<h3>Common Rejection Causes & Proven Solutions</h3>
-<table class="tbl">
-  <tr><th>Rejection Cause</th><th>Actionable Solution</th></tr>
-  <tr><td>Contains Real Person Names</td><td>Use generic persona descriptions: "handsome action movie agent in a tailored suit" instead of "Tom Cruise"</td></tr>
-  <tr><td>Violent Keyword Triggers</td><td>Replace dual-meaning words: "photograph" instead of "shoot", "crimson" instead of "blood red"</td></tr>
-  <tr><td>Specific Artist Names</td><td>Describe visual traits: "epic fantasy digital art with dramatic chiaroscuro and atmospheric fog"</td></tr>
-  <tr><td>Copyrighted Character Names</td><td>Describe archetype: "an electric yellow cartoon mouse with lightning tail" instead of name</td></tr>
-  <tr><td>Generation Timeouts / Errors</td><td>Refresh session → start fresh window → trim prompt (stay under 4,000 characters)</td></tr>
-</table>
-
-<h3>Enterprise Production Checklist</h3>
-<ul>
-  <li>✅ Subscribe to <strong>ChatGPT Enterprise or Team</strong> (data excluded from model training)</li>
-  <li>✅ Establish an internal <strong>Prompt Asset Library</strong> logging validated seeds and templates</li>
-  <li>✅ Conduct <strong>pre-publish legal vetting</strong> to verify absence of trademark deformations</li>
-  <li>✅ Add <strong>human touch</strong> (post-processing) to secure copyright defensibility</li>
-  <li>⛔ Avoid trademarked IP in prompts (e.g., "Disney style")</li>
-  <li>⛔ Avoid relying on raw AI outputs for core trademark registration</li>
-</ul>
-</section>
+<section id="safety-copyright"><h2>Check before delivery</h2><p>Verify text, numbers, and charts. Check permissions for people, brands, and assets, and whether sensitive material can be uploaded or shared. Successful generation does not establish usage rights.</p></section>
 
 <div class="divider"></div>
 
 <!-- ================= SECTION 12: Resources ================= -->
 <section id="resources">
 <div class="sec-tag">INDEX 12</div>
-<h2>Resource Index & Further Reading</h2>
+<h2>Resource Index &amp; Further Reading</h2>
 
 <table class="tbl">
-  <tr><th>Resource Category</th><th>Link / Portal</th><th>Practical Value</th></tr>
+  <tbody><tr><th>Resource Category</th><th>Link / Portal</th><th>Practical Value</th></tr>
   <tr><td><strong>OpenAI Official Images Guide</strong></td><td><a href="https://platform.openai.com/docs/guides/images" target="_blank">platform.openai.com/docs/guides/images</a></td><td>Primary source: API parameters and official best practices</td></tr>
   <tr><td><strong>OpenAI Cookbook</strong></td><td><a href="https://github.com/openai/openai-cookbook" target="_blank">github.com/openai/openai-cookbook</a></td><td>Official code recipes and multimodal pipelines</td></tr>
   <tr><td><strong>OpenAI Usage Policies</strong></td><td><a href="https://openai.com/policies/usage-policies" target="_blank">openai.com/policies/usage-policies</a></td><td>Content compliance and commercial terms</td></tr>
@@ -1010,10 +762,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><td><strong>PromptHero</strong></td><td><a href="https://prompthero.com" target="_blank">prompthero.com</a></td><td>Curated prompt libraries and community inspiration</td></tr>
   <tr><td><strong>Reddit r/ChatGPT</strong></td><td><a href="https://reddit.com/r/ChatGPT" target="_blank">reddit.com/r/ChatGPT</a></td><td>Cutting-edge community tips and real-world experiments</td></tr>
   <tr><td><strong>Related Topic Guides</strong></td><td><a href="codex-guide.en.html">Codex Usage Guide</a> · <a href="prompt-context-engineering.en.html">Prompt Engineering</a> · <a href="ai-leverage-guide.en.html">AI Leverage Guide</a></td><td>Comprehensive engineering foundations</td></tr>
-</table>
+</tbody></table>
 
-<h3>100+ Research Source Categorization</h3>
-<p>This handbook synthesizes findings and workflows from 100+ authoritative sources across multiple disciplines:</p>
+<h3>Image generation and editing: methods, examples, and official references.</h3>
+<p>Image generation and editing: methods, examples, and official references.</p>
 <ul>
   <li><strong>Official Documentation (15+)</strong>: OpenAI API docs, Cookbooks, System Cards, Terms of Use, and official release notes.</li>
   <li><strong>Expert Technical Blogs (25+)</strong>: In-depth evaluations from Towards Data Science, Medium UX Collective, Smashing Magazine, Creative Bloq, and LessWrong.</li>
@@ -1028,7 +780,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="divider"></div>
 
 <div class="footer">
-  <p><strong>Disclaimer & Updates</strong>: This guide is synthesized from official OpenAI documentation, premier community practices, and 100+ authoritative articles. GPT image capabilities evolve rapidly; refer to the latest in-app features and <a href="https://platform.openai.com/docs/guides/images" target="_blank">official documentation</a> for real-time updates.</p>
+  <p><strong>Disclaimer &amp; Updates</strong>: This guide is synthesized from official OpenAI documentation, premier community practices, and 100+ authoritative articles. GPT image capabilities evolve rapidly; refer to the latest in-app features and <a href="https://platform.openai.com/docs/guides/images" target="_blank">official documentation</a> for real-time updates.</p>
 </div>
 
 </div>
@@ -1036,7 +788,10 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <button class="top-btn" id="topBtn" title="Back to Top">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

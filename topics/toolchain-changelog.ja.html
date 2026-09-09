@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Claude Code と Codex のバージョン変更点サマリー：実際の開発習慣に影響する更新のみを厳選収録。破壊的変更の単独索引、月別アーカイブ、公式一次情報源とセルフチェックコマンド付き。">
+<meta name="description" content="公式変更履歴を確認し、利用中の版と作業手順を検証します。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ツールバージョン追跡 · Claude Code × Codex 変更履歴ログ">
-<meta property="og:description" content="Claude Code と Codex のバージョン変更点サマリー：実際の開発習慣に影響する更新のみを厳選収録。破壊的変更の単独索引、月別アーカイブ、公式一次情報源とセルフチェックコマンド付き。">
+<meta property="og:title" content="AI ツールの更新と確認 · AI ナレッジベース">
+<meta property="og:description" content="公式変更履歴を確認し、利用中の版と作業手順を検証します。">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/toolchain-changelog.ja.html">
 <meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>ツールバージョン追跡 · Claude Code × Codex 変更履歴ログ</title>
+<title>AI ツールの更新と確認 · AI ナレッジベース</title>
 <style>
 :root{
   --accent:#b45309; --accent-2:#f59e0b; --accent-soft:#fef6e7;
@@ -153,12 +151,13 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
 <header class="topbar">
   <button class="menu-btn" id="menuBtn">☰</button>
-  <div class="logo"><span class="mark">📅</span>ツールバージョン追跡<span class="sub">変更ログ</span></div>
+  <div class="logo"><span class="mark">📅</span>ツールバージョン追跡<span class="sub">2026-09-09</span></div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
       <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
@@ -173,208 +172,25 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="progress" id="prog"></div>
 
-<nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="章を絞り込み…"><span class="fk">/</span></div>
-  <div class="nav-group">
-    <div class="gt">ガイド</div>
-    <a href="#how-to-read"><span class="no">00</span>このページの読み方</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">アップグレード必読</div>
-    <a href="#breaking"><span class="no">⚠</span>破壊的変更総索引</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">月別アーカイブ</div>
-    <a href="#m2026-09"><span class="no">09</span>2026年9月</a>
-    <a href="#m2026-08"><span class="no">08</span>2026年8月</a>
-    <a href="#m2026-07"><span class="no">07</span>2026年7月</a>
-    <a href="#m2026-06"><span class="no">06</span>2026年6月</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">メンテナンス</div>
-    <a href="#method"><span class="no">99</span>本ページの保守方針</a>
-  </div>
-</nav>
+<nav class="sidebar" id="sidebar"><div class="side-filter"><input id="sideFilter" placeholder="章を検索" aria-label="章を検索"></div><div class="nav-group"><a href="#how-to-read"><span class="no">01</span>変更履歴の読み方</a><a href="#breaking"><span class="no">02</span>確認済みの Codex オプション</a><a href="#m2026-09"><span class="no">03</span>公式更新情報</a><a href="#method"><span class="no">04</span>更新と復元の確認</a></div></nav>
 
 <main class="main">
-<div class="wrap">
-
-<div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 月別アーカイブ · 2026-09-09検証</div>
-  <h1>ツールバージョン追跡<br><span class="grad">何が変わり・どう習慣を変えるべきか</span></h1>
-  <p class="lead">AI コーディングツールの進化スピードは凄まじく、公式の膨大なログを追うのは非効率です。本ページでは Claude Code と Codex の更新から <strong>「日々の開発オペレーションに影響を与える項目」</strong> のみを厳選し、破壊的変更や即座に試すべき新機能をわかりやすく整理しています。</p>
-  <div class="meta">
-    <span>実用的な変更のみ厳選</span><span>破壊的変更を単独索引化</span><span>バージョン番号・日付明記</span><span>月別アーカイブ</span>
-  </div>
-</div>
-
-<div class="stats">
-  <div class="stat"><b>🔴 破壊的変更</b><span>従来の記法や習慣が無効化、アップグレード前必読</span></div>
-  <div class="stat"><b>🔄 挙動変更</b><span>同じ操作で結果やタイミングが変化、把握推奨</span></div>
-  <div class="stat"><b>🆕 新機能・新モデル</b><span>新コマンド、新設定、追加モデル</span></div>
-</div>
-
-<section id="how-to-read">
-<div class="sec-tag">ガイド 00</div>
-<h2>このページの読み方</h2>
-
-<p>本ページは公式 Changelog の単なる翻訳ではありません。内部的なリファクタリング等は除外した上で、<strong>「実際の操作にどう影響するか」「何を修正すべきか」</strong> に焦点を絞って整理しています。</p>
-
-<h3 data-reveal>3大タグの分類基準</h3>
-<table class="tbl">
-  <tr><th>タグ</th><th>意味</th><th>推奨アクション</th></tr>
-  <tr><td>🔴 <strong>破壊的変更 (Breaking)</strong></td><td>古いコマンド・構文・設定が無効化または挙動反転</td><td><strong>必読</strong>。アップデート後に動作不良が起きた場合はまずここを確認</td></tr>
-  <tr><td>🔄 <strong>挙動変更 (Behavior)</strong></td><td>パラメータは維持されるが結果や処理タイミングが変化</td><td>ツールの特性変化を把握しておく（設定変更は通常不要）</td></tr>
-  <tr><td>🆕 <strong>新機能 (New)</strong></td><td>新しいコマンド、設定項目、新世代モデル</td><td>必要なものをピックアップして導入</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="breaking">
-<div class="sec-tag">アップグレード必読</div>
-<h2>破壊的変更総索引</h2>
-<p>時系列の新しい順に掲載しています。アップデート後に動かなくなった際にご確認ください。</p>
-
-<h3 data-reveal>Claude Code</h3>
-<table class="tbl">
-  <tr><th>時期 / 版</th><th>変更内容</th><th>対応手順</th></tr>
-  <tr><td>2026-08-06<br><span class="src">v2.1.223</span></td><td><code>/review</code> は <code>/code-review</code> の <strong>エイリアス</strong> に統合</td><td>スクリプト内の <code>/review</code> を <code>/code-review &lt;PR#&gt;</code> に置き換え</td></tr>
-  <tr><td>2026-08-07<br><span class="src">Codex 0.147.0</span></td><td><strong><code>codex exec --full-auto</code> が廃止</strong></td><td>CIやスクリプト内の <code>--full-auto</code> を <code>--sandbox workspace-write</code> に変更</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.222</span></td><td><code>/ultraplan</code> コマンドが <strong>削除・廃止</strong></td><td>SOPやメモから削除し、<code>/plan</code> や <code>/workflows</code> を使用</td></tr>
-  <tr><td>2026-08-04<br><span class="src">v2.1.221</span></td><td><code>/fork</code> の仕様変更：<strong>フォーク時に新規 Git worktree を作成</strong></td><td>元のワークツリー上で作業継続したい場合は <code>/subtask</code> を使用</td></tr>
-  <tr><td>2026-07-19<br><span class="src">v2.1.215</span></td><td><code>/verify</code> と <code>/code-review</code> が自動起動しなくなる</td><td>必要に応じて明示的にコマンドを実行する運用に変更</td></tr>
-  <tr><td>2026-07-18<br><span class="src">v2.1.214</span></td><td>単一セグメント <code>dir/**</code> 権限ルールが <code>&lt;cwd&gt;/dir</code> のみに限定</td><td>任意の深さにマッチさせるには <code>**/dir/**</code> と明示</td></tr>
-  <tr><td>2026-07-17<br><span class="src">v2.1.212</span></td><td><code>/fork</code> のセマンティクスが反転</td><td>従来のサブエージェント起動は <code>/subtask</code> に改称</td></tr>
-</table>
-
-<h3 data-reveal>Codex</h3>
-<table class="tbl">
-  <tr><th>時期</th><th>変更内容</th><th>対応手順</th></tr>
-  <tr><td>2026-08-31</td><td><strong>GPT-5.4 および 5.4 mini が公式提供終了</strong></td><td>設定ファイル内の指定を <code>gpt-5.6-terra</code> または <code>gpt-5.6-luna</code> に移行</td></tr>
-  <tr><td>2026-07-23</td><td>マルチフォルダ構成時、設定の読み込みは <strong>メインフォルダのみ</strong> に限定</td><td><code>AGENTS.md</code> や <code>config.toml</code> はメインフォルダ直下に配置</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-09">
-<div class="sec-tag">月別アーカイブ 09</div>
-<h2>2026年9月更新ログ</h2>
-
-<h3 data-reveal>Claude Code：パフォーマンス最適化と環境診断</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>一般的な改善および多数のバグ修正を含む。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> 診断</strong>：長期間使用されておらずコンテキストを浪費している Skills を自動検出・整理する新コマンドを追加。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>極長ターミナル出力の解放</strong>：<code>bashOutputMaxChars</code> および <code>taskOutputMaxChars</code> を追加（最大 128K 文字まで対応）。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>外部システムプロンプト読み込み</strong>：<code>--append-subagent-system-prompt-file</code> を追加し、サブエージェントへの超長文プロンプト注入に対応。</td></tr>
-  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>セッション復帰時に Hook 出力および並列ツール呼び出しのコンテキストが消失する不具合を修正。TLS プロキシ下で Bedrock ウィザードがフリーズする問題を解消。</td></tr>
-</table>
-
-<h3 data-reveal>Codex：Astra モデルと操作性の強化</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Astra ネイティブ統合</strong>：内蔵セレクターで GPT-6 Astra をデフォルトモデルに直接設定可能に。非同期 Guidance のエラー防止を最適化。</td></tr>
-  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim モード強化とプラグインシステム</strong>：Undo（`u`）／ Redo（`Ctrl+R`）ですべての添付ファイルと下書きを保持。リモートマーケットプレイス管理用の <code>plugin</code> サブコマンドを追加。</td></tr>
-  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool がデフォルトで無効化。使用する場合は設定で明示的な有効化が必要。</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-08">
-<div class="sec-tag">月別アーカイブ 08</div>
-<h2>2026年8月</h2>
-
-<h3 data-reveal>Claude Code 更新ハイライト</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>08-17</td><td>-</td><td>🆕</td><td><strong><code>/design</code> Skill（プレビュー）</strong>：自然言語やスクリーンショットから編集可能なデザインアートボードを生成</td></tr>
-  <tr><td>08-14</td><td>v2.1.228</td><td>🔄</td><td><strong>Auto Mode デフォルト化</strong>：Pro / Team プランで新規セッションが Auto モード標準に</td></tr>
-  <tr><td>08-04</td><td>v2.1.222</td><td>🔴</td><td><strong><code>/ultraplan</code> 削除</strong>：Plan モードに一本化</td></tr>
-  <tr><td>08-04</td><td>v2.1.221</td><td>🔄</td><td><strong><code>/fork</code> が独立 worktree 生成型に変更</strong></td></tr>
-  <tr><td>08-06</td><td>v2.1.223</td><td>🔄</td><td><strong>1M コンテキストの自動圧縮（200K制限）の統一適用</strong></td></tr>
-</table>
-
-<h3 data-reveal>Codex 更新ハイライト</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>08-18</td><td>0.148.0</td><td>🆕</td><td><strong>Markdown エクスポート & ヘッドレスフォーク</strong>：<code>/export</code> コマンドの追加</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🆕</td><td><strong>Agent Plugins エコシステム</strong>：ポータブルなプラグイン管理と共有</td></tr>
-  <tr><td>08-07</td><td>0.147.0</td><td>🔴</td><td><strong><code>--full-auto</code> 削除</strong>、ワークスペースサンドボックスへの移行</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-07">
-<div class="sec-tag">月別アーカイブ 07</div>
-<h2>2026年7月</h2>
-
-<h3 data-reveal>Claude Code</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>07-24</td><td>v2.1.219</td><td>🆕</td><td><strong>Opus 5 が標準 Opus モデルに採用</strong>（1M ネイティブコンテキスト対応）</td></tr>
-  <tr><td>07-17</td><td>v2.1.212</td><td>🔴</td><td><code>/subtask</code> と <code>/fork</code> のコマンド役割分離</td></tr>
-  <tr><td>07-01</td><td>v2.1.198</td><td>🔄</td><td><strong>サブエージェントがデフォルトでバックグラウンド並行実行に変更</strong></td></tr>
-</table>
-
-<h3 data-reveal>Codex</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>07-09</td><td>🔄</td><td><strong>GPT-5.6 Sol 正式リリース（GA）</strong></td></tr>
-  <tr><td>07-09</td><td>🆕</td><td>ChatGPT Desktop App への Codex 統合</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="m2026-06">
-<div class="sec-tag">月別アーカイブ 06</div>
-<h2>2026年6月</h2>
-
-<h3 data-reveal>Claude Code</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>06-30</td><td>v2.1.197</td><td>🆕</td><td><strong>Sonnet 5 が標準モデルに昇格</strong></td></tr>
-  <tr><td>06-24</td><td>v2.1.191</td><td>🆕</td><td><strong><code>/rewind</code> コマンド</strong>：<code>/clear</code> 直前の状態への巻き戻し機能</td></tr>
-  <tr><td>06-17</td><td>v2.1.181</td><td>🆕</td><td><strong><code>/config key=value</code></strong>：インライン設定変更</td></tr>
-</table>
-
-<h3 data-reveal>Codex</h3>
-<table class="tbl">
-  <tr><th>日付</th><th>種別</th><th>変更内容</th></tr>
-  <tr><td>06-25</td><td>🆕</td><td><strong>Codex Remote 正式リリース（GA）</strong>：モバイル連携とリモートホスト対応</td></tr>
-  <tr><td>06-18</td><td>🆕</td><td><strong>Record & Replay 機能</strong>：操作記録からの Skill 自動生成</td></tr>
-</table>
-</section>
-
-<div class="divider"></div>
-
-<section id="method">
-<div class="sec-tag">メンテナンス 99</div>
-<h2>本ページの保守方針</h2>
-
-<h3 data-reveal>公式一次情報源</h3>
-<ul>
-  <li>Claude Code: <a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com/docs/en/changelog</a>（確認コマンド: <code>/release-notes</code>）</li>
-  <li>Codex: <a href="https://learn.chatgpt.com/docs/changelog" target="_blank">learn.chatgpt.com/docs/changelog</a>（確認コマンド: <code>codex debug models</code>）</li>
-</ul>
-</section>
-
-<div class="divider"></div>
-
-<div class="footer">
-  <p><strong>注記</strong>: 本変更ログは開発現場の実用性を重視した厳選サマリーです。詳細な内部変更については各社公式の最新 Changelog をご参照ください。</p>
-</div>
-
-</div>
+<div class="wrap"><div class="hero"><div class="badge">2026-09-09</div><h1>AI ツールの更新と確認</h1><p class="lead">公式変更履歴を確認し、利用中の版と作業手順を検証します。</p></div><section id="how-to-read"><div class="sec-tag">01</div><h2>変更履歴の読み方</h2><p>履歴は現在のヘルプを代替しません。更新前に版、設定、症状を記録します。根拠の不十分な月次要約は削除し、旧文は Git 履歴に残しています。</p></section>
+<section id="breaking"><div class="sec-tag">02</div><h2>確認済みの Codex オプション</h2><p>untrusted は現在も文書にあります。codex exec --full-auto は警告付きの非推奨互換オプションです。利用版のヘルプで承認とサンドボックスを個別設定します。</p><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
+<section id="m2026-09"><span id="m2026-08"></span><span id="m2026-07"></span><span id="m2026-06"></span><div class="sec-tag">03</div><h2>公式更新情報</h2><p>公開日、利用形態、版を確認し、プレビュー・段階公開・正式提供を区別します。</p><p class="src"><a href="https://learn.chatgpt.com/docs/changelog" target="_blank" rel="noopener">learn.chatgpt.com · changelog</a> · 2026-09-09</p><p class="src"><a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener">github.com · CHANGELOG.md</a> · 2026-09-09</p><p class="src"><a href="https://www.antigravity.google/docs/cli/reference/" target="_blank" rel="noopener">www.antigravity.google · reference</a> · 2026-09-09</p></section>
+<section id="method"><div class="sec-tag">04</div><h2>更新と復元の確認</h2><p>版と復元可能な設定を保存し、小さな課題で認証・権限・接続・出力を検証します。失敗時はログを残して変更を戻します。</p><pre><code>codex --version
+codex exec --help
+claude --version
+claude --help</code></pre></section><footer class="footer">公式資料に基づく要約です。実際の環境で検証してください。</footer></div>
 </main>
 
 <button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+
+</body></html>

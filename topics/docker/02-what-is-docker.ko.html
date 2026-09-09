@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>02. "이사" 비유로 완벽 이해하는 Docker - Docker 35단계 완벽 마스터</title>
@@ -272,6 +270,7 @@ pre code { background: transparent; color: inherit; padding: 0; font-size: inher
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -314,7 +313,7 @@ pre code { background: transparent; color: inherit; padding: 0; font-size: inher
   <div class="nav-group">
     <div class="nav-group-title">🛠️ 2단계: 환경 구축</div>
     <a class="nav-item" href="05-windows-setup.ko.html"><span class="n">05.</span><span>Windows 사용자를 위한 함정 탈출 가이드</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac & Linux 환경 구축 가이드</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.ko.html"><span class="n">06.</span><span>Mac &amp; Linux 환경 구축 가이드</span></a>
     <a class="nav-item" href="07-registry-mirror.ko.html"><span class="n">07.</span><span>미러 사이트 설정: 느린 다운로드 속도 탈출</span></a>
     <a class="nav-item" href="08-hello-world.ko.html"><span class="n">08.</span><span>첫 번째 명령어 뒤에 숨겨진 비밀</span></a>
   </div>
@@ -345,7 +344,7 @@ pre code { background: transparent; color: inherit; padding: 0; font-size: inher
     <a class="nav-item" href="25-volume-backup.ko.html"><span class="n">25.</span><span>금고 이전: 데이터 백업 및 복원</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 6단계: 네트워크 & 오케스트레이션</div>
+    <div class="nav-group-title">🌐 6단계: 네트워크 &amp; 오케스트레이션</div>
     <a class="nav-item" href="26-network-types.ko.html"><span class="n">26.</span><span>네트워크 탐색: Bridge와 Host</span></a>
     <a class="nav-item" href="27-container-network.ko.html"><span class="n">27.</span><span>컨테이너 간 통신: IP 직접 지정 탈출</span></a>
     <a class="nav-item" href="28-why-compose.ko.html"><span class="n">28.</span><span>왜 Docker Compose가 필요할까?</span></a>
@@ -354,7 +353,7 @@ pre code { background: transparent; color: inherit; padding: 0; font-size: inher
     <a class="nav-item" href="31-compose-up-part2.ko.html"><span class="n">31.</span><span>최종 실전 (하): 마이크로서비스 네트워크</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ 7단계: 보안 & 프로덕션 운영</div>
+    <div class="nav-group-title">🛡️ 7단계: 보안 &amp; 프로덕션 운영</div>
     <a class="nav-item" href="32-env-security.ko.html"><span class="n">32.</span><span>보안 방벽: .env로 비밀번호 보호하기</span></a>
     <a class="nav-item" href="33-system-prune.ko.html"><span class="n">33.</span><span>디스크 공간 대청소</span></a>
     <a class="nav-item" href="34-production-root.ko.html"><span class="n">34.</span><span>프로덕션 철칙: Root 계정 사용 금지</span></a>
@@ -396,7 +395,7 @@ pre code { background: transparent; color: inherit; padding: 0; font-size: inher
   <p>앞서 살펴본 해운 컨테이너의 비유를 이해하셨다면, Docker 핵심 개념의 80%는 이미 이해하신 셈입니다. 다음의 직관적인 대응표를 살펴보겠습니다.</p>
 
   <table style="width:100%; border-collapse: collapse; margin: 24px 0;">
-    <tr style="background:#f8fafc; border-bottom: 2px solid var(--border); text-align:left;">
+    <tbody><tr style="background:#f8fafc; border-bottom: 2px solid var(--border); text-align:left;">
       <th style="padding:12px;">물류 해운업 개념</th>
       <th style="padding:12px;">Docker 개념</th>
       <th style="padding:12px;">소프트웨어에서의 구체적 의미</th>
@@ -426,7 +425,7 @@ pre code { background: transparent; color: inherit; padding: 0; font-size: inher
       <td style="padding:12px;"><strong>Docker Hub (Image Registry)</strong></td>
       <td style="padding:12px;">누구나 표준화된 컨테이너 설계도(이미지)를 업로드하고 다운로드할 수 있는 공개 저장소</td>
     </tr>
-  </table>
+  </tbody></table>
 
   <h3>Docker는 실제로 무엇을 패키징하는가?</h3>
 
@@ -446,7 +445,7 @@ flowchart TD
     subgraph 전통적인 호스트 직접 배포 방식
         T1(물리 서버 / 클라우드 인스턴스)
         T2(호스트 OS)
-        T3[시스템 공유 라이브러리 & 환경변수]
+        T3[시스템 공유 라이브러리 &amp; 환경변수]
         T4[앱 A - Python 3.6 환경 필요]
         T5[앱 B - Python 3.10 환경 필요 충돌!]
         T1 --- T2 --- T3
@@ -605,5 +604,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

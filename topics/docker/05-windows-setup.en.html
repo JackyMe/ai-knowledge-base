@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>05. Windows Pitfall Avoidance Guide - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item on" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Playbook</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Playbook</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
   </div>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Disappearing Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Disappearing Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifeline: Data Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
     <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Data Backup</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (Part 2): Microservices Network</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Defense Moat: .env Secrets</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Space Spring Cleaning</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Red Line: Never Run as Root</span></a>
@@ -393,7 +392,7 @@ pre:hover .copy-btn { opacity: 1; }
     <div>
       <span class="tt">Pre-Flight Health Check: Is Your Machine Ready?</span>
       <p>1. <strong>OS Version</strong>: Must be <strong>Windows 10 (64-bit build 19041+) or Windows 11</strong>. If you are on Windows 7, you'll need to upgrade your OS first.<br>
-      2. <strong>Hardware Virtualization</strong>: CPU Virtualization (VT-x / AMD-V) <strong>must be enabled in your BIOS</strong>. Press <code>Ctrl+Shift+Esc</code> to open Task Manager &rarr; click "Performance" &rarr; verify if "Virtualization" in the lower right displays as "Enabled". If "Disabled", reboot your machine and enter BIOS (typically pressing F2/Del during startup) to enable it.</p>
+      2. <strong>Hardware Virtualization</strong>: CPU Virtualization (VT-x / AMD-V) <strong>must be enabled in your BIOS</strong>. Press <code>Ctrl+Shift+Esc</code> to open Task Manager → click "Performance" → verify if "Virtualization" in the lower right displays as "Enabled". If "Disabled", reboot your machine and enter BIOS (typically pressing F2/Del during startup) to enable it.</p>
     </div>
   </div>
 
@@ -462,7 +461,7 @@ processors=2 # Limit WSL2 to max 2 CPU cores</code></pre>
   
   <div class="page-nav">
     <a href="04-core-components.en.html" class="page-nav-link prev"><span class="dir">← Previous Lesson</span><span class="title">04. Illustrated Core Trio Architecture</span></a>
-    <a href="06-mac-linux-setup.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">06. Mac & Linux Setup Playbook</span></a>
+    <a href="06-mac-linux-setup.en.html" class="page-nav-link next"><span class="dir">Next Lesson →</span><span class="title">06. Mac &amp; Linux Setup Playbook</span></a>
   </div>
 
   <div class="keyboard-hints">
@@ -571,5 +570,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

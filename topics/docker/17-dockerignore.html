@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>17. .dockerignore 避坑指南 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -447,23 +446,21 @@ venv/
   <li><code># 这是一行注释</code>：井号开头是注释。</li>
 </ul>
 
-<h2>4. 见证奇迹的时刻：Before & After</h2>
+<h2>4. 见证奇迹的时刻：Before &amp; After</h2>
 <div class="alert note">
   <span class="ic">📊</span>
   <div>
     <span class="tt">加入前：</span>
-    <pre>
-$ docker build -t bad-app .
+    <pre>$ docker build -t bad-app .
 Sending build context to Docker daemon  850.5MB
-Step 1/5 : FROM node:18
+Step 1/5 : FROM node:24
 ...
 (耗时 45 秒)</pre>
     
     <span class="tt">加入后：</span>
-    <pre>
-$ docker build -t good-app .
+    <pre>$ docker build -t good-app .
 Sending build context to Docker daemon  2.15MB
-Step 1/5 : FROM node:18
+Step 1/5 : FROM node:24
 ...
 (耗时 2 秒)</pre>
   </div>
@@ -601,5 +598,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

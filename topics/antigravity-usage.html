@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Google Antigravity (AGY) 2.0 深度实战与使用指南：涵盖 CLI 命令行代理、Agentic IDE、Python SDK、MCP 协议、Subagents 深度编排与沙箱安全防护体系。">
+<meta name="description" content="区分桌面、CLI、IDE 与 SDK，按任务选择入口，再检查权限与输出。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Antigravity 深度使用指南 · 心法与架构 (2026.08)">
+<meta property="og:title" content="Antigravity 使用指南 · AI 知识库">
 <meta property="og:url" content="https://aidoc-zq.netlify.app/topics/antigravity-usage.html">
-<title>Antigravity 深度使用指南 · CLI × IDE × SDK (2026.08)</title>
+<title>Antigravity 使用指南 · AI 知识库</title>
 <link rel="stylesheet" href="../assets/css/site.css">
 <style>
 :root{
@@ -131,6 +129,7 @@ pre code{background:none;color:inherit;padding:0}
 }
 </style>
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 <div id="prog"></div>
@@ -140,7 +139,7 @@ pre code{background:none;color:inherit;padding:0}
   <div class="logo">
     <div class="mark">🛸</div>
     <span>Antigravity 使用指南</span>
-    <span class="sub">CLI × IDE × SDK 实战</span>
+    <span class="sub">2026-09-09</span>
   </div>
   <div class="right">
     <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
@@ -150,291 +149,30 @@ pre code{background:none;color:inherit;padding:0}
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.html">◂ 主题中心</a>
-    
+
       <span>核对至 2026-08-17</span>
   
 
-<nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
-  <div class="nav-group">
-    <div class="gt">核心基座</div>
-    <a href="#sec1"><span class="no">01</span>概念与认知模型</a>
-    <a href="#sec2"><span class="no">02</span>安装配置与环境诊断</a>
-    <a href="#sec3"><span class="no">03</span>CLI 子命令与 IDE 快捷键</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">扩展体系</div>
-    <a href="#sec4"><span class="no">04</span>Customizations 定制规范</a>
-    <a href="#sec5"><span class="no">05</span>Subagents 深度编排</a>
-    <a href="#sec6"><span class="no">06</span>高级工具链与自动化</a>
-  </div>
-  <div class="nav-group">
-    <div class="gt">工程治理</div>
-    <a href="#sec7"><span class="no">07</span>性能、成本与沙箱安全</a>
-    <a href="#sec8"><span class="no">08</span>避坑清单与 30 秒急救室</a>
-    <a href="#sec9"><span class="no">09</span>工业级端到端实战案例</a>
-    <a href="#sec10"><span class="no">10</span>常用速查表与 Slash 手册</a>
-  </div>
-</nav>
+<nav class="sidebar" id="sidebar"><div class="side-filter"><input id="sideFilter" placeholder="筛选章节" aria-label="筛选章节"></div><div class="nav-group"><a href="#sec1"><span class="no">01</span>先区分使用形态</a><a href="#sec2"><span class="no">02</span>安装与登录</a><a href="#sec3"><span class="no">03</span>CLI 常用操作</a><a href="#sec4"><span class="no">04</span>设置与扩展</a><a href="#sec5"><span class="no">05</span>后台任务与非交互运行</a><a href="#sec7"><span class="no">06</span>权限、沙箱与额度</a><a href="#sec8"><span class="no">07</span>按症状排查</a><a href="#sec9"><span class="no">08</span>一个可验证的任务流程</a></div></nav>
 
 <main class="main">
-  <div class="wrap">
-    
-    <div class="hero" id="top">
-      <div class="badge">🛸 Google Antigravity 2.0 · Agentic 全栈实战 · 核对至 2026-08-17</div>
-      <h1>Antigravity 深度使用指南<br><span class="grad">心法 · 实用技法 · 底层架构</span></h1>
-      <p class="lead">全网最系统、最硬核的 Google Antigravity (AGY) 2.0 实战手册：全面覆盖 agy CLI 命令行代理、Agentic IDE 交互工作台、Python SDK 深度拦截、MCP 工具协议、Subagents 状态机编排与 OS 级沙箱防御机制。拒绝凑数，直接面向工业级生产落地。</p>
-      <div class="meta">
-        <span>4 大交互形态</span><span>2 档沙箱防御</span><span>Subagent 隔离模式</span><span>MCP 动态协议</span><span>Planning Mode 约束</span>
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><b>4 大形态</b><span>CLI / IDE / Python SDK / Sidecars 统一协议</span></div>
-      <div class="stat"><b>双层沙箱</b><span>标准隔离态（无网络） vs 显式授权提权态</span></div>
-      <div class="stat"><b>零幻觉防线</b><span>Planning Mode 计划审批前禁止侵入性改动</span></div>
-      <div class="stat"><b>Subagents</b><span>多智能体并行异步执行 + 独立 Worktree 隔离</span></div>
-    </div>
-
-    <!-- 01 概念与认知模型 -->
-    <section id="sec1">
-      <div class="sec-tag">核心基座 01</div>
-      <h2>1️⃣ Antigravity 核心概念与认知模型</h2>
-      <p><span class="tag-badge tag-official">官方基准对齐</span> Google Antigravity (代号 <strong>AGY</strong>) 是 Google 为 Agentic AI 软件工程时代打造的全新一代全栈基座。它不再将大模型局限于简单的聊天补全，而是将<strong>操作系统级沙箱、多智能体协同编排、MCP (Modular Command Protocol) 协议、AST 代码级语义感知与上下文生命周期治理</strong>深度融合为一体。</p>
-
-      <h3 data-reveal>三大 AI 编程体系（Antigravity vs Claude Code vs Codex）核心维度横向比对</h3>
-      <table class="tbl">
-        <tr><th>核心维度</th><th>Google Antigravity 2.0</th><th>Claude Code (Anthropic)</th><th>OpenAI Codex</th></tr>
-        <tr><td><strong>主导模型</strong></td><td>Gemini 2.5 Pro / Flash & 3.0 Ultra (2M+ 窗口)</td><td>Claude 3.7 Sonnet / Opus 5 (200k 窗口)</td><td>GPT-5.6 / o3-mini (128k-200k 窗口)</td></tr>
-        <tr><td><strong>沙箱隔离级别</strong></td><td>OS 级轻量容器 + 严格系统调用拦截 (ptrace/seccomp)</td><td>权限模式 (Manual / Auto-Approve)</td><td>3×3 模式 (Auto / Prompt / Strict)</td></tr>
-        <tr><td><strong>多代理编排</strong></td><td>原生 Subagents（支持 inherit / branch / share 模式）</td><td><code>/subtask</code> 与 <code>/fork</code> 会话派生</td><td>Codex Cloud 协同分派</td></tr>
-        <tr><td><strong>扩展协议</strong></td><td>原生 MCP (Eager/Lazy) + <code>.agents</code> 定制体系</td><td>MCP 客户端 + CLAUDE.md</td><td>MCP 插件 + AGENTS.md</td></tr>
-        <tr><td><strong>交付物管理</strong></td><td>基于会话 ID 的持久化 Artifacts（含架构、Diff 与 Mockup）</td><td>本地文件写入</td><td>云端分支与 PR</td></tr>
-      </table>
-
-      <h3 data-reveal>Antigravity 6 大底层核心概念</h3>
-      <ul>
-        <li><strong>agy CLI</strong>：统一的命令行入口，驱动整个工作区诊断、代码搜索、修改提议与子代理分派。</li>
-        <li><strong>Agentic IDE</strong>：双栏无缝融合的图形 IDE，原生内置代码编辑器、Planning Mode 计划审阅面板、实时 Diff 追踪器与 Artifacts 可视化预览器。</li>
-        <li><strong>Customizations 定制体系</strong>：基于 <code>.agents/</code> 或全局 <code>~/.gemini/antigravity/</code> 的层叠式扩展中心，包含 Skills（能力技能）、Rules（执行规则）、Plugins（插件）与 MCP 服务器。</li>
-        <li><strong>Subagents 智能体网络</strong>：具备独立 Conversation ID、上下文状态机与工作区模式的自主背景智能体，支持父子层级协同通信。</li>
-        <li><strong>Artifacts 交付物机制</strong>：将复杂方案、架构图（Mermaid）、UI 原型与迁移计划持久化为标准化 Markdown，杜绝在对话中刷屏。</li>
-        <li><strong>Reactive Wakeup 响应式唤醒</strong>：全异步任务架构，主代理派发后台子任务或定时调度后无需轮询，任务完成或收到消息时系统会自动唤醒主代理。</li>
-      </ul>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 02 安装配置与环境诊断 -->
-    <section id="sec2">
-      <div class="sec-tag">核心基座 02</div>
-      <h2>2️⃣ 安装配置与环境体检（macOS / Linux / WSL2）</h2>
-      
-      <h3 data-reveal>一键安装与全局初始化</h3>
-      <pre><code class="language-bash"># macOS (Homebrew 官方 Tap)
-brew tap agy/agy && brew install antigravity
-
-# Linux (Debian / Ubuntu / RHEL 一键脚本)
-curl -fsSL https://antigravity.google.com/install.sh | bash
-
-# 验证安装版本与可用工具链
+  <div class="wrap"><div class="hero"><div class="badge">2026-09-09</div><h1>Antigravity 使用指南</h1><p class="lead">区分桌面、CLI、IDE 与 SDK，按任务选择入口，再检查权限与输出。</p></div><section id="sec1"><div class="sec-tag">01</div><h2>先区分使用形态</h2><p>桌面端用于组织项目与任务；CLI 适合终端和 SSH；IDE 集成编辑环境；SDK 用于程序化构建代理。各形态的版本、设置与快捷键不应混用。</p><p class="src"><a href="https://www.antigravity.google/docs/home/" target="_blank" rel="noopener">www.antigravity.google · home</a> · 2026-09-09</p></section>
+<section id="sec2"><div class="sec-tag">02</div><h2>安装与登录</h2><p>macOS / Linux 使用官方原生安装器。运行 agy 后按登录流程操作；SSH 场景可在本地浏览器完成授权。安装后先确认可执行文件位置与版本。</p><pre><code>curl -fsSL https://antigravity.google/cli/install.sh | bash
+command -v agy
 agy --version
-# 输出：antigravity v2.0.18-rel (x86_64-apple-darwin / 2026-08-17)
-
-# 运行深度环境体检 (doctor 诊断)
-agy doctor --verbose</code></pre>
-
-      <h3 data-reveal><code>agy doctor</code> 诊断项目对照表</h3>
-      <table class="tbl">
-        <tr><th>检查项</th><th>正常标准</th><th>异常表现与对症处置</th></tr>
-        <tr><td><strong>Sandbox Layer</strong></td><td><code>cgroups v2 + seccomp filter active</code></td><td>若提示沙箱不可用，检查内核版本（需 Linux 5.10+ 或 macOS 14+），WSL2 需开启虚拟化支持。</td></tr>
-        <tr><td><strong>MCP Daemon</strong></td><td><code>socket alive (/var/run/agy/mcp.sock)</code></td><td>MCP 守护进程未启动时运行 <code>agy mcp daemon --restart</code>。</td></tr>
-        <tr><td><strong>Token & Keychain</strong></td><td><code>GCP SecretStore validated</code></td><td>登录凭证过期运行 <code>agy auth login --refresh</code> 进行 OAuth2 重新授权。</td></tr>
-        <tr><td><strong>Worktree Engine</strong></td><td><code>git worktree support enabled</code></td><td>用于 Subagents 隔离工作树，需 Git 2.34+。</td></tr>
-      </table>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 03 CLI 子命令与 IDE 快捷键 -->
-    <section id="sec3">
-      <div class="sec-tag">核心基座 03</div>
-      <h2>3️⃣ CLI 子命令速查与 IDE 高阶操作</h2>
-      
-      <table class="tbl">
-        <tr><th>子命令</th><th>标准语法格式</th><th>关键参数</th><th>核心功能场景</th></tr>
-        <tr><td><code>agy view</code></td><td><code>agy view src/main.rs --line 1-120</code></td><td><code>--line</code>, <code>--offset</code></td><td>安全只读查看文件内容，内置行号与高亮，不污染修改记录</td></tr>
-        <tr><td><code>agy edit</code></td><td><code>agy edit src/api.py --range 40-75</code></td><td><code>--range</code>, <code>--atomic</code></td><td>精准块替换编辑，自动进行前后文哈希校验，防止代码覆盖</td></tr>
-        <tr><td><code>agy grep</code></td><td><code>agy grep "class AuthService" --type ts</code></td><td><code>--regex</code>, <code>--case</code></td><td>底层驱动 ripgrep 极速正则匹配符号与函数定义</td></tr>
-        <tr><td><code>agy subagent</code></td><td><code>agy subagent invoke research --model flash</code></td><td><code>--model</code>, <code>--workspace</code></td><td>分派后台子代理进行长文本分析或耗时调研</td></tr>
-        <tr><td><code>agy run</code></td><td><code>agy run "pytest tests/" --wait 5000</code></td><td><code>--wait</code>, <code>--bypass</code></td><td>在标准隔离沙箱内执行命令，超时后自动转为后台监控任务</td></tr>
-        <tr><td><code>agy schedule</code></td><td><code>agy schedule --cron "*/10 * * * *" --prompt "检查构建"</code></td><td><code>--cron</code>, <code>--condition</code></td><td>注册后台周期任务或单次定时器，支持条件取消</td></tr>
-      </table>
-
-      <h3 data-reveal>Antigravity Agentic IDE 快捷键矩阵</h3>
-      <ul>
-        <li><kbd>Cmd+L</kbd> / <kbd>Ctrl+L</kbd> —— 聚焦右侧 Agent 交互面板，并自动将当前选中的代码行与文件锚点注入提示词。</li>
-        <li><kbd>Cmd+Shift+P</kbd> —— 打开 Antigravity 命令调色板，快速执行 <code>/goal</code>, <code>/schedule</code>, <code>/grill-me</code> 等高级流程。</li>
-        <li><kbd>Ctrl+Alt+R</kbd> —— 在沙箱内对当前文件或关联测试套件执行静默自验，输出通过证据。</li>
-        <li><kbd>Ctrl+Alt+S</kbd> —— 实时分屏渲染当前会话生成的 Markdown / HTML / UI Artifacts。</li>
-      </ul>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 04 Customizations 定制规范 -->
-    <section id="sec4">
-      <div class="sec-tag">扩展体系 04</div>
-      <h2>4️⃣ Customizations 定制体系：Skills · Rules · MCP · Plugins</h2>
-      <p>Antigravity 拥有三级优先级规则查找系统：<strong>当前项目 <code>.agents/</code> (最高) &gt; 用户全局 <code>~/.gemini/antigravity/</code> &gt; 内置规范 (Built-in)</strong>。所有规则支持热重载（Hot-reload），无需重启。</p>
-
-      <h3 data-reveal>4.1 编写高可用 Skill（以安全审计 Skill 为例）</h3>
-      <p>在 <code>.agents/skills/security-guard/SKILL.md</code> 中声明能力规则：</p>
-      <pre><code class="language-markdown">---
-name: security-guard
-description: "生产级敏感信息与 SQL 注入静态安全合规扫描器"
----
-# 核心安全审计准则
-1. 严禁在代码中硬编码任何 API Key、JWT Secret 或内网数据库密码。
-2. 所有对外暴露的 API 请求参数必须经过严格的 schema 校验与反序列化约束。
-3. 检查所有数据库查询，强制使用参数化预编译绑定，坚决杜绝字符串直接拼接 SQL。
-4. 外部 HTTP 请求必须强制配置超时限制 (Timeout) 与指数退避重试 (Exponential Backoff)。</code></pre>
-
-      <h3 data-reveal>4.2 编写全局拦截规则 (Rules)</h3>
-      <pre><code class="language-yaml"># .agents/rules/safe-terminal.yml
----
-severity: critical
-description: "沙箱防御：拦截未授权的敏感文件外发与高危终端指令"
-enforce:
-  - tool: run_command
-    condition: "BypassSandbox == false && CommandLine matches '(rm\\s+-rf\\s+/|mkfs|dd\\s+if=)' => reject"
-  - tool: replace_file_content
-    condition: "TargetFile matches '\\.(env|pem|key)$' => require_user_approval"</code></pre>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 05 Subagents 深度编排 -->
-    <section id="sec5">
-      <div class="sec-tag">扩展体系 05</div>
-      <h2>5️⃣ Subagents 深度编排与状态机</h2>
-      
-      <table class="tbl">
-        <tr><th>子代理类型 (TypeName)</th><th>工作区模式 (Workspace)</th><th>继承模型</th><th>典型生产应用</th></tr>
-        <tr><td><code>research</code></td><td><code>inherit</code> (只读共享)</td><td><code>flash</code> / <code>flash_lite</code></td><td>海量日志快搜、第三方 API 文档研读、只读代码库扫描</td></tr>
-        <tr><td><code>self</code></td><td><code>branch</code> (独立 Git Worktree)</td><td><code>inherit</code> (与父代同等能力)</td><td>高风险代码重构、破坏性架构实验、多模块并发修改</td></tr>
-        <tr><td><code>pipeline-worker</code></td><td><code>share</code> (共享工作区)</td><td><code>pro</code> (高推理深度)</td><td>流水线构建、测试套件多环境并行跑测、多语言转译</td></tr>
-      </table>
-
-      <h3 data-reveal>Subagent 生命周期状态流转图</h3>
-      <pre><code>[invoke_subagent] ───→ (running) ───┬───→ [等待外部输入] ───→ (waiting_for_input)
-                                    │
-                                    ├───→ [依赖外部任务] ───→ (waiting_for_dependents)
-                                    │
-                                    ├───→ [正常完成执行] ───→ (done) ───→ [唤醒父代理 (Reactive Wakeup)]
-                                    │
-                                    └───→ [执行异常拦截] ───→ (errored) ──→ [输出诊断日志]</code></pre>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 06 高级工具链与自动化 -->
-    <section id="sec6">
-      <div class="sec-tag">扩展体系 06</div>
-      <h2>6️⃣ 高级工具链与自动化调度</h2>
-      <div class="hotcmds">
-        <div class="hotcmd">
-          <span class="hc-cmd">multi_replace_file_content</span>
-          <span class="hc-desc">单次原子调用同时修改文件内多处非连续代码块，杜绝多次反复读写与行号偏移。</span>
-        </div>
-        <div class="hotcmd">
-          <span class="hc-cmd">schedule</span>
-          <span class="hc-desc">设置一次性定时器或标准 Cron 周期任务，支持 <code>TimerCondition</code> 在消息到达时提前取消。</span>
-        </div>
-        <div class="hotcmd">
-          <span class="hc-cmd">manage_task</span>
-          <span class="hc-desc">管理长时间运行的后台服务（如 Web 服务器、文件监听器），支持查看日志与发送 <code>stdin</code> 交互。</span>
-        </div>
-        <div class="hotcmd">
-          <span class="hc-cmd">generate_image</span>
-          <span class="hc-desc">基于文本提示词直接生成 UI 界面原型、架构图与视觉素材，自动保存为 Artifact 供实时预览。</span>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 07 性能、成本与沙箱安全 -->
-    <section id="sec7">
-      <div class="sec-tag">工程治理 07</div>
-      <h2>7️⃣ 性能、成本与沙箱安全防御体系</h2>
-      <ol>
-        <li><strong>标准沙箱优先（Standard Sandbox First）</strong>：所有终端命令默认在无外网访问、限制文件系统的标准沙箱中运行。只有在确需下载依赖或访问外部网络时，才显式声明 <code>BypassSandbox: true</code> 并等待用户审批。</li>
-        <li><strong>Planning Mode 纪律性要求</strong>：涉及多文件架构改造、跨模块重构的大型任务，必须先生成 <code>implementation_plan.md</code> 架构设计方案，明确用户 review 事项与自验步骤，严禁在未获批准前擅自修改源代码。</li>
-        <li><strong>增量精准补丁（Incremental Edits）</strong>：坚决杜绝在数千行的大文件中使用全量覆写，强制使用 <code>replace_file_content</code> 定点替换，极大节省上下文 Token 并保证 Git 历史整洁。</li>
-      </ol>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 08 避坑清单与 30 秒急救室 -->
-    <section id="sec8">
-      <div class="sec-tag">工程治理 08</div>
-      <h2>8️⃣ 避坑清单与 30 秒急救室</h2>
-      <table class="tbl">
-        <tr><th>典型报错与症状</th><th>底层根本原因</th><th>30 秒对症解决指南</th></tr>
-        <tr><td><code>TargetContent not found</code></td><td>目标代码块的前后缩进、换行符（CRLF vs LF）或不可见字符与现有文件不匹配</td><td>先调用 <code>view_file</code> 精确查看目标行号与缩进，再原样传入 <code>TargetContent</code>。</td></tr>
-        <tr><td><code>Subagent in waiting_for_input</code></td><td>子代理遇到了需要人工交互确认的命令或提示</td><td>运行 <code>manage_subagents list</code> 确认状态，使用 <code>send_message</code> 向其发送确认指令即可恢复。</td></tr>
-        <tr><td><code>Sandbox Network Blocked</code></td><td>在标准沙箱内执行了 <code>curl</code>, <code>npm install</code> 或 <code>git pull</code></td><td>确认网络合规性后，在调用参数中指定 <code>BypassSandbox: true</code> 进行提权审批。</td></tr>
-        <tr><td><code>Context Token Overflow</code></td><td>单会话内连续打印超长日志或输出超大 JSON</td><td>使用 <code>/clear</code> 清空旧历史，或将长日志处理委托给 <code>research</code> 子代理。</td></tr>
-      </table>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 09 工业级端到端实战案例 -->
-    <section id="sec9">
-      <div class="sec-tag">工程治理 09</div>
-      <h2>9️⃣ 工业级端到端实战案例：服务重构与并发跑测</h2>
-      <p>演示如何从需求分析、子代理调研、计划拟定，到代码增量修改与沙箱自动化验证的全闭环：</p>
-      <pre><code class="language-bash"># 第一步：派发只读 research 子代理进行代码库架构分析
-agy subagent invoke research --prompt "分析 src/auth/ 模块中原有 Session 机制的瓶颈，梳理依赖关系"
-
-# 第二步：编写结构化 implementation_plan.md 交付物并等待审批
-agy write_to_file --TargetFile .gemini/antigravity/brain/implementation_plan.md \
-  --CodeContent "# OAuth2 + PKCE 重构实施方案..."
-
-# 第三步：用户确认后，使用原子编辑工具进行代码定点重构
-agy edit src/auth/oauth2.py --range 15-60
-
-# 第四步：在标准隔离沙箱中运行全量单元测试与回归套件
-agy run "pytest tests/test_oauth2.py -v" --wait 5000</code></pre>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- 10 常用速查表与 Slash 手册 -->
-    <section id="sec10">
-      <div class="sec-tag">工程治理 10</div>
-      <h2>🔟 常用速查表与 Slash 指令手册</h2>
-      <ul>
-        <li><code>/goal</code> —— 用于长耗时、无人值守的复杂任务，主代理将穷尽一切手段直至目标彻底达成。</li>
-        <li><code>/schedule</code> —— 快速唤起定时任务与定时器配置面板。</li>
-        <li><code>/browser</code> —— 唤起内置无头浏览器工具，用于爬取动态渲染网页或进行 Web UI 自动化回归。</li>
-        <li><code>/grill-me</code> —— 开启深度交互访谈模式，让 Agent 主动追问你架构设计与边界情况。</li>
-        <li><code>/teamwork-preview</code> —— 预览并调度多 Agent 协同团队，针对大型工程进行并行分工。</li>
-        <li><code>/learn</code> —— 沉淀本次交互中的纠偏教训与工作流范式，持久化为 workspace 永久记忆。</li>
-      </ul>
-    </section>
-
-    <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-      <span>© 2026 AI 知识库 · Google Antigravity 2.0 深度实战长卷</span>
-      <span>核对至 2026 年 8 月 17 日</span>
-    </div>
-
-  </div>
+agy</code></pre><p class="src"><a href="https://www.antigravity.google/docs/cli/install/" target="_blank" rel="noopener">www.antigravity.google · install</a> · 2026-09-09</p></section>
+<section id="sec3"><span id="sec10"></span><div class="sec-tag">03</div><h2>CLI 常用操作</h2><p>在会话内输入 / 查看当前可用命令。常用入口包括 /help、/diff、/resume、/permissions、/context 和 /usage。代理内部的文件编辑工具不是可直接在终端运行的 agy 子命令。</p><p class="src"><a href="https://www.antigravity.google/docs/cli/reference/" target="_blank" rel="noopener">www.antigravity.google · reference</a> · 2026-09-09</p></section>
+<section id="sec4"><div class="sec-tag">04</div><h2>设置与扩展</h2><p>通过 /config 检查 CLI 设置，通过 /mcp 查看工具连接。规则、Skills、Hooks 和插件承担不同职责；配置文件位置和格式应以对应形态的文档为准，不要把自拟 YAML 当作内置权限规则。</p><p class="src"><a href="https://www.antigravity.google/docs/cli/settings/" target="_blank" rel="noopener">www.antigravity.google · settings</a> · 2026-09-09</p></section>
+<section id="sec5"><span id="sec6"></span><div class="sec-tag">05</div><h2>后台任务与非交互运行</h2><p>长任务先明确产物、写入范围和验收命令，再通过 /agents 与 /tasks 查看状态。脚本调用使用 -p；不要把工具内部状态名或示意流程写成不存在的终端接口。</p><pre><code>agy -p "Summarize this repository without changing files" --output-format json</code></pre><p class="src"><a href="https://www.antigravity.google/docs/cli/headless/" target="_blank" rel="noopener">www.antigravity.google · headless</a> · 2026-09-09</p></section>
+<section id="sec7"><div class="sec-tag">06</div><h2>权限、沙箱与额度</h2><p>检查实际启用的终端沙箱和工具权限；不要假定所有平台默认断网。提示词或规则文件不能替代执行权限。查看 /usage 的模型额度、/context 的上下文占用，分别处理两类限制。</p><p class="src"><a href="https://www.antigravity.google/docs/cli/permissions/" target="_blank" rel="noopener">www.antigravity.google · permissions</a> · 2026-09-09</p></section>
+<section id="sec8"><div class="sec-tag">07</div><h2>按症状排查</h2><p>命令找不到：检查 PATH 与安装目录。登录失败：保留错误码，核对账号、网络与系统时间。工具被拒绝：查看当前权限原因。输出不可靠：缩小任务，附原始证据，并要求可验证结果。不要直接清空配置或跳过权限。</p><p class="src"><a href="https://www.antigravity.google/docs/cli/troubleshooting/" target="_blank" rel="noopener">www.antigravity.google · troubleshooting</a> · 2026-09-09</p></section>
+<section id="sec9"><div class="sec-tag">08</div><h2>一个可验证的任务流程</h2><p>示例：先读取认证模块并说明现状，列出具体修改与风险，再实施范围内的改动。运行项目已有测试，检查 diff，汇报通过与未验证项。涉及发布、付费或对外发送消息时，单独明确授权。</p></section><footer class="footer">基于所列官方来源整理；示例需在实际环境验证。</footer></div>
 </main>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</div></header>
+</body></html>

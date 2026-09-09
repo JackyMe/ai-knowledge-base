@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="1인 개발자를 위한 서버 인프라 및 운영 기초: 5단계 로드맵 + 서버×네트워크×배포 3대 모듈 + 5대 장애 30초 긴급 처방전. SaaS 의존에서 벗어나 독립 셀프 호스팅 운영까지 완벽 마스터.">
@@ -157,6 +155,7 @@ pre .c{color:#7c8d92}
 }
 </style>
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -178,7 +177,7 @@ pre .c{color:#7c8d92}
 <div class="progress" id="prog"></div>
 
 <nav class="sidebar" id="sidebar">
-  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…" /><span class="fk">/</span></div>
+  <div class="side-filter"><input id="sideFilter" placeholder="섹션 검색…"><span class="fk">/</span></div>
   <div class="nav-group">
     <div class="gt">시작하기</div>
     <a href="#intro"><span class="no">00</span>왜 배워야 하는가</a>
@@ -264,20 +263,20 @@ pre .c{color:#7c8d92}
 <p>이런 경험이 있으신가요? Vercel에 배포한 사이드 프로젝트가 갑작스러운 트래픽이나 DDoS 공격으로 과도한 청구서 폭탄을 맞을까 봐 불안하거나, Cloudflare Pages의 대역폭 한계와 지역 제한에 부딪히거나, 심야에 Supabase 커넥션 풀 한도에 걸려 서비스가 멈추는 일…….</p>
 <p>SaaS 플랫폼은 매우 편리하지만, <strong>플랫폼 제약이나 가격 장벽에 부딪히는 순간</strong> 그 편리함은 족쇄가 됩니다. 그 한계를 벗어나려 할 때 SSH, systemd, 리버스 프록시, DNS 레코드, TLS 핸드셰이크 같은 인프라 용어에 압도당하는 개발자가 많습니다.</p>
 <div class="callout note"><b class="t">이 문서가 다루는 것과 다루지 않는 것</b><strong>다루는 것:</strong> 5단계 로드맵 + 서버·네트워크·배포의 <strong>필수 핵심 지식</strong> + 5대 장애 30초 처방전. 읽고 나면 중규모 프로젝트 서버를 스스로 안정적으로 운영할 수 있습니다.<br><strong>다루지 않는 것:</strong> 대규모 Kubernetes 클러스터 운영, GPU 분산 추론 인프라, 99.999% 극한의 고가용성 튜닝 등은 다루지 않습니다.</div>
-<h3 data-reveal>대상 독자</h3>
+<h3 data-reveal="">대상 독자</h3>
 <ul>
 <li>Next.js / Node / Python / Go 등으로 풀스택 앱을 개발해 보았으나 배포는 Vercel / Netlify / Cloudflare / Supabase / Railway에 전적으로 의존해 온 분.</li>
 <li>도메인을 구매해 본 적은 있지만, DNS 해석과 TLS 인증서 뒷단에서 일어나는 과정을 정확히 알지 못하는 분.</li>
 <li>프로덕션 장애가 발생했을 때 로그를 스스로 추적하지 못해 막막했던 경험이 있는 분.</li>
 <li>SRE나 전문 인프라 엔지니어가 될 생각은 없지만, 내 서비스를 직접 안정적으로 호스팅하고 싶은 1인 개발자 및 풀스택 개발자.</li>
 </ul>
-<h3 data-reveal>근거 표기 기준</h3>
+<h3 data-reveal="">근거 표기 기준</h3>
 <table class="tbl">
-<tr><th>표기</th><th>의미</th><th>구체적 예시</th></tr>
+<tbody><tr><th>표기</th><th>의미</th><th>구체적 예시</th></tr>
 <tr><td><span class="pill a">✅ 공식 사양</span></td><td>공식 문서에서 엄격히 확인됨</td><td>"systemd는 Linux의 시스템 및 서비스 관리자이다" — <a href="https://systemd.io/" target="_blank">systemd.io</a></td></tr>
 <tr><td><span class="pill c">⚡ 실전 검증</span></td><td>커뮤니티의 강력한 합의와 동작 검증 완료</td><td>"certbot --nginx 명령어 3줄로 HTTPS 자동 설정" 등</td></tr>
 <tr><td><span class="pill b">⚠️ 확인 필요</span></td><td>의견이 갈리거나 시기별 정책 변동이 있는 내용</td><td>특정 국가의 도메인 실명제 및 ICP 등록 요건 등</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -287,13 +286,13 @@ pre .c{color:#7c8d92}
 <h2>5단계 로드맵</h2>
 <p>학습 과정을 5단계로 세분화했습니다. 각 단계마다 <strong>검증 가능한 구체적 산출물</strong>이 정의되어 있어 확실하게 전진할 수 있습니다.</p>
 <table class="tbl">
-<tr><th>단계</th><th>목표</th><th>실전 산출물</th><th>완료 기준</th><th>예상 시간</th></tr>
+<tbody><tr><th>단계</th><th>목표</th><th>실전 산출물</th><th>완료 기준</th><th>예상 시간</th></tr>
 <tr><td><strong>R1 현재 점검</strong></td><td>현재 아키텍처와 SaaS 의존도 파악</td><td>'프로젝트 배포 현황표'</td><td>각 앱의 SaaS 이용 현황·비용·제약 시각화</td><td>1시간</td></tr>
 <tr><td><strong>R2 Linux 기초</strong></td><td>VPS에 SSH 연결하고 리소스 확인</td><td>Nginx가 구동 중인 VPS</td><td><code>systemctl status nginx</code>가 active 확인</td><td>반나절</td></tr>
 <tr><td><strong>R3 네트워크 핵심</strong></td><td>도메인 → DNS → SSL → 리버스 프록시 연동</td><td>독립 도메인 + HTTPS 환경</td><td>브라우저에서 안전한 자물쇠 표시 확인</td><td>반나절</td></tr>
 <tr><td><strong>R4 배포 파이프라인</strong></td><td>git push 자동 배포 구축</td><td>Node/Go 앱 + GitHub Actions</td><td>코드 변경 push 후 30초 내 배포 반영</td><td>1일</td></tr>
 <tr><td><strong>R5 장애 분석</strong></td><td>5대 장애 자가 복구</td><td>부록 A 장애 재현 실습</td><td>의도적 장애 유발 후 스스로 복구 완료</td><td>1일</td></tr>
-</table>
+</tbody></table>
 <p>총 권장 학습 시간은 <strong>3~4번의 주말</strong>입니다. 진행 중 막히면 부록 A의 처방전이나 해당 모듈의 상세 설명을 참고하세요.</p>
 </section>
 
@@ -303,7 +302,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">로드맵 R1</div>
 <h2>R1 · 현재 상태 점검</h2>
 <p>VPS를 무작정 결제하기 전에, 현재 운영 중인 프로젝트들의 인프라 구성을 정리해 봅니다. 이를 통해 SaaS를 유지할 항목과 자체 호스팅으로 전환할 항목을 명확히 구분할 수 있습니다.</p>
-<h3 data-reveal>실전: 프로젝트 배포 현황표 작성</h3>
+<h3 data-reveal="">실전: 프로젝트 배포 현황표 작성</h3>
 <p>운영 중인 앱마다 다음 4개 항목을 정리합니다:</p>
 <ol>
 <li><strong>실행 환경</strong>: Vercel / Netlify / Cloudflare Pages / Supabase / VPS / 기타</li>
@@ -320,12 +319,12 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">로드맵 R2</div>
 <h2>R2 · Linux 기초</h2>
 <p>1코어 1GB 메모리 수준의 저렴한 VPS(월 3~5달러)를 대여하여 Ubuntu 24.04 LTS를 설정합니다. SSH 키 인증으로 로그인하고 Nginx를 실행하여 브라우저 접속을 확인합니다.</p>
-<h3 data-reveal>실전 단계</h3>
+<h3 data-reveal="">실전 단계</h3>
 <ol class="steps">
 <li><strong>VPS 선택</strong>: DigitalOcean, Vultr, AWS Lightsail, Linode 등에서 사용자 위치와 가까운 리전 선택. OS는 문서가 가장 풍부한 <strong>Ubuntu 24.04 LTS</strong> 권장.</li>
 <li><strong>로컬에서 SSH 키 생성</strong>: <code>ssh-keygen -t ed25519 -C "your@email"</code> 실행 후, <code>~/.ssh/id_ed25519.pub</code> 내용을 VPS 관리자 콘솔의 SSH Key 항목에 등록.</li>
 <li><strong>VPS 접속</strong>: 터미널에서 <code>ssh root@YOUR_VPS_IP</code>로 접속. 첫 접속 시 핑거프린트 확인에 "yes" 입력.</li>
-<li><strong>Nginx 설치</strong>: <code>apt update && apt install -y nginx</code> 실행 후, <code>systemctl status nginx</code>로 <code>active (running)</code> 확인.</li>
+<li><strong>Nginx 설치</strong>: <code>apt update &amp;&amp; apt install -y nginx</code> 실행 후, <code>systemctl status nginx</code>로 <code>active (running)</code> 확인.</li>
 <li><strong>브라우저 확인</strong>: <code>http://YOUR_VPS_IP</code>에 접속하여 Nginx 환영 페이지가 보이면 R2 완료.</li>
 </ol>
 </section>
@@ -336,7 +335,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">로드맵 R3</div>
 <h2>R3 · 네트워크 핵심</h2>
 <p>IP 주소 직접 접속에서 벗어나, 독립 도메인 + HTTPS(SSL 인증서)를 적용한 안전한 환경으로 업그레이드합니다. DNS, Certbot, Nginx 리버스 프록시 연동을 완벽히 구축합니다.</p>
-<h3 data-reveal>실전 단계</h3>
+<h3 data-reveal="">실전 단계</h3>
 <ol class="steps">
 <li><strong>도메인 구매</strong>: Cloudflare Registrar, Namecheap, 가비아 등에서 도메인 구매.</li>
 <li><strong>DNS 레코드 설정</strong>: 관리 패널에서 A 레코드를 생성하여 도메인을 VPS 공인 IP에 연결. <code>dig yourdomain.dev</code>로 반영 확인.</li>
@@ -352,7 +351,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">로드맵 R4</div>
 <h2>R4 · 배포 파이프라인</h2>
 <p>수동 파일 전송이나 SSH 직접 접속 방식에서 벗어나, <code>git push</code>만으로 서버에 자동 배포되는 CI/CD 파이프라인을 구축합니다.</p>
-<h3 data-reveal>실전 단계</h3>
+<h3 data-reveal="">실전 단계</h3>
 <ol class="steps">
 <li><strong>systemd 서비스 정의</strong>: <code>/etc/systemd/system/myapp.service</code>를 생성하여 SSH 세션 종료 후에도 앱이 백그라운드에서 상시 구동되고 크래시 시 자동 재시작되도록 설정.</li>
 <li><strong>GitHub Actions 워크플로 작성</strong>: <code>.github/workflows/deploy.yml</code>을 설정하여 <code>main</code> 브랜치 push 시 VPS로 자동 SSH 접속, 코드 pull, 빌드 및 서비스 재시작 실행.</li>
@@ -367,7 +366,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">로드맵 R5</div>
 <h2>R5 · 장애 분석 및 트러블슈팅</h2>
 <p>프로덕션 운영에서 가장 중요한 역량은 '장애가 전혀 안 나는 것'이 아니라 '장애 발생 시 30초 이내에 원인을 파악하고 대응하는 것'입니다.</p>
-<h3 data-reveal>실전: 5대 대표 장애 재현 및 복구 실습</h3>
+<h3 data-reveal="">실전: 5대 대표 장애 재현 및 복구 실습</h3>
 <ol class="steps">
 <li><strong>502 Bad Gateway</strong>: <code>systemctl stop myapp</code>으로 앱을 중지시키고 Nginx의 에러 로그를 확인한 뒤 재시작으로 복구.</li>
 <li><strong>SSH 접속 차단</strong>: 포트 설정 오류 및 방화벽 차단 시나리오를 이해하고 콘솔(VNC)을 통한 복구 절차 숙지.</li>
@@ -385,15 +384,15 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">모듈 1 · Linux</div>
 <h2>1.1 서버란 무엇인가</h2>
 <p>'서버'라는 단어에 막연한 두려움을 가질 필요가 없습니다. <strong>서버의 본질은 24시간 365일 전원이 켜진 채 네트워크에 연결되어 있는 컴퓨터</strong>에 불과합니다. 사용하는 PC와 하드웨어 아키텍처는 거의 동일하며, 모니터나 키보드 없이 데이터센터 랙에 장착되어 SSH를 통해 원격으로 제어한다는 점만 다릅니다.</p>
-<h3 data-reveal>로컬 PC와 클라우드 서버(VPS)의 차이</h3>
+<h3 data-reveal="">로컬 PC와 클라우드 서버(VPS)의 차이</h3>
 <table class="tbl">
-<tr><th>항목</th><th>로컬 PC / 노트북</th><th>클라우드 서버 (VPS)</th></tr>
+<tbody><tr><th>항목</th><th>로컬 PC / 노트북</th><th>클라우드 서버 (VPS)</th></tr>
 <tr><td>OS</td><td>macOS / Windows</td><td>Ubuntu / Debian 등 Linux 계열</td></tr>
 <tr><td>인터페이스</td><td>GUI (화면, 마우스, 키보드)</td><td>SSH (CLI 명령어 기반)</td></tr>
 <tr><td>가동 시간</td><td>작업 시에만 부팅</td><td>24시간 상시 가동</td></tr>
 <tr><td>공인 IP</td><td>일반적으로 가정용 사설 IP</td><td>고유한 고정 공인 IP 보유</td></tr>
 <tr><td>우선 가치</td><td>사용 편의성, 반응성, UI</td><td>안정성, 고가용성, 리소스 효율</td></tr>
-</table>
+</tbody></table>
 <div class="callout note"><b class="t">왜 서버 OS는 Linux인가</b>Nginx, Node.js, Python, PostgreSQL, Docker, systemd 등 현대 웹 생태계를 지탱하는 핵심 소프트웨어는 Linux에 최적화되어 있습니다. 백엔드와 인프라를 배운다는 것은 곧 Linux의 기본 원리를 익히는 것입니다.</div>
 </section>
 
@@ -403,30 +402,30 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">모듈 1 · Linux</div>
 <h2>1.2 3대 추상화 개념: 파일 시스템, 프로세스, 포트</h2>
 <p>Linux 서버를 '아파트'에 비유할 수 있습니다. 각 호실의 입주자가 <strong>프로세스</strong>, 호실 번호가 <strong>포트</strong>, 출입 카드와 계약서가 <strong>권한</strong>에 해당합니다. 일상적인 서버 운영의 80%는 어떤 프로세스가 돌고 있는지, 어떤 포트를 열고 있는지, 어떤 권한으로 실행되는지를 점검하는 작업입니다.</p>
-<h3 data-reveal>파일 시스템: 모든 것은 파일이다 (Everything is a File)</h3>
+<h3 data-reveal="">파일 시스템: 모든 것은 파일이다 (Everything is a File)</h3>
 <p>Linux의 근본 철학은 '모든 것은 파일이다'라는 점입니다. 디스크 저장소뿐만 아니라 하드웨어 장치, 네트워크 소켓, 프로세스 정보까지 모두 <code>/</code>(루트 디렉터리) 하위의 파일 형태로 표현됩니다.</p>
 <pre><code>ls /                  <span class="c"># 루트 디렉터리 확인</span>
 ls /etc/nginx/         <span class="c"># Nginx 설정 파일 목록</span>
 ls /var/log/           <span class="c"># 시스템 및 서비스 로그 파일</span>
 cat /proc/cpuinfo      <span class="c"># CPU 정보 (메모리 상의 가상 파일)</span></code></pre>
-<h3 data-reveal>프로세스: 실행 중인 프로그램</h3>
+<h3 data-reveal="">프로세스: 실행 중인 프로그램</h3>
 <p><code>node server.js</code>를 실행하면 고유한 PID(프로세스 ID)를 가진 프로세스가 생성됩니다. 필수 관리 명령어:</p>
 <pre><code>ps aux | grep node     <span class="c"># Node 프로세스 상태 확인</span>
 top                    <span class="c"># 실시간 CPU/메모리 사용량 확인 (q로 종료)</span>
 htop                   <span class="c"># 시각화 리소스 모니터 (apt install htop)</span>
 kill -9 1234           <span class="c"># PID 1234 프로세스 강제 종료</span>
 systemctl status myapp <span class="c"># systemd 관리 서비스 상태 확인</span></code></pre>
-<h3 data-reveal>포트: 통신의 호실 번호 (0~65535)</h3>
+<h3 data-reveal="">포트: 통신의 호실 번호 (0~65535)</h3>
 <p>단일 서버에서 여러 네트워크 서비스를 동시에 서비스하기 위해 포트 번호로 통신 대상을 식별합니다.</p>
 <table class="tbl">
-<tr><th>포트 번호</th><th>주요 용도</th></tr>
+<tbody><tr><th>포트 번호</th><th>주요 용도</th></tr>
 <tr><td>22</td><td>SSH (원격 제어)</td></tr>
 <tr><td>80</td><td>HTTP (암호화되지 않은 웹 통신)</td></tr>
 <tr><td>443</td><td>HTTPS (SSL/TLS 암호화 웹 통신)</td></tr>
 <tr><td>3000 / 8080</td><td>앱 내부 로컬 포트 (Node/Next.js 등)</td></tr>
 <tr><td>3306 / 5432</td><td>MySQL / PostgreSQL</td></tr>
 <tr><td>6379</td><td>Redis</td></tr>
-</table>
+</tbody></table>
 <pre><code>ss -tlnp               <span class="c"># 리슨 중인 포트 및 프로세스 확인</span>
 lsof -i :3000          <span class="c"># 3000 포트를 점유 중인 프로세스 조회</span></code></pre>
 <div class="callout warn"><b class="t">포트 충돌 (Address already in use)</b>초보자가 가장 자주 겪는 오류입니다. <code>lsof -i :포트번호</code>로 점유 중인 이전 프로세스를 찾아 종료하거나 앱 설정 포트를 변경합니다.</div>
@@ -438,13 +437,13 @@ lsof -i :3000          <span class="c"># 3000 포트를 점유 중인 프로세�
 <div class="sec-tag">모듈 1 · Linux</div>
 <h2>1.3 SSH는 단순 로그인이 아니다</h2>
 <p>SSH(Secure Shell)는 암호화된 안전한 통신 터널을 제공하는 프로토콜입니다. 쉘 접속뿐 아니라 포트 포워딩, 안전한 파일 전송(SFTP/rsync), Git 코드 동기화의 핵심 기반입니다.</p>
-<h3 data-reveal>비밀번호 로그인 비활성화 및 공개키 인증 필수화</h3>
+<h3 data-reveal="">비밀번호 로그인 비활성화 및 공개키 인증 필수화</h3>
 <p>비밀번호 로그인은 무차별 대입 공격(Brute Force)에 취약합니다. 비대칭 공개키 암호화(Ed25519)를 사용하면 개인키가 없는 공격자의 접속 시도를 원천 차단할 수 있습니다.</p>
 <pre><code><span class="c"># /etc/ssh/sshd_config 권장 보안 설정</span>
 PasswordAuthentication no
 PermitRootLogin prohibit-password
 PubkeyAuthentication yes</code></pre>
-<h3 data-reveal><code>~/.ssh/config</code>로 간편 접속 설정</h3>
+<h3 data-reveal=""><code>~/.ssh/config</code>로 간편 접속 설정</h3>
 <p>로컬 PC의 <code>~/.ssh/config</code>에 서버 정보를 등록하면 <code>ssh myserver</code> 한 줄로 편리하게 접속할 수 있습니다:</p>
 <pre><code>Host myserver
     HostName 203.0.113.195
@@ -499,12 +498,12 @@ chown -R deployer:deployer /var/www <span class="c"># 디렉터리 소유권 변
 <h2>2.2 DNS (도메인 네임 시스템)</h2>
 <p>사람이 기억하기 쉬운 도메인 이름(예: <code>example.com</code>)을 컴퓨터 통신용 IP 주소(예: <code>203.0.113.195</code>)로 변환해 주는 분산형 이름 풀이 시스템입니다.</p>
 <table class="tbl">
-<tr><th>레코드 종류</th><th>용도</th><th>설정 예시</th></tr>
-<tr><td><strong>A</strong></td><td>도메인을 IPv4 주소에 매핑</td><td><code>@ -> 203.0.113.195</code></td></tr>
-<tr><td><strong>AAAA</strong></td><td>도메인을 IPv6 주소에 매핑</td><td><code>@ -> 2001:db8::1</code></td></tr>
-<tr><td><strong>CNAME</strong></td><td>다른 도메인으로의 별칭(Alias)</td><td><code>www -> example.com</code></td></tr>
+<tbody><tr><th>레코드 종류</th><th>용도</th><th>설정 예시</th></tr>
+<tr><td><strong>A</strong></td><td>도메인을 IPv4 주소에 매핑</td><td><code>@ -&gt; 203.0.113.195</code></td></tr>
+<tr><td><strong>AAAA</strong></td><td>도메인을 IPv6 주소에 매핑</td><td><code>@ -&gt; 2001:db8::1</code></td></tr>
+<tr><td><strong>CNAME</strong></td><td>다른 도메인으로의 별칭(Alias)</td><td><code>www -&gt; example.com</code></td></tr>
 <tr><td><strong>TXT</strong></td><td>도메인 소유권 검증 및 SPF/DKIM 이메일 인증</td><td><code>v=spf1 include:...</code></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -586,7 +585,7 @@ PostgreSQL:       5432 (로컬 바인딩 전용)</code></pre>
 <section id="m2-9">
 <div class="sec-tag">모듈 2b · 네트워크 실무</div>
 <h2>2.9 VPN과 프록시 활용</h2>
-<p>관리자 페이지나 스테이징 환경 보호에는 <strong>Tailscale</strong>이나 <strong>WireGuard</strong> 기반의 메시 VPN을 추천합니다. 인터넷에 포트를 열지 않고도 팀원 간 안전한 통신이 가능합니다.</p>
+<p>Tailscale은 WireGuard를 사용합니다. 요금제의 사용자, 장치, 접근 제어, 가격 제한은 현재 공식 정보를 확인하세요.</p>
 </section>
 
 <div class="divider"></div>
@@ -615,7 +614,7 @@ traceroute yourdomain.dev           <span class="c"># 네트워크 라우팅 홉
 <div class="sec-tag">모듈 2c · 도구와 발전</div>
 <h2>2.12 HTTP/2 및 HTTP/3 (QUIC)</h2>
 <p>HTTP/2의 멀티플렉싱, UDP 기반 HTTP/3(QUIC)의 핸드셰이크 지연 단축 및 패킷 손실 복구력은 Nginx 최신 버전이나 Cloudflare 프록시를 통해 간단히 적용할 수 있습니다.</p>
-</section>
+<p class="src"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x" target="_blank" rel="noopener">developer.mozilla.org · Connection_management_in_HTTP_1.x</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -784,7 +783,7 @@ jobs:
 <div class="sec-tag">부록 A</div>
 <h2>5대 장애 30초 긴급 처방전</h2>
 <table class="tbl">
-<tr><th>장애 현상</th><th>주요 원인</th><th>30초 해결 절차</th></tr>
+<tbody><tr><th>장애 현상</th><th>주요 원인</th><th>30초 해결 절차</th></tr>
 <tr>
   <td><strong>502 Bad Gateway</strong></td>
   <td>백엔드 앱(Node/Python)이 미실행 상태이거나 크래시됨</td>
@@ -810,14 +809,14 @@ jobs:
   <td>Certbot 자동 갱신 크론 작업 실패</td>
   <td><code>certbot renew --dry-run</code>으로 원인 점검 → <code>certbot renew --force-renewal</code>로 강제 갱신.</td>
 </tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
 
 <section id="appB">
 <div class="sec-tag">부록 B</div>
-<h2>추천 레퍼런스 & 공식 정보</h2>
+<h2>추천 레퍼런스 &amp; 공식 정보</h2>
 <ul>
 <li><a href="https://systemd.io/" target="_blank">systemd 공식 문서</a> · Linux 서비스 관리</li>
 <li><a href="https://nginx.org/en/docs/" target="_blank">Nginx 공식 문서</a> · 리버스 프록시 및 웹 서버</li>
@@ -834,13 +833,13 @@ jobs:
 <div class="sec-tag">부록 C</div>
 <h2>핵심 용어집 (Glossary)</h2>
 <table class="tbl">
-<tr><th>용어</th><th>정의 및 역할</th></tr>
+<tbody><tr><th>용어</th><th>정의 및 역할</th></tr>
 <tr><td><strong>VPS</strong></td><td>가상 전용 서버 (Virtual Private Server). 물리 서버 상에서 가상화된 독립 OS 환경.</td></tr>
 <tr><td><strong>Reverse Proxy</strong></td><td>클라이언트 요청을 최전선에서 받아 내부 백엔드로 중계 및 라우팅하는 프록시.</td></tr>
 <tr><td><strong>Daemon</strong></td><td>백그라운드에서 상시 실행되며 요청을 대기하는 시스템 상주 프로세스.</td></tr>
 <tr><td><strong>TLS Handshake</strong></td><td>클라이언트와 서버가 암호화 통신을 시작할 때 암호화 키를 교환하고 신원을 검증하는 과정.</td></tr>
 <tr><td><strong>CIDR</strong></td><td>IP 주소 대역을 표기하는 표준 방식 (예: <code>192.168.1.0/24</code>).</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="footer">
@@ -851,6 +850,9 @@ jobs:
 </main>
 
 <button class="top-btn" id="topBtn" title="맨 위로 이동">▲</button>
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

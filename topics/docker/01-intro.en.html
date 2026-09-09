@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>01. Prologue: Xiao Ming's Dilemma - Docker 35-Stage Mastery Column</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
 <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
   <div class="nav-group">
     <div class="nav-group-title">🛠️ Phase 2: Environment Setup</div>
     <a class="nav-item" href="05-windows-setup.en.html"><span class="n">05.</span><span>Windows Pitfall Avoidance Guide</span></a>
-    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac & Linux Setup Playbook</span></a>
+    <a class="nav-item" href="06-mac-linux-setup.en.html"><span class="n">06.</span><span>Mac &amp; Linux Setup Playbook</span></a>
     <a class="nav-item" href="07-registry-mirror.en.html"><span class="n">07.</span><span>Registry Mirrors: Speed Up Pulls</span></a>
     <a class="nav-item" href="08-hello-world.en.html"><span class="n">08.</span><span>Secrets Behind the First Magic Line</span></a>
   </div>
@@ -357,13 +356,13 @@ pre:hover .copy-btn { opacity: 1; }
   </div>
   <div class="nav-group">
     <div class="nav-group-title">💾 Phase 5: Data Persistence</div>
-    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers & Disappearing Data</span></a>
+    <a class="nav-item" href="22-ephemeral-data.en.html"><span class="n">22.</span><span>Ephemeral Containers &amp; Disappearing Data</span></a>
     <a class="nav-item" href="23-volumes.en.html"><span class="n">23.</span><span>Lifeline: Data Volumes</span></a>
     <a class="nav-item" href="24-bind-mounts.en.html"><span class="n">24.</span><span>Dev Superpower: Bind Mounts</span></a>
     <a class="nav-item" href="25-volume-backup.en.html"><span class="n">25.</span><span>Moving the Safe: Data Backup</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🌐 Phase 6: Networking & Orchestration</div>
+    <div class="nav-group-title">🌐 Phase 6: Networking &amp; Orchestration</div>
     <a class="nav-item" href="26-network-types.en.html"><span class="n">26.</span><span>Network Deep Dive: Bridge vs Host</span></a>
     <a class="nav-item" href="27-container-network.en.html"><span class="n">27.</span><span>Container Matchmaking: Farewell to IPs</span></a>
     <a class="nav-item" href="28-why-compose.en.html"><span class="n">28.</span><span>Why Do We Need Compose?</span></a>
@@ -372,7 +371,7 @@ pre:hover .copy-btn { opacity: 1; }
     <a class="nav-item" href="31-compose-up-part2.en.html"><span class="n">31.</span><span>Final Battle (Part 2): Microservices Network</span></a>
   </div>
   <div class="nav-group">
-    <div class="nav-group-title">🛡️ Phase 7: Security & Production</div>
+    <div class="nav-group-title">🛡️ Phase 7: Security &amp; Production</div>
     <a class="nav-item" href="32-env-security.en.html"><span class="n">32.</span><span>Defense Moat: .env Secrets</span></a>
     <a class="nav-item" href="33-system-prune.en.html"><span class="n">33.</span><span>Disk Space Spring Cleaning</span></a>
     <a class="nav-item" href="34-production-root.en.html"><span class="n">34.</span><span>Red Line: Never Run as Root</span></a>
@@ -428,16 +427,16 @@ OSError: cannot load library 'libcairo.so.2': error 0x7e
 <pre><code class="language-mermaid">
 flowchart TD
     subgraph XiaoMingMac["Xiao Ming's Mac"]
-        A[Flawless Runtime Env] --> |Package Code| B(Source Code)
+        A[Flawless Runtime Env] --&gt; |Package Code| B(Source Code)
     end
     subgraph LaoWangWin["Lao Wang's Windows"]
-        B --> |Missing Dependencies| C{Error: ModuleNotFound}
+        B --&gt; |Missing Dependencies| C{Error: ModuleNotFound}
     end
     subgraph StagingCentOS["Staging Server CentOS"]
-        B --> |Legacy C Libraries| D{Error: Compilation Failure}
+        B --&gt; |Legacy C Libraries| D{Error: Compilation Failure}
     end
-    C -.-> E["Xiao Ming: But it works on my machine!"]
-    D -.-> E
+    C -.-&gt; E["Xiao Ming: But it works on my machine!"]
+    D -.-&gt; E
     style E fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
 </code></pre>
   </div>
@@ -582,5 +581,8 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

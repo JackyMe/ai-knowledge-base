@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+<!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="個人開発者のためのインフラ・運用基盤：5段階ロードマップ ＋ サーバー×ネットワーク×デプロイ 3大モジュール ＋ 5大障害30秒処方箋。SaaS依存から脱却し、ゼロからのセルフホスティングまでを完全マスター。">
@@ -157,6 +155,7 @@ pre .c{color:#7c8d92}
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -171,7 +170,7 @@ pre .c{color:#7c8d92}
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.ja.html">◂ トピック一覧</a>
-    
+
       <span>検証日: 2026-08-17</span>
   </div>
 </header>
@@ -265,20 +264,20 @@ pre .c{color:#7c8d92}
 <p>こんな経験はありませんか？ Vercel にデプロイした個人開発アプリが突然 DDoS を受けて高額請求に怯えたり、Cloudflare Pages の帯域制限やリージョン制限に悩まされたり、深夜に Supabase の接続数上限に達して立ち往生したり……。</p>
 <p>SaaS プラットフォームは極めて便利ですが、<strong>プラットフォームの制約や料金の壁に直面した瞬間</strong>、その恩恵は足かせに変わります。そこから一歩踏み出そうとしたとき、SSH、systemd、リバースプロキシ、DNS レコード、TLS ハンドシェイクといったインフラ用語の山に圧倒されてしまう開発者は少なくありません。</p>
 <div class="callout note"><b class="t">このドキュメントが提供するものと提供しないもの</b><strong>提供するもの：</strong> 5段階ロードマップ ＋ サーバー・ネットワーク・デプロイの <strong>必要最小限のコア知識</strong> ＋ 5大障害の30秒処方箋。読了後に中規模プロジェクトのサーバーを自力で管理・運用できるようになります。<br><strong>提供しないもの：</strong> Kubernetes クラスタの大規模運用、GPU 分散推論クラスタ、99.999% の極限チューニングなどは対象外です。</div>
-<h3 data-reveal>対象読者</h3>
+<h3 data-reveal="">対象読者</h3>
 <ul>
 <li>Next.js / Node / Python / Go 等でフルスタックアプリを構築した経験があり、普段は Vercel / Netlify / Cloudflare / Supabase / Railway に頼っている方。</li>
 <li>ドメインを購入したことはあるが、DNS 解決や TLS 証明書の背後で何が起きているか正確に把握していない方。</li>
 <li>本番障害が起きたときに自力でログを追えず、他人に助けを求めるしかなかった経験がある方。</li>
 <li>SRE や専門インフラエンジニアを目指すわけではないが、自前でサーバーを安定運用できるスキルを身につけたい方。</li>
 </ul>
-<h3 data-reveal>根拠の3段階分類</h3>
+<h3 data-reveal="">根拠の3段階分類</h3>
 <table class="tbl">
-<tr><th>表記</th><th>意味</th><th>具体例</th></tr>
+<tbody><tr><th>表記</th><th>意味</th><th>具体例</th></tr>
 <tr><td><span class="pill a">✅ 公式仕様</span></td><td>公式ドキュメントで厳密に確認済み</td><td>「systemd は Linux のシステムおよびサービスマネージャである」— <a href="https://systemd.io/" target="_blank">systemd.io</a></td></tr>
 <tr><td><span class="pill c">⚡ 実践検証</span></td><td>コミュニティで強固なコンセンサスがあり動作確認済み</td><td>「certbot --nginx のコマンド3行でHTTPS化」など</td></tr>
 <tr><td><span class="pill b">⚠️ 要確認</span></td><td>意見が分かれるものや時期依存の情報</td><td>各国のドメイン申請・ICP登録などの規制情報</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -288,13 +287,13 @@ pre .c{color:#7c8d92}
 <h2>5段階ロードマップ</h2>
 <p>学習プロセスを5つの段階に分割しています。各段階には <strong>検証可能な具体的成果物</strong> が設定されており、着実にステップアップできます。</p>
 <table class="tbl">
-<tr><th>段階</th><th>ゴール</th><th>実践成果物</th><th>完了判定基準</th><th>目安時間</th></tr>
+<tbody><tr><th>段階</th><th>ゴール</th><th>実践成果物</th><th>完了判定基準</th><th>目安時間</th></tr>
 <tr><td><strong>R1 現状の棚卸し</strong></td><td>自身の現在地と依存度を把握</td><td>「自作プロジェクトデプロイ一覧表」</td><td>各アプリのSaaS利用状況・コスト・制限を可視化</td><td>1時間</td></tr>
 <tr><td><strong>R2 Linuxの基礎</strong></td><td>VPS に SSH 接続し top で負荷を確認</td><td>Nginx を導入した稼働中の VPS</td><td><code>systemctl status nginx</code> が active 表示</td><td>半日</td></tr>
 <tr><td><strong>R3 ネットワーク基幹</strong></td><td>ドメイン → DNS → SSL → リバースプロキシが動作</td><td>独自ドメイン + HTTPS 環境</td><td>ブラウザで安全な鍵マークを確認</td><td>半日</td></tr>
 <tr><td><strong>R4 デプロイパイプライン</strong></td><td>git push による自動デプロイ</td><td>Node アプリ + GitHub Actions</td><td>コード変更 push から30秒で本番反映</td><td>1日</td></tr>
 <tr><td><strong>R5 障害調査</strong></td><td>5大障害からの自力復旧</td><td>付録Aの障害パターン再現テスト</td><td>故意に発生させた障害を自力で修復</td><td>1日</td></tr>
-</table>
+</tbody></table>
 <p>合計の学習目安は <strong>3〜4週末</strong> です。途中で詰まった場合は、付録Aの処方箋を参照するか各モジュールの解説に戻ってください。</p>
 </section>
 
@@ -304,7 +303,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">ロードマップ R1</div>
 <h2>R1 · 現状の棚卸し</h2>
 <p>いきなり VPS を契約する前に、現在開発・運用しているプロジェクトの構成を書き出します。これにより、SaaS の継続が適しているか、自前運用に切り替えるべきかが明確になります。</p>
-<h3 data-reveal>実践：プロジェクトデプロイ一覧の作成</h3>
+<h3 data-reveal="">実践：プロジェクトデプロイ一覧の作成</h3>
 <p>稼働中のアプリごとに以下の4項目を整理します：</p>
 <ol>
 <li><strong>実行環境</strong>: Vercel / Netlify / Cloudflare Pages / Supabase / VPS / その他</li>
@@ -321,12 +320,12 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">ロードマップ R2</div>
 <h2>R2 · Linuxの基礎</h2>
 <p>1コア 1GB メモリ程度の安価な VPS（月額 $3〜$5 程度）を契約し、Ubuntu 24.04 LTS をセットアップします。SSH 鍵認証でログインし、Nginx を起動してブラウザから接続確認を行います。</p>
-<h3 data-reveal>実践ステップ</h3>
+<h3 data-reveal="">実践ステップ</h3>
 <ol class="steps">
 <li><strong>VPS の選定</strong>: DigitalOcean, Vultr, AWS, Linode, さくらのVPS などからユーザーに近いリージョンを選択。OS は最も情報量の多い <strong>Ubuntu 24.04 LTS</strong> を推奨。</li>
 <li><strong>ローカルで SSH 鍵を生成</strong>: <code>ssh-keygen -t ed25519 -C "your@email"</code> を実行し、<code>~/.ssh/id_ed25519.pub</code> の内容を VPS 管理画面の SSH 鍵登録欄に貼り付け。</li>
 <li><strong>VPS への接続</strong>: ターミナルから <code>ssh root@YOUR_VPS_IP</code> で接続。初回接続時のフィンガープリント確認には "yes" と入力。</li>
-<li><strong>Nginx のインストール</strong>: <code>apt update && apt install -y nginx</code> を実行後、<code>systemctl status nginx</code> で <code>active (running)</code> を確認。</li>
+<li><strong>Nginx のインストール</strong>: <code>apt update &amp;&amp; apt install -y nginx</code> を実行後、<code>systemctl status nginx</code> で <code>active (running)</code> を確認。</li>
 <li><strong>ブラウザ確認</strong>: <code>http://YOUR_VPS_IP</code> にアクセスし、Nginx の Welcome 画面が表示されれば R2 は完了です。</li>
 </ol>
 </section>
@@ -337,7 +336,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">ロードマップ R3</div>
 <h2>R3 · ネットワーク基幹</h2>
 <p>IP アドレス直接アクセスから、独自ドメイン ＋ HTTPS（SSL証明書）による安全な接続へと昇格させます。DNS、Certbot、Nginx のリバースプロキシ連携を一気に形にします。</p>
-<h3 data-reveal>実践ステップ</h3>
+<h3 data-reveal="">実践ステップ</h3>
 <ol class="steps">
 <li><strong>ドメインの取得</strong>: Cloudflare Registrar、Namecheap、お名前.com 等でドメインを取得。</li>
 <li><strong>DNS レコードの設定</strong>: 管理画面で A レコードを作成し、ドメインを VPS のパブリック IP に紐付け。<code>dig yourdomain.dev</code> で反映を確認。</li>
@@ -353,7 +352,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">ロードマップ R4</div>
 <h2>R4 · デプロイパイプライン</h2>
 <p>手動でのファイル転送や SSH 直接ログインでの更新から卒業し、<code>git push</code> をトリガーとする自動デプロイ環境を構築します。</p>
-<h3 data-reveal>実践ステップ</h3>
+<h3 data-reveal="">実践ステップ</h3>
 <ol class="steps">
 <li><strong>systemd サービス定義</strong>: <code>/etc/systemd/system/myapp.service</code> を作成し、SSH 切断後もアプリがバックグラウンドで永続稼働しクラッシュ時に自動再起動するよう設定。</li>
 <li><strong>GitHub Actions ワークフローの作成</strong>: <code>.github/workflows/deploy.yml</code> を設定し、<code>main</code> ブランチへの push を契機に VPS へ自動 SSH 接続・コード取得・再起動を実行。</li>
@@ -368,7 +367,7 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">ロードマップ R5</div>
 <h2>R5 · 障害調査とトラブルシューティング</h2>
 <p>本番運用における最大の武器は、「障害を起こさないこと」ではなく「障害が起きた際に30秒以内に適切な切り分けができること」です。</p>
-<h3 data-reveal>実践：代表的な5大障害の再現と復旧</h3>
+<h3 data-reveal="">実践：代表的な5大障害の再現と復旧</h3>
 <ol class="steps">
 <li><strong>502 Bad Gateway</strong>: <code>systemctl stop myapp</code> でアプリを停止させ、Nginx のエラー挙動を確認した後に再起動で復旧。</li>
 <li><strong>SSH 接続不能</strong>: ポート設定の誤りやファイアウォール遮断のパターンを把握し、コンソール経由での復旧手順を確認。</li>
@@ -386,15 +385,15 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">モジュール 1 · Linux</div>
 <h2>1.1 サーバーとは何か</h2>
 <p>「サーバー」という言葉に身構える必要はありません。<strong>サーバーの本質は、24時間365日電源が入ったままネットワークに繋がっているコンピュータ</strong> に過ぎません。手元のPCとハードウェア構造はほぼ同じであり、ディスプレイやキーボードを持たず、データセンターのラックに収められ、SSH 経由でリモート操作する点が異なるだけです。</p>
-<h3 data-reveal>手元のPCとクラウドサーバーの違い</h3>
+<h3 data-reveal="">手元のPCとクラウドサーバーの違い</h3>
 <table class="tbl">
-<tr><th>項目</th><th>手元の PC / ラップトップ</th><th>クラウドサーバー (VPS)</th></tr>
+<tbody><tr><th>項目</th><th>手元の PC / ラップトップ</th><th>クラウドサーバー (VPS)</th></tr>
 <tr><td>OS</td><td>macOS / Windows</td><td>Ubuntu / Debian 等の Linux が主流</td></tr>
 <tr><td>操作形態</td><td>GUI（画面・マウス・キーボード）</td><td>SSH（コマンドラインのみ）</td></tr>
 <tr><td>稼働時間</td><td>作業時のみ起動</td><td>24時間常時稼働</td></tr>
 <tr><td>パブリック IP</td><td>通常は家庭内プライベート IP</td><td>固有のグローバル IP を保持</td></tr>
 <tr><td>重視される特性</td><td>操作の快適さ・デザイン</td><td>高可用性・安定性・リソース効率</td></tr>
-</table>
+</tbody></table>
 <div class="callout note"><b class="t">なぜサーバーOSは Linux なのか</b>Nginx、Node.js、Python、PostgreSQL、Docker、systemd など、現代のWebインフラを支える主要ソフトウェアは Linux ファーストで最適化されています。バックエンドやインフラを学ぶことは、実質的に Linux の基本を習得することと同義です。</div>
 </section>
 
@@ -404,30 +403,30 @@ pre .c{color:#7c8d92}
 <div class="sec-tag">モジュール 1 · Linux</div>
 <h2>1.2 3つの抽象概念：ファイルシステム、プロセス、ポート</h2>
 <p>Linux サーバーを「アパート」に例えてみましょう。各部屋の住人が <strong>プロセス</strong>、部屋番号が <strong>ポート</strong>、契約や鍵が <strong>権限</strong> に相当します。日々のサーバー運用の8割は、どのプロセスが動いているか、どのポートを使用しているか、どの権限で動いているかの確認です。</p>
-<h3 data-reveal>ファイルシステム：すべてはファイルである</h3>
+<h3 data-reveal="">ファイルシステム：すべてはファイルである</h3>
 <p>Linux の根幹哲学は「Everything is a File（すべてはファイルである）」です。ストレージだけでなく、ハードウェアデバイス、ネットワークソケット、プロセスの情報まで、すべて <code>/</code>（ルートディレクトリ）以下の階層に配置されたファイルとして扱われます。</p>
 <pre><code>ls /                  <span class="c"># ルートディレクトリの確認</span>
 ls /etc/nginx/         <span class="c"># Nginx の設定ファイル群</span>
 ls /var/log/           <span class="c"># システムおよび各サービスのログ</span>
 cat /proc/cpuinfo      <span class="c"># CPU 情報（メモリ上の仮想ファイル）</span></code></pre>
-<h3 data-reveal>プロセス：実行中のプログラム</h3>
+<h3 data-reveal="">プロセス：実行中のプログラム</h3>
 <p><code>node server.js</code> を実行すると、固有の PID（プロセスID）を持つプロセスが生成されます。運用で頻出するコマンド：</p>
 <pre><code>ps aux | grep node     <span class="c"># Node プロセスの稼働状況を確認</span>
 top                    <span class="c"># リアルタイムの CPU / メモリ消費量を確認（q で終了）</span>
 htop                   <span class="c"># より見やすいリソースモニター（apt install htop）</span>
 kill -9 1234           <span class="c"># PID 1234 のプロセスを強制終了</span>
 systemctl status myapp <span class="c"># systemd 管理下のサービス状態を確認</span></code></pre>
-<h3 data-reveal>ポート：通信の部屋番号 (0〜65535)</h3>
+<h3 data-reveal="">ポート：通信の部屋番号 (0〜65535)</h3>
 <p>1台のサーバー上で複数のネットワークサービスを同時に稼働させるため、通信ごとに「ポート番号」で識別します。</p>
 <table class="tbl">
-<tr><th>ポート番号</th><th>主な用途</th></tr>
+<tbody><tr><th>ポート番号</th><th>主な用途</th></tr>
 <tr><td>22</td><td>SSH（リモート接続）</td></tr>
 <tr><td>80</td><td>HTTP（暗号化なしWeb通信）</td></tr>
 <tr><td>443</td><td>HTTPS（SSL/TLS暗号化Web通信）</td></tr>
 <tr><td>3000 / 8080</td><td>アプリのローカル開発用ポート（Node/Next.js 等）</td></tr>
 <tr><td>3306 / 5432</td><td>MySQL / PostgreSQL</td></tr>
 <tr><td>6379</td><td>Redis</td></tr>
-</table>
+</tbody></table>
 <pre><code>ss -tlnp               <span class="c"># リッスン中のポート一覧を確認</span>
 lsof -i :3000          <span class="c"># ポート 3000 を使用しているプロセスを特定</span></code></pre>
 <div class="callout warn"><b class="t">ポート衝突（Address already in use）</b>初学者が最も頻繁に遭遇するエラーです。<code>lsof -i :対象ポート</code> で占有しているプロセスを特定し、不要なものを終了させるか設定ポートを変更します。</div>
@@ -439,13 +438,13 @@ lsof -i :3000          <span class="c"># ポート 3000 を使用しているプ
 <div class="sec-tag">モジュール 1 · Linux</div>
 <h2>1.3 SSH は単なるログインではない</h2>
 <p>SSH（Secure Shell）は暗号化された安全な通信路を提供するプロトコルです。端末操作だけでなく、ポートフォワーディング、ファイル転送（SFTP/rsync）、Git 連携の基盤として機能します。</p>
-<h3 data-reveal>パスワード認証の廃止と公開鍵認証の徹底</h3>
+<h3 data-reveal="">パスワード認証の廃止と公開鍵認証の徹底</h3>
 <p>パスワード認証はブルートフォース攻撃（総当たり攻撃）のリスクに常に晒されます。公開鍵暗号（Ed25519）を用いた鍵認証に切り替えることで、秘密鍵を持たない外部からの不正アクセスを物理的に遮断できます。</p>
 <pre><code><span class="c"># /etc/ssh/sshd_config の推奨セキュリティ設定</span>
 PasswordAuthentication no
 PermitRootLogin prohibit-password
 PubkeyAuthentication yes</code></pre>
-<h3 data-reveal><code>~/.ssh/config</code> による接続設定の簡素化</h3>
+<h3 data-reveal=""><code>~/.ssh/config</code> による接続設定の簡素化</h3>
 <p>ローカル PC の <code>~/.ssh/config</code> に設定を記述しておくことで、<code>ssh myserver</code> の一撃で接続できるようになります：</p>
 <pre><code>Host myserver
     HostName 203.0.113.195
@@ -500,12 +499,12 @@ chown -R deployer:deployer /var/www <span class="c"># ディレクトリ所有�
 <h2>2.2 DNS（ドメインネームシステム）</h2>
 <p>人間が理解しやすいドメイン名（例: <code>example.com</code>）をコンピュータが通信に使用する IP アドレス（例: <code>203.0.113.195</code>）に変換する分散型名前解決システムです。</p>
 <table class="tbl">
-<tr><th>レコード種別</th><th>用途</th><th>設定例</th></tr>
-<tr><td><strong>A</strong></td><td>ドメインを IPv4 アドレスに紐付け</td><td><code>@ -> 203.0.113.195</code></td></tr>
-<tr><td><strong>AAAA</strong></td><td>ドメインを IPv6 アドレスに紐付け</td><td><code>@ -> 2001:db8::1</code></td></tr>
-<tr><td><strong>CNAME</strong></td><td>別のドメインへのエイリアス（別名）</td><td><code>www -> example.com</code></td></tr>
+<tbody><tr><th>レコード種別</th><th>用途</th><th>設定例</th></tr>
+<tr><td><strong>A</strong></td><td>ドメインを IPv4 アドレスに紐付け</td><td><code>@ -&gt; 203.0.113.195</code></td></tr>
+<tr><td><strong>AAAA</strong></td><td>ドメインを IPv6 アドレスに紐付け</td><td><code>@ -&gt; 2001:db8::1</code></td></tr>
+<tr><td><strong>CNAME</strong></td><td>別のドメインへのエイリアス（別名）</td><td><code>www -&gt; example.com</code></td></tr>
 <tr><td><strong>TXT</strong></td><td>ドメイン所有権確認や SPF / DKIM メール認証</td><td><code>v=spf1 include:...</code></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -587,7 +586,7 @@ PostgreSQL:         5432 (ローカル限定)</code></pre>
 <section id="m2-9">
 <div class="sec-tag">モジュール 2b · 運用実務</div>
 <h2>2.9 VPN とプロキシの使い分け</h2>
-<p>管理画面やステージング環境へのアクセス制御には、<strong>Tailscale</strong> や <strong>WireGuard</strong> を活用したメッシュ VPN の構築が推奨されます。公開ポートを増やすことなく、開発メンバー間でのセキュアな通信が実現します。</p>
+<p>Tailscale は WireGuard を利用します。プランの人数・端末・制御・料金は公式情報で確認してください。</p>
 </section>
 
 <div class="divider"></div>
@@ -616,7 +615,7 @@ traceroute yourdomain.dev           <span class="c"># 通信経路（ホップ�
 <div class="sec-tag">モジュール 2c · ツールと進化</div>
 <h2>2.12 HTTP/2 と HTTP/3 (QUIC)</h2>
 <p>HTTP/2 によるストリーム多重化、HTTP/3（UDPベースの QUIC プロトコル）によるハンドシェイク遅延短縮とパケットロス耐性は、Nginx や Cloudflare を通じて容易に導入可能です。</p>
-</section>
+<p class="src"><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x" target="_blank" rel="noopener">developer.mozilla.org · Connection_management_in_HTTP_1.x</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -667,7 +666,7 @@ RestartSec=5s
 [Install]
 WantedBy=multi-user.target</code></pre>
 <pre><code>systemctl daemon-reload
-systemctl enable --now myapp   <span class="c"># 自動起動有効化 & 即時起動</span>
+systemctl enable --now myapp   <span class="c"># 自動起動有効化 &amp; 即時起動</span>
 systemctl status myapp         <span class="c"># 状態確認</span>
 journalctl -u myapp -f         <span class="c"># アプリのリアルタイムログ出力</span></code></pre>
 </section>
@@ -785,7 +784,7 @@ jobs:
 <div class="sec-tag">付録 A</div>
 <h2>5大障害 30秒クイック処方箋</h2>
 <table class="tbl">
-<tr><th>障害現象</th><th>考えられる根本原因</th><th>30秒対処手順</th></tr>
+<tbody><tr><th>障害現象</th><th>考えられる根本原因</th><th>30秒対処手順</th></tr>
 <tr>
   <td><strong>502 Bad Gateway</strong></td>
   <td>バックエンドアプリ（Node/Python）がクラッシュまたは未起動</td>
@@ -811,14 +810,14 @@ jobs:
   <td>Certbot の自動更新 Cron 失敗</td>
   <td><code>certbot renew --dry-run</code> でエラー原因を確認 → <code>certbot renew --force-renewal</code> で強制更新。</td>
 </tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
 
 <section id="appB">
 <div class="sec-tag">付録 B</div>
-<h2>おすすめリファレンス & 公式情報</h2>
+<h2>おすすめリファレンス &amp; 公式情報</h2>
 <ul>
 <li><a href="https://systemd.io/" target="_blank">systemd 公式ドキュメント</a> · Linux サービス管理</li>
 <li><a href="https://nginx.org/en/docs/" target="_blank">Nginx 公式ドキュメント</a> · リバースプロキシ・Webサーバー</li>
@@ -835,13 +834,13 @@ jobs:
 <div class="sec-tag">付録 C</div>
 <h2>重要用語集 (Glossary)</h2>
 <table class="tbl">
-<tr><th>用語</th><th>定義と役割</th></tr>
+<tbody><tr><th>用語</th><th>定義と役割</th></tr>
 <tr><td><strong>VPS</strong></td><td>仮想専用サーバー（Virtual Private Server）。物理サーバー上で仮想化された独立したOS環境。</td></tr>
 <tr><td><strong>Reverse Proxy</strong></td><td>クライアントからのリクエストを背後の複数バックエンドへ転送・仲介するプロキシ。</td></tr>
 <tr><td><strong>Daemon</strong></td><td>バックグラウンドで常時稼働し、要求を待ち受けるシステム常駐プロセス。</td></tr>
 <tr><td><strong>TLS Handshake</strong></td><td>クライアントとサーバー間で暗号化通信を開始する際の鍵交換および身元証明のやり取り。</td></tr>
 <tr><td><strong>CIDR</strong></td><td>IP アドレスの範囲を表す記法（例: <code>192.168.1.0/24</code>）。</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="footer">
@@ -852,6 +851,9 @@ jobs:
 </main>
 
 <button class="top-btn" id="topBtn" title="トップへ戻る">▲</button>
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>19. 图解：分层缓存魔法 - Docker 35 级通关专栏</title>
@@ -290,6 +288,7 @@ pre:hover .copy-btn { opacity: 1; }
   mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 </script>
   <script src="../../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../../assets/css/reading.css">
 </head>
 <body>
 
@@ -332,7 +331,7 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="nav-group">
   <div class="nav-group-title">🛠️ 第二阶段：环境搭建</div>
   <a class="nav-item" href="05-windows-setup.html"><span class="n">05.</span><span>Windows 玩家避坑指南</span></a>
-  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac & Linux 通关密码</span></a>
+  <a class="nav-item" href="06-mac-linux-setup.html"><span class="n">06.</span><span>Mac &amp; Linux 通关密码</span></a>
   <a class="nav-item" href="07-registry-mirror.html"><span class="n">07.</span><span>换源提速：告别蜗牛网速</span></a>
   <a class="nav-item" href="08-hello-world.html"><span class="n">08.</span><span>第一行魔法背后的秘密</span></a>
 </div>
@@ -393,11 +392,11 @@ pre:hover .copy-btn { opacity: 1; }
 <div class="mermaid-box">
 <pre><code class="language-mermaid">
 graph TD
-    A[FROM node:18-alpine] --> B[WORKDIR /app]
-    B --> C[COPY package.json .]
-    C --> D["RUN npm install"]
-    D --> E[COPY . .]
-    E --> F["CMD ['node', 'server.js']"]
+    A[FROM node:24-alpine] --&gt; B[WORKDIR /app]
+    B --&gt; C[COPY package.json .]
+    C --&gt; D["RUN npm install"]
+    D --&gt; E[COPY . .]
+    E --&gt; F["CMD ['node', 'server.js']"]
     style A fill:#bfdbfe,stroke:#2563eb
     style C fill:#bbf7d0,stroke:#16a34a
     style D fill:#fef08a,stroke:#ca8a04
@@ -414,7 +413,7 @@ graph TD
 <div class="step-panel">
   <div class="step-header">❌ 糟糕的写法：新人常犯错误</div>
   <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 <span class="bash-comment"># 直接把所有代码和 package.json 一次性拷进来</span>
 COPY . .
@@ -428,7 +427,7 @@ CMD ["node", "server.js"]</pre>
 <div class="step-panel">
   <div class="step-header">✅ 优秀的写法：分步拷贝法</div>
   <div class="step-body">
-<pre>FROM node:18-alpine
+<pre>FROM node:24-alpine
 WORKDIR /app
 <span class="bash-comment"># 第一步：只拷贝包描述文件</span>
 COPY package.json .
@@ -445,18 +444,18 @@ CMD ["node", "server.js"]</pre>
 <pre><code class="language-mermaid">
 flowchart LR
     subgraph 糟糕写法
-        A1(COPY . .) --> B1("代码变了!<br>重传代码") --> C1(RUN npm install<br>缓存失效!<br>痛苦重装依赖)
+        A1(COPY . .) --&gt; B1("代码变了!<br>重传代码") --&gt; C1(RUN npm install<br>缓存失效!<br>痛苦重装依赖)
     end
     subgraph 优秀写法
-        A2(COPY package.json .) --> B2(未变! 走缓存) --> C2(RUN npm install<br>走缓存! 秒过) --> D2(COPY . .<br>重传代码)
+        A2(COPY package.json .) --&gt; B2(未变! 走缓存) --&gt; C2(RUN npm install<br>走缓存! 秒过) --&gt; D2(COPY . .<br>重传代码)
     end
 </code></pre>
 </div>
 
 <h2>4. 减少层数：RUN 命令的串联艺术</h2>
-<p>我们提到过，每一条 RUN 都会增加一层。每多一层，镜像就大一点。如果你要装系统软件，请用 <code>&&</code> 串起来，最后记得打扫卫生（清理 apt 缓存等），因为一旦到了下一层，你就算用 <code>rm</code> 删除了文件，镜像的整体体积也不会减小（就像 Git 的提交记录一样，东西还在历史里留着）。</p>
+<p>我们提到过，每一条 RUN 都会增加一层。每多一层，镜像就大一点。如果你要装系统软件，请用 <code>&amp;&amp;</code> 串起来，最后记得打扫卫生（清理 apt 缓存等），因为一旦到了下一层，你就算用 <code>rm</code> 删除了文件，镜像的整体体积也不会减小（就像 Git 的提交记录一样，东西还在历史里留着）。</p>
 <pre><span class="bash-comment"># 完美的一行安装法</span>
-<span class="bash-cmd">RUN</span> apt-get update     && apt-get install -y vim curl net-tools     && rm -rf /var/lib/apt/lists/*</pre>
+<span class="bash-cmd">RUN</span> apt-get update     &amp;&amp; apt-get install -y vim curl net-tools     &amp;&amp; rm -rf /var/lib/apt/lists/*</pre>
 
 <div class="alert tip">
   <span class="ic">💡</span>
@@ -585,5 +584,7 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-</body>
-</html>
+<script src="../../assets/js/reading.js"></script>
+<script src="../../assets/js/theme-toggle.js"></script>
+
+</body></html>

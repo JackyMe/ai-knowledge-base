@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html><html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="OpenAI 编码代理全景实战指南: 20+ 子命令与 40+ 斜杠命令速查、沙箱与审批 3×3 详解、4 条进阶学习路线、选型三棱镜、长任务四权分立、收尾记忆系统、浏览器 E2E 验收、Issue 到 PR 闭环、Skills/MCP 以及与 Claude Code 的协同打法。">
@@ -173,6 +171,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 </style>
 <link rel="stylesheet" href="../assets/css/site.css">
 <script src="../assets/js/i18n.js"></script>
+<link rel="stylesheet" href="../assets/css/reading.css">
 </head>
 <body>
 
@@ -223,11 +222,11 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">实战与进阶</div>
-    <a href="#best-practices"><span class="no">进阶</span>最佳实践与最优示例</a>
-    <a href="#subscription-quotas"><span class="no">进阶</span>订阅额度与榨干指南</a>
-    <a href="#image-guide"><span class="no">进阶</span>Image 2.0/2.5 图像与视觉实战</a>
+    <a href="#best-practices">可复用的任务与验收模板</a>
+    <a href="#subscription-quotas">订阅、API 与上下文的区别</a>
+    <a href="#image-guide">图像任务转入独立专题</a>
     <a href="#playbook"><span class="no">10</span>场景与 GitHub 流水线</a>
-    <a href="#hidden-config"><span class="no">11</span>底层反查与双代理</a>
+    <a href="#hidden-config">核对本机版本与可用能力</a>
     <a href="#resources"><span class="no">12</span>资源索引</a>
   </div>
 </nav>
@@ -258,27 +257,27 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <p>Codex 是 OpenAI 推出的代理式（Agentic）智能编码体系：它不仅仅是“会写代码的聊天机器人”，而是一个具备<strong>项目理解、工具调用、OS 级沙箱隔离、代码修补验证与跨平台执行能力</strong>的自主研发助手。理解 Codex 的第一步，是建立清晰的选型心智模型。</p>
 
-<h3 data-reveal>一、五种形态，一个账号通用</h3>
+<h3 data-reveal="">一、五种形态，一个账号通用</h3>
 <table class="tbl">
-  <tr><th>形态</th><th>核心入口</th><th>最适合场景</th><th>关键特权与机制</th></tr>
+  <tbody><tr><th>形态</th><th>核心入口</th><th>最适合场景</th><th>关键特权与机制</th></tr>
   <tr><td><strong>交互式 CLI (TUI)</strong></td><td>终端运行 <code>codex</code></td><td>日常主力编码、架构探索、快速重构</td><td>沉浸式终端界面、全量快捷键、实时 diff 审查</td></tr>
   <tr><td><strong>非交互模式 (exec)</strong></td><td><code>codex exec</code> / <code>codex e</code></td><td>CI/CD 自动化流水线、Shell 脚本、批量文件处理</td><td>流式输出到 stdout 或 JSONL、支持 <code>--json</code> 机器解析</td></tr>
   <tr><td><strong>IDE 扩展</strong></td><td>VS Code / Cursor / JetBrains</td><td>在当前编辑文件上下文内微调、内联改代码</td><td>直接复用编辑器打开的文件与选区上下文、共享 CLI 登录态</td></tr>
   <tr><td><strong>Codex Cloud</strong></td><td><code>codex cloud</code> / 网页端</td><td>长任务后台托管、异步隔离构建、best-of-N 尝试</td><td>独立云沙箱执行，支持 1-4 次并行尝试，本地 <code>codex apply</code> 落地</td></tr>
   <tr><td><strong>桌面 App / GitHub</strong></td><td><code>codex app</code>；PR 评论 <code>@codex review</code></td><td>独立工作台、可视化任务管理、代码审查流水线</td><td>集成浏览器与应用连接器，GitHub PR 自动内联代码评审</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>二、选型三棱镜 ①：Chat vs ChatGPT Work vs Codex</h3>
+<h3 data-reveal="">二、选型三棱镜 ①：Chat vs ChatGPT Work vs Codex</h3>
 <p>很多初学者常问：“我已经在用 ChatGPT 了，什么时候该切换到 Codex？”按<strong>交付物形态与执行权限</strong>划分：</p>
 <table class="tbl">
-  <tr><th>维度</th><th>ChatGPT 对话 (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
+  <tbody><tr><th>维度</th><th>ChatGPT 对话 (Chat)</th><th>ChatGPT Work</th><th>Codex (CLI / IDE / Cloud)</th></tr>
   <tr><td><strong>核心交付物</strong></td><td>文本解答、代码片段、概念讲解</td><td>Word/Excel/Notion 风格共享文档、知识库</td><td><strong>真实文件树修改、Git Diff、可执行代码</strong></td></tr>
   <tr><td><strong>执行与验证</strong></td><td>仅在云端沙箱跑简单 Python 代码</td><td>办公软件数据联动、协同编辑</td><td><strong>本地/容器全功能终端、跑测试、编译构建、E2E</strong></td></tr>
   <tr><td><strong>上下文管理</strong></td><td>基于单次对话历史，易随长度遗忘</td><td>项目工作区文件索引</td><td><strong>代码仓库全量索引、AGENTS.md、会话分叉与持久记忆</strong></td></tr>
   <tr><td><strong>适用阶段</strong></td><td>需求脑暴、算法伪代码设计、报错原因初查</td><td>PRD 撰写、需求文档整理、团队知识沉淀</td><td><strong>从功能实现、Bug 根治、测试补齐到 PR 提交全流程</strong></td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、选型三棱镜 ②：App vs CLI vs IDE vs Cloud 怎么搭配</h3>
+<h3 data-reveal="">三、选型三棱镜 ②：App vs CLI vs IDE vs Cloud 怎么搭配</h3>
 <div class="duo">
   <div class="good">
     <b>✅ 黄金组合推荐（大厂高效实践）</b>
@@ -375,8 +374,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 
 <div class="callout warn"><b class="t">🚑 遇到环境与登录疑难？</b>如果遇到 1455 端口回调失败、代理拦截、无头机认证、多账号冲突，请直达专题指南：<a href="env-auth-clinic.html">环境与登录急救手册</a>。</div>
 
-<h3 data-reveal>一、全平台安装命令</h3>
-<pre><code><span class="c"># 方式 1: npm 全局安装 (跨平台通用，推荐 Node >= 18)</span>
+<h3 data-reveal="">一、全平台安装命令</h3>
+<pre><code><span class="c"># 方式 1: npm 全局安装 (跨平台通用，推荐 Node &gt;= 18)</span>
 npm install -g @openai/codex
 
 <span class="c"># 方式 2: Homebrew (macOS)</span>
@@ -386,16 +385,16 @@ brew install codex
 codex
 codex update</code></pre>
 
-<h3 data-reveal>二、Windows 与 WSL2 专属深度避坑与调优</h3>
+<h3 data-reveal="">二、Windows 与 WSL2 专属深度避坑与调优</h3>
 <table class="tbl">
-  <tr><th>关键问题</th><th>致命陷阱 / 现象</th><th>官方标准解法与调优建议</th></tr>
+  <tbody><tr><th>关键问题</th><th>致命陷阱 / 现象</th><th>官方标准解法与调优建议</th></tr>
   <tr><td><strong>跨文件系统 I/O 陷阱</strong></td><td>在 Windows 盘符路径（如 <code>/mnt/c/Users/...</code>）运行 Codex，文件读写极慢，Node/Rust 项目构建甚至卡死</td><td><strong>必须在 WSL 原生 Linux 文件系统（如 <code>~/projects/...</code>）下克隆项目与运行</strong>，速度提升 5~10 倍！</td></tr>
   <tr><td><strong>终端字符集与换行符</strong></td><td>Windows 原生 CMD/PowerShell 出现中文乱码、Git CRLF 冲突</td><td>建议使用 <strong>Windows Terminal</strong>，配置全局 <code>chcp 65001</code> (UTF-8)，Git 设置 <code>core.autocrlf = input</code></td></tr>
-  <tr><td><strong>npm 全局权限冲突</strong></td><td>WSL 中 <code>npm install -g</code> 报 <code>EACCES</code> 权限错误</td><td>配置用户级 npm prefix：<code>mkdir ~/.npm-global && npm config set prefix '~/.npm-global'</code> 并加入 <code>PATH</code></td></tr>
+  <tr><td><strong>npm 全局权限冲突</strong></td><td>WSL 中 <code>npm install -g</code> 报 <code>EACCES</code> 权限错误</td><td>配置用户级 npm prefix：<code>mkdir ~/.npm-global &amp;&amp; npm config set prefix '~/.npm-global'</code> 并加入 <code>PATH</code></td></tr>
   <tr><td><strong>快捷键被截获</strong></td><td><kbd>Ctrl+W</kbd> 关闭标签页冲突或复制粘贴错乱</td><td>在 Windows Terminal 设置中为 Codex 配置文件解除 <kbd>Ctrl+W</kbd> 绑定，改用原生终端复制</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、进入新项目的标准四步法</h3>
+<h3 data-reveal="">三、进入新项目的标准四步法</h3>
 <ol class="steps">
   <li><code>/init</code> —— 自动分析仓库，生成精简的 <code>AGENTS.md</code>（构建、测试与架构约定）；</li>
   <li><code>/model</code> —— 选定模型与推理力度（默认 <strong>GPT-5.6 Sol</strong>，或 Terra / Luna）；运行 <code>/status</code> 确认会话配置；</li>
@@ -413,7 +412,7 @@ codex update</code></pre>
 
 <div class="callout note"><b class="t">本页核对状态</b>最后核对 <strong>2026-08-31</strong> · 数据源:<a href="https://learn.chatgpt.com/docs/changelog" target="_blank">Codex 官方 changelog</a>。本节只收录<strong>会改变你使用习惯</strong>的变化;完整历史见<a href="toolchain-changelog.html">工具版本追踪</a>。</div>
 
-<h3 data-reveal>🆕 0.153.4 最新能力 (2026-09)</h3>
+<h3 data-reveal="">🆕 0.153.4 最新能力 (2026-09)</h3>
 <ul>
   <li><strong>内置 GPT-6 Astra 模型</strong>：Codex 现已全面整合 GPT-6 Astra 模型，您可在内置的 Model Picker 中直接将其设为默认选项，体验断崖式提升的复杂逻辑推理能力。</li>
   <li><strong>Vim 模式全面增强</strong>：0.153.0 大幅强化了 TUI 下的 Vim 操作手感，现在的 Undo (<code>u</code>) 与 Redo (<code>Ctrl+R</code>) 将完整保留您的草稿状态（含粘贴内容与附件）。</li>
@@ -422,7 +421,7 @@ codex update</code></pre>
   <li><strong>Markdown 导出与无头会话</strong>：0.148.0 支持了 <code>/export</code> 以及 <code>codex exec fork</code> 分支能力。</li>
 </ul>
 
-<h3 data-reveal>🚨 关键破坏性变更与模型迁移</h3>
+<h3 data-reveal="">🚨 关键破坏性变更与模型迁移</h3>
 <ul>
   <li><strong>GPT-5.4 系列模型全面退役</strong>：OpenAI 已于 <strong>2026-08-31</strong> 正式停用 GPT-5.4 及 mini。若遇到报错请立即将 <code>config.toml</code> 迁移至 <code>gpt-5.6-sol</code>、<code>gpt-5.6-terra</code> 或 <code>gpt-5.6-luna</code>。</li>
   <li><strong><code>codex exec --full-auto</code> 已移除</strong>：0.147.0 移除了 <code>--full-auto</code> 参数，脚本中请改写为 <code>codex exec --sandbox workspace-write --ask-for-approval on-request</code>；若需无人值守自动放行，请使用新参数 <code>--approve-for-me</code>。</li>
@@ -439,7 +438,7 @@ codex update</code></pre>
 <h2>命令速查手册</h2>
 <p>覆盖日常高频 8 核心命令、终端子命令、常用启动参数及按场景归类的 40+ 斜杠命令。</p>
 
-<h3 data-reveal>⚡ 高频核心命令（肌肉记忆）</h3>
+<h3 data-reveal="">⚡ 高频核心命令（肌肉记忆）</h3>
 <div class="hotcmds">
   <div class="hotcmd must"><span class="hc-cmd">codex ["任务描述"]</span><span class="hc-desc">启动交互式 TUI，可带初始提示与 -i 图片</span></div>
   <div class="hotcmd must"><span class="hc-cmd">codex exec (e)</span><span class="hc-desc">非交互式执行，自动化与 CI/CD 脚本基石</span></div>
@@ -451,9 +450,9 @@ codex update</code></pre>
   <div class="hotcmd"><span class="hc-cmd">/side (/btw)</span><span class="hc-desc">开启临时侧对话，探查细节不污染主线</span></div>
 </div>
 
-<h3 data-reveal>一、终端子命令</h3>
+<h3 data-reveal="">一、终端子命令</h3>
 <table class="tbl">
-  <tr><th>子命令</th><th>语法示例</th><th>功能与适用场景</th></tr>
+  <tbody><tr><th>子命令</th><th>语法示例</th><th>功能与适用场景</th></tr>
   <tr><td><code>codex</code></td><td><code>codex "重构 auth 模块"</code></td><td>启动交互式 TUI 工作台，支持携带初敏提示与图片</td></tr>
   <tr><td><code>codex exec</code> (<code>e</code>)</td><td><code>codex exec "跑测试并修掉 lint 报错"</code></td><td>非交互式运行，结果流式输出到控制台，支持 <code>--json</code></td></tr>
   <tr><td><code>codex resume</code></td><td><code>codex resume &lt;SESSION_ID&gt;</code></td><td>按 ID 恢复历史会话；<code>--last</code> 直接续接上一场</td></tr>
@@ -464,11 +463,11 @@ codex update</code></pre>
   <tr><td><code>codex mcp-server</code></td><td><code>codex mcp-server</code></td><td>将 Codex 自身作为 MCP 服务（stdio）暴露给外部工具</td></tr>
   <tr><td><code>codex sandbox</code></td><td><code>codex sandbox -- &lt;cmd&gt;</code></td><td>在 Codex 同款 OS 沙箱里手动运行任意命令进行隔离测试</td></tr>
   <tr><td><code>codex features</code></td><td><code>codex features list / enable / disable</code></td><td>列出并持久开关底层 Rust 功能旗标</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>二、常用启动参数</h3>
+<h3 data-reveal="">二、常用启动参数</h3>
 <table class="tbl">
-  <tr><th>参数</th><th>简写</th><th>功能说明</th></tr>
+  <tbody><tr><th>参数</th><th>简写</th><th>功能说明</th></tr>
   <tr><td><code>--model &lt;name&gt;</code></td><td><code>-m</code></td><td>覆盖指定模型（如 <code>gpt-5.6-sol</code>, <code>gpt-5.6-terra</code>）</td></tr>
   <tr><td><code>--sandbox &lt;mode&gt;</code></td><td><code>-s</code></td><td>沙箱安全档位：<code>read-only</code> | <code>workspace-write</code> | <code>danger-full-access</code></td></tr>
   <tr><td><code>--ask-for-approval &lt;policy&gt;</code></td><td><code>-a</code></td><td>审批策略：<code>untrusted</code> | <code>on-request</code> | <code>never</code></td></tr>
@@ -479,11 +478,11 @@ codex update</code></pre>
   <tr><td><code>--oss</code></td><td>-</td><td>直连本地 Ollama 开源模型运行</td></tr>
   <tr><td><code>-c key=value</code></td><td>-</td><td>单次覆盖 <code>config.toml</code> 中的任意层叠配置（值按 JSON 解析）</td></tr>
   <tr><td><code>--profile &lt;name&gt;</code></td><td><code>-p</code></td><td>加载指定配置档（如 <code>ci.config.toml</code>）</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、会话内斜杠命令（分类全解）</h3>
+<h3 data-reveal="">三、会话内斜杠命令（分类全解）</h3>
 <table class="tbl">
-  <tr><th>分类</th><th>命令</th><th>功能用途</th></tr>
+  <tbody><tr><th>分类</th><th>命令</th><th>功能用途</th></tr>
   <tr><td rowspan="4"><strong>会话与上下文</strong></td><td><code>/new</code> · <code>/clear</code></td><td>新开会话重置上下文 / 清理当前屏与上下文（<kbd>Ctrl+L</kbd> 仅清屏不重置）</td></tr>
   <tr><td><code>/compact</code></td><td>提炼压缩历史对话，大幅释放上下文窗口</td></tr>
   <tr><td><code>/side</code> (<code>/btw</code>)</td><td>开启临时侧枝对话，探讨支线问题后返回，不污染主线上下文</td></tr>
@@ -497,7 +496,7 @@ codex update</code></pre>
   <tr><td rowspan="3"><strong>扩展与配置</strong></td><td><code>/init</code></td><td>初始化仓库的 <code>AGENTS.md</code> 脚手架</td></tr>
   <tr><td><code>/skills</code> · <code>/plugins</code> · <code>/mcp</code></td><td>浏览与调用当前已挂载的技能、插件与 MCP 工具</td></tr>
   <tr><td><code>/import</code></td><td><strong>一键导入 Claude Code 的配置、项目文件与会话历史</strong></td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -509,7 +508,7 @@ codex update</code></pre>
 <p>Codex 的核心安全壁垒由<strong>两个正交旋钮</strong>决定：<strong>沙箱（能碰什么）</strong>与<strong>审批（什么时候打扰你）</strong>。掌握这 3×3 的 9 种手感，是做到“既安全又高效”的钥匙。</p>
 
 <table class="tbl">
-  <tr><th>沙箱 ＼ 审批</th><th><code>untrusted</code><br><span class="src">非白名单一律先问</span></th><th><code>on-request</code> <span class="pill a">推荐默认</span><br><span class="src">越权才问</span></th><th><code>never</code><br><span class="src">绝不弹窗直接失败</span></th></tr>
+  <tbody><tr><th>沙箱 ＼ 审批</th><th><code>untrusted</code><br><span class="src">非白名单一律先问</span></th><th><code>on-request</code> <span class="pill a">推荐默认</span><br><span class="src">越权才问</span></th><th><code>never</code><br><span class="src">绝不弹窗直接失败</span></th></tr>
   <tr>
     <td><code>read-only</code><br><span class="src">只读不写不联网</span></td>
     <td><strong>超保守审查档</strong>：读任何文件都要批准。仅适合完全陌生、来路不明的恶意代码勘探。<br><span class="src">翻车点：频繁弹窗把人逼疯</span></td>
@@ -528,7 +527,7 @@ codex update</code></pre>
     <td><strong>容器内全权开发</strong>：在 Docker 一次性容器内自由调试系统依赖，高危动作仍有人工确认。</td>
     <td><strong>= <code>--yolo</code> ⚠️</strong>：全开权限且不问，仅限一次性无敏感凭据的隔离容器中运行！</td>
   </tr>
-</table>
+</tbody></table>
 
 <div class="callout tip"><b class="t">选择准则</b>日常交互开发闭眼选 <code>workspace-write</code> + <code>on-request</code>（居中安全舒适区）。往左上走是“安全防守”，往右下走是“自动化放权”。</div>
 </section>
@@ -540,7 +539,7 @@ codex update</code></pre>
 <div class="sec-tag">心法 05</div>
 <h2>核心方法论与新手避坑指南</h2>
 
-<h3 data-reveal>一、真实任务的四要素法则（Goal-Context-Constraints-Done）</h3>
+<h3 data-reveal="">一、真实任务的四要素法则（Goal-Context-Constraints-Done）</h3>
 <p>任务失控 90% 源于初始输入过于空泛。高质量 Prompt 必须包含四个锚点：</p>
 <ul>
   <li><strong>Goal (目标)</strong>：用一句话清晰定义要交付的具体结果，拒绝“帮我看看这个模块”；</li>
@@ -549,9 +548,9 @@ codex update</code></pre>
   <li><strong>Done-when (验收标准)</strong>：给出可量化验收条件（如：某个特定单测全绿、返回特定 JSON 字段）。</li>
 </ul>
 
-<h3 data-reveal>二、新手最容易让任务失控的 8 大误区</h3>
+<h3 data-reveal="">二、新手最容易让任务失控的 8 大误区</h3>
 <table class="tbl">
-  <tr><th>误区编号</th><th>典型错误做法</th><th>产生恶果</th><th>正确解法与防守 SOP</th></tr>
+  <tbody><tr><th>误区编号</th><th>典型错误做法</th><th>产生恶果</th><th>正确解法与防守 SOP</th></tr>
   <tr><td><strong>误区 01</strong></td><td>一上来就开干，不让 Codex 出计划</td><td>大范围修改无关文件，破坏既有设计</td><td>复杂任务强制 <code>/plan</code>，先审计划确认影响面</td></tr>
   <tr><td><strong>误区 02</strong></td><td>在存在未提交改动的脏分支上开工</td><td>Codex 改动与个人改动混杂，无法干净回滚</td><td>开工前必先 <code>git stash</code> 或切全新 <code>feat/xxx</code> 分支</td></tr>
   <tr><td><strong>误区 03</strong></td><td>把 <kbd>Ctrl+L</kbd> 当作新会话</td><td>只清屏未清上下文，残留历史噪音导致严重幻觉</td><td>彻底重置必须使用 <code>/new</code> 或 <code>/clear</code></td></tr>
@@ -560,7 +559,7 @@ codex update</code></pre>
   <tr><td><strong>误区 06</strong></td><td>只看口头宣称“已完成”，不看 Diff</td><td>代码隐藏未预期的逻辑空转或语法漏洞</td><td>提交前必亲自执行 <code>/diff</code> 逐行审阅</td></tr>
   <tr><td><strong>误区 07</strong></td><td>修 Bug 直接让模型“凭感觉改”</td><td>用 try-catch 压制报错，掩盖真实根因</td><td><strong>必须坚持 TDD</strong>：先写复现失败的测试，再修至通过</td></tr>
   <tr><td><strong>误区 08</strong></td><td>图省事在主力机直接使用 <code>--yolo</code></td><td>误删系统配置或泄露个人 SSH/API Key 资产</td><td>个人电脑严禁 <code>--yolo</code>，高危操作仅限一次性 Docker</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -572,15 +571,15 @@ codex update</code></pre>
 
 <p>处理耗时半小时以上的大型重构或复杂模块时，单会话从头滚到底必然导致注意力稀释与幻觉失控。Codex 的高阶打法是<strong>“四权分立”与会话分流</strong>。</p>
 
-<h3 data-reveal>一、长任务“四权分立”工作流</h3>
+<h3 data-reveal="">一、长任务“四权分立”工作流</h3>
 <ol class="steps">
   <li><strong>讨论与规划阶段 (Discuss / Plan)</strong>：在 <code>read-only</code> 沙箱下运行 <code>/plan</code>，只读分析仓库，产出详细修改方案、文件清单与风险评估。不写代码。</li>
   <li><strong>隔离执行阶段 (Execute)</strong>：开启新会话或子线程，挂载已确认的 Plan，给足 <code>workspace-write</code> 权限，按模块逐个攻克，每一步要求运行最小验证。</li>
   <li><strong>独立审查阶段 (Review)</strong>：另起全新会话或调用 <code>/review</code>，从“未参与编写的第三者”视角做健壮性、边界与安全审查。</li>
-  <li><strong>收尾与交接阶段 (Closeout & Handover)</strong>：提取测试证据与截图，更新 <code>DECISIONS.md</code> 与 <code>AGENTS.md</code>，生成结构化 PR 描述。</li>
+  <li><strong>收尾与交接阶段 (Closeout &amp; Handover)</strong>：提取测试证据与截图，更新 <code>DECISIONS.md</code> 与 <code>AGENTS.md</code>，生成结构化 PR 描述。</li>
 </ol>
 
-<h3 data-reveal>二、多会话分流与协同工具箱</h3>
+<h3 data-reveal="">二、多会话分流与协同工具箱</h3>
 <ul>
   <li><strong>临时侧对话 <code>/side</code> (<code>/btw</code>)</strong>：遇到疑问（如“这个库的版本号为什么锁在 2.1”）时调起侧对话，探查完毕后带着结论回到主线，<strong>主会话不增加任何中间探讨的 token 垃圾</strong>。</li>
   <li><strong>会话分叉 <code>codex fork</code></strong>：针对同一个复杂方案想尝试 A 方案（重构）与 B 方案（热修），直接从主分支分叉为两个独立线程并行验证。</li>
@@ -597,19 +596,19 @@ codex update</code></pre>
 
 <p>“任务做完了，下一次还要重新解释一遍”是研发团队最大的浪费。Codex 拥有优雅的收尾与记忆固化体系。</p>
 
-<h3 data-reveal>一、任务结束时的“三步收尾法”</h3>
+<h3 data-reveal="">一、任务结束时的“三步收尾法”</h3>
 <ol class="steps">
   <li><strong>收集硬核验证证据</strong>：运行测试套件导出通过日志，涉及 UI 或前端页面时，截取端到端渲染结果（作为交付事实）。</li>
   <li><strong>沉淀决策与事实 (Decision Log)</strong>：在项目中维护 <code>DECISIONS.md</code>（记录技术选型理由、避坑点与未知限制），防止后人踩坑。</li>
   <li><strong>增量维护 <code>AGENTS.md</code></strong>：如果这次任务发现了项目的新启动方式或环境依赖，立即增补进 <code>AGENTS.md</code>。</li>
 </ol>
 
-<h3 data-reveal>二、AGENTS.md 极瘦标准模板（跨工具通用）</h3>
+<h3 data-reveal="">二、AGENTS.md 极瘦标准模板（跨工具通用）</h3>
 <pre><code><span class="c"># AGENTS.md · 极简精要模板 (跨 Codex / Cursor / Claude Code 通用)</span>
 ## 构建与测试
 - 安装依赖: pnpm install --frozen-lockfile
 - 构建: pnpm build   测试: pnpm test -- --run
-- 提 PR 前必须通过: pnpm typecheck && pnpm lint
+- 提 PR 前必须通过: pnpm typecheck &amp;&amp; pnpm lint
 
 ## 架构与核心约定
 - 路由统一在 src/router/index.ts 声明，采用懒加载；
@@ -627,7 +626,7 @@ codex update</code></pre>
 <div class="sec-tag">扩展 08</div>
 <h2>Skills、MCP 与浏览器工程</h2>
 
-<h3 data-reveal>一、从零开发 Codex Skill 工程规范</h3>
+<h3 data-reveal="">一、从零开发 Codex Skill 工程规范</h3>
 <p>Skill 是遵循开放标准的能力包，其核心目录结构如下：</p>
 <pre><code>my-custom-skill/
 ├── SKILL.md            <span class="c"># 必需: 包含 YAML frontmatter (name, description) 与操作指令</span>
@@ -636,15 +635,15 @@ codex update</code></pre>
 └── assets/             <span class="c"># 可选: 图片、模板文件</span></code></pre>
 <div class="callout tip"><b class="t">Skill 编写黄金法则</b><code>description</code> 字段是模型的路由中枢，务必写清“在什么具体场景、遇到什么关键词时触发”，让 Codex 在匹配到需求时才按需加载 <code>SKILL.md</code> 全文，节省全局上下文！</div>
 
-<h3 data-reveal>二、浏览器操作与端到端 (E2E) 视觉验收</h3>
+<h3 data-reveal="">二、浏览器操作与端到端 (E2E) 视觉验收</h3>
 <table class="tbl">
-  <tr><th>浏览器入口形态</th><th>技术实现原理</th><th>登录态 (Cookie/Session) 管理</th><th>适用场景与安全边界</th></tr>
+  <tbody><tr><th>浏览器入口形态</th><th>技术实现原理</th><th>登录态 (Cookie/Session) 管理</th><th>适用场景与安全边界</th></tr>
   <tr><td><strong>内置浏览器 (In-App)</strong></td><td>Codex 内置无头/轻量浏览器渲染</td><td>独立隔离 Session，适合公开页面渲染检查</td><td>静态页面排版、SSR 产物外观回归、外链可达性校验</td></tr>
   <tr><td><strong>外部浏览器 (CDP 桥接)</strong></td><td>Chrome DevTools Protocol 挂载</td><td><strong>可复用开发者本地真实登录态</strong></td><td>需登录的管理后台、表单提交流程、用户数据流端到端验收</td></tr>
   <tr><td><strong>Computer Use 桌面操作</strong></td><td>OS 级屏幕截图与键鼠事件驱动</td><td>完全继承当前桌面宿主环境</td><td>跨桌面应用交互、无法通过 Web 接口访问的复杂 GUI 验收</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>三、MCP 协议双向赋能</h3>
+<h3 data-reveal="">三、MCP 协议双向赋能</h3>
 <ul>
   <li><strong>Codex 消费外部工具</strong>：通过 <code>codex mcp add &lt;name&gt; -- &lt;cmd&gt;</code> 挂载 PostgreSQL、Sentry、Figma 或 Pencil 设计画布；</li>
   <li><strong>Codex 暴露给其他代理</strong>：运行 <code>codex mcp-server</code>，即可让 Claude Code 或其他智能体将复杂代码任务作为 MCP 工具转包给 Codex 执行。</li>
@@ -658,16 +657,16 @@ codex update</code></pre>
 <div class="sec-tag">配置 09</div>
 <h2>配置与账号体系全解</h2>
 
-<h3 data-reveal>一、CODEX_HOME 目录地图</h3>
+<h3 data-reveal="">一、CODEX_HOME 目录地图</h3>
 <table class="tbl">
-  <tr><th>文件 / 路径</th><th>作用内容</th><th>安全与版本管理策略</th></tr>
+  <tbody><tr><th>文件 / 路径</th><th>作用内容</th><th>安全与版本管理策略</th></tr>
   <tr><td><code>~/.codex/config.toml</code></td><td>全局核心配置（默认模型、沙箱、审批策略、MCP 服务器）</td><td>✅ 建议纳入个人 Dotfiles 备份</td></tr>
   <tr><td><code>.codex/config.toml</code></td><td>项目级配置（覆盖全局配置，但敏感 provider 键被限制）</td><td>✅ 随代码仓库提交共享给团队</td></tr>
   <tr><td><code>~/.codex/auth.json</code></td><td><strong>用户认证凭据缓存（明文 Token）</strong></td><td>❌ <strong>绝对禁止提交进 Git 或贴入工单</strong></td></tr>
   <tr><td><code>~/.codex/sessions/</code></td><td>本地历史会话记录（供 <code>resume</code> 与 <code>fork</code> 使用）</td><td>本地资产，不随机器漫游</td></tr>
-</table>
+</tbody></table>
 
-<h3 data-reveal>二、配置层级覆盖优先级</h3>
+<h3 data-reveal="">二、配置层级覆盖优先级</h3>
 <p>从高到低：<strong>企业管控 Requirements</strong> ➔ <strong>单次覆盖 <code>-c key=value</code></strong> ➔ <strong>配置档 <code>--profile &lt;name&gt;</code></strong> ➔ <strong>项目层 <code>.codex/config.toml</code></strong> ➔ <strong>用户层 <code>~/.codex/config.toml</code></strong> ➔ <strong>内置默认值</strong>。</p>
 </section>
 
@@ -676,352 +675,19 @@ codex update</code></pre>
 <!-- ================= SECTION 10 ================= -->
 
 <!-- ================= SECTION BEST PRACTICES ================= -->
-<section id="best-practices">
-<div class="sec-tag">进阶 09</div>
-<h2>最佳实践与最优示例库 (Best Practices & Optimal Examples)</h2>
-<p>为确保您能将 Codex 发挥到极致，我们整理了全网公认的最佳使用技巧、标准命令组合以及最不易出错的 Prompt 模板，便于任何人直接复制学习。</p>
-
-<h3 data-reveal>一、最强 Prompt 模板：TDD 零幻觉格式</h3>
-<p>这是在真实企业级项目中胜率最高的任务下达模板，它通过强制约束条件和验收标准，让模型无法“自由发挥”：</p>
-<pre><code>&gt; 【目标】为 src/auth/jwt.ts 增加 Refresh Token 滑动窗口续期逻辑。
-  【上下文】请阅读 docs/auth-flow.md 和当前的 jwt.ts 代码。
-  【约束】
-  1. 只能修改 jwt.ts 和对应的测试文件，不可碰 routes 模块。
-  2. 保持现有的 HMAC-SHA256 签名算法不变，不要引入新的 npm 库。
-  3. 注意并发下的锁机制，避免同一 Token 被重复刷新。
-  【验收】
-  先在 tests/auth/jwt.test.ts 写 3 个测试用例（包括并发刷新测试）。
-  执行测试，直到看到全绿通过。最后做一次 /diff 给我看。</code></pre>
-
-<h3 data-reveal>二、四大高阶场景与“绝杀”命令组合</h3>
-<table class="tbl">
-  <tr><th>场景</th><th>最佳命令串与操作姿势</th><th>为什么最优？</th></tr>
-  <tr>
-    <td><strong>1. 大幅重构前的“安全快照”</strong></td>
-    <td><code>git add . && git commit -m "WIP" && codex exec fork</code></td>
-    <td>利用 0.148.0 的无头分叉能力。把主会话留作安全锚点，分叉出新会话去做危险的重构。失败了直接废弃分支会话，主干不受任何污染。</td>
-  </tr>
-  <tr>
-    <td><strong>2. CI/CD 无人值守自动化</strong></td>
-    <td><code>codex exec --sandbox workspace-write --approve-for-me "按 .github/ISSUE_TEMPLATE 修复 lint 问题"</code></td>
-    <td>彻底剥离交互。<code>--approve-for-me</code> 允许它在设定的沙箱范围内自动放行安全命令，无需人工盯着回车。</td>
-  </tr>
-  <tr>
-    <td><strong>3. 处理超长 Log 与报错</strong></td>
-    <td><code>npm run build > build-error.log</code> <br> 然后在 Codex 中输入：<code>读取 build-error.log 并修复报错</code></td>
-    <td><strong>绝不要直接把几万行的报错粘贴到终端对话框里！</strong>这会瞬间耗尽上下文 Token，引发模型遗忘。重定向到文件让它自己读取，消耗极低且精准。</td>
-  </tr>
-  <tr>
-    <td><strong>4. 知识沉淀与团队分享</strong></td>
-    <td>在任务圆满完成后输入：<code>/export</code></td>
-    <td>将刚才极其精彩的排错或推理过程一键导出为纯 Markdown 文件，直接扔进飞书/Notion 当团队 wiki，连贯且带代码块。</td>
-  </tr>
-</table>
-
-<h3 data-reveal>三、代码库“冷启动”最佳示例 (Onboarding)</h3>
-<p>接手祖传代码或者全新的庞大项目时，使用以下连续技（Combo），让 Codex 帮你快速建立大脑索引：</p>
-<ol class="steps">
-  <li><strong>全局扫描并生成地图</strong>：输入 <code>分析整个 src/ 目录，总结其架构模式并写一份高层面的 ARCHITECTURE.md</code>。</li>
-  <li><strong>建立防御性护栏</strong>：接着输入 <code>基于你的分析，生成一份极其严格的 AGENTS.md（包含本项目禁止做的事、特定的代码风格规范），供后续 AI 会话遵守</code>。</li>
-  <li><strong>一键清理噪音</strong>：输入 <code>/compact</code>。将刚刚漫长的代码阅读过程压缩成摘要记忆，为接下来真正的功能开发腾出 Token 空间。</li>
-</ol>
-</section>
+<section id="best-practices"><h2>可复用的任务与验收模板</h2><p>先给出目标、范围、约束和完成标准，再要求代理解释发现与验证结果。测试应覆盖真实风险；提示词模板不能保证零幻觉，也不应强制每个文案改动都套用 TDD。</p><pre><code>目标：
+相关文件：
+允许修改的范围：
+不能改变的行为：
+验收方式：
+交付时列出实际修改、检查结果与未验证项。</code></pre></section>
 
 <div class="divider"></div>
-<section id="subscription-quotas">
-<div class="sec-tag">进阶实战指南</div>
-<h2>OpenAI 订阅资产全景利用与跨端效能最大化手册</h2>
-
-<p>许多开发者与技术从业者每月支付 $20（Plus）乃至 $200（Pro）的订阅费用，但在日常使用中往往仅把 ChatGPT 当作单一的网页对话框或代码补全工具，甚至频繁遭遇“额度已达上限，请 5 小时后再试”的窘境。实际上，2026 年的 OpenAI 已经演化为一个多终端、多模态的综合生产力矩阵。本手册汇集了全网数十位顶级工程师与深度用户的实战经验，系统拆解如何盘活每一项权益，构建高产出的端到端工作流。</p>
-
-<h3 data-reveal>🧭 一、 订阅资产全景图与额度计量底层逻辑</h3>
-<p>要想真正用好会员，首先必须看清你所拥有的“算力资产组合”，以及系统后台究竟是如何计算消耗的：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>功能模块</th>
-        <th>核心场景与资产特性</th>
-        <th>额度消耗特性与底层机制</th>
-        <th>典型最佳使用策略</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Codex 终端 / IDE 代理</strong></td>
-        <td>本地代码修改、多文件批量重构、命令行与 Git 自动化</td>
-        <td><strong>高消耗区</strong>。每次交互会自动挂载项目结构与上下文，文件越多单次消耗越大，极易触碰 5 小时滚动上限。</td>
-        <td>只在真正需要落盘修改代码时调用；避免在终端里进行泛泛的漫谈式技术调研。</td>
-      </tr>
-      <tr>
-        <td><strong>Web 端 Deep Research</strong></td>
-        <td>多步全网自主调研、千页技术文档整合、技术选型分析</td>
-        <td><strong>独立月度配额池</strong>（Plus 约 20-25 次/月，Pro 250+ 次/月），不占用日常对话的 5 小时频次限制。</td>
-        <td>用于全新技术栈攻坚、行业报告提炼，产出高价值的结构化方案后再交给终端执行。</td>
-      </tr>
-      <tr>
-        <td><strong>Canvas 协作画布</strong></td>
-        <td>长篇文档精修、局部代码重构、实时代码运行与单测</td>
-        <td><strong>极省额度</strong>。支持高亮局部代码进行定向微调，无需每次让模型重新吐出几百行未改动代码。</td>
-        <td>用于核心算法、组件模块的局部手术式修改，避免全量重写带来的上下文膨胀。</td>
-      </tr>
-      <tr>
-        <td><strong>高级语音模式 (Voice)</strong></td>
-        <td>架构设计口头探讨、需求头脑风暴、代码评审复盘</td>
-        <td>独立时长配额，低思考延迟，支持自然打断与即时纠偏。</td>
-        <td>在敲代码前用于厘清业务逻辑，配置专属指令去除“客套废话”，实现纯技术对齐。</td>
-      </tr>
-      <tr>
-        <td><strong>多模态视觉 (Vision / Image)</strong></td>
-        <td>UI 设计稿复刻、手绘架构图转代码、产品原型生成</td>
-        <td>图像生成（DALL-E 3 / Image 2.5）有独立频次控制；多模态图像识别计入标准 Token。</td>
-        <td>前端开发时先出设计图确认视觉标准，再通过视觉模型提取 CSS/Tailwind 规范。</td>
-      </tr>
-      <tr>
-        <td><strong>Projects / Memory 知识库</strong></td>
-        <td>团队编码规范、核心 API 字典、持久化业务术语</td>
-        <td><strong>原生 Prompt Caching</strong> 机制加持，长期稳定的前置知识享有巨幅读取折扣。</td>
-        <td>将公司规范和项目依赖一次性配置进 Project，避免每次提问重复粘贴大段背景。</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="callout note"><b class="t">核心认知：5 小时滚动窗口的本质</b>
-OpenAI 的限制并不是看你“发了几句话”，而是根据<strong>“请求复杂度 × 上下文长度 × 推理思考深度”</strong>综合计量的动态水池。在一个挂载了 20 个文件的终端对话中提问 1 次，消耗的后台算力可能等于纯文本闲聊 50 次。理解这一点，是合理分配任务的第一步。</div>
-
-<h3 data-reveal>🚀 二、 黄金四段式协同范式：从构想到工程落地的 SOP</h3>
-<p>顶级开发者的核心技巧在于<strong>“分工明确、动静分离”</strong>——将高昂的试错留在成本低、视野广的 Web/语音端，将确定性的交付留给本地终端：</p>
-
-<h4>第 1 阶段：构想与架构破冰（Advanced Voice + Deep Research）</h4>
-<p>当你准备做一个新功能，或者引入一个全新的开源库时，切忌直接在终端里敲代码边改边试：</p>
-<ul>
-  <li><strong>语音头脑风暴</strong>：戴上耳机开启高级语音模式，用 5 分钟向 AI 阐述你的业务构想：“我想在现有 Next.js 架构中接入 Stripe 的自适应结算流程，帮我列出潜在的边界情况与数据表设计。”通过口头探讨快速排查逻辑漏洞。</li>
-  <li><strong>Deep Research 专项攻坚</strong>：针对全新的技术文档，在网页端下达深度调研任务，使用结构化提示词约束其输出：</li>
-</ul>
-<div class="callout tip"><b class="t">结构化调研 Prompt 范式</b>
-<code>请启动深度研究，全面检索最新官方文档与社区实践，针对【特定技术组件】输出技术选型落地指南。要求包含：1. 核心架构与数据流图；2. 破坏性变更 (Breaking Changes) 清单；3. 严格遵循 JSON Schema 的数据模型定义。仅输出干货，去除一切客套话。</code></div>
-
-<h4>第 2 阶段：视觉与界面定型（Image / Vision to Code）</h4>
-<p>前端开发往往在“反复调整样式”上浪费巨量额度。高效的做法是把视觉校验与代码编写解耦：</p>
-<ol>
-  <li>在网页端利用图像生成能力快速渲染出 2~3 套产品 UI 概念图，挑选最满意的一套。</li>
-  <li>利用 Vision 视觉解析能力，对选中的 UI 图发起逆向分析，要求其输出设计系统规范：<code>"提取此界面的色彩 Palette（十六进制色值）、栅格间距、字体层级以及 Flex/Grid 布局骨架，直接输出为 Tailwind CSS 基础配置。"</code></li>
-  <li>拿到纯文本的设计规范后，再进入编码阶段。此时代码生成准确度极高，无需反复修正样式。</li>
-</ol>
-
-<h4>第 3 阶段：局部精修与沙盒验证（Canvas 协同）</h4>
-<p>编写核心算法或复杂业务组件时，打开 ChatGPT 的 <strong>Canvas（画布模式）</strong>：</p>
-<ul>
-  <li><strong>定向局部微调</strong>：鼠标高亮选中函数中的 10 行关键代码，直接下达指令：“为该段逻辑增加重试机制与异常日志”。Canvas 只会修改这 10 行，而不是把 500 行文件从头到尾重新生成一遍，<strong>节省 80% 以上的无谓输出耗时与上下文累积</strong>。</li>
-  <li><strong>内置审查工具</strong>：点击右下角的“Add Logs（增加日志）”或“Code Review（代码审查）”快捷按钮，一键快速体检。</li>
-</ul>
-
-<h4>第 4 阶段：精准落地与持续验证（Codex 终端交付）</h4>
-<p>最后一步，回到本地终端调用 Codex：</p>
-<ul>
-  <li>此时你的手中已经有了前三步产出的<strong>明确设计方案、Tailwind 配置、经过 Canvas 验证的算法核心</strong>。</li>
-  <li>在本地终端中下达精简指令：<code>"按照方案规范，在 src/modules/ 目录下创建对应文件并执行本地自动化测试。"</code></li>
-  <li>由于输入极其精准，终端通常一次性通过测试并完成 Git Commit，将终端算力消耗控制在极低水平。</li>
-</ul>
-
-<h3 data-reveal>🛡️ 三、 额度防爆与上下文精炼军规</h3>
-<p>全网实战中总结出的几条“保命习惯”，能让你的可用额度在无形中延长数倍：</p>
-
-<h4>1. 善用“编辑上一条”而非“追加新回复”</h4>
-<p>这是被 90% 用户忽视的省额度神技：当 AI 的回答出现偏差或理解不准确时，<strong>不要直接发送新消息去纠正它</strong>。每一次追加提问，系统都会将前序的所有错误尝试全盘重新发送一次。点击上一条提问的“编辑”按钮，修改你的指令重新提交，系统会从该节点重新分支，旧的分支不会累加计入当前的上下文负荷。</p>
-
-<h4>2. 建立清晰的 Custom Instructions（自定义指令集）</h4>
-<p>很多用户每次开启新对话都要唠叨一遍：“我是 TypeScript 开发者，请使用 Next.js App Router，只给我代码不要多余废话”。把这些内容写进设置里的全局<strong>自定义指令</strong>，或者在项目根目录下维护 <code>SKILL.md</code>，可以节省每轮交互的输入开销。</p>
-<div class="callout note"><b class="t">高能自定义指令模板 (设置 -> 自定义 ChatGPT)</b>
-<code>- 默认角色：资深全栈架构师。
-- 输出风格：严谨、极简、工程化。严禁输出“好的”、“没问题”等客套开场白与结尾建议。
-- 代码规范：仅输出发生变更的代码片段（使用 // ... existing code ... 替代未改动部分）；默认附带 TypeScript 类型声明。
-- 语音模式约束：在语音交互中只回答核心要点，句式紧凑，严禁以“您还需要什么帮助吗”结尾。</code></div>
-
-<h4>3. 模型分级使用守则：不拿高射炮打蚊子</h4>
-<ul>
-  <li><strong>Flagship / Reasoning 模式 (o3 / Astra / 深度思考)</strong>：专用于解决复杂的并发竞争、复杂算法证明、整库级架构重构。这类任务消耗极其昂贵，每天有明确次数限制。</li>
-  <li><strong>Fast / Mini 模式 (快速模型)</strong>：用于日常的正则表达式编写、JSON/YAML 数据格式转换、Git Commit 信息生成、简单的样式微调。速度飞快且额度近乎无限，日常任务应优先在此完成。</li>
-</ul>
-
-<h3 data-reveal>❓ 四、 常见问题与高频疑难排查</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">为什么我刚问了几个问题就提示额度满了？</div>
-    <div class="card-desc">通常是因为你在同一个长对话中上传了超大的 PDF 或多张高清大图，并且对话轮次超过了 30 轮。此时每一次输入都会连带重新计算前序的所有巨量数据。解决办法：每完成一个里程碑任务，立即开启一个全新的干净对话窗口。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">网页版配额与手机端、桌面端是分开的吗？</div>
-    <div class="card-desc"><strong>不是分开的，全平台共用统一的账户算力池。</strong> 唯一拥有独立额度的是“Deep Research”和“高级语音通话时长”。如果桌面端提示被限流，网页端和手机端同样会受到限制，因此必须掌握多端分工节奏。</div>
-  </div>
-</div>
-</section>
+<section id="subscription-quotas"><h2>订阅、API 与上下文的区别</h2><p>订阅额度、API 计费、累计 Token 与当前上下文占用是不同指标。先确认当前登录方式，再查看用量面板和重置时间；不能用一个百分比推断另一个指标。根据任务选择模型与上下文长度，不承诺切换入口或重复登录可以增加额度。</p></section>
 
 <div class="divider"></div>
 
-<section id="image-guide">
-<div class="sec-tag">进阶图像专题</div>
-<h2>Image 2.0/2.5 视觉赋能与全栈工程落地实战</h2>
-
-<p>在传统的编码范式中，开发者往往陷入“手搓代码 -> 刷新浏览器 -> 肉眼检查 -> 微调 CSS”的低效泥潭。随着 OpenAI 图像模型从早期的 DALL-E 演化为 <strong>GPT-4o 原生扩散多模态</strong> 以及最新的 <strong>Image 2.0 / 2.5 视觉引擎</strong>，图像生成已经彻底跨越了“画插图”的娱乐边界，成为现代敏捷开发中不可或缺的“工程规格原型机”。本章聚合了全网顶尖前端团队、UI/UX 实验室与独立黑客的实战经验，深度拆解如何通过 Image 2.0/2.5 打通从概念草图到生产代码的高效闭环。</p>
-
-<h3 data-reveal>🧬 一、 技术演进全景：从 DALL-E 到 Image 2.5 的质变</h3>
-<p>理解不同代际模型的底层特性，是精准选型与避免提示词“对牛弹琴”的基础：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>技术代际</th>
-        <th>底层架构与核心突破</th>
-        <th>文字渲染与细节精度</th>
-        <th>在编程开发中的典型定位</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>DALL-E 3</strong></td>
-        <td>独立的文本-图像扩散模型，依赖 LLM 隐式改写用户 Prompt。</td>
-        <td>文字经常拼写错误；物体边缘易出现融化或幻觉；几何比例不可控。</td>
-        <td>早期概念灵感探索，不适合直接用于精确的 UI 界面或图标生成。</td>
-      </tr>
-      <tr>
-        <td><strong>GPT-4o 原生图像</strong></td>
-        <td>原生全模态架构，视觉 Token 与文本 Token 深度对齐，支持严格的上下文跟随。</td>
-        <td>能够生成简短正确的英文单词；对现实光影和物理遮挡理解显著提升。</td>
-        <td>快速生成产品原型、绘制系统架构草图与简单的功能占位图。</td>
-      </tr>
-      <tr>
-        <td><strong>Image 2.0 / 2.5</strong></td>
-        <td>融入 Sora 物理时空引擎与高精度矢量先验，支持局部精准重绘与几何锁定。</td>
-        <td><strong>文字渲染准确率突破 95%</strong>；支持像素级网格对齐、清晰的 UI 组件层级与无畸变材质。</td>
-        <td><strong>生产级设计系统资产生成</strong>：直接产出高质量 UI Mockup、规范化 App Icon、空状态矢量插画并无缝提取 Tailwind Tokens。</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 data-reveal>🚀 二、 三大工程使用范式：视觉与代码的高效闭环</h3>
-
-<h4>范式 1：UI 原型逆向工程（Visual-First Design to Code）</h4>
-<p>许多前端工程师最头疼的是“根据一堆文字需求凭空写页面”，写完往往被产品经理打回重做。<br>
-<strong>最佳落地 SOP：</strong></p>
-<ol>
-  <li><strong>生成视觉基准</strong>：在 ChatGPT 网页端输入结构化 Prompt，让 Image 2.5 生成 2~3 套高保真 UI 效果图（如：深色微光风格的 Web3 仪表盘）。</li>
-  <li><strong>多模态 Token 提取</strong>：选中最满意的方案，将其喂给 GPT-4o 视觉模型，执行系统级逆向指令：
-    <div class="callout tip"><b class="t">设计系统提取 Prompt</b>
-    <code>请以高级前端架构师身份分析此设计图：1. 提取完整的色彩 Palette（十六进制 Primary, Secondary, Background, Border 颜色）；2. 测量栅格网格与间距系统（4px/8px 网格规范）；3. 输出对应的 Tailwind CSS 配置文件 (tailwind.config.js) 代码片段与基础 HTML 骨架。</code></div>
-  </li>
-  <li><strong>终端执行</strong>：将生成的标准 Tailwind 配置和骨架代码交给本地 Codex 终端，执行文件落盘并填充真实的业务数据逻辑。这种方式能将 UI 开发效率提升 3 倍以上，且首次验收通过率近乎 100%。</li>
-</ol>
-
-<h4>范式 2：应用资产原子化流水线（App Icon & Empty States）</h4>
-<p>在开发独立应用或企业软件时，找设计师做几十个图标和空状态插画周期长、成本高：</p>
-<ul>
-  <li><strong>标准应用图标（App Icon）</strong>：使用 Image 2.5 的“纯几何扁平化”调教指令，产出符合 Apple HIG 与 Material Design 规范的圆角矩形图。</li>
-  <li><strong>空状态矢量插画（Empty State）</strong>：通过指定纯白色背景（<code>solid pure white #FFFFFF background</code>），出图后利用简单的本地脚本（如 <code>potrace</code> 或 <code>rembg</code>）一秒去除背景并转为轻量级 SVG 格式，直接嵌入工程代码库。</li>
-</ul>
-
-<h4>范式 3：双向视觉回归测试（Visual Regression Loop）</h4>
-<p>利用 Codex 编写端到端测试脚本（Playwright / Puppeteer），自动化启动本地前端服务并截取当前界面的高清截图；随后将“设计基准图”与“代码实现图”一同输入给视觉模型，进行像素级对比：</p>
-<div class="callout note"><b class="t">视觉 Diff 审查 Prompt</b>
-<code>【图1：设计目标基准】 vs 【图2：Playwright 实际渲染结果】
-请严格对比两张图的差异，重点检查：1. 按钮间距与内边距偏差；2. 字体大小与粗细层级；3. 阴影模糊度与边框颜色。请直接给出修正这些差异所需的具体 CSS 修改补丁。</code></div>
-
-<h3 data-reveal>🎨 三、 提示词工程与使用调教 (Prompt Tuning Guide)</h3>
-<p>要让 Image 2.0 / 2.5 产出符合工程师审美的工业级产物，必须彻底摒弃“网民聊天式”提示词，采用严谨的六要素工程框架：</p>
-
-<div class="table-wrap">
-  <table class="tbl">
-    <thead>
-      <tr>
-        <th>要素维度</th>
-        <th>传统泛泛写法（反面教材）</th>
-        <th>工程化专业调教（推荐范式）</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>1. 主体与功能</strong></td>
-        <td>"一个漂亮的理财网站界面"</td>
-        <td><code>SaaS analytics dashboard interface, high-density data visualization, financial charts, transaction table</code></td>
-      </tr>
-      <tr>
-        <td><strong>2. 介质与设计流派</strong></td>
-        <td>"现代风、高级感"</td>
-        <td><code>Clean modern UI design, Swiss typographic style, Apple Human Interface Guidelines aesthetic, 8px grid system</code></td>
-      </tr>
-      <tr>
-        <td><strong>3. 色彩与视觉系统</strong></td>
-        <td>"好看的颜色，酷炫"</td>
-        <td><code>Dark mode palette: deep slate #0B0F17 background, vibrant emerald #10B981 accents, subtle border #1F2937</code></td>
-      </tr>
-      <tr>
-        <td><strong>4. 材质与光影质感</strong></td>
-        <td>"逼真、8K 渲染"</td>
-        <td><code>Matte texture, soft ambient occlusion, crisp 1px borders, subtle glassmorphism card elevation, zero glossy glare</code></td>
-      </tr>
-      <tr>
-        <td><strong>5. 排版与文字渲染</strong></td>
-        <td>"上面写着财务数据"</td>
-        <td><code>Exact typography: with crisp white text "$124,580.00" displayed prominently, and "Total Revenue" above in gray</code></td>
-      </tr>
-      <tr>
-        <td><strong>6. 负向边界排除</strong></td>
-        <td>无</td>
-        <td><code>--no 3d clay style, no realistic human faces, no blurry gradients, no misspelled pseudo-latin text</code></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<h4>进阶调教技巧：</h4>
-<ul>
-  <li><strong>去“AI 塑料感”</strong>：严禁在提示词中使用 "ultra-detailed", "cinematic lighting", "photorealistic" 等虚浮词汇，它们会强行增加廉价的高光与杂乱细节。改用 <code>minimalist</code>, <code>clean lines</code>, <code>matte finish</code>, <code>subtle contrast</code> 等专业设计术语。</li>
-  <li><strong>精确文字渲染秘籍</strong>：在需要渲染英文标题或按钮文字时，<strong>务必使用双引号严格包裹目标文本</strong>（例如：<code>a button with text "GET STARTED" in bold sans-serif</code>）。避免一次性要求渲染超过 4 个单词的长句。</li>
-  <li><strong>局部重绘 (Inpainting) 定向手术</strong>：如果生成的仪表盘整体完美，只有某个图表样式不满意，在 Web 端使用画笔工具将该区域涂抹，并输入新指令：“将此区域重绘为平滑的折线渐变图，保持周围网格与背景色绝对一致”。严禁重新生成整张图。</li>
-</ul>
-
-<h3 data-reveal>📋 四、 100+ 来源精选：生产级实战 Prompt 模板库</h3>
-
-<h4>模板 1：现代化暗黑系 SaaS 分析面板（可直接提取 Tailwind）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · SaaS Dashboard UI</span><button class="copy-btn">复制</button></div>
-  <pre><code>A high-fidelity modern SaaS web application dashboard interface for server monitoring. Dark mode theme with deep obsidian background (#0A0E1A). The layout features a clean left sidebar navigation, top header with user profile, and a central grid of 4 metric cards (CPU, Memory, Bandwidth, Uptime) with emerald green glowing sparkline charts. Crisp 1px borders (#1E293B), minimalist sans-serif typography, subtle dark card elevation. Professional Figma screenshot aesthetic, pixel-perfect alignment, no clutter.</code></pre>
-</div>
-
-<h4>模板 2：移动端极简金融资产卡片（React Native / Flutter 视觉基准）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · Fintech Mobile Card</span><button class="copy-btn">复制</button></div>
-  <pre><code>Mobile UI component for a premium debit card widget on iOS screen. Sleek frosted dark glass design with subtle holographic rim lighting. Prominent embossed white text "8492" and "VISA" logo in top corner. Clean balance display "$34,250.80" with minimalist typography. Below the card, two circular action buttons labeled "Send" and "Top Up". Clean solid background (#121212), Apple HIG design guidelines, modern Dribbble showcase style.</code></pre>
-</div>
-
-<h4>模板 3：独立开发者极简 App 图标套件（符合 App Store 规范）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · Minimalist App Icon</span><button class="copy-btn">复制</button></div>
-  <pre><code>App icon design for a developer code intelligence tool. A smooth rounded squircle container on pure black background. In the center, a minimalist geometric logo combining an abstract bracket '{' and a sparkling cyan star. Premium matte texture, subtle radial gradient, smooth beveled edges, modern iOS icon aesthetic. High resolution, centered composition, zero text, vector emblem clarity.</code></pre>
-</div>
-
-<h4>模板 4：404 错误状态矢量微插画（易于 SVG 矢量化提取）</h4>
-<div class="code-block">
-  <div class="code-header"><span>Prompt 模板 · Empty State Vector</span><button class="copy-btn">复制</button></div>
-  <pre><code>Clean vector empty state illustration for a '404 Page Not Found' error screen. A cute, minimalist floating astronaut robot looking puzzled at a disconnected glowing cable. Flat 2D vector art style, clean outline strokes, limited modern color palette (indigo, mint green, and soft gray). Isolated on a solid pure white (#FFFFFF) background. Modern tech startup illustration aesthetic, zero realistic shading, ready for SVG tracing.</code></pre>
-</div>
-
-<h3 data-reveal>🛡️ 五、 生产级避坑经验与合规准则</h3>
-<div class="duo">
-  <div class="card">
-    <div class="card-title">如何确保一套 App 内的 10 张插画风格完全一致？</div>
-    <div class="card-desc"><strong>锁定“核心风格修饰短语”与色板。</strong> 在所有 Prompt 的末尾附加完全相同的修饰后缀（例如：<code>--style: flat geometric 2D vector, mint and slate palette, soft outlines, pure white background</code>）。在 ChatGPT Web 端保持在同一个会话内连续生成，模型会自动利用上下文记忆维持角色特征与笔触一致性。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">商业化发布的合规与安全边界是什么？</div>
-    <div class="card-desc">OpenAI 明确声明：<strong>付费订阅用户拥有其生成图像的完整商业使用权</strong>。但在提示词中应避免直接引用受严格版权保护的商业角色名称（如“迪士尼米老鼠”或特定知名 App 的专属注册商标），改用“抽象几何风格”、“现代扁平科技风”等通用设计语言进行描述，以确保 100% 的商用合规性。</div>
-  </div>
-</div>
-</section>
+<section id="image-guide"><h2>图像任务转入独立专题</h2><p>Codex 的工程任务应以代码、设计约束与验证结果为中心。图像生成、编辑和提示词方法集中在图像专题维护，避免在多个工具页重复过时的模型与额度说明。</p><p><a href="gpt-image-guide.html">GPT Image →</a></p></section>
 
 <section id="playbook">
 <div class="sec-tag">实战 10</div>
@@ -1055,7 +721,7 @@ OpenAI 的限制并不是看你“发了几句话”，而是根据<strong>“�
     <div class="ph"><span class="pic">🐛</span><b>实战场景 ③：TDD 驱动的高难度 Bug 根治</b><span class="pt">PLAYBOOK · TDD DEBUG</span></div>
     <div class="pb">
       <pre><code>&gt; 故障现象: 在高并发重试请求下，src/auth/token.ts 的刷新锁会出现竞态导致 401 穿透。
-  要求: 
+  要求:
   1. 先在 tests/auth/race.test.ts 编写一个能稳定复现竞态失败的并发测试;
   2. 修复 token.ts 中的互斥锁机制;
   3. 运行测试直到完全变绿，并出示测试执行输出证据。</code></pre>
@@ -1079,29 +745,9 @@ OpenAI 的限制并不是看你“发了几句话”，而是根据<strong>“�
 <div class="divider"></div>
 
 <!-- ================= SECTION 11 ================= -->
-<section id="hidden-config">
-<div class="sec-tag">高阶 11</div>
-<h2>底层反查与隐藏能力</h2>
-
-<p>基于本地真机实测与对 Codex 核心 Rust 原生二进制的反编译反查，揭示 100+ 底层特性旗标与隐藏调试接口：</p>
-
-<h3 data-reveal>一、<code>codex features</code> 核心旗标反查</h3>
-<table class="tbl">
-  <tr><th>底层功能旗标</th><th>实测阶段状态</th><th>功能说明与解锁场景</th></tr>
-  <tr><td><code>guardian_approval</code></td><td><span class="pill a">stable (默认开启)</span></td><td>安全守护审批层，自动识别注入与高危破坏命令</td></tr>
-  <tr><td><code>browser_use_full_cdp_access</code></td><td><span class="pill a">stable (默认开启)</span></td><td>开放底层 Chrome DevTools Protocol 完整交互权限</td></tr>
-  <tr><td><code>multi_agent_v2</code></td><td><span class="pill b">under development</span></td><td>下一代多智能体并行协作调度器（可手动 enable 尝鲜）</td></tr>
-  <tr><td><code>concurrent_reasoning_summaries</code></td><td><span class="pill b">under development</span></td><td>并发推理摘要生成，加速深度思考模型的长文本吞吐</td></tr>
-  <tr><td><code>token_budget</code></td><td><span class="pill b">under development</span></td><td>线程级与回合级 Token 预算熔断器，防止长任务意外刷爆额度</td></tr>
-</table>
-
-<h3 data-reveal>二、高价值隐藏调试命令</h3>
-<ul>
-  <li><code>codex debug prompt-input</code> —— 打印即将送入大模型的原始 Prompt JSON，精准透视 Codex 看到的上下文真实样貌；</li>
-  <li><code>codex debug models</code> —— 获取官方模型仓库原始元数据，查看隐藏或内测模型代号；</li>
-  <li><code>codex sandbox -- &lt;cmd&gt;</code> —— 脱离代理会话，直接在 Codex OS 沙箱里跑指定命令排查权限问题。</li>
-</ul>
-</section>
+<section id="hidden-config"><h2>核对本机版本与可用能力</h2><p>先查看安装版本和命令帮助，再核对配置文档。实验旗标不是稳定接口；没有可追溯的二进制、版本和输出记录时，不能称为“真机实测”或保证默认开启。不要为排错批量启用未知旗标。</p><pre><code>codex --version
+codex --help
+codex exec --help</code></pre><p class="src"><a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener">learn.chatgpt.com · developer-commands?surface=cli</a> · 2026-09-09</p></section>
 
 <div class="divider"></div>
 
@@ -1111,12 +757,12 @@ OpenAI 的限制并不是看你“发了几句话”，而是根据<strong>“�
 <h2>资源索引与延伸阅读</h2>
 
 <table class="tbl">
-  <tr><th>权威资源</th><th>访问入口 / 链接</th><th>定位与价值</th></tr>
+  <tbody><tr><th>权威资源</th><th>访问入口 / 链接</th><th>定位与价值</th></tr>
   <tr><td><strong>官方文档总入口</strong></td><td><a href="https://developers.openai.com/codex" target="_blank">developers.openai.com/codex</a></td><td>第一信源：CLI、IDE、Cloud 与配置全量参考</td></tr>
   <tr><td><strong>CodexGuide 体系</strong></td><td><a href="https://codexguide.io/paths" target="_blank">codexguide.io/paths</a></td><td>中文精品实战教程、多场景案例与入门指南</td></tr>
   <tr><td><strong>AGENTS.md 规范</strong></td><td><a href="https://agents.md" target="_blank">agents.md 开放标准</a></td><td>跨工具开放项目记忆规范</td></tr>
   <tr><td><strong>本库关联主题</strong></td><td><a href="claude-code-guide.html">Claude Code 指南</a> · <a href="env-auth-clinic.html">环境与登录急救</a> · <a href="prompt-context-engineering.html">提示词与上下文工程</a></td><td>全方位夯实 AI 代理式研发工程内功</td></tr>
-</table>
+</tbody></table>
 </section>
 
 <div class="divider"></div>
@@ -1130,7 +776,10 @@ OpenAI 的限制并不是看你“发了几句话”，而是根据<strong>“�
 
 <button class="top-btn" id="topBtn" title="回到顶部">↑</button>
 
+<script src="../assets/js/reading.js"></script>
 <script src="../assets/js/site.js"></script>
 <script src="../assets/js/motion.js"></script>
-</body>
-</html>
+<script src="../assets/js/theme-toggle.js"></script>
+
+
+</body></html>
