@@ -705,31 +705,21 @@ claude mcp login api-tool
 
 <section id="subscription-quotas">
 <div class="sec-tag">ADV</div>
-<h2>Pro/Team Quotas & Best Practices</h2>
+<h2>Squeezing Pro/Team Value: Cross-Platform Synergy Best Practices</h2>
 
-<p>Anthropic uses a unique dual-layer throttling mechanism. Since Claude Code, Claude.ai (Web), and Claude Cowork all share the same underlying compute pool, mastering these consumption rules is a prerequisite for a stable AI-assisted workflow.</p>
+<p>After buying Claude Pro or Team, don't confine your vision to the Claude Code terminal. Anthropic has built a matrix of Web, Cowork, and Code. While they share compute, utilizing the "killer features" unique to each platform is the key to maximizing your subscription ROI.</p>
 
-<h3 data-reveal>🧠 Dual-Layer Quota System</h3>
+<h3 data-reveal>💡 3 Combo Strategies to Maximize Efficiency</h3>
 <ul>
-  <li><strong>Layer 1: 5-Hour Rolling Window</strong><br>Manages short-term burst activity. Resets 5 hours after your first message in a session, preventing acute compute exhaustion.</li>
-  <li><strong>Layer 2: Weekly Cap</strong><br>Governs your sustained long-term compute costs. Exceeding this before your weekly reset time may result in forced model downgrades or queueing.</li>
-</ul>
-
-<h3 data-reveal>📊 2026 Subscription Tiers</h3>
-<table class="tbl">
-  <tr><th>Plan Type</th><th>Claude Code Access?</th><th>Relative Capacity</th></tr>
-  <tr><td><strong>Pro ($20/mo)</strong></td><td>✅ Yes</td><td>1x (Baseline, permanently boosted 25% in May 2026)</td></tr>
-  <tr><td><strong>Max 5x / 20x</strong></td><td>✅ Yes</td><td>5x / 20x (For extreme power users)</td></tr>
-  <tr><td><strong>Team Standard</strong></td><td>❌ No</td><td>Varies by team size</td></tr>
-  <tr><td><strong>Team Premium</strong></td><td>✅ Yes</td><td>~6.25x Pro (varies)</td></tr>
-</table>
-
-<h3 data-reveal>💡 Maximizing Your Quota</h3>
-<ul>
-  <li><strong>Proactive Context Compaction</strong>: Don't carelessly dump 1M-token files into the context window. Use <code>/skill-doctor</code> to prune redundant skills, and actively use <code>/compact</code> to compress chat history after completing a milestone. This saves quota and speeds up response times.</li>
-  <li><strong>Switch to Lightweight Models for Drudge Work</strong>: For log scrubbing or basic docs, manually switch to <code>claude-3-5-haiku</code>, which barely touches your quota. Reserve <code>Sonnet</code> or <code>Opus</code> for core algorithms and deep debugging.</li>
-  <li><strong>Avoid Cross-Fire Cannibalization</strong>: Avoid running a massive codebase refactor in the terminal while simultaneously parsing a massive PDF on the Claude.ai web interface. Because they share the same bucket, fighting a two-front war will rapidly drain your 5-hour window.</li>
-  <li><strong>Usage Credits (Overflow)</strong>: Enable "Usage Credits" in your account settings and bind a credit card to fall back to standard API pricing. This ensures that if you hit your subscription limit during a critical production outage, Claude Code can still jump in to help troubleshoot.</li>
+  <li><strong>1. Web Artifacts + Code Localization</strong><br>
+      Claude Web's Artifacts is an unbeatable rapid prototyping tool. **Best Practice**: Iterate a React interactive component or data visualization dashboard at lightning speed in the Web Artifacts UI. Because it's WYSIWYG, iteration is cheap. Once the prototype is perfect on the web, export the code and use the Claude Code terminal to intelligently "stitch" it into your complex, local enterprise codebase.
+  </li>
+  <li><strong>2. Offload "Long-Form Reading" to Web Projects</strong><br>
+      If you make Claude Code read a 1000-page technical spec in the terminal, every minor code tweak re-calculates those 1000 pages as context, instantly draining your quota. **Solution**: Create a Project on the Claude Web UI and upload the massive tome there. Ask the Web UI to summarize it into a tightly focused <code>SPEC.md</code> for your current task. Then, place that 2-page <code>SPEC.md</code> in your local repo for Claude Code to execute.
+  </li>
+  <li><strong>3. Ruthless Context Pruning in Terminal (/compact)</strong><br>
+      The Claude Code CLI is a greedy context eater. Build this habit: after finishing and testing a small feature, immediately run <code>/compact</code>. This "dehydrates" a long, rambling conversation into a dense summary, freeing up massive amounts of quota and making your Pro account last twice as long as a novice's.
+  </li>
 </ul>
 </section>
 

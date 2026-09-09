@@ -729,31 +729,25 @@ codex update</code></pre>
 <div class="divider"></div>
 <section id="subscription-quotas">
 <div class="sec-tag">进阶</div>
-<h2>订阅额度与资源榨干指南</h2>
+<h2>榨干会员价值：独立额度与跨端协同最佳实践</h2>
 
-<p>随着 OpenAI 的产品线不断丰富，ChatGPT Plus 与 Pro 用户的权益不仅限于 Web 网页端。在使用 Codex 进行工程开发时，如何充分理解并利用您的订阅额度，是提高开发效率、避免任务中断的关键。</p>
+<p>很多开发者购买了 ChatGPT Plus 或 Pro，却只把它们当作单一的对话框或终端工具，导致大量<strong>“隐形且独立的高价值额度”</strong>被白白浪费。OpenAI 现已全面实行“多面体 (Surfaces)”策略，Web 端、Work 空间、图像生成与终端 Codex 实际上拥有相对独立的资源倾斜。不关心具体参数，只关心怎么用最划算？请看下文。</p>
 
-<h3 data-reveal>📊 Plus 与 Pro 的额度池差异</h3>
-<table class="tbl">
-  <tr><th>订阅层级</th><th>每月价格</th><th>额度池倍率</th><th>适用人群</th></tr>
-  <tr><td><strong>ChatGPT Plus</strong></td><td>$20</td><td>1x (基准)</td><td>日常开发、轻中度辅助编程</td></tr>
-  <tr><td><strong>ChatGPT Pro (5x)</strong></td><td>$100</td><td>5x</td><td>重度全栈开发者、架构师</td></tr>
-  <tr><td><strong>ChatGPT Pro (20x)</strong></td><td>$200</td><td>20x</td><td>高强度 Agent 自动化作业团队</td></tr>
-</table>
-
-<p><strong>注意核心机制：</strong>无论是通过网页端的 ChatGPT，还是通过 Codex 终端，或者是使用 Desktop App，您的账单周期内的用量共享<strong>同一个底层动态额度池</strong>。OpenAI 在 2026 年已经全面采用基于“算力消耗 (Compute-Based)”的计量方式，而非简单的对话次数。</p>
-
-<h3 data-reveal>💡 额度榨干与避坑最佳实践</h3>
+<h3 data-reveal>🚀 核心心法：拆解任务，专端专用</h3>
+<p>不要在 Codex 里做所有事！终端的上下文和工具调用十分昂贵。最佳实践是<strong>“网页端打辅助，Codex 端做决战”</strong>：</p>
 <ul>
-  <li><strong>善用滚动窗口机制 (Rolling Windows)</strong>：OpenAI 通常使用 5 小时滚动窗口。当您触发复杂任务（如大型代码库重构或深层架构推理）时，优先在窗口刷新初期执行，避免在额度即将耗尽时中断。</li>
-  <li><strong>大马拉大车，小马拉小车</strong>：
-    <ul>
-      <li><strong>语法修复/快速改写</strong>：在 Codex 的 Model Picker 中手动降级到 <code>gpt-5.6-luna</code>，它的算力消耗只有旗舰模型的几十分之一，几乎不可能触发限流。</li>
-      <li><strong>架构设计/复杂 Bug 定位</strong>：切换至 <code>gpt-6-astra</code> 或 <code>gpt-5.6-sol</code>。好钢用在刀刃上。</li>
-    </ul>
+  <li><strong>1. 独立额度：Web 端“深度研究 (Deep Research)”</strong><br>
+      网页版的 Deep Research 是一个专门为查阅、整合全网信息而生的独立 Agent，不占用普通对话和 Codex 快速推理的额度。当您需要学习全新的框架 (如 React 20) 或整合多篇技术文档时，<strong>在 Web 端触发 <code>/Deepresearch</code></strong>。让它写出一份极其详细的 <code>架构设计与 API 参考.md</code>，然后把这个文件喂给本地的 Codex 进行代码编写。
   </li>
-  <li><strong>DALL-E 3 与图像解析 (Vision) 的开销</strong>：上传大量截图进行 UI 还原（Vision）或要求 Agent 生成占位图时，会大量消耗您的算力池。推荐在 UI 还原时，将截图经过压缩，并一次性传递所有需求，避免反复对话调试 UI。</li>
-  <li><strong>预留给网页版的额度</strong>：如果您重度依赖网页版的“深度研究 (Deep Research)”或高级数据分析，请避免让 Codex 在后台彻夜进行无监督重构（除非使用 Pro 20x 层级或配置了 API Key 兜底机制），否则第二天上班您可能会面临长达数小时的降级体验。</li>
+  <li><strong>2. 独立额度：Image 2.0 / 2.5 视觉管线</strong><br>
+      OpenAI 的图像生成 (DALL-E 3 / Image 2.5 升级版) 在 Web 端有独立的生成队列和配额。<strong>切勿在终端里让 Codex 凭空想象 UI</strong>。最佳实践：在 Web 端输入“生成一个现代 SaaS 仪表盘的 UI 设计图，采用 Image 2.5 的精确布局”，然后在 Web 端用局部重绘 (Inpainting) 修改细节。拿到完美的 UI 图后，再喂给 Codex 进行 <code>Vision-to-Code</code> (视觉转代码) 的精确复刻。
+  </li>
+  <li><strong>3. Web "Projects" (工作区) 作为外脑</strong><br>
+      Plus 会员可以在 Web 端创建多个 Projects。把几十本 API 手册和长达数百页的需求文档上传到 Web Project（这里的文件解析有专属缓存，不消耗您在本地终端每次请求的 Token）。在 Web 端把复杂需求理顺成伪代码，最后让 Codex 去本地执行。
+  </li>
+  <li><strong>4. 思考模型 (Thinking Mode) 的克制使用</strong><br>
+      旗舰的“思考模型”(如 o3 或 Astra-Think) 极其强大但限流严格。在 Codex 中，处理简单的语法报错、加注释，果断在 Model Picker 切换到快速模型；遇到“整个模块状态机混乱”这种级别的问题，再火力全开开启 Thinking。
+  </li>
 </ul>
 </section>
 
