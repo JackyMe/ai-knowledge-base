@@ -221,6 +221,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">实战</div>
     <a href="#subscription-quotas"><span class="no">进阶</span>Pro/Team 额度机制</a>
+    <a href="#vision-artifacts-guide"><span class="no">进阶</span>视觉理解·SVG/Artifacts 实战</a>
     <a href="#playbook"><span class="no">07</span>八大场景实战手册</a>
     <a href="#context"><span class="no">08</span>上下文管理进阶</a>
     <a href="#permissions"><span class="no">09</span>权限与安全</a>
@@ -815,6 +816,139 @@ claude mcp login api-tool
   <div class="card">
     <div class="card-title">高强度编码场景下，选 API 按量还是买双 Pro 账号？</div>
     <div class="card-desc">社区实测表明：对于每天持续编码 6 小时以上的重度开发者，<strong>维持两个 Pro 订阅（交替使用 5 小时重置窗口）在成本上往往远低于直接调用 API</strong>。因为全量读取代码库的 API Token 消耗极其昂贵，而包月订阅提供了可预期的固定开销与高额度的安全感。</div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="vision-artifacts-guide">
+<div class="sec-tag">进阶视觉专题</div>
+<h2>视觉理解、SVG/Artifacts 渲染与多模态工程实战</h2>
+
+<p>与单纯生成位图图片的模型不同，Anthropic 在视觉领域贯彻了极具辨识度的<strong>“代码即视觉”与“纯粹多模态理解”</strong>哲学。Claude 不直接吐出不可控的 PNG/JPEG 像素，而是通过强大的多模态视觉理解能力解析设计图，并直接输出<strong>语义化的 React 组件、响应式 SVG 矢量资产与可交互的 HTML/Canvas 画布</strong>。这种将视觉完全转化为纯代码的范式，在前端工程化、架构拓扑绘制与资产轻量化上展现出压倒性的工程优势。本章深度解析如何借助 Claude 的视觉与 Artifacts 体系，打造零像素失真、高度工程化的视觉资产管线。</p>
+
+<h3 data-reveal>🧬 一、 技术定位全景：代码级渲染与位图的本质分野</h3>
+<p>在严肃的企业级软件开发中，为什么代码级视觉生成往往优于普通的生图模型？</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>对比维度</th>
+        <th>传统位图生成 (PNG/JPEG/WebP)</th>
+        <th>Claude 代码级渲染 (SVG/React/Artifacts)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>分辨率与缩放</strong></td>
+        <td>固定分辨率（如 1024x1024），高分屏或放大查看时边缘模糊失真。</td>
+        <td><strong>数学矢量无级缩放</strong>，在 4K/Retina 视网膜屏幕上边缘永远极致锐利。</td>
+      </tr>
+      <tr>
+        <td><strong>体积与加载性能</strong></td>
+        <td>图片单张动辄数百 KB 至数 MB，影响网页首屏与移动端加载速度。</td>
+        <td>纯文本代码格式，Gzip 压缩后通常<strong>仅几 KB</strong>，加载毫秒级响应。</td>
+      </tr>
+      <tr>
+        <td><strong>可维护性与交互</strong></td>
+        <td>黑盒像素，无法通过代码修改文案、更改局部颜色或添加点击事件。</td>
+        <td><strong>100% 可编程</strong>：支持 CSS 类名控制、Tailwind 动态样式、DOM 事件监听与 CSS 动画。</td>
+      </tr>
+      <tr>
+        <td><strong>SEO 与可访问性 (a11y)</strong></td>
+        <td>搜索引擎无法直接读取图内文字，读屏软件只能依赖 alt 标签。</td>
+        <td>包含原生文本与语义化标签（<code>&lt;text&gt;</code>、<code>&lt;title&gt;</code>），具备天生的 SEO 与无障碍支持。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 二、 三大核心工程范式：打通视觉与业务代码</h3>
+
+<h4>范式 1：像素级 UI/设计稿逆向工程 (Screenshot-to-Clean-Code)</h4>
+<p>当产品或设计团队发来一张复杂的 Figma 原型图或竞品参考截图时，传统开发需要花费数小时手写布局。<br>
+<strong>最佳落地 SOP：</strong></p>
+<ol>
+  <li><strong>上传高分辨率截图</strong>：在 Claude 网页端直接粘贴截图，附带专业结构化提示词：
+    <div class="callout tip"><b class="t">像素级 UI 逆向 Prompt</b>
+    <code>请作为资深前端架构师，像素级复刻此界面截图：
+1. 技术栈：React 19 + Tailwind CSS + Lucide Icons；
+2. 严格对齐：精准还原图中的负空间（Padding/Margin）、圆角梯度（rounded-xl/2xl）、字体层级与毛玻璃阴影；
+3. 响应式与组件化：将主要列表项、状态徽标与卡片抽象为独立可复用的子组件；
+4. 保证在 Artifacts 中可直接完整交互运行，严禁使用虚构占位符。</code></div>
+  </li>
+  <li><strong>在 Artifacts 中即时交互校验</strong>：右侧面板会瞬间渲染出活生生的 Web 界面，直接点击测试按钮状态、悬浮高亮效果与暗色适配。</li>
+  <li><strong>零成本微调</strong>：对右侧渲染不满意的地方直接发指令：“将卡片阴影稍微调淡，右上角的标签改为绿色渐变”。完全在网页端打磨完美后，直接导出代码至本地。</li>
+</ol>
+
+<h4>范式 2：代码级矢量资产流水线 (Code-Native SVG & Canvas)</h4>
+<p>架构师需要绘制高密度的系统拓扑图，或者前端需要精美的主题插画时，切忌去图库到处找不合规的位图：</p>
+<ul>
+  <li><strong>复杂系统拓扑图</strong>：要求 Claude 直接生成包含动画流动虚线（<code>stroke-dasharray</code> 动效）的交互式 SVG 拓扑图，节点包含微服务状态指示，直接嵌入文档或运维看板。</li>
+  <li><strong>数据可视化小组件</strong>：让 Claude 利用 HTML5 Canvas 或 SVG 直接手写轻量级折线图与雷达图，无需引入数十 MB 沉重的第三方图表库。</li>
+</ul>
+
+<h4>范式 3：自动化视觉回归与布局审查 (Headless Visual QA)</h4>
+<p>在本地终端通过 Claude Code 配合 Playwright 运行端到端测试并截图，随后调用视觉接口让 Claude 审查自身代码的渲染结果：</p>
+<div class="callout note"><b class="t">自动化布局对齐审查指令</b>
+<code>【输入：设计图稿 vs 本地 Playwright 截图】
+请对比两张界面的布局偏差：重点检查 1. 移动端断点下的换行折叠表现；2. 国际化超长文本是否产生溢出；3. 按钮点击态对比度是否符合 WCAG AA 标准。输出修复所需的 CSS 补丁代码。</code></div>
+
+<h3 data-reveal>🎨 三、 提示词工程与矢量视觉调教心法</h3>
+<p>为了让 Claude 输出优雅、无冗余的视觉代码，请牢记以下工程原则：</p>
+<ul>
+  <li><strong>强制指定 `viewBox` 与自适应容器</strong>：提示词中明确要求 <code>"Ensure SVG root uses responsive viewBox='0 0 800 600' with preserveAspectRatio='xMidYMid meet', and width='100%' for fluid scaling"</code>，防止图标在移动端显示被截断。</li>
+  <li><strong>语义化色板控制</strong>：要求其使用 CSS 变量绑定主题色彩（如 <code>fill="currentColor"</code> 或 <code>var(--primary-color)</code>），确保视觉资产能够随系统的浅色/深色主题无缝自动切换。</li>
+  <li><strong>渐变与滤镜规范</strong>：指定 <code>&lt;defs&gt;</code> 区域内的渐变定义使用语义化 ID，避免在大型页面中由于重复 ID 导致渐变失效。</li>
+</ul>
+
+<h3 data-reveal>📋 四、 100+ 来源精选：生产级实战 Prompt 模板库</h3>
+
+<h4>模板 1：企业级微服务系统交互式拓扑图（带动效的纯 SVG）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · Interactive Architecture SVG</span><button class="copy-btn">复制</button></div>
+  <pre><code>Generate a responsive, highly detailed SVG architecture diagram illustrating an Enterprise Microservices System.
+Specifications:
+1. Dimensions: viewBox="0 0 1200 800", dark tech aesthetic (background #0B0F19).
+2. Layout: Left-to-right flow with 4 distinct zones: [API Gateway & Auth], [Event Bus (Kafka)], [Core Services (Order, Payment, Inventory)], [Data Layer (PostgreSQL, Redis)].
+3. Visuals: Smooth rounded rectangular service cards with 1px border (#1E293B), glowing emerald connection lines with animated dashed strokes representing active data streams.
+4. Clean typography using system-ui fonts, clear legend, and subtle drop shadows.
+Output pure, self-contained SVG code ready to be rendered in browser.</code></pre>
+</div>
+
+<h4>模板 2：现代暗黑毛玻璃产品特性卡片（React + Tailwind）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · Glassmorphic Feature Card</span><button class="copy-btn">复制</button></div>
+  <pre><code>Create a modern, responsive feature showcase component in React with Tailwind CSS.
+Design details:
+1. 3-column grid featuring frosted glass cards (backdrop-blur-xl, bg-white/5, border border-white/10).
+2. Each card has a glowing radial gradient header icon, a crisp title in inter font, a short feature description, and an interactive 'Learn more' link with subtle arrow hover animation.
+3. Dark futuristic background (#030712) with subtle ambient purple and blue blurred background orbs.
+Ensure fully functional React code using Lucide-react icons, rendered live in Artifacts.</code></pre>
+</div>
+
+<h4>模板 3：仪表盘实时指标圆环进度图（轻量矢量组件）</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt 模板 · Circular Progress Gauge</span><button class="copy-btn">复制</button></div>
+  <pre><code>Generate a pure SVG modern circular progress dashboard gauge component.
+Requirements:
+1. Center shows large bold percentage '78%' with label 'Server Capacity' below in subtle gray.
+2. Circular stroke uses smooth gradient (cyan to violet) with rounded caps (stroke-linecap='round').
+3. Outer ring features subtle dashed tick marks for 0-100 scale.
+4. Fully responsive, clean code, no external JavaScript dependencies, easily styled via CSS variables.</code></pre>
+</div>
+
+<h3 data-reveal>🛡️ 五、 工程避坑与 MCP 视觉扩展生态</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">如果我的项目确实需要生成写实位图照片怎么办？</div>
+    <div class="card-desc"><strong>通过 Model Context Protocol (MCP) 桥接外部图像引擎。</strong> 在 Claude Code 终端中配置本地的 ComfyUI、Stable Diffusion 或 DALL-E 3 MCP 服务插件。您可以在与 Claude 编码的同时，直接通过指令调用本地显卡或云端 API 生图，并自动将生成的位图文件写入工程的 <code>/public/assets</code> 目录。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">如何防止 Claude 在复刻 UI 时写出庞大的死循环代码？</div>
+    <div class="card-desc">在 Prompt 中明确增加约束：<strong>“严禁在 useEffect 中直接无条件修改 state；针对长列表必须使用虚拟滚动或分页；避免内联大型 SVG 路径，将其抽离为独立的 Icon 组件。”</strong> 这能确保产出的代码直接符合生产级架构规范。</div>
   </div>
 </div>
 </section>

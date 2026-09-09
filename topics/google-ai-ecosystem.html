@@ -175,6 +175,7 @@ pre code{background:none;color:inherit;padding:0}
     </div>
       <div class="nav-group"><div class="gt">六 · 订阅与额度</div>
       <a href="#ch6-1"><span class="no">6.1</span>AI Pro/Ultra 额度体系与效能拉满</a>
+      <a href="#ch6-2"><span class="no">6.2</span>Imagen 3 视觉生成与多模态实战</a>
     </div>
   </nav>
 </aside>
@@ -1047,6 +1048,106 @@ sequenceDiagram
     <div class="card">
       <div class="card-title">被平滑降级到 Flash 模型后，我该如何应对？</div>
       <div class="card-desc">平滑降级通常在 5 小时内恢复。在处于降级状态时，不要尝试让它进行复杂的算法推演。您可以利用 Flash 模型极高的响应速度，让它批量生成单元测试、批量翻译代码注释，或者编写用户使用手册，将算力优势发挥到极致。</div>
+    </div>
+  </div>
+</section>
+
+<section id="ch6-2">
+  <h2>6.2 Imagen 3 视觉生成与 Gemini 原生多模态工程实战</h2>
+  <p><span class="tag-badge tag-tip">多模态进阶</span> Google 在生成式视觉领域的王牌不仅是新一代照片级生图引擎 <strong>Imagen 3</strong>，更在于将其与 Gemini 1.5/2.0 Ultra 的<strong>超长上下文原生多模态（Native Multimodal）</strong>深度打通。开发者不仅能生成高精度、无塑料感的产品渲染与设计资产，更可以直接把长达 1 小时的视频录屏、海量 PDF 规范图集甚至复杂的音视频数据一股脑丢给模型进行端到端逻辑逆向。本节全面拆解如何利用 Imagen 3 与原生多模态，打造企业级视觉工程流水线。</p>
+
+  <h3 data-reveal>🧬 一、 技术演进与核心突破：从 Imagen 2 到 Imagen 3 的质变</h3>
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>技术指标</th>
+          <th>早期 Imagen 2 / 传统竞品</th>
+          <th>Imagen 3 核心工程突破</th>
+          <th>在敏捷研发中的价值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>排版与文字渲染</strong></td>
+          <td>文本生成极其不稳定，易出现字符粘连或拼写畸变。</td>
+          <td><strong>复杂英文排版准确率领先业内</strong>，支持多种字体层级与规整对齐。</td>
+          <td>直接产出带有精确文案的产品包装图、电商主图、Marketing 海报与 UI 按钮。</td>
+        </tr>
+        <tr>
+          <td><strong>光影与物理微距质感</strong></td>
+          <td>浓重的“AI 涂抹感”，高光溢出，皮肤或材质呈现塑料光泽。</td>
+          <td><strong>真实光学相机的景深（DoF）、散射光照与微观纹理</strong>极其细腻。</td>
+          <td>高拟真度工业级 3D 硬件外壳渲染、消费电子概念图，无需手搓 Blender。</td>
+        </tr>
+        <tr>
+          <td><strong>超长视频多模态解析</strong></td>
+          <td>只能逐帧抽样低分辨率截屏，无法理解连续动作时序。</td>
+          <td><strong>原生支持 1 小时以上的高清视频直灌</strong>，精准理解时间轴上的动作演变。</td>
+          <td>录制一段竞品 App 的操作视频或复杂 Bug 复现视频，一键自动生成时序图与需求规格书。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 data-reveal>🚀 二、 三大核心工程落地范式</h3>
+
+  <h4>范式 1：录屏视频逆向业务规格书 (Video-to-Spec)</h4>
+  <p>在复刻复杂的前端动效、手势交互或分析竞品 App 业务流时，手动截图与文字描述极其低效。<br>
+  <strong>最佳实战流程：</strong></p>
+  <ol>
+    <li>使用手机或电脑屏幕录制一段 2~3 分钟的 App 完整操作视频（涵盖登录、异常校验、表单交互）。</li>
+    <li>直接将 MP4 视频文件上传至 Gemini Advanced 对话框，下达高能逆向指令：
+      <div class="callout tip"><b class="t">视频逆向时序状态机 Prompt</b>
+      <code>请完整分析此录屏视频：
+1. 梳理视频中用户触发的所有交互行为，按时间戳（如 00:15, 01:20）列出操作步骤；
+2. 绘制前端界面的【状态转移图 (State Machine)】，采用 Mermaid 语法输出；
+3. 提取所有输入边界校验逻辑与 Toast 提示文案，整理为可交付给测试团队的 QA 测试用例文档。</code></div>
+    </li>
+    <li>模型会依据视频的时间轴，逐秒分析界面变化，生成极其精准的业务逻辑规范，节省数天的产品需求文档梳理时间。</li>
+  </ol>
+
+  <h4>范式 2：Imagen 3 驱动的工业级视觉资产流水线</h4>
+  <p>为科技产品、硬件项目或官方网站生成高质量的视觉物料：</p>
+  <ul>
+    <li><strong>硬件概念 3D 渲染</strong>：通过明确指定焦段与光照（如 <code>85mm lens, f/2.8, studio diffuse lighting, matte anodized aluminum texture</code>），产出工业设计级的高端硬件概念图。</li>
+    <li><strong>网站 Hero 全屏横幅</strong>：指定宽画幅比例（<code>--ar 16:9</code>）与留白区域（<code>negative space on the left for hero text</code>），方便前端直接将文字与 CTA 按钮叠放在背景图上方。</li>
+  </ul>
+
+  <h4>范式 3：全量设计规范一致性审计 (Design System Audit)</h4>
+  <p>利用 Gemini 的百万上下文窗口，同时上传公司的《UI 设计系统规范 PDF》以及前端团队刚上线的 10 张网页截图，指令其执行全量一致性审计：对比每一个按钮的圆角弧度、主色调十六进制色值与字体行高是否 100% 契合规范，直接输出不合规组件列表。</p>
+
+  <h3 data-reveal>🎨 三、 提示词工程与专业摄影调教规范</h3>
+  <p>Imagen 3 对“摄影专业术语”的响应极佳。避免使用“好看、高级”等抽象形容词，采用专业镜头语言控制：</p>
+  <ul>
+    <li><strong>镜头与景深控制</strong>：指定焦距与光圈值（如 <code>shot on 50mm f/1.8 lens, shallow depth of field with soft creamy bokeh background</code>）。</li>
+    <li><strong>打光系统配置</strong>：指定光源类型（如 <code>Rembrandt lighting, rim light highlighting product contours, soft directional studio softbox</code>）。</li>
+    <li><strong>文字排版限定</strong>：渲染文字时必须用双引号标注，并注明排版位置：<code>with crisp typography "NEXUS AI" cleanly embossed on the brushed metal surface</code>。</li>
+  </ul>
+
+  <h3 data-reveal>📋 四、 生产级实战 Prompt 模板库</h3>
+
+  <h4>模板 1：极简现代消费电子硬件产品渲染图</h4>
+  <div class="code-block">
+    <div class="code-header"><span>Prompt 模板 · Hardware Product Render</span><button class="copy-btn">复制</button></div>
+    <pre><code>Studio product photography of a sleek minimalist smart home edge-computing gateway device. Matte obsidian anodized aluminum chassis with smooth chamfered edges. A subtle, elegant glowing teal ring indicator on the top circular surface. Studio setup: placed on a neutral dark slate surface, dramatic soft rim lighting highlighting the metallic contours, shallow depth of field (f/2.8, 85mm lens), neutral gray studio background. Ultra-clean commercial aesthetic, no clutter, photorealistic industrial design.</code></pre>
+  </div>
+
+  <h4>模板 2：科技企业官网全屏 Hero 概念背景图 (带排版留白)</h4>
+  <div class="code-block">
+    <div class="code-header"><span>Prompt 模板 · Website Hero Banner</span><button class="copy-btn">复制</button></div>
+    <pre><code>Wide landscape banner (16:9) for an AI enterprise cloud platform website hero section. Dark futuristic aesthetic with deep navy background (#070B19). On the right side, an intricate, elegant glowing crystalline geometric sphere with ethereal neural data threads floating around it. Left side features ample clean, empty negative space with subtle deep gradients, specifically reserved for headline typography. Soft volumetric cinematic lighting, pristine render, professional tech landing page background.</code></pre>
+  </div>
+
+  <h3 data-reveal>🛡️ 五、 SynthID 水印与合规准则</h3>
+  <div class="duo">
+    <div class="card">
+      <div class="card-title">什么是 SynthID 水印？会影响图像在产品中的显示吗？</div>
+      <div class="card-desc"><strong>完全不影响肉眼视觉呈现。</strong> Google DeepMind 的 SynthID 是一种不可见的数字隐形水印，它直接嵌入在图像像素的频率特征中，肉眼看不到任何噪点或标记，但可通过检测工具验证是否为 AI 生成，完全不影响商业发布与前端展示。</div>
+    </div>
+    <div class="card">
+      <div class="card-title">在 Google AI Studio 中批量调用 Imagen 3 会被限流吗？</div>
+      <div class="card-desc">Imagen 3 的 API 调用拥有专门的并发（RPM/TPM）配额。对于大规模自动化批量生成资产，建议在客户端代码中实现指数退避重试（Exponential Backoff）机制，或者使用 Batch API 享受 50% 的离线计费折扣。</div>
     </div>
   </div>
 </section>
