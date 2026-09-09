@@ -198,6 +198,22 @@ const TOPICS = [
     ]
   },
   {
+    href: "topics/gpt-image-guide.ko.html", icon: "🎨", tag: "이용 가이드", color: "#7c3aed",
+    title: "GPT 이미지 생성 가이드 · 입문부터 마스터까지 실전 핸드북",
+    desc: "GPT 회원을 위한 이미지 생성 완벽 가이드: DALL-E부터 GPT-4o 네이티브 이미지, Image 2.5로 이어지는 기술 진화 로드맵, 6요소 프롬프트 프레임워크, 15+ 시나리오 템플릿, 스타일 어휘집, 이미지 편집 루프, 텍스트 렌더링 공략, 경쟁 모델 비교 및 기업용 규정 준수 실무.",
+    keywords: "이미지 생성 image generation dall-e gpt-4o 프롬프트 prompt 스타일 style 텍스트 렌더링 이미지 편집 투명 배경 png 지브리 픽셀 아트 로고 ui 이커머스 인포그래픽 저작권 안전 midjourney stable diffusion 일관성 seed custom gpt image 2.0 2.5",
+    meta: ["4세대 기술 진화", "6요소 프레임워크", "15+ 시나리오 템플릿", "100+ 자료 통합", "2026-09-09 검증"],
+    sections: [
+      {id:"evolution",label:"기술 진화 로드맵"},{id:"subscription",label:"구독 등급 및 할당량"},
+      {id:"prompt-framework",label:"6요소 프롬프트 프레임워크"},{id:"prompt-advanced",label:"프롬프트 심화 기법"},
+      {id:"style-control",label:"스타일 제어 및 어휘집",quick:true,quickLabel:"스타일 어휘집"},
+      {id:"text-rendering",label:"텍스트 렌더링 공략"},{id:"image-editing",label:"이미지 편집 및 반복"},
+      {id:"consistency",label:"캐릭터 및 스타일 일관성"},{id:"scenarios",label:"15+ 시나리오 템플릿",quick:true,quickLabel:"시나리오 템플릿"},
+      {id:"expert-tricks",label:"전문가 고급 팁"},{id:"comparison",label:"경쟁 모델 비교 및 선정"},
+      {id:"safety-copyright",label:"안전 정책 및 저작권"},{id:"resources",label:"리소스 색인"}
+    ]
+  },
+  {
     href: "topics/env-auth-clinic.ko.html", icon: "🚑", tag: "트러블슈팅", color: "#e11d48",
     title: "AI CLI 환경 & 인증 응급 처치 매뉴얼 · Claude Code × Codex",
     desc: "로그인 오류, 환경 설정 충돌, 기기 이전 문제를 한 페이지로 해결: 30초 초기 진단, 5계층 진단법 + 원클릭 무결성 검사, 2대 도구별 5대 카테고리 응급 대응표, 3가지 실전 시나리오(공용 PC, 새 PC, CI/헤드리스), 3단계 완전 초기화 절차.",

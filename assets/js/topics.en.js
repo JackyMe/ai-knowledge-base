@@ -196,6 +196,22 @@ const TOPICS = [
     ]
   },
   {
+    href: "topics/gpt-image-guide.en.html", icon: "🎨", tag: "User Guide", color: "#7c3aed",
+    title: "GPT Image Generation Guide · Complete Practical Handbook",
+    desc: "Comprehensive image generation guide for GPT subscribers: Complete evolution from DALL-E to GPT-4o native image and Image 2.5, Six-Element Prompt Framework, 15+ scenario templates, style vocabulary, image editing loop, text rendering guide, competitive comparison, and enterprise compliance.",
+    keywords: "image generation dall-e gpt-4o prompt style text rendering image editing transparent background png ghibli pixel art logo design ui ecommerce product infographic social media stickers copyright safety midjourney stable diffusion comparison character consistency seed custom gpt image 2.0 2.5",
+    meta: ["4 Generations Evolution", "Six-Element Framework", "15+ Scenario Templates", "100+ Sources Aggregated", "Verified 2026-09-09"],
+    sections: [
+      {id:"evolution",label:"Evolution Panorama"},{id:"subscription",label:"Subscription Tiers & Quotas"},
+      {id:"prompt-framework",label:"Six-Element Prompt Framework"},{id:"prompt-advanced",label:"Advanced Prompting Techniques"},
+      {id:"style-control",label:"Style Control & Vocabulary",quick:true,quickLabel:"Style Vocabulary Quickref"},
+      {id:"text-rendering",label:"Typography & Text Rendering"},{id:"image-editing",label:"Image Editing & Iteration"},
+      {id:"consistency",label:"Character & Style Consistency"},{id:"scenarios",label:"15+ Scenario Templates",quick:true,quickLabel:"Scenario Prompt Templates"},
+      {id:"expert-tricks",label:"Expert-Level Pro Tricks"},{id:"comparison",label:"Comparison & Selection"},
+      {id:"safety-copyright",label:"Safety Policy & Copyright"},{id:"resources",label:"Resource Index"}
+    ]
+  },
+  {
     href: "topics/env-auth-clinic.en.html", icon: "🚑", tag: "Troubleshooting", color: "#e11d48",
     title: "AI CLI Env & Login First-Aid · Claude Code × Codex",
     desc: "Fix login errors, config conflicts, and machine-switching issues in one page: 30-second symptom triage, 5-layer diagnostic methodology + one-click health check script, dual-tool 5-category first-aid tables, 3 scenarios (shared PC, new PC, headless/CI), and 3-level universal reset solutions.",

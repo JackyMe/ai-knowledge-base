@@ -181,6 +181,10 @@ pre code{background:none;color:inherit;padding:0}
       <a href="#ch5-1"><span class="no">5.1</span>4大ツールによるエンドツーエンドパイプライン</a>
       <a href="#ch5-2"><span class="no">5.2</span>アンチパターン図鑑：避けるべき4大失敗例</a>
     </div>
+    <div class="nav-group"><div class="gt">第6章 · サブスクリプションとクォータ</div>
+      <a href="#ch6-1"><span class="no">6.1</span>NotebookLM 独占核兵器：無限の事実ソース</a>
+      <a href="#ch6-2"><span class="no">6.2</span>Imagen 3 & Veo ビジュアルマルチモーダル実戦</a>
+    </div>
   </nav>
 </aside>
 
@@ -899,6 +903,88 @@ sequenceDiagram
             APIの <code>response_schema</code> に Pydantic などの型定義を指定し、サンプリング層で確実にフォーマットを保証します。
           </div>
         </div>
+      </section>
+      
+      <section id="ch6-1">
+        <h2>6.1 NotebookLM 独占核兵器：無限の事実ソース、Audio Overview とクロスドキュメント監査</h2>
+        <p><span class="tag-badge tag-official">Google 独占の堀</span> 多くの開発者や上級ユーザーは、Google One AI Premium に加入しても Gemini Web でチャットするだけに留まり、Google エコシステム内に世界最高峰かつ最も寛大な「次元削減キラーツール」——<strong>NotebookLM</strong> が隠されていることを見落としています。日常の対話上限にカウントされない完全独立の専用コンピュートプールを持ち、業界で唯一<strong>100% 厳格な事実ソースに基づく引用（Source-Grounded）とゼロ・ハルシネーション</strong>を実現する知識エンジンです。本節では、NotebookLM を専属のデジタル技術頭脳として活用する方法を徹底解剖します。</p>
+
+        <h3 data-reveal>🧬 1. なぜ NotebookLM は代替不能な「ハルシネーション皆無」の武器なのか？</h3>
+        <p>汎用 LLM（ChatGPT や通常の Gemini など）はオープンワールドの事前学習に依存するため、長大な技術文書の細部を問われた際に勝手な推測やでっち上げ（ハルシネーション）を起こしがちです。一方、NotebookLM の推論エンジンはアップロードされた<strong>ソース（Sources）</strong>の内部のみに完全に拘束されます：</p>
+        <ul>
+          <li><strong>厳密なエビデンスアンカー</strong>：NotebookLM が出力するすべての文、すべての技術的結論にはクリック可能なインライン引用バッジが付与されます。クリックするだけで、元の PDF、コードファイル、または Google ドキュメントの該当箇所へ即座にジャンプ・ハイライト表示されます。</li>
+          <li><strong>完全に独立した計算資源プール</strong>：NotebookLM は Gemini の 5 時間ローリング制限を消費せず、通常の会話トークン枠にも加算されません。最大 50 個の大容量ソースファイル（1 ファイルあたり最大 50 万語）を自由に投入可能です。</li>
+        </ul>
+
+        <h3 data-reveal>🚀 2. NotebookLM の 3 つの革命的超実践ユースケース</h3>
+
+        <h4>ユースケース 1：Audio Overview（2人ホストによる技術ポッドキャスト）——通勤中の超効率インプット</h4>
+        <p>シリコンバレーのエンジニアコミュニティで爆発的人気を誇る「ハッカー流インプット術」です。300 ページに及ぶ退屈な OSS アーキテクチャ設計書、長大な決算レポート、難解なバックエンド RFC 仕様書に直面したとき：</p>
+        <ol>
+          <li>NotebookLM ノートブック内で対象の技術資料をすべて選択し、右側の <strong>Generate Audio Overview（ディープダイブ対話音声を生成）</strong> をクリックします。</li>
+          <li>バックグラウンドで 2 名の AI ホスト（男女）が起動し、極めて自然で生き生きとした対話（相槌、気付き、鋭い問い返しを含む）で、難解な資料を 15〜20 分の「わかりやすい平易な解説」へと噛み砕きます。</li>
+          <li><strong>実戦メリット</strong>：通勤中やジム、休憩時にイヤホンで聴くだけで、精読に丸 2 日かかる膨大な仕様書から、コアなアーキテクチャ判断や潜在的トレードオフを一瞬で把握できます。</li>
+        </ol>
+
+        <h4>ユースケース 2：クロスドキュメント監査と矛盾検知（Gap & Conflict Analysis）</h4>
+        <p>開発ライフサイクル全体で最も地雷となりやすいのが、「製品 PRD の記述とバックエンド API 仕様書の不一致、さらに UI デザインカンプでのエッジケース抜け」です。</p>
+        <div class="callout tip"><b class="t">クロスソース監査プロンプト・パラダイム</b>
+        <code>【選択済みソース：PRD_v2.docx + API_Contract.json + UI_Specs.pdf】
+シニアシステムアナリストとして、上記 3 つのソースファイルをクロス検証してください：
+1. PRD に記載されているが、API インターフェース定義で完全に欠落しているフィールドやビジネスシナリオを列挙してください。
+2. API のエラーコード定義と UI デザインのトースト文言・エラーハンドリングの間で意味的矛盾が生じている箇所を特定してください。
+3. 厳格に突合した【設計漏れおよびインターフェース阻害要因リスト】を出力してください。</code></div>
+
+        <h4>ユースケース 3：「コード生成辞書」の蒸留と開発ターミナルへの還元</h4>
+        <p>数十個のレガシーコードファイルを NotebookLM に投入し、わずか数 KB のコアステートマシンおよびデータモデル辞書（<code>Minimal Architecture Dictionary</code>）を蒸留抽出。この純度の高い仕様書を Antigravity やローカルコーディングエージェントに渡すことで、巨大な生コードを一括投入してトークン枯渇や推論崩壊を起こすリスクを完全に回避できます。</p>
+      </section>
+
+      <section id="ch6-2">
+        <h2>6.2 Imagen 3 & Veo ビジュアルマルチモーダル実戦</h2>
+        <p><span class="tag-badge tag-tip">マルチモーダル応用</span> NotebookLM に加え、Google エコシステムのもうひとつの絶対的障壁は<strong>真のネイティブ全モーダル（Native Multimodal）と最大 200 万トークンの超長コンテキストウィンドウ</strong>、そして Imagen 3 / Veo などの最先端ビジュアル生成基盤です。数千万トークン規模のフルコードベース解析にとどまらず、1 時間の実際の操作画面録画ビデオを直接モデルに投入してロジックの仕様逆引きを行うことが可能です。</p>
+
+        <h3 data-reveal>🎬 1. 画面録画・動画からの仕様逆引きエンジニアリング (Video-to-Spec) 実戦</h3>
+        <p>複雑なフロントエンドのアニメーション、ジェスチャーインタラクション、競合プロダクトのワークフローを再現する際、テキスト記述には必ず大きな齟齬が生じます：</p>
+        <ul>
+          <li>2〜3 分の高解像度操作録画（MP4 形式）を直接 Gemini 1.5 / 2.0 にドラッグ＆ドロップします。</li>
+          <li>ネイティブマルチモーダル指示でステートマシンを抽出：<code>"この画面録画ビデオを詳細に解析してください：ユーザーのクリック座標と対応するアニメーションイージング曲線を秒単位で記録し、フロントエンド状態遷移の完全な Mermaid 図を作成し、すべての Toast エラー文言を抽出してください。"</code></li>
+          <li>Gemini は物理的な時系列に従ってフレームごとに動作を解析し、実画面と 100% 一致する仕様書を生成するため、数日間にわたる手動確認コストを削減できます。</li>
+        </ul>
+
+        <h3 data-reveal>🎨 2. Imagen 3 & Veo によるビジュアルプロトタイプ生成パイプライン</h3>
+        <p>Gemini Advanced および API パイプラインでは、最新の Imagen 3 画像生成と Veo ビデオモデルとの連携により、UI モックアップ・製品アセット・動的デモ映像を高速に生成可能です。プロンプトによるテキスト指示から高精細テクスチャやインタラクティブ映像へのシームレスな変換を実現します。</p>
+
+        <h3 data-reveal>🔌 3. Google AI Studio：見落とされがちな無料開発者向けリソースの宝庫</h3>
+        <p>多くの開発者は Web 版の有料 Gemini しか知りませんが、開発者向けの <strong>Google AI Studio (aistudio.google.com)</strong> は極めて強力な公式リソースを提供しています：</p>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>開発チャネル</th>
+                <th>利用可能クォータと課金体系</th>
+                <th>コア機能と制御権</th>
+                <th>開発実装における位置づけ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Google AI Studio (無料枠)</strong></td>
+                <td><strong>極めて高い無料並行枠</strong>（Gemini Flash では通常最大 15 RPM / 100万 TPM の無料開発枠を提供）。</td>
+                <td>Temperature、Top-P、Top-K の精密制御。グローバル System Instructions の直接設定。Function Calling の視覚的テスト環境。</td>
+                <td><strong>個人開発者の最優先インフラ</strong>：単体テスト生成、ドキュメント翻訳、軽量スクレイピングスクリプト、データ抽出などを完全無料で実行。</td>
+              </tr>
+              <tr>
+                <td><strong>Gemini Advanced (Web 版)</strong></td>
+                <td>Google One サブスクリプションベース、総合生産性向け。</td>
+                <td>Google Workspace（Docs/Drive）連携、Imagen 3 によるワンクリック画像生成、ネイティブ音声対話、モバイルアプリ対応。</td>
+                <td>ブレインストーミング、戦略立案、文書コラボレーション、デザイン素材の生成に最適。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 data-reveal>☁️ 4. Google Workspace ネイティブ直結（コピペ作業からの解放）</h3>
+        <p>エンタープライズ開発環境では、要件定義や技術仕様を Google Docs で一元管理します。チャット内で <code>@GoogleDrive</code> 構文を用いて最新ドキュメントを直接参照すれば、モデルがクラウド上の最新版を自動取得し、ローカルクリップボードのコピペによるバージョンの齟齬やフォーマット崩れを根絶できます。</p>
       </section>
       
       <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">

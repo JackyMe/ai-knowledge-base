@@ -1177,7 +1177,13 @@ Add the Header component from src/layouts/Header.tsx</code></pre>
     }
   ]
 }</code></pre>
-<p><strong>Theming System</strong>: Variables can have multiple values, each bound to a set of theme conditions; when evaluating, the value of the <strong>last</strong> matc<section id="pencil-cli">
+<p><strong>Theming System</strong>: Variables can have multiple values, each bound to a set of theme conditions; when evaluating, the value of the <strong>last</strong> matching condition is used.</p>
+<p>Beyond top-level properties (<code>version</code>, <code>theme</code>, <code>variables</code>), all other entities are Nodes, including <code>frame</code>, <code>group</code>, <code>text</code>, <code>path</code>, and <code>vector</code>. Nodes encapsulate basic geometry (<code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>), styling (<code>fills</code>, <code>strokes</code>, <code>effects</code>, <code>opacity</code>), layout attributes, custom properties (<code>props</code> supporting color, boolean, number, string), and <code>children</code>. For the complete TypeScript Schema (all properties, fills, effects, and layout values), refer to the <a href="https://docs.pencil.dev/for-developers/the-pen-format#typescript-schema" target="_blank">official documentation</a>.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="pencil-cli">
 <div class="sec-tag">For Developers 02</div>
 <h2>pen.dev CLI</h2>
 <p class="origin">Original: <a href="https://docs.pencil.dev/for-developers/pen-cli" target="_blank">For Developers / pen.dev CLI</a></p>

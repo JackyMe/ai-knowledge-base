@@ -702,7 +702,11 @@ claude mcp login api-tool
 <ul>
   <li><strong>Tools also consume context</strong>: Tool definitions for every MCP server enter the window; the more you connect, the more crowded it gets—use <code>/context</code> to check usage, and disable unused servers in <code>/mcp</code>;</li>
   <li><strong>Treat MCP content as untrusted input</strong>: Text returned by external tools might contain injected prompt instructions. Use <code>auto</code> or <code>manual</code> mode instead of blind trust.</li>
+  <li><strong>Never skip human judgment on critical milestones</strong>: When executing multi-file batch edits or deleting legacy files, always require <code>manual</code> mode instead of blind trust.</li>
 </ul>
+</section>
+
+<div class="divider"></div>
 
 <section id="subscription-quotas">
 <div class="sec-tag">Advanced Practice</div>

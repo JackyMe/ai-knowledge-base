@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GPT 画像生成完全実戦ガイド：DALL-E から GPT-4o ネイティブ画像、Image 2.5 までの進化系譜、6要素プロンプトフレームワーク、15+ 実戦プロンプトテンプレート、スタイル語彙集、画像編集ループ、文字描画攻略、競合ツール比較とエンタープライズ向けコンプライアンス。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPT 画像生成ガイド · 入門から極意まで完全実戦ハンドブック">
+<meta property="og:description" content="GPT 会員向け画像生成完全マニュアル：進化ロードマップ、6要素プロンプトフレームワーク、15+ 実戦テンプレート、スタイル語彙集、画像編集、文字レンダリング、競合比較、企業コンプライアンス。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/gpt-image-guide.ja.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>GPT 画像生成ガイド · 入門から極意まで完全実戦ハンドブック</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#a78bfa; --accent-soft:#f3eeff;
+  --ink:#0f0a1a; --bg:#ffffff; --bg-side:#faf8ff; --bg-code:#1a1025;
+  --text:#1a1625; --text-2:#5b5470; --text-3:#8b83a0;
+  --border:#e8e4f0; --border-2:#d8d2e5;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f3eeff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Meiryo","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.side-filter{position:relative;margin-bottom:14px}
+.side-filter input{width:100%;padding:7px 28px 7px 10px;border:1px solid var(--border-2);border-radius:8px;font-size:13px;background:#fff;outline:none;font-family:var(--font)}
+.side-filter input:focus{border-color:var(--accent)}
+.side-filter .fk{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-3);background:var(--border);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#ece8f5;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#ede8f5;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(124,58,237,.40),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(167,139,250,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.16);
+  border:1px solid rgba(124,58,237,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a78bfa,#e0d4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#b8b0cc;max-width:760px;line-height:1.75}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9a90ad}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3);line-height:1.5;display:block;margin-top:4px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#d0c4e8}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f0ecf5;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#6d28d9}
+pre{background:var(--bg-code);color:#e0d8ef;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7f7498}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#faf8ff}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fdfbff}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:.3s ease}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(15,10,26,.06)}
+.hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
+.hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
+.hotcmd.must{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.hotcmd.must .hc-cmd{color:var(--accent)}
+.hotcmd.must::after{content:"★ コア";position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--accent);padding:2px 9px;border-radius:99px;letter-spacing:.02em}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 16px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#faf8ff;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f3eeff;color:#6d28d9}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+.pill.d{background:#fce7f3;color:#be185d}
+
+.prompt-box{background:linear-gradient(135deg,#faf8ff,#f3eeff);border:1px solid var(--border-2);border-radius:12px;padding:16px 20px;margin:12px 0 16px;font-size:13.8px;line-height:1.75;color:var(--text)}
+.prompt-box .label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:block}
+.prompt-box code{background:rgba(124,58,237,.08);color:var(--accent);border:none;font-size:12.5px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,10,26,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🎨</span>GPT 画像生成ガイド<span class="sub">完全実戦ガイド</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.ja.html">◂ トピック一覧</a>
+    <span>検証日: 2026-09-09</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="セクションを検索…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">基礎と進化</div>
+    <a href="#evolution"><span class="no">00</span>技術進化の全貌</a>
+    <a href="#subscription"><span class="no">01</span>プランとクォータ早見表</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">プロンプト工学</div>
+    <a href="#prompt-framework"><span class="no">02</span>6要素フレームワーク</a>
+    <a href="#prompt-advanced"><span class="no">03</span>上級プロンプト技法</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">スタイルと制御</div>
+    <a href="#style-control"><span class="no">04</span>スタイル制御と語彙集</a>
+    <a href="#text-rendering"><span class="no">05</span>文字描画・タイポグラフィ</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">画像編集</div>
+    <a href="#image-editing"><span class="no">06</span>画像編集と反復プロセス</a>
+    <a href="#consistency"><span class="no">07</span>一貫性維持テクニック</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">実践シナリオ</div>
+    <a href="#scenarios"><span class="no">08</span>15+ 実戦シナリオテンプレート</a>
+    <a href="#expert-tricks"><span class="no">09</span>エキスパート秘伝テクニック</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">比較とコンプライアンス</div>
+    <a href="#comparison"><span class="no">10</span>競合比較と選定ガイド</a>
+    <a href="#safety-copyright"><span class="no">11</span>規約・著作権・企業FAQ</a>
+    <a href="#resources"><span class="no">12</span>リソース索引</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎨 GPT 画像生成 · 100+ の良質記事を凝縮 · 2026-09-09 検証済み</div>
+  <h1>GPT 画像生成<br><span class="grad">入門から極意まで · 完全実戦ハンドブック</span></h1>
+  <p class="lead">ChatGPT Plus / Pro / Team / Enterprise 会員向けの画像生成完全マニュアル。ネット上の <strong>100本以上の高品質記事</strong> を徹底的に網羅し、DALL-E から GPT-4o ネイティブ画像、最新の Image 2.5 までの進化系譜、<strong>6要素プロンプトフレームワーク</strong>、<strong>15+ の実戦プロンプトテンプレート</strong>、ビジュアル語彙集、画像編集ループ、文字レンダリング攻略、競合比較、エンタープライズ向けコンプライアンス実践までを完全解説。</p>
+  <div class="meta">
+    <span>技術進化の全貌</span><span>6要素フレームワーク</span><span>15+ シナリオ</span><span>スタイル語彙集</span><span>文字描画攻略</span><span>競合ツール比較</span><span>企業コンプライアンス</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>4世代の進化</b><span>DALL-E 2 → DALL-E 3 → GPT-4o ネイティブ → Image 2.5</span></div>
+  <div class="stat"><b>6要素フレームワーク</b><span>主体 · 動作 · 環境 · スタイル · 技術 · 雰囲気</span></div>
+  <div class="stat"><b>15+ シナリオ</b><span>EC · SNS · ロゴ · UI · ジブリ風 · ドット絵 · インフォグラフィック</span></div>
+  <div class="stat"><b>100+ ソース</b><span>公式ドキュメント · コミュニティ知見 · 専門ブログ · 実戦事例</span></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 0: 技術進化 ================= -->
+<section id="evolution">
+<div class="sec-tag">技術認知 00</div>
+<h2>技術進化の全貌：DALL-E から Image 2.5 まで</h2>
+
+<p>OpenAI の画像生成機能の進化プロセスを正しく理解することは、実務で使いこなすための第一歩です。以下に主要なマイルストーンを整理します：</p>
+
+<table class="tbl">
+  <tr><th>時期</th><th>マイルストーン</th><th>革新的な変化点</th></tr>
+  <tr><td>2022年</td><td>DALL-E 2</td><td>拡散モデル（Diffusion）アーキテクチャ。テキストから画像生成を初めて実用化したが、文字描画はほぼ判読不能で、空間的関係性も破綻しがちだった。</td></tr>
+  <tr><td>2023年10月</td><td>DALL-E 3</td><td>ChatGPT がユーザーのプロンプトを自動拡張して DALL-E に渡す仕組みを導入。指示の遵守率が大幅に向上し、初歩的な英単語の描画に対応。</td></tr>
+  <tr><td>2025年3月</td><td>GPT-4o ネイティブ画像</td><td><strong>歴史的パラダイムシフト</strong>：外部の拡散モデルを廃止し、自己回帰型（Autoregressive）ネイティブマルチモーダル構造へ移行。文字描画精度が飛躍的に向上し、複雑な日本語・英語のレンダリングに対応。</td></tr>
+  <tr><td>2025年4月</td><td>gpt-image-1 API</td><td>ネイティブ画像生成機能を開発者向けに独立した API として提供開始。</td></tr>
+  <tr><td>2025年12月</td><td>gpt-image-1.5</td><td>生成レイテンシを大幅に削減し、マルチターンの部分編集（Inpainting）の安定性を強化。</td></tr>
+  <tr><td>2026年4月</td><td>GPT Image 2.0</td><td>「ビジュアル推論層（Visual Reasoning Layer）」を導入：ピクセル描画前に構図・物理・ライティングを思考。高精度な文字組版と厳格なプロンプト遵守を実現。</td></tr>
+  <tr><td>2026年9月</td><td><span class="pill a">GPT Image 2.5</span></td><td>スケッチ指示（@Sketch）、テンプレート機能、コメント指定による高精度な局所編集をサポート。レイテンシを従来比 50% 削減。</td></tr>
+</table>
+
+<h3>アーキテクチャの本質的変革：「翻訳者」から「創造者」へ</h3>
+
+<div class="duo">
+  <div class="bad">
+    <b>❌ 旧アーキテクチャ（DALL-E 3 時代）</b>
+    ユーザー入力 → ChatGPT が英訳・拡張 → 外部 DALL-E モデルへ伝送 → 画像返却。<br>
+    <em>問題点：セマンティックの欠落が大きく、コンテキストが分断され、微細なディテール制御が困難。</em>
+  </div>
+  <div class="good">
+    <b>✅ 新アーキテクチャ（GPT-4o ネイティブ）</b>
+    モデル自身がテキストとピクセルを同時に理解 → エンドツーエンドのネイティブ生成。<br>
+    <em>利点：セマンティックロス皆無、マルチターン対話の文脈を完全維持、正確無比なテキスト描画。</em>
+  </div>
+</div>
+
+<h3>各世代の機能比較マトリクス</h3>
+
+<table class="tbl">
+  <tr><th>機能項目</th><th>DALL-E 3</th><th>GPT-4o ネイティブ / Image 1.x</th><th>Image 2.0 / 2.5</th></tr>
+  <tr><td><strong>文字描画</strong></td><td>誤字やレイアウト破綻が多発</td><td>精度が極めて高く、複雑な日本語・英語に対応</td><td>商業出版レベル。多様なフォント、複数行、3Dエフェクト文字に対応</td></tr>
+  <tr><td><strong>編集機能</strong></td><td>ほぼ皆無（全体再生成のみ）</td><td>対話形式による部分修正（Inpainting）</td><td>マルチターンの非破壊編集、スケッチ誘導、コメント注記編集</td></tr>
+  <tr><td><strong>スタイル制御</strong></td><td>イラスト・誇張表現に偏りやすい</td><td>リアルさが大幅向上、現実世界の物理を再現</td><td>プロ仕様の光学パラメータ・テンプレート制約に対応、極めて精緻</td></tr>
+  <tr><td><strong>解像度</strong></td><td>固定（1024×1024 など）</td><td>柔軟なマルチアスペクト比</td><td>超高解像度、細部の鮮明さが大幅に向上</td></tr>
+  <tr><td><strong>プロンプト遵守度</strong></td><td>中程度（複雑な指示で破綻しやすい）</td><td>優秀（空間的配置や関係性の理解が大幅向上）</td><td>業界最高水準（推論してから描画を実行）</td></tr>
+</table>
+
+<div class="callout note">
+  <b class="t">💡 コミュニティにおける Image 2.0 / 2.5 / 3.0 の定義</b>
+  これらは OpenAI の公式 SKU 名ではなく、AI クリエイターコミュニティが進化フェーズを分類した呼称です。<strong>Image 2.0</strong> は「お絵描きトイ」から「本格的な実務生産ツール」への転換点（文字描画のブレイクスルー）；<strong>Image 2.5</strong> はスケッチ＋テンプレート＋高精度編集を備えた最新世代；<strong>Image 3.0</strong> は「ビジュアル思考パートナー」として描画前に空間と光を推論する次世代パラダイムを指します。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 1: 購読プランとクォータ ================= -->
+<section id="subscription">
+<div class="sec-tag">技術認知 01</div>
+<h2>サブスクリプションプランとクォータ早見表</h2>
+
+<table class="tbl">
+  <tr><th>プラン</th><th>画像生成の利用権限</th><th>主な特徴と用途</th></tr>
+  <tr><td><strong>Free（無料版）</strong></td><td>非常に厳しい制限（1日数枚程度）</td><td>高解像度やマルチターン編集は非対応、動作確認・体験用</td></tr>
+  <tr><td><strong>Plus（個人有料版）</strong></td><td>動的な高クォータ（1日数十〜100枚以上）</td><td>一般的なクリエイターに十分。ピーク時にはクールダウンが発生する場合あり</td></tr>
+  <tr><td><strong>Pro（ヘビーユーザー）</strong></td><td>コンシューマー向け最高優先度とクォータ上限</td><td>プロデザイナーやヘビークリエイター向け。サーバー混雑時の制限を受けにくい</td></tr>
+  <tr><td><strong>Team（チーム版）</strong></td><td>Plus 以上の容量、チーム内でのプール共有に対応</td><td>中小規模スタジオや制作チームの高頻度な共同生成に最適</td></tr>
+  <tr><td><strong>Enterprise（エンタープライズ）</strong></td><td>契約コンピュートクレジット制</td><td>専用クラスタ、データ学習なしの完全プライバシー保証、エンタープライズ SLA</td></tr>
+</table>
+
+<div class="callout warn">
+  <b class="t">⚠️ クォータの運用ポリシー</b>
+  画像生成はテキスト処理に比べ莫大な計算リソースを消費します。OpenAI はリアルタイムのサーバー負荷と 3〜5 時間のローリングウィンドウに基づく<strong>動的クォータ制</strong>を採用しており、「1日無制限」は保証されていません。<strong>北米のコア業務時間</strong>（日本時間の夜間〜未明）を避けて利用すると、より高速で安定したレスポンスが得られます。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 2: プロンプトフレームワーク ================= -->
+<section id="prompt-framework">
+<div class="sec-tag">重要原則 02</div>
+<h2>6要素プロンプトフレームワーク</h2>
+
+<p>プロの現場における画像プロンプトは、キーワードの羅列ではなく、体系化された<strong>「6要素フレームワーク」</strong>に則って設計します。自らを「アートディレクター（Art Director）」と見立て、的確なディレクションを出す意識を持ちましょう：</p>
+
+<div class="hotcmds">
+  <div class="hotcmd must">
+    <span class="hc-cmd">① 主体 (Subject)</span>
+    <span class="hc-desc">中心となる人物・オブジェクトの詳細：年齢、服装、表情、ポーズ</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">② 動作 (Action)</span>
+    <span class="hc-desc">主体が何を行っているか：動き、ポーズ、感情の状態</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">③ 環境 (Environment)</span>
+    <span class="hc-desc">背景、時間帯、天候、季節、ロケーション、被写界深度</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">④ スタイル (Style)</span>
+    <span class="hc-desc">アートの流派・画材・表現媒体：水彩画、3Dレンダリング、極簡ベクターなど</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">⑤ 技術 (Technical)</span>
+    <span class="hc-desc">ライティング、画角、構図、カメラレンズのパラメータ</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">⑥ 雰囲気 (Vibe)</span>
+    <span class="hc-desc">作品全体の感情的トーン：ノスタルジック、荘厳、静寂、緊張感</span>
+  </div>
+</div>
+
+<h3>シンプルから商用実用へ：4段階ステップアップ</h3>
+
+<div class="prompt-box">
+  <span class="label">Lv1 最小構成</span>
+  A cat sitting.（座っている猫）<br>
+  <em>→ 結果：平凡で没個性、典型的なAI初期スタイル</em>
+</div>
+<div class="prompt-box">
+  <span class="label">Lv2 環境を追加</span>
+  A cat sitting on a wooden windowsill looking outside.（木製の窓辺に座り外を眺める猫）<br>
+  <em>→ 結果：シチュエーションは伝わるが、質感や作風はランダム</em>
+</div>
+<div class="prompt-box">
+  <span class="label">Lv3 スタイルと光影を追加</span>
+  A photorealistic image of a fluffy white cat sitting on a wooden windowsill looking at the sunset, warm sunlight casting long shadows.（夕日を眺めるふわふわの白猫、温かい夕暮れの光が長い影を落とす写実的な写真）<br>
+  <em>→ 結果：情景に情緒と立体感が生まれ、プロらしい質感に</em>
+</div>
+<div class="prompt-box">
+  <span class="label">Lv4 技術仕様（推奨・商用クオリティ）</span>
+  A professional editorial photograph of a fluffy white cat sitting on a wooden windowsill looking at the sunset, warm golden hour light, shot on 35mm lens, shallow depth of field, high-resolution, cinematic composition.<br>
+  <em>→ 結果：雑誌のグラビアや広告でそのまま使えるプロフェッショナル品質</em>
+</div>
+
+<div class="callout tip">
+  <b class="t">💡 重要なプロンプト作法</b>
+  <ul>
+    <li><strong>自然言語の叙述文を使用する</strong>：Midjourney のような単語の羅列ではなく、ChatGPT には構造化された完全なセンテンスが最も効果的です。</li>
+    <li><strong>削ぎ落としとバランス</strong>：描写の核は 5〜7 点に絞り、過積載による「要素の混ざり（Feature Bleed）」を防ぎます。</li>
+    <li><strong>否定語ではなく肯定語で指示する</strong>：「メガネをかけさせないで」ではなく、「メガネのない、自然で明瞭な目元」と肯定形で指示します。</li>
+    <li><strong>技術用語は英語を維持する</strong>：主体の物語やニュアンスは日本語で記述できますが、<code>85mm lens</code>、<code>f/1.8</code>、<code>Unreal Engine 5</code> などの光学・レンダリング用語は英語のまま渡すのが最も確実です。</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 3: 上級プロンプト技法 ================= -->
+<section id="prompt-advanced">
+<div class="sec-tag">重要原則 03</div>
+<h2>上級プロンプト技法</h2>
+
+<h3>撮影監督（DoP）スタイルのプロンプト処方箋</h3>
+<p>実世界のシネマティックパラメータや光学設定をプロンプトに組み込むことで、スタジオ撮影に匹敵するフォトリアルな質感を実現できます：</p>
+
+<table class="tbl">
+  <tr><th>パラメータ項目</th><th>キーワード</th><th>視覚効果</th></tr>
+  <tr><td><strong>レンズの種類</strong></td><td><code>35mm</code> / <code>85mm</code> / <code>macro</code> / <code>fisheye</code></td><td>ドキュメンタリー感 / ポートレートボケ / 超接写マクロ / 魚眼パース</td></tr>
+  <tr><td><strong>絞り値（F値）</strong></td><td><code>f/1.2</code> / <code>f/1.8</code> / <code>f/8</code></td><td>極浅い被写界深度 / 美しい背景ボケ / 画面全体へのパンフォーカス</td></tr>
+  <tr><td><strong>シャッター速度</strong></td><td><code>1/1000s</code> / <code>2s exposure</code></td><td>高速動体の静止 / 動体ブレ・光跡の描写</td></tr>
+  <tr><td><strong>照明設計</strong></td><td><code>Golden hour</code> / <code>Rembrandt</code> / <code>Cinematic</code></td><td>暖色のマジックアワー / レンブラント光（三角シャドウ） / 映画的明暗</td></tr>
+  <tr><td><strong>フィルム銘柄</strong></td><td><code>Kodak Portra 400</code> / <code>Fuji Superia</code></td><td>温かみのあるスキントーン / レトロで硬質なシネマティックスタイル</td></tr>
+</table>
+
+<div class="prompt-box">
+  <span class="label">📸 フォトリアル黄金レシピ</span>
+  Shot on 35mm lens, Kodak Portra 400 film, golden hour lighting, cinematic rim light, subtle chromatic aberration, shallow depth of field.
+</div>
+
+<h3>ネガティブプロンプトの回避と肯定指示</h3>
+<p>ChatGPT には専用のネガティブプロンプト欄が<strong>存在せず</strong>、「〜しないで」という否定表現を正確に理解するのが苦手です（言及した要素を描画しがちになります）。そのため以下のようにポジティブ変換します：</p>
+
+<div class="duo">
+  <div class="bad">
+    <b>❌ 避けるべき指示（否定文）</b>
+    「メガネをかけないで」<br>
+    「no cartoon style」<br>
+    「背景をなくして」<br>
+    <em>→ メガネ、アニメ調の線、余計な背景が混入しやすくなる</em>
+  </div>
+  <div class="good">
+    <b>✅ 推奨される指示（肯定文）</b>
+    「メガネのない、自然で明瞭な目元と素顔」<br>
+    「highly detailed photorealistic skin texture」<br>
+    「solid seamless white background, nothing else」
+  </div>
+</div>
+
+<h3>GPT によるプロンプト逆引き（リバースエンジニアリング）</h3>
+<ol class="steps">
+  <li><strong>参考画像のアップロード</strong>：目指す構図やライティングを持つお気に入りの画像を ChatGPT にアップロードします。</li>
+  <li><strong>逆引き分析の指示</strong>：「この画像の構図、ライティング、質感、カラーパレット、画風を詳細に分析し、これと極めて類似した画像を再生成できる最適な英語プロンプトを逆算して記述してください」と指示します。</li>
+  <li><strong>そのまま生成実行</strong>：抽出されたプロンプトを使って新規画像を生成させます。単純に「これに似せて描いて」と頼むより十倍以上の精度が得られます。</li>
+</ol>
+
+<h3>思考の連鎖（Chain of Thought）画像プロンプト</h3>
+<div class="prompt-box">
+  <span class="label">🧠 Chain of Thought Prompt</span>
+  画像を生成する前に、まず3つの段落を用いて、このテーマ（[あなたのテーマ]）の構図、色彩心理学、メタファーとなる視覚要素を分析してください。分析完了後、その内容を統合した最適な英語プロンプトを作成し、画像生成を実行してください。
+</div>
+
+<h3>日英ハイブリッドプロンプト戦略</h3>
+<div class="callout note">
+  <b class="t">💡 ハイブリッド戦略（ベストプラクティス）</b>
+  主体の物語やシチュエーションは日本語で入力しても、ChatGPT のセマンティック理解力により正確に認識されます。ただし、撮影用語、アートスタイル、カメラ仕様（例：<code>85mm lens</code>、<code>f/1.8</code>、<code>isometric</code>、<code>Unreal Engine 5</code>）は英語のままプロンプトに組み込むことで、最も精度の高い質感制御が可能になります。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 4: スタイル制御 ================= -->
+<section id="style-control">
+<div class="sec-tag">重要原則 04</div>
+<h2>スタイル制御とビジュアル語彙集</h2>
+
+<h3>5大コアスタイルテンプレート</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">📷</span><b>写真・フォトリアル (Photography)</b><span class="pt">PHOTOREALISTIC</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">テンプレート</span>
+        Editorial photo of [主体], [動作], golden hour lighting, shot on 85mm lens, f/1.8, ultra-sharp focus, photorealistic.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎨</span><b>水彩画イラスト (Watercolor)</b><span class="pt">ILLUSTRATION</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">テンプレート</span>
+        Watercolor illustration of [主体], soft brushstrokes, pastel colors, dreamlike atmosphere, whimsical, visible paper texture.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎮</span><b>3D レンダリング (3D Render)</b><span class="pt">3D STYLE</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">テンプレート</span>
+        3D render of [主体] in Unreal Engine 5, isometric view, soft studio lighting, ray tracing, highly detailed.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">👾</span><b>ドット絵・ピクセルアート (Pixel Art)</b><span class="pt">RETRO</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">テンプレート</span>
+        16-bit pixel art of [主体], retro arcade style, flat colors, crisp edges, isolated on a white background.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">✨</span><b>ロゴ・CI デザイン (Logo Design)</b><span class="pt">BRAND</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">テンプレート</span>
+        Minimalist vector logo of [主体], flat design, corporate, 2-color palette, clean lines, white background, no shading, SVG style.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>ビジュアルスタイル語彙早見表</h3>
+
+<table class="tbl">
+  <tr><th>分類</th><th>実戦キーワード集</th></tr>
+  <tr><td><strong>質感・マテリアル</strong></td><td><code>visible pores</code> (毛穴の質感) · <code>gritty</code> (ザラつき) · <code>cross-hatching</code> (クロスハッチング) · <code>matte</code> (マット調) · <code>glossy</code> (光沢) · <code>iridescent</code> (玉虫色) · <code>translucent</code> (半透明) · <code>corroded metal</code> (錆びた金属) · <code>smooth porcelain</code> (滑らかな陶器)</td></tr>
+  <tr><td><strong>照明・ライティング</strong></td><td><code>volumetric fog</code> (薄明光線・フォグ) · <code>cinematic moody lighting</code> (映画的ムード光) · <code>bioluminescent</code> (生物発光) · <code>golden hour</code> (マジックアワー) · <code>neon reflections</code> (ネオンの反射) · <code>rim light</code> (輪郭光) · <code>split lighting</code> (スプリット照明)</td></tr>
+  <tr><td><strong>色彩設計</strong></td><td><code>pastel colors</code> (パステル調) · <code>earth tones</code> (アーストーン) · <code>monochromatic</code> (モノトーン) · <code>duotone</code> (デュオトーン) · <code>high contrast vivid</code> (高彩度鮮明) · <code>60-30-10 color rule</code> (色彩比率原則)</td></tr>
+  <tr><td><strong>構図・アングル</strong></td><td><code>rule of thirds</code> (三分割法) · <code>bird's-eye view</code> (俯瞰・鳥瞰) · <code>Dutch angle</code> (ダッチアングル・斜め) · <code>low-angle</code> (アオリ構図) · <code>isometric</code> (等角投影) · <code>macro shot</code> (マクロ接写) · <code>medium shot</code> (ミディアムショット)</td></tr>
+  <tr><td><strong>感情・ムード</strong></td><td><code>nostalgic</code> (ノスタルジック) · <code>epic</code> (壮大・叙事詩的) · <code>serene</code> (静謐) · <code>whimsical</code> (幻想的・風変わり) · <code>tense</code> (緊迫感) · <code>cozy</code> (温かみ・居心地の良さ)</td></tr>
+</table>
+
+<h3>ジブリ風プロンプトのフィルタ回避テクニック</h3>
+<div class="callout tip">
+  <b class="t">💡 著作権フィルタの回避作法</b>
+  直接「Studio Ghibli」と入力すると、安全ポリシーの著作権保護機能が作動する場合があります。作風を構成する視覚的特徴を具体的に記述することで回避します：<br>
+  <code>hand-drawn cel animation, soft diffused lighting, watercolor textures, lush greenery, nostalgic atmosphere, expressive character design, blue sky with fluffy cumulus clouds</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 5: 文字描画 ================= -->
+<section id="text-rendering">
+<div class="sec-tag">重要原則 05</div>
+<h2>文字描画・タイポグラフィ攻略</h2>
+
+<p>文字描画は長年 AI 画像生成最大の弱点とされてきましたが、GPT-4o ネイティブマルチモーダル構造により劇的な進化を遂げました：</p>
+
+<h3>高精度文字描画の5大原則</h3>
+<ul>
+  <li><strong>二重引用符による文字の分離</strong>：描画させたい正確な文言を<strong>英語のダブルクォーテーション</strong>で囲みます：<code>A neon sign that reads "OPEN 24 HOURS"</code></li>
+  <li><strong>配置場所の明確な指定</strong>：「マグカップの側面に印字」「店舗のショーウィンドウに」「ホワイトボードの中央に」と場所を明示します。</li>
+  <li><strong>短文至上主義</strong>：1〜4単語が最も成功率が高く、長文になるほどスペルミスやレイアウト崩れの確率が跳ね上がります。</li>
+  <li><strong>フォント様式の英語指定</strong>：<code>bold sans-serif</code>（太字サンセリフ）、<code>elegant cursive</code>（流麗な筆記体）、<code>3D bubble letters</code>（3D立体文字）のように書体を指定します。</li>
+  <li><strong>部分再生成での修正</strong>：スペルミスがあった場合、画像全体を再生成してはいけません！「画像全体を完全に維持し、看板の文字だけを 'HELLO' に差し替えて」と局所指示を出します。</li>
+</ul>
+
+<h3>多言語テキスト描画（日本語・中国語・韓国語）</h3>
+<div class="callout note">
+  <b class="t">🌐 2025〜2026年の重大ブレイクスルー</b>
+  最新モデルは CJK（日中韓）の複雑な漢字や仮名文字のレンダリングにおいて飛躍的な進化を遂げました。プロンプト内で直接日本語をクォート指定できます：<br>
+  <code>A neon sign that reads "未来への扉"</code> のように指定すれば、ポスターデザインや看板の中に自然な日本語フォントを正確に組み込めます。
+</div>
+
+<h3>フォントスタイル語彙集</h3>
+<table class="tbl">
+  <tr><th>書体カテゴリ</th><th>指定用英語キーワード</th></tr>
+  <tr><td>明朝・セリフ体</td><td><code>elegant thin-stroke serif font</code> · <code>classic newspaper typography</code></td></tr>
+  <tr><td>ゴシック・サンセリフ体</td><td><code>modern minimalist sans-serif</code> · <code>bold geometric font</code> · <code>clean Swiss design</code></td></tr>
+  <tr><td>手書き・筆文字</td><td><code>messy handwritten script</code> · <code>vintage calligraphy</code> · <code>brush stroke lettering</code></td></tr>
+  <tr><td>装飾・ディスプレイ体</td><td><code>3D bubble letters</code> · <code>retro neon glow text</code> · <code>gothic blackletter</code></td></tr>
+</table>
+
+<h3>統計グラフ・インフォグラフィックの正しい作成法</h3>
+<div class="duo">
+  <div class="bad">
+    <b>❌ 避けるべき方法</b>
+    画像生成 AI に直接グラフや精密な統計図を描かせる<br>
+    <em>→ AI は数学的な正確性を持たないため、数値軸や比率が必ず破綻します。</em>
+  </div>
+  <div class="good">
+    <b>✅ 推奨されるハイブリッド手法</b>
+    <strong>精密なグラフ</strong>：データをアップロードし、ChatGPT の Python（matplotlib 等）で描画する。<br>
+    <strong>フローチャート</strong>：GPT に Mermaid コードを出力させ、HTML/SVG でレンダリングする。<br>
+    <strong>デザイン背景</strong>：AI には余白の美しいテンプレート背景のみを作らせ、Figma や Canva で数値を重ねる。
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 6: 画像編集 ================= -->
+<section id="image-editing">
+<div class="sec-tag">実践ノウハウ 06</div>
+<h2>画像編集と反復プロセス</h2>
+
+<h3>画像編集の3大ワークフロー</h3>
+<ol class="steps">
+  <li><strong>局所修正（Inpainting）</strong>：画像をクリックして編集画面へ → 変更したい領域をブラシで塗りつぶす → 変更内容を指示（例：「このシャツを赤のストライプ柄に変えて」）。AI が周辺のライティングや質感を保ったまま修正します。</li>
+  <li><strong>コメント注記編集（Images 2.5 新機能）</strong>：画像上の対象箇所を直接丸で囲みコメントを記入 → モデルが文脈を自動理解し、他の要素を崩さずに精密な局所修正を実行します。</li>
+  <li><strong>全体スタイル変換</strong>：手持ちの写真をアップロード → スタイルを指定（例：「この写真をサイバーパンク風のアニメに変換」）。単なるフィルタ加工ではなく、意味論的な再合成が行われます。</li>
+</ol>
+
+<h3>マルチターン対話による段階的チューニング</h3>
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🔄</span><b>プログレッシブ微調整ワークフロー</b><span class="pt">ITERATIVE</span></div>
+    <div class="pb">
+      <ol class="steps">
+        <li><strong>初期ラフ生成</strong>：「森の中で本を読んでいる少女の画像を生成して」</li>
+        <li><strong>環境の変更</strong>：「構図はそのままで、時間帯を真夜中に変更し、森にホタルを飛ばして」</li>
+        <li><strong>小道具の変更</strong>：「少女の容姿は変えずに、手に持っている本を発光するノートPCに差し替えて」</li>
+        <li><strong>局所的な修正</strong>：指の描写に違和感がある場合 → ブラシで囲み「手の構造を整え、自然な5本指に修正して」</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <b class="t">⚠️ 対話編集時の注意点</b>
+  <ul>
+    <li>同一スレッドで3回以上修正に失敗した場合、AI の文脈が混乱している可能性があります。その場合は<strong>新しいチャットを開き</strong>、整理した最良プロンプトで最初から生成し直すのが賢明です。</li>
+    <li>段階的な修正を行う際は、必ず<strong>「〜は一切変更せずに」</strong>と明示してください。指定を怠ると全体の構図が変わってしまうリスクがあります。</li>
+    <li>納得のいく画像が生成されたら、直ちに GPT に完全な英語プロンプトと seed 値を出力させ、保存しておきましょう。</li>
+  </ul>
+</div>
+
+<h3>背景透過 PNG の作成手順</h3>
+<p>ChatGPT の画像モデルは、アルファチャンネル付きの透過 PNG を直接出力することはできません。以下の実用パイプラインを活用します：</p>
+<ol class="steps">
+  <li><strong>単色背景での生成</strong>：プロンプトに「<code>solid seamless white background</code>（純白無地背景）」または「<code>chroma green background, no shadow</code>（影なしグリーンバック）」と明記します。</li>
+  <li><strong>自動切り抜き処理</strong>：生成後、ChatGPT の Code Interpreter（Python）を使って背景色を透過させ、PNG 形式でダウンロードします。</li>
+  <li><strong>外部ツールの併用</strong>：macOS の写真アプリの標準切り抜き機能や、Remove.bg、Canva などのツールを使えばワンクリックで透過処理が完了します。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 7: 一貫性維持 ================= -->
+<section id="consistency">
+<div class="sec-tag">実践ノウハウ 07</div>
+<h2>キャラクターとスタイルの一貫性維持</h2>
+
+<p>複数枚の画像で同一のキャラクターや統一された世界観を維持することは、AI 制作における最大の技術的挑戦です。コミュニティで実証された4つの高度な戦略を紹介します：</p>
+
+<h3>キャラクター一貫性の4大戦略</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">📋</span><b>戦略1：キャラクター設定シート</b><span class="pt">CHARACTER SHEET</span></div>
+    <div class="pb">
+      <p>最初の生成時に、キャラクターの<strong>正面・側面・背面の三面図および複数の表情パターン</strong>を一枚に収めた「設定シート」を出力させます。以降の生成では、この設定シートを参考画像として毎回アップロードします。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🧬</span><b>戦略2：テキスト DNA アンカー</b><span class="pt">DNA TEMPLATE</span></div>
+    <div class="pb">
+      <p>キャラクターに固有の名前（例：「Aria」）を与え、<strong>不変の身体的特徴を定義した DNA 記述</strong>を作成。毎回のプロンプトに一字一句変えずに挿入します：</p>
+      <div class="prompt-box">
+        <span class="label">DNA アンカー記述例</span>
+        Aria, a 30-year-old woman with a scar on her left cheek, emerald green eyes, messy ginger hair tied with a blue ribbon, wearing a red leather jacket with silver zippers.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔢</span><b>戦略3：Seed 値の固定</b><span class="pt">SEED LOCK</span></div>
+    <div class="pb">
+      <p>理想的な出力が得られたら、GPT に「この画像の seed 値と gen_id を教えてください」と質問します。次回の生成時に「seed [番号] を使用し、全く同じキャラクター設定で…」と指示します。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🤖</span><b>戦略4：Custom GPT による固定化</b><span class="pt">CUSTOM GPT</span></div>
+    <div class="pb">
+      <p>プロジェクト専用の Custom GPT を作成し、システムの基本指示（Instructions）にキャラクター設定と画風の制約を書き込みます。これにより、毎回のプロンプト入力時に自動で制約が適用されます。</p>
+    </div>
+  </div>
+</div>
+
+<h3>スタイル一貫性：JSON スタイルブループリント法</h3>
+<ol class="steps">
+  <li>基準となる画像をアップロードし、ChatGPT に「この画像の視覚スタイル、カラーパレット、質感、ライティングを分析し、JSON 形式のスタイル設計図として出力してください」と指示します。</li>
+  <li>以降の生成プロンプトの末尾に、出力された JSON コードを「厳密なスタイル制約」として毎回添付します。</li>
+  <li>「SF風」のような曖昧な言葉は避け、<code>cyberpunk, deep navy and magenta neon contrast, wet asphalt reflections, 35mm grain</code> のように具体的な属性で固定します。</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 8: シナリオ別プロンプト ================= -->
+<section id="scenarios">
+<div class="sec-tag">実践ノウハウ 08</div>
+<h2>15+ 実戦シナリオ別プロンプト集</h2>
+
+<h3>ビジネス向けシナリオ</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🛒</span><b>EC 商品写真</b><span class="pt">E-COMMERCE</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">白抜き商品写真</span>
+        A professional product photograph of [製品名], centered on a pure white background, soft studio lighting, subtle shadow, high-resolution, e-commerce ready, no text.
+      </div>
+      <div class="prompt-box">
+        <span class="label">ライフスタイル・使用シーン</span>
+        [製品名] naturally placed on a wooden table in a sun-drenched Italian-style balcony, morning coffee atmosphere, warm natural light, lifestyle photography, 35mm lens.
+      </div>
+      <p><strong>パラメータ指針</strong>：カタログ用は 1:1 正方形 / LP・詳細用は 4:3 横型 · 白抜きまたはリアルな使用環境 · 余分なテキストは入れない</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">📱</span><b>SNS 投稿用ビジュアル</b><span class="pt">SOCIAL MEDIA</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">Instagram / 縦型フィード</span>
+        Create a featured visual for an article on [テーマ], flat tech illustration style, warm soothing palette, generous upper negative space for text overlay, 3:4 portrait ratio.
+      </div>
+      <div class="prompt-box">
+        <span class="label">投稿デザイン</span>
+        Social media post design, aesthetic, cinematic lighting, 1:1 aspect ratio, leave negative space in the upper half for copy, [詳細な描写].
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🏷️</span><b>ロゴ・ブランド CI</b><span class="pt">BRANDING</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">極簡テックロゴ</span>
+        A minimalist tech company logo on a matte black background. The main subject is [コンセプト]. The text "[ブランド名]" is centered below in clean white bold sans-serif font. Flat vector art, limited color palette (hex #FF5733, #33FF57), ample negative space, no shading, SVG style.
+      </div>
+      <p><strong>注意点</strong>：AI は描き込み過多になりやすいため、<code>minimalist</code>、<code>flat</code>、<code>no shading</code>、<code>clean geometric silhouette</code> を強調します。</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">📊</span><b>プレゼン・スライド背景</b><span class="pt">PRESENTATION</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">スライド用背景</span>
+        A wide cinematic 16:9 abstract background image for a tech presentation about [テーマ]. Gradient from deep navy to midnight blue, subtle geometric patterns, clean professional look, large negative space on the right for text overlay, no text.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>クリエイティブ向けシナリオ</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🏯</span><b>アニメ風：ジブリ調・新海誠調</b><span class="pt">ANIME</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">ジブリ風（フィルタ回避版）</span>
+        Hand-drawn cel animation style of [シーン], soft diffused lighting, watercolor textures, lush greenery overgrowing old structures, nostalgic atmosphere, expressive character design, blue sky with fluffy cumulus clouds, warm color palette.
+      </div>
+      <div class="prompt-box">
+        <span class="label">新海誠風</span>
+        A breathtaking cityscape at twilight in Makoto Shinkai's style, photorealistic sky with dramatic clouds and light rays, lens flare, highly saturated colors, rain-slicked streets reflecting neon lights, 16:9 cinematic widescreen.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🕹️</span><b>ドット絵・レトロゲーム</b><span class="pt">PIXEL ART</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">クラシック 16-bit</span>
+        16-bit pixel art of [主体], retro arcade style, flat colors, crisp pixel edges, game sprite sheet layout, chroma green background for easy extraction.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">⚙️</span><b>サイバーパンク・SF 世界</b><span class="pt">CYBERPUNK</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">ネオン横丁</span>
+        A rain-slicked neon alleyway at midnight, cyberpunk atmosphere, holographic billboards with Chinese characters, volumetric fog, purple and cyan neon reflections in puddles, cinematic wide shot, Blade Runner aesthetic.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🖼️</span><b>伝統絵画：水彩画・油彩画</b><span class="pt">FINE ART</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">水彩画</span>
+        Watercolor painting of [主体], visible brushstrokes, soft bleeding edges, pastel color palette, white paper texture showing through, gentle washes of color, dreamy and ethereal.
+      </div>
+      <div class="prompt-box">
+        <span class="label">重厚な油彩画</span>
+        Thick impasto oil painting of [主体], Renaissance lighting style, dramatic chiaroscuro, visible palette knife strokes, warm golden tones, gallery-worthy composition.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>プロフェッショナル向けシナリオ</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">📐</span><b>UI/UX モックアップ</b><span class="pt">UI DESIGN</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">スマホアプリ UI</span>
+        A modern smart home mobile app dashboard screenshot, dark mode, neon blue accent buttons, clean card-based layout, showing temperature controls and security cameras, iOS design language, high fidelity mockup.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">😃</span><b>スタンプ・ステッカー</b><span class="pt">STICKER</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">ダイカットステッカー</span>
+        Die-cut sticker style of [主体], thick white border, solid color background, kawaii vector art, exaggerated facial expression, cute proportions, no shadow.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🎬</span><b>YouTube サムネイル</b><span class="pt">THUMBNAIL</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">高クリック率サムネイル</span>
+        YouTube thumbnail, 16:9 wide format, vibrant high-contrast colors, [主体] on the right side, left side features bold 3D text "[タイトル]" in yellow with black outline, dramatic lighting, eye-catching pop-art style background.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🏠</span><b>建築・インテリアパース</b><span class="pt">ARCHITECTURE</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">北欧モダンリビング</span>
+        Modern Scandinavian living room interior design, light oak hardwood floors, minimalist white furniture, large floor-to-ceiling windows with natural daylight, indoor plants, warm ambient lighting, architectural photography style, wide-angle lens.
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 9: エキスパート裏技 ================= -->
+<section id="expert-tricks">
+<div class="sec-tag">応用テクニック 09</div>
+<h2>エキスパート秘伝テクニック</h2>
+
+<h3>Custom Instructions による自動プロンプト拡張</h3>
+<p>ChatGPT の「カスタム指示（Custom Instructions）」に画像生成用の基本設定を事前登録しておきます：</p>
+<div class="prompt-box">
+  <span class="label">Custom Instructions 設定例</span>
+  画像生成を依頼された際は、常に熟練のアートディレクターとして振る舞ってください。私の簡潔な要求を、以下の要素を含む詳細なプロンプトへ自動拡張してください：主体描写 ＋ 動作 ＋ 背景環境 ＋ 光影の相互作用 ＋ 構図とレンズ ＋ 芸術的媒体。生成後は、必ず seed 値と完全な英語プロンプトを提示してください。
+</div>
+<p>この設定を有効にしておくと、「猫を描いて」と入力するだけで、ライティングや構図が計算された高品質な画像が自動生成されます。</p>
+
+<h3>コミュニティ実証済みの8大裏技</h3>
+
+<table class="tbl">
+  <tr><th>#</th><th>テクニック名</th><th>具体的な操作手順</th></tr>
+  <tr><td>1</td><td><strong>プロンプト改変防止ロック</strong></td><td>プロンプトの先頭に <code>Generate this exact prompt without changing a single word: [あなたのプロンプト]</code> と記述し、ChatGPT による勝手な加筆・潤色を防止。</td></tr>
+  <tr><td>2</td><td><strong>著作権の安全な回避</strong></td><td>「[特定キャラクター] の名前を出さずに、その人物に似た特徴を持つキャラクターを詳細に描写して」と特徴で指示。</td></tr>
+  <tr><td>3</td><td><strong>2×2 グリッド一括生成</strong></td><td>「同一画像内に、このデザインの異なる4色のバリエーションを 2x2 のグリッドで並べて生成して（arranged in a 2x2 grid）」。気に入ったコマを後から切り抜いて拡大。</td></tr>
+  <tr><td>4</td><td><strong>スケッチによる構図誘導</strong></td><td>ペイントツールで簡単な棒人間を描いて構図を指定 → スクリーンショットを GPT に送信 →「このレイアウトを構図ガイドとして…」と指示。</td></tr>
+  <tr><td>5</td><td><strong>シード値固定の四季シリーズ</strong></td><td>基準画像を生成して seed 値を取得 →「全く同じ seed と構図を使い、季節を[大雪の冬]に変えて」と指示し、春夏秋冬の連作を作成。</td></tr>
+  <tr><td>6</td><td><strong>4コマ漫画・絵コンテ生成</strong></td><td><code>A comic strip page divided into 4 horizontal panels. Panel 1: [描写], Panel 2: [描写]...</code> と指定してストーリーボードを一括生成。</td></tr>
+  <tr><td>7</td><td><strong>ゲーム用アセットシート分離</strong></td><td><code>asset sheet, multiple views, turnaround sheet, chroma green background</code> と指示し、ゲーム開発や素材制作向けに部品を整列出力。</td></tr>
+  <tr><td>8</td><td><strong>超高解像度アップスケール準備</strong></td><td>プロンプトに <code>extremely highly detailed, ultra-crisp, sharp focus, intricate details</code> を追加し、外部 AI アップスケーラーにかける前のテクスチャ密度を極大化。</td></tr>
+</table>
+
+<h3>ChatGPT Images 2.5 最新機能クイックリファレンス</h3>
+<div class="hotcmds">
+  <div class="hotcmd must">
+    <span class="hc-cmd">スケッチから生成 @Sketch</span>
+    <span class="hc-desc">チャットで @Sketch と入力してキャンバスを呼び出し、簡単な落書きで空間配置や色を指定。構図制御が飛躍的に向上</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">テンプレートシステム Templates</span>
+    <span class="hc-desc">ポスター、チラシ、白抜き商品写真など実務向けのプリセットレイアウトをワンクリックで適用可能</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">コメント注記による編集</span>
+    <span class="hc-desc">画像上の修正したい箇所を囲んでコメントを入力するだけで、全体の破綻なく外科的な部分修正を実行</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">複数画像リファレンス合成</span>
+    <span class="hc-desc">最大10枚の画像をアップロードし、アンカープロンプトを用いてスタイルや色彩、モチーフを自在にブレンド</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">線画からの清書・レンダリング</span>
+    <span class="hc-desc">手描きのラフスケッチやワイヤーフレームをアップロードし、高精細な3Dレンダリングや完成イラストへ昇華</span>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 10: 競合比較 ================= -->
+<section id="comparison">
+<div class="sec-tag">比較と選定 10</div>
+<h2>競合ツール比較と選定ガイド</h2>
+
+<table class="tbl">
+  <tr><th>評価軸</th><th>ChatGPT (GPT-4o)</th><th>Midjourney v7</th><th>Stable Diffusion 3 / Flux</th><th>Adobe Firefly</th></tr>
+  <tr><td><strong>コアポジション</strong></td><td>対話型クリエイティブ相棒</td><td>芸術的美の最高峰</td><td>絶対的な制御性（オープンソース）</td><td>商用安全性 ＋ CC 連携</td></tr>
+  <tr><td><strong>プロンプト遵守度</strong></td><td><span class="pill a">極めて強力</span></td><td>中程度</td><td>強力（専門設定が必要）</td><td>中程度</td></tr>
+  <tr><td><strong>文字レンダリング</strong></td><td><span class="pill a">業界最強</span></td><td>弱い</td><td>普通（Flux は強力）</td><td>普通</td></tr>
+  <tr><td><strong>芸術的クオリティ</strong></td><td>優秀</td><td><span class="pill a">圧倒的頂点</span></td><td>LoRA 調節次第で自在</td><td>良好</td></tr>
+  <tr><td><strong>人体・解剖の正確性</strong></td><td>良好</td><td>優秀</td><td><span class="pill a">Flux が最高峰</span></td><td>良好</td></tr>
+  <tr><td><strong>学習コスト</strong></td><td><span class="pill a">最も低い（自然言語）</span></td><td>中程度（Discord 操作）</td><td>高い（UI や設定の知識要）</td><td>低い（Adobe UI に統合）</td></tr>
+  <tr><td><strong>キャラ一貫性</strong></td><td>工夫が必要（中程度）</td><td>中程度</td><td><span class="pill a">極めて強力（ControlNet等）</span></td><td>中程度</td></tr>
+  <tr><td><strong>著作権・商用補償</strong></td><td>Copyright Shield あり</td><td>商用ライセンス付与</td><td>モデル・チェックポイントに依存</td><td><span class="pill a">最強（完全な知財免責補償）</span></td></tr>
+  <tr><td><strong>対話型反復編集</strong></td><td><span class="pill a">業界最強（チャット完結）</span></td><td>弱い</td><td>中程度（Inpainting）</td><td>強力（Photoshop レイヤー連携）</td></tr>
+</table>
+
+<h3>どのような場合に ChatGPT を選ぶべきか？</h3>
+<div class="callout tip">
+  <b class="t">✅ ChatGPT 画像生成ならではの絶対的な強み</b>
+  <ul>
+    <li><strong>対話による段階的なブラッシュアップ</strong>：アートディレクターに伝えるように「背景を夜にして」と言うだけで修正可能。プロンプトをゼロから書き直す必要がありません。</li>
+    <li><strong>制作プロセスの一気通貫</strong>：同じチャット内で「記事執筆 → 挿絵生成 → SNS 用告知文の作成」をシームレスに完結できます。</li>
+    <li><strong>正確な文字レンダリング</strong>：ポスターや看板、UI に正確な文字を埋め込みたい場合、現時点で最も信頼できる選択肢です。</li>
+    <li><strong>ノーコード・学習コストゼロ</strong>：CFG Scale やステップ数、サンプラーなどの複雑な技術パラメータを覚える必要がありません。</li>
+  </ul>
+</div>
+
+<h3>ChatGPT の弱点と留意すべき点</h3>
+<div class="callout warn">
+  <b class="t">⚠️ あらかじめ理解しておくべき課題</b>
+  <ul>
+    <li><strong>キャラクター完全固定の難しさ</strong>：厳密なプロンプト設計を行わない限り、複数枚で同一人物の顔立ちを保つのは困難です。</li>
+    <li><strong>ピクセル単位の精密制御の欠如</strong>：画面内のわずか数ピクセルのノイズをピンポイントで修正することはできません。</li>
+    <li><strong>過敏なセーフティガードレール</strong>：コンテンツモデレーションが厳しく、健全な表現であっても誤検知でブロックされる場合があります。</li>
+    <li><strong>典型的な AI 質感の残存</strong>：ライティングを細かく指定しないと、ツルツルした過彩色の「AI っぽい絵柄文字」になりがちです。</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 11: 規約と著作権 ================= -->
+<section id="safety-copyright">
+<div class="sec-tag">法規とコンプライアンス 11</div>
+<h2>セーフティポリシー、著作権と企業導入 FAQ</h2>
+
+<h3>コンテンツポリシー早見表：生成可能な領域と禁止事項</h3>
+<table class="tbl">
+  <tr><th>カテゴリ</th><th>生成ステータス</th><th>規約の解説と指針</th></tr>
+  <tr><td>暴力・残酷描写</td><td><span class="pill d">厳格に禁止</span></td><td>肉体的暴力、自傷行為、過激な流血表現</td></tr>
+  <tr><td>成人向け / 性的表現</td><td><span class="pill d">厳格に禁止</span></td><td>ヌード、性行為、露骨な性的暗示</td></tr>
+  <tr><td>ヘイト・差別表現</td><td><span class="pill d">厳格に禁止</span></td><td>人種、宗教、性別、性的指向等に対する攻撃や差別</td></tr>
+  <tr><td>実在の政治指導者</td><td><span class="pill d">厳格に禁止</span></td><td>ディープフェイクや政治的プロパガンダの防止</td></tr>
+  <tr><td>実在の著名人・有名人</td><td><span class="pill d">厳格に禁止</span></td><td>肖像権保護およびなりすまし・偽情報の防止</td></tr>
+  <tr><td>現役特定アーティスト風</td><td><span class="pill b">制限あり</span></td><td>システムにより自動的に一般的な芸術流派の表現に置換</td></tr>
+  <tr><td>著作権保護キャラクター</td><td><span class="pill b">制限あり</span></td><td>ディズニーやマーベル等（特徴の言語描写で類似表現は可能だが留意要）</td></tr>
+  <tr><td>商用プロダクト・パッケージ</td><td><span class="pill a">生成可能</span></td><td>商用目的のブランディングやモックアップに自由に利用可能</td></tr>
+  <tr><td>オリジナル創作アート</td><td><span class="pill a">生成可能</span></td><td>大半の自由な創作活動やデザイン制作は完全に自由</td></tr>
+</table>
+
+<h3>著作権：生成された画像の帰属と法的ステータス</h3>
+<div class="callout note">
+  <b class="t">📋 著作権に関する法的ポイント</b>
+  <ul>
+    <li><strong>商用利用権</strong>：ユーザーは生成された画像に対して完全な利用権を保持し、商用（販売、印刷、商品化）が認められています。</li>
+    <li><strong>著作権保護の限界</strong>：米国著作権局の判例および各国の法的見解に基づき、純粋な AI 生成画像には人間の創作的寄与（Human Authorship）が存在しないため、<strong>著作権は発生しません</strong>。競合が同じ画像を複製しても差し止めることは法的に困難です。</li>
+    <li><strong>企業実務への推奨策</strong>：商標登録や知的財産保護を目的とする場合、AI 画像をベースにしつつ、Photoshop や Figma 等で<strong>人間による実質的な創作的加工</strong>を施す必要があります。</li>
+    <li><strong>Copyright Shield（著作権補償）</strong>：Enterprise および API 契約ユーザーに対し、第三者からの著作権侵害請求が発生した場合の訴訟費用を OpenAI が補償する制度が提供されています。</li>
+  </ul>
+</div>
+
+<h3>C2PA 電子透かし・出所情報メタデータ</h3>
+<p>OpenAI は生成されるすべての画像ファイルに <strong>C2PA (Coalition for Content Provenance and Authenticity)</strong> メタデータを暗号学的に埋め込んでおり、AI による生成物であることを証明可能です。Content Credentials などの検証ツールで確認できます。なお、スクリーンショットや一部の SNS へのアップロード時の再圧縮により、このメタデータが除去される場合があります。</p>
+
+<h3>よくある生成エラー・拒絶理由とその解決策</h3>
+<table class="tbl">
+  <tr><th>拒絶・エラーの要因</th><th>実戦的な解決策</th></tr>
+  <tr><td>実在人物の固有名詞</td><td>一般的な属性で表現：「トム・クルーズ」ではなく「スーツを着た精悍なアクション映画のスパイ」に変更</td></tr>
+  <tr><td>暴力系キーワードの誤検知</td><td>多義語を避ける：「shoot（撮影・撃つ）」を「photograph」に、「blood red」を「crimson」に変更</td></tr>
+  <tr><td>特定アーティスト名</td><td>流派の視覚的特徴で描写：「壮大なファンタジーデジタルアート、明暗差の激しいドラマチックな光影」</td></tr>
+  <tr><td>版権キャラクター名</td><td>キャラクターの視覚的特徴を抽象化して指定（例：「黄色い稲妻の尾を持つ電気ネズミ」）</td></tr>
+  <tr><td>生成タイムアウト・エラー</td><td>ページをリロード → 別ウィンドウで再試行 → プロンプトを短縮（4,000文字以内に抑制）</td></tr>
+</table>
+
+<h3>企業実務導入チェックリスト</h3>
+<ul>
+  <li>✅ <strong>ChatGPT Enterprise または Team</strong> プランを導入（企業データがモデル学習に利用されない設定を確保）</li>
+  <li>✅ 社内に <strong>プロンプト資産ライブラリ</strong> を構築し、検証済みのシード値やテンプレートを蓄積</li>
+  <li>✅ 公開前に <strong>法務チェック</strong> を行い、他社商標や既存意匠の偶発的な混入がないか検証</li>
+  <li>✅ AI 生成画像をそのまま商標にせず、デザイナーによる <strong>実質的な加筆加工</strong> を行って知財性を担保</li>
+  <li>⛔ プロンプト内に有名ブランド名や版権キャラクター名を直接記載しない（コンプライアンス遵守）</li>
+  <li>⛔ 権利保護が不確実な純粋 AI 出力をコア商標として出願しない</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 12: リソース ================= -->
+<section id="resources">
+<div class="sec-tag">リソース 12</div>
+<h2>リソース索引と推奨文献</h2>
+
+<table class="tbl">
+  <tr><th>リソース種別</th><th>リンク / アクセス先</th><th>実務的価値</th></tr>
+  <tr><td><strong>OpenAI 公式画像生成ガイド</strong></td><td><a href="https://platform.openai.com/docs/guides/images" target="_blank">platform.openai.com/docs/guides/images</a></td><td>一次情報源：API パラメータと公式ベストプラクティス</td></tr>
+  <tr><td><strong>OpenAI Cookbook</strong></td><td><a href="https://github.com/openai/openai-cookbook" target="_blank">github.com/openai/openai-cookbook</a></td><td>公式コードレシピとマルチモーダル実装例</td></tr>
+  <tr><td><strong>OpenAI 利用ポリシー</strong></td><td><a href="https://openai.com/policies/usage-policies" target="_blank">openai.com/policies/usage-policies</a></td><td>コンテンツコンプライアンスと商用利用規約</td></tr>
+  <tr><td><strong>DALL-E System Card</strong></td><td><a href="https://openai.com/research" target="_blank">openai.com/research</a></td><td>モデルの安全性と能力限界に関する技術レポート</td></tr>
+  <tr><td><strong>PromptHero</strong></td><td><a href="https://prompthero.com" target="_blank">prompthero.com</a></td><td>高品質プロンプトのライブラリと作例集</td></tr>
+  <tr><td><strong>Reddit r/ChatGPT</strong></td><td><a href="https://reddit.com/r/ChatGPT" target="_blank">reddit.com/r/ChatGPT</a></td><td>コミュニティの最新裏技とリアルタイム検証事例</td></tr>
+  <tr><td><strong>当ナレッジベース関連記事</strong></td><td><a href="codex-guide.ja.html">Codex 実戦ガイド</a> · <a href="prompt-context-engineering.ja.html">プロンプト工学</a> · <a href="ai-leverage-guide.ja.html">AI レバレッジガイド</a></td><td>エンジニアリング視点での AI 総合実践知識</td></tr>
+</table>
+
+<h3>100+ の調査文献の内訳分類</h3>
+<p>本ハンドブックは、以下のカテゴリにわたる 100本以上の高品質な技術文献およびコミュニティの知見を体系的に集約したものです：</p>
+<ul>
+  <li><strong>公式ドキュメント群 (15+)</strong>：OpenAI API ドキュメント、Cookbook、System Card、利用規約、公式リリースノート。</li>
+  <li><strong>専門技術ブログ (25+)</strong>：Towards Data Science、Medium UX Collective、Smashing Magazine、Creative Bloq、LessWrong 等の深層レビュー。</li>
+  <li><strong>コミュニティ知見 (20+)</strong>：Reddit r/ChatGPT、r/OpenAI、r/dalle3、r/ChatGPTPromptGenius の高評価ディスカッションと実践まとめ。</li>
+  <li><strong>動画チュートリアル (10+)</strong>：海外トップクリエイターによる実戦デモおよびワークフロー解説動画。</li>
+  <li><strong>業界分析レポート (15+)</strong>：MindStudio、Superside、Zapier、TechCrunch 等による業界動向と企業導入事例分析。</li>
+  <li><strong>学術・技術論文 (10+)</strong>：ArXiv プレプリント、HuggingFace 技術検証、マルチモーダル視覚言語モデルの構造解析。</li>
+  <li><strong>比較ベンチマーク (10+)</strong>：GPT-4o と Midjourney v7、SD 3、Flux、Adobe Firefly、Google Imagen の体系的比較検証記事。</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>免責事項および更新について</strong>：本ガイドは OpenAI 公式ドキュメント、コミュニティの優れた実践、および100本以上の良質記事に基づき編纂されています。GPT 画像生成機能は頻繁にアップデートされるため、最新の仕様については ChatGPT アプリ内の機能および <a href="https://platform.openai.com/docs/guides/images" target="_blank">公式ドキュメント</a> をご参照ください。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="トップへ戻る">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

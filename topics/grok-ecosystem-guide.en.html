@@ -1166,7 +1166,227 @@ if __name__ == "__main__":
     run_pr_audit()</code></pre>
     </section>
 
-    <!-- Chapter 5: Prompting & Truth Seeking -->
+<section id="ch5-1">
+      <div class="sec-tag">Chapter V · Prompting & Truth Seeking</div>
+      <h2>5.1 Grok Tuning Philosophy & Unshackling</h2>
+      <p>Grok excels when prompts are grounded in <strong>First-Principles</strong> rather than superficial conversational pleasantries. Structure instructions with explicit constraints, mathematical targets, and adversarial research roles.</p>
+    </section>
+
+    <section id="ch5-2">
+      <div class="sec-tag">Chapter V · Prompting & Truth Seeking</div>
+      <h2>5.2 Chain-of-Thought & Counterfactuals</h2>
+      <pre><code class="language-markdown">&lt;instruction&gt;
+Evaluate the proposed distributed consensus mechanism. Before delivering your verdict, explicitly perform the following inside &lt;thought_process&gt;:
+1. Identify all implicit assumptions regarding network partitions.
+2. Formulate two opposing failure theories with concrete timing proofs.
+3. Conduct Counterfactual Analysis: If clock drift exceeds 50ms, what cascading partition occurs?
+4. Synthesize final validated consensus bounds.
+&lt;/instruction&gt;</code></pre>
+    </section>
+
+    <section id="ch5-3">
+      <div class="sec-tag">Chapter V · Prompting & Truth Seeking</div>
+      <h2>5.3 Ten Production Prompt Templates</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>01. Breaking Signal Ingestion</h4>
+          <p>Real-time timeline clustering, bot filtration, and stakeholder motive mapping.</p>
+        </div>
+        <div class="feature-card">
+          <h4>02. High-Concurrency Refactoring</h4>
+          <p>Lock-free structures, CPU cache optimization, and micro-benchmark suites.</p>
+        </div>
+        <div class="feature-card">
+          <h4>03. Due Diligence & Financial Forensics</h4>
+          <p>Revenue quality audits, capitalized R&D inspection, and hidden liability tracing.</p>
+        </div>
+        <div class="feature-card">
+          <h4>04. Zero-Day Defense & Exploit Analysis</h4>
+          <p>Binary review, buffer overrun boundary validation, and virtual patch generation.</p>
+        </div>
+        <div class="feature-card">
+          <h4>05. Synthetic Edge Dataset Generation</h4>
+          <p>Unbiased data generation with strict schema enforcement and PII scrubbing.</p>
+        </div>
+        <div class="feature-card">
+          <h4>06. Formal Logic & Mathematical Proofs</h4>
+          <p>Inductive proofs, counter-example synthesis, and Lean/Coq alignment.</p>
+        </div>
+        <div class="feature-card">
+          <h4>07. Red Team Stress Testing</h4>
+          <p>Adversarial game-theoretic simulations and extreme black-swan contingency planning.</p>
+        </div>
+        <div class="feature-card">
+          <h4>08. Institutional Equity Research</h4>
+          <p>Macro cycle positioning, TAM modeling, and sensitivity matrices.</p>
+        </div>
+        <div class="feature-card">
+          <h4>09. Viral Tech Communications</h4>
+          <p>Intuitive analogies, dimensional reduction of complex math, and social engagement hooks.</p>
+        </div>
+        <div class="feature-card">
+          <h4>10. Production Agent System Prompt</h4>
+          <p>Deterministic tool schemas, fail-safe boundaries, and auto-recovery rules.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 6: Clinic & Matrix -->
+    <section id="ch6-1">
+      <div class="sec-tag">Chapter VI · Clinic & Matrix Comparison</div>
+      <h2>6.1 API Error 30s Quick Triage</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Status Code</th>
+              <th>Root Cause</th>
+              <th>30-Second Fix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>401 Unauthorized</code></td>
+              <td>Invalid or revoked API key</td>
+              <td>Regenerate key in <code>console.x.ai</code> and check <code>Authorization: Bearer</code> header.</td>
+            </tr>
+            <tr>
+              <td><code>403 Forbidden</code></td>
+              <td>Geo-blocked origin or incomplete KYC</td>
+              <td>Route through compliant gateway and complete billing verification.</td>
+            </tr>
+            <tr>
+              <td><code>429 Rate Limit</code></td>
+              <td>Tier TPM / RPM ceiling hit</td>
+              <td>Add exponential backoff, enable Prompt Caching, or upgrade API Tier.</td>
+            </tr>
+            <tr>
+              <td><code>400 Schema Error</code></td>
+              <td>Unsupported JSON schema keywords</td>
+              <td>Remove loose <code>additionalProperties</code> and specify all fields in <code>required</code>.</td>
+            </tr>
+            <tr>
+              <td><code>500 Server Error</code></td>
+              <td>Transient cluster spike</td>
+              <td>Retry with max 3 attempts and set fallback routing to <code>grok-3-mini</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ch6-2">
+      <div class="sec-tag">Chapter VI · Clinic & Matrix Comparison</div>
+      <h2>6.2 Hallucination & Sybil Defense Layers</h2>
+      <div class="hotcmds">
+        <div class="hotcmd">
+          <span class="hc-cmd">Layer 1. Authority Weighting</span>
+          <span class="hc-desc">Weight verified maintainers, official domains, and Community Notes over viral spam.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Layer 2. Multi-Source Triangulation</span>
+          <span class="hc-desc">Require at least two independent primary sources across X, GitHub, and academic publications.</span>
+        </div>
+        <div class="hotcmd">
+          <span class="hc-cmd">Layer 3. Explicit Epistemic Humility</span>
+          <span class="hc-desc">Flag unconfirmed breaking developments with clear confidence intervals and uncertainty tags.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ch6-3">
+      <div class="sec-tag">Chapter VI · Clinic & Matrix Comparison</div>
+      <h2>6.3 2026 Frontier LLM Comparison Matrix</h2>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>xAI Grok 3 / 3-Reasoning</th>
+              <th>Anthropic Claude 3.7 Sonnet</th>
+              <th>OpenAI GPT-4o / o3</th>
+              <th>Google Gemini 2.5 / 3.0 Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Temporal Grounding</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Direct live X stream)</td>
+              <td>⭐⭐⭐ (Static / standard web)</td>
+              <td>⭐⭐⭐⭐ (Bing web search)</td>
+              <td>⭐⭐⭐⭐ (Google search integration)</td>
+            </tr>
+            <tr>
+              <td><strong>Objective Truth Seeking</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Anti-censorship, first principles)</td>
+              <td>⭐⭐⭐ (Constitutional safety bounds)</td>
+              <td>⭐⭐⭐⭐ (Standard RLHF)</td>
+              <td>⭐⭐⭐ (Strict policy filtering)</td>
+            </tr>
+            <tr>
+              <td><strong>SWE & Systems Coding</strong></td>
+              <td>⭐⭐⭐⭐⭐ (Top tier SWE-bench)</td>
+              <td>⭐⭐⭐⭐⭐ (Agentic coding standard)</td>
+              <td>⭐⭐⭐⭐ (Solid ecosystem)</td>
+              <td>⭐⭐⭐⭐ (Large context codebase)</td>
+            </tr>
+            <tr>
+              <td><strong>Context Window</strong></td>
+              <td>128k ~ 1M tokens</td>
+              <td>200k tokens</td>
+              <td>128k ~ 200k tokens</td>
+              <td>2M tokens</td>
+            </tr>
+            <tr>
+              <td><strong>Developer Studio (IDE)</strong></td>
+              <td><strong>Grok Build</strong> (MicroVM Cloud IDE)</td>
+              <td>Claude Code (CLI Agent)</td>
+              <td>Codex / Canvas</td>
+              <td>Antigravity (Agentic IDE)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chapter 7: Resources & Roadmap -->
+    <section id="ch7-1">
+      <div class="sec-tag">Chapter VII · Resources & Roadmap</div>
+      <h2>7.1 Official Source Index</h2>
+      <ul>
+        <li><strong>xAI Official Portal:</strong> <a href="https://x.ai" target="_blank">x.ai</a></li>
+        <li><strong>Grok Standalone Web:</strong> <a href="https://grok.com" target="_blank">grok.com</a></li>
+        <li><strong>xAI API Console:</strong> <a href="https://console.x.ai" target="_blank">console.x.ai</a></li>
+        <li><strong>Grok Build Studio:</strong> <a href="https://build.x.ai" target="_blank">build.x.ai</a></li>
+        <li><strong>Official Documentation:</strong> <a href="https://docs.x.ai" target="_blank">docs.x.ai</a></li>
+        <li><strong>System Status:</strong> <a href="https://status.x.ai" target="_blank">status.x.ai</a></li>
+      </ul>
+    </section>
+
+    <section id="ch7-2">
+      <div class="sec-tag">Chapter VII · Resources & Roadmap</div>
+      <h2>7.2 Four-Stage Mastery Roadmap</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>Stage 1: Exploration (1-3 Days)</h4>
+          <p>Master grok.com and X modes, focusing on live X grounding and DeepSearch research papers.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Stage 2: Vibe Coding (3-7 Days)</h4>
+          <p>Build 3 fullstack web apps in Grok Build using natural language and self-healing tests.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Stage 3: APIs & Tool Calling (1-2 Weeks)</h4>
+          <p>Implement Python/TS SDK pipelines, Prompt Caching, structured outputs, and custom tools.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Stage 4: Swarm Engineering (Ongoing)</h4>
+          <p>Architect production multi-agent systems for automated PR reviews and live market sentiment intelligence.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 8: Subscription Quotas & Multimodal -->
     <section id="sub-quotas">
   <h2>8.1 SuperGrok Subscription Optimization & Real-Time Intelligence Guide</h2>
   <p><span class="tag-badge tag-tip">Advanced Practice</span> In the 2026 xAI ecosystem, Grok has evolved from an irreverent chatbot into the world's only hardcore productivity tool directly wired into the real-time X (Twitter) firehose. However, developers frequently subscribe to the wrong tier or recklessly burn through their weekly quota by overusing DeepSearch for trivial questions. This guide dissects xAI's underlying compute dynamics and outlines high-leverage workflows for elite researchers and engineers.</p>

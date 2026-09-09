@@ -222,6 +222,8 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">実戦演習</div>
+    <a href="#subscription-quotas"><span class="no">発展</span>Pro/Team 会員価値の最大化</a>
+    <a href="#vision-artifacts-guide"><span class="no">発展</span>Visual &amp; Artifacts マルチモーダル実践</a>
     <a href="#playbook"><span class="no">07</span>8大シナリオ実践マニュアル</a>
     <a href="#context"><span class="no">08</span>コンテキスト管理の極意</a>
     <a href="#permissions"><span class="no">09</span>権限とセキュリティ</a>
@@ -701,6 +703,269 @@ claude mcp login api-tool
   <li><strong>MCP の戻り値は信頼できない入力として扱う</strong>：外部ツールから返されるテキストにはプロンプトインジェクションが含まれている可能性があるため、信頼できるサーバーのみを接続します。</li>
   <li><strong>手作業で JSON を書かずコマンドを使う</strong>：<code>claude mcp add</code> を使用することで正確なフォーマットで書き込まれます。手動編集による JSON 破損は「MCP が認識されない」原因のトップです。</li>
 </ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="subscription-quotas">
+<div class="sec-tag">応用実践ガイド</div>
+<h2>Claude サブスクリプション資産の価値最大化と Claude Code 高度連携マニュアル</h2>
+
+<p>Anthropic は Claude Pro（$20/月）および Team ユーザーに対して、業界最高峰のコード推論能力とコンテキスト理解力を提供しています。しかし、Claude Code ターミナル CLI や Web 版を高頻度で利用すると、「利用制限に達しました。X時間後にリセットされます」という警告に直面することが少なくありません。本マニュアルは、現場のディープ開発者やエンジニアコミュニティの実戦経験を集約し、Prompt Caching、Projects ナレッジベース、および精密なターミナルエンジニアリング規律を活用して、会員の利用効率を何倍にも引き上げる手法を体系的に解説します。</p>
+
+<h3 data-reveal>🧭 一、 Claude 2層レートリミットとコンピュート計算の基本メカニズム</h3>
+<p>他社プラットフォームと異なり、Claude の利用枠管理は極めて「コンテキスト長に敏感」な設計となっています：</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>制限・課金メカニズム</th>
+        <th>内部動作原理</th>
+        <th>典型的な落とし穴</th>
+        <th>対策とベストプラクティス</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>5時間短期ローリング枠 (Burst Limit)</strong></td>
+        <td>直近5時間の瞬間的な同時実行数と Token スループットを監視。ウィンドウは時間経過とともにスムーズに回復。</td>
+        <td>同一セッション内で30ターン以上の対話を継続する、あるいはターミナル起動時に巨大なプロジェクト全体を一度に読み込む。</td>
+        <td>対話ターン数を抑え、小さなマイルストーンごとに新規セッションを開始する。ターミナルには直近のタスクに直結するモジュールのみをアタッチする。</td>
+      </tr>
+      <tr>
+        <td><strong>週間継続利用上限 (Sustained Cap)</strong></td>
+        <td>ヘビーユーザー向けのグローバルセーフティネット。スクリプトによる24時間365日の無制限な自動呼び出しを防止。</td>
+        <td>無人監視のクローラーや、無限ループに近い自動コードリファクタリングエージェントを長時間放置する。</td>
+        <td>自動化タスクには必ず最大ステップ数の上限を設定する。1日2〜3回集中スプリントを行うなど、開発リズムを合理的に配分する。</td>
+      </tr>
+      <tr>
+        <td><strong>長大コンテキストの複利ペナルティ</strong></td>
+        <td>新しいプロンプトを送信するたび、モデルは過去の全質問・システムプロンプト・コード出力を<strong>先頭から再読み込み</strong>する。</td>
+        <td>第1ターンの質問はわずか 1K Token でも、第40ターン目には1回のプロンプト送信で静かに 80K Token 以上を消費する！</td>
+        <td>「マイクロタスク (Micro-Tasks)」の習慣を身につけ、1セッションあたり4〜6回の高密度なやり取りにとどめてアーカイブする。</td>
+      </tr>
+      <tr>
+        <td><strong>Prompt Caching (ネイティブキャッシュ)</strong></td>
+        <td>リクエストのプレフィックスがシステムキャッシュと完全一致する場合、読み込みに<strong>最大90%の割引とほぼゼロのレイテンシ</strong>が適用される。</td>
+        <td>静的ドキュメントの先頭に動的なタイムスタンプやランダムなセッションIDを挿入し、キャッシュプレフィックスを無効化してしまう。</td>
+        <td>変更のないチーム規約やインターフェース定義を最上部に固定配置し、完全一致を維持して長期的なキャッシュ恩恵を享受する。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 二、 4つの価値の柱：超長寿命の Claude 開発ループを構築する</h3>
+<p>Pro 会員の価値を限界まで引き出すには、以下の4つの連携ツールを組み合わせたアプローチが不可欠です：</p>
+
+<h4>柱 1：Projects（プロジェクトワークスペース）構造化永続ナレッジベース</h4>
+<p>Claude Web 版において、<strong>Projects</strong> は最も効率的なナレッジ集約基盤です：</p>
+<ul>
+  <li><strong>一度アップロードすれば全員がキャッシュ共有</strong>：チームの「コーディング規約」「全データベーススキーマ」「コアAPI定義集」を Project Knowledge に集約。Anthropic はこれらのファイルに自動でグローバルキャッシュを構築するため、プロジェクト内で作成する数十の会話セッションが、極めて低コストで同じ巨大な記憶を即座に共有できます。</li>
+  <li><strong>推奨ファイル形式</strong>：構造化された Markdown（<code>.md</code>）や TypeScript 型定義（<code>.d.ts</code>）は、複雑なレイアウトの PDF や Word 文書に比べて解析効率と情報検索の精度が圧倒的に優れています。</li>
+</ul>
+
+<h4>柱 2：Artifacts 対話型サンドボックス（フロントエンド＆プロトタイプの無劣化実験場）</h4>
+<p>Web 版の <strong>Artifacts（右側プレビューパネル）</strong> は、UI 開発とデータ可視化における強力なツールです：</p>
+<ol>
+  <li><strong>WYSIWYG デバッグ</strong>：Web 上で指示を出し、React コンポーネント、SVG アイコン、HTML プロトタイプ、Mermaid フローチャートを即座に生成し、右側パネルで直接操作・確認可能。</li>
+  <li><strong>ローカル枠を消費しない試行錯誤</strong>：「ボタンの余白が狭い」「配色を変更したい」といった細かな微調整は Web 版 Artifacts で完結させる。デザインと動作が100%満足のいく状態になってから、完成コードをローカルに取り込みます。</li>
+  <li><strong>ターミナルでの当てずっぽうを排除</strong>：CLI 経由で UI スタイルを何度も修正させると、トークン枠を浪費するだけでなく、視覚的フィードバックがないためにコードデグレードを引き起こしやすくなります。</li>
+</ol>
+
+<h4>柱 3：Claude Code CLI ターミナルエンジニアリング規律</h4>
+<p>ローカルで Claude Code CLI エージェントを運用する際は、以下の規律を徹底します：</p>
+<ul>
+  <li><strong>`CLAUDE.md` を軽量に保つ（80行以内を推奨）</strong>：`CLAUDE.md` は Claude Code がセッション開始時に読み込む行動規範です。何千行ものマニュアルを詰め込むと、Enter を押すごとに入力枠を浪費します。以下の3要素に絞り込みます：
+    <ul>
+      <li><strong>WHAT</strong>：プロジェクトの技術スタックと主要モジュールの責務概要。</li>
+      <li><strong>WHY</strong>：重要な設計判断（例:「ロックファイル整合性検証のため npm ではなく pnpm を使用」）。</li>
+      <li><strong>HOW</strong>：標準ビルドコマンド、テスト実行方法、静的解析ルール。</li>
+    </ul>
+  </li>
+  <li><strong>「否定形」ではなく「肯定的な誘導」で書く</strong>：「〜しないでください」を何十個も並べるよりも、「関数型コンポーネントと Tailwind クラスを優先して使用する」などポジティブな指示を記述します。</li>
+  <li><strong>Plan-Inspect-Edit（計画・検証・編集）ループ</strong>：複雑なタスクでは直接コードを修正させず、「まずは修正予定の3つのコア手順と対象ファイルを提示してください」と指示。計画を確認してから実装を承認します。</li>
+</ul>
+
+<h4>柱 4：コンテキスト衛生管理と主要制御コマンド</h4>
+<ul>
+  <li><strong>`/compact`（コンテキスト要約圧縮）</strong>：長いエラーログ調査が一段落した後、同一セッションで作業を続けたい場合は <code>/compact</code> を実行。過去の冗長なスタックトレースを数行の重要情報に凝縮し、メモリを即座に解放します。</li>
+  <li><strong>`/clear`（セッションリセット）</strong>：別モジュールの開発に移る際や新しい課題に着手する際は、迷わず <code>/clear</code> を実行します。「AI のコンテキストは生乳と同じで、新鮮なほど美味しく動く」のが鉄則です。</li>
+  <li><strong>利用枠のリアルタイム監視</strong>：<code>/usage</code> で現在のセッションのコンテキスト消費割合を確認するほか、macOS のメニューバーアプリ等で消費率（75%、90% 到達時）の通知を受け取り、開発ペースを調整します。</li>
+</ul>
+
+<h3 data-reveal>🛡️ 三、 本番グレード実践 SOP ＆ Prompt テンプレート集</h3>
+
+<h4>シナリオ 1：既存コードベースの潜在的な並行処理バグを低リスク修正</h4>
+<div class="callout tip"><b class="t">高精度トラブルシューティング Prompt</b>
+<code>シニアシステムアーキテクトとして、添付の【注文ステートマシンモジュール】を精査してください。
+1. 競合状態 (Race Conditions) とトランザクションデッドロックの潜在リスクのみに集中して分析すること。
+2. 「問題箇所のコード行 -> 発生シーケンス図 (Mermaid) -> 推奨アトミックリファクタリング案」の3段階で出力すること。
+3. まず分析案を提示して私の確認を待ち、ソースコードの直接編集は絶対に行わないこと。</code></div>
+
+<h4>シナリオ 2：Git Worktrees を活用したマルチ Agent 並列開発</h4>
+<p>上級エンジニアは、ローカルで <code>git worktree add ../feature-b</code> を実行して独立した作業ツリーを作成し、別ターミナルウィンドウで Claude Code を並列起動します。片方のエージェントでテスト修正を行い、もう片方で新機能のドキュメント作成を進めることで、サブスクリプションの時間対効果を最大化できます。</p>
+
+<h3 data-reveal>❓ 四、 よくある質問と実用的なアドバイス</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">ターミナルで実行して30分で制限にかかったのはなぜか？</div>
+    <div class="card-desc">主な原因は <code>.claudeignore</code> が未設定であるか、<code>CLAUDE.md</code> が肥大化していることです。これにより、Claude Code が <code>node_modules</code> やビルド生成物、巨大ログファイルを暗黙のうちに読み込んでしまいます。プロジェクト直下に厳格な除外ルールを設定してください。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">ヘビーコーディング環境では、従量課金 API とデュアル Pro アカウントのどちらを選ぶべきか？</div>
+    <div class="card-desc">コミュニティの実績検証によれば、毎日6時間以上コーディングを行うヘビー開発者の場合、<strong>2つの Pro サブスクリプションを契約し、5時間のリセット枠を交互に回すほうが、API 直接呼び出しよりも圧倒的に安価</strong>です。コードベース全体の読み込みは API トークンを大量消費しますが、定額制サブスクリプションなら固定コストで安心して利用できます。</div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<section id="vision-artifacts-guide">
+<div class="sec-tag">マルチモーダル革新</div>
+<h2>Artifacts リアルタイム実行サンドボックスと Computer Use デスクトップ自律制御</h2>
+
+<p>単にビットマップ画像を生成するモデルとは異なり、Anthropic はビジュアル領域において<strong>「コードとしてのビジュアル」と「純粋なマルチモーダル理解」</strong>という際立った設計哲学を貫いています。Claude は制御が難しい PNG/JPEG ピクセルを直接出力するのではなく、卓越したビジュアル理解力でデザインカンプを解析し、<strong>セマンティックな React コンポーネント、レスポンシブな SVG ベクター資産、対話型 HTML/Canvas キャンバス</strong>を直接生成します。ビジュアルをコードへ完全変換するこのアプローチは、フロントエンド開発、アーキテクチャ設計図作成、アセット軽量化において絶大な優位性を誇ります。本章では、Claude のビジュアル＆ Artifacts 体系を活用し、劣化ゼロ・高度にエンジニアリングされたビジュアルパイプラインを構築する手法を解説します。</p>
+
+<h3 data-reveal>🧬 一、 技術ポジショニング全景：コードレベルレンダリングとビットマップ画像の根本的相違</h3>
+<p>エンタープライズソフトウェア開発において、コードレベルのビジュアル生成が一般的な画像生成モデルより優れている理由：</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>比較項目</th>
+        <th>従来のビットマップ生成 (PNG/JPEG/WebP)</th>
+        <th>Claude コードレベルレンダリング (SVG/React/Artifacts)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>解像度とスケーリング</strong></td>
+        <td>固定解像度（例: 1024x1024）。高解像度ディスプレイや拡大表示時に輪郭がぼやける。</td>
+        <td><strong>数式に基づく無段階ベクター拡大</strong>。4K や Retina ディスプレイでも常に極めてシャープ。</td>
+      </tr>
+      <tr>
+        <td><strong>容量とロードパフォーマンス</strong></td>
+        <td>1枚あたり数百KB〜数MBに達し、ファーストビューやモバイルの表示速度に悪影響。</td>
+        <td>プレーンテキストコード形式。Gzip 圧縮後は通常<strong>わずか数KB</strong>でミリ秒単位で表示。</td>
+      </tr>
+      <tr>
+        <td><strong>保守性とインタラクティビティ</strong></td>
+        <td>ブラックボックスのピクセルデータ。コードからテキスト修正、部分配色変更、クリックイベント追加が不可能。</td>
+        <td><strong>100% プログラマブル</strong>：CSS クラス制御、Tailwind 動的スタイリング、DOM イベント監視、CSS アニメーションに対応。</td>
+      </tr>
+      <tr>
+        <td><strong>SEO とアクセシビリティ (a11y)</strong></td>
+        <td>検索エンジンが画像内文字を認識できず、スクリーンリーダーは alt 属性に依存。</td>
+        <td>ネイティブテキストとセマンティックタグ（<code>&lt;text&gt;</code>、<code>&lt;title&gt;</code>）を含み、SEO・アクセシビリティに標準対応。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 二、 3大コアエンジニアリングパラダイム：ビジュアルとビジネスコードの統合</h3>
+
+<h4>パラダイム 1：ピクセル精度 UI/デザインカンプのリバースエンジニアリング (Screenshot-to-Clean-Code)</h4>
+<p>デザイナーから複雑な Figma プロトタイプや競合製品のスクリーンショットが共有された際、ゼロからの手動コーディングには多大な時間を要します。<br>
+<strong>実戦 SOP：</strong></p>
+<ol>
+  <li><strong>高解像度スクリーンショットの添付</strong>：Claude Web 版に画像を貼り付け、構造化プロンプトを添えます：
+    <div class="callout tip"><b class="t">ピクセル精度 UI リバースエンジニアリング Prompt</b>
+    <code>シニアフロントエンドアーキテクトとして、添付の画面スクリーンショットをピクセル精度で再現してください：
+1. 技術スタック：React 19 + Tailwind CSS + Lucide Icons；
+2. 厳密なアライメント：余白（Padding/Margin）、角丸（rounded-xl/2xl）、フォント階層、グラスモーフィズムシャドウを忠実に再現；
+3. レスポンシブ＆コンポーネント化：主要リスト項目、ステータスバッジ、カードを再利用可能な子コンポーネントとして抽象化；
+4. Artifacts 上でそのまま完全に対話動作することを保証し、ダミープレースホルダーは排除すること。</code></div>
+  </li>
+  <li><strong>Artifacts 上での即時インタラクティブ検証</strong>：右側パネルに動作する Web UI が瞬時にレンダリングされ、ボタンのホバー、アクティブ状態、ダークモード対応を直接テストできます。</li>
+  <li><strong>低コストな微調整</strong>：レンダリング結果に対する指示（「カードの影を少し薄くし、右上のタグを緑のグラデーションにして」など）を Web 上で繰り返し、完成したコードをローカルプロジェクトへ取り込みます。</li>
+</ol>
+
+<h4>パラダイム 2：コードネイティブベクターアセットパイプライン (Code-Native SVG & Canvas)</h4>
+<p>複雑なシステム構成図や洗練されたテーマイラストが必要な場合、ライセンス不明なビットマップ素材を探す必要はありません：</p>
+<ul>
+  <li><strong>複雑なシステムトポロジー図</strong>：アニメーション破線（<code>stroke-dasharray</code> 効果）を含むインタラクティブな SVG 構成図を Claude に直接生成させ、ドキュメントや監視ダッシュボードにそのまま組み込めます。</li>
+  <li><strong>データ可視化マイクロコンポーネント</strong>：重厚なサードパーティチャートライブラリを導入せずとも、HTML5 Canvas や SVG を使った軽量な折れ線グラフやレーダーチャートをダイレクトに手書きさせることが可能です。</li>
+</ul>
+
+<h4>パラダイム 3：自動ビジュアルリグレッション＆レイアウト検証 (Headless Visual QA)</h4>
+<p>ローカルターミナルで Claude Code と Playwright を連携させて E2E テストを実行し、キャプチャしたスクリーンショットをビジュアル機能で Claude に自己検証させます：</p>
+<div class="callout note"><b class="t">自動レイアウト検証指示プロンプト</b>
+<code>【入力：デザイン原案画像 vs ローカル Playwright キャプチャ】
+2枚のインターフェースのレイアウト差異を比較してください：1. モバイルブレークポイントでの折り返し挙動；2. 多言語展開時のテキストオーバーフロー；3. ボタンのコントラスト比が WCAG AA 基準を満たしているか。修正に必要な CSS パッチコードを出力してください。</code></div>
+
+<h3 data-reveal>🎨 三、 プロンプトエンジニアリングとベクタービジュアル最適化の極意</h3>
+<p>Claude に簡潔で無駄のないビジュアルコードを出力させるための指針：</p>
+<ul>
+  <li><strong>`viewBox` とレスポンシブコンテナの明示</strong>：プロンプトで <code>"Ensure SVG root uses responsive viewBox='0 0 800 600' with preserveAspectRatio='xMidYMid meet', and width='100%' for fluid scaling"</code> と明示し、モバイルでの表示切れを防ぎます。</li>
+  <li><strong>セマンティックカラーパレットのバインド</strong>：CSS 変数（<code>fill="currentColor"</code> や <code>var(--primary-color)</code>）との連携を指定し、ダーク/ライトテーマの自動切り替えに対応させます。</li>
+  <li><strong>グラデーション・フィルターの ID 命名規則</strong>：<code>&lt;defs&gt;</code> 内のグラデーション ID に重複しにくいプレフィックスを指定させ、大規模ページでの描画競合を回避します。</li>
+</ul>
+
+<h3 data-reveal>🤖 四、 Computer Use（デスクトップ＆ブラウザ自律操作）実践ガイド</h3>
+<p><span class="tag-badge tag-official">独自機能</span> <strong>Computer Use</strong> は、AI がテキストを出力するだけの枠組みを大きく超え、<strong>画面のスクリーンショットを視覚認識し、マウスカーソルの移動、クリック、テキスト入力、キーボードショートカットを組み合わせて実環境のデスクトップソフトやブラウザを自律操作</strong>する革新的な機能です。</p>
+
+<h4>1. 主要ユースケースとエンジニアリング価値</h4>
+<ul>
+  <li><strong>E2E 自動受け入れテスト</strong>：Cypress や Playwright の DOM セレクタ指定に何日も費やす代わりに、「ローカル起動中の EC サイトを開き、会員登録を済ませ、最初の商品をカートに入れ、チェックアウト画面でクーポンが適用されるか確認して」と指示するだけで、人間同様の操作とスクリーンショット検証を自律実行します。</li>
+  <li><strong>API のないレガシーシステムのデータ移行</strong>：REST API が存在しない社内システムやデスクトップアプリから、Claude が画面を自律クリックしてページ送りを行い、データを CSV にエクスポートします。</li>
+</ul>
+
+<h4>2. 本番環境向けサンドボックス保護と暴走防止ルール</h4>
+<div class="callout warn"><b class="t">セキュリティ鉄則：Docker サンドボックスまたは仮想環境に隔離すること</b>
+日常業務で使用しているホスト環境（macOS/Windows）を直接 Computer Use に開放してはなりません。ベストプラクティス：
+1. <strong>環境の完全隔離</strong>：X11 / noVNC 仮想ディスプレイを備えた Docker コンテナまたは独立した仮想マシン内で実行する；
+2. <strong>最大ステップ数の制限</strong>：未知のモーダル等で無限ループに陥るのを防ぐため、クライアント側で <code>max_steps=25</code> などの制限を必須化する；
+3. <strong>機微操作の人的承認</strong>：「決済実行」「データベース削除」「チケット発行」などのクリティカルなアクションには、必ず <code>[Approve / Reject]</code> の確認ダイアログを挟む設計にする。</div>
+
+<h3 data-reveal>📋 五、 本番グレード実践 Prompt テンプレート集</h3>
+
+<h4>テンプレート 1：エンタープライズマイクロサービスシステム対話型トポロジー図 (アニメーション純粋 SVG)</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt テンプレート · Interactive Architecture SVG</span><button class="copy-btn">コピー</button></div>
+  <pre><code>Generate a responsive, highly detailed SVG architecture diagram illustrating an Enterprise Microservices System.
+Specifications:
+1. Dimensions: viewBox="0 0 1200 800", dark tech aesthetic (background #0B0F19).
+2. Layout: Left-to-right flow with 4 distinct zones: [API Gateway & Auth], [Event Bus (Kafka)], [Core Services (Order, Payment, Inventory)], [Data Layer (PostgreSQL, Redis)].
+3. Visuals: Smooth rounded rectangular service cards with 1px border (#1E293B), glowing emerald connection lines with animated dashed strokes representing active data streams.
+4. Clean typography using system-ui fonts, clear legend, and subtle drop shadows.
+Output pure, self-contained SVG code ready to be rendered in browser.</code></pre>
+</div>
+
+<h4>テンプレート 2：モダンダークグラスモーフィズム製品機能カード (React + Tailwind)</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt テンプレート · Glassmorphic Feature Card</span><button class="copy-btn">コピー</button></div>
+  <pre><code>Create a modern, responsive feature showcase component in React with Tailwind CSS.
+Design details:
+1. 3-column grid featuring frosted glass cards (backdrop-blur-xl, bg-white/5, border border-white/10).
+2. Each card has a glowing radial gradient header icon, a crisp title in inter font, a short feature description, and an interactive 'Learn more' link with subtle arrow hover animation.
+3. Dark futuristic background (#030712) with subtle ambient purple and blue blurred background orbs.
+Ensure fully functional React code using Lucide-react icons, rendered live in Artifacts.</code></pre>
+</div>
+
+<h4>テンプレート 3：ダッシュボードリアルタイムゲージプログレスリング (軽量ベクターコンポーネント)</h4>
+<div class="code-block">
+  <div class="code-header"><span>Prompt テンプレート · Circular Progress Gauge</span><button class="copy-btn">コピー</button></div>
+  <pre><code>Generate a pure SVG modern circular progress dashboard gauge component.
+Requirements:
+1. Center shows large bold percentage '78%' with label 'Server Capacity' below in subtle gray.
+2. Circular stroke uses smooth gradient (cyan to violet) with rounded caps (stroke-linecap='round').
+3. Outer ring features subtle dashed tick marks for 0-100 scale.
+4. Fully responsive, clean code, no external JavaScript dependencies, easily styled via CSS variables.</code></pre>
+</div>
+
+<h3 data-reveal>🛡️ 六、 エンジニアリングの落とし穴回避と MCP 拡張エコシステム</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">プロジェクトで写実的な写真画像の生成が必要な場合はどうすればよいか？</div>
+    <div class="card-desc"><strong>Model Context Protocol (MCP) を通じて外部画像生成エンジンを連携させます。</strong> Claude Code ターミナルにローカルの ComfyUI、Stable Diffusion、または DALL-E 3 MCP サーバーを登録することで、コーディング中に直接プロンプトで画像生成を呼び出し、生成された画像ファイルを <code>/public/assets</code> ディレクトリへ自動保存させることができます。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Claude に UI を実装させる際、無限レンダリング等のバグを防ぐには？</div>
+    <div class="card-desc">プロンプトで明示的な制約を加えます：<strong>「useEffect 内での無条件な state 更新を禁止すること。長いリスト表示には仮想スクロールまたはページネーションを導入すること。インラインの巨大 SVG パスは別個の Icon コンポーネントに分離すること。」</strong> これにより、本番水準のクリーンな設計コードが得られます。</div>
+  </div>
+</div>
 </section>
 
 <div class="divider"></div>

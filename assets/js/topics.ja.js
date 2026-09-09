@@ -198,6 +198,22 @@ const TOPICS = [
     ]
   },
   {
+    href: "topics/gpt-image-guide.ja.html", icon: "🎨", tag: "利用ガイド", color: "#7c3aed",
+    title: "GPT 画像生成ガイド · 入門からマスターまでの完全実戦ハンドブック",
+    desc: "GPT 会員向け画像生成完全ガイド: DALL-E から GPT-4o ネイティブ画像、Image 2.5 への進化、6要素プロンプトフレームワーク、15+ 場面別テンプレート、スタイル語彙集、画像編集ループ、文字レンダリング攻略、競合比較とエンタープライズコンプライアンス実務。",
+    keywords: "画像生成 image generation dall-e gpt-4o プロンプト prompt スタイル style 文字レンダリング 画像編集 透明背景 png ジブリ ピクセルアート ロゴ ui ec インフォグラフィック 著作権 安全性 midjourney stable diffusion キャラクター一貫性 seed custom gpt image 2.0 2.5",
+    meta: ["4世代の進化", "6要素フレームワーク", "15+ シーン別テンプレート", "100+ 情報源統合", "2026-09-09 確認済"],
+    sections: [
+      {id:"evolution",label:"技術進化の全景"},{id:"subscription",label:"サブスクリプションと配額"},
+      {id:"prompt-framework",label:"6要素プロンプトフレームワーク"},{id:"prompt-advanced",label:"プロンプト応用テクニック"},
+      {id:"style-control",label:"スタイル制御と語彙集",quick:true,quickLabel:"スタイル語彙集"},
+      {id:"text-rendering",label:"文字レンダリング攻略"},{id:"image-editing",label:"画像編集とイテレーション"},
+      {id:"consistency",label:"キャラクターとスタイルの一貫性"},{id:"scenarios",label:"15+ シーン別テンプレート",quick:true,quickLabel:"シーン別テンプレート"},
+      {id:"expert-tricks",label:"エキスパート向けテクニック"},{id:"comparison",label:"競合比較とモデル選定"},
+      {id:"safety-copyright",label:"安全ポリシーと著作権"},{id:"resources",label:"リソース目録"}
+    ]
+  },
+  {
     href: "topics/env-auth-clinic.ja.html", icon: "🚑", tag: "トラブルシューティング", color: "#e11d48",
     title: "AI CLI 環境 & 認証 応急救急マニュアル · Claude Code × Codex",
     desc: "ログインエラー、環境設定の衝突、端末移行時の問題を1ページで解決: 30秒初期問診、5層診断メソッド ＋ ワンクリック健全性チェック、2大ツール別5カテゴリ応急対応表、3つの実用シーン（共有PC・新PC・CI/ヘッドレス）、3段階の完全リセット手順。",

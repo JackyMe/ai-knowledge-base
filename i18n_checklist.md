@@ -9,10 +9,10 @@ This checklist tracks the four-language (`zh` / `en` / `ja` / `ko`) localization
 - [x] `assets/js/topics.en.js` (EN topic registry)
 - [x] `assets/js/topics.ja.js` (JA topic registry)
 - [x] `assets/js/topics.ko.js` (KO topic registry)
-- [x] `assets/js/search-index.js` (ZH search tree: 255 entries)
-- [x] `assets/js/search-index-en.js` (EN search tree: 252 entries)
-- [x] `assets/js/search-index-ja.js` (JA search tree: 254 entries)
-- [x] `assets/js/search-index-ko.js` (KO search tree: 239 entries)
+- [x] `assets/js/search-index.js` (ZH search tree: 284 entries)
+- [x] `assets/js/search-index-en.js` (EN search tree: 284 entries)
+- [x] `assets/js/search-index-ja.js` (JA search tree: 284 entries)
+- [x] `assets/js/search-index-ko.js` (KO search tree: 284 entries)
 
 ## Root Pages (2)
 | Page | ZH (`.html`) | EN (`.en.html`) | JA (`.ja.html`) | KO (`.ko.html`) |
@@ -20,7 +20,7 @@ This checklist tracks the four-language (`zh` / `en` / `ja` / `ko`) localization
 | `index` | [x] | [x] | [x] | [x] |
 | `404` | [x] | [x] | [x] | [x] |
 
-## Topics (15)
+## Topics (16)
 | Topic | ZH (`.html`) | EN (`.en.html`) | JA (`.ja.html`) | KO (`.ko.html`) |
 | :--- | :---: | :---: | :---: | :---: |
 | `ai-capability-expansion` | [x] | [x] | [x] | [x] |
@@ -32,6 +32,7 @@ This checklist tracks the four-language (`zh` / `en` / `ja` / `ko`) localization
 | `codex-guide` | [x] | [x] | [x] | [x] |
 | `env-auth-clinic` | [x] | [x] | [x] | [x] |
 | `google-ai-ecosystem` | [x] | [x] | [x] | [x] |
+| `gpt-image-guide` | [x] | [x] | [x] | [x] |
 | `grok-ecosystem-guide` | [x] | [x] | [x] | [x] |
 | `ops-basics` | [x] | [x] | [x] | [x] |
 | `pencil-claude-code-best-practices` | [x] | [x] | [x] | [x] |

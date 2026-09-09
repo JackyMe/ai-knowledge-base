@@ -66,4 +66,4 @@ for cat, items in sorted(grouped.items()):
         print(f"  ... and {len(items)-25} more")
 
 if not issues:
-    print("✨ Perfect! All 208 HTML pages (52 ZH + 52 EN + 52 JA + 52 KO) passed all audit criteria!")
+    print(f"✨ Perfect! All {len(zh_files)*4} HTML pages ({len(zh_files)} ZH + {len(en_files)} EN + {len(ja_files)} JA + {len(ko_files)} KO) passed all audit criteria!")

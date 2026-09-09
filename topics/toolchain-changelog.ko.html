@@ -168,7 +168,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.ko.html">◂ 주제 목록</a>
-    <span>검증 완료: 2026-08-25</span>
+    <span>검증 완료: 2026-09-09</span>
   </div>
 </header>
 
@@ -186,6 +186,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">월별 아카이브</div>
+    <a href="#m2026-09"><span class="no">09</span>2026년 9월</a>
     <a href="#m2026-08"><span class="no">08</span>2026년 8월</a>
     <a href="#m2026-07"><span class="no">07</span>2026년 7월</a>
     <a href="#m2026-06"><span class="no">06</span>2026년 6월</a>
@@ -200,7 +201,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 월별 아카이브 · 2026-08-25 검증</div>
+  <div class="badge">📅 Claude Code × Codex · 월별 아카이브 · 2026-09-09 검증</div>
   <h1>도구 버전 트래킹<br><span class="grad">무엇이 바뀌었고 개발 습관을 어떻게 전환해야 하는가</span></h1>
   <p class="lead">AI 코딩 도구의 진화 속도는 매우 빠르며, 방대한 공식 로그를 일일이 추적하는 것은 비효율적입니다. 본 페이지는 Claude Code와 Codex의 업데이트 중 <strong>'실제 개발 작업에 직접적인 영향을 미치는 핵심 항목'</strong>만을 엄선하여 하위 호환성 파괴(Breaking Changes) 및 즉시 시도해 볼 만한 신기능을 일목요연하게 정리합니다.</p>
   <div class="meta">
@@ -253,6 +254,31 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><th>시기</th><th>변경 내용</th><th>대응 절차</th></tr>
   <tr><td>2026-08-31</td><td><strong>GPT-5.4 및 5.4 mini 공식 지원 종료 (EOL)</strong></td><td>설정 파일 내 모델 지정을 <code>gpt-5.6-terra</code> 또는 <code>gpt-5.6-luna</code>로 마이그레이션</td></tr>
   <tr><td>2026-07-23</td><td>다중 폴더 워크스페이스 구성 시 설정 로드는 <strong>메인 폴더로 한정</strong></td><td><code>AGENTS.md</code> 및 <code>config.toml</code>을 메인 작업 디렉터리 최상단에 배치</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-09">
+<div class="sec-tag">월별 아카이브 09</div>
+<h2>2026년 9월 업데이트 로그</h2>
+
+<h3 data-reveal>Claude Code: 성능 최적화 및 환경 진단</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>버전</th><th>유형</th><th>변경 내용</th></tr>
+  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>일반 성능 개선 및 다수의 버그 수정 포함.</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> 진단</strong>: 장기간 사용되지 않아 컨텍스트 비용을 낭비하는 Skills를 자동 탐색 및 정리하는 신규 명령어 추가.</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>초장문 터미널 출력 제한 완화</strong>: <code>bashOutputMaxChars</code> 및 <code>taskOutputMaxChars</code> 추가 (최대 128K 문자 지원).</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>외부 시스템 프롬프트 파일 주입</strong>: <code>--append-subagent-system-prompt-file</code> 추가로 서브에이전트 대상 초장문 프롬프트 주입 지원.</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>세션 복구 시 Hook 출력 및 병렬 도구 호출 컨텍스트가 유실되던 결함 수정. TLS 프록시 환경에서 Bedrock 마법사 멈춤 문제 해결.</td></tr>
+</table>
+
+<h3 data-reveal>Codex: Astra 모델 및 사용성 강화</h3>
+<table class="tbl">
+  <tr><th>일자</th><th>버전</th><th>유형</th><th>변경 내용</th></tr>
+  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Astra 네이티브 통합</strong>: 내장 셀렉터에서 GPT-6 Astra를 기본 모델로 직접 설정 가능. 비동기 Guidance 오류 방지 로직 최적화.</td></tr>
+  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim 모드 강화 및 플러그인 시스템</strong>: Undo (`u`) / Redo (`Ctrl+R`) 실행 시 모든 첨부파일과 초안 네이티브 보존. 원격 마켓플레이스 관리를 위한 <code>plugin</code> 서브명령어 추가.</td></tr>
+  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool이 기본 비활성화됨. 사용을 원할 경우 설정에서 명시적 활성화 필요.</td></tr>
 </table>
 </section>
 

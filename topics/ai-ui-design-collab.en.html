@@ -784,7 +784,28 @@ Output three tables, I will fix them one by one.</code>
   <li>Submit PR #2: "business logic integration".</li>
 </ol>
 
-<h3 data-reveal>Day 5 · Designer Changes + Sync (0.5 Days)</h3>
+<h3 data-reveal>Day 5 · Designer Adjustments & Sync (0.5 Days)</h3>
+<ol class="steps">
+  <li>Designer says "Let's brighten the primary color slightly", edits <code>brand/primary/500</code> in Figma Variables.</li>
+  <li>Claude Code auto-detects: reads latest <code>get_variable_defs</code> → compares against <code>Color.kt</code> → generates patch.</li>
+  <li>Run Paparazzi → 4 baseline snapshots show diffs → quick human spot check → accepted.</li>
+  <li><code>./gradlew :app:recordPaparazziDebug</code> updates baselines.</li>
+  <li>Submit PR #3: "Brand color adjustment" with attached Paparazzi diff screenshots.</li>
+</ol>
+
+<h3 data-reveal>Day 6-7 · Internationalization & Release (1.5 Days)</h3>
+<ol class="steps">
+  <li>Add <code>values-zh-rCN/strings.xml</code> and <code>values-en/strings.xml</code>.</li>
+  <li>Record new baselines (Light/Dark × EN/ZH = 8 snapshots via Paparazzi).</li>
+  <li>Run Play Console Pre-launch report, verify on physical test devices and real networks.</li>
+  <li>Submit for store review.</li>
+</ol>
+
+<div class="callout note"><b class="t">The Week's "AI Dividend"</b>① Token automated codegen (1 hr manual → 3 sec); ② Composable scaffolding (8 hr manual → 1 hr review); ③ Regression baseline maintenance (5 sec per step, &lt;30 min total); ④ Designer change sync (1 hr PR → 5 min); ⑤ 8 internationalized screenshots (previously skipped due to lack of automation).</div>
+</section>
+
+<div class="divider"></div>
+
 <section id="antipatterns">
 <div class="sec-tag">Pitfalls 09</div>
 <h2>Anti-patterns and Pitfalls Checklist</h2>

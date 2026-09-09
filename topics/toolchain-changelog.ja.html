@@ -167,7 +167,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
       <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
     </div>
     <a href="../index.ja.html">◂ トピック一覧</a>
-    <span>検証日: 2026-08-25</span>
+    <span>検証日: 2026-09-09</span>
   </div>
 </header>
 
@@ -185,6 +185,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">月別アーカイブ</div>
+    <a href="#m2026-09"><span class="no">09</span>2026年9月</a>
     <a href="#m2026-08"><span class="no">08</span>2026年8月</a>
     <a href="#m2026-07"><span class="no">07</span>2026年7月</a>
     <a href="#m2026-06"><span class="no">06</span>2026年6月</a>
@@ -199,7 +200,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
 <div class="wrap">
 
 <div class="hero" id="top">
-  <div class="badge">📅 Claude Code × Codex · 月別アーカイブ · 2026-08-25検証</div>
+  <div class="badge">📅 Claude Code × Codex · 月別アーカイブ · 2026-09-09検証</div>
   <h1>ツールバージョン追跡<br><span class="grad">何が変わり・どう習慣を変えるべきか</span></h1>
   <p class="lead">AI コーディングツールの進化スピードは凄まじく、公式の膨大なログを追うのは非効率です。本ページでは Claude Code と Codex の更新から <strong>「日々の開発オペレーションに影響を与える項目」</strong> のみを厳選し、破壊的変更や即座に試すべき新機能をわかりやすく整理しています。</p>
   <div class="meta">
@@ -252,6 +253,31 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <tr><th>時期</th><th>変更内容</th><th>対応手順</th></tr>
   <tr><td>2026-08-31</td><td><strong>GPT-5.4 および 5.4 mini が公式提供終了</strong></td><td>設定ファイル内の指定を <code>gpt-5.6-terra</code> または <code>gpt-5.6-luna</code> に移行</td></tr>
   <tr><td>2026-07-23</td><td>マルチフォルダ構成時、設定の読み込みは <strong>メインフォルダのみ</strong> に限定</td><td><code>AGENTS.md</code> や <code>config.toml</code> はメインフォルダ直下に配置</td></tr>
+</table>
+</section>
+
+<div class="divider"></div>
+
+<section id="m2026-09">
+<div class="sec-tag">月別アーカイブ 09</div>
+<h2>2026年9月更新ログ</h2>
+
+<h3 data-reveal>Claude Code：パフォーマンス最適化と環境診断</h3>
+<table class="tbl">
+  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
+  <tr><td>09-08</td><td>v2.1.266</td><td>🔧</td><td>一般的な改善および多数のバグ修正を含む。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong><code>/skill-doctor</code> 診断</strong>：長期間使用されておらずコンテキストを浪費している Skills を自動検出・整理する新コマンドを追加。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>極長ターミナル出力の解放</strong>：<code>bashOutputMaxChars</code> および <code>taskOutputMaxChars</code> を追加（最大 128K 文字まで対応）。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🆕</td><td><strong>外部システムプロンプト読み込み</strong>：<code>--append-subagent-system-prompt-file</code> を追加し、サブエージェントへの超長文プロンプト注入に対応。</td></tr>
+  <tr><td>09-04</td><td>v2.1.261</td><td>🔧</td><td>セッション復帰時に Hook 出力および並列ツール呼び出しのコンテキストが消失する不具合を修正。TLS プロキシ下で Bedrock ウィザードがフリーズする問題を解消。</td></tr>
+</table>
+
+<h3 data-reveal>Codex：Astra モデルと操作性の強化</h3>
+<table class="tbl">
+  <tr><th>日付</th><th>バージョン</th><th>種別</th><th>変更内容</th></tr>
+  <tr><td>09-04</td><td>0.153.4</td><td>🆕</td><td><strong>Astra ネイティブ統合</strong>：内蔵セレクターで GPT-6 Astra をデフォルトモデルに直接設定可能に。非同期 Guidance のエラー防止を最適化。</td></tr>
+  <tr><td>09-03</td><td>0.153.0</td><td>🆕</td><td><strong>Vim モード強化とプラグインシステム</strong>：Undo（`u`）／ Redo（`Ctrl+R`）ですべての添付ファイルと下書きを保持。リモートマーケットプレイス管理用の <code>plugin</code> サブコマンドを追加。</td></tr>
+  <tr><td>09-01</td><td>0.152.0</td><td>🔄</td><td>Planning Tool がデフォルトで無効化。使用する場合は設定で明示的な有効化が必要。</td></tr>
 </table>
 </section>
 
