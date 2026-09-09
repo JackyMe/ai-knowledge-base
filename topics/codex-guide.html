@@ -728,27 +728,61 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">进阶</div>
-<h2>榨干会员价值：独立额度与跨端协同最佳实践</h2>
+<div class="sec-tag">核心进阶</div>
+<h2>深度剖析：OpenAI 生态全链路压榨与极限利用指南</h2>
 
-<p>很多开发者购买了 ChatGPT Plus 或 Pro，却只把它们当作单一的对话框或终端工具，导致大量<strong>“隐形且独立的高价值额度”</strong>被白白浪费。OpenAI 现已全面实行“多面体 (Surfaces)”策略，Web 端、Work 空间、图像生成与终端 Codex 实际上拥有相对独立的资源倾斜。不关心具体参数，只关心怎么用最划算？请看下文。</p>
+<p>许多开发者每年支付数千美金订阅 ChatGPT Plus 或 Pro，却仅仅将其当作一个“聪明的命令行提示器”。在 2026 年的 OpenAI 矩阵中，<strong>算力是被物理和产品线严格切割的</strong>。Web 端的 Deep Research、桌面端的 Work 模式、后端的 o3/Astra 思考模型、以及终端的 Codex 代理，实际上构成了互补却又彼此独立配额的生态闭环。本节将为您揭示全网顶尖开发者的真实工作流。</p>
 
-<h3 data-reveal>🚀 核心心法：拆解任务，专端专用</h3>
-<p>不要在 Codex 里做所有事！终端的上下文和工具调用十分昂贵。最佳实践是<strong>“网页端打辅助，Codex 端做决战”</strong>：</p>
+<h3 data-reveal>📊 1. 拨开迷雾：2026 年订阅配额的隐藏真相</h3>
+<p>OpenAI 已经从单纯的“次数限制”全面转向基于**“算力令牌 (Compute Tokens)”**的动态配额机制。以下是隐藏在官网营销话术下的真实数据基准：</p>
+<table class="tbl">
+  <tr><th>订阅层级</th><th>官方标价</th><th>Codex 实际可用推理深度</th><th>Web 端 Deep Research 独立配额</th><th>最佳适用场景</th></tr>
+  <tr><td><strong>Plus</strong></td><td>$20/月</td><td>中度。约每 5 小时 160 次标准请求，遇到 1M 巨型上下文时衰减极快。</td><td>25 次 / 月</td><td>独立开发者、外包接单、日常辅助</td></tr>
+  <tr><td><strong>Pro (5x)</strong></td><td>$100/月</td><td>重度。享有优先队列，不会被动态降级到 mini 模型。</td><td>250 次 / 月</td><td>全栈核心研发、中型架构重构</td></tr>
+  <tr><td><strong>Pro (20x)</strong></td><td>$200/月</td><td>极重度。享有 o1-Pro 与 Astra 的专属大算力池。</td><td>500+ 次 / 月</td><td>自动化流水线监控、大型企业级重构</td></tr>
+</table>
+<div class="callout note"><b class="t">黑客认知</b>：API Key 的计费与网页端/Codex 完全独立。很多顶级玩家会在本地配置 API Fallback（备用通道），一旦 Codex 触发 5 小时限流，自动无缝切到 API 计费，保证灵感不中断。</div>
+
+<h3 data-reveal>🚀 2. 顶级工作流 SOP：Web 与 Codex 的“左右互搏”</h3>
+<p>千万不要让终端里的 Codex 去做调研！终端的每次对话都会带上庞大的项目路径和环境变量，这会极大地消耗你的基础算力池。请遵循以下 <strong>SOP (标准作业程序)</strong>：</p>
+
+<h4>阶段 A：Web 端的“火力侦察” (使用独立额度)</h4>
+<ol>
+  <li>打开浏览器进入 ChatGPT Web 端。</li>
+  <li>触发 <code>/Deepresearch</code> 指令。这是 OpenAI 为 Web 预留的独立高价值额度。</li>
+  <li><strong>Prompt 示例</strong>：<br>
+     <code>"使用 Deep Research 帮我分析最新的 React 20 Server Components 最佳实践。对比 Next.js 16 的官方文档，为我生成一份详细的《架构迁移设计规范.md》。禁止写废话，只保留核心接口定义和边界情况处理。"</code>
+  </li>
+  <li>拿到 <code>设计规范.md</code> 后，将其下载到本地项目目录。</li>
+</ol>
+
+<h4>阶段 B：Work 空间的外脑建立</h4>
+<ol>
+  <li>在 ChatGPT 桌面版或 Web 端创建一个专用的 <strong>Project (工作区)</strong>。</li>
+  <li>将第三方 SDK 的长篇 PDF 手册、UI 团队给的超大 Figma 截图全部上传到此处。<strong>Project 内部具有独立的上下文缓存 (Context Caching)</strong>，极大降低长文本解析成本。</li>
+</ol>
+
+<h4>阶段 C：Codex 终端的“精确打击”</h4>
+<ol>
+  <li>回到 VSCode 或终端，启动 Codex。</li>
+  <li>通过引用刚才的规范文件，直接下达执行命令。</li>
+  <li><strong>Prompt 示例</strong>：<br>
+     <code>"codex exec -- 严格按照我目录下的 架构迁移设计规范.md，重构 src/components 下的所有组件。遇到状态机冲突时，自动挂起并向我请求确认。"</code>
+  </li>
+  <li>此时，Codex 只需要专注于“写代码”和“跑测试”，完全不会浪费算力在“理解新知识”上。</li>
+</ol>
+
+<h3 data-reveal>🎨 3. 视觉管线压榨：Image 2.5 与 UI 还原的“降维打击”</h3>
+<p>在 UI 还原的场景中，千万不要给终端里的 Codex 发送一张设计图，然后让它改了十遍！视觉解析极其昂贵。正确的“降维打击”方式是：</p>
 <ul>
-  <li><strong>1. 独立额度：Web 端“深度研究 (Deep Research)”</strong><br>
-      网页版的 Deep Research 是一个专门为查阅、整合全网信息而生的独立 Agent，不占用普通对话和 Codex 快速推理的额度。当您需要学习全新的框架 (如 React 20) 或整合多篇技术文档时，<strong>在 Web 端触发 <code>/Deepresearch</code></strong>。让它写出一份极其详细的 <code>架构设计与 API 参考.md</code>，然后把这个文件喂给本地的 Codex 进行代码编写。
-  </li>
-  <li><strong>2. 独立额度：Image 2.0 / 2.5 视觉管线</strong><br>
-      OpenAI 的图像生成 (DALL-E 3 / Image 2.5 升级版) 在 Web 端有独立的生成队列和配额。<strong>切勿在终端里让 Codex 凭空想象 UI</strong>。最佳实践：在 Web 端输入“生成一个现代 SaaS 仪表盘的 UI 设计图，采用 Image 2.5 的精确布局”，然后在 Web 端用局部重绘 (Inpainting) 修改细节。拿到完美的 UI 图后，再喂给 Codex 进行 <code>Vision-to-Code</code> (视觉转代码) 的精确复刻。
-  </li>
-  <li><strong>3. Web "Projects" (工作区) 作为外脑</strong><br>
-      Plus 会员可以在 Web 端创建多个 Projects。把几十本 API 手册和长达数百页的需求文档上传到 Web Project（这里的文件解析有专属缓存，不消耗您在本地终端每次请求的 Token）。在 Web 端把复杂需求理顺成伪代码，最后让 Codex 去本地执行。
-  </li>
-  <li><strong>4. 思考模型 (Thinking Mode) 的克制使用</strong><br>
-      旗舰的“思考模型”(如 o3 或 Astra-Think) 极其强大但限流严格。在 Codex 中，处理简单的语法报错、加注释，果断在 Model Picker 切换到快速模型；遇到“整个模块状态机混乱”这种级别的问题，再火力全开开启 Thinking。
-  </li>
+  <li><strong>逆向工程</strong>：在 Web 端的 GPT-6 中上传截图，输入：<code>"以极度详尽的前端工程师视角，用文字描述这张图的所有 CSS 细节（包括 flex 布局关系、色号、阴影、层级）。输出为结构化的 JSON。"</code></li>
+  <li><strong>剥离视觉</strong>：将这段包含 UI 骨架的纯文本 JSON 丢给 Codex。文本的处理速度是图片的 100 倍，且几乎不占算力。Codex 能够瞬间根据这份“UI 蓝图”生成完美还原的 React 代码。</li>
+  <li><strong>资产生成</strong>：利用 DALL-E 3 / Image 2.5 在 Web 端独立队列生成所需的高清插图、Logo 占位符，然后直接让 Codex 编写脚本将这些资产映射到对应目录。</li>
 </ul>
+
+<h3 data-reveal>🧠 4. o3/Astra 思考模型的节流术</h3>
+<p>思考模型 (Thinking Mode) 拥有史无前例的强大逻辑，但配额最少。<strong>请将日常的语法报错修复、代码注释生成、单元测试覆盖率补充，全部通过 Model Picker 降级到 <code>gpt-5.6-luna</code> 甚至更小的模型</strong>。好钢必须用在刀刃上，只有在遇到“整个微服务集群的并发死锁”这种级别的难题时，才开启 Thinking Mode 进行深度排障。</p>
+
 </section>
 
 <section id="playbook">

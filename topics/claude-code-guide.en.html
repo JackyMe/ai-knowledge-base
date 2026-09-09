@@ -704,23 +704,48 @@ claude mcp login api-tool
 </ul>
 
 <section id="subscription-quotas">
-<div class="sec-tag">ADV</div>
-<h2>Squeezing Pro/Team Value: Cross-Platform Synergy Best Practices</h2>
+<div class="sec-tag">Core ADV</div>
+<h2>Deep Dive: Penetrating the Anthropic Matrix & Squeezing Quotas</h2>
 
-<p>After buying Claude Pro or Team, don't confine your vision to the Claude Code terminal. Anthropic has built a matrix of Web, Cowork, and Code. While they share compute, utilizing the "killer features" unique to each platform is the key to maximizing your subscription ROI.</p>
+<p>For Claude Pro ($20) and Team ($30/user) subscribers, Anthropic has built an incredibly disciplined yet highly capable dual-layer quota system. Typing commands strictly in the Claude Code terminal will never unlock the true ROI of your monthly fee. You must combine Web Artifacts, Projects knowledge bases, and local terminal Agents into a cohesive "Assembly Line."</p>
 
-<h3 data-reveal>💡 3 Combo Strategies to Maximize Efficiency</h3>
+<h3 data-reveal>⚖️ 1. Unspoken Rules: "5-Hour Bursts" & "Weekly Caps"</h3>
+<p>Unlike OpenAI's pure rolling window, Claude employs a **Dual-Layer Circuit Breaker**:</p>
 <ul>
-  <li><strong>1. Web Artifacts + Code Localization</strong><br>
-      Claude Web's Artifacts is an unbeatable rapid prototyping tool. **Best Practice**: Iterate a React interactive component or data visualization dashboard at lightning speed in the Web Artifacts UI. Because it's WYSIWYG, iteration is cheap. Once the prototype is perfect on the web, export the code and use the Claude Code terminal to intelligently "stitch" it into your complex, local enterprise codebase.
-  </li>
-  <li><strong>2. Offload "Long-Form Reading" to Web Projects</strong><br>
-      If you make Claude Code read a 1000-page technical spec in the terminal, every minor code tweak re-calculates those 1000 pages as context, instantly draining your quota. **Solution**: Create a Project on the Claude Web UI and upload the massive tome there. Ask the Web UI to summarize it into a tightly focused <code>SPEC.md</code> for your current task. Then, place that 2-page <code>SPEC.md</code> in your local repo for Claude Code to execute.
-  </li>
-  <li><strong>3. Ruthless Context Pruning in Terminal (/compact)</strong><br>
-      The Claude Code CLI is a greedy context eater. Build this habit: after finishing and testing a small feature, immediately run <code>/compact</code>. This "dehydrates" a long, rambling conversation into a dense summary, freeing up massive amounts of quota and making your Pro account last twice as long as a novice's.
-  </li>
+  <li><strong>5-Hour Burst Limit</strong>: Prevents you from hammering the system with multi-million token requests in a short time frame.</li>
+  <li><strong>Weekly Sustained Cap</strong>: Defines your absolute total compute over 7 days based on your tier (Pro=1x, Max=5x/20x, Team=6.25x). Exhausting this means forced downgrades to Haiku or relegation to an ultra-slow queue until the reset day.</li>
 </ul>
+<div class="callout warn"><b class="t">The Devouring Trap</b>: Without strict oversight, Claude Code will eagerly glob your entire <code>src</code> directory and tests into the context just to fix a one-line bug. This sends 100K+ tokens per turn, and is the #1 reason novices hit rate limits within an hour.</div>
+
+<h3 data-reveal>💡 2. Breaking the Cap: The 3 Ultimate Workflows</h3>
+
+<h4>Tactic 1: Seamless Web Artifacts to Local Repo Handoff</h4>
+<p>Web Artifacts is the undisputed king of rapid UI prototyping. Iterating in the Web UI is incredibly cheap and bypasses heavy terminal context bloat.</p>
+<ol>
+  <li>In <strong>Claude.ai (Web)</strong>, prompt the model to generate a complex React dashboard and render it as an Artifact.</li>
+  <li>Tweak colors, layout, and logic in the Web UI until perfect (extremely low compute cost per iteration).</li>
+  <li>Open <strong>Claude Code</strong> in your local terminal and prompt:<br>
+     <code>"Fetch the logic of the Dashboard component I just generated on the Web, integrate it into src/pages/Admin.tsx, and automatically resolve local Tailwind dependencies."</code></li>
+</ol>
+
+<h4>Tactic 2: Web Projects as a "Memory Blackbox"</h4>
+<p>The worst thing you can do during a massive legacy rewrite is force Claude Code to re-read 500 disconnected legacy files on every single terminal prompt.</p>
+<ol>
+  <li>Create a <strong>Project on the Web</strong>. Upload zipped legacy code and massive API PDF docs.</li>
+  <li>Assign the Web AI the role of Software Architect: <code>"Based on these docs, generate a hyper-condensed Migration_Map.json and a SPEC.md for the rewrite."</code></li>
+  <li>Save those two lightweight files locally. Now, Claude Code in the terminal only reads a few kilobytes to understand the rules of a massive system. **This saves 99% of useless context waste.**</li>
+</ol>
+
+<h4>Tactic 3: Ruthless Context Amputation (/compact)</h4>
+<p>The CLI terminal's memory is cumulative. If you argue with Claude for 20 turns over a bug, all those code diffs and stack traces drag into turn 21.</p>
+<ul>
+  <li>**Mandatory Habit**: After every successful Git Commit or resolved milestone, **immediately type <code>/compact</code>**.</li>
+  <li>This triggers a background subagent to dehydrate 20 turns of rambling into a 200-word state summary. Your context overhead drops to near zero, restoring massive quota runway.</li>
+</ul>
+
+<h3 data-reveal>🖥 3. Anti-Blackhole Strategies for Computer Use (Beta)</h3>
+<p>The highly acclaimed Computer Use feature (where Claude controls your browser and GUI) is an **absolute compute blackhole**. It sends high-res screenshots to the model on every single frame. Unless you are on a Max 20x plan, never let it "browse around" unsupervised. Best practice: Provide exact URLs, highly explicit DOM paths, and enforce strict max-step limits to ensure it suspends immediately after passing E2E acceptance tests.</p>
+
 </section>
 
 <section id="playbook">

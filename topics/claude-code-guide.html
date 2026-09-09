@@ -708,23 +708,48 @@ claude mcp login api-tool
 <div class="divider"></div>
 
 <section id="subscription-quotas">
-<div class="sec-tag">进阶</div>
-<h2>榨干 Pro/Team 价值：跨端协同最佳实践</h2>
+<div class="sec-tag">核心进阶</div>
+<h2>深度剖析：Anthropic 全家桶无缝穿透与配额榨干指南</h2>
 
-<p>购买 Claude Pro 或 Team 后，不要把视野局限在 Claude Code 的终端里。Anthropic 构建了 Web、Cowork 与 Code 的立体矩阵，它们虽然共享算力，但各个端独有的“杀手锏功能”才是把订阅费赚回来的关键。</p>
+<p>Anthropic 为 Claude Pro ($20) 与 Team ($30/人) 用户打造了极度克制但上限极高的双层配额系统。仅仅在终端里敲击 Claude Code 无法释放这笔月费的真正威力。您需要将 Web 端的 Artifacts、Projects 知识库与本地的终端 Agent 组合成一条“流水线”。</p>
 
-<h3 data-reveal>💡 最大化效能的 3 个组合技</h3>
+<h3 data-reveal>⚖️ 1. 看懂“5小时滚动窗口”与“周算力帽”的潜规则</h3>
+<p>Claude 不同于 OpenAI 的纯滚动窗口，它采用**双层熔断机制**：</p>
 <ul>
-  <li><strong>1. Web Artifacts + Code 本地化落地</strong><br>
-      Claude 网页版的 Artifacts 是无敌的快速原型工具。**最佳实践**：在 Web 端利用 Artifacts 飞速迭代一个 React 交互组件或数据可视化图表。由于 Web 端交互更快且所见即所得，试错成本极低。当原型在 Web 端完美运行后，将代码复制或打包，再用 Claude Code 终端将其“缝合”进您复杂的本地企业级工程代码中。
-  </li>
-  <li><strong>2. 让 Web Projects 承担“长文本阅读”重任</strong><br>
-      如果您在本地终端让 Claude Code 阅读一本 1000 页的技术规范，每一次微小的代码修改，都会将这 1000 页作为上下文重复计算，极速榨干您的配额。**解法**：在 Claude Web 端创建一个 Project，将这本巨著上传进去。在 Web 端让它总结提炼出针对当前任务的 <code>SPEC.md</code>。然后把这只有 2 页纸的 <code>SPEC.md</code> 放在本地让 Claude Code 读取。
-  </li>
-  <li><strong>3. 终端 Context 的“断舍离” (/compact)</strong><br>
-      Claude Code 的命令行环境像一个贪婪的胃。养成好习惯：完成一个小功能测试后，立刻执行 <code>/compact</code>。这相当于把冗长的对话“脱水压缩”，释放大量占用额度，让同样的 Pro 账号比别人用得更久、跑得更快。
-  </li>
+  <li><strong>5 小时滚动 (Burst Limit)</strong>：防止您在短时间内发送包含几百万 Token 的无意义请求。</li>
+  <li><strong>每周算力帽 (Weekly Sustained Cap)</strong>：根据您的套餐层级 (Pro=1x, Max=5x/20x, Team=6.25x)，框定您一周内的总算力。若提前耗尽，将被强制降级到 Haiku，或被限制在极端慢速的队列中。</li>
 </ul>
+<div class="callout warn"><b class="t">吞噬陷阱</b>：Claude Code 在修改本地文件时，如果不加以控制，很容易把整个 <code>src</code> 目录及测试文件一并塞入 Context。一次对话哪怕只改一行代码，也会消耗 100K 的上下文配额。这是导致很多新手“一小时限流”的罪魁祸首。</div>
+
+<h3 data-reveal>💡 2. 破局之道：全网公认的三大极限压榨工作流</h3>
+
+<h4>绝招一：Web Artifacts 到本地 Repo 的无缝衔接</h4>
+<p>网页版的 Artifacts 是生成独立前端组件、交互图表和沙盒代码的最强工具，且其在 Web 端的交互修改是不计入重度长文本上下文的。</p>
+<ol>
+  <li>在 <strong>Claude.ai (Web)</strong> 中，让模型生成复杂的 React 仪表盘并渲染出 Artifact。</li>
+  <li>在 Web 端随意要求修改配色、布局，直至完全满意（试错成本极低）。</li>
+  <li>打开本地终端的 <strong>Claude Code</strong>，输入：<br>
+     <code>"请抓取我刚才在网页端生成的 Dashboard 组件逻辑，将其整合到当前的 src/pages/Admin.tsx 中，并自动处理好本地的 Tailwind 依赖。"</code></li>
+</ol>
+
+<h4>绝招二：利用 Web Projects 作为“记忆黑盒”</h4>
+<p>大型重构最怕的就是让 Claude Code 在终端里每次都去读几百个毫无关联的旧文件。</p>
+<ol>
+  <li>在 <strong>Web 端创建一个 Project</strong>，将旧版系统所有的代码压缩包、接口文档 PDF 全部上传。</li>
+  <li>让 Web 端充当架构师：<code>"基于这些旧文档，生成一份精简版的迁移接口映射表 (Migration_Map.json) 和 重构指导书 (SPEC.md)。"</code></li>
+  <li>把生成的这两个轻量级文件保存到本地，终端里的 Claude Code 只需要读取这几 KB 的文件，就能明白背后庞大系统的规则。**这能为您节省 99% 的无效上下文消耗。**</li>
+</ol>
+
+<h4>绝招三：终端 Context 的“残酷断舍离” (/compact)</h4>
+<p>CLI 终端的记忆是累加的。如果您跟 Claude 聊了 20 轮来修复一个 Bug，这 20 轮的所有代码差异、报错栈都会被带入下一轮。</p>
+<ul>
+  <li>**强制习惯**：每完成一个 Git Commit 或解决完一个局部问题，**必须立刻敲击 <code>/compact</code>**。</li>
+  <li>该命令会触发后台子代理，将这 20 轮的废话浓缩成一段 200 字的状态总结。您的 Context 占用瞬间清零，又是一条好汉。</li>
+</ul>
+
+<h3 data-reveal>🖥 3. Computer Use (Beta) 的额度防黑洞策略</h3>
+<p>2026 年大火的 Computer Use（让 Claude 直接接管浏览器和 GUI 软件）是**绝对的算力黑洞**。它每一帧都在向模型发送高分辨率截图。除非您是 Max 20x 订阅用户，否则切勿让它在无监督的情况下帮您在网上“随便逛逛”。最佳实践是：精确给出 URL 和操作路径，甚至限制最大步数，确保其完成特定表单或验收测试后立刻自动挂起。</p>
+
 </section>
 
 <section id="playbook">

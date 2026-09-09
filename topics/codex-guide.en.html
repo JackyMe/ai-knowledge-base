@@ -684,27 +684,61 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">ADV</div>
-<h2>Squeezing Membership Value: Independent Quotas & Cross-Platform Best Practices</h2>
+<div class="sec-tag">Core ADV</div>
+<h2>Deep Dive: Maximum Exploitation of the OpenAI Ecosystem</h2>
 
-<p>Many developers buy ChatGPT Plus or Pro but use them as a single chatbox or a simple terminal tool, completely wasting <strong>"invisible and independent high-value quotas."</strong> OpenAI has fully embraced a "Surfaces" strategy, where Web, Workspaces, Image Generation, and the Codex terminal actually have isolated resources. Don't care about the specific numbers? Just want to know how to maximize value? Read on.</p>
+<p>Many developers spend thousands of dollars a year on ChatGPT Plus or Pro, only to treat it as a "smart CLI prompter." In the 2026 OpenAI matrix, <strong>compute is strictly segmented across physical surfaces and product lines.</strong> Web's Deep Research, Desktop's Work mode, backend o3/Astra models, and the terminal Codex agent actually form a complementary ecosystem with isolated quotas. This section reveals the real workflows of top-tier developers.</p>
 
-<h3 data-reveal>🚀 Core Strategy: Task Separation across Surfaces</h3>
-<p>Don't do everything inside Codex! Terminal context and tool usage are highly expensive. The best practice is: <strong>"Use the Web for Reconnaissance, Codex for Execution."</strong></p>
+<h3 data-reveal>📊 1. Unveiling 2026 Quota Mechanics</h3>
+<p>OpenAI has completely transitioned from "message caps" to a dynamic <strong>"Compute Tokens"</strong> metering system. Here is the reality beneath the marketing:</p>
+<table class="tbl">
+  <tr><th>Tier</th><th>Price</th><th>Codex Actual Reasoning Depth</th><th>Web Deep Research Quota</th><th>Target User</th></tr>
+  <tr><td><strong>Plus</strong></td><td>$20/mo</td><td>Moderate. ~160 standard requests / 5 hrs. Degrades rapidly with 1M context.</td><td>25 times / month</td><td>Solo devs, freelancers, daily assist</td></tr>
+  <tr><td><strong>Pro (5x)</strong></td><td>$100/mo</td><td>Heavy. Priority queues, immune to forced mini-model downgrades.</td><td>250 times / month</td><td>Core full-stack devs, architecture rewrites</td></tr>
+  <tr><td><strong>Pro (20x)</strong></td><td>$200/mo</td><td>Extreme. Dedicated massive compute pool for o1-Pro & Astra.</td><td>500+ times / month</td><td>Automated CI/CD pipelines, enterprise refactoring</td></tr>
+</table>
+<div class="callout note"><b class="t">Hacker Insight</b>: API Key billing is entirely independent of Web/Codex subscriptions. Top players configure an <code>API Fallback</code> in Codex so that when the 5-hour limit hits, it seamlessly switches to pay-as-you-go API billing, ensuring zero interruption to their flow state.</div>
+
+<h3 data-reveal>🚀 2. Top-Tier SOP: The "Web-Codex Synergy"</h3>
+<p>Never let the terminal Codex do your initial research! Every terminal conversation attaches massive project paths and environment variables, rapidly burning your base compute pool. Follow this <strong>Standard Operating Procedure (SOP)</strong>:</p>
+
+<h4>Phase A: Web "Reconnaissance" (Using Independent Quotas)</h4>
+<ol>
+  <li>Open the ChatGPT Web interface.</li>
+  <li>Trigger the <code>/Deepresearch</code> command. This utilizes high-value quotas specifically reserved for the Web.</li>
+  <li><strong>Prompt Example</strong>:<br>
+     <code>"Use Deep Research to analyze the latest React 20 Server Components best practices. Compare against Next.js 16 official docs and generate a highly detailed 'Architecture_Migration_Spec.md'. No fluff, just core interface definitions and edge-case handling."</code>
+  </li>
+  <li>Download <code>Architecture_Migration_Spec.md</code> to your local project directory.</li>
+</ol>
+
+<h4>Phase B: Building the "Work" External Brain</h4>
+<ol>
+  <li>Create a dedicated <strong>Project</strong> in the ChatGPT Desktop app or Web interface.</li>
+  <li>Upload massive third-party PDF manuals and heavy Figma screenshots here. <strong>Projects have independent Context Caching</strong>, drastically reducing the cost of parsing long texts.</li>
+</ol>
+
+<h4>Phase C: Codex Terminal "Precision Strike"</h4>
+<ol>
+  <li>Return to VSCode or your terminal and launch Codex.</li>
+  <li>Reference the spec file to issue exact execution commands.</li>
+  <li><strong>Prompt Example</strong>:<br>
+     <code>"codex exec -- Strictly follow Architecture_Migration_Spec.md in my directory to refactor all components under src/components. Suspend and ask for confirmation if state machine conflicts arise."</code>
+  </li>
+  <li>Codex now focuses entirely on "writing code" and "running tests" without wasting compute on "learning new concepts."</li>
+</ol>
+
+<h3 data-reveal>🎨 3. Visual Pipeline Squeezing: Image 2.5 and UI Recreation</h3>
+<p>For UI implementation, never send an image to terminal Codex and ask it to iterate ten times! Visual parsing is insanely expensive. Use this "Dimensional Reduction" tactic:</p>
 <ul>
-  <li><strong>1. Independent Quota: Web "Deep Research"</strong><br>
-      The Web's Deep Research is an independent Agent built to scour and synthesize the internet, utilizing quotas separate from normal chat or fast Codex inference. When learning a brand-new framework (like React 20) or integrating multiple technical docs, <strong>trigger <code>/Deepresearch</code> on the Web</strong>. Have it write a hyper-detailed <code>Architecture_and_API_Ref.md</code>, then feed that Markdown file into your local Codex for implementation.
-  </li>
-  <li><strong>2. Independent Quota: Image 2.0 / 2.5 Visual Pipeline</strong><br>
-      Image generation (DALL-E 3 / Image 2.5) has isolated queues and quotas on the Web. <strong>Never ask Codex to hallucinate UI blindly in the terminal.</strong> Best Practice: Ask the Web UI to "generate a modern SaaS dashboard UI using Image 2.5 layout precision." Use Web Inpainting to tweak details. Once you have the perfect mockup, pass that image to Codex for <code>Vision-to-Code</code> implementation.
-  </li>
-  <li><strong>3. Web "Projects" as your External Brain</strong><br>
-      Plus members can create Web Projects. Upload dozens of API manuals and massive PRDs into a Web Project (which has dedicated caching and doesn't burn your local terminal token quota on every request). Digest the complex requirements into pseudo-code on the Web, then let Codex execute it locally.
-  </li>
-  <li><strong>4. Sparingly Use "Thinking Mode"</strong><br>
-      Flagship reasoning models (like o3 or Astra-Think) are incredibly powerful but heavily rate-limited. In Codex, for simple syntax errors or comments, instantly switch to a fast model via the Model Picker. Only unleash "Thinking" mode when facing complex, cross-module state machine corruption.
-  </li>
+  <li><strong>Reverse Engineering</strong>: Upload the screenshot to GPT-6 on the Web and ask: <code>"From the perspective of a senior frontend engineer, describe every CSS detail in this image (flex layouts, hex colors, shadows, z-index). Output as a highly structured JSON."</code></li>
+  <li><strong>Strip the Vision</strong>: Pass this pure-text JSON UI skeleton to Codex. Text processing is 100x faster and cheaper than image processing. Codex will instantly generate a pixel-perfect React implementation based on this "UI Blueprint".</li>
+  <li><strong>Asset Generation</strong>: Use DALL-E 3 / Image 2.5 in its independent Web queue to generate required HD illustrations and logo placeholders, then tell Codex to write a script mapping these assets to the correct directories.</li>
 </ul>
+
+<h3 data-reveal>🧠 4. o3/Astra "Thinking Mode" Throttling</h3>
+<p>Thinking Mode possesses unprecedented logical capability but has the strictest quotas. <strong>For daily syntax error fixes, docstring generation, and unit test coverage, aggressively downgrade to <code>gpt-5.6-luna</code> via the Model Picker.</strong> Save your heavy artillery for genuine battles—like debugging concurrent deadlocks across microservice clusters.</p>
+
 </section>
 
 <section id="playbook">

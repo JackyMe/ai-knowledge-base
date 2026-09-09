@@ -1379,19 +1379,29 @@ if __name__ == "__main__":
 
     <!-- 第五章：提示词与真理探索 -->
     <section id="ch5-1">
-  <h2>5.1 榨干 SuperGrok 价值：双环境解耦实战</h2>
-  <p><span class="tag-badge tag-tip">💰 效能最大化</span> xAI 的生态分化非常明显（社交 X 端与开发者 Build 端）。要最大化您的 SuperGrok 订阅价值，关键在于利用好其独有的“时效数据”与“云端沙箱”的独立优势。</p>
+  <h2>5.1 榨干 SuperGrok 价值：双环境解耦与防节流实战</h2>
+  <p><span class="tag-badge tag-tip">💰 效能最大化</span> 在 2026 年的 xAI 版图中，生态分化走向了极端：一边是与推特(X)深度绑定的社交向 AI，另一边是极客专属的开发者平台 (Build)。很多开发者盲目续费了 X Premium+，结果在跑代码时处处受限，核心原因就是没有看懂背后的“周额度池”博弈。</p>
   
-  <h3 data-reveal>💡 最佳榨干技巧</h3>
+  <h3 data-reveal>📊 避坑指南：套餐定位的巨大鸿沟</h3>
+  <table class="tbl">
+    <tr><th>订阅计划</th><th>月费(预估)</th><th>核心权益</th><th>开发者适用度与周额度</th></tr>
+    <tr><td><strong>X Premium+</strong></td><td>~$40</td><td>推特蓝V、免广告、社交权重提升</td><td>极差。AI 能力只是捆绑附赠，周算力池非常小，极易被限流。</td></tr>
+    <tr><td><strong>SuperGrok</strong></td><td>~$30</td><td>纯粹的 AI 生产力、最高频的 API 访问</td><td><strong>必选</strong>。拥有近 3 倍于 Premium+ 的周算力池，专为高强度编码设计。</td></tr>
+    <tr><td><strong>SuperGrok Plus/Heavy</strong></td><td>$100+</td><td>多并发数字员工集群部署</td><td>面向极客团队。不受宏观平台“动态节流”影响。</td></tr>
+  </table>
+  
+  <p><strong>注意</strong>：xAI 已经废除了旧版的“每2小时限制提示词数量”，改为 <strong>“每周统一算力池”</strong>。这意味着，如果你周一为了好玩疯狂让它生成 4K 视频，周三你写代码时可能就因为算力耗尽而不断卡顿排队。</p>
+
+  <h3 data-reveal>💡 最优工作流：把独家优势用到极致</h3>
   <ul>
-    <li><strong>1. Web 端的 Real-Time X Grounding (实时断言)</strong><br>
-        不要浪费算力让 Grok 在本地终端里苦思冥想某个报错。Grok 最强的是与 X (推特) 社交库的实时直连。遇到诡异的最新框架报错，**去 Web 端提问，让它搜索 X 上的全球开发者吐槽和最新 Workaround (临时解法)**。这是其他所有 AI 都做不到的独立优势。拿到解法后，再丢给本地的 Grok Agent 去修代码。
+    <li><strong>1. Web 端的 Real-Time X Grounding (全网抓虫)</strong><br>
+        不要浪费本地算力让 Grok 去强行修复一个毫无头绪的报错。Grok 最强的是与 X 数据池的绝对直连。遇到诡异的最新版本框架报错，**去 Web 端提问，让它开启 Real-Time 扫描全球开发者在推特上的吐槽和最新 Workaround (临时解法)**。这是 OpenAI 和 Claude 都绝对做不到的。拿到解法后，再丢给本地的 Grok Agent 修代码。
     </li>
-    <li><strong>2. DeepSearch 专门用于“破荒”</strong><br>
-        DeepSearch (深度搜索) 极其消耗每周配额，它是为了“破荒”而生的。**最佳实践**：在没有任何文档支持、接手极其冷门的祖传代码或老旧第三方 SDK 时，去 Web 开启 DeepSearch，让它把全网散落的废弃博客、论坛片段全部组装成一篇现代化的 API 文档。
+    <li><strong>2. DeepSearch (深度搜索) 的克制化“破荒”</strong><br>
+        DeepSearch 是一个算力抽水机。**绝对不要把它开着当日常对话用！** 只有当你接手了毫无文档的祖传屎山、或者需要逆向某个冷门第三方 SDK 时，才开启 DeepSearch。让它去互联网深网、废弃博客里把拼凑的代码片段拉出来，整理成一份现代化的 API 规范。
     </li>
-    <li><strong>3. 把耗时任务丢给 Grok Build (云端)</strong><br>
-        利用云端 Grok Build 环境，将极度消耗时间和算力的测试、打包、爬虫抓取等脏活，交给云端的沙箱并发执行，完全不占用你本地电脑的资源和焦点，榨干云端虚拟机的附加价值。
+    <li><strong>3. Grok Build 云沙箱的并发白嫖</strong><br>
+        利用云端 Grok Build 环境，将极度消耗时间和算力的端到端 (E2E) 测试、并行编译、爬虫抓取等脏活，全部丢给云端的沙箱。只要你的环境配置（Dockerfile/依赖包）不频繁变动，Grok Build 会命中环境缓存，这不仅不占用本地 CPU，还会极大豁免您的“重度计算扣分”。
     </li>
   </ul>
 </section>
