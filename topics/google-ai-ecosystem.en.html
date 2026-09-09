@@ -173,6 +173,9 @@ pre code{background:none;color:inherit;padding:0}
       <a href="#ch5-1"><span class="no">5.1</span>Four Musketeers End-to-End Pipeline Best Practices</a>
       <a href="#ch5-2"><span class="no">5.2</span>Pitfall Guide: 5 Things Absolutely Not to Do</a>
     </div>
+      <div class="nav-group"><div class="gt">VI · Subscriptions & Quotas</div>
+      <a href="#ch6-1"><span class="no">6.1</span>AI Pro/Ultra Quota System & Maximization</a>
+    </div>
   </nav>
 </aside>
 
@@ -948,6 +951,35 @@ sequenceDiagram
           </div>
         </div>
       </section>
+      <section id="ch6-1">
+  <h2>6.1 AI Pro/Ultra Quotas & Maximization</h2>
+  <p><span class="tag-badge tag-tip">💰 Subscriptions</span> After the mid-2026 restructuring, Google transitioned the legacy "One AI Premium" into a compute-based tiered system (AI Plus, AI Pro, AI Ultra). Understanding this framework is foundational to maximizing your subscription value.</p>
+  
+  <h3 data-reveal>📊 Compute-Based Metering</h3>
+  <p>Unlike early "prompt count" limits, Google now uses a "Compute Point" system:</p>
+  <ul>
+    <li><strong>Text Gen & Light Coding</strong>: Consumes very few points; nearly imperceptible for daily usage.</li>
+    <li><strong>Long Context (1M Token) Reasoning</strong>: Submitting massive codebases or dozens of PDFs multiplies point consumption significantly per turn.</li>
+    <li><strong>Video Gen & Imagen 3 Rendering</strong>: Extremely high consumption. Blindly iterating here can drain your quota window in under an hour.</li>
+  </ul>
+  
+  <h3 data-reveal>🔄 5-Hour Refresh & Fallback Mechanics</h3>
+  <p>Like OpenAI, Google employs a <strong>5-hour rolling refresh</strong> window. However, it features excellent graceful degradation: when you exhaust your high-tier model quota (e.g., Gemini Advanced / Ultra), the system doesn't cut you off completely. Instead, it <strong>automatically falls back to Gemini Flash</strong>. You'll experience much faster responses, albeit with slightly reduced deep logical reasoning.</p>
+
+  <h3 data-reveal>💡 Best Practices to Maximize Quota</h3>
+  <div class="duo">
+    <div class="card">
+      <div class="icon">🔍</div>
+      <h4>Optimize the 1M Context</h4>
+      <p>The 1M+ context window is the core asset of Pro/Ultra users. Avoid lazily dumping your entire repo into the prompt every time. Use NotebookLM or <code>git ls-files</code> to filter for strictly relevant source files. Leaner inputs consume drastically fewer compute points, saving your quota for heavy logic.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎨</div>
+      <h4>Buffer Visual Pipelines</h4>
+      <p>When using Antigravity and Gemini to generate images (Imagen 3) or UI prototypes, do not feed incremental, single-sentence tweaks to the high-tier model. Brainstorm and iterate with the lightweight Flash model first. Once the final comprehensive prompt is nailed down, invoke the top-tier model for the render. This saves ~80% of unnecessary visual compute spend.</p>
+    </div>
+  </div>
+</section>
       <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
         <span>© 2026 AI Knowledge Base · Google AI Ecosystem Deep Dive</span>
         <span>Verified August 17, 2026</span>

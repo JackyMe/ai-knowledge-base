@@ -224,6 +224,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   <div class="nav-group">
     <div class="gt">Practices & Scenarios</div>
     <a href="#best-practices"><span class="no">ADV</span>Best Practices</a>
+    <a href="#subscription-quotas"><span class="no">ADV</span>Quotas & Maximization</a>
     <a href="#playbook"><span class="no">10</span>Pipelines & Playbook</a>
     <a href="#hidden-config"><span class="no">11</span>Under-the-Hood Flags</a>
     <a href="#resources"><span class="no">12</span>Resource Index</a>
@@ -682,6 +683,36 @@ codex update</code></pre>
 </section>
 
 <div class="divider"></div>
+<section id="subscription-quotas">
+<div class="sec-tag">ADV</div>
+<h2>Subscription Quotas & Maximization Guide</h2>
+
+<p>As OpenAI's product line expands, the benefits for ChatGPT Plus and Pro users extend far beyond the Web interface. When using Codex for engineering, fully understanding and exploiting your subscription quotas is key to boosting efficiency and preventing task interruptions.</p>
+
+<h3 data-reveal>📊 Plus vs Pro Quota Pools</h3>
+<table class="tbl">
+  <tr><th>Subscription Tier</th><th>Monthly Price</th><th>Quota Multiplier</th><th>Target Audience</th></tr>
+  <tr><td><strong>ChatGPT Plus</strong></td><td>$20</td><td>1x (Baseline)</td><td>Daily development, light/medium assistance</td></tr>
+  <tr><td><strong>ChatGPT Pro (5x)</strong></td><td>$100</td><td>5x</td><td>Heavy full-stack devs, architects</td></tr>
+  <tr><td><strong>ChatGPT Pro (20x)</strong></td><td>$200</td><td>20x</td><td>High-intensity automated Agent teams</td></tr>
+</table>
+
+<p><strong>Core Mechanism Note:</strong> Whether via web ChatGPT, the Codex terminal, or the Desktop App, your usage draws from the <strong>same underlying dynamic compute pool</strong>. By 2026, OpenAI shifted entirely to "Compute-Based Metering" rather than simple message counts.</p>
+
+<h3 data-reveal>💡 Best Practices for Maximizing Value</h3>
+<ul>
+  <li><strong>Leverage Rolling Windows</strong>: OpenAI typically uses a 5-hour rolling window. Trigger complex tasks (like massive codebase refactors or deep architectural reasoning) early in a fresh window to prevent hitting limits mid-task.</li>
+  <li><strong>Match Model Size to Task Complexity</strong>:
+    <ul>
+      <li><strong>Syntax Fixes / Quick Rewrites</strong>: Downgrade manually to <code>gpt-5.6-luna</code> in the Codex Model Picker. It consumes a fraction of the compute of flagship models and rarely hits rate limits.</li>
+      <li><strong>Architecture Design / Complex Debugging</strong>: Switch to <code>gpt-6-astra</code> or <code>gpt-5.6-sol</code>. Save your heavy compute for where it matters most.</li>
+    </ul>
+  </li>
+  <li><strong>DALL-E 3 & Vision Overhead</strong>: Uploading dozens of screenshots for UI recreation (Vision) or generating assets burns through your compute pool rapidly. Compress your screenshots and batch your UI requests into a single prompt to avoid expensive iterative tweaking.</li>
+  <li><strong>Preserving Web Quotas</strong>: If you rely heavily on the web interface's "Deep Research" or Advanced Data Analysis, avoid leaving Codex on unsupervised overnight refactors (unless you have Pro 20x or configured an API key fallback). Otherwise, you might face hours of throttled models the next morning.</li>
+</ul>
+</section>
+
 <section id="playbook">
 <div class="sec-tag">Playbook 10</div>
 <h2>Automated Pipelines & Playbook</h2>

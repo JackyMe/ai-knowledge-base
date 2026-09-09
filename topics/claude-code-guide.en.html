@@ -220,6 +220,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">Real World Scenarios</div>
+    <a href="#subscription-quotas"><span class="no">ADV</span>Pro/Team Quota Limits</a>
     <a href="#playbook"><span class="no">07</span>Eight Scenario Playbooks</a>
     <a href="#context"><span class="no">08</span>Advanced Context Management</a>
     <a href="#permissions"><span class="no">09</span>Permissions and Security</a>
@@ -701,6 +702,36 @@ claude mcp login api-tool
   <li><strong>Tools also consume context</strong>: Tool definitions for every MCP server enter the window; the more you connect, the more crowded it gets—use <code>/context</code> to check usage, and disable unused servers in <code>/mcp</code>;</li>
   <li><strong>Treat MCP content as untrusted input</strong>: Text returned by external tools might contain injected prompt instructions. Use <code>auto</code> or <code>manual</code> mode instead of blind trust.</li>
 </ul>
+
+<section id="subscription-quotas">
+<div class="sec-tag">ADV</div>
+<h2>Pro/Team Quotas & Best Practices</h2>
+
+<p>Anthropic uses a unique dual-layer throttling mechanism. Since Claude Code, Claude.ai (Web), and Claude Cowork all share the same underlying compute pool, mastering these consumption rules is a prerequisite for a stable AI-assisted workflow.</p>
+
+<h3 data-reveal>🧠 Dual-Layer Quota System</h3>
+<ul>
+  <li><strong>Layer 1: 5-Hour Rolling Window</strong><br>Manages short-term burst activity. Resets 5 hours after your first message in a session, preventing acute compute exhaustion.</li>
+  <li><strong>Layer 2: Weekly Cap</strong><br>Governs your sustained long-term compute costs. Exceeding this before your weekly reset time may result in forced model downgrades or queueing.</li>
+</ul>
+
+<h3 data-reveal>📊 2026 Subscription Tiers</h3>
+<table class="tbl">
+  <tr><th>Plan Type</th><th>Claude Code Access?</th><th>Relative Capacity</th></tr>
+  <tr><td><strong>Pro ($20/mo)</strong></td><td>✅ Yes</td><td>1x (Baseline, permanently boosted 25% in May 2026)</td></tr>
+  <tr><td><strong>Max 5x / 20x</strong></td><td>✅ Yes</td><td>5x / 20x (For extreme power users)</td></tr>
+  <tr><td><strong>Team Standard</strong></td><td>❌ No</td><td>Varies by team size</td></tr>
+  <tr><td><strong>Team Premium</strong></td><td>✅ Yes</td><td>~6.25x Pro (varies)</td></tr>
+</table>
+
+<h3 data-reveal>💡 Maximizing Your Quota</h3>
+<ul>
+  <li><strong>Proactive Context Compaction</strong>: Don't carelessly dump 1M-token files into the context window. Use <code>/skill-doctor</code> to prune redundant skills, and actively use <code>/compact</code> to compress chat history after completing a milestone. This saves quota and speeds up response times.</li>
+  <li><strong>Switch to Lightweight Models for Drudge Work</strong>: For log scrubbing or basic docs, manually switch to <code>claude-3-5-haiku</code>, which barely touches your quota. Reserve <code>Sonnet</code> or <code>Opus</code> for core algorithms and deep debugging.</li>
+  <li><strong>Avoid Cross-Fire Cannibalization</strong>: Avoid running a massive codebase refactor in the terminal while simultaneously parsing a massive PDF on the Claude.ai web interface. Because they share the same bucket, fighting a two-front war will rapidly drain your 5-hour window.</li>
+  <li><strong>Usage Credits (Overflow)</strong>: Enable "Usage Credits" in your account settings and bind a credit card to fall back to standard API pricing. This ensures that if you hit your subscription limit during a critical production outage, Claude Code can still jump in to help troubleshoot.</li>
+</ul>
+</section>
 
 <section id="playbook">
 <div class="sec-tag">Practice 07</div>

@@ -220,6 +220,7 @@ kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(
   </div>
   <div class="nav-group">
     <div class="gt">实战</div>
+    <a href="#subscription-quotas"><span class="no">进阶</span>Pro/Team 额度机制</a>
     <a href="#playbook"><span class="no">07</span>八大场景实战手册</a>
     <a href="#context"><span class="no">08</span>上下文管理进阶</a>
     <a href="#permissions"><span class="no">09</span>权限与安全</a>
@@ -705,6 +706,36 @@ claude mcp login api-tool
 </section>
 
 <div class="divider"></div>
+
+<section id="subscription-quotas">
+<div class="sec-tag">进阶</div>
+<h2>Pro/Team 额度机制与最佳实践</h2>
+
+<p>Anthropic 采用了一套非常独特的双层限流机制。因为 Claude Code、Claude.ai（网页版）和 Claude Cowork 共享同一套底层算力池，掌握其消耗规律是长期稳定使用大模型协助开发的前提。</p>
+
+<h3 data-reveal>🧠 双层额度控制系统</h3>
+<ul>
+  <li><strong>第一层：5 小时滚动窗口 (5-Hour Rolling Window)</strong><br>应对短时间内的爆发性计算。从您发送第一条消息起算，5小时后刷新。此机制有效防止了单次过度消耗。</li>
+  <li><strong>第二层：每周算力帽 (Weekly Cap)</strong><br>管理您的长期持续计算成本。超出每周额度后，在下一个结算日之前，您可能会遭遇强制降级或排队。</li>
+</ul>
+
+<h3 data-reveal>📊 2026 订阅层级差异</h3>
+<table class="tbl">
+  <tr><th>计划类型</th><th>Claude Code 权限</th><th>相对额度容量</th></tr>
+  <tr><td><strong>Pro ($20/月)</strong></td><td>✅ 支持</td><td>1x (基准，自 2026 年 5 月提升了 25%)</td></tr>
+  <tr><td><strong>Max 5x / 20x</strong></td><td>✅ 支持</td><td>5x / 20x (面向极端重度用户)</td></tr>
+  <tr><td><strong>Team Standard</strong></td><td>❌ 不包含</td><td>按团队规模分配</td></tr>
+  <tr><td><strong>Team Premium</strong></td><td>✅ 支持</td><td>约 6.25x Pro (视团队协议波动)</td></tr>
+</table>
+
+<h3 data-reveal>💡 额度效能拉满技巧</h3>
+<ul>
+  <li><strong>主动进行上下文压缩 (Context Compaction)</strong>：不要无脑把 1M token 的大文件塞给模型。使用 <code>/skill-doctor</code> 剔除多余的挂载技能，在完成一个小目标后主动通过 <code>/compact</code> 压实上下文历史。这不仅省钱，还会提升响应速度。</li>
+  <li><strong>切换轻量模型处理脏活累活</strong>：面对日志清洗、基础文档生成，手动切至 <code>claude-3-5-haiku</code>，它消耗的额度微乎其微。只有在写核心算法或 Debug 疑难杂症时才调用 <code>Sonnet</code> 或 <code>Opus</code>。</li>
+  <li><strong>避免双开内耗</strong>：在终端里运行庞大代码重构任务的同时，尽量不要在 Claude.ai 网页版里进行超长 PDF 解析。两者共享池子，双线开战极易在一小时内耗干 5 小时窗口的可用度。</li>
+  <li><strong>越权后备 (Overflow Credit)</strong>：在账户设置中开启“越权后备 (Usage Credits)”，绑定信用卡按标准 API 计费。这能确保在遇到紧急线上事故（刚好耗尽了月卡额度时），依然能拉起 Claude Code 协助救火。</li>
+</ul>
+</section>
 
 <section id="playbook">
 <div class="sec-tag">实战 07</div>
