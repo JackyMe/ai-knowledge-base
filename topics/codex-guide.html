@@ -728,61 +728,46 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">核心进阶</div>
-<h2>深度剖析：OpenAI 生态全链路压榨与极限利用指南</h2>
+<div class="sec-tag">Masterclass / 骨灰级实战</div>
+<h2>2026 极限压榨指南：OpenAI 全家桶高阶玩法与 API 兜底</h2>
 
-<p>许多开发者每年支付数千美金订阅 ChatGPT Plus 或 Pro，却仅仅将其当作一个“聪明的命令行提示器”。在 2026 年的 OpenAI 矩阵中，<strong>算力是被物理和产品线严格切割的</strong>。Web 端的 Deep Research、桌面端的 Work 模式、后端的 o3/Astra 思考模型、以及终端的 Codex 代理，实际上构成了互补却又彼此独立配额的生态闭环。本节将为您揭示全网顶尖开发者的真实工作流。</p>
+<p>如果您每年向 OpenAI 支付上千美元订阅 ChatGPT Pro (5x/20x)，却只把它当成代码补全工具，那您至少浪费了 80% 的价值。2026 年的 OpenAI 生态已经彻底分离了各个底层产品线。这篇长文汇集了海外顶尖极客博客（如 The Rundown AI、Dev.to 等）的最强实战策略，教您如何真正榨干每一分钱。</p>
 
-<h3 data-reveal>📊 1. 拨开迷雾：2026 年订阅配额的隐藏真相</h3>
-<p>OpenAI 已经从单纯的“次数限制”全面转向基于**“算力令牌 (Compute Tokens)”**的动态配额机制。以下是隐藏在官网营销话术下的真实数据基准：</p>
-<table class="tbl">
-  <tr><th>订阅层级</th><th>官方标价</th><th>Codex 实际可用推理深度</th><th>Web 端 Deep Research 独立配额</th><th>最佳适用场景</th></tr>
-  <tr><td><strong>Plus</strong></td><td>$20/月</td><td>中度。约每 5 小时 160 次标准请求，遇到 1M 巨型上下文时衰减极快。</td><td>25 次 / 月</td><td>独立开发者、外包接单、日常辅助</td></tr>
-  <tr><td><strong>Pro (5x)</strong></td><td>$100/月</td><td>重度。享有优先队列，不会被动态降级到 mini 模型。</td><td>250 次 / 月</td><td>全栈核心研发、中型架构重构</td></tr>
-  <tr><td><strong>Pro (20x)</strong></td><td>$200/月</td><td>极重度。享有 o1-Pro 与 Astra 的专属大算力池。</td><td>500+ 次 / 月</td><td>自动化流水线监控、大型企业级重构</td></tr>
-</table>
-<div class="callout note"><b class="t">黑客认知</b>：API Key 的计费与网页端/Codex 完全独立。很多顶级玩家会在本地配置 API Fallback（备用通道），一旦 Codex 触发 5 小时限流，自动无缝切到 API 计费，保证灵感不中断。</div>
-
-<h3 data-reveal>🚀 2. 顶级工作流 SOP：Web 与 Codex 的“左右互搏”</h3>
-<p>千万不要让终端里的 Codex 去做调研！终端的每次对话都会带上庞大的项目路径和环境变量，这会极大地消耗你的基础算力池。请遵循以下 <strong>SOP (标准作业程序)</strong>：</p>
-
-<h4>阶段 A：Web 端的“火力侦察” (使用独立额度)</h4>
-<ol>
-  <li>打开浏览器进入 ChatGPT Web 端。</li>
-  <li>触发 <code>/Deepresearch</code> 指令。这是 OpenAI 为 Web 预留的独立高价值额度。</li>
-  <li><strong>Prompt 示例</strong>：<br>
-     <code>"使用 Deep Research 帮我分析最新的 React 20 Server Components 最佳实践。对比 Next.js 16 的官方文档，为我生成一份详细的《架构迁移设计规范.md》。禁止写废话，只保留核心接口定义和边界情况处理。"</code>
-  </li>
-  <li>拿到 <code>设计规范.md</code> 后，将其下载到本地项目目录。</li>
-</ol>
-
-<h4>阶段 B：Work 空间的外脑建立</h4>
-<ol>
-  <li>在 ChatGPT 桌面版或 Web 端创建一个专用的 <strong>Project (工作区)</strong>。</li>
-  <li>将第三方 SDK 的长篇 PDF 手册、UI 团队给的超大 Figma 截图全部上传到此处。<strong>Project 内部具有独立的上下文缓存 (Context Caching)</strong>，极大降低长文本解析成本。</li>
-</ol>
-
-<h4>阶段 C：Codex 终端的“精确打击”</h4>
-<ol>
-  <li>回到 VSCode 或终端，启动 Codex。</li>
-  <li>通过引用刚才的规范文件，直接下达执行命令。</li>
-  <li><strong>Prompt 示例</strong>：<br>
-     <code>"codex exec -- 严格按照我目录下的 架构迁移设计规范.md，重构 src/components 下的所有组件。遇到状态机冲突时，自动挂起并向我请求确认。"</code>
-  </li>
-  <li>此时，Codex 只需要专注于“写代码”和“跑测试”，完全不会浪费算力在“理解新知识”上。</li>
-</ol>
-
-<h3 data-reveal>🎨 3. 视觉管线压榨：Image 2.5 与 UI 还原的“降维打击”</h3>
-<p>在 UI 还原的场景中，千万不要给终端里的 Codex 发送一张设计图，然后让它改了十遍！视觉解析极其昂贵。正确的“降维打击”方式是：</p>
+<h3 data-reveal>🛑 1. 揭开官方不说的隐藏限流规则</h3>
+<p>OpenAI 表面上说“按需分配”，但在系统底层，额度被严格划分为三个独立的算力池：</p>
 <ul>
-  <li><strong>逆向工程</strong>：在 Web 端的 GPT-6 中上传截图，输入：<code>"以极度详尽的前端工程师视角，用文字描述这张图的所有 CSS 细节（包括 flex 布局关系、色号、阴影、层级）。输出为结构化的 JSON。"</code></li>
-  <li><strong>剥离视觉</strong>：将这段包含 UI 骨架的纯文本 JSON 丢给 Codex。文本的处理速度是图片的 100 倍，且几乎不占算力。Codex 能够瞬间根据这份“UI 蓝图”生成完美还原的 React 代码。</li>
-  <li><strong>资产生成</strong>：利用 DALL-E 3 / Image 2.5 在 Web 端独立队列生成所需的高清插图、Logo 占位符，然后直接让 Codex 编写脚本将这些资产映射到对应目录。</li>
+  <li><strong>终端代码生成池 (Codex/Cursor/Antigravity)</strong>：采用严苛的 5 小时滚动窗口。处理 1M Token 的大文件时，极其容易在 2 小时内被降级到 <code>gpt-5.6-luna</code>。</li>
+  <li><strong>深度研究池 (Deep Research)</strong>：拥有绝对独立的配额。Plus 每月约 25 次，Pro 每月 250+ 次。这个池子专为解决“多步搜索与千页资料整合”而生。</li>
+  <li><strong>o3/Astra 思考模型池 (Thinking Mode)</strong>：限制最死。哪怕您是 Pro 用户，每天能让模型“深度思考超过 5 分钟”的次数也屈指可数。</li>
 </ul>
 
-<h3 data-reveal>🧠 4. o3/Astra 思考模型的节流术</h3>
-<p>思考模型 (Thinking Mode) 拥有史无前例的强大逻辑，但配额最少。<strong>请将日常的语法报错修复、代码注释生成、单元测试覆盖率补充，全部通过 Model Picker 降级到 <code>gpt-5.6-luna</code> 甚至更小的模型</strong>。好钢必须用在刀刃上，只有在遇到“整个微服务集群的并发死锁”这种级别的难题时，才开启 Thinking Mode 进行深度排障。</p>
+<h3 data-reveal>🛠 2. 顶级工作流 SOP：AST 语法树分离与 API 兜底</h3>
+<p>这是硅谷高阶工程师每天都在使用的工作流，彻底解决“改一行代码却烧光整个工程算力”的痛点：</p>
 
+<h4>第一步：不要让终端读源码，让它读 AST 语法树</h4>
+<p>把几百个 <code>.ts</code> 文件扔给终端，是新手最容易踩的坑。最佳实践是利用 Python 或 Node 脚本，一键提取出整个工程的 <strong>AST（抽象语法树）骨架</strong>，只保留类名、函数签名和类型定义，剥离所有的具体实现代码。然后把这份 20KB 的骨架文件上传给 Web 端的 <strong>Work Projects (工作区)</strong>。这能将上下文占用降低 95%。</p>
+
+<h4>第二步：Web 端 Deep Research 负责“破荒”</h4>
+<p>在迁移旧工程或引入完全没用过的框架（如 Next.js 16）时：<br>
+<strong>不要：</strong> 在本地瞎试报错。<br>
+<strong>最佳做法：</strong> 在网页端触发 <code>/Deepresearch</code>。使用以下高阶 Prompt：<br>
+<code>"启动深度研究：爬取官方文档的最新版本。要求输出一个严格遵循以下 JSON Schema 的迁移指南：{ 'components': [...], 'deprecated_hooks': [...] }。不要输出废话。"</code><br>
+拿到这绝对精准的 JSON 后，再交给本地 Codex 执行重构，确保零幻觉。</p>
+
+<h4>第三步：配置 API Fallback（无缝兜底防挂机）</h4>
+<p>当 Codex 触发 5 小时滚动限流时，普通人只能去喝咖啡。高手会配置 API Key 作为备用通道（Fallback）。<br>
+在 <code>~/.codex/config.json</code> 中：</p>
+<pre><code class="language-json">{
+  "fallback_strategy": "api_key",
+  "api_model": "gpt-5.6-turbo",
+  "max_fallback_spend": 5.0
+}</code></pre>
+<p>当订阅额度耗尽时，系统自动切到 API 计费，花几毛钱保证灵感不中断。</p>
+
+<h3 data-reveal>🎨 3. 视觉管线极限压缩（Image 2.5 转代码）</h3>
+<p>在 UI 还原时，直接把截图发给终端改 10 次，会立刻耗尽视觉解析算力。<br>
+<strong>最佳实践 (Dimensional Reduction)</strong>：在 Web 端的 GPT-6 中上传截图，输入：<code>"以资深前端架构师视角，描述这张图的所有 CSS 细节（包括 flex 关系、色号、阴影），并直接输出 Tailwind 骨架树。纯文本返回。"</code><br>
+随后，将生成的纯文本喂给 Codex。文本的处理速度不仅是图片的 100 倍，且几乎没有限流惩罚。</p>
 </section>
 
 <section id="playbook">

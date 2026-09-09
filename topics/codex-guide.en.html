@@ -684,61 +684,46 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">Core ADV</div>
-<h2>Deep Dive: Maximum Exploitation of the OpenAI Ecosystem</h2>
+<div class="sec-tag">Masterclass</div>
+<h2>2026 Max Exploitation Guide: OpenAI Ecosystem Advanced Tactics & API Fallbacks</h2>
 
-<p>Many developers spend thousands of dollars a year on ChatGPT Plus or Pro, only to treat it as a "smart CLI prompter." In the 2026 OpenAI matrix, <strong>compute is strictly segmented across physical surfaces and product lines.</strong> Web's Deep Research, Desktop's Work mode, backend o3/Astra models, and the terminal Codex agent actually form a complementary ecosystem with isolated quotas. This section reveals the real workflows of top-tier developers.</p>
+<p>If you pay OpenAI hundreds of dollars a year for ChatGPT Pro (5x/20x) but only use it as an autocomplete tool, you are wasting 80% of its value. In 2026, OpenAI's ecosystem tightly compartmentalizes compute across product lines. This deep dive aggregates the most hardcore, battle-tested strategies from top developer blogs (like Dev.to and The Rundown AI) to help you squeeze out every penny.</p>
 
-<h3 data-reveal>📊 1. Unveiling 2026 Quota Mechanics</h3>
-<p>OpenAI has completely transitioned from "message caps" to a dynamic <strong>"Compute Tokens"</strong> metering system. Here is the reality beneath the marketing:</p>
-<table class="tbl">
-  <tr><th>Tier</th><th>Price</th><th>Codex Actual Reasoning Depth</th><th>Web Deep Research Quota</th><th>Target User</th></tr>
-  <tr><td><strong>Plus</strong></td><td>$20/mo</td><td>Moderate. ~160 standard requests / 5 hrs. Degrades rapidly with 1M context.</td><td>25 times / month</td><td>Solo devs, freelancers, daily assist</td></tr>
-  <tr><td><strong>Pro (5x)</strong></td><td>$100/mo</td><td>Heavy. Priority queues, immune to forced mini-model downgrades.</td><td>250 times / month</td><td>Core full-stack devs, architecture rewrites</td></tr>
-  <tr><td><strong>Pro (20x)</strong></td><td>$200/mo</td><td>Extreme. Dedicated massive compute pool for o1-Pro & Astra.</td><td>500+ times / month</td><td>Automated CI/CD pipelines, enterprise refactoring</td></tr>
-</table>
-<div class="callout note"><b class="t">Hacker Insight</b>: API Key billing is entirely independent of Web/Codex subscriptions. Top players configure an <code>API Fallback</code> in Codex so that when the 5-hour limit hits, it seamlessly switches to pay-as-you-go API billing, ensuring zero interruption to their flow state.</div>
-
-<h3 data-reveal>🚀 2. Top-Tier SOP: The "Web-Codex Synergy"</h3>
-<p>Never let the terminal Codex do your initial research! Every terminal conversation attaches massive project paths and environment variables, rapidly burning your base compute pool. Follow this <strong>Standard Operating Procedure (SOP)</strong>:</p>
-
-<h4>Phase A: Web "Reconnaissance" (Using Independent Quotas)</h4>
-<ol>
-  <li>Open the ChatGPT Web interface.</li>
-  <li>Trigger the <code>/Deepresearch</code> command. This utilizes high-value quotas specifically reserved for the Web.</li>
-  <li><strong>Prompt Example</strong>:<br>
-     <code>"Use Deep Research to analyze the latest React 20 Server Components best practices. Compare against Next.js 16 official docs and generate a highly detailed 'Architecture_Migration_Spec.md'. No fluff, just core interface definitions and edge-case handling."</code>
-  </li>
-  <li>Download <code>Architecture_Migration_Spec.md</code> to your local project directory.</li>
-</ol>
-
-<h4>Phase B: Building the "Work" External Brain</h4>
-<ol>
-  <li>Create a dedicated <strong>Project</strong> in the ChatGPT Desktop app or Web interface.</li>
-  <li>Upload massive third-party PDF manuals and heavy Figma screenshots here. <strong>Projects have independent Context Caching</strong>, drastically reducing the cost of parsing long texts.</li>
-</ol>
-
-<h4>Phase C: Codex Terminal "Precision Strike"</h4>
-<ol>
-  <li>Return to VSCode or your terminal and launch Codex.</li>
-  <li>Reference the spec file to issue exact execution commands.</li>
-  <li><strong>Prompt Example</strong>:<br>
-     <code>"codex exec -- Strictly follow Architecture_Migration_Spec.md in my directory to refactor all components under src/components. Suspend and ask for confirmation if state machine conflicts arise."</code>
-  </li>
-  <li>Codex now focuses entirely on "writing code" and "running tests" without wasting compute on "learning new concepts."</li>
-</ol>
-
-<h3 data-reveal>🎨 3. Visual Pipeline Squeezing: Image 2.5 and UI Recreation</h3>
-<p>For UI implementation, never send an image to terminal Codex and ask it to iterate ten times! Visual parsing is insanely expensive. Use this "Dimensional Reduction" tactic:</p>
+<h3 data-reveal>🛑 1. Exposing the Hidden Throttling Rules</h3>
+<p>OpenAI markets "dynamic capacity," but beneath the hood, quotas are strictly segregated into three independent compute pools:</p>
 <ul>
-  <li><strong>Reverse Engineering</strong>: Upload the screenshot to GPT-6 on the Web and ask: <code>"From the perspective of a senior frontend engineer, describe every CSS detail in this image (flex layouts, hex colors, shadows, z-index). Output as a highly structured JSON."</code></li>
-  <li><strong>Strip the Vision</strong>: Pass this pure-text JSON UI skeleton to Codex. Text processing is 100x faster and cheaper than image processing. Codex will instantly generate a pixel-perfect React implementation based on this "UI Blueprint".</li>
-  <li><strong>Asset Generation</strong>: Use DALL-E 3 / Image 2.5 in its independent Web queue to generate required HD illustrations and logo placeholders, then tell Codex to write a script mapping these assets to the correct directories.</li>
+  <li><strong>Terminal Code Gen Pool (Codex/Cursor/Antigravity)</strong>: Governed by a strict 5-hour rolling window. Pushing massive 1M-token files will get you aggressively downgraded to <code>gpt-5.6-luna</code> within two hours.</li>
+  <li><strong>Deep Research Pool</strong>: Has an absolute independent monthly quota. Plus gets ~25/mo, Pro gets 250+/mo. This is built specifically for "multi-step browsing and 1000-page synthesis."</li>
+  <li><strong>o3/Astra Thinking Mode Pool</strong>: The most strictly constrained. Even on Pro, allowing the model to "think for over 5 minutes" is heavily capped per day.</li>
 </ul>
 
-<h3 data-reveal>🧠 4. o3/Astra "Thinking Mode" Throttling</h3>
-<p>Thinking Mode possesses unprecedented logical capability but has the strictest quotas. <strong>For daily syntax error fixes, docstring generation, and unit test coverage, aggressively downgrade to <code>gpt-5.6-luna</code> via the Model Picker.</strong> Save your heavy artillery for genuine battles—like debugging concurrent deadlocks across microservice clusters.</p>
+<h3 data-reveal>🛠 2. Top 1% Workflow SOP: AST Stripping & API Fallbacks</h3>
+<p>This is the standard workflow used by Silicon Valley senior engineers to avoid burning quotas when modifying just one line of code in a massive repo:</p>
 
+<h4>Step 1: Don't Read Source Code, Read AST Skeletons</h4>
+<p>Dumping hundreds of <code>.ts</code> files into the terminal is an amateur mistake. **Best Practice:** Run a Python/Node script to extract the **AST (Abstract Syntax Tree) skeleton** of your repo—keeping only class names, function signatures, and types, stripping all implementations. Upload this 20KB skeleton to a **Web "Work" Project**. This drops context overhead by 95%.</p>
+
+<h4>Step 2: Deep Research for "Barren Wastelands"</h4>
+<p>When migrating legacy apps or adopting brand-new frameworks (like Next.js 16):<br>
+<strong>Don't:</strong> Trial-and-error locally.<br>
+<strong>Best Practice:</strong> Trigger <code>/Deepresearch</code> on the Web with a strict schema prompt:<br>
+<code>"Initiate Deep Research: Crawl the latest docs. Output a migration guide strictly adhering to this JSON Schema: { 'components': [...], 'deprecated_hooks': [...] }. No fluff."</code><br>
+Take that zero-hallucination JSON and hand it to local Codex for flawless execution.</p>
+
+<h4>Step 3: Configure API Fallback (Zero Downtime)</h4>
+<p>When the 5-hour limit hits, normal users take a break. Pros configure an API Key Fallback.<br>
+In <code>~/.codex/config.json</code>:</p>
+<pre><code class="language-json">{
+  "fallback_strategy": "api_key",
+  "api_model": "gpt-5.6-turbo",
+  "max_fallback_spend": 5.0
+}</code></pre>
+<p>When the subscription quota is exhausted, it seamlessly routes through the pay-as-you-go API, spending a few cents to keep your flow state uninterrupted.</p>
+
+<h3 data-reveal>🎨 3. Visual Pipeline Compression (Image 2.5 to Code)</h3>
+<p>Iterating on UI by repeatedly sending screenshots to the terminal is a fast track to getting rate-limited.<br>
+<strong>Dimensional Reduction Tactic:</strong> Upload the mockup to Web GPT-6 and prompt: <code>"As a senior frontend architect, describe every CSS detail (flex relationships, hex colors, box-shadows) and output a raw Tailwind skeleton tree. Text only."</code><br>
+Pass that text output to Codex. Processing text is 100x faster and cheaper than parsing images, carrying virtually no rate-limit penalty.</p>
 </section>
 
 <section id="playbook">

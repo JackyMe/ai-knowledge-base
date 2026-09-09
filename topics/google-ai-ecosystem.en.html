@@ -952,34 +952,42 @@ sequenceDiagram
         </div>
       </section>
       <section id="ch6-1">
-  <h2>6.1 Squeezing AI Pro/Ultra Value: Advanced Ecosystem Tactics</h2>
-  <p><span class="tag-badge tag-tip">💰 Maximization</span> Since the late 2026 restructuring, Google transitioned "One AI Premium" into AI Plus, AI Pro, and AI Ultra, completely abandoning prompt counts for a **"Compute Points"** system. Many complain about hitting rate limits quickly when coding via the Antigravity terminal, entirely because they ignore Google's hidden "cross-product independent quotas."</p>
+  <h2>6.1 Squeezing AI Pro/Ultra Value: Context Caching & Ecosystem Hacks</h2>
+  <p><span class="tag-badge tag-tip">💰 Masterclass</span> Since the late 2026 revamp, Google shifted from "One AI Premium" to a **"Compute Points"** tiered system (Plus, Pro, Ultra). If you don't understand Google's hidden Implicit Caching and ecosystem synergies, coding in the terminal will result in sudden, brutal model downgrades.</p>
 
-  <h3 data-reveal>📊 The Compute Point "Dark Web" and Fallback Mechanics</h3>
+  <h3 data-reveal>📊 1. The Compute Point "Dark Web" and Graceful Fallbacks</h3>
   <ul>
-    <li><strong>The Multiplier Trap</strong>: Sending a 1M Context payload in the terminal burns roughly <strong>150 times</strong> more Compute Points than a standard Web chat. Rendering one Imagen 3 high-res image costs the equivalent of 50 code autocompletes.</li>
-    <li><strong>Graceful Fallback</strong>: When you burn through your Pro/Ultra compute within the 5-hour window, Google **does not pull the plug**. The system seamlessly downgrades your backend to <strong>Gemini Flash</strong>. Responses get blazing fast, but deep logical reasoning plummets. If Antigravity suddenly seems "dumb," stop writing complex algorithms and switch to generating documentation.</li>
+    <li><strong>The 1M Context Multiplier Trap</strong>: Shoving a 1M token repo into Gemini 1.5/2.0 Ultra burns 150x more compute points than a standard web chat. Rendering one Imagen 3 high-res image costs the equivalent of 50 deep code reviews.</li>
+    <li><strong>Graceful Fallback Mechanism</strong>: When you burn through your Ultra compute within the 5-hour window, Google **does not pull the plug**. The system seamlessly downgrades your backend to <strong>Gemini 3.5/3.6 Flash</strong>. Responses get blazing fast, but deep logical reasoning plummets. If Antigravity suddenly seems "dumb," stop writing complex architectural algorithms immediately and switch to generating docs or unit tests.</li>
   </ul>
 
-  <h3 data-reveal>💡 3 "Cheat-Code" Combos in the Google Ecosystem</h3>
-  
-  <h4>Cheat 1: Exploit NotebookLM's "Infinite" Reading</h4>
-  <p>The biggest loophole (and perk) in Google's ecosystem is that NotebookLM possesses an **independent and astronomically generous knowledge parsing quota pool**. Never force the terminal LLM to brute-force read dozens of GitHub repos!</p>
-  <ul>
-    <li>**SOP**: Zip up massive third-party repos or dump hundreds of PDF pages into NotebookLM.</li>
-    <li>**Prompt**: <code>"As a senior architect, synthesize these materials into a highly structured API contract and usage dictionary. Highlight all edge cases and breaking changes."</code></li>
-    <li>**Handoff**: Feed that ultra-condensed dictionary doc to Antigravity in the terminal. You just used a free quota for the heaviest parsing, saving your precious Ultra compute for actual code generation.</li>
-  </ul>
+  <h3 data-reveal>💡 2. Top 1% Workflow: Implicit Caching & XML Formatting</h3>
+  <p>Many developers complain about inconsistent retrieval accuracy in Gemini. The global best practice in 2026 dictates that Google's caching engine heavily favors <strong>XML-tagged</strong> prefix structures.</p>
+  <h4>The XML Wrapper Hack (Boosts Recall to 99% & Triggers Deep Caching)</h4>
+  <p>Never dump raw, unstructured code files into Gemini. Use a pre-commit script to wrap your codebase like this, placing it at the **absolute top** of the prompt:</p>
+  <pre><code class="language-xml">&lt;repository&gt;
+  &lt;file path="src/main.ts"&gt;
+    // Source code...
+  &lt;/file&gt;
+  &lt;file path="docs/schema.graphql"&gt;
+    // Doc content...
+  &lt;/file&gt;
+&lt;/repository&gt;</code></pre>
+  <p>Keep this exact prefix **verbatim and immutable** across multiple conversations. The system will trigger <strong>Implicit Caching</strong>, saving you up to 80% on compute points and ensuring terrifyingly accurate code retrieval across massive contexts.</p>
 
-  <h4>Cheat 2: Visual Dimensional Reduction (Imagen 3)</h4>
-  <p>Image and video generation rely on dedicated pipelines that receive massive priority on the Web.</p>
-  <ul>
-    <li>**Design Phase**: Use the Gemini Advanced Web UI to exhaust your dedicated visual quotas generating UI concepts, assets, or architectural diagrams (via Imagen 3).</li>
-    <li>**Implementation Phase**: Pick the absolute best image and pass only that *final* version to the local Antigravity terminal for <code>Image-to-Code</code> rendering. Never iterate UI adjustments inside the terminal.</li>
-  </ul>
+  <h3 data-reveal>📚 3. Cheat Code: NotebookLM "Infinite RAG" Synergy</h3>
+  <p>The biggest legitimate loophole in the Google ecosystem is <strong>NotebookLM</strong>. It possesses a completely independent, hyper-generous knowledge parsing quota. Never force the Antigravity terminal to brute-force read dozens of legacy GitHub repos!</p>
+  <ol>
+    <li>Zip up the massive legacy project, along with dozens of enterprise PDFs, and dump them into NotebookLM.</li>
+    <li>Prompt NotebookLM: <code>"As a senior architect, extract the complete API contract, database schemas, and highlight all Breaking Changes to generate the ultimate design dictionary."</code></li>
+    <li>You can even use NotebookLM's <strong>Audio Overview</strong> to distill the knowledge rapidly. Then, feed the generated minimalist Markdown dictionary into your local Antigravity terminal.</li>
+    <li>**Result**: You offloaded the heaviest parsing workload to the free, unlimited NotebookLM pool, saving your precious Ultra compute solely for executing code generation.</li>
+  </ol>
 
-  <h4>Cheat 3: Workspace Auto-Drive</h4>
-  <p>On AI Pro and above, AI reads against Google Docs and Drive bypass standard API rate limits. For team collaboration, keep your PRDs and Jira acceptance checklists in Google Docs. The terminal Antigravity can use <code>@workspace</code> to code directly against the live-updated cloud document, eliminating the massive token bloat of copying/pasting specs.</p>
+  <h3 data-reveal>🎨 4. Vision-to-Code Pipeline (Imagen 3 to React/Flutter)</h3>
+  <p>Use your dedicated visual quotas in Gemini Advanced (Web) to generate stunning Imagen 3 concepts. Once you have the perfect image, never vaguely ask for "the code."<br>
+  <strong>Advanced Prompt Paradigm:</strong><br>
+  <code>"Act as a Senior Flutter Engineer analyzing this Imagen 3 render. Step 1: Output a strictly rigorous Widget Tree structure using Mermaid syntax. Step 2: Only after I approve the Widget Tree will you begin writing the Dart implementation."</code></p>
 </section>
 
 <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
