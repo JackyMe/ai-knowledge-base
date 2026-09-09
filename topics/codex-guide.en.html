@@ -684,32 +684,134 @@ codex update</code></pre>
 
 <div class="divider"></div>
 <section id="subscription-quotas">
-<div class="sec-tag">Best Practices</div>
-<h2>Maximizing Premium Subscriptions: OpenAI Ecosystem Synergy</h2>
+<div class="sec-tag">Advanced Practice</div>
+<h2>OpenAI Subscription Value Maximization & Cross-Surface Synergy Guide</h2>
 
-<p>After subscribing to ChatGPT Plus or Pro, many users quickly trigger rate limits because they frequently request large contexts within their local terminals. To truly unlock the value of a premium membership, you must understand the positioning of OpenAI's product lines and establish a professional workflow: "Plan on the Web, Execute in the Terminal."</p>
+<p>Many developers and professionals pay $20 (Plus) or even $200 (Pro) monthly, yet only use ChatGPT as a simple web chatbot or an autocomplete tool, frequently hitting the frustrating "You've reached your limit, please try again in 5 hours" wall. In reality, OpenAI has evolved into a multi-device, multi-modal productivity matrix. This guide synthesizes battle-tested workflows from dozens of senior engineers to help you unlock every asset and establish an end-to-end, high-leverage development pipeline.</p>
 
-<h3 data-reveal>📊 1. The Core Logic of Quota Management</h3>
-<p>OpenAI utilizes dynamic compute quotas. This means consumption depends not just on the number of messages, but critically on <strong>context length</strong> and <strong>model selection</strong>.</p>
+<h3 data-reveal>🧭 1. Subscription Asset Inventory & Metering Logic</h3>
+<p>To truly extract full value from your membership, you must first understand your portfolio of compute assets and how the backend meters usage:</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Feature Module</th>
+        <th>Core Use Case & Asset Type</th>
+        <th>Quota Metering Characteristics</th>
+        <th>Optimal Strategy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Codex Terminal / IDE Agent</strong></td>
+        <td>Local code edits, multi-file batch refactoring, CLI & Git automation</td>
+        <td><strong>High Consumption</strong>. Each interaction mounts workspace state and repo context; massive files rapidly drain the 5-hour rolling limit.</td>
+        <td>Invoke strictly for executing concrete file writes; avoid conversational architecture debates here.</td>
+      </tr>
+      <tr>
+        <td><strong>Web Deep Research</strong></td>
+        <td>Autonomous multi-step web crawling, documentation synthesis, tech evaluations</td>
+        <td><strong>Independent Monthly Pool</strong> (~20-25 runs for Plus, 250+ for Pro); does not drain the 5-hour chat interaction limits.</td>
+        <td>Deploy for mastering novel tech stacks or synthesizing industry specs into structured blueprints.</td>
+      </tr>
+      <tr>
+        <td><strong>Canvas Workspace</strong></td>
+        <td>Targeted document polishing, modular code refactors, inline execution & tests</td>
+        <td><strong>Extremely Efficient</strong>. Allows highlighting specific functions for selective surgical edits without re-streaming unmodified lines.</td>
+        <td>Use for tweaking complex algorithms and components, eliminating context bloat caused by full-file rewrites.</td>
+      </tr>
+      <tr>
+        <td><strong>Advanced Voice Mode</strong></td>
+        <td>Verbal architecture debates, feature brainstorming, post-mortem reviews</td>
+        <td>Dedicated monthly audio minutes; ultra-low latency; supports natural interruptions.</td>
+        <td>Brainstorm architecture before touching code; configure custom instructions to suppress conversational fluff.</td>
+      </tr>
+      <tr>
+        <td><strong>Multimodal Vision / Image Gen</strong></td>
+        <td>UI mockup generation, architecture diagram analysis, design token extraction</td>
+        <td>Image generation (Image 2.5 / DALL-E) has independent rate caps; visual OCR/parsing counts as standard tokens.</td>
+        <td>Render UI concepts on the web first, then use vision models to extract Tailwind/CSS tokens before coding.</td>
+      </tr>
+      <tr>
+        <td><strong>Projects & Memory</strong></td>
+        <td>Persistent team coding rules, API dictionaries, specialized domain terminology</td>
+        <td>Leverages <strong>Native Prompt Caching</strong>; immutable reference docs enjoy massive token read discounts.</td>
+        <td>Configure core guidelines inside Project Knowledge once, rather than pasting them in every new session.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout note"><b class="t">Core Principle: The Nature of the 5-Hour Rolling Window</b>
+OpenAI's limits are not based on simple message counts, but on a dynamic pool determined by <strong>"Request Complexity × Context Length × Reasoning Depth"</strong>. Asking a single question in a terminal session with 20 mounted files can consume the compute equivalent of 50 basic chat prompts. Understanding this dynamic is the prerequisite for optimal resource management.</div>
+
+<h3 data-reveal>🚀 2. The 4-Stage Synergy Paradigm: From Idea to Production</h3>
+<p>The core philosophy of top developers is <strong>"Separation of Concerns"</strong>: offload cheap, broad exploration to the Web and Voice surfaces, and reserve deterministic code execution for local terminals:</p>
+
+<h4>Stage 1: Ideation & Architectural Discovery (Voice + Deep Research)</h4>
+<p>When introducing a novel framework or kicking off a new system module, never start by hacking code in the terminal:</p>
 <ul>
-  <li>In Codex or IDE terminals, the system automatically appends substantial project background information to ensure code generation accuracy.</li>
-  <li>If you repeatedly ask minor questions in a chat containing dozens of files, the massive context is re-transmitted every time. This will rapidly deplete your quota within the 5-hour rolling window.</li>
+  <li><strong>Voice Brainstorming</strong>: Put on your headphones and spend 5 minutes exploring ideas with Advanced Voice: "I want to implement an adaptive Stripe checkout in Next.js. Walk me through the edge cases and database schema." Clear out logical dead ends verbally.</li>
+  <li><strong>Targeted Deep Research</strong>: For unfamiliar APIs, launch an autonomous research task on the web with structured constraints:</li>
+</ul>
+<div class="callout tip"><b class="t">Structured Research Prompt Paradigm</b>
+<code>Initiate Deep Research to crawl the latest official documentation and verified community practices for [Target Tech]. Deliver an implementation guide containing: 1. Core architecture & data flow; 2. Breaking changes list; 3. Exact data models adhering to JSON Schema. Output only structured insights without pleasantries.</code></div>
+
+<h4>Stage 2: Visuals & UI Stabilization (Image / Vision to Code)</h4>
+<p>Frontend iterations burn massive quotas when done blindly in code. Decouple visual validation from implementation:</p>
+<ol>
+  <li>Use image generation on the web to render 2–3 high-fidelity UI concepts and pick the best one.</li>
+  <li>Use Vision analysis to reverse-engineer the selected mockup: <code>"Extract the color palette (hex codes), spacing grid, typography hierarchy, and Flex/Grid layout. Output as clean Tailwind CSS configuration."</code></li>
+  <li>Hand this exact text specification to the coding phase. Code generation accuracy will approach 100% on the first try.</li>
+</ol>
+
+<h4>Stage 3: Surgical Refinement & Sandbox Testing (Canvas)</h4>
+<p>When developing core algorithmic logic or complex UI components, switch to ChatGPT <strong>Canvas</strong>:</p>
+<ul>
+  <li><strong>Targeted Selective Edits</strong>: Highlight the 10 critical lines inside a function: "Add a retry mechanism and structured logging here." Canvas rewrites only those 10 lines rather than regenerating the entire 500-line file, <strong>saving 80%+ of token output time and context accumulation</strong>.</li>
+  <li><strong>Built-in Tooling</strong>: Use the "Add Logs" or "Code Review" quick actions for immediate, focused audits.</li>
 </ul>
 
-<h3 data-reveal>🚀 2. Efficient Division of Labor: Web vs. Terminal</h3>
-<p>Highly efficient developers never try to solve everything in the terminal. They leverage the synergy of the entire OpenAI ecosystem:</p>
+<h4>Stage 4: Deterministic Production Delivery (Codex Terminal)</h4>
+<p>Finally, transition to your local terminal with Codex:</p>
 <ul>
-  <li><strong>Phase 1: Web-based Deep Research</strong>. When encountering unknown framework errors or complex architectural designs, start the discussion on the ChatGPT Web interface. The web version's multi-modal capabilities (web browsing, image parsing) are more robust and prevent polluting your local coding context.</li>
-  <li><strong>Phase 2: Structured Documentation</strong>. Once the logic is clear on the web, ask the AI to output a concise "Technical Specification" or "Step-by-Step Fix."</li>
-  <li><strong>Phase 3: Precise Terminal Execution</strong>. Return to the Codex terminal, provide this specification, and issue clear instructions (e.g., "Modify the current module according to this spec"). This "precision strike" drastically improves code accuracy and protects your compute quota.</li>
+  <li>You now possess an approved architectural blueprint, verified Tailwind tokens, and a tested Canvas logic core.</li>
+  <li>Instruct Codex in the terminal: <code>"Following the attached specification, generate the implementation in src/modules/ and execute local test suites."</code></li>
+  <li>Because the input is crisp and deterministic, Codex will pass tests and commit changes on the first pass with minimal terminal quota consumption.</li>
 </ul>
 
-<h3 data-reveal>🧠 3. The Art of Dynamic Model Switching</h3>
-<p>Avoid forcing the heaviest reasoning models for every task:</p>
+<h3 data-reveal>🛡️ 3. Quota Preservation & Context Hygiene Rules</h3>
+<p>Adopt these community-proven operational habits to multiply your effective quota:</p>
+
+<h4>1. "Edit the Prompt" Instead of "Following Up"</h4>
+<p>The most overlooked power habit: when an answer is slightly off-target, <strong>do not send a new message to correct it</strong>. Appending follow-ups forces the system to re-send the entire conversation history including all errors. Instead, click the "Edit" button on your previous prompt and adjust your constraints. The conversation branches cleanly without compounding historical context bloat.</p>
+
+<h4>2. Standardize Global Custom Instructions</h4>
+<p>Stop repeating "I use TypeScript and Next.js, omit fluff" in every session. Embed persistent stack instructions in your ChatGPT settings or maintain a project-level <code>SKILL.md</code>.</p>
+<div class="callout note"><b class="t">High-Performance Custom Instruction Blueprint</b>
+<code>- Persona: Senior Full-Stack Architect.
+- Output Style: Rigorous, minimalistic, production-ready. Eliminate pleasantries and follow-up offers.
+- Code Standards: Output only modified code blocks (use // ... existing code ... for unchanged logic); include TypeScript interfaces by default.
+- Voice Constraint: Provide concise, high-density answers without trailing questions.</code></div>
+
+<h4>3. Dynamic Model Tiering: Save Heavy Models for Heavy Problems</h4>
 <ul>
-  <li><strong>Heavy Logical Refactoring</strong>: Use the flagship model to ensure rigorous logic.</li>
-  <li><strong>Routine Syntax Fixes & Commenting</strong>: Manually switch your terminal to a lightweight, high-speed model with generous quotas. This provides zero-latency responses and reserves your premium quota for critical tasks.</li>
+  <li><strong>Flagship / Reasoning Models (o3 / Astra / Thinking)</strong>: Reserve exclusively for race conditions, mathematical algorithms, and large-scale architectural refactors. These are expensive and subject to strict daily caps.</li>
+  <li><strong>Fast / Mini Models</strong>: Deploy for routine regex generation, JSON/YAML reformatting, Git commit drafting, and minor syntax fixes. They are instantaneous and carry virtually unlimited quotas.</li>
 </ul>
+
+<h3 data-reveal>❓ 4. Frequently Asked Questions</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">Why did my quota run out after only a few questions?</div>
+    <div class="card-desc">This usually happens when you upload giant PDFs or multiple high-res images into a thread that extends past 30 turns. Every new prompt re-processes the entire historical payload. Remedy: open a clean, fresh chat window whenever a project milestone is completed.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Are Web, Desktop, and Mobile quotas separate?</div>
+    <div class="card-desc"><strong>No, they share a unified account quota pool.</strong> The only independent allowances are Deep Research monthly credits and Advanced Voice minutes. If your desktop client hits a rate limit, the web and mobile apps will be locked as well.</div>
+  </div>
+</div>
 </section>
 
 <section id="playbook">

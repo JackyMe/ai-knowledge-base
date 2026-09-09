@@ -704,37 +704,115 @@ claude mcp login api-tool
 </ul>
 
 <section id="subscription-quotas">
-<div class="sec-tag">Best Practices</div>
-<h2>Claude Pro/Team Best Practices: Context Management & Synergy</h2>
+<div class="sec-tag">Advanced Practice</div>
+<h2>Claude Subscription Value Maximization & Claude Code Synergy Guide</h2>
 
-<p>Anthropic equips Claude with industry-leading long-context processing and deep logical reasoning. However, for Pro ($20/month) or Team users, poor context management can quickly trigger the 5-hour quota limits. Mastering the following best practices will yield a qualitative leap in your development efficiency.</p>
+<p>Anthropic equips Claude Pro ($20/month) and Team users with what is widely regarded as the industry's finest code reasoning and contextual comprehension. However, developers leveraging the Claude Code terminal or web interface frequently hit rate limits within an hour. This guide synthesizes battle-tested lessons from top developers and engineering communities, showing you how to leverage Prompt Caching, Projects Knowledge, and disciplined terminal engineering to multiply your subscription runway.</p>
 
-<h3 data-reveal>⚡ 1. Leveraging the Prompt Caching Dividend</h3>
-<p>Claude features an incredibly powerful underlying caching mechanism—this is the core secret to preserving your quota:</p>
+<h3 data-reveal>🧭 1. Deconstructing Claude's Dual-Layer Throttling & Metering Mechanics</h3>
+<p>Unlike other platforms, Claude's quota management is exceptionally sensitive to context dynamics:</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Limiting Mechanism</th>
+        <th>Underlying Operational Logic</th>
+        <th>Typical Pitfall / Trigger</th>
+        <th>Mitigation & Best Practice</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>5-Hour Rolling Window (Burst Limit)</strong></td>
+        <td>Monitors instantaneous concurrency and token throughput over the preceding 5 hours. Unlocks smoothly over time.</td>
+        <td>Sending 30+ iterative messages in a single thread, or mounting an entire massive monorepo into the terminal.</td>
+        <td>Cap session length; start fresh sessions for distinct goals. Mount only task-relevant modules in the terminal.</td>
+      </tr>
+      <tr>
+        <td><strong>Weekly Sustained Cap</strong></td>
+        <td>A platform-wide safeguard to prevent accounts from running continuous 24/7 automated scraping or refactoring scripts.</td>
+        <td>Running unmonitored autonomous loops or infinite-recursion refactoring agents overnight.</td>
+        <td>Impose hard step caps on agentic scripts; structure work into 2–3 high-intensity daily sprints.</td>
+      </tr>
+      <tr>
+        <td><strong>The Compound Penalty of Long Context</strong></td>
+        <td>On every prompt, the model must <strong>re-evaluate from scratch</strong> all previous prompts, instructions, and code in that thread.</td>
+        <td>Turn 1 consumes 1K tokens; by Turn 40, a simple question silently re-processes 80K+ tokens on every enter!</td>
+        <td>Adopt the "Micro-Tasks" rule: keep individual sessions within 4–6 high-density turns, then archive.</td>
+      </tr>
+      <tr>
+        <td><strong>Prompt Caching (Native Engine)</strong></td>
+        <td>When a request's prefix matches system cache verbatim, reading that prefix enjoys <strong>up to a 90% discount and near-zero latency</strong>.</td>
+        <td>Dynamically inserting timestamps or random session IDs at the head of static instructions, breaking the cache.</td>
+        <td>Anchor immutable team guidelines and API definitions at the very top of prompts to preserve cache hits.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 2. The 4 Value Pillars: Building an Ultra-Long Runway</h3>
+<p>Maximizing Claude Pro requires mastering the synergistic interplay of these four core assets:</p>
+
+<h4>Pillar 1: Projects as an Architectural Persistent Knowledge Base</h4>
+<p>On Claude.ai (Web), <strong>Projects</strong> serve as your persistent organizational intelligence center:</p>
 <ul>
-  <li>If you place a large amount of stable, unchanging content (like team coding standards, complete API dictionaries, or long documents) at the <strong>very beginning</strong> of your conversation, Claude automatically caches it.</li>
-  <li>In subsequent interactions, as long as this prefix content remains unmodified, the cost and quota consumption to read it are <strong>massively reduced (up to 90% savings)</strong>.</li>
-  <li><strong>Practical Advice</strong>: Always place static reference materials at the top of your prompt, and put your dynamic, ever-changing queries at the very bottom.</li>
+  <li><strong>Upload Once, Cache Globally</strong>: Upload your team's "Coding Standards", "Database Schemas", and "Core API Dictionaries" into Project Knowledge. Anthropic automatically establishes underlying prompt caching across the project. Dozens of chats initiated within that Project share this massive memory at near-zero incremental token overhead.</li>
+  <li><strong>Format Optimization</strong>: Clean Markdown (<code>.md</code>) and TypeScript definition files (<code>.d.ts</code>) yield significantly higher parsing fidelity and lower token footprints than bloated PDFs or Word documents.</li>
 </ul>
 
-<h3 data-reveal>📚 2. Using Projects for Persistent Knowledge Bases</h3>
-<p>If you are developing a large-scale application, never manually re-upload dozens of core code files every time you start a new chat with Claude.</p>
+<h4>Pillar 2: Artifacts Interactive Sandbox (Lossless Frontend Prototyping)</h4>
+<p>The Web <strong>Artifacts (Right-hand Preview Panel)</strong> is the definitive frontend and visualization weapon:</p>
+<ol>
+  <li><strong>Live Interactive WYSIWYG</strong>: Generate React components, SVG diagrams, interactive HTML, or Mermaid charts and test them immediately inside the browser panel.</li>
+  <li><strong>Zero Terminal Overhead Iteration</strong>: Offload minor UI micro-adjustments ("change button color", "fix padding") to the web panel. Tweak until 100% satisfied visually before exporting.</li>
+  <li><strong>Eliminate Blind Terminal Rewrites</strong>: Forcing Claude Code in the CLI to tweak UI CSS repeatedly drains quotas rapidly and easily introduces layout regressions due to the lack of visual feedback.</li>
+</ol>
+
+<h4>Pillar 3: Claude Code CLI Engineering Disciplines</h4>
+<p>When working in the local terminal with Claude Code, enforce these core engineering rules:</p>
 <ul>
-  <li>Use the <strong>Projects</strong> feature on the Claude Web interface to create a dedicated workspace.</li>
-  <li>Upload your core source code, third-party library documentation, and even PDF requirement specs directly as Project Knowledge.</li>
-  <li>All conversations within that Project will automatically and highly efficiently reference this knowledge. This ensures extreme accuracy while preventing the rapid quota drain caused by repetitive uploads.</li>
+  <li><strong>Concise `CLAUDE.md` Contract (Under 80 Lines)</strong>: `CLAUDE.md` is Claude Code's standing brief. Never paste thousands of lines of documentation into it, which burns input tokens on every command. Follow the three essentials:
+    <ul>
+      <li><strong>WHAT</strong>: Project stack summary and module boundaries.</li>
+      <li><strong>WHY</strong>: Rationale behind critical conventions ("Use pnpm because lockfiles are strictly enforced").</li>
+      <li><strong>HOW</strong>: Deterministic commands for build, test, and linting.</li>
+    </ul>
+  </li>
+  <li><strong>Positive Guidance Over Negative Rules</strong>: Use positive affirmations like "Prefer functional React components with Tailwind classes" rather than laundry lists of "Don't do X".</li>
+  <li><strong>Plan-Inspect-Edit Loop</strong>: For non-trivial refactors, enforce planning first: "Do not touch files yet. Outline your 3-step plan and list all affected files." Validate the plan before granting write access.</li>
 </ul>
 
-<h3 data-reveal>🧹 3. Context Dehydration & Long-Task Management</h3>
-<p>During complex debugging sessions, conversations often accumulate massive amounts of useless error stacks and intermediate attempts. Long-running conversations are the number one quota killer.</p>
+<h4>Pillar 4: Context Hygiene & Terminal Command Controls</h4>
 <ul>
-  <li><strong>Timely Summarization (Dehydration)</strong>: Once a bug is successfully fixed, if you need to move on, use tools like <code>/compact</code>, or manually ask Claude: "Summarize the correct code logic we just established, and let's start a new chat."</li>
-  <li>Bring only this "summary" into the new conversation, leaving behind the dozens of rounds of invalid troubleshooting. The system will regain its speed and efficiency.</li>
+  <li><strong>Leverage `/compact`</strong>: When finishing an intensive debugging session but needing to continue in the same terminal thread, run <code>/compact</code>. Claude Code condenses the sprawling error logs into a concise factual summary, resetting context bloat.</li>
+  <li><strong>Embrace `/clear`</strong>: When pivoting to an unrelated ticket, immediately execute <code>/clear</code>. As the community adage goes: "AI context is like fresh milk; it's best served fresh."</li>
+  <li><strong>Live Quota Monitoring</strong>: Run <code>/usage</code> to inspect token limits, or install the open-source <code>Usagebar</code> on macOS for status-bar alerts at 50%, 75%, and 90% capacity.</li>
 </ul>
 
-<h3 data-reveal>🎨 4. Rapid Validation with Artifacts</h3>
-<p>When developing Web UIs, charts, or simple utilities, fully utilize the <strong>Artifacts (Preview Panel)</strong> in the Claude Web interface.</p>
-<p>Artifacts allow you to directly preview and interactively debug the generated UI code in the right-hand panel. Refine the visuals and logic perfectly on the web first, and only integrate the finalized code into your local project afterward. This avoids the massive waste of repeatedly generating incorrect UIs in your local terminal.</p>
+<h3 data-reveal>🛡️ 3. Production SOPs & Prompt Templates</h3>
+
+<h4>Scenario 1: Resolving Subtle Concurrency Bugs in Legacy Code</h4>
+<div class="callout tip"><b class="t">High-Performance Audit Prompt</b>
+<code>Act as a Senior Systems Architect reviewing the attached [Order State Machine].
+1. Focus exclusively on potential race conditions and transactional deadlocks;
+2. Output in a 3-tier structure: "Vulnerable Lines -> Sequence Diagram (Mermaid) -> Atomic Refactoring Proposal";
+3. Deliver the analysis for my confirmation first. DO NOT overwrite files directly.</code></div>
+
+<h4>Scenario 2: Parallel Multi-Agent Execution via Git Worktrees</h4>
+<p>Power engineers run <code>git worktree add ../feature-b</code> to spawn parallel, isolated workspaces, launching separate Claude Code CLI instances in distinct terminals. One instance handles test writing while the other drafts API documentation—drastically compressing overall project delivery time.</p>
+
+<h3 data-reveal>❓ 4. Frequently Asked Questions</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">Why did my terminal session get throttled after just 30 minutes?</div>
+    <div class="card-desc">Usually caused by a missing <code>.claudeignore</code> or a bloated <code>CLAUDE.md</code>, forcing Claude Code to ingest <code>node_modules</code>, build artifacts, or huge log files. Add a strict ignore file to prevent reading non-source directories.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">For heavy development, is API pay-as-you-go or a second Pro account better?</div>
+    <div class="card-desc">Community benchmarks show that for developers coding 6+ hours daily, <strong>holding two Pro subscriptions (alternating across the 5-hour reset windows) is significantly more cost-effective than raw API usage</strong>. Full-repo API token costs scale aggressively, whereas subscriptions provide fixed, predictable monthly costs.</div>
+  </div>
+</div>
 </section>
 
 <section id="playbook">

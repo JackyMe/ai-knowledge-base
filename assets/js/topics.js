@@ -197,6 +197,22 @@ const TOPICS = [
     ]
   },
   {
+    href: "topics/gpt-image-guide.html", icon: "🎨", tag: "使用指南", color: "#7c3aed",
+    title: "GPT 图像生成指南 · 从入门到精通全景实战手册",
+    desc: "面向 GPT 会员的图像生成完全指南: DALL-E 到 GPT-4o 原生图像再到 Image 2.5 完整进化路线、六要素提示词框架、15+ 场景 Prompt 模板、风格词汇表、图像编辑闭环、文字渲染攻略、竞品对比与企业级合规实践。",
+    keywords: "图像生成 image generation dall-e gpt-4o 提示词 prompt 风格 style 文字渲染 text rendering 图片编辑 editing 透明背景 png 吉卜力 ghibli 像素画 pixel art logo 设计 ui 电商 产品图 信息图 infographic 社交媒体 表情包 贴纸 版权 copyright 安全 safety midjourney stable diffusion 对比 comparison 角色一致性 character consistency seed custom gpt image 2.0 2.5",
+    meta: ["4 代技术进化", "六要素框架", "15+ 场景模板", "100+ 来源聚合", "核对至 2026-09-09"],
+    sections: [
+      {id:"evolution",label:"技术进化全景"},{id:"subscription",label:"订阅层级与配额"},
+      {id:"prompt-framework",label:"六要素提示词框架"},{id:"prompt-advanced",label:"提示词进阶心法"},
+      {id:"style-control",label:"风格控制与词汇表",quick:true,quickLabel:"风格词汇速查"},
+      {id:"text-rendering",label:"文字渲染攻略"},{id:"image-editing",label:"图像编辑与迭代"},
+      {id:"consistency",label:"角色与风格一致性"},{id:"scenarios",label:"15+ 场景模板",quick:true,quickLabel:"场景 Prompt 模板"},
+      {id:"expert-tricks",label:"专家级隐藏技巧"},{id:"comparison",label:"竞品对比与选型"},
+      {id:"safety-copyright",label:"安全策略与版权"},{id:"resources",label:"资源索引"}
+    ]
+  },
+  {
     href: "topics/env-auth-clinic.html", icon: "🚑", tag: "排查急救", color: "#e11d48",
     title: "AI CLI 环境与登录急救手册 · Claude Code × Codex",
     desc: "登录报错、配置打架、换机翻车一页治好:对症快查表 30 秒定位,五层诊断法 + 一键体检脚本、双工具五分类急救表、共用电脑/换电脑/无头机三大剧本、三级万能重置方案。",

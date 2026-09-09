@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GPT 图像生成全景实战指南: 从 DALL-E 到 GPT-4o 原生图像、Image 2.5 的完整进化路线、提示词工程六要素框架、15+ 场景 Prompt 模板、风格词汇表、图像编辑闭环、文字渲染攻略、竞品对比与企业级合规实践。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPT 图像生成指南 · 从入门到精通全景实战手册">
+<meta property="og:description" content="GPT 会员图像生成完全指南: 进化路线、六要素提示词框架、15+ 场景模板、风格词汇表、图像编辑、文字渲染、竞品对比与企业合规。">
+<meta property="og:url" content="https://aidoc-zq.netlify.app/topics/gpt-image-guide.html">
+<meta property="og:image" content="https://aidoc-zq.netlify.app/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>GPT 图像生成指南 · 从入门到精通全景实战手册</title>
+<style>
+:root{
+  --accent:#7c3aed; --accent-2:#a78bfa; --accent-soft:#f3eeff;
+  --ink:#0f0a1a; --bg:#ffffff; --bg-side:#faf8ff; --bg-code:#1a1025;
+  --text:#1a1625; --text-2:#5b5470; --text-3:#8b83a0;
+  --border:#e8e4f0; --border-2:#d8d2e5;
+  --tip-bg:#f0fdf6; --warn-bg:#fff8ec; --note-bg:#f3eeff;
+  --radius:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.78;font-size:15.5px}
+::selection{background:var(--accent);color:#fff}
+
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;display:flex;align-items:center;gap:14px;
+  padding:0 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16.5px}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.logo .sub{font-size:12px;font-weight:500;color:var(--text-3);padding:2px 8px;border:1px solid var(--border-2);border-radius:99px}
+.topbar .right{margin-left:auto;font-size:13px;color:var(--text-3);display:flex;gap:14px;align-items:center}
+.topbar .right a{color:var(--accent);text-decoration:none;font-weight:500}
+.menu-btn{display:none;border:1px solid var(--border-2);background:#fff;border-radius:8px;width:36px;height:36px;
+  font-size:16px;cursor:pointer;color:var(--text-2)}
+
+.sidebar{position:fixed;top:60px;left:0;bottom:0;width:272px;overflow-y:auto;background:var(--bg-side);
+  border-right:1px solid var(--border);padding:22px 14px 60px;z-index:90}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+.nav-group{margin-bottom:18px}
+.nav-group>.gt{font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;padding:6px 12px}
+.nav-group a{display:flex;align-items:center;gap:8px;padding:6.5px 12px;border-radius:8px;color:var(--text-2);
+  text-decoration:none;font-size:13.8px;transition:.15s}
+.nav-group a .no{font-family:var(--mono);font-size:11px;color:var(--text-3);min-width:20px}
+.nav-group a:hover{background:#ece8f5;color:var(--text)}
+.nav-group a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.nav-group a.active .no{color:var(--accent)}
+
+.main{margin-left:272px;padding:60px 0 0}
+.wrap{max-width:920px;margin:0 auto;padding:0 44px 120px}
+
+.hero{margin:40px 0 0;border-radius:20px;color:#ede8f5;position:relative;overflow:hidden;
+  background:
+    radial-gradient(1000px 420px at 85% -20%,rgba(124,58,237,.40),transparent 60%),
+    radial-gradient(800px 420px at 5% 125%,rgba(167,139,250,.22),transparent 60%),
+    var(--ink);
+  padding:56px 52px 48px}
+.hero .badge{display:inline-flex;font-size:12.5px;color:#c4b5fd;font-weight:600;background:rgba(124,58,237,.16);
+  border:1px solid rgba(124,58,237,.45);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:36px;line-height:1.28;letter-spacing:-.5px;font-weight:800;color:#fff}
+.hero h1 .grad{background:linear-gradient(90deg,#a78bfa,#e0d4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{margin-top:16px;font-size:16px;color:#b8b0cc;max-width:760px;line-height:1.75}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9a90ad}
+.hero .meta span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:99px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:26px 0 8px}
+.stat{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;background:#fff}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12.5px;color:var(--text-3);line-height:1.5;display:block;margin-top:4px}
+
+section{padding-top:8px}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em;
+  text-transform:uppercase;margin:56px 0 6px}
+h2{font-size:27px;font-weight:800;letter-spacing:-.3px;padding-bottom:14px;margin-bottom:22px;
+  border-bottom:1px solid var(--border);scroll-margin-top:84px}
+h3{font-size:19px;font-weight:700;margin:32px 0 12px;scroll-margin-top:84px}
+h4{font-size:15.5px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 14px}
+ul,ol{padding-left:24px;margin:0 0 16px}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+strong{font-weight:650}
+.src{font-size:12.5px;color:var(--text-3)}
+.src a{color:var(--text-3);text-decoration:underline dotted}
+
+.callout{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14.5px;border:1px solid transparent}
+.callout b.t{display:block;margin-bottom:4px;font-size:13.5px}
+.callout.note{background:var(--note-bg);border-color:#d0c4e8}
+.callout.note b.t{color:var(--accent)}
+.callout.tip{background:var(--tip-bg);border-color:#bbedd2}
+.callout.tip b.t{color:#16a34a}
+.callout.warn{background:var(--warn-bg);border-color:#fbe0ae}
+.callout.warn b.t{color:#d97706}
+
+code{font-family:var(--mono);font-size:13px;background:#f0ecf5;border:1px solid var(--border);
+  padding:1.5px 6px;border-radius:6px;color:#6d28d9}
+pre{background:var(--bg-code);color:#e0d8ef;border-radius:12px;padding:18px 20px;overflow-x:auto;
+  margin:16px 0 20px;font-size:13px;line-height:1.7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#7f7498}
+
+.tbl{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13.8px}
+.tbl th{text-align:left;font-size:12.5px;color:var(--text-3);font-weight:700;letter-spacing:.05em;
+  padding:10px 14px;border-bottom:2px solid var(--border-2);background:#faf8ff}
+.tbl td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl tr:hover td{background:#fdfbff}
+
+.hotcmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0 8px}
+.hotcmd{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#fff;transition:.3s ease}
+.hotcmd:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(15,10,26,.06)}
+.hotcmd .hc-cmd{display:block;font-family:var(--mono);font-size:13.8px;font-weight:700;color:var(--text);margin-bottom:6px;word-break:break-word}
+.hotcmd .hc-desc{display:block;font-size:12.5px;color:var(--text-2);line-height:1.55}
+.hotcmd.must{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.hotcmd.must .hc-cmd{color:var(--accent)}
+.hotcmd.must::after{content:"★ 核心";position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;
+  color:#fff;background:var(--accent);padding:2px 9px;border-radius:99px;letter-spacing:.02em}
+kbd{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--border-2);
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--text-2);white-space:nowrap}
+
+.steps{counter-reset:st;list-style:none;padding-left:0;margin:16px 0 20px}
+.steps li{counter-increment:st;position:relative;padding:0 0 16px 44px;margin:0}
+.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:99px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1.5px;background:var(--border)}
+
+.plays{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.play{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+.play .ph{display:flex;align-items:center;gap:12px;padding:16px 22px;background:#faf8ff;border-bottom:1px solid var(--border)}
+.play .ph .pic{font-size:19px}
+.play .ph b{font-size:15.5px}
+.play .ph .pt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.06em}
+.play .pb{padding:18px 22px 8px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 20px}
+.duo .bad,.duo .good{border-radius:10px;padding:14px 18px;font-size:14px}
+.duo .bad{background:#fef2f2;border:1px solid #fecaca}
+.duo .good{background:var(--tip-bg);border:1px solid #bbedd2}
+.duo b{display:block;font-size:12.5px;margin-bottom:6px}
+.duo .bad b{color:#dc2626}.duo .good b{color:#16a34a}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.pill.a{background:#f3eeff;color:#6d28d9}
+.pill.b{background:#fef6e7;color:#b45309}
+.pill.c{background:#eef4fe;color:#1d4ed8}
+.pill.d{background:#fce7f3;color:#be185d}
+
+.prompt-box{background:linear-gradient(135deg,#faf8ff,#f3eeff);border:1px solid var(--border-2);border-radius:12px;padding:16px 20px;margin:12px 0 16px;font-size:13.8px;line-height:1.75;color:var(--text)}
+.prompt-box .label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:block}
+.prompt-box code{background:rgba(124,58,237,.08);color:var(--accent);border:none;font-size:12.5px}
+
+.divider{height:1px;background:var(--border);margin:56px 0 0}
+.footer{margin-top:64px;padding-top:28px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3)}
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-2);
+  background:#fff;color:var(--text-2);cursor:pointer;font-size:17px;box-shadow:0 6px 20px rgba(15,10,26,.08);
+  opacity:0;pointer-events:none;transition:.25s;z-index:80}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{color:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1080px){
+  .sidebar{transform:translateX(-100%);transition:.25s}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.15)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .wrap{padding:0 22px 100px}
+  .hero{padding:40px 28px 36px}
+  .hero h1{font-size:28px}
+}
+</style>
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="logo"><span class="mark">🎨</span>GPT 图像生成指南<span class="sub">旗舰干货版</span></div>
+  <div class="right">
+    <div class="lang-switcher" style="display:inline-flex;align-items:center;background:var(--border-2);border-radius:14px;padding:2px;gap:2px;font-size:11px;font-weight:700;margin-right:12px;font-family:var(--font);" role="group" aria-label="Language Switcher">
+      <button type="button" data-lang="zh" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">中</button>
+      <button type="button" data-lang="en" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">EN</button>
+      <button type="button" data-lang="ja" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">JA</button>
+      <button type="button" data-lang="ko" class="lang-btn" style="border:none;background:none;border-radius:10px;padding:2px 7px;cursor:pointer;color:var(--text-3);font-size:11px;font-weight:700;transition:.2s;line-height:1.2;font-family:inherit;">KO</button>
+    </div>
+    <a href="../index.html">◂ 主题中心</a>
+    <span>核对至 2026-09-09</span>
+  </div>
+</header>
+
+<div class="progress" id="prog"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="side-filter"><input id="sideFilter" placeholder="筛选章节…"><span class="fk">/</span></div>
+  <div class="nav-group">
+    <div class="gt">认知与进化</div>
+    <a href="#evolution"><span class="no">00</span>技术进化全景</a>
+    <a href="#subscription"><span class="no">01</span>订阅层级与配额</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">提示词工程</div>
+    <a href="#prompt-framework"><span class="no">02</span>六要素提示词框架</a>
+    <a href="#prompt-advanced"><span class="no">03</span>提示词进阶心法</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">风格与控制</div>
+    <a href="#style-control"><span class="no">04</span>风格控制与词汇表</a>
+    <a href="#text-rendering"><span class="no">05</span>文字渲染攻略</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">图像编辑</div>
+    <a href="#image-editing"><span class="no">06</span>图像编辑与迭代</a>
+    <a href="#consistency"><span class="no">07</span>角色与风格一致性</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">实战场景</div>
+    <a href="#scenarios"><span class="no">08</span>15+ 场景模板</a>
+    <a href="#expert-tricks"><span class="no">09</span>专家级隐藏技巧</a>
+  </div>
+  <div class="nav-group">
+    <div class="gt">对比与合规</div>
+    <a href="#comparison"><span class="no">10</span>竞品对比与选型</a>
+    <a href="#safety-copyright"><span class="no">11</span>安全策略与版权</a>
+    <a href="#resources"><span class="no">12</span>资源索引</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="wrap">
+
+<div class="hero" id="top">
+  <div class="badge">🎨 GPT 图像生成 · 100+ 篇高质量文章精华 · 核对至 2026-09-09</div>
+  <h1>GPT 图像生成<br><span class="grad">从入门到精通 · 全景实战手册</span></h1>
+  <p class="lead">面向 ChatGPT Plus / Pro / Team / Enterprise 会员的图像生成完全指南。本手册综合 <strong>100+ 篇全网高质量文章</strong>，覆盖从 DALL-E 到 GPT-4o 原生图像再到 Image 2.5 的完整进化路线、<strong>六要素提示词框架</strong>、<strong>15+ 场景 Prompt 模板</strong>、风格词汇表、图像编辑闭环、文字渲染攻略、竞品对比与企业级合规实践。</p>
+  <div class="meta">
+    <span>技术进化全景</span><span>六要素框架</span><span>15+ 场景模板</span><span>风格词汇表</span><span>文字渲染攻略</span><span>竞品对比</span><span>企业合规</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>4 代进化</b><span>DALL-E 2 → DALL-E 3 → GPT-4o 原生 → Image 2.5</span></div>
+  <div class="stat"><b>六要素框架</b><span>主体 · 动作 · 环境 · 风格 · 技术 · 氛围</span></div>
+  <div class="stat"><b>15+ 场景</b><span>电商 · 社媒 · Logo · UI · 吉卜力 · 像素画 · 信息图</span></div>
+  <div class="stat"><b>100+ 来源</b><span>官方文档 · 社区精华 · 专家博客 · 实战案例</span></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 0: 技术进化 ================= -->
+<section id="evolution">
+<div class="sec-tag">认知 00</div>
+<h2>技术进化全景：从 DALL-E 到 Image 2.5</h2>
+
+<p>理解 OpenAI 图像生成的进化脉络，是用好它的前提。以下是关键里程碑：</p>
+
+<table class="tbl">
+  <tr><th>时间</th><th>里程碑</th><th>核心变化</th></tr>
+  <tr><td>2022</td><td>DALL-E 2</td><td>扩散模型架构，首次实现文本→图像，但文字渲染几乎全部乱码，空间关系混乱</td></tr>
+  <tr><td>2023.10</td><td>DALL-E 3</td><td>ChatGPT 自动扩写提示词再传入 DALL-E，提示词遵从度大幅提升，开始支持简单英文文字</td></tr>
+  <tr><td>2025.03</td><td>GPT-4o 原生图像</td><td><strong>里程碑式转变</strong>：摒弃外挂扩散模型，转向自回归原生多模态架构。文字渲染准确率飙升，支持复杂中英文</td></tr>
+  <tr><td>2025.04</td><td>gpt-image-1 API</td><td>将原生图像能力封装为独立 API 供开发者使用</td></tr>
+  <tr><td>2025.12</td><td>gpt-image-1.5</td><td>大幅降低生成延迟，提升多轮局部编辑稳定性</td></tr>
+  <tr><td>2026.04</td><td>GPT Image 2.0</td><td>引入"视觉推理层"：生成前先构思构图和光影关系，攻克文字渲染与精准 Prompt 遵循</td></tr>
+  <tr><td>2026.09</td><td><span class="pill a">GPT Image 2.5</span></td><td>引入草图生图（Sketch）、模板系统、基于评论的精确编辑，延迟降低 50%</td></tr>
+</table>
+
+<h3>架构本质变革：从"翻译者"到"创作者"</h3>
+
+<div class="duo">
+  <div class="bad">
+    <b>❌ 旧架构（DALL-E 3 时代）</b>
+    用户说话 → ChatGPT 翻译/扩写 → 传给外部 DALL-E 模型 → 返回图片。<br>
+    <em>问题：语义损耗大，上下文断裂，无法精确控制细节。</em>
+  </div>
+  <div class="good">
+    <b>✅ 新架构（GPT-4o 原生）</b>
+    模型本身同时理解文字和像素 → 端到端原生生成。<br>
+    <em>优势：零语义损耗，多轮对话上下文一致，文字渲染精准。</em>
+  </div>
+</div>
+
+<h3>各版本功能对比速查表</h3>
+
+<table class="tbl">
+  <tr><th>功能</th><th>DALL-E 3</th><th>GPT-4o 原生 / Image 1.x</th><th>Image 2.0 / 2.5</th></tr>
+  <tr><td><strong>文字渲染</strong></td><td>经常拼错排版混乱</td><td>准确率极高，支持复杂中英文</td><td>商用排版级，多字体与特效文字</td></tr>
+  <tr><td><strong>编辑能力</strong></td><td>几乎为零，只能重新生成</td><td>对话式局部修改 (Inpainting)</td><td>多轮无损编辑、草图引导、评论标注</td></tr>
+  <tr><td><strong>风格控制</strong></td><td>偏插画/艺术化，风格夸张</td><td>写实感增强，场景元素准确</td><td>支持专业摄影参数、模板约束，极度逼真</td></tr>
+  <tr><td><strong>分辨率</strong></td><td>固定（1024×1024 等）</td><td>灵活多比例</td><td>超高分辨率，细节清晰度极大提升</td></tr>
+  <tr><td><strong>Prompt 遵从度</strong></td><td>中等，复杂指令容易跑偏</td><td>优秀，空间关系理解大幅提升</td><td>极强，先推理再渲染</td></tr>
+</table>
+
+<div class="callout note">
+  <b class="t">💡 Image 2.0 / 2.5 / 3.0 的社区含义</b>
+  这些并非官方产品名称，而是社区对 AI 绘图范式演进的阶段性总结。<strong>Image 2.0</strong> 标志着 AI 绘图从"艺术玩具"走向"生产力工具"（文字渲染突破）；<strong>Image 2.5</strong> 是当前最新一代，主打草图+模板+精确编辑；<strong>Image 3.0</strong> 则代表未来范式——模型化身"视觉思考伙伴"，渲染前先推理。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 1: 订阅与配额 ================= -->
+<section id="subscription">
+<div class="sec-tag">认知 01</div>
+<h2>订阅层级与配额速查</h2>
+
+<table class="tbl">
+  <tr><th>订阅层级</th><th>图像生成权限</th><th>核心特征</th></tr>
+  <tr><td><strong>Free（免费版）</strong></td><td>极严苛限制，每日个位数</td><td>不支持复杂高清/多轮编辑功能，仅供体验</td></tr>
+  <tr><td><strong>Plus（个人版）</strong></td><td>动态高配额（每日数十至上百张）</td><td>高峰期可能遇到冷却时间 (Cooldown)，基础生成力足够</td></tr>
+  <tr><td><strong>Pro（专业版）</strong></td><td>消费者端最高优先级和上限</td><td>面向重度创作者（设计师），更少受系统降级影响</td></tr>
+  <tr><td><strong>Team（团队版）</strong></td><td>额度高于 Plus，支持团队池化共享</td><td>适合中小型工作室的高频生图</td></tr>
+  <tr><td><strong>Enterprise（企业版）</strong></td><td>基于合同算力 Credit 结算</td><td>专用服务器集群，数据不用于训练，绝对隐私</td></tr>
+</table>
+
+<div class="callout warn">
+  <b class="t">⚠️ 配额策略</b>
+  图像生成的消耗远高于纯文本。OpenAI 实行<strong>动态配额制</strong>，基于服务器实时负载和你的 3-5 小时滚动窗口进行分配，不提供"每日无限量"的承诺。<strong>避开北美工作时间</strong>上午至下午高峰时段可获得更快响应。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 2: 提示词框架 ================= -->
+<section id="prompt-framework">
+<div class="sec-tag">核心 02</div>
+<h2>六要素提示词框架</h2>
+
+<p>专业的图像提示词不是随意堆砌关键词，而应遵循结构化的<strong>"六要素框架"</strong>。把自己当成"艺术指导（Art Director）"来下达指令：</p>
+
+<div class="hotcmds">
+  <div class="hotcmd must">
+    <span class="hc-cmd">① 主体 (Subject)</span>
+    <span class="hc-desc">核心人物/物体的详细描述：年龄、服装、表情、姿态</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">② 动作 (Action)</span>
+    <span class="hc-desc">主体正在做什么，处于什么姿态和状态</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">③ 环境 (Environment)</span>
+    <span class="hc-desc">背景、时间段、天气、季节、场所</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">④ 风格 (Style)</span>
+    <span class="hc-desc">艺术流派或媒介：水彩、3D渲染、极简矢量图等</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">⑤ 技术 (Technical)</span>
+    <span class="hc-desc">光照、视角、构图、镜头参数</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">⑥ 氛围 (Vibe)</span>
+    <span class="hc-desc">情感基调：怀旧、史诗、宁静、紧张</span>
+  </div>
+</div>
+
+<h3>从简单到复杂的 4 级进阶</h3>
+
+<div class="prompt-box">
+  <span class="label">Lv1 极简</span>
+  A cat sitting.（一只坐着的猫）<br>
+  <em>→ 结果：平庸、无个性、默认AI风格</em>
+</div>
+<div class="prompt-box">
+  <span class="label">Lv2 加环境</span>
+  A cat sitting on a wooden windowsill looking outside.（一只猫坐在木窗台向外看）<br>
+  <em>→ 结果：有基本场景感，但风格随机</em>
+</div>
+<div class="prompt-box">
+  <span class="label">Lv3 加风格与光影</span>
+  A photorealistic image of a fluffy white cat sitting on a wooden windowsill looking at the sunset, warm sunlight casting long shadows.（一张毛茸茸白猫在窗台看日落的写实照片）<br>
+  <em>→ 结果：开始有专业感和情感</em>
+</div>
+<div class="prompt-box">
+  <span class="label">Lv4 技术级（推荐）</span>
+  A professional editorial photograph of a fluffy white cat sitting on a wooden windowsill looking at the sunset, warm golden hour light, shot on 35mm lens, shallow depth of field, high-resolution, cinematic composition.<br>
+  <em>→ 结果：专业摄影级，可商用</em>
+</div>
+
+<div class="callout tip">
+  <b class="t">💡 核心原则</b>
+  <ul>
+    <li><strong>使用自然语言叙事句</strong>：ChatGPT 偏好完整句子，不像 Midjourney 适合堆标签</li>
+    <li><strong>克制与平衡</strong>：保持 5-7 个核心描述点，避免超载导致"特征泄漏"</li>
+    <li><strong>正向强化代替否定</strong>：不说"不要戴眼镜"，而说"露出清晰自然的眼睛"</li>
+    <li><strong>技术词用英文</strong>：主体描述可用中文，但 <code>85mm lens</code>、<code>f/1.8</code>、<code>Unreal Engine 5</code> 等建议英文</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 3: 提示词进阶 ================= -->
+<section id="prompt-advanced">
+<div class="sec-tag">核心 03</div>
+<h2>提示词进阶心法</h2>
+
+<h3>"摄影指导"式提示词配方</h3>
+<p>通过输入真实的摄影参数，可以生成极具真实感的照片级图片：</p>
+
+<table class="tbl">
+  <tr><th>参数维度</th><th>关键词</th><th>效果</th></tr>
+  <tr><td><strong>镜头类型</strong></td><td><code>35mm</code> / <code>85mm</code> / <code>macro</code> / <code>fisheye</code></td><td>人文/人像/微距/夸张透视</td></tr>
+  <tr><td><strong>光圈</strong></td><td><code>f/1.2</code> / <code>f/1.8</code> / <code>f/8</code></td><td>极浅景深 / 浅景深 / 全景深</td></tr>
+  <tr><td><strong>快门</strong></td><td><code>1/1000s</code> / <code>2s exposure</code></td><td>冻结运动 / 运动模糊</td></tr>
+  <tr><td><strong>光线</strong></td><td><code>Golden hour</code> / <code>Rembrandt</code> / <code>Cinematic</code></td><td>黄金时刻 / 伦勃朗光 / 电影光</td></tr>
+  <tr><td><strong>胶片</strong></td><td><code>Kodak Portra 400</code> / <code>Fuji Superia</code></td><td>暖色调/冷色调胶片感</td></tr>
+</table>
+
+<div class="prompt-box">
+  <span class="label">📸 照片级黄金配方</span>
+  Shot on 35mm lens, Kodak Portra 400 film, golden hour lighting, cinematic rim light, subtle chromatic aberration, shallow depth of field.<br>
+  <em>（35mm镜头，柯达Portra400胶片，黄金时刻光照，电影级边缘光，轻微色散，浅景深）</em>
+</div>
+
+<h3>负面提示词的正确处理</h3>
+<p>ChatGPT <strong>没有</strong>原生负面提示词输入，且对"不要"的理解很差（你提什么它就画什么）。解决方案：</p>
+
+<div class="duo">
+  <div class="bad">
+    <b>❌ 错误做法</b>
+    "不要戴眼镜"<br>
+    "no cartoon style"<br>
+    "没有背景"<br>
+    → 反而会出现眼镜/卡通/杂乱背景
+  </div>
+  <div class="good">
+    <b>✅ 正确做法（正向强化）</b>
+    "露出清晰自然的眼睛和面部"<br>
+    "highly detailed photorealistic texture"<br>
+    "solid white background, nothing else"
+  </div>
+</div>
+
+<h3>让 GPT 帮你写提示词（反向工程法）</h3>
+<ol class="steps">
+  <li><strong>上传参考图</strong>：找一张你喜欢的图片上传给 ChatGPT</li>
+  <li><strong>让 GPT 分析</strong>：说"请详细描述这张图的构图、光线、材质、色彩和艺术风格，并反向工程写出一段能够生成极度相似图片的英文提示词"</li>
+  <li><strong>直接生成</strong>：让 GPT 使用它提取的提示词生成新图，这比直接命令"照着画"精准十倍</li>
+</ol>
+
+<h3>"思维链"生图法</h3>
+<div class="prompt-box">
+  <span class="label">🧠 Chain of Thought Prompt</span>
+  在生成图像前，请先用三段话分析这个主题（[我的主题]）的构图、色彩心理学和隐喻元素。分析完成后，基于你的分析写出一段最优的 DALL-E 提示词并生成图像。
+</div>
+
+<h3>中文 vs 英文提示词策略</h3>
+<div class="callout note">
+  <b class="t">💡 混合语言策略（最佳实践）</b>
+  <strong>主体叙事和人物动作</strong>使用中文（GPT 语义理解极强）。<strong>摄影术语、艺术流派、镜头参数</strong>等核心技术修饰词建议直接用英文（如 <code>85mm lens</code>、<code>f/1.8</code>、<code>isometric</code>、<code>Unreal Engine 5</code>），以获取最高精度的风格还原。
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 4: 风格控制 ================= -->
+<section id="style-control">
+<div class="sec-tag">核心 04</div>
+<h2>风格控制与视觉词汇表</h2>
+
+<h3>五大核心风格模板</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">📷</span><b>摄影写实 (Photography)</b><span class="pt">PHOTOREALISTIC</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">模板</span>
+        Editorial photo of [主体], [动作], golden hour lighting, shot on 85mm lens, f/1.8, ultra-sharp focus, photorealistic.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎨</span><b>水彩插画 (Watercolor)</b><span class="pt">ILLUSTRATION</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">模板</span>
+        Watercolor illustration of [主体], soft brushstrokes, pastel colors, dreamlike atmosphere, whimsical, visible paper texture.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🎮</span><b>3D 渲染 (3D Render)</b><span class="pt">3D STYLE</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">模板</span>
+        3D render of [主体] in Unreal Engine 5, isometric view, soft studio lighting, ray tracing, highly detailed.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">👾</span><b>像素画 (Pixel Art)</b><span class="pt">RETRO</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">模板</span>
+        16-bit pixel art of [主体], retro arcade style, flat colors, crisp edges, isolated on a white background.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">✨</span><b>Logo 设计 (Logo Design)</b><span class="pt">BRAND</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">模板</span>
+        Minimalist vector logo of [主体], flat design, corporate, 2-color palette, clean lines, white background, no shading, SVG style.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>风格词汇速查表</h3>
+
+<table class="tbl">
+  <tr><th>维度</th><th>关键词库</th></tr>
+  <tr><td><strong>质感/材质</strong></td><td><code>visible pores</code> (可见毛孔) · <code>gritty</code> (粗粝) · <code>cross-hatching</code> (交叉排线) · <code>matte</code> (哑光) · <code>glossy</code> (高光) · <code>iridescent</code> (幻彩) · <code>translucent</code> (半透明) · <code>corroded metal</code> (锈蚀金属) · <code>smooth porcelain</code> (光滑瓷器)</td></tr>
+  <tr><td><strong>光影</strong></td><td><code>volumetric fog</code> (体积雾) · <code>cinematic moody lighting</code> (电影氛围光) · <code>bioluminescent</code> (生物发光) · <code>golden hour</code> (黄金时刻) · <code>neon reflections</code> (霓虹倒影) · <code>rim light</code> (轮廓光) · <code>split lighting</code> (分裂光)</td></tr>
+  <tr><td><strong>色彩</strong></td><td><code>pastel colors</code> (粉彩) · <code>earth tones</code> (大地色) · <code>monochromatic</code> (单色调) · <code>duotone</code> (双色调) · <code>high contrast vivid</code> (高对比鲜艳) · <code>60-30-10 color rule</code> (色彩比例法则)</td></tr>
+  <tr><td><strong>构图</strong></td><td><code>rule of thirds</code> (三分法) · <code>bird's-eye view</code> (鸟瞰) · <code>Dutch angle</code> (倾斜构图) · <code>low-angle</code> (仰视) · <code>isometric</code> (等距) · <code>macro shot</code> (微距) · <code>medium shot</code> (中景)</td></tr>
+  <tr><td><strong>情感</strong></td><td><code>nostalgic</code> (怀旧) · <code>epic</code> (史诗) · <code>serene</code> (宁静) · <code>whimsical</code> (奇幻) · <code>tense</code> (紧张) · <code>cozy</code> (温馨)</td></tr>
+</table>
+
+<h3>吉卜力风格防屏蔽技巧</h3>
+<div class="callout tip">
+  <b class="t">💡 版权绕过</b>
+  直接使用"Studio Ghibli"可能触发版权保护限制。改用描述性关键词：<br>
+  <code>hand-drawn cel animation, soft diffused lighting, watercolor textures, lush greenery, nostalgic atmosphere, expressive character design, blue sky with fluffy cumulus clouds</code>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 5: 文字渲染 ================= -->
+<section id="text-rendering">
+<div class="sec-tag">核心 05</div>
+<h2>文字渲染攻略</h2>
+
+<p>文字渲染曾是 AI 图像生成的最大痛点。GPT-4o 原生图像彻底改变了这一局面：</p>
+
+<h3>文字渲染核心技巧</h3>
+<ul>
+  <li><strong>引号隔离法</strong>：将需要的精确文字放在<strong>英文双引号</strong>内：<code>A neon sign that reads "OPEN 24 HOURS"</code></li>
+  <li><strong>位置指定</strong>：明确说明文字在哪里——"杯身上印着"、"店面橱窗上"、"白板正中央"</li>
+  <li><strong>简短为王</strong>：1-4 个单词成功率最高，长句极易出错</li>
+  <li><strong>字体描述</strong>：用英文描述字体风格——<code>bold sans-serif</code>（粗体无衬线）、<code>elegant cursive</code>（优雅草书）、<code>3D bubble letters</code>（3D气泡字）</li>
+  <li><strong>迭代修复</strong>：拼写错了不要重生成全图！直接说"保持图片完全一致，只把招牌上的字改成 'HELLO'"</li>
+</ul>
+
+<h3>多语言文字渲染（中日韩）</h3>
+<div class="callout note">
+  <b class="t">🌐 2025-2026 重大突破</b>
+  最新模型对中日韩（CJK）复杂字符的渲染实现了质的飞跃。直接在提示词中放入中文即可：<br>
+  <code>A neon sign that reads "你好未来"</code>，模型能准确将中文融入海报设计或书法作品中。
+</div>
+
+<h3>字体风格控制词汇表</h3>
+<table class="tbl">
+  <tr><th>字体类型</th><th>英文关键词</th></tr>
+  <tr><td>衬线体</td><td><code>elegant thin-stroke serif font</code> · <code>classic newspaper typography</code></td></tr>
+  <tr><td>无衬线体</td><td><code>modern minimalist sans-serif</code> · <code>bold geometric font</code> · <code>clean Swiss design</code></td></tr>
+  <tr><td>手写体</td><td><code>messy handwritten script</code> · <code>vintage calligraphy</code> · <code>brush stroke lettering</code></td></tr>
+  <tr><td>装饰体</td><td><code>3D bubble letters</code> · <code>retro neon glow text</code> · <code>gothic blackletter</code></td></tr>
+</table>
+
+<h3>数据图表与信息图的正确做法</h3>
+<div class="duo">
+  <div class="bad">
+    <b>❌ 错误方法</b>
+    用图像生成模型"画"精确的统计图表<br>
+    → AI 不具备数学精确度，数值和比例一定会出错
+  </div>
+  <div class="good">
+    <b>✅ 正确方法</b>
+    <strong>精确图表</strong>：上传数据，让 ChatGPT 用 Python（matplotlib）生成<br>
+    <strong>流程图</strong>：让 GPT 输出 Mermaid 代码，用渲染工具展示<br>
+    <strong>美化底图</strong>：让 AI 只生成留白精美模板，后期手动添加数据
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 6: 图像编辑 ================= -->
+<section id="image-editing">
+<div class="sec-tag">实战 06</div>
+<h2>图像编辑与多轮迭代</h2>
+
+<h3>图像编辑三大工作流</h3>
+<ol class="steps">
+  <li><strong>局部重绘（Inpainting）</strong>：点击图片进入编辑界面 → 画笔涂抹需修改区域 → 输入修改指令（如"把这件衬衫改成红色条纹"）。AI 保持原图上下文和光影不变。</li>
+  <li><strong>评论标注编辑（Images 2.5 新功能）</strong>：在图片上直接圈选并添加评论 → 模型根据上下文自动完成精确的局部修改，不破坏其他部分。</li>
+  <li><strong>整体风格转换</strong>：上传照片 → 指定风格（如"转换为赛博朋克风格"）。注意这是语义级重新生成，非加滤镜。</li>
+</ol>
+
+<h3>多轮对话迭代的最佳实践</h3>
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🔄</span><b>渐进式微调工作流</b><span class="pt">ITERATIVE</span></div>
+    <div class="pb">
+      <ol class="steps">
+        <li><strong>初稿生成</strong>："生成一个在森林里读书的女孩"</li>
+        <li><strong>调整环境</strong>："保持构图不变，把时间改成夜晚，森林里有萤火虫"</li>
+        <li><strong>修改细节</strong>："人物不变，将她的书换成一台发光的笔记本电脑"</li>
+        <li><strong>局部修复</strong>：发现手指画变形？圈出→"修复手部结构，确保只有5根手指"</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="callout warn">
+  <b class="t">⚠️ 迭代避坑</b>
+  <ul>
+    <li>如果一个对话中连续 3 次以上失败，AI 会陷入"思维定势"。此时最好<strong>新开一个 Chat</strong>，用总结出的最好提示词重新开始</li>
+    <li>增量式修改时，务必强调<strong>"保持 XXX 不变"</strong>，否则 AI 可能重新构图</li>
+    <li>满意某个结果时，立即让 GPT 输出完整的提示词和 seed 值，方便后续复用</li>
+  </ul>
+</div>
+
+<h3>透明背景的正确处理</h3>
+<p>ChatGPT 原生图像模型<strong>不支持</strong>直接输出透明通道 PNG。最佳实践闭环：</p>
+<ol class="steps">
+  <li><strong>纯色背景生成</strong>：提示词中要求"纯白背景（solid white background）"或"纯绿幕背景（chroma green background），不要任何阴影"</li>
+  <li><strong>一键去背</strong>：生成后用 ChatGPT 的 Code Interpreter 写 Python 代码去除纯色背景，输出透明 PNG</li>
+  <li><strong>外部替代</strong>：也可使用 Remove.bg、Canva 或 macOS 原生抠图一键处理</li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 7: 一致性 ================= -->
+<section id="consistency">
+<div class="sec-tag">实战 07</div>
+<h2>角色与风格一致性</h2>
+
+<p>角色一致性（Character Consistency）和风格一致性是多图项目的最大挑战。以下是经社区验证的高阶方法：</p>
+
+<h3>角色一致性四大策略</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">📋</span><b>策略一：角色设定卡</b><span class="pt">CHARACTER SHEET</span></div>
+    <div class="pb">
+      <p>首次生成时，要求绘制包含角色<strong>正、侧、背三视图和多种表情</strong>的设定卡。后续所有生成都上传这张设定卡作为参考。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🧬</span><b>策略二：文字DNA锚点</b><span class="pt">DNA TEMPLATE</span></div>
+    <div class="pb">
+      <p>为角色起一个专属名字（如"Aria"），并编写<strong>核心物理特征DNA描述</strong>，每次提示词中完整重复：</p>
+      <div class="prompt-box">
+        <span class="label">DNA 锚点示例</span>
+        Aria, a 30-year-old woman with a scar on her left cheek, emerald green eyes, messy ginger hair tied with a blue ribbon, wearing a red leather jacket with silver zippers.
+      </div>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🔢</span><b>策略三：Seed 值锁定</b><span class="pt">SEED LOCK</span></div>
+    <div class="pb">
+      <p>满意某图时，问 GPT"请告诉我这张图的 seed 值和 gen_id"。下次生成时声明"使用 seed X"，搭配完全一样的角色描述。</p>
+    </div>
+  </div>
+  <div class="play">
+    <div class="ph"><span class="pic">🤖</span><b>策略四：Custom GPT 固化</b><span class="pt">CUSTOM GPT</span></div>
+    <div class="pb">
+      <p>创建专属 Custom GPT，在系统级 Instructions 中写入角色特征和画风约束，让 AI 在后台自动为每次生成垫入这些规则。</p>
+    </div>
+  </div>
+</div>
+
+<h3>风格一致性：JSON 风格蓝图法</h3>
+<ol class="steps">
+  <li>上传一张基准风格图，要求 ChatGPT："分析这张图的视觉风格、配色方案、材质和光影，输出为 JSON 格式的风格蓝图"</li>
+  <li>在后续对话中，每次生成都附加这段 JSON 作为硬性风格约束</li>
+  <li>避免使用"科幻风格"等宽泛词汇，改用具体描述：<code>赛博朋克，蓝紫色霓虹高对比度光影，阴雨天积水反射，35mm胶片质感</code></li>
+</ol>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 8: 场景模板 ================= -->
+<section id="scenarios">
+<div class="sec-tag">实战 08</div>
+<h2>15+ 实战场景 Prompt 模板</h2>
+
+<h3>商业场景</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🛒</span><b>电商产品图</b><span class="pt">E-COMMERCE</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">白底产品图</span>
+        A professional product photograph of [产品名], centered on a pure white background, soft studio lighting, subtle shadow, high-resolution, e-commerce ready, no text.
+      </div>
+      <div class="prompt-box">
+        <span class="label">生活场景图</span>
+        [产品] naturally placed on a wooden table in a sun-drenched Italian-style balcony, morning coffee atmosphere, warm natural light, lifestyle photography, 35mm lens.
+      </div>
+      <p><strong>参数建议</strong>：方形 1:1（主图）/ 横版 4:3（详情页）· 纯白或生活场景 · 避免复杂文字</p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">📱</span><b>社交媒体配图</b><span class="pt">SOCIAL MEDIA</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">小红书/Instagram</span>
+        为一篇关于"[主题]"的文章生成配图，要求展现[关键视觉]，扁平化科技插画风格，温暖色调，留出上方空白以便添加文字，竖版 3:4 比例。
+      </div>
+      <div class="prompt-box">
+        <span class="label">微信朋友圈</span>
+        Social media post design, aesthetic, cinematic lighting, 1:1 aspect ratio, leave negative space in the upper half for copy, [主题描述].
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🏷️</span><b>Logo 与品牌设计</b><span class="pt">BRANDING</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">极简商业 Logo</span>
+        A minimalist tech company logo on a matte black background. The main subject is [概念]. The text "[品牌名]" is centered below in clean white bold sans-serif font. Flat vector art, limited color palette (hex #FF5733, #33FF57), ample negative space, no shading, SVG style.
+      </div>
+      <p><strong>注意</strong>：AI 容易画得太复杂，必须强调 <code>minimalist</code>、<code>flat</code>、<code>no shading</code>、<code>clear silhouette</code></p>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">📊</span><b>PPT/演示文稿配图</b><span class="pt">PRESENTATION</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">PPT 背景</span>
+        A wide cinematic 16:9 abstract background image for a tech presentation about [主题]. Gradient from deep navy to midnight blue, subtle geometric patterns, clean professional look, large negative space on the right for text overlay, no text.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>创意场景</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">🏯</span><b>吉卜力/新海诚动画风</b><span class="pt">ANIME</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">吉卜力风（防屏蔽版）</span>
+        Hand-drawn cel animation style of [场景], soft diffused lighting, watercolor textures, lush greenery overgrowing old structures, nostalgic atmosphere, expressive character design, blue sky with fluffy cumulus clouds, warm color palette.
+      </div>
+      <div class="prompt-box">
+        <span class="label">新海诚风</span>
+        A breathtaking cityscape at twilight in Makoto Shinkai's style, photorealistic sky with dramatic clouds and light rays, lens flare, highly saturated colors, rain-slicked streets reflecting neon lights, 16:9 cinematic widescreen.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🕹️</span><b>像素画/复古游戏</b><span class="pt">PIXEL ART</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">经典像素风</span>
+        16-bit pixel art of [主体], retro arcade style, flat colors, crisp pixel edges, game sprite sheet layout, chroma green background for easy extraction.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">⚙️</span><b>赛博朋克/蒸汽朋克</b><span class="pt">CYBERPUNK</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">赛博朋克</span>
+        A rain-slicked neon alleyway at midnight, cyberpunk atmosphere, holographic billboards with Chinese characters, volumetric fog, purple and cyan neon reflections in puddles, cinematic wide shot, Blade Runner aesthetic.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🖼️</span><b>水彩/油画艺术</b><span class="pt">FINE ART</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">水彩画</span>
+        Watercolor painting of [主体], visible brushstrokes, soft bleeding edges, pastel color palette, white paper texture showing through, gentle washes of color, dreamy and ethereal.
+      </div>
+      <div class="prompt-box">
+        <span class="label">油画</span>
+        Thick impasto oil painting of [主体], Renaissance lighting style, dramatic chiaroscuro, visible palette knife strokes, warm golden tones, gallery-worthy composition.
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>专业场景</h3>
+
+<div class="plays">
+  <div class="play">
+    <div class="ph"><span class="pic">📐</span><b>UI/UX 原型图</b><span class="pt">UI DESIGN</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">APP 界面设计</span>
+        A modern smart home mobile app dashboard screenshot, dark mode, neon blue accent buttons, clean card-based layout, showing temperature controls and security cameras, iOS design language, high fidelity mockup.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">😃</span><b>表情包/贴纸</b><span class="pt">STICKER</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">贴纸万用词</span>
+        Die-cut sticker style of [主体], thick white border, solid color background, kawaii vector art, exaggerated facial expression, cute proportions, no shadow.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🎬</span><b>YouTube/视频封面</b><span class="pt">THUMBNAIL</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">高点击率封面</span>
+        YouTube thumbnail, 16:9 wide format, vibrant high-contrast colors, [主体] on the right side, left side features bold 3D text "[标题]" in yellow with black outline, dramatic lighting, eye-catching pop-art style background.
+      </div>
+    </div>
+  </div>
+
+  <div class="play">
+    <div class="ph"><span class="pic">🏠</span><b>建筑/室内设计可视化</b><span class="pt">ARCHITECTURE</span></div>
+    <div class="pb">
+      <div class="prompt-box">
+        <span class="label">室内改造效果图</span>
+        Modern Scandinavian living room interior design, light oak hardwood floors, minimalist white furniture, large floor-to-ceiling windows with natural daylight, indoor plants, warm ambient lighting, architectural photography style, wide-angle lens.
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 9: 专家技巧 ================= -->
+<section id="expert-tricks">
+<div class="sec-tag">高阶 09</div>
+<h2>专家级隐藏技巧</h2>
+
+<h3>Custom Instructions 提示词升频</h3>
+<p>在 ChatGPT 的个性化设置中预设"图像生成框架"：</p>
+<div class="prompt-box">
+  <span class="label">Custom Instructions 示例</span>
+  每次生成图片时，请充当专业美术指导，将我的简短要求扩写为包含以下元素的详细提示词：主体描述 + 动作 + 环境背景 + 光影互动 + 视角构图 + 艺术媒介。每次生成后，请告诉我 seed 值和完整的英文提示词。
+</div>
+<p>设置后，即使你只输入"画一只猫"，系统也会自动输出专业级光影和构图的高质量图片。</p>
+
+<h3>社区验证的 8 大隐藏技巧</h3>
+
+<table class="tbl">
+  <tr><th>#</th><th>技巧名称</th><th>具体操作</th></tr>
+  <tr><td>1</td><td><strong>防自由发挥锁定</strong></td><td>在 Prompt 前加：<code>Generate this exact prompt without changing a single word: [你的Prompt]</code>，强制 ChatGPT 不做额外润色</td></tr>
+  <tr><td>2</td><td><strong>版权绕过法</strong></td><td>"详细描述一个看起来像 [某角色] 的人物，但不要提及他的名字"——描述特征而非名字</td></tr>
+  <tr><td>3</td><td><strong>并排网格变体</strong></td><td>"在同一张图里，生成该设计的4种不同颜色变体，用网格排列（arranged in a 2x2 grid）"。挑中后单独放大</td></tr>
+  <tr><td>4</td><td><strong>草图引导法</strong></td><td>用画图工具画几个火柴人安排位置 → 截图发给 GPT → "以此图为构图结构，生成一幅…"</td></tr>
+  <tr><td>5</td><td><strong>季节变化系列</strong></td><td>生成基准图获取 seed → "使用相同 seed 和构图，将场景改为[冬季大雪]"，生成春夏秋冬四景</td></tr>
+  <tr><td>6</td><td><strong>漫画分镜生成</strong></td><td><code>A comic strip page divided into 4 horizontal panels. Panel 1: [描述], Panel 2: [描述]...</code></td></tr>
+  <tr><td>7</td><td><strong>资产分离（游戏素材）</strong></td><td>要求 <code>asset sheet, multiple views, turnaround sheet, chroma green background</code>，方便后期抠图</td></tr>
+  <tr><td>8</td><td><strong>印刷级高清处理</strong></td><td>提示词中加入 <code>extremely highly detailed, ultra-crisp, sharp focus, intricate details</code>，为后期 AI 放大打基础</td></tr>
+</table>
+
+<h3>ChatGPT Images 2.5 最新功能速查</h3>
+<div class="hotcmds">
+  <div class="hotcmd must">
+    <span class="hc-cmd">草图生图 @Sketch</span>
+    <span class="hc-desc">输入 @Sketch 唤出画板，随手涂鸦作为空间和色彩参考，极大增强构图可控性</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">模板系统 Templates</span>
+    <span class="hc-desc">内置海报、传单、产品白底图的高效排版模板，一键套用</span>
+  </div>
+  <div class="hotcmd must">
+    <span class="hc-cmd">评论标注编辑</span>
+    <span class="hc-desc">在图片上直接圈选"添加评论"，模型精确完成局部修改不破坏整体</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">多图参考融合</span>
+    <span class="hc-desc">上传最多10张图片，使用锚点提示词进行风格与元素的创意融合</span>
+  </div>
+  <div class="hotcmd">
+    <span class="hc-cmd">线稿→成品图</span>
+    <span class="hc-desc">上传手绘线稿，配合提示词转化为高精度3D渲染或插画作品</span>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 10: 竞品对比 ================= -->
+<section id="comparison">
+<div class="sec-tag">对比 10</div>
+<h2>竞品对比与选型指南</h2>
+
+<table class="tbl">
+  <tr><th>维度</th><th>ChatGPT (GPT-4o)</th><th>Midjourney v7</th><th>Stable Diffusion 3 / Flux</th><th>Adobe Firefly</th></tr>
+  <tr><td><strong>核心定位</strong></td><td>对话式协作助手</td><td>艺术美学巅峰</td><td>绝对控制权（开源）</td><td>商业安全 + 生态集成</td></tr>
+  <tr><td><strong>Prompt 遵从</strong></td><td><span class="pill a">极强</span></td><td>中等</td><td>强（需技术配置）</td><td>中等</td></tr>
+  <tr><td><strong>文字渲染</strong></td><td><span class="pill a">最强</span></td><td>弱</td><td>中（Flux 较强）</td><td>中</td></tr>
+  <tr><td><strong>美学质量</strong></td><td>优秀</td><td><span class="pill a">顶级</span></td><td>可控但需技巧</td><td>好</td></tr>
+  <tr><td><strong>人体解剖</strong></td><td>良好</td><td>优秀</td><td><span class="pill a">Flux 最佳</span></td><td>良好</td></tr>
+  <tr><td><strong>学习门槛</strong></td><td><span class="pill a">最低（自然语言）</span></td><td>中等（Discord交互）</td><td>高（需技术背景）</td><td>低（Adobe 生态）</td></tr>
+  <tr><td><strong>角色一致性</strong></td><td>弱（需技巧）</td><td>中</td><td><span class="pill a">强（ControlNet+LoRA）</span></td><td>中</td></tr>
+  <tr><td><strong>版权安全</strong></td><td>有 Copyright Shield</td><td>商用许可</td><td>取决于模型</td><td><span class="pill a">最强（IP赔偿担保）</span></td></tr>
+  <tr><td><strong>多轮编辑</strong></td><td><span class="pill a">最强（对话式）</span></td><td>弱</td><td>中</td><td>强（Photoshop 集成）</td></tr>
+</table>
+
+<h3>什么时候选 ChatGPT？</h3>
+<div class="callout tip">
+  <b class="t">✅ ChatGPT 图像生成的独特优势（杀手锏）</b>
+  <ul>
+    <li><strong>多模态对话式迭代</strong>：像指使助理一样说"把背景换成晚上"，无需重写 Prompt</li>
+    <li><strong>跨流程闭环</strong>：同一对话中写文案 → 生成配图 → 写发布文字</li>
+    <li><strong>文字渲染</strong>：需要在图像中嵌入精确文字时，ChatGPT 是当前最佳选择</li>
+    <li><strong>无代码零门槛</strong>：无需理解采样步数、CFG Scale 等技术参数</li>
+  </ul>
+</div>
+
+<h3>ChatGPT 的局限性</h3>
+<div class="callout warn">
+  <b class="t">⚠️ 需要了解的弱点</b>
+  <ul>
+    <li><strong>角色一致性差</strong>：极难在多张图中保持完全相同的角色面貌</li>
+    <li><strong>缺乏像素级控制</strong>：无法精确修改画面中某个10×10像素的瑕疵</li>
+    <li><strong>安全护栏过于敏感</strong>：内容审核经常误判，导致合理创意被拦截</li>
+    <li><strong>"AI 塑料感"</strong>：有时会出现过于平滑、高饱和度的典型AI风格</li>
+  </ul>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 11: 安全与版权 ================= -->
+<section id="safety-copyright">
+<div class="sec-tag">合规 11</div>
+<h2>安全策略、版权与 FAQ</h2>
+
+<h3>内容策略速查：什么能生成，什么不能</h3>
+<table class="tbl">
+  <tr><th>类别</th><th>状态</th><th>说明</th></tr>
+  <tr><td>暴力与血腥</td><td><span class="pill d">禁止</span></td><td>肢体暴力、自残、极端血腥图像</td></tr>
+  <tr><td>成人/色情内容</td><td><span class="pill d">禁止</span></td><td>裸露、性暗示、色情行为</td></tr>
+  <tr><td>仇恨与歧视</td><td><span class="pill d">禁止</span></td><td>针对种族、宗教、性取向等的歧视</td></tr>
+  <tr><td>真实政治人物</td><td><span class="pill d">禁止</span></td><td>防止深度伪造和政治宣传</td></tr>
+  <tr><td>真实公众人物</td><td><span class="pill d">禁止</span></td><td>保护肖像权，防止Deepfakes</td></tr>
+  <tr><td>特定在世艺术家风格</td><td><span class="pill b">受限</span></td><td>系统自动转换为通用流派描述</td></tr>
+  <tr><td>受版权保护角色</td><td><span class="pill b">受限</span></td><td>如迪士尼角色、漫威英雄（可通过描述特征绕过）</td></tr>
+  <tr><td>商业产品设计</td><td><span class="pill a">允许</span></td><td>可用于商业用途</td></tr>
+  <tr><td>创意艺术作品</td><td><span class="pill a">允许</span></td><td>绝大部分创意内容可自由生成</td></tr>
+</table>
+
+<h3>版权：生成的图片属于谁？</h3>
+<div class="callout note">
+  <b class="t">📋 版权要点</b>
+  <ul>
+    <li><strong>使用权</strong>：你拥有生成图像的完整使用权，可自由商用（销售、重印、商品化）</li>
+    <li><strong>版权局限</strong>：根据美国版权局裁定，纯 AI 生成图像<strong>不受版权保护</strong>（缺乏人类作者身份），你无法起诉别人使用相同图像</li>
+    <li><strong>建议</strong>：企业使用时，应在 AI 图像基础上进行<strong>实质性人工修改</strong>，以申请部分著作权保护</li>
+    <li><strong>Copyright Shield</strong>：Enterprise 和 API 用户可获得版权盾服务，OpenAI 代为承担侵权索赔的法律费用</li>
+  </ul>
+</div>
+
+<h3>C2PA 元数据标记</h3>
+<p>OpenAI 在所有生成图像中嵌入了 <strong>C2PA (Coalition for Content Provenance and Authenticity)</strong> 元数据，标明图片由 AI 生成。可通过 Content Credentials Verify 工具验证。注意：截图或通过不支持 C2PA 的平台传播后，元数据可能丢失。</p>
+
+<h3>常见拒绝原因与解决方案</h3>
+<table class="tbl">
+  <tr><th>拒绝原因</th><th>解决方案</th></tr>
+  <tr><td>包含真实人物名字</td><td>用通用描述代替：把"汤姆·克鲁斯"改为"英俊的穿西装动作片特工"</td></tr>
+  <tr><td>触发暴力敏感词</td><td>避免双义词如"shoot"（改用"photograph"），"blood red"改用"crimson"</td></tr>
+  <tr><td>特定艺术家名字</td><td>描述风格特征而非名字："史诗般的奇幻数字艺术，戏剧性高对比度光影"</td></tr>
+  <tr><td>疑似版权角色</td><td>"描述一个 [特征] 的角色"而非直呼其名</td></tr>
+  <tr><td>生成失败 / 报错</td><td>刷新页面 → 新窗口重试 → 精简提示词长度（上限约4000字符）</td></tr>
+</table>
+
+<h3>企业级使用清单</h3>
+<ul>
+  <li>✅ 使用 <strong>ChatGPT Enterprise 或 Team</strong> 版本（数据不用于模型训练）</li>
+  <li>✅ 建立内部 <strong>Prompt 资产库</strong>，记录优质 Seed 和模板</li>
+  <li>✅ 发布前进行 <strong>法律审核</strong>，确认无商标变形或侵权元素</li>
+  <li>✅ 在 AI 图像基础上进行 <strong>人工修改</strong>，增加版权保护</li>
+  <li>⛔ 避免在 Prompt 中使用受保护 IP（如"迪士尼风格"）</li>
+  <li>⛔ 避免用于核心商标注册（版权保护不确定）</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= SECTION 12: 资源索引 ================= -->
+<section id="resources">
+<div class="sec-tag">索引 12</div>
+<h2>资源索引与延伸阅读</h2>
+
+<table class="tbl">
+  <tr><th>资源类别</th><th>链接/入口</th><th>价值</th></tr>
+  <tr><td><strong>OpenAI 官方图像指南</strong></td><td><a href="https://platform.openai.com/docs/guides/images" target="_blank">platform.openai.com/docs/guides/images</a></td><td>第一信源：API 参数与官方最佳实践</td></tr>
+  <tr><td><strong>OpenAI Cookbook</strong></td><td><a href="https://github.com/openai/openai-cookbook" target="_blank">github.com/openai/openai-cookbook</a></td><td>官方代码示例与多模态工作流</td></tr>
+  <tr><td><strong>OpenAI 使用政策</strong></td><td><a href="https://openai.com/policies/usage-policies" target="_blank">openai.com/policies/usage-policies</a></td><td>内容策略与商用条款</td></tr>
+  <tr><td><strong>DALL-E System Card</strong></td><td><a href="https://openai.com/research" target="_blank">openai.com/research</a></td><td>模型安全与能力边界技术报告</td></tr>
+  <tr><td><strong>PromptHero</strong></td><td><a href="https://prompthero.com" target="_blank">prompthero.com</a></td><td>提示词灵感库与社区精选</td></tr>
+  <tr><td><strong>Reddit r/ChatGPT</strong></td><td><a href="https://reddit.com/r/ChatGPT" target="_blank">reddit.com/r/ChatGPT</a></td><td>社区最新技巧与实战案例</td></tr>
+  <tr><td><strong>本库关联主题</strong></td><td><a href="codex-guide.html">Codex 使用指南</a> · <a href="prompt-context-engineering.html">提示词工程</a> · <a href="ai-leverage-guide.html">AI 杠杆指南</a></td><td>全方位 AI 工程内功</td></tr>
+</table>
+
+<h3>100+ 研究来源分类</h3>
+<p>本指南综合了以下来源类别的 100+ 篇高质量文章：</p>
+<ul>
+  <li><strong>官方文档 (15+)</strong>：OpenAI API 文档、Cookbook、System Card、使用条款、版本公告</li>
+  <li><strong>专家博客 (25+)</strong>：Towards Data Science、Medium UX Collective、Smashing Magazine、Creative Bloq、LessWrong 等专业平台的深度评测</li>
+  <li><strong>社区精华 (20+)</strong>：Reddit r/ChatGPT、r/OpenAI、r/dalle3、r/ChatGPTPromptGenius 的高赞帖与精华总结</li>
+  <li><strong>视频教程 (10+)</strong>：YouTube 创作者的实战演示与工作流分享</li>
+  <li><strong>行业报告 (15+)</strong>：MindStudio、Superside、Zapier、TechCrunch 等行业洞察与企业级案例</li>
+  <li><strong>学术/技术论文 (10+)</strong>：ArXiv 预印本、HuggingFace 社区研究、多模态 AI 技术分析</li>
+  <li><strong>对比评测 (10+)</strong>：GPT-4o vs Midjourney/SD/Firefly/Imagen 的系统性对比文章</li>
+</ul>
+</section>
+
+<div class="divider"></div>
+
+<div class="footer">
+  <p><strong>免责与更新说明</strong>：本指南基于 OpenAI 官方文档、社区优质实践及 100+ 篇高质量文章提炼整理。GPT 图像生成功能随版本快速演进，具体以 ChatGPT 应用内最新功能和 <a href="https://platform.openai.com/docs/guides/images" target="_blank">官方文档</a> 为准。</p>
+</div>
+
+</div>
+</main>
+
+<button class="top-btn" id="topBtn" title="回到顶部">↑</button>
+
+<script src="../assets/js/site.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

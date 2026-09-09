@@ -1167,31 +1167,87 @@ if __name__ == "__main__":
 
     <!-- Chapter 5: Prompting & Truth Seeking -->
     <section id="ch5-1">
-  <h2>5.1 SuperGrok Best Practices: Real-Time Data & Deep Research</h2>
-  <p><span class="tag-badge tag-tip">Efficiency Guide</span> Within the xAI ecosystem, Grok's greatest strength isn't just code generation; it is its unparalleled "real-time information access." For developers and professional researchers, mastering how to allocate these resources is essential to extracting the maximum value from a Grok subscription.</p>
-  
-  <h3 data-reveal>📊 1. Subscription Positioning: Clarify Your Core Needs</h3>
-  <p>xAI currently offers different tiers of membership, each with entirely different resource priorities:</p>
+  <h2>5.1 SuperGrok Subscription Optimization & Real-Time Intelligence Guide</h2>
+  <p><span class="tag-badge tag-tip">Advanced Practice</span> In the 2026 xAI ecosystem, Grok has evolved from an irreverent chatbot into the world's only hardcore productivity tool directly wired into the real-time X (Twitter) firehose. However, developers frequently subscribe to the wrong tier or recklessly burn through their weekly quota by overusing DeepSearch for trivial questions. This guide dissects xAI's underlying compute dynamics and outlines high-leverage workflows for elite researchers and engineers.</p>
+
+  <h3 data-reveal>🧭 1. Deconstructing Subscription Tiers & Compute Pools</h3>
+  <p>Selecting the proper tier is the prerequisite for unthrottled productivity. xAI enforces a clear divergence in its product lines:</p>
+
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Subscription Tier</th>
+          <th>Core Positioning & Perks</th>
+          <th>Developer Suitability</th>
+          <th>Selection Advice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>X Premium / Premium+</strong></td>
+          <td>Aimed primarily at social media users. Includes Blue Checkmark, algorithm boosts, ad-free feed, and basic Grok access.</td>
+          <td><strong>Moderate</strong>. AI quotas are treated as a bundled perk; the weekly compute pool is relatively small and throttles easily during heavy coding.</td>
+          <td>Ideal for content creators who prioritize social presence and only need casual AI assistance.</td>
+        </tr>
+        <tr>
+          <td><strong>SuperGrok (Standalone)</strong></td>
+          <td>Dedicated AI productivity tier for power users and engineers. Unthrottled channels, queue priority, and full suite access.</td>
+          <td><strong>Elite (Recommended)</strong>. Provides roughly 3x the weekly compute pool of the bundled social tier, purpose-built for sustained logical reasoning.</td>
+          <td>Mandatory for software engineers, market researchers, and automation builders.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn"><b class="t">Core Principle: The Weekly Unified Compute Pool</b>
+  xAI meters usage through a <strong>Weekly Rolling Pool</strong>. Unchecked generation of high-res image assets or running multiple DeepSearch queries on Monday can heavily throttle your coding capacity by mid-week. Thoughtful compute pacing is an essential discipline.</div>
+
+  <h3 data-reveal>🚀 2. Unique Advantages: 3 Power Plays for Breakthrough Velocity</h3>
+
+  <h4>Power Play 1: Real-Time X Grounding (Zero-Day Bug Breakthroughs)</h4>
+  <p>This is Grok's undisputed superpower. When a core framework (e.g., React 20) launches a major release today and breaks production, conventional LLMs are helpless because their training datasets are frozen. They will hallucinate obsolete workarounds.</p>
   <ul>
-    <li><strong>X Premium / Premium+</strong>: Aimed primarily at social media users. It provides Blue Checkmark verification, algorithmic boosts for posts, and includes basic Grok AI chat functionality. If your main goal is growing your platform influence, this is the best choice.</li>
-    <li><strong>SuperGrok</strong>: A pure AI subscription built specifically for productivity, developers, and heavy researchers. It offers significantly higher interaction quotas, highly stable response speeds, and exclusive advanced R&D tools, making it the definitive choice for serious work.</li>
+    <li><strong>The Play</strong>: Enable Real-Time mode in the web app, using advanced syntax to penetrate social noise and tap directly into global senior developer posts.</li>
+  </ul>
+  <div class="callout tip"><b class="t">Zero-Day Bug Triage Prompt Paradigm</b>
+  <code>Initiate real-time X data retrieval: Search today's discussions for [Framework/Library + Error Keyword].
+  1. Filter out spam and emotional noise; isolate high-signal, upvoted technical posts;
+  2. Extract actionable Workarounds validated by senior engineers;
+  3. Output in 3 sections: "Root Cause Summary -> Temporary Patch Code -> Official Tracking Status".</code></div>
+  <p>This prompt consistently surfaces working patches 48 hours before official documentation is patched, obliterating technical blind spots.</p>
+
+  <h4>Power Play 2: Strategic DeepSearch (Multi-Agent Debate)</h4>
+  <p><strong>DeepSearch</strong> deploys an autonomous multi-agent swarm that crawls, cross-references, and debates findings. It is a strategic heavy weapon—and a voracious compute consumer.</p>
+  <ul>
+    <li><strong>Never Waste It</strong>: Do not trigger DeepSearch for basic tasks like "check the weather" or "write a binary search algorithm"—it burns weekly quotas instantly.</li>
+    <li><strong>The Right Application</strong>: Deploy it for <strong>Strategic Technology Selection</strong> or <strong>Executive Whitepaper Synthesis</strong>: <code>"Enable DeepSearch in debate mode. For a 10M concurrent websocket scenario, Agent A defends Elixir/Phoenix, Agent B defends Go. Synthesize latest 2026 benchmarks into a 3000-word architectural decision whitepaper."</code></li>
+    <li>Within minutes, sub-agents crawl dozens of technical whitepapers and stress-test benchmarks, delivering an architectural teardown deep enough to present to a CTO.</li>
   </ul>
 
-  <h3 data-reveal>🚀 2. The Unique Advantage: Real-Time Search & Bug Fixing</h3>
-  <p>When a popular open-source framework (like React or Vue) releases an update today, or a widespread system crash occurs, conventional LLMs often provide outdated or hallucinated fixes due to their "training data cutoff dates."</p>
+  <h4>Power Play 3: Think Mode (Deep Chain-of-Thought Auditing)</h4>
+  <p>When solving abstract mathematical optimizations, concurrency race conditions, or cryptographic verification algorithms, enable <strong>Think Mode</strong>. Grok exposes its full chain of thought, stress-testing its own logic and catching edge cases before outputting the final implementation.</p>
+
+  <h3 data-reveal>🛡️ 3. Production Prompt Engineering: The Goal-First Framework</h3>
+  <p>Community testing confirms that Grok excels with structured directives. Always structure non-trivial requests using the <strong>Goal-First</strong> hierarchy:</p>
   <ul>
-    <li><strong>Best Practice</strong>: Immediately open Grok and enable real-time networking mode.</li>
-    <li>Use precise prompts: <code>"Search the X platform to see if other developers encountered the 'XXX Module Startup Failure' today. If so, summarize the most highly upvoted workarounds."</code></li>
-    <li>Grok instantly taps into the live stream of global developer discussions, returning verified solutions posted just minutes ago. This is currently the fastest way in the industry to break through technical information barriers.</li>
+    <li><strong>[Goal]</strong>: Define the precise deliverable in one sentence (e.g., "Refactor authentication middleware to stateless JWT").</li>
+    <li><strong>[Context]</strong>: Include only necessary schema contracts; avoid dumping thousands of unrelated lines.</li>
+    <li><strong>[Constraints]</strong>: Mandate language versions, latency bounds, and banned dependencies.</li>
+    <li><strong>[Output Spec]</strong>: Demand Markdown Diff formatting or strict JSON Schema.</li>
   </ul>
 
-  <h3 data-reveal>🕵️ 3. Strategic Decisions & DeepSearch</h3>
-  <p>SuperGrok features the breathtaking <strong>DeepSearch</strong> capability. Because it performs extensive multi-page cross-validation and deep reasoning in the background, it also <strong>significantly consumes your resource quotas</strong>.</p>
-  <ul>
-    <li><strong>What to Avoid</strong>: For daily code debugging or basic knowledge questions, use Standard Mode. Do not enable DeepSearch.</li>
-    <li><strong>The Right Way to Use It</strong>: Enable it when facing major "Strategic Architecture Decisions" or "Deep Market Research." For example: <code>"Comprehensively compare the mainstream Serverless database products of 2026. Combine the latest developer reviews and pricing strategies to output a 3000-word architectural selection report."</code></li>
-    <li>In these scenarios, DeepSearch acts like a professional team of analysts, producing highly in-depth evaluation reports that make your membership quota completely worth it.</li>
-  </ul>
+  <h3 data-reveal>❓ 4. Frequently Asked Questions</h3>
+  <div class="duo">
+    <div class="card">
+      <div class="card-title">Should I use the X sidebar or the grok.com standalone app?</div>
+      <div class="card-desc"><strong>We strongly recommend grok.com for serious work.</strong> The standalone interface offers a clean distraction-free layout, superior conversation organization, and far more reliable code block rendering. The X sidebar is best reserved for quick sentiment checks on live posts.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">What happens when my weekly compute pool runs low?</div>
+      <div class="card-desc">During peak global hours, accounts nearing their weekly threshold experience increased queue times or slightly condensed reasoning lengths. Group compute-heavy DeepSearch runs into dedicated sprint days to prevent throttling everyday interactions.</div>
+    </div>
+  </div>
 </section>
 
 <div class="footer" style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">

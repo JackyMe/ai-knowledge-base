@@ -708,37 +708,115 @@ claude mcp login api-tool
 <div class="divider"></div>
 
 <section id="subscription-quotas">
-<div class="sec-tag">最佳实践</div>
-<h2>Claude Pro/Team 最佳实践：上下文管理与生态联动</h2>
+<div class="sec-tag">进阶实战指南</div>
+<h2>Claude 订阅资产效能变现与 Claude Code 高阶协同手册</h2>
 
-<p>Anthropic 为 Claude 赋予了业界领先的超长上下文处理能力与深度的代码逻辑推理。但对于 Pro（20美元/月）或 Team 用户而言，如果缺乏科学的上下文管理习惯，很容易在几轮长对话中触发 5 小时的配额限制。掌握以下最佳实践，能让您的开发效率发生质的飞跃。</p>
+<p>Anthropic 为 Claude Pro（$20/月）与 Team 用户提供了业内公认最顶尖的代码推理能力与上下文理解力。然而，很多用户在接入 Claude Code 终端命令行或高频使用网页端时，常常在一个小时内就收到了“已触碰限流阈值，将在 X 小时后重置”的提示。本手册汇集全网 Claude 深度开发者与工程师社区的实战总结，系统拆解如何利用 Prompt Caching、Projects 知识库与精准的终端工程化纪律，将您的会员使用效率提升数倍。</p>
 
-<h3 data-reveal>⚡ 1. 掌握 Prompt Caching (提示词缓存) 的红利</h3>
-<p>Claude 底层具备极为强大的缓存机制，这是节省额度的核心秘密：</p>
+<h3 data-reveal>🧭 一、 揭开 Claude 双层限流与算力计量的底层逻辑</h3>
+<p>与其他平台不同，Claude 的额度控制逻辑具有极强的“上下文敏感性”：</p>
+
+<div class="table-wrap">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>计费与限制机制</th>
+        <th>底层运转原理</th>
+        <th>典型踩坑诱因</th>
+        <th>应对与避坑准则</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>5 小时短期滚动窗口 (Burst Limit)</strong></td>
+        <td>系统监控您在过去 5 小时内的瞬时并发与 Token 吞吐。窗口随时间平滑向前滚动释放。</td>
+        <td>在同一个对话中连续发送 30+ 轮交互，或者一次性在终端挂载整个庞大工程的代码。</td>
+        <td>控制交互轮次，每完成一个小目标及时开新会话；终端只挂载当前任务强相关的模块。</td>
+      </tr>
+      <tr>
+        <td><strong>每周持续使用上限 (Sustained Cap)</strong></td>
+        <td>针对高强度用户的全局防护网，防止账号被脚本 7x24 小时不间断自动化调用。</td>
+        <td>长时间运行无人值守的自动化爬虫或死循环式的自动化代码重构代理。</td>
+        <td>重要自动化任务设置步数上限；合理规划工作节奏（如每日 2-3 个核心冲刺时段）。</td>
+      </tr>
+      <tr>
+        <td><strong>长上下文的复利惩罚</strong></td>
+        <td>每次发送新指令，模型必须<strong>从头重新读取</strong>该对话历史中的所有过往提问、系统提示与代码输出。</td>
+        <td>第 1 轮提问消耗 1K Token，到第 40 轮时单次提问可能在静默中消耗 80K Token！</td>
+        <td>养成“微任务（Micro-Tasks）”习惯，单会话保持在 4-6 轮高密度交互内即归档。</td>
+      </tr>
+      <tr>
+        <td><strong>Prompt Caching (原生缓存)</strong></td>
+        <td>当请求的前缀（Prefix）与系统缓存完全一致时，读取该前缀享有<strong>高达 90% 的算力折扣与近乎零延迟</strong>。</td>
+        <td>在静态文档的前面动态插入时间戳、随机会话 ID，导致缓存前缀全盘失效。</td>
+        <td>将不变的团队规范和接口定义固定在最顶部，确保逐字匹配，长期触发缓存红利。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 data-reveal>🚀 二、 四大价值支柱：构建超长续航的 Claude 开发闭环</h3>
+<p>要想真正榨干 Pro 会员的价值，必须掌握以下四套协同工具的组合打法：</p>
+
+<h4>支柱 1：Projects (项目工作区) 架构化持久知识库</h4>
+<p>在 Claude 网页版中，<strong>Projects（项目）</strong>是最高效的资产沉淀中心：</p>
 <ul>
-  <li>如果您在对话的**最开头**放置了大量稳定不变的内容（如团队的代码规范、完整的 API 字典、长篇文档），Claude 会自动将其缓存。</li>
-  <li>在后续的对话中，只要这些前置内容没有任何修改，系统读取它们的成本和额度消耗将**大幅降低（最高可省 90%）**。</li>
-  <li><strong>实践建议</strong>：永远将静态参考资料放在对话顶部，将您每天不断变动的具体问题写在对话的最底部。</li>
+  <li><strong>一次上传，全员缓存</strong>：将团队的《代码风格规范》、《全量数据库 Schema》、《核心 API 字典》统一上传至 Project Knowledge。Anthropic 会在底层自动对这些项目文件建立全局缓存，后续在项目内开启的数十个对话窗口，均以极低开销瞬间共享这套庞大记忆。</li>
+  <li><strong>文件格式优选</strong>：实践证明，结构良好的 Markdown（<code>.md</code>）和 TypeScript 接口文件（<code>.d.ts</code>）的解析效率与召回准确度显著优于复杂的 PDF 或 Word 排版文档。</li>
 </ul>
 
-<h3 data-reveal>📚 2. 巧用 Projects (工作区) 构建持久化知识库</h3>
-<p>如果您在开发一个大型项目，千万不要在每次新建对话时，手动把几十个核心代码文件重新发给 Claude。</p>
+<h4>支柱 2：Artifacts 交互沙盒（前端与原型的无损试验场）</h4>
+<p>Web 端的 <strong>Artifacts（右侧预览面板）</strong> 是前端开发与数据可视化的神器：</p>
+<ol>
+  <li><strong>所见即所得调试</strong>：在网页端下达指令生成 React 组件、SVG 图标、HTML 原型或 Mermaid 流程图，直接在右侧实时交互操作。</li>
+  <li><strong>零终端开销试错</strong>：将“颜色不好看”、“按钮间距不对”等频繁的细碎修改留在网页版 Artifacts 中微调。等视觉和交互打磨至 100% 满意后，再将定稿代码复制至本地。</li>
+  <li><strong>彻底杜绝终端盲猜</strong>：如果在本地终端让 Claude Code 反复修改前端样式，不仅极其消耗额度，且因为终端缺乏视觉反馈，极易产生“改了这里坏了那里”的代码回退。</li>
+</ol>
+
+<h4>支柱 3：Claude Code CLI 终端工程化军规</h4>
+<p>在本地使用 Claude Code 命令行代理时，严格遵守以下工程规范：</p>
 <ul>
-  <li>在 Claude 网页版中，利用 <strong>Projects</strong> 功能创建一个专属工作区。</li>
-  <li>将您的全量核心源码、第三方库文档、甚至 PDF 需求说明书直接上传为 Project Knowledge（项目知识库）。</li>
-  <li>在 Project 内的所有对话，都会自动并极其高效地引用这些知识，既保证了回答的精准度，又避免了重复上传导致额度被瞬间抽干。</li>
+  <li><strong>精简 `CLAUDE.md` 契约（保持在 80 行以内）</strong>：`CLAUDE.md` 是 Claude Code 的入场行为准则。切忌把成千上万行的整本手册塞进去，这会导致每敲一次回车都在浪费输入额度。遵循三原则：
+    <ul>
+      <li><strong>WHAT</strong>：当前项目的技术栈与模块职责简述。</li>
+      <li><strong>WHY</strong>：核心约定的背书（例如：“使用 pnpm 而非 npm，因依赖锁已严格校验”）。</li>
+      <li><strong>HOW</strong>：标准的构建命令、测试命令与代码检查规范。</li>
+    </ul>
+  </li>
+  <li><strong>推行“正面引导”而非负面罗列</strong>：尽量使用“优先使用函数式组件与 Tailwind 类名”等正向指令，避免堆砌数十条“不要这样不要那样”的否定句。</li>
+  <li><strong>Plan-Inspect-Edit（计划-审查-执行）循环</strong>：在下达复杂任务前，强制其先输出计划：“不要直接修改文件，先列出你打算调整的 3 个核心步骤与受影响文件”。确认计划无误后，再敲击确认执行。</li>
 </ul>
 
-<h3 data-reveal>🧹 3. Context 脱水与长线任务管理</h3>
-<p>在复杂的 Debug 过程中，对话往往会堆积大量无效的错误堆栈和中间尝试。长线对话是消耗配额的头号杀手。</p>
+<h4>支柱 4：上下文卫生学与常用控制指令</h4>
 <ul>
-  <li><strong>及时总结 (脱水)</strong>：当一个 Bug 被成功修复后，如果不打算开启全新话题，建议使用诸如 <code>/compact</code> 的命令，或者手动让 Claude：“总结当前正确的代码逻辑并输出，然后我们开启一个新对话。”</li>
-  <li>在新对话中，只带入这份“总结”，抛弃之前几十轮的无效排错记录，系统将重新恢复轻盈与高效。</li>
+  <li><strong>善用 `/compact`（上下文脱水）</strong>：当一个长任务排查完毕、但你仍需要在当前终端会话继续工作时，输入 <code>/compact</code>。Claude Code 会将过往漫长的报错堆栈凝练为数行关键上下文，瞬间释放对话内存。</li>
+  <li><strong>善用 `/clear`（重置会话）</strong>：在切换功能模块或开始新的 Issue 时，毫不犹豫地输入 <code>/clear</code>。正如社区名言所说：“AI 的上下文就像鲜牛奶，越新鲜越香醇。”</li>
+  <li><strong>随时监控配额状态</strong>：输入 <code>/usage</code> 查看当前会话的上下文消耗百分比，或者在 macOS 状态栏安装社区开源的 <code>Usagebar</code>，在配额达到 75% 和 90% 时获得前置提醒，从容调整开发节奏。</li>
 </ul>
 
-<h3 data-reveal>🎨 4. Artifacts 的高频验证</h3>
-<p>开发 Web UI、图表或简单工具时，充分利用 Claude 网页版的 <strong>Artifacts (预览面板)</strong>。</p>
-<p>在 Artifacts 中，您可以直接在右侧实时预览代码生成的 UI 效果，随时进行交互调试。等到视觉和逻辑都在网页端打磨完美后，再将最终定稿的代码整合进本地工程。这避免了在本地终端反复生成错误 UI 造成的极大浪费。</p>
+<h3 data-reveal>🛡️ 三、 生产级实战 SOP 与 Prompt 模板库</h3>
+
+<h4>场景 1：无痛修复历史代码库的隐蔽并发 Bug</h4>
+<div class="callout tip"><b class="t">高能排查 Prompt</b>
+<code>请以资深系统架构师身份，审查附带的【订单状态机模块】。
+1. 仅关注潜在的竞态条件 (Race Conditions) 与事务死锁隐患；
+2. 按照“隐患代码行 -> 触发时序图 (Mermaid) -> 推荐原子化重构方案”的三段式结构输出；
+3. 先输出分析方案并等待我的审查确认，严禁直接全量覆写源码文件。</code></div>
+
+<h4>场景 2：基于 Git Worktrees 的多 Agent 并行开发</h4>
+<p>高阶工程师会在本地利用 <code>git worktree add ../feature-b</code> 创建平行的独立代码工作区，在不同的终端窗口中并行启动 Claude Code。一个代理负责跑测试修 Bug，另一个代理负责写新功能文档，互不干扰，极大摊薄会员的时间成本。</p>
+
+<h3 data-reveal>❓ 四、 常见高频疑问与实用建议</h3>
+<div class="duo">
+  <div class="card">
+    <div class="card-title">为什么我刚在终端跑了半小时就被限流了？</div>
+    <div class="card-desc">常见诱因是未配置 <code>.claudeignore</code> 或 <code>CLAUDE.md</code> 过于庞大，导致 Claude Code 默默读取了 <code>node_modules</code>、<code>build</code> 产物或庞大的日志文件。在项目根目录下配置严格的忽略规则，禁止代理读取非源码目录。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">高强度编码场景下，选 API 按量还是买双 Pro 账号？</div>
+    <div class="card-desc">社区实测表明：对于每天持续编码 6 小时以上的重度开发者，<strong>维持两个 Pro 订阅（交替使用 5 小时重置窗口）在成本上往往远低于直接调用 API</strong>。因为全量读取代码库的 API Token 消耗极其昂贵，而包月订阅提供了可预期的固定开销与高额度的安全感。</div>
+  </div>
+</div>
 </section>
 
 <section id="playbook">
